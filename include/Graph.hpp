@@ -1,3 +1,6 @@
+#ifndef __CXXGRAPH_H__
+#define __CXXGRAPH_H__
+
 
 #pragma once
 
@@ -18,10 +21,16 @@ namespace CXXGRAPH
 	template <typename T>
 	class UndirectedEdge;
 	template <typename T>
+	class DirectedWeightedEdge;
+	template <typename T>
+	class UndirectedWeightedEdge;
+	template <typename T>
 	class Graph;
 
+	class Weighted;
+
 	template <typename T>
-	using AdjacencyMatrix = std::map<const Node<T>,std::vector<std::pair<const Node<T>, const Edge<T>>>>;
+	using AdjacencyMatrix = std::map<const Node<T>, std::vector<std::pair<const Node<T>, const Edge<T>>>>;
 
 	template <typename T>
 	std::ostream &operator<<(std::ostream &o, const Node<T> &node);
@@ -31,6 +40,10 @@ namespace CXXGRAPH
 	std::ostream &operator<<(std::ostream &o, const DirectedEdge<T> &edge);
 	template <typename T>
 	std::ostream &operator<<(std::ostream &o, const UndirectedEdge<T> &edge);
+	template <typename T>
+	std::ostream &operator<<(std::ostream &o, const DirectedWeightedEdge<T> &edge);
+	template <typename T>
+	std::ostream &operator<<(std::ostream &o, const UndirectedWeightedEdge<T> &edge);
 	template <typename T>
 	std::ostream &operator<<(std::ostream &o, const Graph<T> &graph);
 	template <typename T>
@@ -78,11 +91,44 @@ namespace CXXGRAPH
 	{
 		return (this->id == b.id && this->data == b.data);
 	}
-	
-	template<typename T>
+
+	template <typename T>
 	bool Node<T>::operator<(const Node<T> &b) const
 	{
 		return (this->id < b.id);
+	}
+
+	class Weighted
+	{
+	private:
+		double weight;
+
+	public:
+		Weighted();
+		Weighted(const double weight);
+		virtual ~Weighted() = default;
+		double getWeight() const;
+		void setWeight(const double weight);
+	};
+
+	inline Weighted::Weighted() //inline because the implementation of non-template function in header file
+	{
+		weight = 0.0;
+	}
+
+	inline Weighted::Weighted(const double weight) //inline because the implementation of non-template function in header file
+	{
+		this->weight = weight;
+	}
+
+	inline double Weighted::getWeight() const //inline because the implementation of non-template function in header file
+	{
+		return weight;
+	}
+
+	inline void Weighted::setWeight(const double weight) //inline because the implementation of non-template function in header file
+	{
+		this->weight = weight;
 	}
 
 	template <typename T>
@@ -90,14 +136,14 @@ namespace CXXGRAPH
 	{
 	private:
 		unsigned long id;
-		std::pair<const Node<T>*,const Node<T>*> nodePair;
+		std::pair<const Node<T> *, const Node<T> *> nodePair;
 
 	public:
 		Edge(const unsigned long id, const Node<T> &node1, const Node<T> &node2);
-		Edge(const unsigned long id, const std::pair<const Node<T>*,const Node<T>*> &nodepair);
+		Edge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair);
 		virtual ~Edge() = default;
 		const unsigned long &getId() const;
-		const std::pair<const Node<T>*, const Node<T>*> &getNodePair() const;
+		const std::pair<const Node<T> *, const Node<T> *> &getNodePair() const;
 		virtual const std::optional<bool> isDirected() const;
 		virtual const std::optional<bool> isWeighted() const;
 		//operator
@@ -116,7 +162,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	Edge<T>::Edge(const unsigned long id, const std::pair<const Node<T>*,const Node<T>*> &nodepair) : nodePair(nodepair)
+	Edge<T>::Edge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair) : nodePair(nodepair)
 	{
 		this->id = id;
 	}
@@ -128,7 +174,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	const std::pair<const Node<T>*, const Node<T>*> &Edge<T>::getNodePair() const
+	const std::pair<const Node<T> *, const Node<T> *> &Edge<T>::getNodePair() const
 	{
 		return nodePair;
 	}
@@ -162,7 +208,7 @@ namespace CXXGRAPH
 	{
 	public:
 		DirectedEdge(const unsigned long id, const Node<T> &node1, const Node<T> &node2);
-		DirectedEdge(const unsigned long id, const std::pair<const Node<T>*, const Node<T>*> &nodepair);
+		DirectedEdge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair);
 		DirectedEdge(const Edge<T> &edge);
 		virtual ~DirectedEdge() = default;
 		const Node<T> &getFrom() const;
@@ -181,7 +227,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	DirectedEdge<T>::DirectedEdge(const unsigned long id, const std::pair<const Node<T>*,const Node<T>*> &nodepair) : Edge<T>(id, nodepair)
+	DirectedEdge<T>::DirectedEdge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair) : Edge<T>(id, nodepair)
 	{
 	}
 
@@ -219,7 +265,7 @@ namespace CXXGRAPH
 	{
 	public:
 		UndirectedEdge(const unsigned long id, const Node<T> &node1, const Node<T> &node2);
-		UndirectedEdge(const unsigned long id, const std::pair<const Node<T>*,const Node<T>*> &nodepair);
+		UndirectedEdge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair);
 		UndirectedEdge(const Edge<T> &edge);
 		virtual ~UndirectedEdge() = default;
 		const Node<T> &getNode1() const;
@@ -238,7 +284,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	UndirectedEdge<T>::UndirectedEdge(const unsigned long id, const std::pair<const Node<T>*,const Node<T>*> &nodepair) : Edge<T>(id, nodepair)
+	UndirectedEdge<T>::UndirectedEdge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair) : Edge<T>(id, nodepair)
 	{
 	}
 
@@ -272,21 +318,144 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
+	class DirectedWeightedEdge : public DirectedEdge<T>, public Weighted
+	{
+	public:
+		DirectedWeightedEdge(const unsigned long id, const Node<T> &node1, const Node<T> &node2, const double weight);
+		DirectedWeightedEdge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair, const double weight);
+		DirectedWeightedEdge(const DirectedEdge<T> &edge, const double weight);
+		DirectedWeightedEdge(const Edge<T> &edge, const double weight);
+		DirectedWeightedEdge(const DirectedEdge<T> &edge);
+		DirectedWeightedEdge(const Edge<T> &edge);
+		DirectedWeightedEdge(const UndirectedWeightedEdge<T> &edge);
+		virtual ~DirectedWeightedEdge() = default;
+		const std::optional<bool> isWeighted() const override;
+		//operator
+		explicit operator UndirectedWeightedEdge<T>() const { return UndirectedWeightedEdge<T>(Edge<T>::getId(), Edge<T>::getNodePair(),Weighted::getWeight()); }
+
+		friend std::ostream &operator<<<>(std::ostream &os, const DirectedWeightedEdge<T> &edge);
+	};
+
+	template <typename T>
+	DirectedWeightedEdge<T>::DirectedWeightedEdge(const unsigned long id, const Node<T> &node1, const Node<T> &node2, const double weight) : DirectedEdge<T>(id, node1, node2), Weighted(weight)
+	{
+	}
+
+	template <typename T>
+	DirectedWeightedEdge<T>::DirectedWeightedEdge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair, const double weight) : DirectedEdge<T>(id, nodepair), Weighted(weight)
+	{
+	}
+
+	template <typename T>
+	DirectedWeightedEdge<T>::DirectedWeightedEdge(const DirectedEdge<T> &edge, const double weight) : DirectedEdge<T>(edge), Weighted(weight)
+	{
+	}
+
+	template <typename T>
+	DirectedWeightedEdge<T>::DirectedWeightedEdge(const Edge<T> &edge, const double weight) : DirectedEdge<T>(edge), Weighted(weight)
+	{
+	}
+	
+	template<typename T>
+	DirectedWeightedEdge<T>::DirectedWeightedEdge(const DirectedEdge<T> &edge) : DirectedEdge<T>(edge), Weighted()
+	{		
+	}
+	
+	template<typename T>
+	DirectedWeightedEdge<T>::DirectedWeightedEdge(const Edge<T> &edge) : DirectedEdge<T>(edge), Weighted()
+	{		
+	}
+	
+	template<typename T>
+	DirectedWeightedEdge<T>::DirectedWeightedEdge(const UndirectedWeightedEdge<T> &edge) :DirectedEdge<T>(edge), Weighted(edge.getWeight())
+	{		
+	}
+
+	template <typename T>
+	const std::optional<bool> DirectedWeightedEdge<T>::isWeighted() const
+	{
+		return true;
+	}
+
+	template <typename T>
+	class UndirectedWeightedEdge : public UndirectedEdge<T>, public Weighted
+	{
+	public:
+		UndirectedWeightedEdge(const unsigned long id, const Node<T> &node1, const Node<T> &node2, const double weight);
+		UndirectedWeightedEdge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair, const double weight);
+		UndirectedWeightedEdge(const UndirectedEdge<T> &edge, const double weight);
+		UndirectedWeightedEdge(const Edge<T> &edge, const double weight);
+		UndirectedWeightedEdge(const UndirectedEdge<T> &edge);
+		UndirectedWeightedEdge(const Edge<T> &edge);
+		UndirectedWeightedEdge(const DirectedWeightedEdge<T> &edge);
+		virtual ~UndirectedWeightedEdge() = default;
+		const std::optional<bool> isWeighted() const override;
+		//operator
+		explicit operator DirectedWeightedEdge<T>() const { return DirectedWeightedEdge<T>(Edge<T>::getId(), Edge<T>::getNodePair(),Weighted::getWeight()); }
+
+		friend std::ostream &operator<<<>(std::ostream &os, const UndirectedWeightedEdge<T> &edge);
+	};
+
+	template <typename T>
+	UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const unsigned long id, const Node<T> &node1, const Node<T> &node2, const double weight) : UndirectedEdge<T>(id, node1, node2), Weighted(weight)
+	{
+	}
+
+	template <typename T>
+	UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair, const double weight) : UndirectedEdge<T>(id, nodepair), Weighted(weight)
+	{
+	}
+
+	template <typename T>
+	UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const UndirectedEdge<T> &edge, const double weight) : UndirectedEdge<T>(edge), Weighted(weight)
+	{
+	}
+
+	template <typename T>
+	UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const Edge<T> &edge, const double weight) : UndirectedEdge<T>(edge), Weighted(weight)
+	{
+	}
+	
+	template<typename T>
+	UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const UndirectedEdge<T> &edge) : UndirectedEdge<T>(edge), Weighted()
+	{
+		
+	}
+	
+	template<typename T>
+	UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const Edge<T> &edge) : UndirectedEdge<T>(edge), Weighted()
+	{
+		
+	}
+	
+	template<typename T>
+	UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const DirectedWeightedEdge<T> &edge) : UndirectedEdge<T>(edge), Weighted(edge.getWeight())
+	{
+		
+	}
+
+	template <typename T>
+	const std::optional<bool> UndirectedWeightedEdge<T>::isWeighted() const
+	{
+		return true;
+	}
+
+	template <typename T>
 	class Graph
 	{
 	private:
-		std::set<const Edge<T>*> edgeSet;
+		std::set<const Edge<T> *> edgeSet;
 		void addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> &nodeFrom, const Node<T> &nodeTo, const Edge<T> &edge) const;
 
 	public:
 		Graph() = default;
-		Graph(const std::set<const Edge<T>*> &edgeSet);
+		Graph(const std::set<const Edge<T> *> &edgeSet);
 		~Graph() = default;
-		const std::set<const Edge<T>*> &getEdgeSet() const;
-		void setEdgeSet(std::set<const Edge<T>*> &edgeSet);
+		const std::set<const Edge<T> *> &getEdgeSet() const;
+		void setEdgeSet(std::set<const Edge<T> *> &edgeSet);
 		void addEdge(const Edge<T> &edge);
 		void removeEdge(unsigned long edgeId);
-		const std::optional<const Edge<T>*> getEdge(unsigned long edgeId) const;
+		const std::optional<const Edge<T> *> getEdge(unsigned long edgeId) const;
 		/*This function generate a list of adjacency matrix with every element of the matrix 
 		***contain the node where is directed the link and the Edge corrispondent to the link
 		*/
@@ -297,19 +466,19 @@ namespace CXXGRAPH
 	};
 
 	template <typename T>
-	Graph<T>::Graph(const std::set<const Edge<T>*> &edgeSet)
+	Graph<T>::Graph(const std::set<const Edge<T> *> &edgeSet)
 	{
 		this->edgeSet = edgeSet;
 	}
 
 	template <typename T>
-	const std::set<const Edge<T>*> &Graph<T>::getEdgeSet() const
+	const std::set<const Edge<T> *> &Graph<T>::getEdgeSet() const
 	{
 		return edgeSet;
 	}
 
 	template <typename T>
-	void Graph<T>::setEdgeSet(std::set<const Edge<T>*> &edgeSet)
+	void Graph<T>::setEdgeSet(std::set<const Edge<T> *> &edgeSet)
 	{
 		this->edgeSet = edgeSet;
 	}
@@ -331,7 +500,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	const std::optional<const Edge<T>*> Graph<T>::getEdge(unsigned long edgeId) const
+	const std::optional<const Edge<T> *> Graph<T>::getEdge(unsigned long edgeId) const
 	{
 
 		auto it = edgeSet.begin();
@@ -349,13 +518,10 @@ namespace CXXGRAPH
 	template <typename T>
 	void Graph<T>::addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> &nodeFrom, const Node<T> &nodeTo, const Edge<T> &edge) const
 	{
-		std::cout << "add element START " << std::endl;
 		std::pair<const Node<T>, const Edge<T>> elem = {nodeTo, edge};
-		std::cout << "add element insert " << std::endl;
 		adjMatrix[nodeFrom].push_back(elem);
-		
+
 		//adjMatrix[nodeFrom.getId()].push_back(std::make_pair<const Node<T>,const Edge<T>>(nodeTo, edge));
-		std::cout << "add element END " << std::endl;
 	}
 
 	template <typename T>
@@ -365,16 +531,13 @@ namespace CXXGRAPH
 		auto edgeSetIt = edgeSet.begin();
 		for (edgeSetIt; edgeSetIt != edgeSet.end(); ++edgeSetIt)
 		{
-			std::cout << "Has Value: " << (*edgeSetIt)->isDirected().has_value() << std::endl;
 			if ((*edgeSetIt)->isDirected().has_value() && (*edgeSetIt)->isDirected().value())
 			{
-				std::cout << "is directed edge" << std::endl;
 				DirectedEdge d_edge = **edgeSetIt;
 				addElementToAdjMatrix(adj, d_edge.getFrom(), d_edge.getTo(), d_edge);
 			}
 			else if ((*edgeSetIt)->isDirected().has_value() && !(*edgeSetIt)->isDirected().value())
 			{
-				std::cout << "is undirected edge" << std::endl;
 				UndirectedEdge ud_edge = **edgeSetIt;
 				addElementToAdjMatrix(adj, ud_edge.getNode1(), ud_edge.getNode2(), ud_edge);
 				addElementToAdjMatrix(adj, ud_edge.getNode2(), ud_edge.getNode1(), ud_edge);
@@ -403,13 +566,25 @@ namespace CXXGRAPH
 	template <typename T>
 	std::ostream &operator<<(std::ostream &os, const DirectedEdge<T> &edge)
 	{
-		os << "((Node: " << edge.getFrom().getId() << ")) +----- |Edge: " << edge.getId() << "|-----> ((Node: " << edge.getTo().getId() << "))";
+		os << "((Node: " << edge.getFrom().getId() << ")) +----- |Edge: #" << edge.getId() << "|-----> ((Node: " << edge.getTo().getId() << "))";
 	}
 
 	template <typename T>
 	std::ostream &operator<<(std::ostream &os, const UndirectedEdge<T> &edge)
 	{
-		os << "((Node: " << edge.getNode1().getId() << ")) <----- |Edge: " << edge.getId() << "|-----> ((Node: " << edge.getNode2().getId() << "))";
+		os << "((Node: " << edge.getNode1().getId() << ")) <----- |Edge: #" << edge.getId() << "|-----> ((Node: " << edge.getNode2().getId() << "))";
+	}
+
+	template <typename T>
+	std::ostream &operator<<(std::ostream &os, const DirectedWeightedEdge<T> &edge)
+	{
+		os << "((Node: " << edge.getFrom().getId() << ")) +----- |Edge: #" << edge.getId() << " W:" << edge.getWeight() << "|-----> ((Node: " << edge.getTo().getId() << "))";
+	}
+
+	template <typename T>
+	std::ostream &operator<<(std::ostream &os, const UndirectedWeightedEdge<T> &edge)
+	{
+		os << "((Node: " << edge.getNode1().getId() << ")) <----- |Edge: #" << edge.getId() << " W:" << edge.getWeight() << "|-----> ((Node: " << edge.getNode2().getId() << "))";
 	}
 
 	template <typename T>
@@ -445,7 +620,7 @@ namespace CXXGRAPH
 				auto it2 = it->second.begin();
 				for (it2; it2 != it->second.end(); ++it2)
 				{
-					os << "N"<<it2->first.getId() << ",E" << it2->second.getId() << "|";
+					os << "N" << it2->first.getId() << ",E" << it2->second.getId() << "|";
 				}
 				os << "\n|--|";
 				for (int i = 0; i < max_column; i++)
@@ -459,3 +634,4 @@ namespace CXXGRAPH
 	}
 
 } // namespace CXXGRAPH
+#endif // __CXXGRAPH_H__
