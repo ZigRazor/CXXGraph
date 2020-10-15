@@ -8,24 +8,24 @@
 
 [![Generic badge](https://img.shields.io/badge/Build-Passed-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/UnitTest-Passed-Green.svg)](https://shields.io/)
 
-##Introduction
+## Introduction
 **CXXGraph** is a small library, header only, that manages the Graph and it's algorithm in **C++**
 
-##Algorithm Explanation
+## Algorithm Explanation
 
 WORK IN PROGRESS
 
-##Classes Explanation
+## Classes Explanation
 
 WORK IN PROGRESS
 
-##Requirements
+## Requirements
 The minimun C++ standard required is **C++17** and a G++ compiler version greater than 7.3.0.
 
-##How to use
+## How to use
 The use of the library is very simple, **just put the header file where you need!**
 
-##Unit-Test Execution
+## Unit-Test Execution
 The Unit-Test required the CMake version greater than 3.9 and the **google test** library.
 
 #### How to Compile
@@ -40,14 +40,15 @@ The Unit-Test required the CMake version greater than 3.9 and the **google test*
 ## Example
 Work in Progess
 
-##How to contribute [![GitHub contributors](https://img.shields.io/github/contributors/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/graphs/contributors/)
+## How to contribute [![GitHub contributors](https://img.shields.io/github/contributors/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/graphs/contributors/)
 If you want give your support you can create a ***pull request***   [![GitHub pull-requests](https://img.shields.io/github/issues-pr/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/pull/) or report an ***issue***  [![GitHub issues](https://img.shields.io/github/issues/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/issues/).
 
-##Contact
+## Contact
 E-Mail : zigrazor@gmail.com
+
 [GitHub Profile](https://github.com/ZigRazor) ![Profile views](https://gpvc.arturio.dev/ZigRazor)
 
-##Support
+## Support
 To support me just add ***Star*** the project  [![GitHub stars](https://img.shields.io/github/stars/ZigRazor/CXXGraph.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/ZigRazor/CXXGraph/stargazers/) or ***follow me***  [![GitHub followers](https://img.shields.io/github/followers/ZigRazor.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/ZigRazor?tab=followers)
 
 To get updated ***watch*** the project  [![GitHub watchers](https://img.shields.io/github/watchers/ZigRazor/CXXGraph.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/ZigRazor/CXXGraph/watchers/)
