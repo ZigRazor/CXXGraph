@@ -1,7 +1,6 @@
 #ifndef __CXXGRAPH_H__
 #define __CXXGRAPH_H__
 
-
 #pragma once
 
 #include <utility>
@@ -9,9 +8,18 @@
 #include <map>
 #include <optional>
 #include <iostream>
+#include <limits>
+#include <queue>
+#include <string>
 
 namespace CXXGRAPH
 {
+	//STRING ERROR CONST EXPRESSION
+	constexpr char ERR_NO_DIR_OR_UNDIR_EDGE[] = "Edge are neither Directed neither Undirected";
+	constexpr char ERR_NO_WEIGHTED_EDGE[] = "Edge are not Weighted";
+	constexpr char ERR_DIJ_TARGET_NODE_NOT_REACHABLE[] = "Target Node not Reachable";
+	///////////////////////////////
+	constexpr double INF_DOUBLE = std::numeric_limits<double>::max();
 	template <typename T>
 	class Node;
 	template <typename T>
@@ -30,7 +38,7 @@ namespace CXXGRAPH
 	class Weighted;
 
 	template <typename T>
-	using AdjacencyMatrix = std::map<const Node<T>, std::vector<std::pair<const Node<T>, const Edge<T>>>>;
+	using AdjacencyMatrix = std::map<const Node<T>*, std::vector<std::pair<const Node<T>*, const Edge<T>*>>>;
 
 	template <typename T>
 	std::ostream &operator<<(std::ostream &o, const Node<T> &node);
@@ -48,6 +56,12 @@ namespace CXXGRAPH
 	std::ostream &operator<<(std::ostream &o, const Graph<T> &graph);
 	template <typename T>
 	std::ostream &operator<<(std::ostream &o, const AdjacencyMatrix<T> &adj);
+
+	typedef struct DijkstraResult_struct{
+		bool success; // TRUE if the function does not return error, FALSE otherwise
+		std::string errorMessage; //message of error
+		double result; //result (valid only if success is TRUE)
+	}DijkstraResult;
 
 	template <typename T>
 	class Node
@@ -331,7 +345,7 @@ namespace CXXGRAPH
 		virtual ~DirectedWeightedEdge() = default;
 		const std::optional<bool> isWeighted() const override;
 		//operator
-		explicit operator UndirectedWeightedEdge<T>() const { return UndirectedWeightedEdge<T>(Edge<T>::getId(), Edge<T>::getNodePair(),Weighted::getWeight()); }
+		explicit operator UndirectedWeightedEdge<T>() const { return UndirectedWeightedEdge<T>(Edge<T>::getId(), Edge<T>::getNodePair(), Weighted::getWeight()); }
 
 		friend std::ostream &operator<<<>(std::ostream &os, const DirectedWeightedEdge<T> &edge);
 	};
@@ -355,20 +369,20 @@ namespace CXXGRAPH
 	DirectedWeightedEdge<T>::DirectedWeightedEdge(const Edge<T> &edge, const double weight) : DirectedEdge<T>(edge), Weighted(weight)
 	{
 	}
-	
-	template<typename T>
+
+	template <typename T>
 	DirectedWeightedEdge<T>::DirectedWeightedEdge(const DirectedEdge<T> &edge) : DirectedEdge<T>(edge), Weighted()
-	{		
+	{
 	}
-	
-	template<typename T>
+
+	template <typename T>
 	DirectedWeightedEdge<T>::DirectedWeightedEdge(const Edge<T> &edge) : DirectedEdge<T>(edge), Weighted()
-	{		
+	{
 	}
-	
-	template<typename T>
-	DirectedWeightedEdge<T>::DirectedWeightedEdge(const UndirectedWeightedEdge<T> &edge) :DirectedEdge<T>(edge), Weighted(edge.getWeight())
-	{		
+
+	template <typename T>
+	DirectedWeightedEdge<T>::DirectedWeightedEdge(const UndirectedWeightedEdge<T> &edge) : DirectedEdge<T>(edge), Weighted(edge.getWeight())
+	{
 	}
 
 	template <typename T>
@@ -391,7 +405,7 @@ namespace CXXGRAPH
 		virtual ~UndirectedWeightedEdge() = default;
 		const std::optional<bool> isWeighted() const override;
 		//operator
-		explicit operator DirectedWeightedEdge<T>() const { return DirectedWeightedEdge<T>(Edge<T>::getId(), Edge<T>::getNodePair(),Weighted::getWeight()); }
+		explicit operator DirectedWeightedEdge<T>() const { return DirectedWeightedEdge<T>(Edge<T>::getId(), Edge<T>::getNodePair(), Weighted::getWeight()); }
 
 		friend std::ostream &operator<<<>(std::ostream &os, const UndirectedWeightedEdge<T> &edge);
 	};
@@ -415,23 +429,20 @@ namespace CXXGRAPH
 	UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const Edge<T> &edge, const double weight) : UndirectedEdge<T>(edge), Weighted(weight)
 	{
 	}
-	
-	template<typename T>
+
+	template <typename T>
 	UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const UndirectedEdge<T> &edge) : UndirectedEdge<T>(edge), Weighted()
 	{
-		
 	}
-	
-	template<typename T>
+
+	template <typename T>
 	UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const Edge<T> &edge) : UndirectedEdge<T>(edge), Weighted()
 	{
-		
 	}
-	
-	template<typename T>
+
+	template <typename T>
 	UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const DirectedWeightedEdge<T> &edge) : UndirectedEdge<T>(edge), Weighted(edge.getWeight())
 	{
-		
 	}
 
 	template <typename T>
@@ -445,7 +456,7 @@ namespace CXXGRAPH
 	{
 	private:
 		std::set<const Edge<T> *> edgeSet;
-		void addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> &nodeFrom, const Node<T> &nodeTo, const Edge<T> &edge) const;
+		void addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T>* nodeFrom, const Node<T>* nodeTo, const Edge<T>* edge) const;
 
 	public:
 		Graph() = default;
@@ -460,6 +471,18 @@ namespace CXXGRAPH
 		***contain the node where is directed the link and the Edge corrispondent to the link
 		*/
 		const AdjacencyMatrix<T> getAdjMatrix() const;
+		/**
+ 		* @brief Function runs the dijkstra algorithm for some source node and
+ 		* target node in the graph and returns the shortest distance of target
+ 		* from the source.
+ 		*
+		* @param source source vertex
+ 		* @param target target vertex
+ 		*
+ 		* @return shortest distance if target is reachable from source else ERROR in
+ 		* case if target is not reachable from source or there is error in the computation.
+ 		*/
+		const DijkstraResult dijkstra(const Node<T> &source, const Node<T> &target) const;
 
 		friend std::ostream &operator<<<>(std::ostream &os, const Graph<T> &graph);
 		friend std::ostream &operator<<<>(std::ostream &os, const AdjacencyMatrix<T> &adj);
@@ -516,9 +539,9 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	void Graph<T>::addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> &nodeFrom, const Node<T> &nodeTo, const Edge<T> &edge) const
+	void Graph<T>::addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T>* nodeFrom, const Node<T>* nodeTo, const Edge<T>* edge) const
 	{
-		std::pair<const Node<T>, const Edge<T>> elem = {nodeTo, edge};
+		std::pair<const Node<T>*, const Edge<T>*> elem = {nodeTo, edge};
 		adjMatrix[nodeFrom].push_back(elem);
 
 		//adjMatrix[nodeFrom.getId()].push_back(std::make_pair<const Node<T>,const Edge<T>>(nodeTo, edge));
@@ -533,14 +556,14 @@ namespace CXXGRAPH
 		{
 			if ((*edgeSetIt)->isDirected().has_value() && (*edgeSetIt)->isDirected().value())
 			{
-				DirectedEdge d_edge = **edgeSetIt;
-				addElementToAdjMatrix(adj, d_edge.getFrom(), d_edge.getTo(), d_edge);
+				const DirectedEdge<T>* d_edge = dynamic_cast<const DirectedEdge<T>*>(*edgeSetIt);
+				addElementToAdjMatrix(adj, &(d_edge->getFrom()), &(d_edge->getTo()), d_edge);
 			}
 			else if ((*edgeSetIt)->isDirected().has_value() && !(*edgeSetIt)->isDirected().value())
 			{
-				UndirectedEdge ud_edge = **edgeSetIt;
-				addElementToAdjMatrix(adj, ud_edge.getNode1(), ud_edge.getNode2(), ud_edge);
-				addElementToAdjMatrix(adj, ud_edge.getNode2(), ud_edge.getNode1(), ud_edge);
+				const UndirectedEdge<T>* ud_edge = dynamic_cast<const UndirectedEdge<T>*>(*edgeSetIt);;
+				addElementToAdjMatrix(adj, &(ud_edge->getNode1()), &(ud_edge->getNode2()), ud_edge);
+				addElementToAdjMatrix(adj, &(ud_edge->getNode2()), &(ud_edge->getNode1()), ud_edge);
 			}
 			else
 			{ //is a simple edge we cannot create adj matrix
@@ -549,6 +572,95 @@ namespace CXXGRAPH
 		}
 		return adj;
 	}
+
+	template <typename T>
+	const DijkstraResult Graph<T>::dijkstra(const Node<T> &source, const Node<T> &target) const
+	{
+		DijkstraResult result;
+		result.success = false;
+		result.errorMessage = "";
+		result.result = INF_DOUBLE;
+		const AdjacencyMatrix<T> adj = getAdjMatrix();
+		/// n denotes the number of vertices in graph
+		int n = adj.size();
+
+		/// setting all the distances initially to INF_DOUBLE
+		std::map<const Node<T>*, double> dist;
+
+		for (auto elem : adj)
+		{
+			dist[elem.first] = INF_DOUBLE;
+		}
+
+		/// creating a min heap using priority queue
+		/// first element of pair contains the distance
+		/// second element of pair contains the vertex
+		std::priority_queue<std::pair<double,const Node<T>*>, std::vector<std::pair<double,const Node<T>*>>,
+							std::greater<std::pair<double,const Node<T>*>>>
+			pq;
+
+		/// pushing the source vertex 's' with 0 distance in min heap
+		pq.push(std::make_pair(0.0, &source));
+
+		/// marking the distance of source as 0
+		dist[&source] = 0;
+
+		while (!pq.empty())
+		{
+			/// second element of pair denotes the node / vertex
+			const Node<T>* currentNode = pq.top().second;
+
+			/// first element of pair denotes the distance
+			double currentDist = pq.top().first;
+
+			pq.pop();
+
+			/// for all the reachable vertex from the currently exploring vertex
+			/// we will try to minimize the distance
+			for (std::pair<const Node<T>*, const Edge<T>*> elem : adj.at(currentNode))
+			{
+				/// minimizing distances
+				if (elem.second->isWeighted().has_value() && elem.second->isWeighted().value())
+				{
+					if(elem.second->isDirected().has_value() && elem.second->isDirected().value()){
+						const DirectedWeightedEdge<T> *dw_edge = dynamic_cast<const DirectedWeightedEdge<T> *>(elem.second);
+						if (currentDist +dw_edge->getWeight() < dist[elem.first])
+						{
+							dist[elem.first] = currentDist + dw_edge->getWeight();
+							pq.push(std::make_pair(dist[elem.first], elem.first));
+						}
+					}else if (elem.second->isDirected().has_value() && !elem.second->isDirected().value()){
+						const UndirectedWeightedEdge<T> *udw_edge = dynamic_cast<const UndirectedWeightedEdge<T> *>(elem.second);
+						if (currentDist + udw_edge->getWeight() < dist[elem.first])
+						{
+							dist[elem.first] = currentDist + udw_edge->getWeight();
+							pq.push(std::make_pair(dist[elem.first], elem.first));
+						}
+					}else{
+						//ERROR it shouldn't never returned ( does not exist a Node Weighted and not Directed/Undirected)
+						result.errorMessage = ERR_NO_DIR_OR_UNDIR_EDGE;
+						return result;
+					}
+				}
+				else
+				{ // No Weighted Edge 
+					result.errorMessage = ERR_NO_WEIGHTED_EDGE;
+					return result;
+				}
+			}
+		}
+		if (dist[&target] != INF_DOUBLE)
+		{
+			result.success = true;
+			result.errorMessage = "";
+			result.result = dist[&target];
+			return result;
+		}
+		result.errorMessage = ERR_DIJ_TARGET_NODE_NOT_REACHABLE;
+		result.result = -1;
+		return result;
+	}
+	
 	//ostream overload
 	template <typename T>
 	std::ostream &operator<<(std::ostream &os, const Node<T> &node)
@@ -616,11 +728,11 @@ namespace CXXGRAPH
 			os << "\n";
 			for (it; it != adj.end(); ++it)
 			{
-				os << "|N" << it->first.getId() << "|";
+				os << "|N" << it->first->getId() << "|";
 				auto it2 = it->second.begin();
 				for (it2; it2 != it->second.end(); ++it2)
 				{
-					os << "N" << it2->first.getId() << ",E" << it2->second.getId() << "|";
+					os << "N" << it2->first->getId() << ",E" << it2->second->getId() << "|";
 				}
 				os << "\n|--|";
 				for (int i = 0; i < max_column; i++)

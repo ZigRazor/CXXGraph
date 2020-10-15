@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.9)
 
 # set the project name and version
-project(CXXGraph VERSION 0.0.1)
+project(CXXGraph VERSION 0.0.2)
 
 configure_file(CXXGraphConfig.h.in ${PROJECT_SOURCE_DIR}/include/CXXGraphConfig.h)
 
@@ -28,6 +28,7 @@ add_executable(test_exe test/main.cpp
 						test/DirectedWeightedEdgeTest.cpp
 						test/UndirectedWeightedEdgeTest.cpp
 						test/GraphTest.cpp
+						test/DijkstraTest.cpp
 				)
 target_include_directories(test_exe PUBLIC
 						  "${PROJECT_SOURCE_DIR}/include"
