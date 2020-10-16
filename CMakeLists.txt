@@ -39,3 +39,16 @@ target_link_libraries(test_exe
 					   libgtest_main.a 
 					   pthread )
 
+
+enable_testing()
+
+add_test(test_node test_exe --gtest_filter=NodeTest*)
+add_test(test_edge test_exe --gtest_filter=EdgeTest*)
+add_test(test_directededge test_exe --gtest_filter=DirectedEdgeTest*)
+add_test(test_undirectededge test_exe --gtest_filter=UndirectedEdgeTest*)
+add_test(test_directedweightededge test_exe --gtest_filter=DirectedWeightedEdgeTest*)
+add_test(test_undirectedweightededge test_exe --gtest_filter=UndirectedWeightedEdgeTest*)
+add_test(test_graph test_exe --gtest_filter=GraphTest*)
+add_test(test_dijkstra test_exe --gtest_filter=DijkstraTest*)
+add_test(test_bfs test_exe --gtest_filter=BFSTest*)
+
