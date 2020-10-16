@@ -11,6 +11,7 @@
 #include <limits>
 #include <queue>
 #include <string>
+#include <functional>
 
 namespace CXXGRAPH
 {
@@ -497,6 +498,16 @@ namespace CXXGRAPH
  		*
  		*/
 		const std::vector<Node<T>> breadth_first_search(const Node<T> &start) const;
+		/**
+ 		* \brief
+ 		* Function performs the depth first search algorithm over the graph
+ 		*
+ 		* @param start Node from where traversing starts
+ 		* @returns a vector of Node indicating which Node were visited during the
+ 		* search.
+ 		*
+ 		*/
+		const std::vector<Node<T>> depth_first_search(const Node<T> &start) const;
 
 		friend std::ostream &operator<<<>(std::ostream &os, const Graph<T> &graph);
 		friend std::ostream &operator<<<>(std::ostream &os, const AdjacencyMatrix<T> &adj);
@@ -535,12 +546,13 @@ namespace CXXGRAPH
 			edgeSet.erase(edgeSet.find(edgeOpt.value()));
 		}
 	}
-	
-	template<typename T>
+
+	template <typename T>
 	const std::set<const Node<T> *> Graph<T>::getNodeSet() const
 	{
 		std::set<const Node<T> *> nodeSet;
-		for (auto edge : edgeSet){
+		for (auto edge : edgeSet)
+		{
 			nodeSet.insert(edge->getNodePair().first);
 			nodeSet.insert(edge->getNodePair().second);
 		}
@@ -607,11 +619,13 @@ namespace CXXGRAPH
 		result.errorMessage = "";
 		result.result = INF_DOUBLE;
 		auto nodeSet = getNodeSet();
-		if(nodeSet.find(&source) == nodeSet.end()){ // check if source node exist in the graph
+		if (nodeSet.find(&source) == nodeSet.end())
+		{ // check if source node exist in the graph
 			result.errorMessage = ERR_DIJ_SOURCE_NODE_NOT_IN_GRAPH;
 			return result;
 		}
-		if(nodeSet.find(&target) == nodeSet.end()){ // check if target node exist in the graph
+		if (nodeSet.find(&target) == nodeSet.end())
+		{ // check if target node exist in the graph
 			result.errorMessage = ERR_DIJ_TARGET_NODE_NOT_IN_GRAPH;
 			return result;
 		}
@@ -707,36 +721,69 @@ namespace CXXGRAPH
 	template <typename T>
 	const std::vector<Node<T>> Graph<T>::breadth_first_search(const Node<T> &start) const
 	{
-		const AdjacencyMatrix<T> adj = getAdjMatrix();
 		/// vector to keep track of visited nodes
 		std::vector<Node<T>> visited;
+		auto nodeSet = getNodeSet();
+		if (nodeSet.find(&start) == nodeSet.end()) //check is exist node in the graph
+		{
+			return visited;
+		}
+		const AdjacencyMatrix<T> adj = getAdjMatrix();
 		/// queue that stores vertices that need to be further explored
 		std::queue<const Node<T> *> tracker;
-		auto nodeSet = getNodeSet();
-		if (nodeSet.find(&start) != nodeSet.end()) //check is exist node in the graph
+
+		/// mark the starting node as visited
+		visited.push_back(start);
+		tracker.push(&start);
+		while (!tracker.empty())
 		{
-			/// mark the starting node as visited
-			visited.push_back(start);
-			tracker.push(&start);
-			while (!tracker.empty())
+			const Node<T> *node = tracker.front();
+			tracker.pop();
+			if (adj.find(node) != adj.end())
 			{
-				const Node<T> *node = tracker.front();
-				tracker.pop();
-				if (adj.find(node) != adj.end())
+				for (auto elem : adj.at(node))
 				{
-					for (auto elem : adj.at(node))
+					/// if the node is not visited then mark it as visited
+					/// and push it to the queue
+					if (std::find(visited.begin(), visited.end(), *(elem.first)) == visited.end())
 					{
-						/// if the node is not visited then mark it as visited
-						/// and push it to the queue
-						if (std::find(visited.begin(), visited.end(), *(elem.first)) == visited.end())
-						{
-							visited.push_back(*(elem.first));
-							tracker.push(elem.first);
-						}
+						visited.push_back(*(elem.first));
+						tracker.push(elem.first);
 					}
 				}
 			}
 		}
+
+		return visited;
+	}
+
+	template <typename T>
+	const std::vector<Node<T>> Graph<T>::depth_first_search(const Node<T> &start) const
+	{
+		/// vector to keep track of visited nodes
+		std::vector<Node<T>> visited;
+		auto nodeSet = getNodeSet();
+		if (nodeSet.find(&start) == nodeSet.end()) //check is exist node in the graph
+		{
+			return visited;
+		}
+		const AdjacencyMatrix<T> adj = getAdjMatrix();		
+		std::function<void(const AdjacencyMatrix<T> &, const Node<T> &, std::vector<Node<T>> &)> explore;
+		explore = [&explore](const AdjacencyMatrix<T> &adj, const Node<T> &node, std::vector<Node<T>> &visited) -> void {
+			visited.push_back(node);
+			if (adj.find(&node) != adj.end())
+			{
+				for (auto x : adj.at(&node))
+				{
+					if (std::find(visited.begin(), visited.end(), *(x.first)) == visited.end())
+					{
+						explore(adj, *(x.first), visited);
+					}
+				}
+			}
+		};
+		explore(adj, start, visited);
+
 		return visited;
 	}
 
