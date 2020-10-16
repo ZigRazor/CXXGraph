@@ -18,6 +18,8 @@ namespace CXXGRAPH
 	constexpr char ERR_NO_DIR_OR_UNDIR_EDGE[] = "Edge are neither Directed neither Undirected";
 	constexpr char ERR_NO_WEIGHTED_EDGE[] = "Edge are not Weighted";
 	constexpr char ERR_DIJ_TARGET_NODE_NOT_REACHABLE[] = "Target Node not Reachable";
+	constexpr char ERR_DIJ_TARGET_NODE_NOT_IN_GRAPH[] = "Target Node not inside Graph";
+	constexpr char ERR_DIJ_SOURCE_NODE_NOT_IN_GRAPH[] = "Source Node not inside Graph";
 	///////////////////////////////
 	constexpr double INF_DOUBLE = std::numeric_limits<double>::max();
 	template <typename T>
@@ -38,7 +40,7 @@ namespace CXXGRAPH
 	class Weighted;
 
 	template <typename T>
-	using AdjacencyMatrix = std::map<const Node<T>*, std::vector<std::pair<const Node<T>*, const Edge<T>*>>>;
+	using AdjacencyMatrix = std::map<const Node<T> *, std::vector<std::pair<const Node<T> *, const Edge<T> *>>>;
 
 	template <typename T>
 	std::ostream &operator<<(std::ostream &o, const Node<T> &node);
@@ -57,11 +59,12 @@ namespace CXXGRAPH
 	template <typename T>
 	std::ostream &operator<<(std::ostream &o, const AdjacencyMatrix<T> &adj);
 
-	typedef struct DijkstraResult_struct{
-		bool success; // TRUE if the function does not return error, FALSE otherwise
+	typedef struct DijkstraResult_struct
+	{
+		bool success;			  // TRUE if the function does not return error, FALSE otherwise
 		std::string errorMessage; //message of error
-		double result; //result (valid only if success is TRUE)
-	}DijkstraResult;
+		double result;			  //result (valid only if success is TRUE)
+	} DijkstraResult;
 
 	template <typename T>
 	class Node
@@ -456,7 +459,7 @@ namespace CXXGRAPH
 	{
 	private:
 		std::set<const Edge<T> *> edgeSet;
-		void addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T>* nodeFrom, const Node<T>* nodeTo, const Edge<T>* edge) const;
+		void addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge) const;
 
 	public:
 		Graph() = default;
@@ -466,6 +469,7 @@ namespace CXXGRAPH
 		void setEdgeSet(std::set<const Edge<T> *> &edgeSet);
 		void addEdge(const Edge<T> &edge);
 		void removeEdge(unsigned long edgeId);
+		const std::set<const Node<T> *> getNodeSet() const;
 		const std::optional<const Edge<T> *> getEdge(unsigned long edgeId) const;
 		/*This function generate a list of adjacency matrix with every element of the matrix 
 		***contain the node where is directed the link and the Edge corrispondent to the link
@@ -483,6 +487,16 @@ namespace CXXGRAPH
  		* case if target is not reachable from source or there is error in the computation.
  		*/
 		const DijkstraResult dijkstra(const Node<T> &source, const Node<T> &target) const;
+		/**
+ 		* \brief
+ 		* Function performs the breadth first search algorithm over the graph
+ 		*
+ 		* @param start Node from where traversing starts
+ 		* @returns a vector of Node indicating which Node were visited during the
+ 		* search.
+ 		*
+ 		*/
+		const std::vector<Node<T>> breadth_first_search(const Node<T> &start) const;
 
 		friend std::ostream &operator<<<>(std::ostream &os, const Graph<T> &graph);
 		friend std::ostream &operator<<<>(std::ostream &os, const AdjacencyMatrix<T> &adj);
@@ -521,6 +535,17 @@ namespace CXXGRAPH
 			edgeSet.erase(edgeSet.find(edgeOpt.value()));
 		}
 	}
+	
+	template<typename T>
+	const std::set<const Node<T> *> Graph<T>::getNodeSet() const
+	{
+		std::set<const Node<T> *> nodeSet;
+		for (auto edge : edgeSet){
+			nodeSet.insert(edge->getNodePair().first);
+			nodeSet.insert(edge->getNodePair().second);
+		}
+		return nodeSet;
+	}
 
 	template <typename T>
 	const std::optional<const Edge<T> *> Graph<T>::getEdge(unsigned long edgeId) const
@@ -539,9 +564,9 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	void Graph<T>::addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T>* nodeFrom, const Node<T>* nodeTo, const Edge<T>* edge) const
+	void Graph<T>::addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge) const
 	{
-		std::pair<const Node<T>*, const Edge<T>*> elem = {nodeTo, edge};
+		std::pair<const Node<T> *, const Edge<T> *> elem = {nodeTo, edge};
 		adjMatrix[nodeFrom].push_back(elem);
 
 		//adjMatrix[nodeFrom.getId()].push_back(std::make_pair<const Node<T>,const Edge<T>>(nodeTo, edge));
@@ -556,12 +581,13 @@ namespace CXXGRAPH
 		{
 			if ((*edgeSetIt)->isDirected().has_value() && (*edgeSetIt)->isDirected().value())
 			{
-				const DirectedEdge<T>* d_edge = dynamic_cast<const DirectedEdge<T>*>(*edgeSetIt);
+				const DirectedEdge<T> *d_edge = dynamic_cast<const DirectedEdge<T> *>(*edgeSetIt);
 				addElementToAdjMatrix(adj, &(d_edge->getFrom()), &(d_edge->getTo()), d_edge);
 			}
 			else if ((*edgeSetIt)->isDirected().has_value() && !(*edgeSetIt)->isDirected().value())
 			{
-				const UndirectedEdge<T>* ud_edge = dynamic_cast<const UndirectedEdge<T>*>(*edgeSetIt);;
+				const UndirectedEdge<T> *ud_edge = dynamic_cast<const UndirectedEdge<T> *>(*edgeSetIt);
+				;
 				addElementToAdjMatrix(adj, &(ud_edge->getNode1()), &(ud_edge->getNode2()), ud_edge);
 				addElementToAdjMatrix(adj, &(ud_edge->getNode2()), &(ud_edge->getNode1()), ud_edge);
 			}
@@ -580,12 +606,21 @@ namespace CXXGRAPH
 		result.success = false;
 		result.errorMessage = "";
 		result.result = INF_DOUBLE;
+		auto nodeSet = getNodeSet();
+		if(nodeSet.find(&source) == nodeSet.end()){ // check if source node exist in the graph
+			result.errorMessage = ERR_DIJ_SOURCE_NODE_NOT_IN_GRAPH;
+			return result;
+		}
+		if(nodeSet.find(&target) == nodeSet.end()){ // check if target node exist in the graph
+			result.errorMessage = ERR_DIJ_TARGET_NODE_NOT_IN_GRAPH;
+			return result;
+		}
 		const AdjacencyMatrix<T> adj = getAdjMatrix();
 		/// n denotes the number of vertices in graph
 		int n = adj.size();
 
 		/// setting all the distances initially to INF_DOUBLE
-		std::map<const Node<T>*, double> dist;
+		std::map<const Node<T> *, double> dist;
 
 		for (auto elem : adj)
 		{
@@ -595,8 +630,8 @@ namespace CXXGRAPH
 		/// creating a min heap using priority queue
 		/// first element of pair contains the distance
 		/// second element of pair contains the vertex
-		std::priority_queue<std::pair<double,const Node<T>*>, std::vector<std::pair<double,const Node<T>*>>,
-							std::greater<std::pair<double,const Node<T>*>>>
+		std::priority_queue<std::pair<double, const Node<T> *>, std::vector<std::pair<double, const Node<T> *>>,
+							std::greater<std::pair<double, const Node<T> *>>>
 			pq;
 
 		/// pushing the source vertex 's' with 0 distance in min heap
@@ -608,7 +643,7 @@ namespace CXXGRAPH
 		while (!pq.empty())
 		{
 			/// second element of pair denotes the node / vertex
-			const Node<T>* currentNode = pq.top().second;
+			const Node<T> *currentNode = pq.top().second;
 
 			/// first element of pair denotes the distance
 			double currentDist = pq.top().first;
@@ -617,35 +652,43 @@ namespace CXXGRAPH
 
 			/// for all the reachable vertex from the currently exploring vertex
 			/// we will try to minimize the distance
-			for (std::pair<const Node<T>*, const Edge<T>*> elem : adj.at(currentNode))
+			if (adj.find(currentNode) != adj.end())
 			{
-				/// minimizing distances
-				if (elem.second->isWeighted().has_value() && elem.second->isWeighted().value())
+				for (std::pair<const Node<T> *, const Edge<T> *> elem : adj.at(currentNode))
 				{
-					if(elem.second->isDirected().has_value() && elem.second->isDirected().value()){
-						const DirectedWeightedEdge<T> *dw_edge = dynamic_cast<const DirectedWeightedEdge<T> *>(elem.second);
-						if (currentDist +dw_edge->getWeight() < dist[elem.first])
+					/// minimizing distances
+					if (elem.second->isWeighted().has_value() && elem.second->isWeighted().value())
+					{
+						if (elem.second->isDirected().has_value() && elem.second->isDirected().value())
 						{
-							dist[elem.first] = currentDist + dw_edge->getWeight();
-							pq.push(std::make_pair(dist[elem.first], elem.first));
+							const DirectedWeightedEdge<T> *dw_edge = dynamic_cast<const DirectedWeightedEdge<T> *>(elem.second);
+							if (currentDist + dw_edge->getWeight() < dist[elem.first])
+							{
+								dist[elem.first] = currentDist + dw_edge->getWeight();
+								pq.push(std::make_pair(dist[elem.first], elem.first));
+							}
 						}
-					}else if (elem.second->isDirected().has_value() && !elem.second->isDirected().value()){
-						const UndirectedWeightedEdge<T> *udw_edge = dynamic_cast<const UndirectedWeightedEdge<T> *>(elem.second);
-						if (currentDist + udw_edge->getWeight() < dist[elem.first])
+						else if (elem.second->isDirected().has_value() && !elem.second->isDirected().value())
 						{
-							dist[elem.first] = currentDist + udw_edge->getWeight();
-							pq.push(std::make_pair(dist[elem.first], elem.first));
+							const UndirectedWeightedEdge<T> *udw_edge = dynamic_cast<const UndirectedWeightedEdge<T> *>(elem.second);
+							if (currentDist + udw_edge->getWeight() < dist[elem.first])
+							{
+								dist[elem.first] = currentDist + udw_edge->getWeight();
+								pq.push(std::make_pair(dist[elem.first], elem.first));
+							}
 						}
-					}else{
-						//ERROR it shouldn't never returned ( does not exist a Node Weighted and not Directed/Undirected)
-						result.errorMessage = ERR_NO_DIR_OR_UNDIR_EDGE;
+						else
+						{
+							//ERROR it shouldn't never returned ( does not exist a Node Weighted and not Directed/Undirected)
+							result.errorMessage = ERR_NO_DIR_OR_UNDIR_EDGE;
+							return result;
+						}
+					}
+					else
+					{ // No Weighted Edge
+						result.errorMessage = ERR_NO_WEIGHTED_EDGE;
 						return result;
 					}
-				}
-				else
-				{ // No Weighted Edge 
-					result.errorMessage = ERR_NO_WEIGHTED_EDGE;
-					return result;
 				}
 			}
 		}
@@ -660,7 +703,43 @@ namespace CXXGRAPH
 		result.result = -1;
 		return result;
 	}
-	
+
+	template <typename T>
+	const std::vector<Node<T>> Graph<T>::breadth_first_search(const Node<T> &start) const
+	{
+		const AdjacencyMatrix<T> adj = getAdjMatrix();
+		/// vector to keep track of visited nodes
+		std::vector<Node<T>> visited;
+		/// queue that stores vertices that need to be further explored
+		std::queue<const Node<T> *> tracker;
+		auto nodeSet = getNodeSet();
+		if (nodeSet.find(&start) != nodeSet.end()) //check is exist node in the graph
+		{
+			/// mark the starting node as visited
+			visited.push_back(start);
+			tracker.push(&start);
+			while (!tracker.empty())
+			{
+				const Node<T> *node = tracker.front();
+				tracker.pop();
+				if (adj.find(node) != adj.end())
+				{
+					for (auto elem : adj.at(node))
+					{
+						/// if the node is not visited then mark it as visited
+						/// and push it to the queue
+						if (std::find(visited.begin(), visited.end(), *(elem.first)) == visited.end())
+						{
+							visited.push_back(*(elem.first));
+							tracker.push(elem.first);
+						}
+					}
+				}
+			}
+		}
+		return visited;
+	}
+
 	//ostream overload
 	template <typename T>
 	std::ostream &operator<<(std::ostream &os, const Node<T> &node)

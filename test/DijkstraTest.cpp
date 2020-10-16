@@ -82,3 +82,41 @@ TEST(DijkstraTest, test_4)
     ASSERT_EQ(res.result, -1);
 
 }
+
+TEST(DijkstraTest, test_5)
+{
+    CXXGRAPH::Node<int> node1(1, 1);
+    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node4(4, 4);
+    CXXGRAPH::DirectedEdge<int> edge2(2, node2, node3);
+    CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3,6);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
+    CXXGRAPH::Graph<int> graph(edgeSet);
+    CXXGRAPH::DijkstraResult  res= graph.dijkstra(node4,node2);
+    ASSERT_FALSE(res.success);
+    ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_DIJ_SOURCE_NODE_NOT_IN_GRAPH);
+    ASSERT_EQ(res.result, CXXGRAPH::INF_DOUBLE);
+
+}
+
+TEST(DijkstraTest, test_6)
+{
+    CXXGRAPH::Node<int> node1(1, 1);
+    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node4(4, 4);
+    CXXGRAPH::DirectedEdge<int> edge2(2, node2, node3);
+    CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3,6);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
+    CXXGRAPH::Graph<int> graph(edgeSet);
+    CXXGRAPH::DijkstraResult  res= graph.dijkstra(node1,node4);
+    ASSERT_FALSE(res.success);
+    ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_DIJ_TARGET_NODE_NOT_IN_GRAPH);
+    ASSERT_EQ(res.result, CXXGRAPH::INF_DOUBLE);
+
+}

@@ -49,6 +49,41 @@ TEST(GraphTest, GetEdge_3)
     ASSERT_EQ(*(graph.getEdge(1).value()), edge);
 }
 
+TEST(GraphTest, GetNodeSet_1)
+{
+    CXXGRAPH::Node<int> node1(1, 1);
+    CXXGRAPH::Node<int> node2(2, 2);
+    std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
+    CXXGRAPH::Edge<int> edge(1, pairNode);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge);
+    CXXGRAPH::Graph<int> graph(edgeSet);
+    auto nodeSet = graph.getNodeSet();
+    ASSERT_EQ(nodeSet.size(), 2);
+    ASSERT_TRUE(nodeSet.find(&node1) != nodeSet.end() );
+    ASSERT_TRUE(nodeSet.find(&node2) != nodeSet.end() );
+}
+
+TEST(GraphTest, GetNodeSet_2)
+{
+    CXXGRAPH::Node<int> node1(1, 1);
+    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node3(3, 3);
+    std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
+    CXXGRAPH::Edge<int> edge(1, pairNode);
+    CXXGRAPH::UndirectedEdge<int> edge2(2, node2, node3);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge);
+    edgeSet.insert(&edge2);
+    CXXGRAPH::Graph<int> graph(edgeSet);
+    auto nodeSet = graph.getNodeSet();
+    ASSERT_EQ(nodeSet.size(), 3);
+    ASSERT_TRUE(nodeSet.find(&node1) != nodeSet.end() );
+    ASSERT_TRUE(nodeSet.find(&node2) != nodeSet.end() );
+    ASSERT_TRUE(nodeSet.find(&node3) != nodeSet.end() );
+    
+}
+
 TEST(GraphTest, adj_print_1)
 {
     CXXGRAPH::Node<int> node1(1, 1);

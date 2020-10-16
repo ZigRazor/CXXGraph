@@ -13,6 +13,23 @@
 
 ## Algorithm Explanation
 
+#### Dijkstra
+[Graph Dijkstras Shortest Path Algorithm(Dijkstra's Shortest Path)](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
+**Dijkstra's Algorithm** is used to find the shortest path from a source node to all other reachable nodes in the graph. The algorithm initially assumes all the nodes are unreachable from the given source node so we mark the distances of all nodes as infinity.
+(infinity) from source node (INF / infinity denotes unable to reach).
+
+#### BFS (Breadth First Search)
+[Breadth First Search Algorithm(Breadth First Search)](https://en.wikipedia.org/wiki/Breadth-first_search)
+**Breadth First Search**, also quoted as **BFS**, is a Graph Traversal Algorithm. Time Complexity O(|V| + |E|) where V are the number of vertices and E are the number of edges in the graph.
+Applications of Breadth First Search are :
+
+ 1. Finding shortest path between two vertices say u and v, with path length measured by number of edges (an advantage over depth first search algorithm)
+ 2. Ford-Fulkerson Method for computing the maximum flow in a flow network.
+ 3. Testing bipartiteness of a graph.
+ 4. Cheney's Algorithm, Copying garbage collection.
+ 
+  And there are many more...
+
 WORK IN PROGRESS
 
 ## Classes Explanation
@@ -52,3 +69,8 @@ E-Mail : zigrazor@gmail.com
 To support me just add ***Star*** the project  [![GitHub stars](https://img.shields.io/github/stars/ZigRazor/CXXGraph.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/ZigRazor/CXXGraph/stargazers/) or ***follow me***  [![GitHub followers](https://img.shields.io/github/followers/ZigRazor.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/ZigRazor?tab=followers)
 
 To get updated ***watch*** the project  [![GitHub watchers](https://img.shields.io/github/watchers/ZigRazor/CXXGraph.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/ZigRazor/CXXGraph/watchers/)
+
+
+## Credits
+
+Thanks to the community of [TheAlgorithms](https://github.com/TheAlgorithms) for some algorithm ispiration.
