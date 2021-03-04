@@ -793,36 +793,42 @@ namespace CXXGRAPH
 	{
 		os << "Node: {\n"
 		   << "  Id:\t" << node.id << "\n  Data:\t" << node.data << "\n}";
+		   return os;
 	}
 
 	template <typename T>
 	std::ostream &operator<<(std::ostream &os, const Edge<T> &edge)
 	{
 		os << "((Node: " << edge.nodePair.first->getId() << ")) ?----- |Edge: " << edge.id << "|-----? ((Node: " << edge.nodePair.second->getId() << "))";
+		retrun os;
 	}
 
 	template <typename T>
 	std::ostream &operator<<(std::ostream &os, const DirectedEdge<T> &edge)
 	{
 		os << "((Node: " << edge.getFrom().getId() << ")) +----- |Edge: #" << edge.getId() << "|-----> ((Node: " << edge.getTo().getId() << "))";
+		return os;
 	}
 
 	template <typename T>
 	std::ostream &operator<<(std::ostream &os, const UndirectedEdge<T> &edge)
 	{
 		os << "((Node: " << edge.getNode1().getId() << ")) <----- |Edge: #" << edge.getId() << "|-----> ((Node: " << edge.getNode2().getId() << "))";
+		return os;
 	}
 
 	template <typename T>
 	std::ostream &operator<<(std::ostream &os, const DirectedWeightedEdge<T> &edge)
 	{
 		os << "((Node: " << edge.getFrom().getId() << ")) +----- |Edge: #" << edge.getId() << " W:" << edge.getWeight() << "|-----> ((Node: " << edge.getTo().getId() << "))";
+		return os;
 	}
 
 	template <typename T>
 	std::ostream &operator<<(std::ostream &os, const UndirectedWeightedEdge<T> &edge)
 	{
 		os << "((Node: " << edge.getNode1().getId() << ")) <----- |Edge: #" << edge.getId() << " W:" << edge.getWeight() << "|-----> ((Node: " << edge.getNode2().getId() << "))";
+		return os;
 	}
 
 	template <typename T>
