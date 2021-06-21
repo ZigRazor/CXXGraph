@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.9)
 
 # set the project name and version
-project(CXXGraph VERSION 0.0.4)
+project(CXXGraph VERSION 0.0.5)
 
 configure_file(CXXGraphConfig.h.in ${PROJECT_SOURCE_DIR}/include/CXXGraphConfig.h)
 
@@ -31,6 +31,7 @@ add_executable(test_exe test/main.cpp
 						test/DijkstraTest.cpp
 						test/BFSTest.cpp
 						test/DFSTest.cpp
+						test/CycleCheckTest.cpp
 				)
 target_include_directories(test_exe PUBLIC
 						  "${PROJECT_SOURCE_DIR}/include"
@@ -53,4 +54,5 @@ add_test(test_graph test_exe --gtest_filter=GraphTest*)
 add_test(test_dijkstra test_exe --gtest_filter=DijkstraTest*)
 add_test(test_bfs test_exe --gtest_filter=BFSTest*)
 add_test(test_dfs test_exe --gtest_filter=DFSTest*)
+add_test(test_cycle_check test_exe --gtest_filter=CycleCheckTest*)
 

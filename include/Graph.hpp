@@ -509,6 +509,22 @@ namespace CXXGRAPH
  		*/
 		const std::vector<Node<T>> depth_first_search(const Node<T> &start) const;
 
+		/** 
+		* \brief
+     	* This function uses DFS to check for cycle in the graph.
+     	* Pay Attention, this function work only with directed Graph
+     	* 
+     	* @return true if a cycle is detected, else false. ( false is returned also if the graph in indirected)
+     	*/
+		const bool isCyclicDFS() const;
+		/**
+     	* \brief
+     	* This function checks if a graph is directed
+     	* 
+     	* @return true if the graph is directed, else false.
+     	*/
+		const bool isDirectedGraph() const;
+
 		friend std::ostream &operator<<<>(std::ostream &os, const Graph<T> &graph);
 		friend std::ostream &operator<<<>(std::ostream &os, const AdjacencyMatrix<T> &adj);
 	};
@@ -767,9 +783,10 @@ namespace CXXGRAPH
 		{
 			return visited;
 		}
-		const AdjacencyMatrix<T> adj = getAdjMatrix();		
+		const AdjacencyMatrix<T> adj = getAdjMatrix();
 		std::function<void(const AdjacencyMatrix<T> &, const Node<T> &, std::vector<Node<T>> &)> explore;
-		explore = [&explore](const AdjacencyMatrix<T> &adj, const Node<T> &node, std::vector<Node<T>> &visited) -> void {
+		explore = [&explore](const AdjacencyMatrix<T> &adj, const Node<T> &node, std::vector<Node<T>> &visited) -> void
+		{
 			visited.push_back(node);
 			if (adj.find(&node) != adj.end())
 			{
@@ -787,20 +804,122 @@ namespace CXXGRAPH
 		return visited;
 	}
 
+	template <typename T>
+	const bool Graph<T>::isCyclicDFS() const
+	{
+		if(!isDirectedGraph()){
+			return false;
+		}
+		enum nodeStates : uint8_t
+		{
+			not_visited,
+			in_stack,
+			visited
+		};
+		auto nodeSet = this->getNodeSet();
+		auto adjMatrix = this->getAdjMatrix();
+
+		/** State of the node.
+         *
+         * It is a vector of "nodeStates" which represents the state node is in.
+         * It can take only 3 values: "not_visited", "in_stack", and "visited".
+         *
+         * Initially, all nodes are in "not_visited" state.
+         */
+		std::map<unsigned long,nodeStates> state;
+		for (auto node : nodeSet){
+			state[node->getId()] = not_visited;
+		}
+		int stateCounter = 0;
+
+		// Start visiting each node.
+		for (auto node : nodeSet)
+		{
+			// If a node is not visited, only then check for presence of cycle.
+			// There is no need to check for presence of cycle for a visited
+			// node as it has already been checked for presence of cycle.
+			if (state[node->getId()] == not_visited)
+			{
+				// Check for cycle.
+				std::function<bool(AdjacencyMatrix<T>&,std::map<unsigned long,nodeStates>&,const Node<T>*)> isCyclicDFSHelper;
+				isCyclicDFSHelper = [this, &isCyclicDFSHelper](AdjacencyMatrix<T>& adjMatrix, std::map<unsigned long,nodeStates>& states, const Node<T>* node)
+				{
+					// Add node "in_stack" state.
+					states[node->getId()] = in_stack;
+
+					// If the node has children, then recursively visit all children of the
+					// node.
+					auto const it = adjMatrix.find(node);
+					if (it != adjMatrix.end())
+					{
+						for (auto child : it->second)
+						{
+							// If state of child node is "not_visited", evaluate that child
+							// for presence of cycle.
+							auto state_of_child = states.at((std::get<0>(child))->getId());
+							if (state_of_child == not_visited)
+							{
+								if (isCyclicDFSHelper(adjMatrix, states, std::get<0>(child)))
+								{
+									return true;
+								}
+							}
+							else if (state_of_child == in_stack)
+							{
+								// If child node was "in_stack", then that means that there
+								// is a cycle in the graph. Return true for presence of the
+								// cycle.
+								return true;
+							}
+						}
+					}
+
+					// Current node has been evaluated for the presence of cycle and had no
+					// cycle. Mark current node as "visited".
+					states[node->getId()] = visited;
+					// Return that current node didn't result in any cycles.
+					return false;
+				};
+				if (isCyclicDFSHelper(adjMatrix, state, node))
+				{
+					return true;
+				}
+			}
+		}
+
+		// All nodes have been safely traversed, that means there is no cycle in
+		// the graph. Return false.
+		return false;
+	}
+	
+	template<typename T>
+	const bool Graph<T>::isDirectedGraph() const
+	{
+		auto edgeSet = this->getEdgeSet();
+		for( auto edge : edgeSet){
+			if( !(edge->isDirected().has_value() && edge->isDirected().value())){
+				//Found Undirected Edge
+				return false;
+			}
+		}
+		//No Undirected Edge
+		return true;
+	}
+
 	//ostream overload
 	template <typename T>
 	std::ostream &operator<<(std::ostream &os, const Node<T> &node)
 	{
 		os << "Node: {\n"
 		   << "  Id:\t" << node.id << "\n  Data:\t" << node.data << "\n}";
-		   return os;
+		return os;
 	}
 
 	template <typename T>
 	std::ostream &operator<<(std::ostream &os, const Edge<T> &edge)
 	{
 		os << "((Node: " << edge.nodePair.first->getId() << ")) ?----- |Edge: " << edge.id << "|-----? ((Node: " << edge.nodePair.second->getId() << "))";
-		retrun os;
+		return os;
 	}
 
 	template <typename T>
