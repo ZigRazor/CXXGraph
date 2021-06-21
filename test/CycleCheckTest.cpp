@@ -15,7 +15,7 @@ TEST(CycleCheckTest, test_1)
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
-    bool res= graph.isCyclicDFS();
+    bool res= graph.isCyclicDirectedGraphDFS();
     ASSERT_EQ(res,false);
 }
 
@@ -31,7 +31,7 @@ TEST(CycleCheckTest, test_2)
     edgeSet.insert(&edge1);
     edgeSet.insert(&edge2);
     CXXGRAPH::Graph<int> graph(edgeSet);
-    bool res= graph.isCyclicDFS();
+    bool res= graph.isCyclicDirectedGraphDFS();
     ASSERT_EQ(res,false);
 }
 
@@ -49,7 +49,7 @@ TEST(CycleCheckTest, test_3)
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);    
-    bool res= graph.isCyclicDFS();
+    bool res= graph.isCyclicDirectedGraphDFS();
     ASSERT_EQ(res,false);
 }
 
@@ -67,7 +67,7 @@ TEST(CycleCheckTest, test_4)
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
-    bool res= graph.isCyclicDFS();
+    bool res= graph.isCyclicDirectedGraphDFS();
     ASSERT_EQ(res,true);
 }
 

@@ -516,7 +516,7 @@ namespace CXXGRAPH
      	* 
      	* @return true if a cycle is detected, else false. ( false is returned also if the graph in indirected)
      	*/
-		const bool isCyclicDFS() const;
+		const bool isCyclicDirectedGraphDFS() const;
 		/**
      	* \brief
      	* This function checks if a graph is directed
@@ -805,7 +805,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	const bool Graph<T>::isCyclicDFS() const
+	const bool Graph<T>::isCyclicDirectedGraphDFS() const
 	{
 		if(!isDirectedGraph()){
 			return false;
