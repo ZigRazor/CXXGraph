@@ -43,7 +43,7 @@ Applications of Breadth First Search are :
  
   And there are many more...
 
-  ####Cycle Detection
+   #### Cycle Detection
    [Cycle (graph theory)](https://en.wikipedia.org/wiki/Cycle_(graph_theory))
    The existence of a cycle in directed and undirected graphs can be determined by whether depth-first search (DFS) finds an edge that points to an ancestor of the current vertex (it contains a back edge). All the back edges which DFS skips over are part of cycles. In an undirected graph, the edge to the parent of a node should not be counted as a back edge, but finding any other already visited vertex will indicate a back edge. In the case of undirected graphs, only O(n) time is required to find a cycle in an n-vertex graph, since at most n − 1 edges can be tree edges.
 

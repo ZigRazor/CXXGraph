@@ -517,6 +517,16 @@ namespace CXXGRAPH
      	* @return true if a cycle is detected, else false. ( false is returned also if the graph in indirected)
      	*/
 		const bool isCyclicDirectedGraphDFS() const;
+
+		/** 
+		* \brief
+     	* This function uses BFS to check for cycle in the graph.
+     	* Pay Attention, this function work only with directed Graph
+     	* 
+     	* @return true if a cycle is detected, else false. ( false is returned also if the graph in indirected)
+     	*/
+		const bool isCyclicDirectedGraphBFS() const;
+
 		/**
      	* \brief
      	* This function checks if a graph is directed
@@ -807,7 +817,8 @@ namespace CXXGRAPH
 	template <typename T>
 	const bool Graph<T>::isCyclicDirectedGraphDFS() const
 	{
-		if(!isDirectedGraph()){
+		if (!isDirectedGraph())
+		{
 			return false;
 		}
 		enum nodeStates : uint8_t
@@ -826,8 +837,9 @@ namespace CXXGRAPH
          *
          * Initially, all nodes are in "not_visited" state.
          */
-		std::map<unsigned long,nodeStates> state;
-		for (auto node : nodeSet){
+		std::map<unsigned long, nodeStates> state;
+		for (auto node : nodeSet)
+		{
 			state[node->getId()] = not_visited;
 		}
 		int stateCounter = 0;
@@ -841,8 +853,8 @@ namespace CXXGRAPH
 			if (state[node->getId()] == not_visited)
 			{
 				// Check for cycle.
-				std::function<bool(AdjacencyMatrix<T>&,std::map<unsigned long,nodeStates>&,const Node<T>*)> isCyclicDFSHelper;
-				isCyclicDFSHelper = [this, &isCyclicDFSHelper](AdjacencyMatrix<T>& adjMatrix, std::map<unsigned long,nodeStates>& states, const Node<T>* node)
+				std::function<bool(AdjacencyMatrix<T> &, std::map<unsigned long, nodeStates> &, const Node<T> *)> isCyclicDFSHelper;
+				isCyclicDFSHelper = [this, &isCyclicDFSHelper](AdjacencyMatrix<T> &adjMatrix, std::map<unsigned long, nodeStates> &states, const Node<T> *node)
 				{
 					// Add node "in_stack" state.
 					states[node->getId()] = in_stack;
@@ -891,13 +903,84 @@ namespace CXXGRAPH
 		// the graph. Return false.
 		return false;
 	}
-	
-	template<typename T>
+
+	template <typename T>
+	const bool Graph<T>::isCyclicDirectedGraphBFS() const
+	{
+		if (!isDirectedGraph())
+		{
+			return false;
+		}
+		auto adjMatrix = this->getAdjMatrix();
+		auto nodeSet = this->getNodeSet();
+
+		std::map<unsigned long, unsigned int> indegree;
+		for (auto node : nodeSet)
+		{
+			indegree[node->getId()] = 0;
+		}
+		// Calculate the indegree i.e. the number of incident edges to the node.
+		for (auto const &list : adjMatrix)
+		{
+			auto children = list.second;
+			for (auto const &child : children)
+			{
+				indegree[std::get<0>(child)->getId()]++;
+			}
+		}
+
+		std::queue<const Node<T> *> can_be_solved;
+		for (auto node : nodeSet)
+		{
+			// If a node doesn't have any input edges, then that node will
+			// definately not result in a cycle and can be visited safely.
+			if (!indegree[node->getId()])
+			{
+				can_be_solved.emplace(&(*node));
+			}
+		}
+
+		// Vertices that need to be traversed.
+		auto remain = this->getNodeSet().size();
+		// While there are safe nodes that we can visit.
+		while (!can_be_solved.empty())
+		{
+			auto solved = can_be_solved.front();
+			// Visit the node.
+			can_be_solved.pop();
+			// Decrease number of nodes that need to be traversed.
+			remain--;
+
+			// Visit all the children of the visited node.
+			auto it = adjMatrix.find(solved);
+			if (it != adjMatrix.end())
+			{
+				for (auto child : it->second)
+				{
+					// Check if we can visited the node safely.
+					if (--indegree[std::get<0>(child)->getId()] == 0)
+					{
+						// if node can be visited safely, then add that node to
+						// the visit queue.
+						can_be_solved.emplace(std::get<0>(child));
+					}
+				}
+			}
+		}
+
+		// If there are still nodes that we can't visit, then it means that
+		// there is a cycle and return true, else return false.
+		return !(remain == 0);
+	}
+
+	template <typename T>
 	const bool Graph<T>::isDirectedGraph() const
 	{
 		auto edgeSet = this->getEdgeSet();
-		for( auto edge : edgeSet){
-			if( !(edge->isDirected().has_value() && edge->isDirected().value())){
+		for (auto edge : edgeSet)
+		{
+			if (!(edge->isDirected().has_value() && edge->isDirected().value()))
+			{
 				//Found Undirected Edge
 				return false;
 			}
