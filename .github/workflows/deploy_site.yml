@@ -3,8 +3,8 @@ name: Deploy Site
 on:
   workflow_dispatch:
   push:
-    paths-ignore:
-    - '.github/**' # Ignore changes towards the .github directory
+    #paths-ignore:
+    #- '.github/**' # Ignore changes towards the .github directory
     branches:
     - master # Only trigger on the master branch
 
@@ -24,4 +24,4 @@ jobs:
         cp /tmp/README.md index.md
         git add index.md
         git commit -m "Update Website (${GITHUB_SHA:0:7})"
-        git push gh-pages origin
+        git push
