@@ -24,7 +24,7 @@ jobs:
         uses: mattnotmitt/doxygen-action@v1.3.1
         with:
           # Working directory
-          working-directory: 'docs/'
+          working-directory: '/docs/'
           # Path to Doxyfile
           doxyfile-path: './Doxyfile'        
           # Generate latex documentation
