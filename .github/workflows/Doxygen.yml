@@ -26,8 +26,16 @@ jobs:
       - name: Checkout New Branch
         run: |
           git fetch
-          git checkout documentation-update
-        #git push origin documentation-update
+          git checkout -b documentation-update-${{ steps.buildnumber.outputs.build_number }}
+          git push origin documentation-update-${{ steps.buildnumber.outputs.build_number }}
+      
+      - name: Generate build number
+        id: buildnumber
+        uses: einaregilsson/build-number@v3 
+        with:
+          token: ${{secrets.PERSONAL_TOKEN}}        
+    
+    # Now you can pass ${{ steps.buildnumber.outputs.build_number }} to the next steps.
       
       - name: Doxygen Action
         uses: mattnotmitt/doxygen-action@v1.3.1
@@ -51,7 +59,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.PERSONAL_TOKEN }}
-          branch: documentation-update
+          branch: documentation-update-${{ steps.buildnumber.outputs.build_number }}
           
       - name: Create Pull Request
         uses: thomaseizinger/create-pull-request@1.1.0
@@ -59,7 +67,7 @@ jobs:
           # A GitHub API token
           github_token: ${{ secrets.PERSONAL_TOKEN }}
           # The head ref that should be pulled into base.
-          head: documentation-update
+          head: documentation-update-${{ steps.buildnumber.outputs.build_number }}
           # The title of the pull request.
           title: Documentation Update
           # The base branch for the pull request. Defaults to master.
