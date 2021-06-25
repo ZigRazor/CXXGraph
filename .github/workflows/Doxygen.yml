@@ -25,6 +25,7 @@ jobs:
           token: ${{ secrets.PERSONAL_TOKEN }}
       - name: Checkout New Branch
         run: |
+          git fetch
           git checkout documentation-update
         #git push origin documentation-update
       
