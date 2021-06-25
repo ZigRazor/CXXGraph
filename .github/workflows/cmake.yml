@@ -20,8 +20,8 @@ jobs:
 
     steps:
     - name: Install gtest manually
-      run: sudo apt-get install libgtest-dev && cd /usr/src/gtest && sudo cmake CMakeLists.txt && sudo make && sudo make install
-      
+      run: sudo apt-get install libgtest-dev
+    
     - uses: actions/checkout@v2
 
     - name: Configure CMake
