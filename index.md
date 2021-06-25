@@ -84,6 +84,10 @@ Work in Progess
 ## How to contribute [![GitHub contributors](https://img.shields.io/github/contributors/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/graphs/contributors/)
 If you want give your support you can create a ***pull request***   [![GitHub pull-requests](https://img.shields.io/github/issues-pr/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/pull/) or report an ***issue***  [![GitHub issues](https://img.shields.io/github/issues/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/issues/).
 
+## Site
+
+[CXXGraph Site](https://zigrazor.github.io/CXXGraph/)
+
 ## Contact
 E-Mail : zigrazor@gmail.com
 
@@ -96,6 +100,9 @@ To support me just add ***Star*** the project  [![GitHub stars](https://img.shie
 
 To get updated ***watch*** the project  [![GitHub watchers](https://img.shields.io/github/watchers/ZigRazor/CXXGraph.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/ZigRazor/CXXGraph/watchers/)
 
+## References
+We are referenced by:
+- [awesome-hpp](https://github.com/p-ranav/awesome-hpp)
 
 ## Credits
 
