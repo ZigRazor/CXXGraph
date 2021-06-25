@@ -40,7 +40,6 @@ jobs:
 
           git add docs
           git commit -m "Updated Doxygen Documentation"
-          git push
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
