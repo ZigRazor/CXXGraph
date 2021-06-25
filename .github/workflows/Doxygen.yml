@@ -61,8 +61,8 @@ jobs:
           committer: ZigRazor <zigrazor@gmail.com>
           author: ZigRazor <zigrazor@gmail.com>
           signoff: true
-          base: documentation-update
-          branch: master
+          base: master
+          branch: documentation-update
           delete-branch: true
           title: 'Update Docs'
           body: |
