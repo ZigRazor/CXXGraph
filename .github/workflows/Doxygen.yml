@@ -25,8 +25,8 @@ jobs:
           token: ${{ secrets.PERSONAL_TOKEN }}
       - name: Checkout New Branch
         run: |
-          git checkout -b documentation-update
-          git push origin documentation-update
+          git checkout documentation-update
+        #git push origin documentation-update
       
       - name: Doxygen Action
         uses: mattnotmitt/doxygen-action@v1.3.1
