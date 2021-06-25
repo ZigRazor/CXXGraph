@@ -12,16 +12,15 @@ jobs:
   build:
     runs-on: [ubuntu-latest]
     steps:
-    - name: Perform Checkout
-      uses: actions/checkout@v2
-    - name: Deploy Files
-      run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-                
-        cp README.md /tmp
-        git checkout -b gh-pages origin/gh-pages     
-        cp /tmp/README.md index.md
-        git add index.md
-        git commit -m "Update Website (${GITHUB_SHA:0:7})"        
-        git push
+    - name: Copy
+      uses: andstor/copycat-action@v3
+      with:
+        personal_token: ${{ secrets.PERSONAL_TOKEN }}
+        src_path: README.md
+        dst_path: index.md
+        src_branch: master
+        dst_branch: gh-pages
+        username: ZigRazor
+        email: zigrazor@gmail.com
+        dst_owner: ZigRazor
+        dst_repo_name: CXXGraph
