@@ -26,7 +26,7 @@ jobs:
           # Path to Doxyfile
           doxyfile-path: ./Doxyfile
           # Working directory
-          working-directory: docs
+          working-directory: ./docs
           # Generate latex documentation
           #enable-latex: # optional
           # Extra alpine packages for the build environment
