@@ -16,8 +16,8 @@ jobs:
       uses: andstor/copycat-action@v3
       with:
         personal_token: ${{ secrets.PERSONAL_TOKEN }}
-        src_path: README.md
-        dst_path: index.md
+        src_path: /README.md
+        dst_path: /index.md
         src_branch: master
         dst_branch: gh-pages
         username: ZigRazor
