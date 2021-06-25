@@ -33,7 +33,7 @@ jobs:
           #enable-latex: # optional
           # Extra alpine packages for the build environment
           #additional-packages: # optional, default is 
-      - name: push to remote
+      - name: commit changes
         run: |
           git config --global user.name "ZigRazor"
           git config --global user.email "zigrazor@gmail.com"
@@ -41,3 +41,8 @@ jobs:
           git add docs
           git commit -m "Updated Doxygen Documentation"
           git push
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PERSONAL_TOKEN }}
+          branch: master
