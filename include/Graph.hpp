@@ -129,22 +129,26 @@ namespace CXXGRAPH
 		void setWeight(const double weight);
 	};
 
-	inline Weighted::Weighted() //inline because the implementation of non-template function in header file
+	//inline because the implementation of non-template function in header file
+	inline Weighted::Weighted() 
 	{
 		weight = 0.0;
 	}
 
-	inline Weighted::Weighted(const double weight) //inline because the implementation of non-template function in header file
+	//inline because the implementation of non-template function in header file
+	inline Weighted::Weighted(const double weight) 
 	{
 		this->weight = weight;
 	}
 
-	inline double Weighted::getWeight() const //inline because the implementation of non-template function in header file
+	//inline because the implementation of non-template function in header file
+	inline double Weighted::getWeight() const 
 	{
 		return weight;
 	}
 
-	inline void Weighted::setWeight(const double weight) //inline because the implementation of non-template function in header file
+	//inline because the implementation of non-template function in header file
+	inline void Weighted::setWeight(const double weight) 
 	{
 		this->weight = weight;
 	}
@@ -473,7 +477,7 @@ namespace CXXGRAPH
 		const std::set<const Node<T> *> getNodeSet() const;
 		const std::optional<const Edge<T> *> getEdge(unsigned long edgeId) const;
 		/*This function generate a list of adjacency matrix with every element of the matrix 
-		***contain the node where is directed the link and the Edge corrispondent to the link
+		* contain the node where is directed the link and the Edge corrispondent to the link
 		*/
 		const AdjacencyMatrix<T> getAdjMatrix() const;
 		/**
@@ -646,20 +650,22 @@ namespace CXXGRAPH
 		result.result = INF_DOUBLE;
 		auto nodeSet = getNodeSet();
 		if (nodeSet.find(&source) == nodeSet.end())
-		{ // check if source node exist in the graph
+		{ 
+			// check if source node exist in the graph
 			result.errorMessage = ERR_DIJ_SOURCE_NODE_NOT_IN_GRAPH;
 			return result;
 		}
 		if (nodeSet.find(&target) == nodeSet.end())
-		{ // check if target node exist in the graph
+		{ 
+			// check if target node exist in the graph
 			result.errorMessage = ERR_DIJ_TARGET_NODE_NOT_IN_GRAPH;
 			return result;
 		}
 		const AdjacencyMatrix<T> adj = getAdjMatrix();
-		/// n denotes the number of vertices in graph
+		// n denotes the number of vertices in graph
 		int n = adj.size();
 
-		/// setting all the distances initially to INF_DOUBLE
+		// setting all the distances initially to INF_DOUBLE
 		std::map<const Node<T> *, double> dist;
 
 		for (auto elem : adj)
@@ -667,36 +673,36 @@ namespace CXXGRAPH
 			dist[elem.first] = INF_DOUBLE;
 		}
 
-		/// creating a min heap using priority queue
-		/// first element of pair contains the distance
-		/// second element of pair contains the vertex
+		// creating a min heap using priority queue
+		// first element of pair contains the distance
+		// second element of pair contains the vertex
 		std::priority_queue<std::pair<double, const Node<T> *>, std::vector<std::pair<double, const Node<T> *>>,
 							std::greater<std::pair<double, const Node<T> *>>>
 			pq;
 
-		/// pushing the source vertex 's' with 0 distance in min heap
+		// pushing the source vertex 's' with 0 distance in min heap
 		pq.push(std::make_pair(0.0, &source));
 
-		/// marking the distance of source as 0
+		// marking the distance of source as 0
 		dist[&source] = 0;
 
 		while (!pq.empty())
 		{
-			/// second element of pair denotes the node / vertex
+			// second element of pair denotes the node / vertex
 			const Node<T> *currentNode = pq.top().second;
 
-			/// first element of pair denotes the distance
+			// first element of pair denotes the distance
 			double currentDist = pq.top().first;
 
 			pq.pop();
 
-			/// for all the reachable vertex from the currently exploring vertex
-			/// we will try to minimize the distance
+			// for all the reachable vertex from the currently exploring vertex
+			// we will try to minimize the distance
 			if (adj.find(currentNode) != adj.end())
 			{
 				for (std::pair<const Node<T> *, const Edge<T> *> elem : adj.at(currentNode))
 				{
-					/// minimizing distances
+					// minimizing distances
 					if (elem.second->isWeighted().has_value() && elem.second->isWeighted().value())
 					{
 						if (elem.second->isDirected().has_value() && elem.second->isDirected().value())
@@ -725,7 +731,8 @@ namespace CXXGRAPH
 						}
 					}
 					else
-					{ // No Weighted Edge
+					{ 
+						// No Weighted Edge
 						result.errorMessage = ERR_NO_WEIGHTED_EDGE;
 						return result;
 					}
@@ -747,18 +754,19 @@ namespace CXXGRAPH
 	template <typename T>
 	const std::vector<Node<T>> Graph<T>::breadth_first_search(const Node<T> &start) const
 	{
-		/// vector to keep track of visited nodes
+		// vector to keep track of visited nodes
 		std::vector<Node<T>> visited;
 		auto nodeSet = getNodeSet();
-		if (nodeSet.find(&start) == nodeSet.end()) //check is exist node in the graph
+		//check is exist node in the graph
+		if (nodeSet.find(&start) == nodeSet.end())
 		{
 			return visited;
 		}
 		const AdjacencyMatrix<T> adj = getAdjMatrix();
-		/// queue that stores vertices that need to be further explored
+		// queue that stores vertices that need to be further explored
 		std::queue<const Node<T> *> tracker;
 
-		/// mark the starting node as visited
+		// mark the starting node as visited
 		visited.push_back(start);
 		tracker.push(&start);
 		while (!tracker.empty())
@@ -769,8 +777,8 @@ namespace CXXGRAPH
 			{
 				for (auto elem : adj.at(node))
 				{
-					/// if the node is not visited then mark it as visited
-					/// and push it to the queue
+					// if the node is not visited then mark it as visited
+					// and push it to the queue
 					if (std::find(visited.begin(), visited.end(), *(elem.first)) == visited.end())
 					{
 						visited.push_back(*(elem.first));
@@ -786,10 +794,11 @@ namespace CXXGRAPH
 	template <typename T>
 	const std::vector<Node<T>> Graph<T>::depth_first_search(const Node<T> &start) const
 	{
-		/// vector to keep track of visited nodes
+		// vector to keep track of visited nodes
 		std::vector<Node<T>> visited;
 		auto nodeSet = getNodeSet();
-		if (nodeSet.find(&start) == nodeSet.end()) //check is exist node in the graph
+		//check is exist node in the graph
+		if (nodeSet.find(&start) == nodeSet.end()) 
 		{
 			return visited;
 		}
@@ -830,7 +839,7 @@ namespace CXXGRAPH
 		auto nodeSet = this->getNodeSet();
 		auto adjMatrix = this->getAdjMatrix();
 
-		/** State of the node.
+		/* State of the node.
          *
          * It is a vector of "nodeStates" which represents the state node is in.
          * It can take only 3 values: "not_visited", "in_stack", and "visited".
