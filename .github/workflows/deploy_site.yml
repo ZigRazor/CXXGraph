@@ -20,8 +20,9 @@ jobs:
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
                 
         cp README.md /tmp
-        git checkout -b gh-pages
+        git checkout -b gh-pages        
         cp /tmp/README.md index.md
         git add index.md
         git commit -m "Update Website (${GITHUB_SHA:0:7})"
+        git push --set-upstream origin gh-pages        
         git push
