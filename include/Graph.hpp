@@ -130,25 +130,25 @@ namespace CXXGRAPH
 	};
 
 	//inline because the implementation of non-template function in header file
-	inline Weighted::Weighted() 
+	inline Weighted::Weighted()
 	{
 		weight = 0.0;
 	}
 
 	//inline because the implementation of non-template function in header file
-	inline Weighted::Weighted(const double weight) 
+	inline Weighted::Weighted(const double weight)
 	{
 		this->weight = weight;
 	}
 
 	//inline because the implementation of non-template function in header file
-	inline double Weighted::getWeight() const 
+	inline double Weighted::getWeight() const
 	{
 		return weight;
 	}
 
 	//inline because the implementation of non-template function in header file
-	inline void Weighted::setWeight(const double weight) 
+	inline void Weighted::setWeight(const double weight)
 	{
 		this->weight = weight;
 	}
@@ -650,13 +650,13 @@ namespace CXXGRAPH
 		result.result = INF_DOUBLE;
 		auto nodeSet = getNodeSet();
 		if (nodeSet.find(&source) == nodeSet.end())
-		{ 
+		{
 			// check if source node exist in the graph
 			result.errorMessage = ERR_DIJ_SOURCE_NODE_NOT_IN_GRAPH;
 			return result;
 		}
 		if (nodeSet.find(&target) == nodeSet.end())
-		{ 
+		{
 			// check if target node exist in the graph
 			result.errorMessage = ERR_DIJ_TARGET_NODE_NOT_IN_GRAPH;
 			return result;
@@ -731,7 +731,7 @@ namespace CXXGRAPH
 						}
 					}
 					else
-					{ 
+					{
 						// No Weighted Edge
 						result.errorMessage = ERR_NO_WEIGHTED_EDGE;
 						return result;
@@ -798,7 +798,7 @@ namespace CXXGRAPH
 		std::vector<Node<T>> visited;
 		auto nodeSet = getNodeSet();
 		//check is exist node in the graph
-		if (nodeSet.find(&start) == nodeSet.end()) 
+		if (nodeSet.find(&start) == nodeSet.end())
 		{
 			return visited;
 		}
