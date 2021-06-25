@@ -30,10 +30,10 @@ Applications of Breadth First Search are :
  
   And there are many more...
 
-  #### DFS (Depth First Search)
-  [Depth First Search Algorithm (Depth First Search)](https://en.wikipedia.org/wiki/Depth-first_search)
-  **Depth First Search**, also quoted as **DFS**, is a Graph Traversal Algorithm. Time Complexity O(|V| + |E|) where V is number of vertices and E is number of edges in graph.
-  Application of Depth First Search are:
+#### DFS (Depth First Search)
+[Depth First Search Algorithm (Depth First Search)](https://en.wikipedia.org/wiki/Depth-first_search)
+**Depth First Search**, also quoted as **DFS**, is a Graph Traversal Algorithm. Time Complexity O(|V| + |E|) where V is number of vertices and E is number of edges in graph.
+Application of Depth First Search are:
   1. Finding connected components
   2. Finding 2-(edge or vertex)-connected components.
   3. Finding 3-(edge or vertex)-connected components.
@@ -43,16 +43,16 @@ Applications of Breadth First Search are :
  
   And there are many more...
 
-   #### Cycle Detection
-   [Cycle (graph theory)](https://en.wikipedia.org/wiki/Cycle_(graph_theory))
+#### Cycle Detection
+[Cycle (graph theory)](https://en.wikipedia.org/wiki/Cycle_(graph_theory))
    
-   The existence of a cycle in directed and undirected graphs can be determined by whether depth-first search (DFS) finds an edge that points to an ancestor of the current vertex (it contains a back edge). All the back edges which DFS skips over are part of cycles. In an undirected graph, the edge to the parent of a node should not be counted as a back edge, but finding any other already visited vertex will indicate a back edge. In the case of undirected graphs, only O(n) time is required to find a cycle in an n-vertex graph, since at most n − 1 edges can be tree edges.
+The existence of a cycle in directed and undirected graphs can be determined by whether depth-first search (DFS) finds an edge that points to an ancestor of the current vertex (it contains a back edge). All the back edges which DFS skips over are part of cycles. In an undirected graph, the edge to the parent of a node should not be counted as a back edge, but finding any other already visited vertex will indicate a back edge. In the case of undirected graphs, only O(n) time is required to find a cycle in an n-vertex graph, since at most n − 1 edges can be tree edges.
 
-   Many topological sorting algorithms will detect cycles too, since those are obstacles for topological order to exist. Also, if a directed graph has been divided into strongly connected components, cycles only exist within the components and not between them, since cycles are strongly connected.
+Many topological sorting algorithms will detect cycles too, since those are obstacles for topological order to exist. Also, if a directed graph has been divided into strongly connected components, cycles only exist within the components and not between them, since cycles are strongly connected.
 
-   For directed graphs, distributed message based algorithms can be used. These algorithms rely on the idea that a message sent by a vertex in a cycle will come back to itself.    Distributed cycle detection algorithms are useful for processing large-scale graphs using a distributed graph processing system on a computer cluster (or supercomputer).
+For directed graphs, distributed message based algorithms can be used. These algorithms rely on the idea that a message sent by a vertex in a cycle will come back to itself.    Distributed cycle detection algorithms are useful for processing large-scale graphs using a distributed graph processing system on a computer cluster (or supercomputer).
 
-   Applications of cycle detection include the use of wait-for graphs to detect deadlocks in concurrent systems.
+Applications of cycle detection include the use of wait-for graphs to detect deadlocks in concurrent systems.
 
 WORK IN PROGRESS
 
@@ -76,7 +76,7 @@ The Unit-Test required the CMake version greater than 3.9 and the **google test*
 -   if all is succesfull execute the command `make`
 
 ### How to Run
-   After the compilation, you can run the executable that is under the "build" directory with the name "test_exe", with the simple command `./test_exe`.
+After the compilation, you can run the executable that is under the "build" directory with the name "test_exe", with the simple command `./test_exe`.
 
 ## Example
 Work in Progess
