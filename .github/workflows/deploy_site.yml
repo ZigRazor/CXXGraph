@@ -5,6 +5,8 @@ on:
   push:
     #paths-ignore:
     #- '.github/**' # Ignore changes towards the .github directory
+    paths:
+      - 'README.md'
     branches:
     - master # Only trigger on the master branch
 
