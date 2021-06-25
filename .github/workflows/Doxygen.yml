@@ -21,10 +21,12 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
-      
+        with:
+          token: ${{ secrets.PERSONAL_TOKEN }}
       - name: Checkout New Branch
         run: |
-          git checkout documentation-update
+          git checkout -b documentation-update
+          git push origin documentation-update
       
       - name: Doxygen Action
         uses: mattnotmitt/doxygen-action@v1.3.1
