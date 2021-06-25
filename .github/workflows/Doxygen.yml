@@ -25,19 +25,17 @@ jobs:
       - uses: actions/checkout@v2
         with:
           token: ${{ secrets.PERSONAL_TOKEN }}
-      - name: Checkout New Branch
-        run: |
-          git fetch
-          git checkout -b documentation-update-${{ steps.buildnumber.outputs.build_number }}
-          git push origin documentation-update-${{ steps.buildnumber.outputs.build_number }}
-      
       - name: Generate build number
         id: buildnumber
         uses: einaregilsson/build-number@v3 
         with:
-          token: ${{secrets.PERSONAL_TOKEN}}        
-    
-    # Now you can pass ${{ steps.buildnumber.outputs.build_number }} to the next steps.
+          token: ${{secrets.PERSONAL_TOKEN}} 
+      # Now you can pass ${{ steps.buildnumber.outputs.build_number }} to the next steps.
+      - name: Checkout New Branch
+        run: |
+          git fetch
+          git checkout -b documentation-update-${{ steps.buildnumber.outputs.build_number }}
+          git push origin documentation-update-${{ steps.buildnumber.outputs.build_number }}             
       
       - name: Doxygen Action
         uses: mattnotmitt/doxygen-action@v1.3.1
