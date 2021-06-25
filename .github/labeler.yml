@@ -1,0 +1,15 @@
+# Add 'repo' label to any root file changes
+repo:
+- '*'
+
+# Add 'test' label to any change to *.spec.js files within the source dir
+test:
+- test/**
+
+# Add 'source' label to any change to src files within the source dir EXCEPT for the docs sub-folder
+automated workflows:
+- .github/workflows//**
+
+# Add 'frontend` label to any change to *.js files as long as the `main.js` hasn't changed
+core:
+- include/**
