@@ -1,0 +1,27 @@
+name: Deploy Site
+
+on:
+  workflow_dispatch:
+  push:
+    paths-ignore:
+    - '.github/**' # Ignore changes towards the .github directory
+    branches:
+    - master # Only trigger on the master branch
+
+jobs:
+  build:
+    runs-on: [ubuntu-latest]
+    steps:
+    - name: Perform Checkout
+      uses: actions/checkout@v2
+    - name: Deploy Files
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                
+        cp README.md /tmp
+        git checkout -b gh-pages
+        cp /tmp/README.md index.md
+        git add index.md
+        git commit -m "Update Website (${GITHUB_SHA:0:7})"
+        git push gh-pages origin
