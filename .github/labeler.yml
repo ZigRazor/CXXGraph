@@ -6,10 +6,14 @@ repo:
 test:
 - test/**
 
-# Add 'source' label to any change to src files within the source dir EXCEPT for the docs sub-folder
+# Add 'automated workflows' label to any change to workflows files 
 automated workflows:
 - .github/workflows//**
 
-# Add 'frontend` label to any change to *.js files as long as the `main.js` hasn't changed
+# Add 'core` label to any change to include files
 core:
 - include/**
+
+# Add 'documentation` label to any change to docs files
+documentation:
+- docs/**
