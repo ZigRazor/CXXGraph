@@ -12,6 +12,7 @@
 #include <queue>
 #include <string>
 #include <functional>
+#include <fstream>
 
 namespace CXXGRAPH
 {
@@ -465,8 +466,15 @@ namespace CXXGRAPH
 	private:
 		std::set<const Edge<T> *> edgeSet;
 		void addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge) const;
+		int writeToStandardFile(std::string OFileName) const;
 
 	public:
+		typedef enum E_OutputFormat{
+			STANDARD,
+			OUT_1,
+			OUT_2
+		}OutputFormat;
+
 		Graph() = default;
 		Graph(const std::set<const Edge<T> *> &edgeSet);
 		~Graph() = default;
@@ -538,6 +546,16 @@ namespace CXXGRAPH
      	* @return true if the graph is directed, else false.
      	*/
 		const bool isDirectedGraph() const;
+
+		/**
+     	* \brief
+     	* This function write the graph in an output file
+     	* 
+		* @param format The Output format of the file
+		* @param OFileName The Output File Name
+     	* @return 0 if all OK, else return a negative value
+     	*/
+		int writeToFile(OutputFormat format = OutputFormat::STANDARD, std::string OFileName = "graph.csv", bool compress = false) const;
 
 		friend std::ostream &operator<<<>(std::ostream &os, const Graph<T> &graph);
 		friend std::ostream &operator<<<>(std::ostream &os, const AdjacencyMatrix<T> &adj);
@@ -612,6 +630,17 @@ namespace CXXGRAPH
 		adjMatrix[nodeFrom].push_back(elem);
 
 		//adjMatrix[nodeFrom.getId()].push_back(std::make_pair<const Node<T>,const Edge<T>>(nodeTo, edge));
+	}
+	
+	template<typename T>
+	int Graph<T>::writeToStandardFile(std::string OFileName) const
+	{
+		std::ofstream ofile;
+		ofile.open(OFileName);
+		auto printOut = [&ofile](const Edge<T> *e) { ofile << e->getId() << "," << e->getNodePair().first->getId() << "," << e->getNodePair().second->getId() << std::endl; };
+    	std::for_each(edgeSet.cbegin(), edgeSet.cend(), printOut);
+		ofile.close();
+		return 0;
 	}
 
 	template <typename T>
@@ -996,6 +1025,17 @@ namespace CXXGRAPH
 		}
 		//No Undirected Edge
 		return true;
+	}
+	
+	template<typename T>
+	int Graph<T>::writeToFile(OutputFormat format, std::string OFileName, bool compress) const
+	{
+		if( format == OutputFormat::STANDARD ){
+			return writeToStandardFile(OFileName);
+		}else{
+			//OUTPUT FORMAT NOT RECOGNIZED
+			return -1;
+		}
 	}
 
 	//ostream overload
