@@ -60,8 +60,8 @@ TEST(GraphTest, GetNodeSet_1)
     CXXGRAPH::Graph<int> graph(edgeSet);
     auto nodeSet = graph.getNodeSet();
     ASSERT_EQ(nodeSet.size(), 2);
-    ASSERT_TRUE(nodeSet.find(&node1) != nodeSet.end() );
-    ASSERT_TRUE(nodeSet.find(&node2) != nodeSet.end() );
+    ASSERT_TRUE(nodeSet.find(&node1) != nodeSet.end());
+    ASSERT_TRUE(nodeSet.find(&node2) != nodeSet.end());
 }
 
 TEST(GraphTest, GetNodeSet_2)
@@ -78,10 +78,9 @@ TEST(GraphTest, GetNodeSet_2)
     CXXGRAPH::Graph<int> graph(edgeSet);
     auto nodeSet = graph.getNodeSet();
     ASSERT_EQ(nodeSet.size(), 3);
-    ASSERT_TRUE(nodeSet.find(&node1) != nodeSet.end() );
-    ASSERT_TRUE(nodeSet.find(&node2) != nodeSet.end() );
-    ASSERT_TRUE(nodeSet.find(&node3) != nodeSet.end() );
-    
+    ASSERT_TRUE(nodeSet.find(&node1) != nodeSet.end());
+    ASSERT_TRUE(nodeSet.find(&node2) != nodeSet.end());
+    ASSERT_TRUE(nodeSet.find(&node3) != nodeSet.end());
 }
 
 TEST(GraphTest, adj_print_1)

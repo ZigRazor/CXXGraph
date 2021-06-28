@@ -53,7 +53,6 @@ TEST(UndirectedEdgeTest, Constructor_5)
     ASSERT_FALSE(edge.isWeighted().value());
 }
 
-
 TEST(UndirectedEdgeTest, Cast_1)
 {
     CXXGRAPH::Node<int> node1(1, 1);

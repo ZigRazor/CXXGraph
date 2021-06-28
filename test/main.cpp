@@ -43,8 +43,9 @@ class FooTest : public ::testing::Test {
 }  // namespace project
 }  // namespace my
 *******       EXAMPLE END  ***********/
-int main(int argc, char **argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  std::cout << "Running Test for CXXGraph Version " << CXXGraph_VERSION_MAJOR << "." << CXXGraph_VERSION_MINOR << "." << CXXGraph_VERSION_PATCH << std::endl; 
-  return RUN_ALL_TESTS();
+int main(int argc, char **argv)
+{
+   ::testing::InitGoogleTest(&argc, argv);
+   std::cout << "Running Test for CXXGraph Version " << CXXGraph_VERSION_MAJOR << "." << CXXGraph_VERSION_MINOR << "." << CXXGraph_VERSION_PATCH << std::endl;
+   return RUN_ALL_TESTS();
 }

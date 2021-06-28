@@ -469,11 +469,12 @@ namespace CXXGRAPH
 		int writeToStandardFile(std::string OFileName) const;
 
 	public:
-		typedef enum E_OutputFormat{
+		typedef enum E_OutputFormat
+		{
 			STANDARD,
 			OUT_1,
 			OUT_2
-		}OutputFormat;
+		} OutputFormat;
 
 		Graph() = default;
 		Graph(const std::set<const Edge<T> *> &edgeSet);
@@ -484,7 +485,7 @@ namespace CXXGRAPH
 		void removeEdge(unsigned long edgeId);
 		const std::set<const Node<T> *> getNodeSet() const;
 		const std::optional<const Edge<T> *> getEdge(unsigned long edgeId) const;
-		/*This function generate a list of adjacency matrix with every element of the matrix 
+		/*This function generate a list of adjacency matrix with every element of the matrix
 		* contain the node where is directed the link and the Edge corrispondent to the link
 		*/
 		const AdjacencyMatrix<T> getAdjMatrix() const;
@@ -521,20 +522,20 @@ namespace CXXGRAPH
  		*/
 		const std::vector<Node<T>> depth_first_search(const Node<T> &start) const;
 
-		/** 
+		/**
 		* \brief
      	* This function uses DFS to check for cycle in the graph.
      	* Pay Attention, this function work only with directed Graph
-     	* 
+     	*
      	* @return true if a cycle is detected, else false. ( false is returned also if the graph in indirected)
      	*/
 		const bool isCyclicDirectedGraphDFS() const;
 
-		/** 
+		/**
 		* \brief
      	* This function uses BFS to check for cycle in the graph.
      	* Pay Attention, this function work only with directed Graph
-     	* 
+     	*
      	* @return true if a cycle is detected, else false. ( false is returned also if the graph in indirected)
      	*/
 		const bool isCyclicDirectedGraphBFS() const;
@@ -542,7 +543,7 @@ namespace CXXGRAPH
 		/**
      	* \brief
      	* This function checks if a graph is directed
-     	* 
+     	*
      	* @return true if the graph is directed, else false.
      	*/
 		const bool isDirectedGraph() const;
@@ -550,7 +551,7 @@ namespace CXXGRAPH
 		/**
      	* \brief
      	* This function write the graph in an output file
-     	* 
+     	*
 		* @param format The Output format of the file
 		* @param OFileName The Output File Name
      	* @return 0 if all OK, else return a negative value
@@ -631,14 +632,15 @@ namespace CXXGRAPH
 
 		//adjMatrix[nodeFrom.getId()].push_back(std::make_pair<const Node<T>,const Edge<T>>(nodeTo, edge));
 	}
-	
-	template<typename T>
+
+	template <typename T>
 	int Graph<T>::writeToStandardFile(std::string OFileName) const
 	{
 		std::ofstream ofile;
 		ofile.open(OFileName);
-		auto printOut = [&ofile](const Edge<T> *e) { ofile << e->getId() << "," << e->getNodePair().first->getId() << "," << e->getNodePair().second->getId() << std::endl; };
-    	std::for_each(edgeSet.cbegin(), edgeSet.cend(), printOut);
+		auto printOut = [&ofile](const Edge<T> *e)
+		{ ofile << e->getId() << "," << e->getNodePair().first->getId() << "," << e->getNodePair().second->getId() << std::endl; };
+		std::for_each(edgeSet.cbegin(), edgeSet.cend(), printOut);
 		ofile.close();
 		return 0;
 	}
@@ -1026,13 +1028,16 @@ namespace CXXGRAPH
 		//No Undirected Edge
 		return true;
 	}
-	
-	template<typename T>
+
+	template <typename T>
 	int Graph<T>::writeToFile(OutputFormat format, std::string OFileName, bool compress) const
 	{
-		if( format == OutputFormat::STANDARD ){
+		if (format == OutputFormat::STANDARD)
+		{
 			return writeToStandardFile(OFileName);
-		}else{
+		}
+		else
+		{
 			//OUTPUT FORMAT NOT RECOGNIZED
 			return -1;
 		}

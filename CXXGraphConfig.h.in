@@ -1,4 +1,4 @@
 // the configured options and settings for CXXGraph
-#define CXXGraph_VERSION_MAJOR @CXXGraph_VERSION_MAJOR@
-#define CXXGraph_VERSION_MINOR @CXXGraph_VERSION_MINOR@
-#define CXXGraph_VERSION_PATCH @CXXGraph_VERSION_PATCH@
+#define CXXGraph_VERSION_MAJOR @CXXGraph_VERSION_MAJOR @
+#define CXXGraph_VERSION_MINOR @CXXGraph_VERSION_MINOR @
+#define CXXGraph_VERSION_PATCH @CXXGraph_VERSION_PATCH @

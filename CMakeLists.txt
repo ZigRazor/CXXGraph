@@ -17,8 +17,8 @@ if(DEBUG)
 		-O0  #no optimization
 		-g   #generate debug info
 	)
-	
-endif(DEBUG)	
+
+endif(DEBUG)
 
 option(CODE_COVERAGE "Enable coverage reporting" OFF)
 if(CODE_COVERAGE)
@@ -36,12 +36,12 @@ if(CODE_COVERAGE)
 		"-fprofile-arcs"
 		"--coverage"
 	)
-	
-endif(CODE_COVERAGE)	
+
+endif(CODE_COVERAGE)
 
 # add the library
-						   
-add_executable(test_exe test/main.cpp 
+
+add_executable(test_exe test/main.cpp
 						test/NodeTest.cpp
 						test/EdgeTest.cpp
 						test/DirectedEdgeTest.cpp
@@ -58,9 +58,9 @@ add_executable(test_exe test/main.cpp
 target_include_directories(test_exe PUBLIC
 						  "${PROJECT_SOURCE_DIR}/include"
 						  )
-target_link_libraries(test_exe 
-					   libgtest.a 
-					   libgtest_main.a 
+target_link_libraries(test_exe
+					   libgtest.a
+					   libgtest_main.a
 					   pthread )
 
 
