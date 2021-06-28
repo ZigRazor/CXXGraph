@@ -9,6 +9,8 @@ configure_file(CXXGraphConfig.h.in ${PROJECT_SOURCE_DIR}/include/CXXGraphConfig.
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES /usr/local/lib ${CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES})
+
 option(DEBUG "Enable Debug" OFF)
 if(DEBUG)
 	add_compile_options(
@@ -17,6 +19,25 @@ if(DEBUG)
 	)
 	
 endif(DEBUG)	
+
+option(CODE_COVERAGE "Enable coverage reporting" OFF)
+if(CODE_COVERAGE)
+	message( "Code Coverage Enabled" )
+	add_compile_options(
+		-O0  #no optimization
+		-g   #generate debug info
+		--coverage #set coverage flag
+		-fprofile-arcs
+		-ftest-coverage
+		-fPIC
+	)
+	link_libraries(
+		"gcov"
+		"-fprofile-arcs"
+		"--coverage"
+	)
+	
+endif(CODE_COVERAGE)	
 
 # add the library
 						   
