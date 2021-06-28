@@ -6,7 +6,7 @@ repo:
 test:
 - test/**
 
-# Add 'automated workflows' label to any change to workflows files 
+# Add 'automated workflows' label to any change to workflows files
 automated workflows:
 - .github/workflows//**
 

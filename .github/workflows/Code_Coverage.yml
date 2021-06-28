@@ -15,27 +15,27 @@ jobs:
     steps:
       - name: Install gtest manually
         run: sudo apt-get install libgtest-dev
-    
+
       - name: Install tools manually
         run: sudo apt-get install lcov gcovr
-    
+
       - uses: actions/checkout@v2
-      
+
       - name: Configure CMake
         run: cmake -B ${{github.workspace}}/build -DCODE_COVERAGE=ON
-        
+
       - name: Build
         # Build your program with the given configuration
         run: cmake --build ${{github.workspace}}/build
-        
+
       - name: run
         working-directory: ${{github.workspace}}/build
         run: ./test_exe
-        
-      - name: create Report      
+
+      - name: create Report
         working-directory: ${{github.workspace}}/build
         run: lcov --capture --directory .. --output-file coverage.info
-      
+
       - uses: codecov/codecov-action@v1.5.2
         with:
           #token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos

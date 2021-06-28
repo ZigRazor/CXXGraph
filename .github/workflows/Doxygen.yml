@@ -9,7 +9,7 @@ on:
     paths:
       - 'include/Graph.hpp'
     branches: [ master ]
-  
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -27,40 +27,40 @@ jobs:
           token: ${{ secrets.PERSONAL_TOKEN }}
       - name: Generate build number
         id: buildnumber
-        uses: einaregilsson/build-number@v3 
+        uses: einaregilsson/build-number@v3
         with:
-          token: ${{secrets.PERSONAL_TOKEN}} 
+          token: ${{secrets.PERSONAL_TOKEN}}
       # Now you can pass ${{ steps.buildnumber.outputs.build_number }} to the next steps.
       - name: Checkout New Branch
         run: |
           git fetch
           git checkout -b documentation-update-${{ steps.buildnumber.outputs.build_number }}
-          git push origin documentation-update-${{ steps.buildnumber.outputs.build_number }}             
-      
+          git push origin documentation-update-${{ steps.buildnumber.outputs.build_number }}
+
       - name: Doxygen Action
         uses: mattnotmitt/doxygen-action@v1.3.1
         with:
           # Working directory
           working-directory: 'docs/'
           # Path to Doxyfile
-          doxyfile-path: './Doxyfile'        
+          doxyfile-path: './Doxyfile'
           # Generate latex documentation
           #enable-latex: # optional
           # Extra alpine packages for the build environment
-          #additional-packages: # optional, default is 
+          #additional-packages: # optional, default is
       - name: commit changes
         run: |
           git config --global user.name "ZigRazor"
           git config --global user.email "zigrazor@gmail.com"
           git add docs
           git commit -m "Updated Doxygen Documentation"
-          
+
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.PERSONAL_TOKEN }}
           branch: documentation-update-${{ steps.buildnumber.outputs.build_number }}
-          
+
       - name: Create Pull Request
         uses: thomaseizinger/create-pull-request@1.1.0
         with:
