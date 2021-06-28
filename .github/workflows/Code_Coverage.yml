@@ -13,6 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     name: codecov-coverage-reporter
     steps:
+      - name: Install gtest manually
+        run: sudo apt-get install libgtest-dev
+    
       - name: Install tools manually
         run: sudo apt-get install lcov gcovr
     
