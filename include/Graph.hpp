@@ -466,7 +466,7 @@ namespace CXXGRAPH
 	private:
 		std::set<const Edge<T> *> edgeSet;
 		void addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge) const;
-		int writeToStandardFile(std::string OFileName) const;
+		int writeToStandardFile(std::string OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const;
 
 	public:
 		typedef enum E_OutputFormat
@@ -556,7 +556,7 @@ namespace CXXGRAPH
 		* @param OFileName The Output File Name
      	* @return 0 if all OK, else return a negative value
      	*/
-		int writeToFile(OutputFormat format = OutputFormat::STANDARD, std::string OFileName = "graph.csv", bool compress = false) const;
+		int writeToFile(OutputFormat format = OutputFormat::STANDARD, std::string OFileName = "graph.csv", bool compress = false, bool writeNodeFeat = false, bool writeEdgeWeight = false) const;
 
 		friend std::ostream &operator<<<>(std::ostream &os, const Graph<T> &graph);
 		friend std::ostream &operator<<<>(std::ostream &os, const AdjacencyMatrix<T> &adj);
@@ -634,14 +634,36 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	int Graph<T>::writeToStandardFile(std::string OFileName) const
+	int Graph<T>::writeToStandardFile(std::string OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
 	{
-		std::ofstream ofile;
-		ofile.open(OFileName);
-		auto printOut = [&ofile](const Edge<T> *e)
-		{ ofile << e->getId() << "," << e->getNodePair().first->getId() << "," << e->getNodePair().second->getId() << std::endl; };
-		std::for_each(edgeSet.cbegin(), edgeSet.cend(), printOut);
-		ofile.close();
+		std::ofstream ofileGraph;
+		ofileGraph.open(OFileName);
+		auto printOutGraph = [&ofileGraph](const Edge<T> *e)
+		{ ofileGraph << e->getId() << "," << e->getNodePair().first->getId() << "," << e->getNodePair().second->getId() << std::endl; };
+		std::for_each(edgeSet.cbegin(), edgeSet.cend(), printOutGraph);
+		ofileGraph.close();
+
+		if (writeNodeFeat)
+		{
+			std::ofstream ofileNodeFeat;
+			ofileNodeFeat.open("NodeFeat_" + OFileName);
+			auto printOutNodeFeat = [&ofileNodeFeat](const Node<T> *node)
+			{ ofileNodeFeat << node->getId() << "," << node->getData() << std::endl; };
+			auto nodeSet = getNodeSet();
+			std::for_each(nodeSet.cbegin(), nodeSet.cend(), printOutNodeFeat);
+			ofileNodeFeat.close();
+		}
+
+		if (writeEdgeWeight)
+		{
+			std::ofstream ofileEdgeWeight;
+			ofileEdgeWeight.open("EdgeWeight_" + OFileName);
+			auto printOutEdgeWeight = [&ofileEdgeWeight](const Edge<T> *e)
+			{ ofileEdgeWeight << e->getId() << "," << (e->isWeighted().has_value() && e->isWeighted().value() ? (dynamic_cast<const Weighted *>(e))->getWeight() : 0.0) << std::endl; };
+
+			std::for_each(edgeSet.cbegin(), edgeSet.cend(), printOutEdgeWeight);
+			ofileEdgeWeight.close();
+		}
 		return 0;
 	}
 
@@ -1030,11 +1052,11 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	int Graph<T>::writeToFile(OutputFormat format, std::string OFileName, bool compress) const
+	int Graph<T>::writeToFile(OutputFormat format, std::string OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
 	{
 		if (format == OutputFormat::STANDARD)
 		{
-			return writeToStandardFile(OFileName);
+			return writeToStandardFile(OFileName, compress, writeNodeFeat, writeEdgeWeight);
 		}
 		else
 		{
