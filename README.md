@@ -62,7 +62,7 @@ WORK IN PROGRESS
 
 ## Classes Explanation
 
-WORK IN PROGRESS
+The Classes Explanation can be found in the [Doxygen Documentation](https://rawcdn.githack.com/ZigRazor/CXXGraph/master/docs/html/index.html), in the [Classes Section](https://rawcdn.githack.com/ZigRazor/CXXGraph/master/docs/html/classes.html)
 
 ## Requirements
 The minimun C++ standard required is **C++17** and a G++ compiler version greater than 7.3.0.
