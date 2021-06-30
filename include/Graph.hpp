@@ -553,7 +553,10 @@ namespace CXXGRAPH
      	* This function write the graph in an output file
      	*
 		* @param format The Output format of the file
-		* @param OFileName The Output File Name
+		* @param OFileName The Output File Name ( )
+		* @param compress Indicates if the output will be compressed
+		* @param writeNodeFeat Indicates if export also Node Features
+		* @param writeEdgeWeight Indicates if export also Edge Weights
      	* @return 0 if all OK, else return a negative value
      	*/
 		int writeToFile(OutputFormat format = OutputFormat::STANDARD, std::string OFileName = "graph.csv", bool compress = false, bool writeNodeFeat = false, bool writeEdgeWeight = false) const;
