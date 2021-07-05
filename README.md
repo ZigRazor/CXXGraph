@@ -114,3 +114,5 @@ We are referenced by:
 ## Credits
 
 Thanks to the community of [TheAlgorithms](https://github.com/TheAlgorithms) for some algorithm ispiration.
+
+![](https://github.com/ZigRazor/CXXGraph/blob/master/Icon2.png)
