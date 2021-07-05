@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">CXXGraph
-   &#160;<span id="projectnumber">0.0.6</span>
+   &#160;<span id="projectnumber">0.0.9</span>
    </div>
    <div id="projectbrief">CXXGraph is a small library, header only, that manages the Graph and it&#39;s algorithm in C++</div>
   </td>
@@ -79,14 +79,16 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a0f2d1afdee26c9919056a523af5f0b0d"><td class="memItemLeft" align="right" valign="top"><a id="a0f2d1afdee26c9919056a523af5f0b0d"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>E_OutputFormat</b> { <b>STANDARD</b>
+<tr class="memitem:af40584c5cd15ce35ad36a736b3429c71"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71">E_InputOutputFormat</a> { <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71a12e3f194ab31b8c22b5789dda8d4645c">STANDARD_CSV</a>
 , <b>OUT_1</b>
 , <b>OUT_2</b>
  }</td></tr>
-<tr class="separator:a0f2d1afdee26c9919056a523af5f0b0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d32cda32af8e71f05d532093f3f6f12"><td class="memItemLeft" align="right" valign="top"><a id="a9d32cda32af8e71f05d532093f3f6f12"></a>
-typedef enum CXXGRAPH::Graph::E_OutputFormat&#160;</td><td class="memItemRight" valign="bottom"><b>OutputFormat</b></td></tr>
-<tr class="separator:a9d32cda32af8e71f05d532093f3f6f12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:af40584c5cd15ce35ad36a736b3429c71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the Input/Output format of the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">Graph</a> for Import/Export functions.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71">More...</a><br /></td></tr>
+<tr class="separator:af40584c5cd15ce35ad36a736b3429c71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41742703923f919470b2ca1496b124d6"><td class="memItemLeft" align="right" valign="top"><a id="a41742703923f919470b2ca1496b124d6"></a>
+typedef enum <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71">CXXGRAPH::Graph::E_InputOutputFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a41742703923f919470b2ca1496b124d6">InputOutputFormat</a></td></tr>
+<tr class="memdesc:a41742703923f919470b2ca1496b124d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the Input/Output format of the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">Graph</a> for Import/Export functions. <br /></td></tr>
+<tr class="separator:a41742703923f919470b2ca1496b124d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -132,9 +134,9 @@ const AdjacencyMatrix&lt; T &gt;&#160;</td><td class="memItemRight" valign="bott
 <tr class="memitem:a30f4e26af431457ff30c15804888e318"><td class="memItemLeft" align="right" valign="top">const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a30f4e26af431457ff30c15804888e318">isDirectedGraph</a> () const</td></tr>
 <tr class="memdesc:a30f4e26af431457ff30c15804888e318"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function checks if a graph is directed.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a30f4e26af431457ff30c15804888e318">More...</a><br /></td></tr>
 <tr class="separator:a30f4e26af431457ff30c15804888e318"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee3c26cd7be1503096b6728756d5a971"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#aee3c26cd7be1503096b6728756d5a971">writeToFile</a> (OutputFormat format=OutputFormat::STANDARD, std::string OFileName=&quot;graph.csv&quot;, bool compress=false, bool writeNodeFeat=false, bool writeEdgeWeight=false) const</td></tr>
-<tr class="memdesc:aee3c26cd7be1503096b6728756d5a971"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function write the graph in an output file.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#aee3c26cd7be1503096b6728756d5a971">More...</a><br /></td></tr>
-<tr class="separator:aee3c26cd7be1503096b6728756d5a971"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a1ffeb9ef3b62b38c10bd84b44170a0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a5a1ffeb9ef3b62b38c10bd84b44170a0">writeToFile</a> (<a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a41742703923f919470b2ca1496b124d6">InputOutputFormat</a> format=InputOutputFormat::STANDARD_CSV, const std::string &amp;workingDir=&quot;.&quot;, const std::string &amp;OFileName=&quot;graph&quot;, bool compress=false, bool writeNodeFeat=false, bool writeEdgeWeight=false) const</td></tr>
+<tr class="memdesc:a5a1ffeb9ef3b62b38c10bd84b44170a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function write the graph in an output file.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a5a1ffeb9ef3b62b38c10bd84b44170a0">More...</a><br /></td></tr>
+<tr class="separator:a5a1ffeb9ef3b62b38c10bd84b44170a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -145,6 +147,29 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;os, const AdjacencyMatrix&lt; T &gt; &amp;adj)</td></tr>
 <tr class="separator:a35626ad6a1edaf1309a82bcdd9ab4ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="af40584c5cd15ce35ad36a736b3429c71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af40584c5cd15ce35ad36a736b3429c71">&#9670;&nbsp;</a></span>E_InputOutputFormat</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71">CXXGRAPH::Graph::E_InputOutputFormat</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Specify the Input/Output format of the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">Graph</a> for Import/Export functions. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af40584c5cd15ce35ad36a736b3429c71a12e3f194ab31b8c22b5789dda8d4645c"></a>STANDARD_CSV&#160;</td><td class="fielddoc"><p>A standard csv format. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="ae94a68dc57331c26070c3aec035264ef"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae94a68dc57331c26070c3aec035264ef">&#9670;&nbsp;</a></span>breadth_first_search()</h2>
@@ -301,8 +326,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="aee3c26cd7be1503096b6728756d5a971"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee3c26cd7be1503096b6728756d5a971">&#9670;&nbsp;</a></span>writeToFile()</h2>
+<a id="a5a1ffeb9ef3b62b38c10bd84b44170a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a1ffeb9ef3b62b38c10bd84b44170a0">&#9670;&nbsp;</a></span>writeToFile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -312,14 +337,20 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">int <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">CXXGRAPH::Graph</a>&lt; T &gt;::writeToFile </td>
           <td>(</td>
-          <td class="paramtype">OutputFormat&#160;</td>
-          <td class="paramname"><em>format</em> = <code>OutputFormat::STANDARD</code>, </td>
+          <td class="paramtype"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a41742703923f919470b2ca1496b124d6">InputOutputFormat</a>&#160;</td>
+          <td class="paramname"><em>format</em> = <code>InputOutputFormat::STANDARD_CSV</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>OFileName</em> = <code>&quot;graph.csv&quot;</code>, </td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>workingDir</em> = <code>&quot;.&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>OFileName</em> = <code>&quot;graph&quot;</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -351,6 +382,7 @@ template&lt;typename T &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">format</td><td>The Output format of the file </td></tr>
+    <tr><td class="paramname">workingDir</td><td>The path to the directory in which will be placed the output file </td></tr>
     <tr><td class="paramname">OFileName</td><td>The Output File Name ( ) </td></tr>
     <tr><td class="paramname">compress</td><td>Indicates if the output will be compressed </td></tr>
     <tr><td class="paramname">writeNodeFeat</td><td>Indicates if export also <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a> Features </td></tr>
