@@ -24,8 +24,8 @@ TEST(RWOutputTest, test_1)
     int res = graph.writeToFile();
     ASSERT_EQ(res, 0);
     ASSERT_TRUE(exists_test("graph.csv"));
-    ASSERT_FALSE(exists_test("NodeFeat_graph.csv"));
-    ASSERT_FALSE(exists_test("EdgeWeight_graph.csv"));
+    ASSERT_FALSE(exists_test("graph_NodeFeat.csv"));
+    ASSERT_FALSE(exists_test("graph_EdgeWeight.csv"));
 }
 
 TEST(RWOutputTest, test_2)
@@ -45,8 +45,8 @@ TEST(RWOutputTest, test_2)
     int res = graph.writeToFile(CXXGRAPH::Graph<int>::InputOutputFormat::STANDARD_CSV);
     ASSERT_EQ(res, 0);
     ASSERT_TRUE(exists_test("graph.csv"));
-    ASSERT_FALSE(exists_test("NodeFeat_graph.csv"));
-    ASSERT_FALSE(exists_test("EdgeWeight_graph.csv"));
+    ASSERT_FALSE(exists_test("graph_NodeFeat.csv"));
+    ASSERT_FALSE(exists_test("graph_EdgeWeight.csv"));
 }
 
 TEST(RWOutputTest, test_3)
@@ -66,8 +66,8 @@ TEST(RWOutputTest, test_3)
     int res = graph.writeToFile(CXXGRAPH::Graph<int>::InputOutputFormat::STANDARD_CSV, ".", "test_3");
     ASSERT_EQ(res, 0);
     ASSERT_TRUE(exists_test("test_3.csv"));
-    ASSERT_FALSE(exists_test("NodeFeat_test_3.csv"));
-    ASSERT_FALSE(exists_test("EdgeWeight_test_3.csv"));
+    ASSERT_FALSE(exists_test("test_3_NodeFeat.csv"));
+    ASSERT_FALSE(exists_test("test_3_EdgeWeight.csv"));
 }
 
 TEST(RWOutputTest, test_4)
@@ -84,8 +84,8 @@ TEST(RWOutputTest, test_4)
     int res = graph.writeToFile(CXXGRAPH::Graph<int>::InputOutputFormat::OUT_1, "test_4");
     ASSERT_EQ(res, -1);
     ASSERT_FALSE(exists_test("test_4.csv"));
-    ASSERT_FALSE(exists_test("NodeFeat_test_4.csv"));
-    ASSERT_FALSE(exists_test("EdgeWeight_test_4.csv"));
+    ASSERT_FALSE(exists_test("test_4_NodeFeat.csv"));
+    ASSERT_FALSE(exists_test("test_4_EdgeWeight.csv"));
 }
 
 TEST(RWOutputTest, test_5)
@@ -102,8 +102,8 @@ TEST(RWOutputTest, test_5)
     int res = graph.writeToFile(CXXGRAPH::Graph<int>::InputOutputFormat::STANDARD_CSV, ".", "test_5", false, true, true);
     ASSERT_EQ(res, 0);
     ASSERT_TRUE(exists_test("test_5.csv"));
-    ASSERT_TRUE(exists_test("NodeFeat_test_5.csv"));
-    ASSERT_TRUE(exists_test("EdgeWeight_test_5.csv"));
+    ASSERT_TRUE(exists_test("test_5_NodeFeat.csv"));
+    ASSERT_TRUE(exists_test("test_5_EdgeWeight.csv"));
 }
 
 TEST(RWOutputTest, test_6)
@@ -120,8 +120,8 @@ TEST(RWOutputTest, test_6)
     int res = graph.writeToFile(CXXGRAPH::Graph<int>::InputOutputFormat::STANDARD_CSV, ".", "test_6", false, false, true);
     ASSERT_EQ(res, 0);
     ASSERT_TRUE(exists_test("test_6.csv"));
-    ASSERT_FALSE(exists_test("NodeFeat_test_6.csv"));
-    ASSERT_TRUE(exists_test("EdgeWeight_test_6.csv"));
+    ASSERT_FALSE(exists_test("test_6_NodeFeat.csv"));
+    ASSERT_TRUE(exists_test("test_6_EdgeWeight.csv"));
 }
 
 TEST(RWOutputTest, test_7)
@@ -138,6 +138,6 @@ TEST(RWOutputTest, test_7)
     int res = graph.writeToFile(CXXGRAPH::Graph<int>::InputOutputFormat::STANDARD_CSV, ".", "test_7", false, true, false);
     ASSERT_EQ(res, 0);
     ASSERT_TRUE(exists_test("test_7.csv"));
-    ASSERT_TRUE(exists_test("NodeFeat_test_7.csv"));
-    ASSERT_FALSE(exists_test("EdgeWeight_test_7.csv"));
+    ASSERT_TRUE(exists_test("test_7_NodeFeat.csv"));
+    ASSERT_FALSE(exists_test("test_7_EdgeWeight.csv"));
 }
