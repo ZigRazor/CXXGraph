@@ -42,7 +42,7 @@ TEST(RWOutputTest, test_2)
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
-    int res = graph.writeToFile(CXXGRAPH::Graph<int>::OutputFormat::STANDARD);
+    int res = graph.writeToFile(CXXGRAPH::Graph<int>::InputOutputFormat::STANDARD_CSV);
     ASSERT_EQ(res, 0);
     ASSERT_TRUE(exists_test("graph.csv"));
     ASSERT_FALSE(exists_test("NodeFeat_graph.csv"));
@@ -63,7 +63,7 @@ TEST(RWOutputTest, test_3)
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
-    int res = graph.writeToFile(CXXGRAPH::Graph<int>::OutputFormat::STANDARD, "test_3.csv");
+    int res = graph.writeToFile(CXXGRAPH::Graph<int>::InputOutputFormat::STANDARD_CSV, ".", "test_3");
     ASSERT_EQ(res, 0);
     ASSERT_TRUE(exists_test("test_3.csv"));
     ASSERT_FALSE(exists_test("NodeFeat_test_3.csv"));
@@ -81,7 +81,7 @@ TEST(RWOutputTest, test_4)
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
-    int res = graph.writeToFile(CXXGRAPH::Graph<int>::OutputFormat::OUT_1, "test_4.csv");
+    int res = graph.writeToFile(CXXGRAPH::Graph<int>::InputOutputFormat::OUT_1, "test_4");
     ASSERT_EQ(res, -1);
     ASSERT_FALSE(exists_test("test_4.csv"));
     ASSERT_FALSE(exists_test("NodeFeat_test_4.csv"));
@@ -99,7 +99,7 @@ TEST(RWOutputTest, test_5)
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
-    int res = graph.writeToFile(CXXGRAPH::Graph<int>::OutputFormat::STANDARD, "test_5.csv", false, true, true);
+    int res = graph.writeToFile(CXXGRAPH::Graph<int>::InputOutputFormat::STANDARD_CSV, ".", "test_5", false, true, true);
     ASSERT_EQ(res, 0);
     ASSERT_TRUE(exists_test("test_5.csv"));
     ASSERT_TRUE(exists_test("NodeFeat_test_5.csv"));
@@ -117,7 +117,7 @@ TEST(RWOutputTest, test_6)
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
-    int res = graph.writeToFile(CXXGRAPH::Graph<int>::OutputFormat::STANDARD, "test_6.csv", false, false, true);
+    int res = graph.writeToFile(CXXGRAPH::Graph<int>::InputOutputFormat::STANDARD_CSV, ".", "test_6", false, false, true);
     ASSERT_EQ(res, 0);
     ASSERT_TRUE(exists_test("test_6.csv"));
     ASSERT_FALSE(exists_test("NodeFeat_test_6.csv"));
@@ -135,7 +135,7 @@ TEST(RWOutputTest, test_7)
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
-    int res = graph.writeToFile(CXXGRAPH::Graph<int>::OutputFormat::STANDARD, "test_7.csv", false, true, false);
+    int res = graph.writeToFile(CXXGRAPH::Graph<int>::InputOutputFormat::STANDARD_CSV, ".", "test_7", false, true, false);
     ASSERT_EQ(res, 0);
     ASSERT_TRUE(exists_test("test_7.csv"));
     ASSERT_TRUE(exists_test("NodeFeat_test_7.csv"));

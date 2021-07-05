@@ -466,15 +466,16 @@ namespace CXXGRAPH
 	private:
 		std::set<const Edge<T> *> edgeSet;
 		void addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge) const;
-		int writeToStandardFile(std::string OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const;
+		int writeToStandardFile_csv(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const;
 
 	public:
-		typedef enum E_OutputFormat
+		/// Specify the Input/Output format of the Graph for Import/Export functions
+		typedef enum E_InputOutputFormat
 		{
-			STANDARD,
+			STANDARD_CSV, ///< A standard csv format
 			OUT_1,
 			OUT_2
-		} OutputFormat;
+		} InputOutputFormat;
 
 		Graph() = default;
 		Graph(const std::set<const Edge<T> *> &edgeSet);
@@ -553,13 +554,14 @@ namespace CXXGRAPH
      	* This function write the graph in an output file
      	*
 		* @param format The Output format of the file
+		* @param workingDir The path to the directory in which will be placed the output file
 		* @param OFileName The Output File Name ( )
 		* @param compress Indicates if the output will be compressed
 		* @param writeNodeFeat Indicates if export also Node Features
 		* @param writeEdgeWeight Indicates if export also Edge Weights
      	* @return 0 if all OK, else return a negative value
      	*/
-		int writeToFile(OutputFormat format = OutputFormat::STANDARD, std::string OFileName = "graph.csv", bool compress = false, bool writeNodeFeat = false, bool writeEdgeWeight = false) const;
+		int writeToFile(InputOutputFormat format = InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool writeNodeFeat = false, bool writeEdgeWeight = false) const;
 
 		friend std::ostream &operator<<<>(std::ostream &os, const Graph<T> &graph);
 		friend std::ostream &operator<<<>(std::ostream &os, const AdjacencyMatrix<T> &adj);
@@ -637,10 +639,11 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	int Graph<T>::writeToStandardFile(std::string OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
+	int Graph<T>::writeToStandardFile_csv(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
 	{
 		std::ofstream ofileGraph;
-		ofileGraph.open(OFileName);
+		std::string completePathToFileGraph = workingDir + "/" + OFileName + ".csv";
+		ofileGraph.open(completePathToFileGraph);
 		auto printOutGraph = [&ofileGraph](const Edge<T> *e)
 		{ ofileGraph << e->getId() << "," << e->getNodePair().first->getId() << "," << e->getNodePair().second->getId() << std::endl; };
 		std::for_each(edgeSet.cbegin(), edgeSet.cend(), printOutGraph);
@@ -649,7 +652,9 @@ namespace CXXGRAPH
 		if (writeNodeFeat)
 		{
 			std::ofstream ofileNodeFeat;
-			ofileNodeFeat.open("NodeFeat_" + OFileName);
+			std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat"
+																					".csv";
+			ofileNodeFeat.open(completePathToFileNodeFeat);
 			auto printOutNodeFeat = [&ofileNodeFeat](const Node<T> *node)
 			{ ofileNodeFeat << node->getId() << "," << node->getData() << std::endl; };
 			auto nodeSet = getNodeSet();
@@ -660,7 +665,9 @@ namespace CXXGRAPH
 		if (writeEdgeWeight)
 		{
 			std::ofstream ofileEdgeWeight;
-			ofileEdgeWeight.open("EdgeWeight_" + OFileName);
+			std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight"
+																					  ".csv";
+			ofileEdgeWeight.open(completePathToFileEdgeWeight);
 			auto printOutEdgeWeight = [&ofileEdgeWeight](const Edge<T> *e)
 			{ ofileEdgeWeight << e->getId() << "," << (e->isWeighted().has_value() && e->isWeighted().value() ? (dynamic_cast<const Weighted *>(e))->getWeight() : 0.0) << std::endl; };
 
@@ -1055,11 +1062,11 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	int Graph<T>::writeToFile(OutputFormat format, std::string OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
+	int Graph<T>::writeToFile(InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
 	{
-		if (format == OutputFormat::STANDARD)
+		if (format == InputOutputFormat::STANDARD_CSV)
 		{
-			return writeToStandardFile(OFileName, compress, writeNodeFeat, writeEdgeWeight);
+			return writeToStandardFile_csv(workingDir, OFileName, compress, writeNodeFeat, writeEdgeWeight);
 		}
 		else
 		{
