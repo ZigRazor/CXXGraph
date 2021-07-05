@@ -530,7 +530,7 @@ namespace CXXGRAPH
      	*
      	* @return true if a cycle is detected, else false. ( false is returned also if the graph in indirected)
      	*/
-		const bool isCyclicDirectedGraphDFS() const;
+		bool isCyclicDirectedGraphDFS() const;
 
 		/**
 		* \brief
@@ -539,7 +539,7 @@ namespace CXXGRAPH
      	*
      	* @return true if a cycle is detected, else false. ( false is returned also if the graph in indirected)
      	*/
-		const bool isCyclicDirectedGraphBFS() const;
+		bool isCyclicDirectedGraphBFS() const;
 
 		/**
      	* \brief
@@ -547,7 +547,7 @@ namespace CXXGRAPH
      	*
      	* @return true if the graph is directed, else false.
      	*/
-		const bool isDirectedGraph() const;
+		bool isDirectedGraph() const;
 
 		/**
      	* \brief
@@ -887,7 +887,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	const bool Graph<T>::isCyclicDirectedGraphDFS() const
+	bool Graph<T>::isCyclicDirectedGraphDFS() const
 	{
 		if (!isDirectedGraph())
 		{
@@ -977,7 +977,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	const bool Graph<T>::isCyclicDirectedGraphBFS() const
+	bool Graph<T>::isCyclicDirectedGraphBFS() const
 	{
 		if (!isDirectedGraph())
 		{
@@ -1046,7 +1046,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	const bool Graph<T>::isDirectedGraph() const
+	bool Graph<T>::isDirectedGraph() const
 	{
 		auto edgeSet = this->getEdgeSet();
 		for (auto edge : edgeSet)
