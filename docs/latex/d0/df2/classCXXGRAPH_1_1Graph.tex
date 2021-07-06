@@ -14,23 +14,23 @@ typedef enum \mbox{\hyperlink{classCXXGRAPH_1_1Graph_af40584c5cd15ce35ad36a736b3
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a1db87f546b957d5552520a3cb661c4cf}\label{classCXXGRAPH_1_1Graph_a1db87f546b957d5552520a3cb661c4cf}} 
-{\bfseries Graph} (const std\+::set$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ \&edge\+Set)
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a49433844912894835ea1142fd90abfb1}\label{classCXXGRAPH_1_1Graph_a49433844912894835ea1142fd90abfb1}} 
+{\bfseries Graph} (const std\+::list$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ \&edge\+Set)
 \item 
-\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_aab76c55b7e0f63129ad8f549430387b9}\label{classCXXGRAPH_1_1Graph_aab76c55b7e0f63129ad8f549430387b9}} 
-const std\+::set$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ \& {\bfseries get\+Edge\+Set} () const
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a1d00ee150e0876b4edb10616e052021a}\label{classCXXGRAPH_1_1Graph_a1d00ee150e0876b4edb10616e052021a}} 
+const std\+::list$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ \& {\bfseries get\+Edge\+Set} () const
 \item 
-\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_af011cceec7b31f78e720d2560802fdc3}\label{classCXXGRAPH_1_1Graph_af011cceec7b31f78e720d2560802fdc3}} 
-void {\bfseries set\+Edge\+Set} (std\+::set$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ \&edge\+Set)
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_af2cd256d3638bf15ea926b6da6bc6097}\label{classCXXGRAPH_1_1Graph_af2cd256d3638bf15ea926b6da6bc6097}} 
+void {\bfseries set\+Edge\+Set} (std\+::list$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ \&edge\+Set)
 \item 
-\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a2514dfb744504071b750c81cc9e27ade}\label{classCXXGRAPH_1_1Graph_a2514dfb744504071b750c81cc9e27ade}} 
-void {\bfseries add\+Edge} (const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ \&edge)
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a95fc676b51609323126e1d6f2366c4bb}\label{classCXXGRAPH_1_1Graph_a95fc676b51609323126e1d6f2366c4bb}} 
+void {\bfseries add\+Edge} (const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$edge)
 \item 
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a4fe93321484d4144d3ff7db0ef33707c}\label{classCXXGRAPH_1_1Graph_a4fe93321484d4144d3ff7db0ef33707c}} 
 void {\bfseries remove\+Edge} (unsigned long edge\+Id)
 \item 
-\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_af0544d74b956980e05e2a57a5dc2d2d6}\label{classCXXGRAPH_1_1Graph_af0544d74b956980e05e2a57a5dc2d2d6}} 
-const std\+::set$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $\ast$ $>$ {\bfseries get\+Node\+Set} () const
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_ae68cf3b1eb04907935c032755bd81004}\label{classCXXGRAPH_1_1Graph_ae68cf3b1eb04907935c032755bd81004}} 
+const std\+::list$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $\ast$ $>$ {\bfseries get\+Node\+Set} () const
 \item 
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a4671c249cc900ab644b9142e1deaa534}\label{classCXXGRAPH_1_1Graph_a4671c249cc900ab644b9142e1deaa534}} 
 const std\+::optional$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ {\bfseries get\+Edge} (unsigned long edge\+Id) const
@@ -44,13 +44,15 @@ const std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $
 \begin{DoxyCompactList}\small\item\em Function performs the breadth first search algorithm over the graph. \end{DoxyCompactList}\item 
 const std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a05d230bd6185b99b624227c4c82b7811}{depth\+\_\+first\+\_\+search}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&start) const
 \begin{DoxyCompactList}\small\item\em Function performs the depth first search algorithm over the graph. \end{DoxyCompactList}\item 
-const bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_af0170db81f17b37a05bda62f41017489}{is\+Cyclic\+Directed\+Graph\+DFS}} () const
+bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a91a818601c0df0e5abfbaf4da5918afa}{is\+Cyclic\+Directed\+Graph\+DFS}} () const
 \begin{DoxyCompactList}\small\item\em This function uses DFS to check for cycle in the graph. Pay Attention, this function work only with directed \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}. \end{DoxyCompactList}\item 
-const bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a735fab4931fb5b4dfba33fc97aa837dd}{is\+Cyclic\+Directed\+Graph\+BFS}} () const
+bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a4f76bb7230c1654dd6b1ec24d0291875}{is\+Cyclic\+Directed\+Graph\+BFS}} () const
 \begin{DoxyCompactList}\small\item\em This function uses BFS to check for cycle in the graph. Pay Attention, this function work only with directed \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}. \end{DoxyCompactList}\item 
-const bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a30f4e26af431457ff30c15804888e318}{is\+Directed\+Graph}} () const
+bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a5c7ddb5c91f3ab7456c8203a740f52c9}{is\+Directed\+Graph}} () const
 \begin{DoxyCompactList}\small\item\em This function checks if a graph is directed. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a5a1ffeb9ef3b62b38c10bd84b44170a0}{write\+To\+File}} (\mbox{\hyperlink{classCXXGRAPH_1_1Graph_a41742703923f919470b2ca1496b124d6}{Input\+Output\+Format}} format=Input\+Output\+Format\+::\+STANDARD\+\_\+\+CSV, const std\+::string \&working\+Dir=\char`\"{}.\char`\"{}, const std\+::string \&OFile\+Name=\char`\"{}graph\char`\"{}, bool compress=false, bool write\+Node\+Feat=false, bool write\+Edge\+Weight=false) const
+\begin{DoxyCompactList}\small\item\em This function write the graph in an output file. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classCXXGRAPH_1_1Graph_abd5baeb88c2b588c14383155fff4ec3e}{read\+From\+File}} (\mbox{\hyperlink{classCXXGRAPH_1_1Graph_a41742703923f919470b2ca1496b124d6}{Input\+Output\+Format}} format=Input\+Output\+Format\+::\+STANDARD\+\_\+\+CSV, const std\+::string \&working\+Dir=\char`\"{}.\char`\"{}, const std\+::string \&OFile\+Name=\char`\"{}graph\char`\"{}, bool compress=false, bool read\+Node\+Feat=false, bool read\+Edge\+Weight=false)
 \begin{DoxyCompactList}\small\item\em This function write the graph in an output file. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Friends}
 \begin{DoxyCompactItemize}
@@ -143,12 +145,12 @@ Function runs the dijkstra algorithm for some source node and target node in the
 \begin{DoxyReturn}{Returns}
 shortest distance if target is reachable from source else ERROR in case if target is not reachable from source or there is error in the computation. 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a735fab4931fb5b4dfba33fc97aa837dd}\label{classCXXGRAPH_1_1Graph_a735fab4931fb5b4dfba33fc97aa837dd}} 
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a4f76bb7230c1654dd6b1ec24d0291875}\label{classCXXGRAPH_1_1Graph_a4f76bb7230c1654dd6b1ec24d0291875}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!isCyclicDirectedGraphBFS@{isCyclicDirectedGraphBFS}}
 \index{isCyclicDirectedGraphBFS@{isCyclicDirectedGraphBFS}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{isCyclicDirectedGraphBFS()}{isCyclicDirectedGraphBFS()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-const bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::is\+Cyclic\+Directed\+Graph\+BFS}
+bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::is\+Cyclic\+Directed\+Graph\+BFS}
 
 
 
@@ -157,12 +159,12 @@ This function uses BFS to check for cycle in the graph. Pay Attention, this func
 \begin{DoxyReturn}{Returns}
 true if a cycle is detected, else false. ( false is returned also if the graph in indirected) 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_af0170db81f17b37a05bda62f41017489}\label{classCXXGRAPH_1_1Graph_af0170db81f17b37a05bda62f41017489}} 
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a91a818601c0df0e5abfbaf4da5918afa}\label{classCXXGRAPH_1_1Graph_a91a818601c0df0e5abfbaf4da5918afa}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!isCyclicDirectedGraphDFS@{isCyclicDirectedGraphDFS}}
 \index{isCyclicDirectedGraphDFS@{isCyclicDirectedGraphDFS}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{isCyclicDirectedGraphDFS()}{isCyclicDirectedGraphDFS()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-const bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::is\+Cyclic\+Directed\+Graph\+DFS}
+bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::is\+Cyclic\+Directed\+Graph\+DFS}
 
 
 
@@ -171,12 +173,12 @@ This function uses DFS to check for cycle in the graph. Pay Attention, this func
 \begin{DoxyReturn}{Returns}
 true if a cycle is detected, else false. ( false is returned also if the graph in indirected) 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a30f4e26af431457ff30c15804888e318}\label{classCXXGRAPH_1_1Graph_a30f4e26af431457ff30c15804888e318}} 
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a5c7ddb5c91f3ab7456c8203a740f52c9}\label{classCXXGRAPH_1_1Graph_a5c7ddb5c91f3ab7456c8203a740f52c9}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!isDirectedGraph@{isDirectedGraph}}
 \index{isDirectedGraph@{isDirectedGraph}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{isDirectedGraph()}{isDirectedGraph()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-const bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::is\+Directed\+Graph}
+bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::is\+Directed\+Graph}
 
 
 
@@ -184,6 +186,35 @@ This function checks if a graph is directed.
 
 \begin{DoxyReturn}{Returns}
 true if the graph is directed, else false. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_abd5baeb88c2b588c14383155fff4ec3e}\label{classCXXGRAPH_1_1Graph_abd5baeb88c2b588c14383155fff4ec3e}} 
+\index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!readFromFile@{readFromFile}}
+\index{readFromFile@{readFromFile}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{readFromFile()}{readFromFile()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::read\+From\+File (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCXXGRAPH_1_1Graph_a41742703923f919470b2ca1496b124d6}{Input\+Output\+Format}}}]{format = {\ttfamily InputOutputFormat\+:\+:STANDARD\+\_\+CSV},  }\item[{const std\+::string \&}]{working\+Dir = {\ttfamily \char`\"{}.\char`\"{}},  }\item[{const std\+::string \&}]{OFile\+Name = {\ttfamily \char`\"{}graph\char`\"{}},  }\item[{bool}]{compress = {\ttfamily false},  }\item[{bool}]{read\+Node\+Feat = {\ttfamily false},  }\item[{bool}]{read\+Edge\+Weight = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+This function write the graph in an output file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em format} & The Input format of the file \\
+\hline
+{\em working\+Dir} & The path to the directory in which is placed the Input file \\
+\hline
+{\em OFile\+Name} & The Input File Name ( ) \\
+\hline
+{\em compress} & Indicates if the Input is compressed \\
+\hline
+{\em write\+Node\+Feat} & Indicates if import also \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}} Features \\
+\hline
+{\em write\+Edge\+Weight} & Indicates if import also \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} Weights \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if all OK, else return a negative value 
 \end{DoxyReturn}
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a5a1ffeb9ef3b62b38c10bd84b44170a0}\label{classCXXGRAPH_1_1Graph_a5a1ffeb9ef3b62b38c10bd84b44170a0}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!writeToFile@{writeToFile}}
