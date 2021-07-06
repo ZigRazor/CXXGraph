@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['undirectededge_15',['UndirectedEdge',['../df/d71/classCXXGRAPH_1_1UndirectedEdge.html',1,'CXXGRAPH']]],
-  ['undirectedweightededge_16',['UndirectedWeightedEdge',['../d7/d24/classCXXGRAPH_1_1UndirectedWeightedEdge.html',1,'CXXGRAPH']]]
+  ['standard_5fcsv_15',['STANDARD_CSV',['../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71a12e3f194ab31b8c22b5789dda8d4645c',1,'CXXGRAPH::Graph']]]
 ];

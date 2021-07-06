@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['standard_5fcsv_14',['STANDARD_CSV',['../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71a12e3f194ab31b8c22b5789dda8d4645c',1,'CXXGRAPH::Graph']]]
+  ['readfromfile_14',['readFromFile',['../d0/df2/classCXXGRAPH_1_1Graph.html#abd5baeb88c2b588c14383155fff4ec3e',1,'CXXGRAPH::Graph']]]
 ];
