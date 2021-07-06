@@ -468,6 +468,7 @@ namespace CXXGRAPH
 		std::list<const Edge<T> *> edgeSet;
 		void addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge) const;
 		int writeToStandardFile_csv(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const;
+		int readFromStandardFile_csv(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight);
 
 	public:
 		/// Specify the Input/Output format of the Graph for Import/Export functions
@@ -483,7 +484,7 @@ namespace CXXGRAPH
 		~Graph() = default;
 		const std::list<const Edge<T> *> &getEdgeSet() const;
 		void setEdgeSet(std::list<const Edge<T> *> &edgeSet);
-		void addEdge(const Edge<T> &edge);
+		void addEdge(const Edge<T> *edge);
 		void removeEdge(unsigned long edgeId);
 		const std::list<const Node<T> *> getNodeSet() const;
 		const std::optional<const Edge<T> *> getEdge(unsigned long edgeId) const;
@@ -563,6 +564,19 @@ namespace CXXGRAPH
      	* @return 0 if all OK, else return a negative value
      	*/
 		int writeToFile(InputOutputFormat format = InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool writeNodeFeat = false, bool writeEdgeWeight = false) const;
+		/**
+     	* \brief
+     	* This function write the graph in an output file
+     	*
+		* @param format The Input format of the file
+		* @param workingDir The path to the directory in which is placed the Input file
+		* @param OFileName The Input File Name ( )
+		* @param compress Indicates if the Input is compressed
+		* @param writeNodeFeat Indicates if import also Node Features
+		* @param writeEdgeWeight Indicates if import also Edge Weights
+     	* @return 0 if all OK, else return a negative value
+     	*/
+		int readFromFile(InputOutputFormat format = InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool readNodeFeat = false, bool readEdgeWeight = false);
 
 		friend std::ostream &operator<<<>(std::ostream &os, const Graph<T> &graph);
 		friend std::ostream &operator<<<>(std::ostream &os, const AdjacencyMatrix<T> &adj);
@@ -573,7 +587,8 @@ namespace CXXGRAPH
 	{
 		for (auto edgeSetIt = edgeSet.begin(); edgeSetIt != edgeSet.end(); ++edgeSetIt)
 		{
-			if (std::find(this->edgeSet.begin(), this->edgeSet.end(), *edgeSetIt) == this->edgeSet.end())
+			if (std::find_if(this->edgeSet.begin(), this->edgeSet.end(), [edgeSetIt](const Edge<T> *edge)
+							 { return (*edge == **edgeSetIt); }) == this->edgeSet.end())
 			{
 				this->edgeSet.push_back(*edgeSetIt);
 			}
@@ -592,7 +607,8 @@ namespace CXXGRAPH
 		this->edgeSet.clear();
 		for (auto edgeSetIt = edgeSet.begin(); edgeSetIt != edgeSet.end(); ++edgeSetIt)
 		{
-			if (std::find(this->edgeSet.begin(), this->edgeSet.end(), *edgeSetIt) == this->edgeSet.end())
+			if (std::find_if(this->edgeSet.begin(), this->edgeSet.end(), [edgeSetIt](const Edge<T> *edge)
+							 { return (*edge == **edgeSetIt); }) == this->edgeSet.end())
 			{
 				this->edgeSet.push_back(*edgeSetIt);
 			}
@@ -600,11 +616,12 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	void Graph<T>::addEdge(const Edge<T> &edge)
+	void Graph<T>::addEdge(const Edge<T> *edge)
 	{
-		if (std::find(edgeSet.begin(), edgeSet.end(), &edge) == edgeSet.end())
+		if (std::find_if(edgeSet.begin(), edgeSet.end(), [edge](const Edge<T> *edge_a)
+						 { return (*edge == *edge_a); }) == edgeSet.end())
 		{
-			edgeSet.push_back(&edge);
+			edgeSet.push_back(edge);
 		}
 	}
 
@@ -624,11 +641,13 @@ namespace CXXGRAPH
 		std::list<const Node<T> *> nodeSet;
 		for (auto edge : edgeSet)
 		{
-			if (std::find(nodeSet.begin(), nodeSet.end(), edge->getNodePair().first) == nodeSet.end())
+			if (std::find_if(nodeSet.begin(), nodeSet.end(), [edge](const Node<T> *node)
+							 { return (*edge->getNodePair().first == *node); }) == nodeSet.end())
 			{
 				nodeSet.push_back(edge->getNodePair().first);
 			}
-			if (std::find(nodeSet.begin(), nodeSet.end(), edge->getNodePair().second) == nodeSet.end())
+			if (std::find_if(nodeSet.begin(), nodeSet.end(), [edge](const Node<T> *node)
+							 { return (*edge->getNodePair().second == *node); }) == nodeSet.end())
 			{
 				nodeSet.push_back(edge->getNodePair().second);
 			}
@@ -667,8 +686,13 @@ namespace CXXGRAPH
 		std::ofstream ofileGraph;
 		std::string completePathToFileGraph = workingDir + "/" + OFileName + ".csv";
 		ofileGraph.open(completePathToFileGraph);
+		if (!ofileGraph.is_open())
+		{
+			// ERROR File Not Open
+			return -1;
+		}
 		auto printOutGraph = [&ofileGraph](const Edge<T> *e)
-		{ ofileGraph << e->getId() << "," << e->getNodePair().first->getId() << "," << e->getNodePair().second->getId() << std::endl; };
+		{ ofileGraph << e->getId() << "," << e->getNodePair().first->getId() << "," << e->getNodePair().second->getId() << "," << ((e->isDirected().has_value() && e->isDirected().value()) ? 1 : 0) << std::endl; };
 		std::for_each(edgeSet.cbegin(), edgeSet.cend(), printOutGraph);
 		ofileGraph.close();
 
@@ -678,6 +702,11 @@ namespace CXXGRAPH
 			std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat"
 																					".csv";
 			ofileNodeFeat.open(completePathToFileNodeFeat);
+			if (!ofileNodeFeat.is_open())
+			{
+				// ERROR File Not Open
+				return -1;
+			}
 			auto printOutNodeFeat = [&ofileNodeFeat](const Node<T> *node)
 			{ ofileNodeFeat << node->getId() << "," << node->getData() << std::endl; };
 			auto nodeSet = getNodeSet();
@@ -691,12 +720,179 @@ namespace CXXGRAPH
 			std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight"
 																					  ".csv";
 			ofileEdgeWeight.open(completePathToFileEdgeWeight);
+			if (!ofileEdgeWeight.is_open())
+			{
+				// ERROR File Not Open
+				return -1;
+			}
 			auto printOutEdgeWeight = [&ofileEdgeWeight](const Edge<T> *e)
-			{ ofileEdgeWeight << e->getId() << "," << (e->isWeighted().has_value() && e->isWeighted().value() ? (dynamic_cast<const Weighted *>(e))->getWeight() : 0.0) << std::endl; };
+			{ ofileEdgeWeight << e->getId() << "," << (e->isWeighted().has_value() && e->isWeighted().value() ? (dynamic_cast<const Weighted *>(e))->getWeight() : 0.0) << "," << (e->isWeighted().has_value() && e->isWeighted().value() ? 1 : 0) << std::endl; };
 
 			std::for_each(edgeSet.cbegin(), edgeSet.cend(), printOutEdgeWeight);
 			ofileEdgeWeight.close();
 		}
+		return 0;
+	}
+
+	template <typename T>
+	int Graph<T>::readFromStandardFile_csv(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight)
+	{
+		std::ifstream ifileGraph;
+		std::ifstream ifileNodeFeat;
+		std::ifstream ifileEdgeWeight;
+		std::map<unsigned long, std::pair<unsigned long, unsigned long>> edgeMap;
+		std::map<unsigned long, bool> edgeDirectedMap;
+		std::map<unsigned long, T> nodeFeatMap;
+		std::map<unsigned long, double> edgeWeightMap;
+		std::string completePathToFileGraph = workingDir + "/" + OFileName + ".csv";
+		ifileGraph.open(completePathToFileGraph);
+		if (!ifileGraph.is_open())
+		{
+			// ERROR File Not Open
+			return -1;
+		}
+		for (;;)
+		{ /* loop continually */
+			char comma;
+			unsigned long edgeId;
+			unsigned long nodeId1;
+			unsigned long nodeId2;
+			bool directed;
+			ifileGraph >> edgeId >> comma >> nodeId1 >> comma >> nodeId2 >> comma >> directed;
+			edgeMap[edgeId] = std::pair<unsigned long, unsigned long>(nodeId1, nodeId2);
+			edgeDirectedMap[edgeId] = directed;
+			std::cout << "Edge Id : " << edgeId << std::endl;
+			std::cout << "map size : " << edgeMap.size() << std::endl;
+			if (ifileGraph.fail() || ifileGraph.eof())
+				break;
+			ifileGraph.ignore(128, '\n');
+		}
+		ifileGraph.close();
+
+		if (readNodeFeat)
+		{
+			std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat"
+																					".csv";
+			ifileNodeFeat.open(completePathToFileNodeFeat);
+			if (!ifileNodeFeat.is_open())
+			{
+				// ERROR File Not Open
+				return -1;
+			}
+			for (;;)
+			{ /* loop continually */
+				char comma;
+				unsigned long nodeId;
+				T nodeFeat;
+				ifileNodeFeat >> nodeId >> comma >> nodeFeat;
+				nodeFeatMap[nodeId] = nodeFeat;
+				if (ifileNodeFeat.fail() || ifileNodeFeat.eof())
+					break;
+				ifileNodeFeat.ignore(128, '\n');
+			}
+			ifileNodeFeat.close();
+		}
+
+		if (readEdgeWeight)
+		{
+
+			std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight"
+																					  ".csv";
+			ifileEdgeWeight.open(completePathToFileEdgeWeight);
+			if (!ifileEdgeWeight.is_open())
+			{
+				// ERROR File Not Open
+				return -1;
+			}
+			for (;;)
+			{ /* loop continually */
+				char comma;
+				unsigned long edgeId;
+				double weight;
+				bool weighted;
+				ifileEdgeWeight >> edgeId >> comma >> weight >> comma >> weighted;
+				if (weighted)
+				{
+					edgeWeightMap[edgeId] = weight;
+				}
+				if (ifileEdgeWeight.fail() || ifileEdgeWeight.eof())
+					break;
+				ifileEdgeWeight.ignore(128, '\n');
+			}
+			ifileEdgeWeight.close();
+		}
+		std::map<unsigned long, Node<T> *> nodeMap;
+		for (auto edgeIt = edgeMap.begin(); edgeIt != edgeMap.end(); ++edgeIt)
+		{
+			Node<T> *node1 = nullptr;
+			Node<T> *node2 = nullptr;
+			if (nodeMap.find(edgeIt->second.first) == nodeMap.end())
+			{
+				//Create new Node
+				T feat;
+				if (nodeFeatMap.find(edgeIt->second.first) != nodeFeatMap.end())
+				{
+					feat = nodeFeatMap.at(edgeIt->second.first);
+				}
+				node1 = new Node<T>(edgeIt->second.first, feat);
+				nodeMap[edgeIt->second.first] = node1;
+			}
+			else
+			{
+				node1 = nodeMap.at(edgeIt->second.first);
+			}
+			if (nodeMap.find(edgeIt->second.second) == nodeMap.end())
+			{
+				//Create new Node
+				T feat;
+				if (nodeFeatMap.find(edgeIt->second.second) != nodeFeatMap.end())
+				{
+					feat = nodeFeatMap.at(edgeIt->second.second);
+				}
+				node2 = new Node<T>(edgeIt->second.second, feat);
+				nodeMap[edgeIt->second.second] = node2;
+			}
+			else
+			{
+				node2 = nodeMap.at(edgeIt->second.second);
+			}
+
+			if (edgeWeightMap.find(edgeIt->first) != edgeWeightMap.end())
+			{
+				if (edgeDirectedMap.find(edgeIt->first) != edgeDirectedMap.end() && edgeDirectedMap.at(edgeIt->first))
+				{
+					auto edge = new DirectedWeightedEdge<T>(edgeIt->first, *node1, *node2, edgeWeightMap.at(edgeIt->first));
+					std::cout << "ADD Edge : " << *edge << std::endl;
+					addEdge(edge);
+					std::cout << "EdgeSet size : " << getEdgeSet().size() << std::endl;
+				}
+				else
+				{
+					auto edge = new UndirectedWeightedEdge<T>(edgeIt->first, *node1, *node2, edgeWeightMap.at(edgeIt->first));
+					std::cout << "ADD Edge : " << *edge << std::endl;
+					addEdge(edge);
+					std::cout << "EdgeSet size : " << getEdgeSet().size() << std::endl;
+				}
+			}
+			else
+			{
+				if (edgeDirectedMap.find(edgeIt->first) != edgeDirectedMap.end() && edgeDirectedMap.at(edgeIt->first))
+				{
+					auto edge = new DirectedEdge<T>(edgeIt->first, *node1, *node2);
+					std::cout << "ADD Edge : " << *edge << std::endl;
+					addEdge(edge);
+					std::cout << "EdgeSet size : " << getEdgeSet().size() << std::endl;
+				}
+				else
+				{
+					auto edge = new UndirectedEdge<T>(edgeIt->first, *node1, *node2);
+					std::cout << "ADD Edge : " << *edge << std::endl;
+					addEdge(edge);
+					std::cout << "EdgeSet size : " << getEdgeSet().size() << std::endl;
+				}
+			}
+		}
+
 		return 0;
 	}
 
@@ -1090,6 +1286,20 @@ namespace CXXGRAPH
 		if (format == InputOutputFormat::STANDARD_CSV)
 		{
 			return writeToStandardFile_csv(workingDir, OFileName, compress, writeNodeFeat, writeEdgeWeight);
+		}
+		else
+		{
+			//OUTPUT FORMAT NOT RECOGNIZED
+			return -1;
+		}
+	}
+
+	template <typename T>
+	int Graph<T>::readFromFile(InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight)
+	{
+		if (format == InputOutputFormat::STANDARD_CSV)
+		{
+			return readFromStandardFile_csv(workingDir, OFileName, compress, readNodeFeat, readEdgeWeight);
 		}
 		else
 		{
