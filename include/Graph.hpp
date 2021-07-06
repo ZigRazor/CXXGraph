@@ -9,6 +9,7 @@
 #include <optional>
 #include <iostream>
 #include <limits>
+#include <list>
 #include <queue>
 #include <string>
 #include <functional>
@@ -464,7 +465,7 @@ namespace CXXGRAPH
 	class Graph
 	{
 	private:
-		std::set<const Edge<T> *> edgeSet;
+		std::list<const Edge<T> *> edgeSet;
 		void addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge) const;
 		int writeToStandardFile_csv(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const;
 
@@ -478,13 +479,13 @@ namespace CXXGRAPH
 		} InputOutputFormat;
 
 		Graph() = default;
-		Graph(const std::set<const Edge<T> *> &edgeSet);
+		Graph(const std::list<const Edge<T> *> &edgeSet);
 		~Graph() = default;
-		const std::set<const Edge<T> *> &getEdgeSet() const;
-		void setEdgeSet(std::set<const Edge<T> *> &edgeSet);
+		const std::list<const Edge<T> *> &getEdgeSet() const;
+		void setEdgeSet(std::list<const Edge<T> *> &edgeSet);
 		void addEdge(const Edge<T> &edge);
 		void removeEdge(unsigned long edgeId);
-		const std::set<const Node<T> *> getNodeSet() const;
+		const std::list<const Node<T> *> getNodeSet() const;
 		const std::optional<const Edge<T> *> getEdge(unsigned long edgeId) const;
 		/*This function generate a list of adjacency matrix with every element of the matrix
 		* contain the node where is directed the link and the Edge corrispondent to the link
@@ -568,27 +569,43 @@ namespace CXXGRAPH
 	};
 
 	template <typename T>
-	Graph<T>::Graph(const std::set<const Edge<T> *> &edgeSet)
+	Graph<T>::Graph(const std::list<const Edge<T> *> &edgeSet)
 	{
-		this->edgeSet = edgeSet;
+		for (auto edgeSetIt = edgeSet.begin(); edgeSetIt != edgeSet.end(); ++edgeSetIt)
+		{
+			if (std::find(this->edgeSet.begin(), this->edgeSet.end(), *edgeSetIt) == this->edgeSet.end())
+			{
+				this->edgeSet.push_back(*edgeSetIt);
+			}
+		}
 	}
 
 	template <typename T>
-	const std::set<const Edge<T> *> &Graph<T>::getEdgeSet() const
+	const std::list<const Edge<T> *> &Graph<T>::getEdgeSet() const
 	{
 		return edgeSet;
 	}
 
 	template <typename T>
-	void Graph<T>::setEdgeSet(std::set<const Edge<T> *> &edgeSet)
+	void Graph<T>::setEdgeSet(std::list<const Edge<T> *> &edgeSet)
 	{
-		this->edgeSet = edgeSet;
+		this->edgeSet.clear();
+		for (auto edgeSetIt = edgeSet.begin(); edgeSetIt != edgeSet.end(); ++edgeSetIt)
+		{
+			if (std::find(this->edgeSet.begin(), this->edgeSet.end(), *edgeSetIt) == this->edgeSet.end())
+			{
+				this->edgeSet.push_back(*edgeSetIt);
+			}
+		}
 	}
 
 	template <typename T>
 	void Graph<T>::addEdge(const Edge<T> &edge)
 	{
-		edgeSet.insert(&edge);
+		if (std::find(edgeSet.begin(), edgeSet.end(), &edge) == edgeSet.end())
+		{
+			edgeSet.push_back(&edge);
+		}
 	}
 
 	template <typename T>
@@ -602,13 +619,19 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	const std::set<const Node<T> *> Graph<T>::getNodeSet() const
+	const std::list<const Node<T> *> Graph<T>::getNodeSet() const
 	{
-		std::set<const Node<T> *> nodeSet;
+		std::list<const Node<T> *> nodeSet;
 		for (auto edge : edgeSet)
 		{
-			nodeSet.insert(edge->getNodePair().first);
-			nodeSet.insert(edge->getNodePair().second);
+			if (std::find(nodeSet.begin(), nodeSet.end(), edge->getNodePair().first) == nodeSet.end())
+			{
+				nodeSet.push_back(edge->getNodePair().first);
+			}
+			if (std::find(nodeSet.begin(), nodeSet.end(), edge->getNodePair().second) == nodeSet.end())
+			{
+				nodeSet.push_back(edge->getNodePair().second);
+			}
 		}
 		return nodeSet;
 	}
@@ -712,13 +735,13 @@ namespace CXXGRAPH
 		result.errorMessage = "";
 		result.result = INF_DOUBLE;
 		auto nodeSet = getNodeSet();
-		if (nodeSet.find(&source) == nodeSet.end())
+		if (std::find(nodeSet.begin(), nodeSet.end(), &source) == nodeSet.end())
 		{
 			// check if source node exist in the graph
 			result.errorMessage = ERR_DIJ_SOURCE_NODE_NOT_IN_GRAPH;
 			return result;
 		}
-		if (nodeSet.find(&target) == nodeSet.end())
+		if (std::find(nodeSet.begin(), nodeSet.end(), &target) == nodeSet.end())
 		{
 			// check if target node exist in the graph
 			result.errorMessage = ERR_DIJ_TARGET_NODE_NOT_IN_GRAPH;
@@ -821,7 +844,7 @@ namespace CXXGRAPH
 		std::vector<Node<T>> visited;
 		auto nodeSet = getNodeSet();
 		//check is exist node in the graph
-		if (nodeSet.find(&start) == nodeSet.end())
+		if (std::find(nodeSet.begin(), nodeSet.end(), &start) == nodeSet.end())
 		{
 			return visited;
 		}
@@ -861,7 +884,7 @@ namespace CXXGRAPH
 		std::vector<Node<T>> visited;
 		auto nodeSet = getNodeSet();
 		//check is exist node in the graph
-		if (nodeSet.find(&start) == nodeSet.end())
+		if (std::find(nodeSet.begin(), nodeSet.end(), &start) == nodeSet.end())
 		{
 			return visited;
 		}
