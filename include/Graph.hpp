@@ -471,6 +471,7 @@ namespace CXXGRAPH
 		int readFromStandardFile_csv(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight);
 		int writeToStandardFile_tsv(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const;
 		int readFromStandardFile_tsv(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight);
+		void recreateGraphFromReadFiles(std::map<unsigned long, std::pair<unsigned long, unsigned long>> &edgeMap, std::map<unsigned long, bool> &edgeDirectedMap, std::map<unsigned long, T> &nodeFeatMap, std::map<unsigned long, double> &edgeWeightMap);
 
 	public:
 		/// Specify the Input/Output format of the Graph for Import/Export functions
@@ -820,70 +821,7 @@ namespace CXXGRAPH
 			}
 			ifileEdgeWeight.close();
 		}
-		std::map<unsigned long, Node<T> *> nodeMap;
-		for (auto edgeIt = edgeMap.begin(); edgeIt != edgeMap.end(); ++edgeIt)
-		{
-			Node<T> *node1 = nullptr;
-			Node<T> *node2 = nullptr;
-			if (nodeMap.find(edgeIt->second.first) == nodeMap.end())
-			{
-				//Create new Node
-				T feat;
-				if (nodeFeatMap.find(edgeIt->second.first) != nodeFeatMap.end())
-				{
-					feat = nodeFeatMap.at(edgeIt->second.first);
-				}
-				node1 = new Node<T>(edgeIt->second.first, feat);
-				nodeMap[edgeIt->second.first] = node1;
-			}
-			else
-			{
-				node1 = nodeMap.at(edgeIt->second.first);
-			}
-			if (nodeMap.find(edgeIt->second.second) == nodeMap.end())
-			{
-				//Create new Node
-				T feat;
-				if (nodeFeatMap.find(edgeIt->second.second) != nodeFeatMap.end())
-				{
-					feat = nodeFeatMap.at(edgeIt->second.second);
-				}
-				node2 = new Node<T>(edgeIt->second.second, feat);
-				nodeMap[edgeIt->second.second] = node2;
-			}
-			else
-			{
-				node2 = nodeMap.at(edgeIt->second.second);
-			}
-
-			if (edgeWeightMap.find(edgeIt->first) != edgeWeightMap.end())
-			{
-				if (edgeDirectedMap.find(edgeIt->first) != edgeDirectedMap.end() && edgeDirectedMap.at(edgeIt->first))
-				{
-					auto edge = new DirectedWeightedEdge<T>(edgeIt->first, *node1, *node2, edgeWeightMap.at(edgeIt->first));
-					addEdge(edge);
-				}
-				else
-				{
-					auto edge = new UndirectedWeightedEdge<T>(edgeIt->first, *node1, *node2, edgeWeightMap.at(edgeIt->first));
-					addEdge(edge);
-				}
-			}
-			else
-			{
-				if (edgeDirectedMap.find(edgeIt->first) != edgeDirectedMap.end() && edgeDirectedMap.at(edgeIt->first))
-				{
-					auto edge = new DirectedEdge<T>(edgeIt->first, *node1, *node2);
-					addEdge(edge);
-				}
-				else
-				{
-					auto edge = new UndirectedEdge<T>(edgeIt->first, *node1, *node2);
-					addEdge(edge);
-				}
-			}
-		}
-
+		recreateGraphFromReadFiles(edgeMap, edgeDirectedMap, nodeFeatMap, edgeWeightMap);
 		return 0;
 	}
 
@@ -958,7 +896,6 @@ namespace CXXGRAPH
 			// ERROR File Not Open
 			return -1;
 		}
-		char tab;
 		for (;;)
 		{ /* loop continually */
 			unsigned long edgeId;
@@ -966,7 +903,6 @@ namespace CXXGRAPH
 			unsigned long nodeId2;
 			bool directed;
 			ifileGraph >> edgeId >> std::ws >> nodeId1 >> std::ws >> nodeId2 >> std::ws >> directed;
-			std::cout << edgeId << nodeId1 << nodeId2 << directed << std::endl;
 			edgeMap[edgeId] = std::pair<unsigned long, unsigned long>(nodeId1, nodeId2);
 			edgeDirectedMap[edgeId] = directed;
 			if (ifileGraph.fail() || ifileGraph.eof())
@@ -1025,6 +961,13 @@ namespace CXXGRAPH
 			}
 			ifileEdgeWeight.close();
 		}
+		recreateGraphFromReadFiles(edgeMap, edgeDirectedMap, nodeFeatMap, edgeWeightMap);
+		return 0;
+	}
+
+	template <typename T>
+	void Graph<T>::recreateGraphFromReadFiles(std::map<unsigned long, std::pair<unsigned long, unsigned long>> &edgeMap, std::map<unsigned long, bool> &edgeDirectedMap, std::map<unsigned long, T> &nodeFeatMap, std::map<unsigned long, double> &edgeWeightMap)
+	{
 		std::map<unsigned long, Node<T> *> nodeMap;
 		for (auto edgeIt = edgeMap.begin(); edgeIt != edgeMap.end(); ++edgeIt)
 		{
@@ -1088,8 +1031,6 @@ namespace CXXGRAPH
 				}
 			}
 		}
-
-		return 0;
 	}
 
 	template <typename T>
