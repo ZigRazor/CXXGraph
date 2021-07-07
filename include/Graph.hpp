@@ -1453,6 +1453,59 @@ namespace CXXGRAPH
 		}
 	}
 
+	template <typename T>
+	class Partition : public Graph<T>
+	{
+	public:
+		Partition();
+		Partition(unsigned int partitionId);
+		Partition(const std::list<const Edge<T> *> &edgeSet);
+		Partition(unsigned int partitionId, const std::list<const Edge<T> *> &edgeSet);
+		~Partition() = default;
+
+		unsigned int getPartitionId() const;
+		void setPartitionId(unsigned int partitionId);
+
+	private:
+		unsigned int partitionId;
+	};
+
+	template <typename T>
+	Partition<T>::Partition() : Graph<T>()
+	{
+		partitionId = 0;
+	}
+
+	template <typename T>
+	Partition<T>::Partition(unsigned int partitionId) : Graph<T>()
+	{
+		this->partitionId = partitionId;
+	}
+
+	template <typename T>
+	Partition<T>::Partition(const std::list<const Edge<T> *> &edgeSet) : Graph<T>(edgeSet)
+	{
+		partitionId = 0;
+	}
+
+	template <typename T>
+	Partition<T>::Partition(unsigned int partitionId, const std::list<const Edge<T> *> &edgeSet) : Graph<T>(edgeSet)
+	{
+		this->partitionId = partitionId;
+	}
+
+	template <typename T>
+	unsigned int Partition<T>::getPartitionId() const
+	{
+		return partitionId;
+	}
+
+	template <typename T>
+	void Partition<T>::setPartitionId(unsigned int partitionId)
+	{
+		this->partitionId = partitionId;
+	}
+
 	//ostream overload
 	template <typename T>
 	std::ostream &operator<<(std::ostream &os, const Node<T> &node)
