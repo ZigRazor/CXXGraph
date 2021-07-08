@@ -486,6 +486,7 @@ namespace CXXGRAPH
 			OUT_2
 		} InputOutputFormat;
 
+		/// Specify the Partition Algorithm
 		typedef enum E_PartitionAlgorithm
 		{
 			GREEDY_VC, ///< A Greedy Vertex-Cut Algorithm
@@ -502,7 +503,8 @@ namespace CXXGRAPH
 		void removeEdge(unsigned long edgeId);
 		const std::list<const Node<T> *> getNodeSet() const;
 		const std::optional<const Edge<T> *> getEdge(unsigned long edgeId) const;
-		/*This function generate a list of adjacency matrix with every element of the matrix
+		/**
+		* @brief This function generate a list of adjacency matrix with every element of the matrix
 		* contain the node where is directed the link and the Edge corrispondent to the link
 		*/
 		const AdjacencyMatrix<T> getAdjMatrix() const;
