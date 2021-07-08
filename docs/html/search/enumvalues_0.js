@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['standard_5fcsv_40',['STANDARD_CSV',['../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71a12e3f194ab31b8c22b5789dda8d4645c',1,'CXXGRAPH::Graph']]],
-  ['standard_5ftsv_41',['STANDARD_TSV',['../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71a28e4461e98949e163fe3ad5982065d76',1,'CXXGRAPH::Graph']]]
+  ['greedy_5fvc_47',['GREEDY_VC',['../d0/df2/classCXXGRAPH_1_1Graph.html#a1549d3208d57a922c72d0885894f1c32acc15214a985a3049a81a874878ffbabb',1,'CXXGRAPH::Graph']]]
 ];
