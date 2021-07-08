@@ -63,6 +63,18 @@ Applications of cycle detection include the use of wait-for graphs to detect dea
 
 WORK IN PROGRESS
 
+## Partition Algorithm Explanation
+
+### Vertex-Cut
+
+A vertex-cut partitioning divides edges of a graph into equal size partitions. The vertices that hold the endpoints of an edge are also placed in the same partition as the edge itself. However, the vertices are not unique across partitions and might have to be replicated (cut), due to the distribution of their edge across different partitions.
+
+Replication factor quantifies how many vertexes are replicated over computers compared with the the number of vertexes of the original input graph.
+
+#### Greedy Vertex-Cut
+This Algorithm is a simple vertex-cut in Round-Robin fashion.
+It takes the original graph edges and assign them to the partitions, dividing it in equal(or similar) size. This algorithm does not take care of optimization in vertex replication ( Replication Factor) but only balance the edge in the partitions. 
+
 ## Classes Explanation
 
 The Classes Explanation can be found in the [Doxygen Documentation](https://rawcdn.githack.com/ZigRazor/CXXGraph/master/docs/html/index.html), in the [Classes Section](https://rawcdn.githack.com/ZigRazor/CXXGraph/master/docs/html/classes.html)
