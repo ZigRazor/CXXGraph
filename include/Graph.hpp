@@ -462,6 +462,8 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
+	class Partition;
+	template <typename T>
 	class Graph
 	{
 	private:
@@ -472,6 +474,7 @@ namespace CXXGRAPH
 		int writeToStandardFile_tsv(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const;
 		int readFromStandardFile_tsv(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight);
 		void recreateGraphFromReadFiles(std::map<unsigned long, std::pair<unsigned long, unsigned long>> &edgeMap, std::map<unsigned long, bool> &edgeDirectedMap, std::map<unsigned long, T> &nodeFeatMap, std::map<unsigned long, double> &edgeWeightMap);
+		void greedyPartition(std::map<unsigned int, Partition<T> *> &partitionMap) const;
 
 	public:
 		/// Specify the Input/Output format of the Graph for Import/Export functions
@@ -482,6 +485,13 @@ namespace CXXGRAPH
 			OUT_1,
 			OUT_2
 		} InputOutputFormat;
+
+		typedef enum E_PartitionAlgorithm
+		{
+			GREEDY_VC, ///< A Greedy Vertex-Cut Algorithm
+			ALG_1,
+			ALG_2
+		} PartitionAlgorithm;
 
 		Graph() = default;
 		Graph(const std::list<const Edge<T> *> &edgeSet);
@@ -568,6 +578,7 @@ namespace CXXGRAPH
      	* @return 0 if all OK, else return a negative value
      	*/
 		int writeToFile(InputOutputFormat format = InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool writeNodeFeat = false, bool writeEdgeWeight = false) const;
+
 		/**
      	* \brief
      	* This function write the graph in an output file
@@ -581,6 +592,16 @@ namespace CXXGRAPH
      	* @return 0 if all OK, else return a negative value
      	*/
 		int readFromFile(InputOutputFormat format = InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool readNodeFeat = false, bool readEdgeWeight = false);
+
+		/**
+     	* \brief
+     	* This function partition a graph in a set of partitions
+     	*
+		* @param algorithm The partition algorithm
+		* @param numberOfPartition The number of partitions
+		* @return The partiton Map of the partitioned graph
+     	*/
+		std::map<unsigned int, Partition<T> *> partitionGraph(PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const;
 
 		friend std::ostream &operator<<<>(std::ostream &os, const Graph<T> &graph);
 		friend std::ostream &operator<<<>(std::ostream &os, const AdjacencyMatrix<T> &adj);
@@ -1034,6 +1055,25 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
+	void Graph<T>::greedyPartition(std::map<unsigned int, Partition<T> *> &partitionMap) const
+	{
+		unsigned int index = 0;
+		unsigned int numberOfPartitions = partitionMap.size();
+		if (index == numberOfPartitions)
+		{
+			//ERROR partion map of zero element
+			return;
+		}
+		auto edgeSet = getEdgeSet();
+		for (auto edge : edgeSet)
+		{
+			partitionMap.at(index)->addEdge(edge);
+			index++;
+			index = index % numberOfPartitions;
+		}
+	}
+
+	template <typename T>
 	const AdjacencyMatrix<T> Graph<T>::getAdjMatrix() const
 	{
 		AdjacencyMatrix<T> adj;
@@ -1451,6 +1491,26 @@ namespace CXXGRAPH
 			//OUTPUT FORMAT NOT RECOGNIZED
 			return -1;
 		}
+	}
+
+	template <typename T>
+	std::map<unsigned int, Partition<T> *> Graph<T>::partitionGraph(PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const
+	{
+		std::map<unsigned int, Partition<T> *> partitionMap;
+		for (unsigned int i = 0; i < numberOfPartitions; ++i)
+		{
+			partitionMap[i] = new Partition<T>(i);
+		}
+		if (algorithm == PartitionAlgorithm::GREEDY_VC)
+		{
+			greedyPartition(partitionMap);
+		}
+		else
+		{
+			//Error not recognized algorithm
+			partitionMap.clear();
+		}
+		return partitionMap;
 	}
 
 	template <typename T>
