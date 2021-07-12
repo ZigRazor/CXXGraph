@@ -165,4 +165,10 @@ We are referenced by:
 
 Thanks to the community of [TheAlgorithms](https://github.com/TheAlgorithms) for some algorithm ispiration.
 
+## We are Looking for...
+
+**We are looking for developers and committer**, also at *first experience*, we will guide you step by step to the open-source world!
+If you are interested, please contact us at zigrazor@gmail.com or contribute to this project. We are waiting for you!
+
+
 ![](https://github.com/ZigRazor/CXXGraph/blob/master/Icon2.png)
