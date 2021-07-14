@@ -62,12 +62,28 @@ namespace CXXGRAPH
 	template <typename T>
 	std::ostream &operator<<(std::ostream &o, const AdjacencyMatrix<T> &adj);
 
+	/// Struct that contains the information about Dijsktra's Algorithm results
 	typedef struct DijkstraResult_struct
 	{
 		bool success;			  // TRUE if the function does not return error, FALSE otherwise
 		std::string errorMessage; //message of error
 		double result;			  //result (valid only if success is TRUE)
 	} DijkstraResult;
+
+	/// Struct that contains the information about the partioning statistics
+	typedef struct PartioningStats_struct
+	{
+		unsigned int numberOfPartions;		  // The number of Partitions
+		unsigned int numberOfVertices;		  // The number of Vertices
+		unsigned int replicatedVerticesCount; // The number of Vertices that are replicated
+		unsigned int numberOfEdges;			  // The number of edges
+		unsigned int replicatedEdgesCount;	  // The number of edges that are replicated
+		unsigned int maxLoad;				  // Maximum load of the partitions
+		unsigned int minLoad;				  // Minimun load of the partitions
+		double balanceFactor;				  // The balance factor of the partitions (maxLoad - minLoad) / (maxLoad + minLoad), 0 is the optimal partitioning
+		double nodeReplicationFactor;		  // The replication factor of the nodes (replicatedVerticesCount / numberOfVertices), 1 is the optimal partitioning
+		double edgeReplicationFactor;		  // The replication factor of the nodes (replicatedEdgesCount / numberOfEdges), 1 is the optimal partitioning
+	} PartioningStats;
 
 	template <typename T>
 	class Node
