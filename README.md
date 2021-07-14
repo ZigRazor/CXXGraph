@@ -1,4 +1,5 @@
-![](https://github.com/ZigRazor/CXXGraph/blob/master/Icon.png)
+<img style="float: right;" align="left" src="https://github.com/ZigRazor/CXXGraph/blob/master/Icon.png">
+
 # CXXGraph
 
 <img src="https://img.shields.io/badge/c++%20-%2300599C.svg?&style=for-the-badge&logo=c%2B%2B&ogoColor=white"/> <img src="https://img.shields.io/badge/github%20-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white"/>
@@ -14,6 +15,39 @@
 [![Generic badge](https://img.shields.io/badge/Required-G++7.3.0-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/required-C++17-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Required-CMake3.9-Green.svg)](https://shields.io/)
 
 [![Generic badge](https://img.shields.io/badge/Build-Passed-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/UnitTest-Passed-Green.svg)](https://shields.io/)
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+## Table of Contents
+- [CXXGraph](#cxxgraph)
+  * [Table of Contents](#table-of-contents)
+  * [Introduction](#introduction)
+  * [Algorithm Explanation](#algorithm-explanation)
+      - [Dijkstra](#dijkstra)
+      - [BFS](#bfs)
+      - [DFS](#dfs)
+      - [Cycle Detection](#cycle-detection)
+  * [Partition Algorithm Explanation](#partition-algorithm-explanation)
+    + [Vertex-Cut](#vertex-cut)
+      - [Greedy Vertex-Cut](#greedy-vertex-cut)
+  * [Classes Explanation](#classes-explanation)
+  * [Requirements](#requirements)
+  * [How to use](#how-to-use)
+  * [Unit-Test Execution](#unit-test-execution)
+      - [How to Compile](#how-to-compile)
+    + [How to Run](#how-to-run)
+  * [Example](#example)
+  * [How to contribute](#how-to-contribute)
+  * [Site](#site)
+  * [Contact](#contact)
+  * [Support](#support)
+  * [References](#references)
+  * [Credits](#credits)
+  * [Contact](#contact)
+  * [Support](#support)
+  * [References](#references)
+  * [Credits](#credits)
 
 ## Introduction
 **CXXGraph** is a small library, header only, that manages the Graph and it's algorithm in **C++**
@@ -25,7 +59,8 @@
 **Dijkstra's Algorithm** is used to find the shortest path from a source node to all other reachable nodes in the graph. The algorithm initially assumes all the nodes are unreachable from the given source node so we mark the distances of all nodes as infinity.
 (infinity) from source node (INF / infinity denotes unable to reach).
 
-#### BFS (Breadth First Search)
+#### BFS 
+(Breadth First Search)
 [Breadth First Search Algorithm(Breadth First Search)](https://en.wikipedia.org/wiki/Breadth-first_search)
 **Breadth First Search**, also quoted as **BFS**, is a Graph Traversal Algorithm. Time Complexity O(|V| + |E|) where V are the number of vertices and E are the number of edges in the graph.
 Applications of Breadth First Search are :
@@ -37,7 +72,8 @@ Applications of Breadth First Search are :
  
   And there are many more...
 
-#### DFS (Depth First Search)
+#### DFS 
+(Depth First Search)
 [Depth First Search Algorithm (Depth First Search)](https://en.wikipedia.org/wiki/Depth-first_search)
 **Depth First Search**, also quoted as **DFS**, is a Graph Traversal Algorithm. Time Complexity O(|V| + |E|) where V is number of vertices and E is number of edges in graph.
 Application of Depth First Search are:
@@ -100,8 +136,10 @@ After the compilation, you can run the executable that is under the "build" dire
 ## Example
 Work in Progess
 
-## How to contribute [![GitHub contributors](https://img.shields.io/github/contributors/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/graphs/contributors/)
+## How to contribute 
+[![GitHub contributors](https://img.shields.io/github/contributors/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/graphs/contributors/)
 If you want give your support you can create a ***pull request***   [![GitHub pull-requests](https://img.shields.io/github/issues-pr/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/pull/) or report an ***issue***  [![GitHub issues](https://img.shields.io/github/issues/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/issues/).
+If you want to change the code, or fix issue, or implement a new feature please read our [CONTRIBUTING Guide](https://github.com/ZigRazor/CXXGraph/blob/master/CONTRIBUTING.md)
 
 ## Site
 
@@ -126,5 +164,11 @@ We are referenced by:
 ## Credits
 
 Thanks to the community of [TheAlgorithms](https://github.com/TheAlgorithms) for some algorithm ispiration.
+
+## We are Looking for...
+
+**We are looking for developers and committer**, also at *first experience*, we will guide you step by step to the open-source world!
+If you are interested, please contact us at zigrazor@gmail.com or contribute to this project. We are waiting for you!
+
 
 ![](https://github.com/ZigRazor/CXXGraph/blob/master/Icon2.png)
