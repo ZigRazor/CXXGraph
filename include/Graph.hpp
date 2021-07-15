@@ -39,8 +39,37 @@ namespace CXXGRAPH
 	class UndirectedWeightedEdge;
 	template <typename T>
 	class Graph;
+	template <typename T>
+	class Partition;
 
 	class Weighted;
+
+	/// Struct that contains the information about Dijsktra's Algorithm results
+	struct DijkstraResult_struct
+	{
+		bool success;			  // TRUE if the function does not return error, FALSE otherwise
+		std::string errorMessage; //message of error
+		double result;			  //result (valid only if success is TRUE)
+	};
+	typedef DijkstraResult_struct DijkstraResult;
+
+	/// Struct that contains the information about the partioning statistics
+	struct PartioningStats_struct
+	{
+		unsigned int numberOfPartions;		  // The number of Partitions
+		unsigned int numberOfVertices;		  // The number of Vertices
+		unsigned int replicatedVerticesCount; // The number of Vertices that are replicated
+		unsigned int numberOfEdges;			  // The number of edges
+		unsigned int replicatedEdgesCount;	  // The number of edges that are replicated
+		unsigned int maxLoad;				  // Maximum load of the partitions
+		unsigned int minLoad;				  // Minimun load of the partitions
+		double balanceFactor;				  // The balance factor of the partitions (maxLoad - minLoad) / (maxLoad + minLoad), 0 is the optimal partitioning
+		double verticesReplicationFactor;	  // The replication factor of the vertices (replicatedVerticesCount / numberOfVertices), 1 is the optimal partitioning
+		double edgesReplicationFactor;		  // The replication factor of the edges (replicatedEdgesCount / numberOfEdges), 1 is the optimal partitioning
+
+		friend std::ostream &operator<<(std::ostream &os, const PartioningStats_struct &partitionStats);
+	};
+	typedef PartioningStats_struct PartioningStats;
 
 	template <typename T>
 	using AdjacencyMatrix = std::map<const Node<T> *, std::vector<std::pair<const Node<T> *, const Edge<T> *>>>;
@@ -61,29 +90,10 @@ namespace CXXGRAPH
 	std::ostream &operator<<(std::ostream &o, const Graph<T> &graph);
 	template <typename T>
 	std::ostream &operator<<(std::ostream &o, const AdjacencyMatrix<T> &adj);
-
-	/// Struct that contains the information about Dijsktra's Algorithm results
-	typedef struct DijkstraResult_struct
-	{
-		bool success;			  // TRUE if the function does not return error, FALSE otherwise
-		std::string errorMessage; //message of error
-		double result;			  //result (valid only if success is TRUE)
-	} DijkstraResult;
-
-	/// Struct that contains the information about the partioning statistics
-	typedef struct PartioningStats_struct
-	{
-		unsigned int numberOfPartions;		  // The number of Partitions
-		unsigned int numberOfVertices;		  // The number of Vertices
-		unsigned int replicatedVerticesCount; // The number of Vertices that are replicated
-		unsigned int numberOfEdges;			  // The number of edges
-		unsigned int replicatedEdgesCount;	  // The number of edges that are replicated
-		unsigned int maxLoad;				  // Maximum load of the partitions
-		unsigned int minLoad;				  // Minimun load of the partitions
-		double balanceFactor;				  // The balance factor of the partitions (maxLoad - minLoad) / (maxLoad + minLoad), 0 is the optimal partitioning
-		double nodeReplicationFactor;		  // The replication factor of the nodes (replicatedVerticesCount / numberOfVertices), 1 is the optimal partitioning
-		double edgeReplicationFactor;		  // The replication factor of the nodes (replicatedEdgesCount / numberOfEdges), 1 is the optimal partitioning
-	} PartioningStats;
+	template <typename T>
+	std::ostream &operator<<(std::ostream &o, const PartioningStats &partitionStats);
+	template <typename T>
+	using PartitionMap = std::map<unsigned int, Partition<T> *>;
 
 	template <typename T>
 	class Node
@@ -490,7 +500,7 @@ namespace CXXGRAPH
 		int writeToStandardFile_tsv(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const;
 		int readFromStandardFile_tsv(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight);
 		void recreateGraphFromReadFiles(std::map<unsigned long, std::pair<unsigned long, unsigned long>> &edgeMap, std::map<unsigned long, bool> &edgeDirectedMap, std::map<unsigned long, T> &nodeFeatMap, std::map<unsigned long, double> &edgeWeightMap);
-		void greedyPartition(std::map<unsigned int, Partition<T> *> &partitionMap) const;
+		void greedyPartition(PartitionMap<T> &partitionMap) const;
 
 	public:
 		/// Specify the Input/Output format of the Graph for Import/Export functions
@@ -619,7 +629,7 @@ namespace CXXGRAPH
 		* @param numberOfPartition The number of partitions
 		* @return The partiton Map of the partitioned graph
      	*/
-		std::map<unsigned int, Partition<T> *> partitionGraph(PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const;
+		PartitionMap<T> partitionGraph(PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const;
 
 		friend std::ostream &operator<<<>(std::ostream &os, const Graph<T> &graph);
 		friend std::ostream &operator<<<>(std::ostream &os, const AdjacencyMatrix<T> &adj);
@@ -1073,7 +1083,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	void Graph<T>::greedyPartition(std::map<unsigned int, Partition<T> *> &partitionMap) const
+	void Graph<T>::greedyPartition(PartitionMap<T> &partitionMap) const
 	{
 		unsigned int index = 0;
 		unsigned int numberOfPartitions = partitionMap.size();
@@ -1512,9 +1522,9 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	std::map<unsigned int, Partition<T> *> Graph<T>::partitionGraph(PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const
+	PartitionMap<T> Graph<T>::partitionGraph(PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const
 	{
-		std::map<unsigned int, Partition<T> *> partitionMap;
+		PartitionMap<T> partitionMap;
 		for (unsigned int i = 0; i < numberOfPartitions; ++i)
 		{
 			partitionMap[i] = new Partition<T>(i);
@@ -1671,6 +1681,23 @@ namespace CXXGRAPH
 				os << "\n";
 			}
 		}
+		return os;
+	}
+
+	template <typename T>
+	std::ostream &operator<<(std::ostream &os, const PartioningStats &partitionStats)
+	{
+		os << "Partitioning Stats:\n";
+		os << "\tNumber of Partitions:" << partitionStats.numberOfPartions << "\n";
+		os << "\tNumber of Vertices: " << partitionStats.numberOfVertices << "\n";
+		os << "\tNumber of Edges: " << partitionStats.numberOfEdges << "\n";
+		os << "\tNumber of Vertices Replica: " << partitionStats.replicatedVerticesCount << "\n";
+		os << "\tNumber of Edges Replica: " << partitionStats.replicatedEdgesCount << "\n";
+		os << "\tVertices Replication Factor: " << partitionStats.verticesReplicationFactor << "\n";
+		os << "\tEdges Replication Factor: " << partitionStats.edgesReplicationFactor << "\n";
+		os << "\tMax Load: " << partitionStats.maxLoad << "\n";
+		os << "\tMin Load: " << partitionStats.minLoad << "\n";
+		os << "\tBalance Factor: " << partitionStats.balanceFactor << "\n";
 		return os;
 	}
 
