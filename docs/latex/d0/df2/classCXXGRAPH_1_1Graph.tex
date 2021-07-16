@@ -2,8 +2,7 @@
 \label{classCXXGRAPH_1_1Graph}\index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 
 
-Inheritance diagram for CXXGRAPH\+::Graph$<$ T $>$\+:
-\nopagebreak
+Inheritance diagram for CXXGRAPH\+::Graph$<$ T $>$\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -23,13 +22,13 @@ enum \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a1549d3208d57a922c72d0885894f1c32}{
 , {\bfseries ALG\+\_\+1}
 , {\bfseries ALG\+\_\+2}
  \}
-\item 
+\begin{DoxyCompactList}\small\item\em Specify the \mbox{\hyperlink{classCXXGRAPH_1_1Partition}{Partition}} Algorithm. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a41742703923f919470b2ca1496b124d6}\label{classCXXGRAPH_1_1Graph_a41742703923f919470b2ca1496b124d6}} 
 typedef enum \mbox{\hyperlink{classCXXGRAPH_1_1Graph_af40584c5cd15ce35ad36a736b3429c71}{CXXGRAPH\+::\+Graph\+::\+E\+\_\+\+Input\+Output\+Format}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a41742703923f919470b2ca1496b124d6}{Input\+Output\+Format}}
 \begin{DoxyCompactList}\small\item\em Specify the Input/\+Output format of the \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} for Import/\+Export functions. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a3df0188b5897ee4404982a27cd543485}\label{classCXXGRAPH_1_1Graph_a3df0188b5897ee4404982a27cd543485}} 
-typedef enum \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a1549d3208d57a922c72d0885894f1c32}{CXXGRAPH\+::\+Graph\+::\+E\+\_\+\+Partition\+Algorithm}} {\bfseries Partition\+Algorithm}
-\end{DoxyCompactItemize}
+typedef enum \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a1549d3208d57a922c72d0885894f1c32}{CXXGRAPH\+::\+Graph\+::\+E\+\_\+\+Partition\+Algorithm}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a3df0188b5897ee4404982a27cd543485}{Partition\+Algorithm}}
+\begin{DoxyCompactList}\small\item\em Specify the \mbox{\hyperlink{classCXXGRAPH_1_1Partition}{Partition}} Algorithm. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -55,8 +54,8 @@ const std\+::list$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $
 const std\+::optional$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ {\bfseries get\+Edge} (unsigned long edge\+Id) const
 \item 
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_ad000477b7a25ea7bfd1edf589133b042}\label{classCXXGRAPH_1_1Graph_ad000477b7a25ea7bfd1edf589133b042}} 
-const Adjacency\+Matrix$<$ T $>$ {\bfseries get\+Adj\+Matrix} () const
-\item 
+const Adjacency\+Matrix$<$ T $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph_ad000477b7a25ea7bfd1edf589133b042}{get\+Adj\+Matrix}} () const
+\begin{DoxyCompactList}\small\item\em This function generate a list of adjacency matrix with every element of the matrix contain the node where is directed the link and the \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} corrispondent to the link. \end{DoxyCompactList}\item 
 const \mbox{\hyperlink{structCXXGRAPH_1_1DijkstraResult__struct}{Dijkstra\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a8d655cd624cedf47ee366d8c0ab31921}{dijkstra}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&source, const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&target) const
 \begin{DoxyCompactList}\small\item\em Function runs the dijkstra algorithm for some source node and target node in the graph and returns the shortest distance of target from the source. \end{DoxyCompactList}\item 
 const std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph_ae94a68dc57331c26070c3aec035264ef}{breadth\+\_\+first\+\_\+search}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&start) const
@@ -73,7 +72,7 @@ int \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a5a1ffeb9ef3b62b38c10bd84b44170a0}{w
 \begin{DoxyCompactList}\small\item\em This function write the graph in an output file. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{classCXXGRAPH_1_1Graph_abd5baeb88c2b588c14383155fff4ec3e}{read\+From\+File}} (\mbox{\hyperlink{classCXXGRAPH_1_1Graph_a41742703923f919470b2ca1496b124d6}{Input\+Output\+Format}} format=Input\+Output\+Format\+::\+STANDARD\+\_\+\+CSV, const std\+::string \&working\+Dir=\char`\"{}.\char`\"{}, const std\+::string \&OFile\+Name=\char`\"{}graph\char`\"{}, bool compress=false, bool read\+Node\+Feat=false, bool read\+Edge\+Weight=false)
 \begin{DoxyCompactList}\small\item\em This function write the graph in an output file. \end{DoxyCompactList}\item 
-std\+::map$<$ unsigned int, \mbox{\hyperlink{classCXXGRAPH_1_1Partition}{Partition}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph_ac3f9c195dead42bd029b8c4cb9eb27a6}{partition\+Graph}} (Partition\+Algorithm algorithm, unsigned int number\+Of\+Partitions) const
+Partition\+Map$<$ T $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph_abb1d335334b510d037729719e8f579b6}{partition\+Graph}} (\mbox{\hyperlink{classCXXGRAPH_1_1Graph_a3df0188b5897ee4404982a27cd543485}{Partition\+Algorithm}} algorithm, unsigned int number\+Of\+Partitions) const
 \begin{DoxyCompactList}\small\item\em This function partition a graph in a set of partitions. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Friends}
 \begin{DoxyCompactItemize}
@@ -114,6 +113,10 @@ STANDARD\+\_\+\+TSV&A standard tsv format. \\
 \doxysubsubsection{\texorpdfstring{E\_PartitionAlgorithm}{E\_PartitionAlgorithm}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 enum \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a1549d3208d57a922c72d0885894f1c32}{CXXGRAPH\+::\+Graph\+::\+E\+\_\+\+Partition\+Algorithm}}}
+
+
+
+Specify the \mbox{\hyperlink{classCXXGRAPH_1_1Partition}{Partition}} Algorithm. 
 
 \begin{DoxyEnumFields}{Enumerator}
 \raisebox{\heightof{T}}[0pt][0pt]{\index{GREEDY\_VC@{GREEDY\_VC}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}\index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!GREEDY\_VC@{GREEDY\_VC}}}\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a1549d3208d57a922c72d0885894f1c32acc15214a985a3049a81a874878ffbabb}\label{classCXXGRAPH_1_1Graph_a1549d3208d57a922c72d0885894f1c32acc15214a985a3049a81a874878ffbabb}} 
@@ -225,12 +228,12 @@ This function checks if a graph is directed.
 \begin{DoxyReturn}{Returns}
 true if the graph is directed, else false. 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_ac3f9c195dead42bd029b8c4cb9eb27a6}\label{classCXXGRAPH_1_1Graph_ac3f9c195dead42bd029b8c4cb9eb27a6}} 
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_abb1d335334b510d037729719e8f579b6}\label{classCXXGRAPH_1_1Graph_abb1d335334b510d037729719e8f579b6}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!partitionGraph@{partitionGraph}}
 \index{partitionGraph@{partitionGraph}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{partitionGraph()}{partitionGraph()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-std\+::map$<$ unsigned int, \mbox{\hyperlink{classCXXGRAPH_1_1Partition}{Partition}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::partition\+Graph (\begin{DoxyParamCaption}\item[{Partition\+Algorithm}]{algorithm,  }\item[{unsigned int}]{number\+Of\+Partitions }\end{DoxyParamCaption}) const}
+Partition\+Map$<$ T $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::partition\+Graph (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCXXGRAPH_1_1Graph_a3df0188b5897ee4404982a27cd543485}{Partition\+Algorithm}}}]{algorithm,  }\item[{unsigned int}]{number\+Of\+Partitions }\end{DoxyParamCaption}) const}
 
 
 

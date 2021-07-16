@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['writetofile_43',['writeToFile',['../d0/df2/classCXXGRAPH_1_1Graph.html#a5a1ffeb9ef3b62b38c10bd84b44170a0',1,'CXXGRAPH::Graph']]]
+  ['readfromfile_50',['readFromFile',['../d0/df2/classCXXGRAPH_1_1Graph.html#abd5baeb88c2b588c14383155fff4ec3e',1,'CXXGRAPH::Graph']]]
 ];
