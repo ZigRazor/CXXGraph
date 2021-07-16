@@ -21,33 +21,31 @@
 <br/><br/>
 ## Table of Contents
 - [CXXGraph](#cxxgraph)
-  * [Table of Contents](#table-of-contents)
-  * [Introduction](#introduction)
-  * [Algorithm Explanation](#algorithm-explanation)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Algorithm Explanation](#algorithm-explanation)
       - [Dijkstra](#dijkstra)
+      - [Dial](#dial)
       - [BFS](#bfs)
       - [DFS](#dfs)
       - [Cycle Detection](#cycle-detection)
-  * [Partition Algorithm Explanation](#partition-algorithm-explanation)
-    + [Vertex-Cut](#vertex-cut)
+  - [Partition Algorithm Explanation](#partition-algorithm-explanation)
+    - [Vertex-Cut](#vertex-cut)
       - [Greedy Vertex-Cut](#greedy-vertex-cut)
-  * [Classes Explanation](#classes-explanation)
-  * [Requirements](#requirements)
-  * [How to use](#how-to-use)
-  * [Unit-Test Execution](#unit-test-execution)
+  - [Classes Explanation](#classes-explanation)
+  - [Requirements](#requirements)
+  - [How to use](#how-to-use)
+  - [Unit-Test Execution](#unit-test-execution)
       - [How to Compile](#how-to-compile)
-    + [How to Run](#how-to-run)
-  * [Example](#example)
-  * [How to contribute](#how-to-contribute)
-  * [Site](#site)
-  * [Contact](#contact)
-  * [Support](#support)
-  * [References](#references)
-  * [Credits](#credits)
-  * [Contact](#contact)
-  * [Support](#support)
-  * [References](#references)
-  * [Credits](#credits)
+    - [How to Run](#how-to-run)
+  - [Example](#example)
+  - [How to contribute](#how-to-contribute)
+  - [Site](#site)
+  - [Contact](#contact)
+  - [Support](#support)
+  - [References](#references)
+  - [Credits](#credits)
+  - [We are Looking for...](#we-are-looking-for)
 
 ## Introduction
 **CXXGraph** is a small library, header only, that manages the Graph and it's algorithm in **C++**
@@ -59,7 +57,27 @@
 **Dijkstra's Algorithm** is used to find the shortest path from a source node to all other reachable nodes in the graph. The algorithm initially assumes all the nodes are unreachable from the given source node so we mark the distances of all nodes as infinity.
 (infinity) from source node (INF / infinity denotes unable to reach).
 
-#### BFS 
+#### Dial
+Dial specialization of dijkstra’s algorithm.
+
+When arc weights are small integers (bounded by a parameter {\displaystyle C}C), specialized queues which take advantage of this fact can be used to speed up Dijkstra's algorithm. The first algorithm of this type was Dial's algorithm (Dial 1969) for graphs with positive integer edge weights, which uses a bucket queue to obtain a running time {\displaystyle O(|E|+|V|C)}{\displaystyle O(|E|+|V|C)}. The use of a Van Emde Boas tree as the priority queue brings the complexity to {\displaystyle O(|E|\log \log C)}{\displaystyle O(|E|\log \log C)} (Ahuja et al. 1990). Another interesting variant based on a combination of a new radix heap and the well-known Fibonacci heap runs in time {\displaystyle O(|E|+|V|{\sqrt {\log C}})}{\displaystyle O(|E|+|V|{\sqrt {\log C}})} (Ahuja et al. 1990). Finally, the best algorithms in this special case are as follows. The algorithm given by (Thorup 2000) runs in {\displaystyle O(|E|\log \log |V|)}O(|E|\log \log |V|) time and the algorithm given by (Raman 1997) runs in {\displaystyle O(|E|+|V|\min\{(\log |V|)^{1/3+\varepsilon },(\log C)^{1/4+\varepsilon }\})}{\displaystyle O(|E|+|V|\min\{(\log |V|)^{1/3+\varepsilon },(\log C)^{1/4+\varepsilon }\})} time. ([source wikipedia](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Specialized_variants))
+
+Below is complete algorithm:
+ 1. Maintains some buckets, numbered 0, 1, 2,…,wV.
+ 2. Bucket k contains all temporarily labeled nodes with distance equal to k.
+ 3. Nodes in each bucket are represented by list of vertices.
+ 4. Buckets 0, 1, 2,..wV are checked sequentially until the first non-empty bucket is found. Each node contained in the first non-empty bucket has the minimum distance label by definition.
+ 5. One by one, these nodes with minimum distance label are permanently labeled and deleted from the bucket during the scanning process.
+ 6. Thus operations involving vertex include:
+    - Checking if a bucket is empty
+    - Adding a vertex to a bucket
+    - Deleting a vertex from a bucket.
+ 7. The position of a temporarily labeled vertex in the buckets is updated accordingly when the distance label of a vertex changes.
+ 8. Process repeated until all vertices are permanently labeled (or distances of all vertices are finalized).
+
+At this [link](https://ocw.mit.edu/courses/sloan-school-of-management/15-082j-network-optimization-fall-2010/animations/MIT15_082JF10_av07.pdf) you can find a step-by-step illustrations.
+
+#### BFS
 (Breadth First Search)
 [Breadth First Search Algorithm(Breadth First Search)](https://en.wikipedia.org/wiki/Breadth-first_search)
 **Breadth First Search**, also quoted as **BFS**, is a Graph Traversal Algorithm. Time Complexity O(|V| + |E|) where V are the number of vertices and E are the number of edges in the graph.
@@ -69,10 +87,10 @@ Applications of Breadth First Search are :
  2. Ford-Fulkerson Method for computing the maximum flow in a flow network.
  3. Testing bipartiteness of a graph.
  4. Cheney's Algorithm, Copying garbage collection.
- 
+
   And there are many more...
 
-#### DFS 
+#### DFS
 (Depth First Search)
 [Depth First Search Algorithm (Depth First Search)](https://en.wikipedia.org/wiki/Depth-first_search)
 **Depth First Search**, also quoted as **DFS**, is a Graph Traversal Algorithm. Time Complexity O(|V| + |E|) where V is number of vertices and E is number of edges in graph.
@@ -83,12 +101,12 @@ Application of Depth First Search are:
   4. Finding the bridges of a graph.
   5. Generating words in order to plot the limit set of a group.
   6. Finding strongly connected components.
- 
+
   And there are many more...
 
 #### Cycle Detection
 [Cycle (graph theory)](https://en.wikipedia.org/wiki/Cycle_(graph_theory))
-   
+
 The existence of a cycle in directed and undirected graphs can be determined by whether depth-first search (DFS) finds an edge that points to an ancestor of the current vertex (it contains a back edge). All the back edges which DFS skips over are part of cycles. In an undirected graph, the edge to the parent of a node should not be counted as a back edge, but finding any other already visited vertex will indicate a back edge. In the case of undirected graphs, only O(n) time is required to find a cycle in an n-vertex graph, since at most n − 1 edges can be tree edges.
 
 Many topological sorting algorithms will detect cycles too, since those are obstacles for topological order to exist. Also, if a directed graph has been divided into strongly connected components, cycles only exist within the components and not between them, since cycles are strongly connected.
@@ -109,7 +127,7 @@ Replication factor quantifies how many vertexes are replicated over computers co
 
 #### Greedy Vertex-Cut
 This Algorithm is a simple vertex-cut in Round-Robin fashion.
-It takes the original graph edges and assign them to the partitions, dividing it in equal(or similar) size. This algorithm does not take care of optimization in vertex replication ( Replication Factor) but only balance the edge in the partitions. 
+It takes the original graph edges and assign them to the partitions, dividing it in equal(or similar) size. This algorithm does not take care of optimization in vertex replication ( Replication Factor) but only balance the edge in the partitions.
 
 ## Classes Explanation
 
@@ -136,7 +154,7 @@ After the compilation, you can run the executable that is under the "build" dire
 ## Example
 Work in Progess
 
-## How to contribute 
+## How to contribute
 [![GitHub contributors](https://img.shields.io/github/contributors/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/graphs/contributors/)
 If you want give your support you can create a ***pull request***   [![GitHub pull-requests](https://img.shields.io/github/issues-pr/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/pull/) or report an ***issue***  [![GitHub issues](https://img.shields.io/github/issues/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/issues/).
 If you want to change the code, or fix issue, or implement a new feature please read our [CONTRIBUTING Guide](https://github.com/ZigRazor/CXXGraph/blob/master/CONTRIBUTING.md)
@@ -163,7 +181,8 @@ We are referenced by:
 
 ## Credits
 
-Thanks to the community of [TheAlgorithms](https://github.com/TheAlgorithms) for some algorithm ispiration.
+Thanks to the community of [TheAlgorithms](https://github.com/TheAlgorithms) for some algorithms ispiration.
+Thanks to [GeeksForGeeks](https://www.geeksforgeeks.org/) for some algorithms inspiration.
 
 ## We are Looking for...
 
