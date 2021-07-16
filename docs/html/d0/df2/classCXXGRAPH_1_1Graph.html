@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">CXXGraph
-   &#160;<span id="projectnumber">0.1.2</span>
+   &#160;<span id="projectnumber">0.1.3</span>
    </div>
    <div id="projectbrief">CXXGraph is a small library, header only, that manages the Graph and it&#39;s algorithm in C++</div>
   </td>
@@ -100,13 +100,15 @@ Public Types</h2></td></tr>
 , <b>ALG_1</b>
 , <b>ALG_2</b>
  }</td></tr>
+<tr class="memdesc:a1549d3208d57a922c72d0885894f1c32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the <a class="el" href="../../d4/d32/classCXXGRAPH_1_1Partition.html">Partition</a> Algorithm.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a1549d3208d57a922c72d0885894f1c32">More...</a><br /></td></tr>
 <tr class="separator:a1549d3208d57a922c72d0885894f1c32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41742703923f919470b2ca1496b124d6"><td class="memItemLeft" align="right" valign="top"><a id="a41742703923f919470b2ca1496b124d6"></a>
 typedef enum <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71">CXXGRAPH::Graph::E_InputOutputFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a41742703923f919470b2ca1496b124d6">InputOutputFormat</a></td></tr>
 <tr class="memdesc:a41742703923f919470b2ca1496b124d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the Input/Output format of the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">Graph</a> for Import/Export functions. <br /></td></tr>
 <tr class="separator:a41742703923f919470b2ca1496b124d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3df0188b5897ee4404982a27cd543485"><td class="memItemLeft" align="right" valign="top"><a id="a3df0188b5897ee4404982a27cd543485"></a>
-typedef enum <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a1549d3208d57a922c72d0885894f1c32">CXXGRAPH::Graph::E_PartitionAlgorithm</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PartitionAlgorithm</b></td></tr>
+typedef enum <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a1549d3208d57a922c72d0885894f1c32">CXXGRAPH::Graph::E_PartitionAlgorithm</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a3df0188b5897ee4404982a27cd543485">PartitionAlgorithm</a></td></tr>
+<tr class="memdesc:a3df0188b5897ee4404982a27cd543485"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the <a class="el" href="../../d4/d32/classCXXGRAPH_1_1Partition.html">Partition</a> Algorithm. <br /></td></tr>
 <tr class="separator:a3df0188b5897ee4404982a27cd543485"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -133,7 +135,8 @@ const std::list&lt; const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node
 const std::optional&lt; const <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>&lt; T &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getEdge</b> (unsigned long edgeId) const</td></tr>
 <tr class="separator:a4671c249cc900ab644b9142e1deaa534"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad000477b7a25ea7bfd1edf589133b042"><td class="memItemLeft" align="right" valign="top"><a id="ad000477b7a25ea7bfd1edf589133b042"></a>
-const AdjacencyMatrix&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getAdjMatrix</b> () const</td></tr>
+const AdjacencyMatrix&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#ad000477b7a25ea7bfd1edf589133b042">getAdjMatrix</a> () const</td></tr>
+<tr class="memdesc:ad000477b7a25ea7bfd1edf589133b042"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function generate a list of adjacency matrix with every element of the matrix contain the node where is directed the link and the <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> corrispondent to the link. <br /></td></tr>
 <tr class="separator:ad000477b7a25ea7bfd1edf589133b042"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d655cd624cedf47ee366d8c0ab31921"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="../../dd/d6c/structCXXGRAPH_1_1DijkstraResult__struct.html">DijkstraResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a8d655cd624cedf47ee366d8c0ab31921">dijkstra</a> (const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;source, const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;target) const</td></tr>
 <tr class="memdesc:a8d655cd624cedf47ee366d8c0ab31921"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function runs the dijkstra algorithm for some source node and target node in the graph and returns the shortest distance of target from the source.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a8d655cd624cedf47ee366d8c0ab31921">More...</a><br /></td></tr>
@@ -159,9 +162,9 @@ const AdjacencyMatrix&lt; T &gt;&#160;</td><td class="memItemRight" valign="bott
 <tr class="memitem:abd5baeb88c2b588c14383155fff4ec3e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#abd5baeb88c2b588c14383155fff4ec3e">readFromFile</a> (<a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a41742703923f919470b2ca1496b124d6">InputOutputFormat</a> format=InputOutputFormat::STANDARD_CSV, const std::string &amp;workingDir=&quot;.&quot;, const std::string &amp;OFileName=&quot;graph&quot;, bool compress=false, bool readNodeFeat=false, bool readEdgeWeight=false)</td></tr>
 <tr class="memdesc:abd5baeb88c2b588c14383155fff4ec3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function write the graph in an output file.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#abd5baeb88c2b588c14383155fff4ec3e">More...</a><br /></td></tr>
 <tr class="separator:abd5baeb88c2b588c14383155fff4ec3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3f9c195dead42bd029b8c4cb9eb27a6"><td class="memItemLeft" align="right" valign="top">std::map&lt; unsigned int, <a class="el" href="../../d4/d32/classCXXGRAPH_1_1Partition.html">Partition</a>&lt; T &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#ac3f9c195dead42bd029b8c4cb9eb27a6">partitionGraph</a> (PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const</td></tr>
-<tr class="memdesc:ac3f9c195dead42bd029b8c4cb9eb27a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function partition a graph in a set of partitions.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#ac3f9c195dead42bd029b8c4cb9eb27a6">More...</a><br /></td></tr>
-<tr class="separator:ac3f9c195dead42bd029b8c4cb9eb27a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb1d335334b510d037729719e8f579b6"><td class="memItemLeft" align="right" valign="top">PartitionMap&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#abb1d335334b510d037729719e8f579b6">partitionGraph</a> (<a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a3df0188b5897ee4404982a27cd543485">PartitionAlgorithm</a> algorithm, unsigned int numberOfPartitions) const</td></tr>
+<tr class="memdesc:abb1d335334b510d037729719e8f579b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function partition a graph in a set of partitions.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#abb1d335334b510d037729719e8f579b6">More...</a><br /></td></tr>
+<tr class="separator:abb1d335334b510d037729719e8f579b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -210,6 +213,8 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Specify the <a class="el" href="../../d4/d32/classCXXGRAPH_1_1Partition.html">Partition</a> Algorithm. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a1549d3208d57a922c72d0885894f1c32acc15214a985a3049a81a874878ffbabb"></a>GREEDY_VC&#160;</td><td class="fielddoc"><p>A Greedy Vertex-Cut Algorithm. </p>
 </td></tr>
@@ -373,8 +378,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ac3f9c195dead42bd029b8c4cb9eb27a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3f9c195dead42bd029b8c4cb9eb27a6">&#9670;&nbsp;</a></span>partitionGraph()</h2>
+<a id="abb1d335334b510d037729719e8f579b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb1d335334b510d037729719e8f579b6">&#9670;&nbsp;</a></span>partitionGraph()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -382,9 +387,9 @@ template&lt;typename T &gt; </div>
 template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::map&lt; unsigned int, <a class="el" href="../../d4/d32/classCXXGRAPH_1_1Partition.html">Partition</a>&lt; T &gt; * &gt; <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">CXXGRAPH::Graph</a>&lt; T &gt;::partitionGraph </td>
+          <td class="memname">PartitionMap&lt; T &gt; <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">CXXGRAPH::Graph</a>&lt; T &gt;::partitionGraph </td>
           <td>(</td>
-          <td class="paramtype">PartitionAlgorithm&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a3df0188b5897ee4404982a27cd543485">PartitionAlgorithm</a>&#160;</td>
           <td class="paramname"><em>algorithm</em>, </td>
         </tr>
         <tr>
