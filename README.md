@@ -183,6 +183,7 @@ We are referenced by:
 ## Credits
 
 Thanks to the community of [TheAlgorithms](https://github.com/TheAlgorithms) for some algorithms ispiration.
+
 Thanks to [GeeksForGeeks](https://www.geeksforgeeks.org/) for some algorithms inspiration.
 
 ## We are Looking for...
