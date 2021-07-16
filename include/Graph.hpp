@@ -14,6 +14,7 @@
 #include <string>
 #include <functional>
 #include <fstream>
+#include <limits.h>
 
 namespace CXXGRAPH
 {
@@ -53,23 +54,43 @@ namespace CXXGRAPH
 	};
 	typedef DijkstraResult_struct DijkstraResult;
 
-	/// Struct that contains the information about the partioning statistics
-	struct PartioningStats_struct
+	/// Struct that contains the information about the partitioning statistics
+	struct PartitioningStats_struct
 	{
-		unsigned int numberOfPartions;		  // The number of Partitions
-		unsigned int numberOfVertices;		  // The number of Vertices
-		unsigned int replicatedVerticesCount; // The number of Vertices that are replicated
-		unsigned int numberOfEdges;			  // The number of edges
-		unsigned int replicatedEdgesCount;	  // The number of edges that are replicated
-		unsigned int maxLoad;				  // Maximum load of the partitions
-		unsigned int minLoad;				  // Minimun load of the partitions
-		double balanceFactor;				  // The balance factor of the partitions (maxLoad - minLoad) / (maxLoad + minLoad), 0 is the optimal partitioning
-		double verticesReplicationFactor;	  // The replication factor of the vertices (replicatedVerticesCount / numberOfVertices), 1 is the optimal partitioning
-		double edgesReplicationFactor;		  // The replication factor of the edges (replicatedEdgesCount / numberOfEdges), 1 is the optimal partitioning
+		unsigned int numberOfPartitions;   // The number of Partitions
+		unsigned int numberOfNodes;		   // The number of Nodes
+		unsigned int replicatedNodesCount; // The number of Nodes that are replicated
+		unsigned int numberOfEdges;		   // The number of edges
+		unsigned int replicatedEdgesCount; // The number of edges that are replicated
+		unsigned int maxEdgesLoad;		   // Maximum edges load of the partitions
+		unsigned int minEdgesLoad;		   // Minimun edges load of the partitions
+		unsigned int maxNodesLoad;		   // Maximum nodes load of the partitions
+		unsigned int minNodesLoad;		   // Minimun nodes load of the partitions
+		double balanceEdgesFactor;		   // The balance edges factor of the partitions (maxEdgesLoad - minEdgesLoad) / (maxEdgesLoad), 0 is the optimal partitioning
+		double balanceNodesFactor;		   // The balance edges factor of the partitions (maxNodesLoad - minNodesLoad) / (maxNodesLoad), 0 is the optimal partitioning
+		double nodesReplicationFactor;	   // The replication factor of the Nodes (replicatedNodesCount / numberOfNodes), 1 is the optimal partitioning
+		double edgesReplicationFactor;	   // The replication factor of the edges (replicatedEdgesCount / numberOfEdges), 1 is the optimal partitioning
 
-		friend std::ostream &operator<<(std::ostream &os, const PartioningStats_struct &partitionStats);
+		friend std::ostream &operator<<(std::ostream &os, const PartitioningStats_struct &partitionStats)
+		{
+			os << "Partitioning Stats:\n";
+			os << "\tNumber of Partitions: " << partitionStats.numberOfPartitions << "\n";
+			os << "\tNumber of Nodes: " << partitionStats.numberOfNodes << "\n";
+			os << "\tNumber of Edges: " << partitionStats.numberOfEdges << "\n";
+			os << "\tNumber of Nodes Replica: " << partitionStats.replicatedNodesCount << "\n";
+			os << "\tNumber of Edges Replica: " << partitionStats.replicatedEdgesCount << "\n";
+			os << "\tNodes Replication Factor: " << partitionStats.nodesReplicationFactor << "\n";
+			os << "\tEdges Replication Factor: " << partitionStats.edgesReplicationFactor << "\n";
+			os << "\tMax Edges Load: " << partitionStats.maxEdgesLoad << "\n";
+			os << "\tMin Edges Load: " << partitionStats.minEdgesLoad << "\n";
+			os << "\tBalance Edges Factor: " << partitionStats.balanceEdgesFactor << "\n";
+			os << "\tMax Nodes Load: " << partitionStats.maxNodesLoad << "\n";
+			os << "\tMin Nodes Load: " << partitionStats.minNodesLoad << "\n";
+			os << "\tBalance Nodes Factor: " << partitionStats.balanceNodesFactor << "\n";
+			return os;
+		}
 	};
-	typedef PartioningStats_struct PartioningStats;
+	typedef PartitioningStats_struct PartitioningStats;
 
 	template <typename T>
 	using AdjacencyMatrix = std::map<const Node<T> *, std::vector<std::pair<const Node<T> *, const Edge<T> *>>>;
@@ -90,8 +111,6 @@ namespace CXXGRAPH
 	std::ostream &operator<<(std::ostream &o, const Graph<T> &graph);
 	template <typename T>
 	std::ostream &operator<<(std::ostream &o, const AdjacencyMatrix<T> &adj);
-	template <typename T>
-	std::ostream &operator<<(std::ostream &o, const PartioningStats &partitionStats);
 	template <typename T>
 	using PartitionMap = std::map<unsigned int, Partition<T> *>;
 
@@ -1089,7 +1108,7 @@ namespace CXXGRAPH
 		unsigned int numberOfPartitions = partitionMap.size();
 		if (index == numberOfPartitions)
 		{
-			//ERROR partion map of zero element
+			//ERROR partition map of zero element
 			return;
 		}
 		auto edgeSet = getEdgeSet();
@@ -1557,6 +1576,24 @@ namespace CXXGRAPH
 	private:
 		unsigned int partitionId;
 	};
+	template <typename T>
+	static PartitioningStats getPartitionStats(const PartitionMap<T> &partitionMap);
+	template <typename T>
+	static unsigned int getMaxEdgesLoad(const PartitionMap<T> &partitionMap);
+	template <typename T>
+	static unsigned int getMinEdgesLoad(const PartitionMap<T> &partitionMap);
+	template <typename T>
+	static unsigned int getMaxNodesLoad(const PartitionMap<T> &partitionMap);
+	template <typename T>
+	static unsigned int getMinNodesLoad(const PartitionMap<T> &partitionMap);
+	template <typename T>
+	static unsigned int getNumberOfEdges(const PartitionMap<T> &partitionMap);
+	template <typename T>
+	static unsigned int getNumberOfNodes(const PartitionMap<T> &partitionMap);
+	template <typename T>
+	static unsigned int getNumberOfReplicatedEdges(const PartitionMap<T> &partitionMap);
+	template <typename T>
+	static unsigned int getNumberOfReplicatedNodes(const PartitionMap<T> &partitionMap);
 
 	template <typename T>
 	Partition<T>::Partition() : Graph<T>()
@@ -1592,6 +1629,150 @@ namespace CXXGRAPH
 	void Partition<T>::setPartitionId(unsigned int partitionId)
 	{
 		this->partitionId = partitionId;
+	}
+
+	template <typename T>
+	PartitioningStats getPartitionStats(const PartitionMap<T> &partitionMap)
+	{
+		PartitioningStats result;
+		result.numberOfPartitions = partitionMap.size();
+		result.numberOfNodes = getNumberOfNodes(partitionMap);
+		result.numberOfEdges = getNumberOfEdges(partitionMap);
+		result.replicatedNodesCount = getNumberOfReplicatedNodes(partitionMap);
+		result.replicatedEdgesCount = getNumberOfReplicatedEdges(partitionMap);
+		result.maxEdgesLoad = getMaxEdgesLoad(partitionMap);
+		result.minEdgesLoad = getMinEdgesLoad(partitionMap);
+		result.maxNodesLoad = getMaxNodesLoad(partitionMap);
+		result.minNodesLoad = getMinNodesLoad(partitionMap);
+		result.edgesReplicationFactor = (double)result.replicatedEdgesCount / result.numberOfEdges;
+		result.nodesReplicationFactor = (double)result.replicatedNodesCount / result.numberOfNodes;
+		result.balanceEdgesFactor = (double)(result.maxEdgesLoad - result.minEdgesLoad) / (result.maxEdgesLoad);
+		result.balanceNodesFactor = (double)(result.maxNodesLoad - result.minNodesLoad) / (result.maxNodesLoad);
+		return result;
+	}
+
+	template <typename T>
+	unsigned int getMaxEdgesLoad(const PartitionMap<T> &partitionMap)
+	{
+		unsigned int maxLoad = 0;
+		for (auto it = partitionMap.begin(); it != partitionMap.end(); ++it)
+		{
+			if (it->second->getEdgeSet().size() > maxLoad)
+			{
+				maxLoad = it->second->getEdgeSet().size();
+			}
+		}
+		return maxLoad;
+	}
+
+	template <typename T>
+	unsigned int getMinEdgesLoad(const PartitionMap<T> &partitionMap)
+	{
+		unsigned int minLoad = std::numeric_limits<unsigned int>::max();
+		for (auto it = partitionMap.begin(); it != partitionMap.end(); ++it)
+		{
+			if (it->second->getEdgeSet().size() < minLoad)
+			{
+				minLoad = it->second->getEdgeSet().size();
+			}
+		}
+		return minLoad;
+	}
+
+	template <typename T>
+	unsigned int getMaxNodesLoad(const PartitionMap<T> &partitionMap)
+	{
+		unsigned int maxLoad = 0;
+		for (auto it = partitionMap.begin(); it != partitionMap.end(); ++it)
+		{
+			if (it->second->getNodeSet().size() > maxLoad)
+			{
+				maxLoad = it->second->getNodeSet().size();
+			}
+		}
+		return maxLoad;
+	}
+
+	template <typename T>
+	unsigned int getMinNodesLoad(const PartitionMap<T> &partitionMap)
+	{
+		unsigned int minLoad = std::numeric_limits<unsigned int>::max();
+		for (auto it = partitionMap.begin(); it != partitionMap.end(); ++it)
+		{
+			if (it->second->getNodeSet().size() < minLoad)
+			{
+				minLoad = it->second->getNodeSet().size();
+			}
+		}
+		return minLoad;
+	}
+
+	template <typename T>
+	unsigned int getNumberOfEdges(const PartitionMap<T> &partitionMap)
+	{
+		unsigned int numberOfEdges = 0;
+		std::list<const Edge<T> *> edgeSet;
+
+		for (auto it = partitionMap.begin(); it != partitionMap.end(); ++it)
+		{
+			const std::list<const Edge<T> *> partitionEdgeSet = it->second->getEdgeSet();
+			for (auto it2 = partitionEdgeSet.begin(); it2 != partitionEdgeSet.end(); ++it2)
+			{
+				if (std::find_if(edgeSet.begin(), edgeSet.end(), [it2](const Edge<T> *edge)
+								 { return (*(*it2) == *edge); }) == edgeSet.end())
+				{
+					edgeSet.push_back(*it2);
+				}
+			}
+		}
+
+		return edgeSet.size();
+	}
+
+	template <typename T>
+	unsigned int getNumberOfNodes(const PartitionMap<T> &partitionMap)
+	{
+
+		unsigned int numberOfNodes = 0;
+		std::list<const Node<T> *> nodeSet;
+
+		for (auto it = partitionMap.begin(); it != partitionMap.end(); ++it)
+		{
+			const std::list<const Node<T> *> partitionNodeSet = it->second->getNodeSet();
+			for (auto it2 = partitionNodeSet.begin(); it2 != partitionNodeSet.end(); ++it2)
+			{
+				if (std::find_if(nodeSet.begin(), nodeSet.end(), [it2](const Node<T> *node)
+								 { return (*(*it2) == *node); }) == nodeSet.end())
+				{
+					nodeSet.push_back(*it2);
+				}
+			}
+		}
+
+		return nodeSet.size();
+	}
+
+	template <typename T>
+	unsigned int getNumberOfReplicatedEdges(const PartitionMap<T> &partitionMap)
+	{
+
+		unsigned int numberOfEdges = 0;
+		for (auto it = partitionMap.begin(); it != partitionMap.end(); ++it)
+		{
+			numberOfEdges += it->second->getEdgeSet().size();
+		}
+		return numberOfEdges;
+	}
+
+	template <typename T>
+	unsigned int getNumberOfReplicatedNodes(const PartitionMap<T> &partitionMap)
+	{
+		unsigned int numberOfNodes = 0;
+		for (auto it = partitionMap.begin(); it != partitionMap.end(); ++it)
+		{
+			numberOfNodes += it->second->getNodeSet().size();
+		}
+		return numberOfNodes;
 	}
 
 	//ostream overload
@@ -1683,23 +1864,23 @@ namespace CXXGRAPH
 		}
 		return os;
 	}
-
+	/*
 	template <typename T>
-	std::ostream &operator<<(std::ostream &os, const PartioningStats &partitionStats)
+	std::ostream &operator<<(std::ostream &os, const PartitioningStats_struct &partitionStats)
 	{
 		os << "Partitioning Stats:\n";
-		os << "\tNumber of Partitions:" << partitionStats.numberOfPartions << "\n";
-		os << "\tNumber of Vertices: " << partitionStats.numberOfVertices << "\n";
+		os << "\tNumber of Partitions:" << partitionStats.numberOfPartitions << "\n";
+		os << "\tNumber of Nodes: " << partitionStats.numberOfNodes << "\n";
 		os << "\tNumber of Edges: " << partitionStats.numberOfEdges << "\n";
-		os << "\tNumber of Vertices Replica: " << partitionStats.replicatedVerticesCount << "\n";
+		os << "\tNumber of Nodes Replica: " << partitionStats.replicatedNodesCount << "\n";
 		os << "\tNumber of Edges Replica: " << partitionStats.replicatedEdgesCount << "\n";
-		os << "\tVertices Replication Factor: " << partitionStats.verticesReplicationFactor << "\n";
+		os << "\tNodes Replication Factor: " << partitionStats.nodesReplicationFactor << "\n";
 		os << "\tEdges Replication Factor: " << partitionStats.edgesReplicationFactor << "\n";
 		os << "\tMax Load: " << partitionStats.maxLoad << "\n";
 		os << "\tMin Load: " << partitionStats.minLoad << "\n";
 		os << "\tBalance Factor: " << partitionStats.balanceFactor << "\n";
 		return os;
 	}
-
+*/
 } // namespace CXXGRAPH
 #endif // __CXXGRAPH_H__
