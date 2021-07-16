@@ -60,7 +60,8 @@
 #### Dial
 Dial specialization of dijkstra’s algorithm.
 
-When arc weights are small integers (bounded by a parameter {\displaystyle C}C), specialized queues which take advantage of this fact can be used to speed up Dijkstra's algorithm. The first algorithm of this type was Dial's algorithm (Dial 1969) for graphs with positive integer edge weights, which uses a bucket queue to obtain a running time {\displaystyle O(|E|+|V|C)}{\displaystyle O(|E|+|V|C)}. The use of a Van Emde Boas tree as the priority queue brings the complexity to {\displaystyle O(|E|\log \log C)}{\displaystyle O(|E|\log \log C)} (Ahuja et al. 1990). Another interesting variant based on a combination of a new radix heap and the well-known Fibonacci heap runs in time {\displaystyle O(|E|+|V|{\sqrt {\log C}})}{\displaystyle O(|E|+|V|{\sqrt {\log C}})} (Ahuja et al. 1990). Finally, the best algorithms in this special case are as follows. The algorithm given by (Thorup 2000) runs in {\displaystyle O(|E|\log \log |V|)}O(|E|\log \log |V|) time and the algorithm given by (Raman 1997) runs in {\displaystyle O(|E|+|V|\min\{(\log |V|)^{1/3+\varepsilon },(\log C)^{1/4+\varepsilon }\})}{\displaystyle O(|E|+|V|\min\{(\log |V|)^{1/3+\varepsilon },(\log C)^{1/4+\varepsilon }\})} time. ([source wikipedia](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Specialized_variants))
+When edge weights are small integers (bounded by a parameter *C*), specialized queues which take advantage of this fact can be used to speed up Dijkstra's algorithm. The first algorithm of this type was Dial's algorithm (Dial 1969) for graphs with positive integer edge weights, which uses a bucket queue to obtain a running time
+*O(|E|+|V|C)*.([source wikipedia](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Specialized_variants))
 
 Below is complete algorithm:
  1. Maintains some buckets, numbered 0, 1, 2,…,wV.
