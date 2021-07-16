@@ -21,9 +21,9 @@ namespace CXXGRAPH
 	//STRING ERROR CONST EXPRESSION
 	constexpr char ERR_NO_DIR_OR_UNDIR_EDGE[] = "Edge are neither Directed neither Undirected";
 	constexpr char ERR_NO_WEIGHTED_EDGE[] = "Edge are not Weighted";
-	constexpr char ERR_DIJ_TARGET_NODE_NOT_REACHABLE[] = "Target Node not Reachable";
-	constexpr char ERR_DIJ_TARGET_NODE_NOT_IN_GRAPH[] = "Target Node not inside Graph";
-	constexpr char ERR_DIJ_SOURCE_NODE_NOT_IN_GRAPH[] = "Source Node not inside Graph";
+	constexpr char ERR_TARGET_NODE_NOT_REACHABLE[] = "Target Node not Reachable";
+	constexpr char ERR_TARGET_NODE_NOT_IN_GRAPH[] = "Target Node not inside Graph";
+	constexpr char ERR_SOURCE_NODE_NOT_IN_GRAPH[] = "Source Node not inside Graph";
 	///////////////////////////////
 	constexpr double INF_DOUBLE = std::numeric_limits<double>::max();
 	template <typename T>
@@ -53,6 +53,15 @@ namespace CXXGRAPH
 		double result;			  //result (valid only if success is TRUE)
 	};
 	typedef DijkstraResult_struct DijkstraResult;
+
+	/// Struct that contains the information about Dijsktra's Algorithm results
+	struct DialResult_struct
+	{
+		bool success;						  // TRUE if the function does not return error, FALSE otherwise
+		std::string errorMessage;			  //message of error
+		std::map<unsigned long, long> minDistanceMap; //result a map that contains the node id and the minumum distance from source (valid only if success is TRUE)
+	};
+	typedef DialResult_struct DialResult;
 
 	/// Struct that contains the information about the partitioning statistics
 	struct PartitioningStats_struct
@@ -624,6 +633,20 @@ namespace CXXGRAPH
 		* @param writeEdgeWeight Indicates if export also Edge Weights
      	* @return 0 if all OK, else return a negative value
      	*/
+
+		/**
+ 		* @brief Function runs the Dial algorithm  (Optimized Dijkstra for small range weights) for some source node and
+ 		* target node in the graph and returns the shortest distance of target
+ 		* from the source.
+ 		*
+		* @param source source vertex
+		* @param maxWeight maximum weight of the edge
+ 		*
+ 		* @return shortest distance for all nodes reachable from source else ERROR in
+ 		* case there is error in the computation.
+ 		*/
+		const DialResult dial(const Node<T> &source, int maxWeight) const;
+
 		int writeToFile(InputOutputFormat format = InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool writeNodeFeat = false, bool writeEdgeWeight = false) const;
 
 		/**
@@ -1158,13 +1181,13 @@ namespace CXXGRAPH
 		if (std::find(nodeSet.begin(), nodeSet.end(), &source) == nodeSet.end())
 		{
 			// check if source node exist in the graph
-			result.errorMessage = ERR_DIJ_SOURCE_NODE_NOT_IN_GRAPH;
+			result.errorMessage = ERR_SOURCE_NODE_NOT_IN_GRAPH;
 			return result;
 		}
 		if (std::find(nodeSet.begin(), nodeSet.end(), &target) == nodeSet.end())
 		{
 			// check if target node exist in the graph
-			result.errorMessage = ERR_DIJ_TARGET_NODE_NOT_IN_GRAPH;
+			result.errorMessage = ERR_TARGET_NODE_NOT_IN_GRAPH;
 			return result;
 		}
 		const AdjacencyMatrix<T> adj = getAdjMatrix();
@@ -1252,7 +1275,7 @@ namespace CXXGRAPH
 			result.result = dist[&target];
 			return result;
 		}
-		result.errorMessage = ERR_DIJ_TARGET_NODE_NOT_REACHABLE;
+		result.errorMessage = ERR_TARGET_NODE_NOT_REACHABLE;
 		result.result = -1;
 		return result;
 	}
@@ -1502,6 +1525,134 @@ namespace CXXGRAPH
 		}
 		//No Undirected Edge
 		return true;
+	}
+
+	template <typename T>
+	const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const
+	{
+		DialResult result;
+		result.result =false
+
+		auto adj = getAdjMatrix();
+		auto nodeSet = getNodeSet();
+
+		if (std::find(nodeSet.begin(), nodeSet.end(), &source) == nodeSet.end())
+		{
+			// check if source node exist in the graph
+			result.errorMessage = ERR_SOURCE_NODE_NOT_IN_GRAPH;
+			return result;
+		}
+		/* With each distance, iterator to that vertex in
+       		its bucket is stored so that vertex can be deleted
+       		in O(1) at time of updation. So
+    		dist[i].first = distance of ith vertex from src vertex
+    		dits[i].second = vertex i in bucket number */
+		unsigned int V = nodeSet.size();
+		std::map<const Node<T> *, std::pair<long, const Node<T> *>> dist;
+
+		// Initialize all distances as infinite (INF)
+		for (auto node : nodeSet)
+		{
+			dist[&(*node)].first = std::numeric_limits<long>::max();
+		}
+
+		// Create buckets B[].
+		// B[i] keep vertex of distance label i
+		std::list<const Node<T> *> B[maxWeight * V + 1];
+
+		B[0].push_back(&source);
+		dist[&source].first = 0;
+
+		int idx = 0;
+		while (1)
+		{
+			// Go sequentially through buckets till one non-empty
+			// bucket is found
+			while (B[idx].size() == 0 && idx < maxWeight * V)
+			{
+				idx++;
+			}
+
+			// If all buckets are empty, we are done.
+			if (idx == maxWeight * V)
+			{
+				break;
+			}
+
+			// Take top vertex from bucket and pop it
+			auto u = B[idx].front();
+			B[idx].pop_front();
+
+			// Process all adjacents of extracted vertex 'u' and
+			// update their distanced if required.
+			for (auto i = adj[u].begin(); i != adj[u].end(); ++i)
+			{
+				auto v = (*i).first;
+				int weight = 0;
+				if ((*i).second->isWeighted().has_value() && (*i).second->isWeighted().value())
+				{
+					if ((*i).second->isDirected().has_value() && (*i).second->isDirected().value())
+					{
+						const DirectedWeightedEdge<T> *dw_edge = dynamic_cast<const DirectedWeightedEdge<T> *>((*i).second);
+						weight = dw_edge->getWeight();
+					}
+					else if ((*i).second->isDirected().has_value() && !(*i).second->isDirected().value())
+					{
+						const UndirectedWeightedEdge<T> *udw_edge = dynamic_cast<const UndirectedWeightedEdge<T> *>((*i).second);
+						weight = udw_edge->getWeight();
+					}
+					else
+					{
+						//ERROR it shouldn't never returned ( does not exist a Node Weighted and not Directed/Undirected)
+						result.errorMessage = ERR_NO_DIR_OR_UNDIR_EDGE;
+						return result;
+					}
+				}
+				else
+				{
+					// No Weighted Edge
+					result.errorMessage = ERR_NO_WEIGHTED_EDGE;
+					return result;
+				}
+				auto u_i = std::find_if(dist.begin(), dist.end(), [u](std::pair<const Node<T> *, std::pair<long, const Node<T> *>> const &it)
+										{ return (*u == *(it.first)); });
+
+				auto v_i = std::find_if(dist.begin(), dist.end(), [v](std::pair<const Node<T> *, std::pair<long, const Node<T> *>> const &it)
+										{ return (*v == *(it.first)); });
+				long du = u_i->second.first;
+				long dv = v_i->second.first;
+
+				// If there is shorted path to v through u.
+				if (dv > du + weight)
+				{
+					// If dv is not INF then it must be in B[dv]
+					// bucket, so erase its entry using iterator
+					// in O(1)
+					if (dv != std::numeric_limits<long>::max())
+					{
+						auto findIter = std::find(B[dv].begin(), B[dv].end(), dist[v].second);
+						B[dv].erase(findIter);
+					}
+
+					//  updating the distance
+					dist[v].first = du + weight;
+					dv = dist[v].first;
+
+					// pushing vertex v into updated distance's bucket
+					B[dv].push_front(v);
+
+					// storing updated iterator in dist[v].second
+					dist[v].second = *(B[dv].begin());
+				}
+			}
+		}
+		for (auto dist_i : dist)
+		{
+			result.minDistanceMap[dist_i.first->getId()] = dist_i.second.first;
+		}
+		result.success = true;
+
+		return result;
 	}
 
 	template <typename T>

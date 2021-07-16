@@ -55,6 +55,7 @@ add_executable(test_exe test/main.cpp
 						test/CycleCheckTest.cpp
 						test/RWOutputTest.cpp
 						test/PartitionTest.cpp
+						test/DialTest.cpp
 				)
 target_include_directories(test_exe PUBLIC
 						  "${PROJECT_SOURCE_DIR}/include"
@@ -80,4 +81,5 @@ add_test(test_dfs test_exe --gtest_filter=DFSTest*)
 add_test(test_cycle_check test_exe --gtest_filter=CycleCheckTest*)
 add_test(test_rw_output test_exe --gtest_filter=RWOutputTest*)
 add_test(test_partition test_exe --gtest_filter=PartitionTest*)
+add_test(test_dial test_exe --gtest_filter=DialTest*)
 
