@@ -74,7 +74,7 @@ TEST(DijkstraTest, test_4)
     CXXGRAPH::Graph<int> graph(edgeSet);
     CXXGRAPH::DijkstraResult res = graph.dijkstra(node1, node2);
     ASSERT_FALSE(res.success);
-    ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_DIJ_TARGET_NODE_NOT_REACHABLE);
+    ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_TARGET_NODE_NOT_REACHABLE);
     ASSERT_EQ(res.result, -1);
 }
 
@@ -92,7 +92,7 @@ TEST(DijkstraTest, test_5)
     CXXGRAPH::Graph<int> graph(edgeSet);
     CXXGRAPH::DijkstraResult res = graph.dijkstra(node4, node2);
     ASSERT_FALSE(res.success);
-    ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_DIJ_SOURCE_NODE_NOT_IN_GRAPH);
+    ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_SOURCE_NODE_NOT_IN_GRAPH);
     ASSERT_EQ(res.result, CXXGRAPH::INF_DOUBLE);
 }
 
@@ -110,6 +110,6 @@ TEST(DijkstraTest, test_6)
     CXXGRAPH::Graph<int> graph(edgeSet);
     CXXGRAPH::DijkstraResult res = graph.dijkstra(node1, node4);
     ASSERT_FALSE(res.success);
-    ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_DIJ_TARGET_NODE_NOT_IN_GRAPH);
+    ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_TARGET_NODE_NOT_IN_GRAPH);
     ASSERT_EQ(res.result, CXXGRAPH::INF_DOUBLE);
 }

@@ -1531,7 +1531,7 @@ namespace CXXGRAPH
 	const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const
 	{
 		DialResult result;
-		result.result =false
+		result.success = false;
 
 		auto adj = getAdjMatrix();
 		auto nodeSet = getNodeSet();
