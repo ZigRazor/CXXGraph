@@ -1569,29 +1569,110 @@ namespace CXXGRAPH
 		Partition(const std::list<const Edge<T> *> &edgeSet);
 		Partition(unsigned int partitionId, const std::list<const Edge<T> *> &edgeSet);
 		~Partition() = default;
-
+		/**
+		* @brief Get the Partition ID
+		*
+		* @return The ID of the partition
+		*/
 		unsigned int getPartitionId() const;
+		/**
+ 		* @brief Set the Partition ID
+ 		*
+		* @param partitionId the ID to set
+ 		*/
 		void setPartitionId(unsigned int partitionId);
 
 	private:
 		unsigned int partitionId;
 	};
+
+	/**
+ 	* @brief Calculate and return the statistic of the Partitioned Graph
+ 	*
+	* @param partitionMap the Partition Map
+	*
+	* @return The Statistic of the Partioned Graph
+ 	*/
 	template <typename T>
 	static PartitioningStats getPartitionStats(const PartitionMap<T> &partitionMap);
+
+	/**
+ 	* @brief Calculate the Maximum Load in a single partition (in terms of edges) for the Partioned Graph
+ 	*
+	* @param partitionMap the Partition Map
+	*
+	* @return The value of the Maximum Load
+ 	*/
 	template <typename T>
 	static unsigned int getMaxEdgesLoad(const PartitionMap<T> &partitionMap);
+
+	/**
+ 	* @brief Calculate the Minimum Load in a single partition (in terms of edges) for the Partioned Graph
+ 	*
+	* @param partitionMap the Partition Map
+	*
+	* @return The value of the Minimum Load
+ 	*/
 	template <typename T>
 	static unsigned int getMinEdgesLoad(const PartitionMap<T> &partitionMap);
+
+	/**
+ 	* @brief Calculate the Maximum Load in a single partition (in terms of nodes) for the Partioned Graph
+ 	*
+	* @param partitionMap the Partition Map
+	*
+	* @return The value of the Maximum Load
+ 	*/
 	template <typename T>
 	static unsigned int getMaxNodesLoad(const PartitionMap<T> &partitionMap);
+
+	/**
+ 	* @brief Calculate the Minimum Load in a single partition (in terms of nodes) for the Partioned Graph
+ 	*
+	* @param partitionMap the Partition Map
+	*
+	* @return The value of the Minimum Load
+ 	*/
 	template <typename T>
 	static unsigned int getMinNodesLoad(const PartitionMap<T> &partitionMap);
+
+	/**
+ 	* @brief Calculate the Number of Unique Edges in the Partitioned Graph ( this value is equal to the number of edges in the Original Graph)
+ 	*
+	* @param partitionMap the Partition Map
+	*
+	* @return The number of Edges
+ 	*/
 	template <typename T>
 	static unsigned int getNumberOfEdges(const PartitionMap<T> &partitionMap);
+
+	/**
+ 	* @brief Calculate the Number of Unique Nodes in the Partitioned Graph ( this value is equal to the number of nodes in the Original Graph)
+ 	*
+	* @param partitionMap the Partition Map
+	*
+	* @return The number of Nodes
+ 	*/
 	template <typename T>
 	static unsigned int getNumberOfNodes(const PartitionMap<T> &partitionMap);
+
+	/**
+ 	* @brief Calculate the Total Number of Edges in the Partitioned Graph
+ 	*
+	* @param partitionMap the Partition Map
+	*
+	* @return The number of Edges
+ 	*/
 	template <typename T>
 	static unsigned int getNumberOfReplicatedEdges(const PartitionMap<T> &partitionMap);
+
+	/**
+ 	* @brief Calculate the Total Number of Nodes in the Partitioned Graph
+ 	*
+	* @param partitionMap the Partition Map
+	*
+	* @return The number of Nodes
+ 	*/
 	template <typename T>
 	static unsigned int getNumberOfReplicatedNodes(const PartitionMap<T> &partitionMap);
 
@@ -1864,23 +1945,6 @@ namespace CXXGRAPH
 		}
 		return os;
 	}
-	/*
-	template <typename T>
-	std::ostream &operator<<(std::ostream &os, const PartitioningStats_struct &partitionStats)
-	{
-		os << "Partitioning Stats:\n";
-		os << "\tNumber of Partitions:" << partitionStats.numberOfPartitions << "\n";
-		os << "\tNumber of Nodes: " << partitionStats.numberOfNodes << "\n";
-		os << "\tNumber of Edges: " << partitionStats.numberOfEdges << "\n";
-		os << "\tNumber of Nodes Replica: " << partitionStats.replicatedNodesCount << "\n";
-		os << "\tNumber of Edges Replica: " << partitionStats.replicatedEdgesCount << "\n";
-		os << "\tNodes Replication Factor: " << partitionStats.nodesReplicationFactor << "\n";
-		os << "\tEdges Replication Factor: " << partitionStats.edgesReplicationFactor << "\n";
-		os << "\tMax Load: " << partitionStats.maxLoad << "\n";
-		os << "\tMin Load: " << partitionStats.minLoad << "\n";
-		os << "\tBalance Factor: " << partitionStats.balanceFactor << "\n";
-		return os;
-	}
-*/
+
 } // namespace CXXGRAPH
 #endif // __CXXGRAPH_H__
