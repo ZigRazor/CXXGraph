@@ -48,7 +48,7 @@
   - [We are Looking for...](#we-are-looking-for)
 
 ## Introduction
-**CXXGraph** is a small library, header only, that manages the Graph and it's algorithm in **C++**
+**CXXGraph** is a small library, header only, that manages the Graph and it's algorithms in **C++**. In other words a "Comprehensive C++ Graph Library".
 
 ## Algorithm Explanation
 
