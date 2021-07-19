@@ -18,9 +18,11 @@ TEST(DialTest, test_1)
     auto res = graph.dial(node1, 6);
     ASSERT_TRUE(res.success);
     ASSERT_EQ(res.errorMessage, "");
-    //ASSERT_EQ(res.result, 2);
+    ASSERT_EQ(res.minDistanceMap.at(1), 0);
+    ASSERT_EQ(res.minDistanceMap.at(2), 1);
+    ASSERT_EQ(res.minDistanceMap.at(3), 2);
 }
-/*
+
 TEST(DialTest, test_2)
 {
     CXXGRAPH::Node<int> node1(1, 1);
@@ -35,11 +37,13 @@ TEST(DialTest, test_2)
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
-    auto res = graph.dial(node1, node3, 6);
+    auto res = graph.dial(node1, 6);
     ;
     ASSERT_TRUE(res.success);
     ASSERT_EQ(res.errorMessage, "");
-    ASSERT_EQ(res.result, 6);
+    ASSERT_EQ(res.minDistanceMap.at(1), 0);
+    ASSERT_EQ(res.minDistanceMap.at(2), 5);
+    ASSERT_EQ(res.minDistanceMap.at(3), 6);
 }
 
 TEST(DialTest, test_3)
@@ -56,10 +60,10 @@ TEST(DialTest, test_3)
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
-    auto res = graph.dial(node1, node3, 6);
+    auto res = graph.dial(node1, 6);
     ASSERT_FALSE(res.success);
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_NO_WEIGHTED_EDGE);
-    ASSERT_EQ(res.result, CXXGRAPH::INF_DOUBLE);
+    ASSERT_TRUE(res.minDistanceMap.empty());
 }
 
 TEST(DialTest, test_4)
@@ -73,10 +77,12 @@ TEST(DialTest, test_4)
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
-    auto res = graph.dial(node1, node2, 6);
-    ASSERT_FALSE(res.success);
-    ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_DIJ_TARGET_NODE_NOT_REACHABLE);
-    ASSERT_EQ(res.result, -1);
+    auto res = graph.dial(node1, 6);
+    ASSERT_TRUE(res.success);
+    ASSERT_EQ(res.errorMessage, "");
+    ASSERT_EQ(res.minDistanceMap.at(1), 0);
+    ASSERT_EQ(res.minDistanceMap.at(2), std::numeric_limits<long>::max());
+    ASSERT_EQ(res.minDistanceMap.at(3), 6);
 }
 
 TEST(DialTest, test_5)
@@ -91,27 +97,8 @@ TEST(DialTest, test_5)
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
-    auto res = graph.dial(node4, node2, 6);
+    auto res = graph.dial(node4, 6);
     ASSERT_FALSE(res.success);
-    ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_DIJ_SOURCE_NODE_NOT_IN_GRAPH);
-    ASSERT_EQ(res.result, CXXGRAPH::INF_DOUBLE);
+    ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_SOURCE_NODE_NOT_IN_GRAPH);
+    ASSERT_TRUE(res.minDistanceMap.empty());
 }
-
-TEST(DialTest, test_6)
-{
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
-    CXXGRAPH::Node<int> node4(4, 4);
-    CXXGRAPH::DirectedEdge<int> edge2(2, node2, node3);
-    CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
-    CXXGRAPH::Graph<int> graph(edgeSet);
-    auto res = graph.dial(node1, node4, 6);
-    ASSERT_FALSE(res.success);
-    ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_DIJ_TARGET_NODE_NOT_IN_GRAPH);
-    ASSERT_EQ(res.result, CXXGRAPH::INF_DOUBLE);
-}
-*/
