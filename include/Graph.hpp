@@ -45,6 +45,11 @@ namespace CXXGRAPH
 
 	class Weighted;
 
+	template <typename T>
+	class Writer;
+	template <typename T>
+	class Reader;
+
 	/// Struct that contains the information about Dijsktra's Algorithm results
 	struct DijkstraResult_struct
 	{
@@ -57,8 +62,8 @@ namespace CXXGRAPH
 	/// Struct that contains the information about Dijsktra's Algorithm results
 	struct DialResult_struct
 	{
-		bool success;						  // TRUE if the function does not return error, FALSE otherwise
-		std::string errorMessage;			  //message of error
+		bool success;								  // TRUE if the function does not return error, FALSE otherwise
+		std::string errorMessage;					  //message of error
 		std::map<unsigned long, long> minDistanceMap; //result a map that contains the node id and the minumum distance from source (valid only if success is TRUE)
 	};
 	typedef DialResult_struct DialResult;
@@ -2007,9 +2012,48 @@ namespace CXXGRAPH
 		return numberOfNodes;
 	}
 
+	/*!
+  	Interface to implement for a custom writer.
+	*/
+
+	template <typename T>
+	class Writer
+	{
+	public:
+		/**
+ 		* \brief
+ 		* Function performs the writing of the Graph to the file.
+ 		*
+ 		* @param graph The graph to be written.
+		* @param file The output file to be written.
+ 		* @returns a negative value if is impossible to write the graph from the file, else 0 if the graph is write successfully.
+ 		*
+ 		*/
+		virtual int writeGraph(const Graph<T> &graph, std::ofstream &file) = 0;
+	};
+
+	/*!
+  	Interface to implement for a custom reader.
+	*/
+	template <typename T>
+	class Reader
+	{
+		/**
+ 		* \brief
+ 		* Function performs the writing of the Graph to the file.
+ 		*
+ 		* @param graph The graph to be filled.
+		* @param file The input file to be read.
+ 		* @returns a negative value if is impossible to read the graph from the file, else 0 if the graph is read successfully.
+ 		*
+ 		*/
+		virtual int ReadGraph(Graph<T> &graph, std::ifstream &file) = 0;
+	};
+
 	//ostream overload
 	template <typename T>
-	std::ostream &operator<<(std::ostream &os, const Node<T> &node)
+	std::ostream &
+	operator<<(std::ostream &os, const Node<T> &node)
 	{
 		os << "Node: {\n"
 		   << "  Id:\t" << node.id << "\n  Data:\t" << node.data << "\n}";
