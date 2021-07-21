@@ -84,7 +84,8 @@ add_test(test_partition test_exe --gtest_filter=PartitionTest*)
 add_test(test_dial test_exe --gtest_filter=DialTest*)
 
 
-add_executable(benchmark benchmark/Node_BM.cpp
+add_executable(benchmark 	benchmark/Utilities.hpp
+							benchmark/Node_BM.cpp
 							benchmark/Edge_BM.cpp
 							benchmark/Graph_BM.cpp
 				)
