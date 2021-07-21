@@ -15,6 +15,7 @@
 #include <functional>
 #include <fstream>
 #include <limits.h>
+#include <mutex>
 
 namespace CXXGRAPH
 {
@@ -44,6 +45,8 @@ namespace CXXGRAPH
 	class Partition;
 
 	class Weighted;
+
+	class ThreadSafe;
 
 	template <typename T>
 	class Writer;
@@ -212,6 +215,26 @@ namespace CXXGRAPH
 	inline void Weighted::setWeight(const double weight)
 	{
 		this->weight = weight;
+	}
+
+	class ThreadSafe
+	{
+	public:
+		void getLock();
+		void releaseLock();
+
+	protected:
+		std::mutex mutex;
+	};
+	//inline because the implementation of non-template function in header file
+	inline void ThreadSafe::getLock()
+	{
+		mutex.lock();
+	}
+	//inline because the implementation of non-template function in header file
+	inline void ThreadSafe::releaseLock()
+	{
+		mutex.unlock();
 	}
 
 	template <typename T>
