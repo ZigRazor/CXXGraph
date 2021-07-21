@@ -54,7 +54,7 @@ jobs:
             # Where the output from the benchmark tool is stored
             output-file-path: ${{github.workspace}}/build/benchmark_result.json
             # Where the previous data file is stored
-            external-data-json-path: ./cache/benchmark-data.json
+            #external-data-json-path: ./cache/benchmark-data.json
             # Workflow will fail when an alert happens
             fail-on-alert: true
             # Upload the updated cache file for the next job by actions/cache
