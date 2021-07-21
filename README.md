@@ -36,6 +36,9 @@
   - [Requirements](#requirements)
   - [How to use](#how-to-use)
   - [Unit-Test Execution](#unit-test-execution)
+    - [Google Test Installation](#google-test-installation)
+  - [Benchmark Execution](#benchmark-execution)
+    - [Google Benchmark Installation](#google-benchmark-installation)
       - [How to Compile](#how-to-compile)
     - [How to Run](#how-to-run)
   - [Example](#example)
@@ -141,7 +144,35 @@ The minimun C++ standard required is **C++17** and a G++ compiler version greate
 The use of the library is very simple, **just put the header file where you need!**
 
 ## Unit-Test Execution
-The Unit-Test required the CMake version greater than 3.9 and the **google test** library.
+The Unit-Test required the CMake version greater than 3.9 and the **google test**  library.
+
+### Google Test Installation
+
+## Benchmark Execution
+The Benchmark required the CMake version greater than 3.9 and the **google test** and the **google benchmark** library.
+
+### Google Benchmark Installation
+
+[Google Benchmark](https://github.com/google/benchmark)
+
+```
+# Check out the library.
+$ git clone https://github.com/google/benchmark.git
+# Benchmark requires Google Test as a dependency. Add the source tree as a subdirectory.
+$ git clone https://github.com/google/googletest.git benchmark/googletest
+# Go to the library root directory
+$ cd benchmark
+# Make a build directory to place the build output.
+$ cmake -E make_directory "build"
+# Generate build system files with cmake.
+$ cmake -E chdir "build" cmake -DCMAKE_BUILD_TYPE=Release ../
+# or, starting with CMake 3.13, use a simpler form:
+# cmake -DCMAKE_BUILD_TYPE=Release -S . -B "build"
+# Build the library.
+$ cmake --build "build" --config Release
+# install library
+$ sudo cmake --build "build" --config Release --target install
+```
 
 #### How to Compile
 -   If not exist create a directory "build" under the base directory.
