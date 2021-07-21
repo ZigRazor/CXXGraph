@@ -174,6 +174,10 @@ $ cmake --build "build" --config Release
 $ sudo cmake --build "build" --config Release --target install
 ```
 
+### Benchmark Results
+
+You can check benchmark result at this [link](https://zigrazor.github.io/CXXGraph/dev/bench/)
+
 #### How to Compile
 -   If not exist create a directory "build" under the base directory.
 -   Enter the directory
