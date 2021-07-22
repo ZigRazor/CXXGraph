@@ -2,7 +2,7 @@
 #include "../include/Graph.hpp"
 #include "Utilities.hpp"
 
-static void BM_EdgeCreation_1(benchmark::State &state)
+static void BM_EdgeCreation(benchmark::State &state)
 {
     auto nodes = generateRandomNodes(2, 2);
     auto n1 = *nodes.at(0);
@@ -13,9 +13,9 @@ static void BM_EdgeCreation_1(benchmark::State &state)
     }
 }
 
-BENCHMARK(BM_EdgeCreation_1);
+BENCHMARK(BM_EdgeCreation);
 
-static void BM_EdgeCreationDestruction_2(benchmark::State &state)
+static void EdgeCreationDestruction_new_delete(benchmark::State &state)
 {
     auto nodes = generateRandomNodes(2, 2);
     auto n1 = *nodes.at(0);
@@ -28,9 +28,9 @@ static void BM_EdgeCreationDestruction_2(benchmark::State &state)
     }
 }
 
-BENCHMARK(BM_EdgeCreationDestruction_2);
+BENCHMARK(EdgeCreationDestruction_new_delete);
 
-static void BM_EdgeGetId(benchmark::State &state)
+static void EdgeGetId(benchmark::State &state)
 {
     auto nodes = generateRandomNodes(2, 2);
     auto n1 = *nodes.at(0);
@@ -41,9 +41,9 @@ static void BM_EdgeGetId(benchmark::State &state)
         e.getId();
     }
 }
-BENCHMARK(BM_EdgeGetId);
+BENCHMARK(EdgeGetId);
 
-static void BM_NodeGetNodePair(benchmark::State &state)
+static void NodeGetNodePair(benchmark::State &state)
 {
     auto nodes = generateRandomNodes(2, 2);
     auto n1 = *nodes.at(0);
@@ -54,4 +54,4 @@ static void BM_NodeGetNodePair(benchmark::State &state)
         e.getNodePair();
     }
 }
-BENCHMARK(BM_NodeGetNodePair);
+BENCHMARK(NodeGetNodePair);

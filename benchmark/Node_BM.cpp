@@ -2,16 +2,16 @@
 #include "../include/Graph.hpp"
 #include "Utilities.hpp"
 
-static void BM_NodeCreation_1(benchmark::State &state)
+static void NodeCreation(benchmark::State &state)
 {
     for (auto _ : state)
     {
         CXXGRAPH::Node<int> n1(1, 1);
     }
 }
-BENCHMARK(BM_NodeCreation_1);
+BENCHMARK(NodeCreation);
 
-static void BM_NodeCreationDestruction_2(benchmark::State &state)
+static void NodeCreationDestruction_new_delete(benchmark::State &state)
 {
     for (auto _ : state)
     {
@@ -20,9 +20,9 @@ static void BM_NodeCreationDestruction_2(benchmark::State &state)
     }
 }
 
-BENCHMARK(BM_NodeCreationDestruction_2);
+BENCHMARK(NodeCreationDestruction_new_delete);
 
-static void BM_NodeGetId(benchmark::State &state)
+static void NodeGetId(benchmark::State &state)
 {
     CXXGRAPH::Node<int> n1(1, 1);
     for (auto _ : state)
@@ -30,9 +30,9 @@ static void BM_NodeGetId(benchmark::State &state)
         n1.getId();
     }
 }
-BENCHMARK(BM_NodeGetId);
+BENCHMARK(NodeGetId);
 
-static void BM_NodeGetData(benchmark::State &state)
+static void NodeGetData(benchmark::State &state)
 {
     CXXGRAPH::Node<int> n1(1, 1);
     for (auto _ : state)
@@ -40,4 +40,4 @@ static void BM_NodeGetData(benchmark::State &state)
         n1.getData();
     }
 }
-BENCHMARK(BM_NodeGetData);
+BENCHMARK(NodeGetData);

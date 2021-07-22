@@ -8,29 +8,29 @@ static auto edges = generateRandomEdges(100000, nodes);
 
 static CXXGRAPH::Graph<int> *graph;
 
-static void BM_GraphCreation(benchmark::State &state)
+static void GraphCreation(benchmark::State &state)
 {
     for (auto _ : state){
         CXXGRAPH::Graph<int> g;
     }
 }
 
-BENCHMARK(BM_GraphCreation);
+BENCHMARK(GraphCreation);
 
-
-static void BM_AddEdge(benchmark::State &state)
+static void AddEdge(benchmark::State &state)
 {
     CXXGRAPH::Graph<int> g;
     auto n1 = *nodes.at(0);
     auto n2 = *nodes.at(1);
     CXXGRAPH::Edge<int> e(1, n1, n2);
-    for (auto _ : state){
+    for (auto _ : state)
+    {
         g.addEdge(&e);
     }
 }
-BENCHMARK(BM_AddEdge);
+BENCHMARK(AddEdge);
 
-static void BM_AddEdgeX(benchmark::State &state)
+static void AddEdgeX(benchmark::State &state)
 {
     CXXGRAPH::Graph<int> g;
     auto range_start = edges.begin();
@@ -46,8 +46,9 @@ static void BM_AddEdgeX(benchmark::State &state)
         }
     }
 }
-BENCHMARK(BM_AddEdgeX)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned long)1 << 18);
+BENCHMARK(AddEdgeX)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned long)1 << 18);
 
+/*
 static void BM_AddEdgeX_MT(benchmark::State &state)
 {
     //std::cout << "Thread Number" << state.thread_index << std::endl;
@@ -76,3 +77,4 @@ static void BM_AddEdgeX_MT(benchmark::State &state)
     }
 }
 BENCHMARK(BM_AddEdgeX_MT)->RangeMultiplier(16)->Range((unsigned long)1 << 4, (unsigned long)1 << 18)->ThreadRange(1, 4);
+*/
