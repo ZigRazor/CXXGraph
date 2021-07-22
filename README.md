@@ -148,6 +148,18 @@ The Unit-Test required the CMake version greater than 3.9 and the **google test*
 
 ### Google Test Installation
 
+[GoogleTest](https://github.com/google/googletest)
+
+```
+git clone https://github.com/google/googletest.git
+cd googletest        # Main directory of the cloned repository.
+mkdir build          # Create a directory to hold the build output.
+cd build
+cmake ..             # Generate native build scripts for GoogleTest.
+make
+sudo make install    # Install in /usr/local/ by default
+```
+
 ## Benchmark Execution
 The Benchmark required the CMake version greater than 3.9 and the **google test** and the **google benchmark** library.
 
