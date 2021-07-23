@@ -226,6 +226,7 @@ To get updated ***watch*** the project  [![GitHub watchers](https://img.shields.
 ## References
 We are referenced by:
 - [awesome-hpp](https://github.com/p-ranav/awesome-hpp)
+- [cppreference.com](https://en.cppreference.com/w/cpp/links/libs)
 
 ## Credits
 
