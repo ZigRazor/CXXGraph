@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1627031636106,
+  "lastUpdate": 1627285324987,
   "repoUrl": "https://github.com/ZigRazor/CXXGraph",
   "entries": {
     "Benchmark": [
@@ -1026,6 +1026,126 @@ window.BENCHMARK_DATA = {
             "value": 26788989985.99999,
             "unit": "ns/iter",
             "extra": "iterations: 1\ncpu: 26774816855 ns\nthreads: 1"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "zigrazor@gmail.com",
+            "name": "ZigRazor",
+            "username": "ZigRazor"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3f8ffd251906e9b374c2622ff3304bce90d93542",
+          "message": "Merge branch 'master' of https://github.com/ZigRazor/CXXGraph",
+          "timestamp": "2021-07-26T07:38:22Z",
+          "tree_id": "b728f36be9bb2f8ac0584a8c5686730628150bed",
+          "url": "https://github.com/ZigRazor/CXXGraph/commit/3f8ffd251906e9b374c2622ff3304bce90d93542"
+        },
+        "date": 1627285324129,
+        "tool": "googlecpp",
+        "benches": [
+          {
+            "name": "NodeCreation",
+            "value": 6.999999868639861e-7,
+            "unit": "ns/iter",
+            "extra": "iterations: 1000000000\ncpu: 7.99999999995249e-7 ns\nthreads: 1"
+          },
+          {
+            "name": "NodeCreationDestruction_new_delete",
+            "value": 15.70412069883594,
+            "unit": "ns/iter",
+            "extra": "iterations: 44543197\ncpu: 15.70214219244299 ns\nthreads: 1"
+          },
+          {
+            "name": "NodeGetId",
+            "value": 6.999999868639861e-7,
+            "unit": "ns/iter",
+            "extra": "iterations: 1000000000\ncpu: 6.999999999646178e-7 ns\nthreads: 1"
+          },
+          {
+            "name": "NodeGetData",
+            "value": 7.00000043707405e-7,
+            "unit": "ns/iter",
+            "extra": "iterations: 1000000000\ncpu: 6.999999999646178e-7 ns\nthreads: 1"
+          },
+          {
+            "name": "BM_EdgeCreation",
+            "value": 8.000000093488779e-7,
+            "unit": "ns/iter",
+            "extra": "iterations: 1000000000\ncpu: 8.000000000230045e-7 ns\nthreads: 1"
+          },
+          {
+            "name": "EdgeCreationDestruction_new_delete",
+            "value": 15.726807634852069,
+            "unit": "ns/iter",
+            "extra": "iterations: 44614984\ncpu: 15.725137299163887 ns\nthreads: 1"
+          },
+          {
+            "name": "EdgeGetId",
+            "value": 7.00000043707405e-7,
+            "unit": "ns/iter",
+            "extra": "iterations: 1000000000\ncpu: 8.000000000230045e-7 ns\nthreads: 1"
+          },
+          {
+            "name": "NodeGetNodePair",
+            "value": 8.000000093488779e-7,
+            "unit": "ns/iter",
+            "extra": "iterations: 1000000000\ncpu: 6.999999999646178e-7 ns\nthreads: 1"
+          },
+          {
+            "name": "GraphCreation",
+            "value": 6.000000212225132e-7,
+            "unit": "ns/iter",
+            "extra": "iterations: 1000000000\ncpu: 6.999999997425732e-7 ns\nthreads: 1"
+          },
+          {
+            "name": "AddEdge",
+            "value": 3.7105630242632524,
+            "unit": "ns/iter",
+            "extra": "iterations: 189128137\ncpu: 3.7104112541435317 ns\nthreads: 1"
+          },
+          {
+            "name": "AddEdgeX/1",
+            "value": 5.956156726591454,
+            "unit": "ns/iter",
+            "extra": "iterations: 116727735\ncpu: 5.955698480742388 ns\nthreads: 1"
+          },
+          {
+            "name": "AddEdgeX/16",
+            "value": 265.12992189332914,
+            "unit": "ns/iter",
+            "extra": "iterations: 2678517\ncpu: 265.03186838089886 ns\nthreads: 1"
+          },
+          {
+            "name": "AddEdgeX/256",
+            "value": 71989.84500668973,
+            "unit": "ns/iter",
+            "extra": "iterations: 9723\ncpu: 71982.3908258768 ns\nthreads: 1"
+          },
+          {
+            "name": "AddEdgeX/4096",
+            "value": 20430541.24137872,
+            "unit": "ns/iter",
+            "extra": "iterations: 29\ncpu: 20430038.37931032 ns\nthreads: 1"
+          },
+          {
+            "name": "AddEdgeX/65536",
+            "value": 10400265155.999989,
+            "unit": "ns/iter",
+            "extra": "iterations: 1\ncpu: 10392636713.999998 ns\nthreads: 1"
+          },
+          {
+            "name": "AddEdgeX/262144",
+            "value": 24578297002,
+            "unit": "ns/iter",
+            "extra": "iterations: 1\ncpu: 24576489010 ns\nthreads: 1"
           }
         ]
       }
