@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">CXXGraph
-   &#160;<span id="projectnumber">0.1.3</span>
+   &#160;<span id="projectnumber">0.1.4</span>
    </div>
    <div id="projectbrief">CXXGraph is a small library, header only, that manages the Graph and it&#39;s algorithm in C++</div>
   </td>
@@ -77,13 +77,19 @@ $(function() {
 <div class="title">CXXGRAPH::Graph&lt; T &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Class that implement the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a>. ( This class is not Thread Safe )  
+ <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d9/d69/Graph_8hpp_source.html">Graph.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for CXXGRAPH::Graph&lt; T &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dc/d80/classCXXGRAPH_1_1Graph__inherit__graph.png" border="0" usemap="#aCXXGRAPH_1_1Graph_3_01T_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="aCXXGRAPH_1_1Graph_3_01T_01_4_inherit__map" id="aCXXGRAPH_1_1Graph_3_01T_01_4_inherit__map">
-<area shape="rect" title=" " alt="" coords="12,5,179,32"/>
-<area shape="rect" href="../../d4/d32/classCXXGRAPH_1_1Partition.html" title=" " alt="" coords="5,80,185,107"/>
+<area shape="rect" title="Class that implement the Graph. ( This class is not Thread Safe )" alt="" coords="121,5,288,32"/>
+<area shape="rect" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html" title="Class that implement the Thread Safe Graph." alt="" coords="5,80,196,107"/>
+<area shape="rect" href="../../d4/d32/classCXXGRAPH_1_1Partition.html" title=" " alt="" coords="220,80,400,107"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -94,7 +100,7 @@ Public Types</h2></td></tr>
 , <b>OUT_1</b>
 , <b>OUT_2</b>
  }</td></tr>
-<tr class="memdesc:af40584c5cd15ce35ad36a736b3429c71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the Input/Output format of the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">Graph</a> for Import/Export functions.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71">More...</a><br /></td></tr>
+<tr class="memdesc:af40584c5cd15ce35ad36a736b3429c71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the Input/Output format of the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a> for Import/Export functions.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71">More...</a><br /></td></tr>
 <tr class="separator:af40584c5cd15ce35ad36a736b3429c71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1549d3208d57a922c72d0885894f1c32"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a1549d3208d57a922c72d0885894f1c32">E_PartitionAlgorithm</a> { <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a1549d3208d57a922c72d0885894f1c32acc15214a985a3049a81a874878ffbabb">GREEDY_VC</a>
 , <b>ALG_1</b>
@@ -102,68 +108,69 @@ Public Types</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a1549d3208d57a922c72d0885894f1c32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the <a class="el" href="../../d4/d32/classCXXGRAPH_1_1Partition.html">Partition</a> Algorithm.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a1549d3208d57a922c72d0885894f1c32">More...</a><br /></td></tr>
 <tr class="separator:a1549d3208d57a922c72d0885894f1c32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41742703923f919470b2ca1496b124d6"><td class="memItemLeft" align="right" valign="top"><a id="a41742703923f919470b2ca1496b124d6"></a>
-typedef enum <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71">CXXGRAPH::Graph::E_InputOutputFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a41742703923f919470b2ca1496b124d6">InputOutputFormat</a></td></tr>
-<tr class="memdesc:a41742703923f919470b2ca1496b124d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the Input/Output format of the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">Graph</a> for Import/Export functions. <br /></td></tr>
-<tr class="separator:a41742703923f919470b2ca1496b124d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3df0188b5897ee4404982a27cd543485"><td class="memItemLeft" align="right" valign="top"><a id="a3df0188b5897ee4404982a27cd543485"></a>
-typedef enum <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a1549d3208d57a922c72d0885894f1c32">CXXGRAPH::Graph::E_PartitionAlgorithm</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a3df0188b5897ee4404982a27cd543485">PartitionAlgorithm</a></td></tr>
-<tr class="memdesc:a3df0188b5897ee4404982a27cd543485"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the <a class="el" href="../../d4/d32/classCXXGRAPH_1_1Partition.html">Partition</a> Algorithm. <br /></td></tr>
-<tr class="separator:a3df0188b5897ee4404982a27cd543485"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fc898269f0671f33aa4a352c5e265d7"><td class="memItemLeft" align="right" valign="top"><a id="a2fc898269f0671f33aa4a352c5e265d7"></a>
+typedef <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71">E_InputOutputFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>InputOutputFormat</b></td></tr>
+<tr class="separator:a2fc898269f0671f33aa4a352c5e265d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0c22e0c17eb8ebd34fc875086aca616"><td class="memItemLeft" align="right" valign="top"><a id="ae0c22e0c17eb8ebd34fc875086aca616"></a>
+typedef <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a1549d3208d57a922c72d0885894f1c32">E_PartitionAlgorithm</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PartitionAlgorithm</b></td></tr>
+<tr class="separator:ae0c22e0c17eb8ebd34fc875086aca616"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a49433844912894835ea1142fd90abfb1"><td class="memItemLeft" align="right" valign="top"><a id="a49433844912894835ea1142fd90abfb1"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Graph</b> (const std::list&lt; const <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>&lt; T &gt; * &gt; &amp;edgeSet)</td></tr>
 <tr class="separator:a49433844912894835ea1142fd90abfb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d00ee150e0876b4edb10616e052021a"><td class="memItemLeft" align="right" valign="top"><a id="a1d00ee150e0876b4edb10616e052021a"></a>
-const std::list&lt; const <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>&lt; T &gt; * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getEdgeSet</b> () const</td></tr>
+<tr class="memitem:a1d00ee150e0876b4edb10616e052021a"><td class="memItemLeft" align="right" valign="top">virtual const std::list&lt; const <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>&lt; T &gt; * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a1d00ee150e0876b4edb10616e052021a">getEdgeSet</a> () const</td></tr>
+<tr class="memdesc:a1d00ee150e0876b4edb10616e052021a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that return the <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> set of the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a> Note: No Thread Safe.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a1d00ee150e0876b4edb10616e052021a">More...</a><br /></td></tr>
 <tr class="separator:a1d00ee150e0876b4edb10616e052021a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2cd256d3638bf15ea926b6da6bc6097"><td class="memItemLeft" align="right" valign="top"><a id="af2cd256d3638bf15ea926b6da6bc6097"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setEdgeSet</b> (std::list&lt; const <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>&lt; T &gt; * &gt; &amp;edgeSet)</td></tr>
+<tr class="memitem:af2cd256d3638bf15ea926b6da6bc6097"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#af2cd256d3638bf15ea926b6da6bc6097">setEdgeSet</a> (std::list&lt; const <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>&lt; T &gt; * &gt; &amp;edgeSet)</td></tr>
+<tr class="memdesc:af2cd256d3638bf15ea926b6da6bc6097"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function set the <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> Set of the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a> Note: No Thread Safe.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#af2cd256d3638bf15ea926b6da6bc6097">More...</a><br /></td></tr>
 <tr class="separator:af2cd256d3638bf15ea926b6da6bc6097"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95fc676b51609323126e1d6f2366c4bb"><td class="memItemLeft" align="right" valign="top"><a id="a95fc676b51609323126e1d6f2366c4bb"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>addEdge</b> (const <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>&lt; T &gt; *edge)</td></tr>
+<tr class="memitem:a95fc676b51609323126e1d6f2366c4bb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a95fc676b51609323126e1d6f2366c4bb">addEdge</a> (const <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>&lt; T &gt; *edge)</td></tr>
+<tr class="memdesc:a95fc676b51609323126e1d6f2366c4bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function add an <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> to the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a> <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> Set Note: No Thread Safe.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a95fc676b51609323126e1d6f2366c4bb">More...</a><br /></td></tr>
 <tr class="separator:a95fc676b51609323126e1d6f2366c4bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fe93321484d4144d3ff7db0ef33707c"><td class="memItemLeft" align="right" valign="top"><a id="a4fe93321484d4144d3ff7db0ef33707c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>removeEdge</b> (unsigned long edgeId)</td></tr>
+<tr class="memitem:a4fe93321484d4144d3ff7db0ef33707c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a4fe93321484d4144d3ff7db0ef33707c">removeEdge</a> (unsigned long edgeId)</td></tr>
+<tr class="memdesc:a4fe93321484d4144d3ff7db0ef33707c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function remove an <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> from the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a> <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> Set Note: No Thread Safe.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a4fe93321484d4144d3ff7db0ef33707c">More...</a><br /></td></tr>
 <tr class="separator:a4fe93321484d4144d3ff7db0ef33707c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae68cf3b1eb04907935c032755bd81004"><td class="memItemLeft" align="right" valign="top"><a id="ae68cf3b1eb04907935c032755bd81004"></a>
-const std::list&lt; const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getNodeSet</b> () const</td></tr>
+<tr class="memitem:ae68cf3b1eb04907935c032755bd81004"><td class="memItemLeft" align="right" valign="top">virtual const std::list&lt; const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#ae68cf3b1eb04907935c032755bd81004">getNodeSet</a> () const</td></tr>
+<tr class="memdesc:ae68cf3b1eb04907935c032755bd81004"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that return the <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a> Set of the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a> Note: No Thread Safe.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#ae68cf3b1eb04907935c032755bd81004">More...</a><br /></td></tr>
 <tr class="separator:ae68cf3b1eb04907935c032755bd81004"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4671c249cc900ab644b9142e1deaa534"><td class="memItemLeft" align="right" valign="top"><a id="a4671c249cc900ab644b9142e1deaa534"></a>
-const std::optional&lt; const <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>&lt; T &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getEdge</b> (unsigned long edgeId) const</td></tr>
+<tr class="memitem:a4671c249cc900ab644b9142e1deaa534"><td class="memItemLeft" align="right" valign="top">virtual const std::optional&lt; const <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>&lt; T &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a4671c249cc900ab644b9142e1deaa534">getEdge</a> (unsigned long edgeId) const</td></tr>
+<tr class="memdesc:a4671c249cc900ab644b9142e1deaa534"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that return an <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> with specific ID if Exist in the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a> Note: No Thread Safe.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a4671c249cc900ab644b9142e1deaa534">More...</a><br /></td></tr>
 <tr class="separator:a4671c249cc900ab644b9142e1deaa534"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad000477b7a25ea7bfd1edf589133b042"><td class="memItemLeft" align="right" valign="top"><a id="ad000477b7a25ea7bfd1edf589133b042"></a>
-const AdjacencyMatrix&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#ad000477b7a25ea7bfd1edf589133b042">getAdjMatrix</a> () const</td></tr>
-<tr class="memdesc:ad000477b7a25ea7bfd1edf589133b042"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function generate a list of adjacency matrix with every element of the matrix contain the node where is directed the link and the <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> corrispondent to the link. <br /></td></tr>
+virtual const AdjacencyMatrix&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#ad000477b7a25ea7bfd1edf589133b042">getAdjMatrix</a> () const</td></tr>
+<tr class="memdesc:ad000477b7a25ea7bfd1edf589133b042"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function generate a list of adjacency matrix with every element of the matrix contain the node where is directed the link and the <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> corrispondent to the link Note: No Thread Safe. <br /></td></tr>
 <tr class="separator:ad000477b7a25ea7bfd1edf589133b042"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d655cd624cedf47ee366d8c0ab31921"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="../../dd/d6c/structCXXGRAPH_1_1DijkstraResult__struct.html">DijkstraResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a8d655cd624cedf47ee366d8c0ab31921">dijkstra</a> (const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;source, const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;target) const</td></tr>
-<tr class="memdesc:a8d655cd624cedf47ee366d8c0ab31921"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function runs the dijkstra algorithm for some source node and target node in the graph and returns the shortest distance of target from the source.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a8d655cd624cedf47ee366d8c0ab31921">More...</a><br /></td></tr>
+<tr class="memitem:a8d655cd624cedf47ee366d8c0ab31921"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="../../dd/d6c/structCXXGRAPH_1_1DijkstraResult__struct.html">DijkstraResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a8d655cd624cedf47ee366d8c0ab31921">dijkstra</a> (const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;source, const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;target) const</td></tr>
+<tr class="memdesc:a8d655cd624cedf47ee366d8c0ab31921"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function runs the dijkstra algorithm for some source node and target node in the graph and returns the shortest distance of target from the source. Note: No Thread Safe.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a8d655cd624cedf47ee366d8c0ab31921">More...</a><br /></td></tr>
 <tr class="separator:a8d655cd624cedf47ee366d8c0ab31921"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae94a68dc57331c26070c3aec035264ef"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#ae94a68dc57331c26070c3aec035264ef">breadth_first_search</a> (const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;start) const</td></tr>
-<tr class="memdesc:ae94a68dc57331c26070c3aec035264ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function performs the breadth first search algorithm over the graph.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#ae94a68dc57331c26070c3aec035264ef">More...</a><br /></td></tr>
+<tr class="memitem:ae94a68dc57331c26070c3aec035264ef"><td class="memItemLeft" align="right" valign="top">virtual const std::vector&lt; <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#ae94a68dc57331c26070c3aec035264ef">breadth_first_search</a> (const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;start) const</td></tr>
+<tr class="memdesc:ae94a68dc57331c26070c3aec035264ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function performs the breadth first search algorithm over the graph Note: No Thread Safe.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#ae94a68dc57331c26070c3aec035264ef">More...</a><br /></td></tr>
 <tr class="separator:ae94a68dc57331c26070c3aec035264ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05d230bd6185b99b624227c4c82b7811"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a05d230bd6185b99b624227c4c82b7811">depth_first_search</a> (const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;start) const</td></tr>
-<tr class="memdesc:a05d230bd6185b99b624227c4c82b7811"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function performs the depth first search algorithm over the graph.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a05d230bd6185b99b624227c4c82b7811">More...</a><br /></td></tr>
+<tr class="memitem:a05d230bd6185b99b624227c4c82b7811"><td class="memItemLeft" align="right" valign="top">virtual const std::vector&lt; <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a05d230bd6185b99b624227c4c82b7811">depth_first_search</a> (const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;start) const</td></tr>
+<tr class="memdesc:a05d230bd6185b99b624227c4c82b7811"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function performs the depth first search algorithm over the graph Note: No Thread Safe.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a05d230bd6185b99b624227c4c82b7811">More...</a><br /></td></tr>
 <tr class="separator:a05d230bd6185b99b624227c4c82b7811"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91a818601c0df0e5abfbaf4da5918afa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a91a818601c0df0e5abfbaf4da5918afa">isCyclicDirectedGraphDFS</a> () const</td></tr>
-<tr class="memdesc:a91a818601c0df0e5abfbaf4da5918afa"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function uses DFS to check for cycle in the graph. Pay Attention, this function work only with directed <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">Graph</a>.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a91a818601c0df0e5abfbaf4da5918afa">More...</a><br /></td></tr>
+<tr class="memitem:a91a818601c0df0e5abfbaf4da5918afa"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a91a818601c0df0e5abfbaf4da5918afa">isCyclicDirectedGraphDFS</a> () const</td></tr>
+<tr class="memdesc:a91a818601c0df0e5abfbaf4da5918afa"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function uses DFS to check for cycle in the graph. Pay Attention, this function work only with directed <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a> Note: No Thread Safe.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a91a818601c0df0e5abfbaf4da5918afa">More...</a><br /></td></tr>
 <tr class="separator:a91a818601c0df0e5abfbaf4da5918afa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f76bb7230c1654dd6b1ec24d0291875"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a4f76bb7230c1654dd6b1ec24d0291875">isCyclicDirectedGraphBFS</a> () const</td></tr>
-<tr class="memdesc:a4f76bb7230c1654dd6b1ec24d0291875"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function uses BFS to check for cycle in the graph. Pay Attention, this function work only with directed <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">Graph</a>.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a4f76bb7230c1654dd6b1ec24d0291875">More...</a><br /></td></tr>
+<tr class="memitem:a4f76bb7230c1654dd6b1ec24d0291875"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a4f76bb7230c1654dd6b1ec24d0291875">isCyclicDirectedGraphBFS</a> () const</td></tr>
+<tr class="memdesc:a4f76bb7230c1654dd6b1ec24d0291875"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function uses BFS to check for cycle in the graph. Pay Attention, this function work only with directed <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a> Note: No Thread Safe.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a4f76bb7230c1654dd6b1ec24d0291875">More...</a><br /></td></tr>
 <tr class="separator:a4f76bb7230c1654dd6b1ec24d0291875"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c7ddb5c91f3ab7456c8203a740f52c9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a5c7ddb5c91f3ab7456c8203a740f52c9">isDirectedGraph</a> () const</td></tr>
-<tr class="memdesc:a5c7ddb5c91f3ab7456c8203a740f52c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function checks if a graph is directed.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a5c7ddb5c91f3ab7456c8203a740f52c9">More...</a><br /></td></tr>
+<tr class="memitem:a5c7ddb5c91f3ab7456c8203a740f52c9"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a5c7ddb5c91f3ab7456c8203a740f52c9">isDirectedGraph</a> () const</td></tr>
+<tr class="memdesc:a5c7ddb5c91f3ab7456c8203a740f52c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function checks if a graph is directed Note: No Thread Safe.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a5c7ddb5c91f3ab7456c8203a740f52c9">More...</a><br /></td></tr>
 <tr class="separator:a5c7ddb5c91f3ab7456c8203a740f52c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a1ffeb9ef3b62b38c10bd84b44170a0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a5a1ffeb9ef3b62b38c10bd84b44170a0">writeToFile</a> (<a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a41742703923f919470b2ca1496b124d6">InputOutputFormat</a> format=InputOutputFormat::STANDARD_CSV, const std::string &amp;workingDir=&quot;.&quot;, const std::string &amp;OFileName=&quot;graph&quot;, bool compress=false, bool writeNodeFeat=false, bool writeEdgeWeight=false) const</td></tr>
-<tr class="memdesc:a5a1ffeb9ef3b62b38c10bd84b44170a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function write the graph in an output file.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a5a1ffeb9ef3b62b38c10bd84b44170a0">More...</a><br /></td></tr>
+<tr class="memitem:a662a0e15cd997252639e7a257b830190"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="../../d5/d93/structCXXGRAPH_1_1DialResult__struct.html">DialResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a662a0e15cd997252639e7a257b830190">dial</a> (const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;source, int maxWeight) const</td></tr>
+<tr class="memdesc:a662a0e15cd997252639e7a257b830190"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function write the graph in an output file Note: No Thread Safe.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a662a0e15cd997252639e7a257b830190">More...</a><br /></td></tr>
+<tr class="separator:a662a0e15cd997252639e7a257b830190"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a1ffeb9ef3b62b38c10bd84b44170a0"><td class="memItemLeft" align="right" valign="top"><a id="a5a1ffeb9ef3b62b38c10bd84b44170a0"></a>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>writeToFile</b> (<a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71">InputOutputFormat</a> format=InputOutputFormat::STANDARD_CSV, const std::string &amp;workingDir=&quot;.&quot;, const std::string &amp;OFileName=&quot;graph&quot;, bool compress=false, bool writeNodeFeat=false, bool writeEdgeWeight=false) const</td></tr>
 <tr class="separator:a5a1ffeb9ef3b62b38c10bd84b44170a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd5baeb88c2b588c14383155fff4ec3e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#abd5baeb88c2b588c14383155fff4ec3e">readFromFile</a> (<a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a41742703923f919470b2ca1496b124d6">InputOutputFormat</a> format=InputOutputFormat::STANDARD_CSV, const std::string &amp;workingDir=&quot;.&quot;, const std::string &amp;OFileName=&quot;graph&quot;, bool compress=false, bool readNodeFeat=false, bool readEdgeWeight=false)</td></tr>
-<tr class="memdesc:abd5baeb88c2b588c14383155fff4ec3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function write the graph in an output file.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#abd5baeb88c2b588c14383155fff4ec3e">More...</a><br /></td></tr>
+<tr class="memitem:abd5baeb88c2b588c14383155fff4ec3e"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#abd5baeb88c2b588c14383155fff4ec3e">readFromFile</a> (<a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71">InputOutputFormat</a> format=InputOutputFormat::STANDARD_CSV, const std::string &amp;workingDir=&quot;.&quot;, const std::string &amp;OFileName=&quot;graph&quot;, bool compress=false, bool readNodeFeat=false, bool readEdgeWeight=false)</td></tr>
+<tr class="memdesc:abd5baeb88c2b588c14383155fff4ec3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function write the graph in an output file Note: No Thread Safe.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#abd5baeb88c2b588c14383155fff4ec3e">More...</a><br /></td></tr>
 <tr class="separator:abd5baeb88c2b588c14383155fff4ec3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb1d335334b510d037729719e8f579b6"><td class="memItemLeft" align="right" valign="top">PartitionMap&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#abb1d335334b510d037729719e8f579b6">partitionGraph</a> (<a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a3df0188b5897ee4404982a27cd543485">PartitionAlgorithm</a> algorithm, unsigned int numberOfPartitions) const</td></tr>
-<tr class="memdesc:abb1d335334b510d037729719e8f579b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function partition a graph in a set of partitions.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#abb1d335334b510d037729719e8f579b6">More...</a><br /></td></tr>
+<tr class="memitem:abb1d335334b510d037729719e8f579b6"><td class="memItemLeft" align="right" valign="top">virtual PartitionMap&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#abb1d335334b510d037729719e8f579b6">partitionGraph</a> (<a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a1549d3208d57a922c72d0885894f1c32">PartitionAlgorithm</a> algorithm, unsigned int numberOfPartitions) const</td></tr>
+<tr class="memdesc:abb1d335334b510d037729719e8f579b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function partition a graph in a set of partitions Note: No Thread Safe.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#abb1d335334b510d037729719e8f579b6">More...</a><br /></td></tr>
 <tr class="separator:abb1d335334b510d037729719e8f579b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
@@ -175,7 +182,12 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;os, const AdjacencyMatrix&lt; T &gt; &amp;adj)</td></tr>
 <tr class="separator:a35626ad6a1edaf1309a82bcdd9ab4ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Enumeration Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename T&gt;<br />
+class CXXGRAPH::Graph&lt; T &gt;</h3>
+
+<p>Class that implement the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a>. ( This class is not Thread Safe ) </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="af40584c5cd15ce35ad36a736b3429c71"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af40584c5cd15ce35ad36a736b3429c71">&#9670;&nbsp;</a></span>E_InputOutputFormat</h2>
 
@@ -190,7 +202,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Specify the Input/Output format of the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">Graph</a> for Import/Export functions. </p>
+<p>Specify the Input/Output format of the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a> for Import/Export functions. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af40584c5cd15ce35ad36a736b3429c71a12e3f194ab31b8c22b5789dda8d4645c"></a>STANDARD_CSV&#160;</td><td class="fielddoc"><p>A standard csv format. </p>
 </td></tr>
@@ -223,6 +235,44 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a95fc676b51609323126e1d6f2366c4bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95fc676b51609323126e1d6f2366c4bb">&#9670;&nbsp;</a></span>addEdge()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">CXXGRAPH::Graph</a>&lt; T &gt;::addEdge </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>&lt; T &gt; *&#160;</td>
+          <td class="paramname"><em>edge</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Function add an <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> to the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a> <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> Set Note: No Thread Safe. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">edge</td><td>The <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> to insert </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#a5bdacfe9db0d77fec01c46420d7d7024">CXXGRAPH::Graph_TS&lt; T &gt;</a>.</p>
+
+</div>
+</div>
 <a id="ae94a68dc57331c26070c3aec035264ef"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae94a68dc57331c26070c3aec035264ef">&#9670;&nbsp;</a></span>breadth_first_search()</h2>
 
@@ -230,6 +280,9 @@ template&lt;typename T &gt; </div>
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const std::vector&lt; <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &gt; <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">CXXGRAPH::Graph</a>&lt; T &gt;::breadth_first_search </td>
@@ -239,9 +292,14 @@ template&lt;typename T &gt; </div>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Function performs the breadth first search algorithm over the graph. </p>
+<p>Function performs the breadth first search algorithm over the graph Note: No Thread Safe. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">start</td><td><a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a> from where traversing starts </td></tr>
@@ -249,6 +307,8 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a vector of <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a> indicating which <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a> were visited during the search. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#a88122ab10e34ecb9aae4c64c907a82b9">CXXGRAPH::Graph_TS&lt; T &gt;</a>.</p>
 
 </div>
 </div>
@@ -259,6 +319,9 @@ template&lt;typename T &gt; </div>
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const std::vector&lt; <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &gt; <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">CXXGRAPH::Graph</a>&lt; T &gt;::depth_first_search </td>
@@ -268,9 +331,14 @@ template&lt;typename T &gt; </div>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Function performs the depth first search algorithm over the graph. </p>
+<p>Function performs the depth first search algorithm over the graph Note: No Thread Safe. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">start</td><td><a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a> from where traversing starts </td></tr>
@@ -278,6 +346,71 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a vector of <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a> indicating which <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a> were visited during the search. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#aa8844339395cc7e6cecd1a4e0ab57804">CXXGRAPH::Graph_TS&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a662a0e15cd997252639e7a257b830190"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a662a0e15cd997252639e7a257b830190">&#9670;&nbsp;</a></span>dial()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="../../d5/d93/structCXXGRAPH_1_1DialResult__struct.html">DialResult</a> <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">CXXGRAPH::Graph</a>&lt; T &gt;::dial </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>maxWeight</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This function write the graph in an output file Note: No Thread Safe. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">format</td><td>The Output format of the file </td></tr>
+    <tr><td class="paramname">workingDir</td><td>The path to the directory in which will be placed the output file </td></tr>
+    <tr><td class="paramname">OFileName</td><td>The Output File Name ( ) </td></tr>
+    <tr><td class="paramname">compress</td><td>Indicates if the output will be compressed </td></tr>
+    <tr><td class="paramname">writeNodeFeat</td><td>Indicates if export also <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a> Features </td></tr>
+    <tr><td class="paramname">writeEdgeWeight</td><td>Indicates if export also <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> Weights </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if all OK, else return a negative value</dd></dl>
+<p>Function runs the Dial algorithm (Optimized Dijkstra for small range weights) for some source node and target node in the graph and returns the shortest distance of target from the source. Note: No Thread Safe</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>source vertex </td></tr>
+    <tr><td class="paramname">maxWeight</td><td>maximum weight of the edge</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>shortest distance for all nodes reachable from source else ERROR in case there is error in the computation. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#aec71b7cd4b3460b032806c0b870cdbef">CXXGRAPH::Graph_TS&lt; T &gt;</a>.</p>
 
 </div>
 </div>
@@ -288,6 +421,9 @@ template&lt;typename T &gt; </div>
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const <a class="el" href="../../dd/d6c/structCXXGRAPH_1_1DijkstraResult__struct.html">DijkstraResult</a> <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">CXXGRAPH::Graph</a>&lt; T &gt;::dijkstra </td>
@@ -307,9 +443,14 @@ template&lt;typename T &gt; </div>
           <td></td><td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Function runs the dijkstra algorithm for some source node and target node in the graph and returns the shortest distance of target from the source. </p>
+<p>Function runs the dijkstra algorithm for some source node and target node in the graph and returns the shortest distance of target from the source. Note: No Thread Safe. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">source</td><td>source vertex </td></tr>
@@ -318,6 +459,105 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>shortest distance if target is reachable from source else ERROR in case if target is not reachable from source or there is error in the computation. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#a423f7d958e9c758682178ad6204b81af">CXXGRAPH::Graph_TS&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a4671c249cc900ab644b9142e1deaa534"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4671c249cc900ab644b9142e1deaa534">&#9670;&nbsp;</a></span>getEdge()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::optional&lt; const <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>&lt; T &gt; * &gt; <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">CXXGRAPH::Graph</a>&lt; T &gt;::getEdge </td>
+          <td>(</td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>edgeId</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Function that return an <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> with specific ID if Exist in the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a> Note: No Thread Safe. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">edgeId</td><td>The <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> Id to return </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> if exist </dd></dl>
+
+<p>Reimplemented in <a class="el" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#a2514461be9e322c242b44e414f76efc8">CXXGRAPH::Graph_TS&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a1d00ee150e0876b4edb10616e052021a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d00ee150e0876b4edb10616e052021a">&#9670;&nbsp;</a></span>getEdgeSet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::list&lt; const <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>&lt; T &gt; * &gt; &amp; <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">CXXGRAPH::Graph</a>&lt; T &gt;::getEdgeSet</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Function that return the <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> set of the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a> Note: No Thread Safe. </p>
+<dl class="section return"><dt>Returns</dt><dd>a list of Edges of the graph </dd></dl>
+
+<p>Reimplemented in <a class="el" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#aa71357e59aabf422cf1578b94336f7e7">CXXGRAPH::Graph_TS&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<a id="ae68cf3b1eb04907935c032755bd81004"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae68cf3b1eb04907935c032755bd81004">&#9670;&nbsp;</a></span>getNodeSet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::list&lt; const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; * &gt; <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">CXXGRAPH::Graph</a>&lt; T &gt;::getNodeSet</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Function that return the <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a> Set of the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a> Note: No Thread Safe. </p>
+<dl class="section return"><dt>Returns</dt><dd>a list of Nodes of the graph </dd></dl>
+
+<p>Reimplemented in <a class="el" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#a2c9873692bef042d5f94ab8e7018bf95">CXXGRAPH::Graph_TS&lt; T &gt;</a>.</p>
 
 </div>
 </div>
@@ -328,15 +568,25 @@ template&lt;typename T &gt; </div>
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">CXXGRAPH::Graph</a>&lt; T &gt;::isCyclicDirectedGraphBFS</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>This function uses BFS to check for cycle in the graph. Pay Attention, this function work only with directed <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">Graph</a>. </p>
+<p>This function uses BFS to check for cycle in the graph. Pay Attention, this function work only with directed <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a> Note: No Thread Safe. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if a cycle is detected, else false. ( false is returned also if the graph in indirected) </dd></dl>
+
+<p>Reimplemented in <a class="el" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#a71b397271c5157bab1778e5e9341d793">CXXGRAPH::Graph_TS&lt; T &gt;</a>.</p>
 
 </div>
 </div>
@@ -347,15 +597,25 @@ template&lt;typename T &gt; </div>
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">CXXGRAPH::Graph</a>&lt; T &gt;::isCyclicDirectedGraphDFS</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>This function uses DFS to check for cycle in the graph. Pay Attention, this function work only with directed <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">Graph</a>. </p>
+<p>This function uses DFS to check for cycle in the graph. Pay Attention, this function work only with directed <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a> Note: No Thread Safe. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if a cycle is detected, else false. ( false is returned also if the graph in indirected) </dd></dl>
+
+<p>Reimplemented in <a class="el" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#af2c7ac7142b3de0d088a8af736b26f33">CXXGRAPH::Graph_TS&lt; T &gt;</a>.</p>
 
 </div>
 </div>
@@ -366,15 +626,25 @@ template&lt;typename T &gt; </div>
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">CXXGRAPH::Graph</a>&lt; T &gt;::isDirectedGraph</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>This function checks if a graph is directed. </p>
+<p>This function checks if a graph is directed Note: No Thread Safe. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if the graph is directed, else false. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#a39cf608717962cd84e4a3606135ee1f4">CXXGRAPH::Graph_TS&lt; T &gt;</a>.</p>
 
 </div>
 </div>
@@ -385,11 +655,14 @@ template&lt;typename T &gt; </div>
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">PartitionMap&lt; T &gt; <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">CXXGRAPH::Graph</a>&lt; T &gt;::partitionGraph </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a3df0188b5897ee4404982a27cd543485">PartitionAlgorithm</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a1549d3208d57a922c72d0885894f1c32">PartitionAlgorithm</a>&#160;</td>
           <td class="paramname"><em>algorithm</em>, </td>
         </tr>
         <tr>
@@ -404,9 +677,14 @@ template&lt;typename T &gt; </div>
           <td></td><td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>This function partition a graph in a set of partitions. </p>
+<p>This function partition a graph in a set of partitions Note: No Thread Safe. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">algorithm</td><td>The partition algorithm </td></tr>
@@ -425,11 +703,14 @@ template&lt;typename T &gt; </div>
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">CXXGRAPH::Graph</a>&lt; T &gt;::readFromFile </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a41742703923f919470b2ca1496b124d6">InputOutputFormat</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71">InputOutputFormat</a>&#160;</td>
           <td class="paramname"><em>format</em> = <code>InputOutputFormat::STANDARD_CSV</code>, </td>
         </tr>
         <tr>
@@ -468,9 +749,14 @@ template&lt;typename T &gt; </div>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>This function write the graph in an output file. </p>
+<p>This function write the graph in an output file Note: No Thread Safe. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">format</td><td>The Input format of the file </td></tr>
@@ -486,71 +772,79 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a5a1ffeb9ef3b62b38c10bd84b44170a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a1ffeb9ef3b62b38c10bd84b44170a0">&#9670;&nbsp;</a></span>writeToFile()</h2>
+<a id="a4fe93321484d4144d3ff7db0ef33707c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fe93321484d4144d3ff7db0ef33707c">&#9670;&nbsp;</a></span>removeEdge()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">CXXGRAPH::Graph</a>&lt; T &gt;::writeToFile </td>
+          <td class="memname">void <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">CXXGRAPH::Graph</a>&lt; T &gt;::removeEdge </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a41742703923f919470b2ca1496b124d6">InputOutputFormat</a>&#160;</td>
-          <td class="paramname"><em>format</em> = <code>InputOutputFormat::STANDARD_CSV</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>edgeId</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>workingDir</em> = <code>&quot;.&quot;</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>OFileName</em> = <code>&quot;graph&quot;</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>compress</em> = <code>false</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>writeNodeFeat</em> = <code>false</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>writeEdgeWeight</em> = <code>false</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>This function write the graph in an output file. </p>
+<p>Function remove an <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> from the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a> <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> Set Note: No Thread Safe. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">format</td><td>The Output format of the file </td></tr>
-    <tr><td class="paramname">workingDir</td><td>The path to the directory in which will be placed the output file </td></tr>
-    <tr><td class="paramname">OFileName</td><td>The Output File Name ( ) </td></tr>
-    <tr><td class="paramname">compress</td><td>Indicates if the output will be compressed </td></tr>
-    <tr><td class="paramname">writeNodeFeat</td><td>Indicates if export also <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a> Features </td></tr>
-    <tr><td class="paramname">writeEdgeWeight</td><td>Indicates if export also <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> Weights </td></tr>
+    <tr><td class="paramname">edgeId</td><td>The <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> Id to remove </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if all OK, else return a negative value </dd></dl>
+
+<p>Reimplemented in <a class="el" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#a8e74dba5178c47c0abd054b1015c734a">CXXGRAPH::Graph_TS&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<a id="af2cd256d3638bf15ea926b6da6bc6097"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2cd256d3638bf15ea926b6da6bc6097">&#9670;&nbsp;</a></span>setEdgeSet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html">CXXGRAPH::Graph</a>&lt; T &gt;::setEdgeSet </td>
+          <td>(</td>
+          <td class="paramtype">std::list&lt; const <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>&lt; T &gt; * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>edgeSet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Function set the <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> Set of the <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a> Note: No Thread Safe. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">edgeSet</td><td>The <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a> Set </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#a2fc8067ede63880fd645206ef9a23380">CXXGRAPH::Graph_TS&lt; T &gt;</a>.</p>
 
 </div>
 </div>

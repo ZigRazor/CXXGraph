@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['setpartitionid_23',['setPartitionId',['../d4/d32/classCXXGRAPH_1_1Partition.html#a71935c588f9f4caac9fcee25b667bd4e',1,'CXXGRAPH::Partition']]],
-  ['standard_5fcsv_24',['STANDARD_CSV',['../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71a12e3f194ab31b8c22b5789dda8d4645c',1,'CXXGRAPH::Graph']]],
-  ['standard_5ftsv_25',['STANDARD_TSV',['../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71a28e4461e98949e163fe3ad5982065d76',1,'CXXGRAPH::Graph']]]
+  ['reader_27',['Reader',['../d2/d3f/classCXXGRAPH_1_1Reader.html',1,'CXXGRAPH']]],
+  ['readfromfile_28',['readFromFile',['../d0/df2/classCXXGRAPH_1_1Graph.html#abd5baeb88c2b588c14383155fff4ec3e',1,'CXXGRAPH::Graph::readFromFile()'],['../da/da5/classCXXGRAPH_1_1Graph__TS.html#aeb611d968d8359fd805dc31f20adc701',1,'CXXGRAPH::Graph_TS::readFromFile()']]],
+  ['removeedge_29',['removeEdge',['../d0/df2/classCXXGRAPH_1_1Graph.html#a4fe93321484d4144d3ff7db0ef33707c',1,'CXXGRAPH::Graph::removeEdge()'],['../da/da5/classCXXGRAPH_1_1Graph__TS.html#a8e74dba5178c47c0abd054b1015c734a',1,'CXXGRAPH::Graph_TS::removeEdge()']]]
 ];

@@ -1,0 +1,46 @@
+\hypertarget{classCXXGRAPH_1_1Writer}{}\doxysection{CXXGRAPH\+::Writer$<$ T $>$ Class Template Reference}
+\label{classCXXGRAPH_1_1Writer}\index{CXXGRAPH::Writer$<$ T $>$@{CXXGRAPH::Writer$<$ T $>$}}
+
+
+{\ttfamily \#include $<$Graph.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual int \mbox{\hyperlink{classCXXGRAPH_1_1Writer_aee299d7e7dbda1ca99c35b9f2d92149c}{write\+Graph}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}$<$ T $>$ \&graph, std\+::ofstream \&file)=0
+\begin{DoxyCompactList}\small\item\em Function performs the writing of the \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} to the file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class CXXGRAPH\+::\+Writer$<$ T $>$}
+
+Interface to implement for a custom writer. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCXXGRAPH_1_1Writer_aee299d7e7dbda1ca99c35b9f2d92149c}\label{classCXXGRAPH_1_1Writer_aee299d7e7dbda1ca99c35b9f2d92149c}} 
+\index{CXXGRAPH::Writer$<$ T $>$@{CXXGRAPH::Writer$<$ T $>$}!writeGraph@{writeGraph}}
+\index{writeGraph@{writeGraph}!CXXGRAPH::Writer$<$ T $>$@{CXXGRAPH::Writer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{writeGraph()}{writeGraph()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+virtual int \mbox{\hyperlink{classCXXGRAPH_1_1Writer}{CXXGRAPH\+::\+Writer}}$<$ T $>$\+::write\+Graph (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}$<$ T $>$ \&}]{graph,  }\item[{std\+::ofstream \&}]{file }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Function performs the writing of the \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} to the file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em graph} & The graph to be written. \\
+\hline
+{\em file} & The output file to be written. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a negative value if is impossible to write the graph from the file, else 0 if the graph is write successfully. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/github/workspace/include/Graph.\+hpp\end{DoxyCompactItemize}

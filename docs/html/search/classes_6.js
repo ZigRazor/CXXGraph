@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['weighted_40',['Weighted',['../db/d54/classCXXGRAPH_1_1Weighted.html',1,'CXXGRAPH']]]
+  ['threadsafe_51',['ThreadSafe',['../d9/d2f/classCXXGRAPH_1_1ThreadSafe.html',1,'CXXGRAPH']]]
 ];

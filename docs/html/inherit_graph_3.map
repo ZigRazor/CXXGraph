@@ -1,3 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d3/dd2/classCXXGRAPH_1_1Node.html" title=" " alt="" coords="5,5,168,32"/>
+<area shape="rect" id="node1" href="$d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )" alt="" coords="7,56,173,83"/>
+<area shape="rect" id="node2" href="$da/da5/classCXXGRAPH_1_1Graph__TS.html" title="Class that implement the Thread Safe Graph." alt="" coords="223,5,413,32"/>
+<area shape="rect" id="node3" href="$d4/d32/classCXXGRAPH_1_1Partition.html" title=" " alt="" coords="228,56,408,83"/>
+<area shape="rect" id="node4" href="$d9/d2f/classCXXGRAPH_1_1ThreadSafe.html" title=" " alt="" coords="5,5,175,32"/>
 </map>
