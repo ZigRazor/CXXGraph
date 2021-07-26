@@ -97,4 +97,4 @@ target_link_libraries(benchmark
 					   libbenchmark_main.a
 					   pthread )
 
-
+install(FILES include/Graph.hpp DESTINATION /usr/include)
