@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['breadth_5ffirst_5fsearch_41',['breadth_first_search',['../d0/df2/classCXXGRAPH_1_1Graph.html#ae94a68dc57331c26070c3aec035264ef',1,'CXXGRAPH::Graph']]]
+  ['addedge_56',['addEdge',['../d0/df2/classCXXGRAPH_1_1Graph.html#a95fc676b51609323126e1d6f2366c4bb',1,'CXXGRAPH::Graph::addEdge()'],['../da/da5/classCXXGRAPH_1_1Graph__TS.html#a5bdacfe9db0d77fec01c46420d7d7024',1,'CXXGRAPH::Graph_TS::addEdge()']]]
 ];
