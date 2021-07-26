@@ -320,7 +320,7 @@ namespace CXXGRAPH
 		const Node<T> &getFrom() const;
 		const Node<T> &getTo() const;
 		const std::optional<bool> isDirected() const override;
-		virtual const std::optional<bool> isWeighted() const override;
+		const std::optional<bool> isWeighted() const override;
 		//operator
 		explicit operator UndirectedEdge<T>() const { return UndirectedEdge<T>(Edge<T>::getId(), Edge<T>::getNodePair()); }
 
@@ -545,6 +545,8 @@ namespace CXXGRAPH
 
 	template <typename T>
 	class Partition;
+
+	/// Class that implement the Graph. ( This class is not Thread Safe )
 	template <typename T>
 	class Graph
 	{
@@ -582,21 +584,72 @@ namespace CXXGRAPH
 		Graph() = default;
 		Graph(const std::list<const Edge<T> *> &edgeSet);
 		~Graph() = default;
+		/**
+ 		* \brief
+ 		* Function that return the Edge set of the Graph
+		* Note: No Thread Safe
+		*
+ 		* @returns a list of Edges of the graph
+ 		*
+ 		*/
 		virtual const std::list<const Edge<T> *> &getEdgeSet() const;
+		/**
+ 		* \brief
+ 		* Function set the Edge Set of the Graph
+		* Note: No Thread Safe
+ 		*
+ 		* @param edgeSet The Edge Set
+ 		*
+ 		*/
 		virtual void setEdgeSet(std::list<const Edge<T> *> &edgeSet);
+		/**
+ 		* \brief
+ 		* Function add an Edge to the Graph Edge Set
+		* Note: No Thread Safe
+ 		*
+ 		* @param edge The Edge to insert
+ 		*
+ 		*/
 		virtual void addEdge(const Edge<T> *edge);
+		/**
+ 		* \brief
+ 		* Function remove an Edge from the Graph Edge Set
+		* Note: No Thread Safe
+ 		*
+ 		* @param edgeId The Edge Id to remove
+ 		*
+ 		*/
 		virtual void removeEdge(unsigned long edgeId);
+		/**
+ 		* \brief
+ 		* Function that return the Node Set of the Graph
+		* Note: No Thread Safe
+ 		*
+ 		* @returns a list of Nodes of the graph
+ 		*
+ 		*/
 		virtual const std::list<const Node<T> *> getNodeSet() const;
+		/**
+ 		* \brief
+ 		* Function that return an Edge with specific ID if Exist in the Graph
+		* Note: No Thread Safe
+ 		*
+		* @param edgeId The Edge Id to return
+ 		* @returns the Edge if exist
+ 		*
+ 		*/
 		virtual const std::optional<const Edge<T> *> getEdge(unsigned long edgeId) const;
 		/**
 		* @brief This function generate a list of adjacency matrix with every element of the matrix
 		* contain the node where is directed the link and the Edge corrispondent to the link
+		* Note: No Thread Safe
 		*/
 		virtual const AdjacencyMatrix<T> getAdjMatrix() const;
 		/**
  		* @brief Function runs the dijkstra algorithm for some source node and
  		* target node in the graph and returns the shortest distance of target
  		* from the source.
+		* Note: No Thread Safe
  		*
 		* @param source source vertex
  		* @param target target vertex
@@ -608,6 +661,7 @@ namespace CXXGRAPH
 		/**
  		* \brief
  		* Function performs the breadth first search algorithm over the graph
+		* Note: No Thread Safe
  		*
  		* @param start Node from where traversing starts
  		* @returns a vector of Node indicating which Node were visited during the
@@ -618,6 +672,7 @@ namespace CXXGRAPH
 		/**
  		* \brief
  		* Function performs the depth first search algorithm over the graph
+		* Note: No Thread Safe
  		*
  		* @param start Node from where traversing starts
  		* @returns a vector of Node indicating which Node were visited during the
@@ -630,6 +685,7 @@ namespace CXXGRAPH
 		* \brief
      	* This function uses DFS to check for cycle in the graph.
      	* Pay Attention, this function work only with directed Graph
+		* Note: No Thread Safe
      	*
      	* @return true if a cycle is detected, else false. ( false is returned also if the graph in indirected)
      	*/
@@ -639,6 +695,7 @@ namespace CXXGRAPH
 		* \brief
      	* This function uses BFS to check for cycle in the graph.
      	* Pay Attention, this function work only with directed Graph
+		* Note: No Thread Safe
      	*
      	* @return true if a cycle is detected, else false. ( false is returned also if the graph in indirected)
      	*/
@@ -647,6 +704,7 @@ namespace CXXGRAPH
 		/**
      	* \brief
      	* This function checks if a graph is directed
+		* Note: No Thread Safe
      	*
      	* @return true if the graph is directed, else false.
      	*/
@@ -655,6 +713,7 @@ namespace CXXGRAPH
 		/**
      	* \brief
      	* This function write the graph in an output file
+		* Note: No Thread Safe
      	*
 		* @param format The Output format of the file
 		* @param workingDir The path to the directory in which will be placed the output file
@@ -669,6 +728,7 @@ namespace CXXGRAPH
  		* @brief Function runs the Dial algorithm  (Optimized Dijkstra for small range weights) for some source node and
  		* target node in the graph and returns the shortest distance of target
  		* from the source.
+		* Note: No Thread Safe
  		*
 		* @param source source vertex
 		* @param maxWeight maximum weight of the edge
@@ -683,6 +743,7 @@ namespace CXXGRAPH
 		/**
      	* \brief
      	* This function write the graph in an output file
+		* Note: No Thread Safe
      	*
 		* @param format The Input format of the file
 		* @param workingDir The path to the directory in which is placed the Input file
@@ -697,6 +758,7 @@ namespace CXXGRAPH
 		/**
      	* \brief
      	* This function partition a graph in a set of partitions
+		* Note: No Thread Safe
      	*
 		* @param algorithm The partition algorithm
 		* @param numberOfPartition The number of partitions
@@ -919,7 +981,6 @@ namespace CXXGRAPH
 
 		if (readEdgeWeight)
 		{
-
 			std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight"
 																					  ".csv";
 			ifileEdgeWeight.open(completePathToFileEdgeWeight);
@@ -1059,7 +1120,6 @@ namespace CXXGRAPH
 
 		if (readEdgeWeight)
 		{
-
 			std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight"
 																					  ".tsv";
 			ifileEdgeWeight.open(completePathToFileEdgeWeight);
@@ -1743,6 +1803,7 @@ namespace CXXGRAPH
 		return partitionMap;
 	}
 
+	/// Class that implement the Thread Safe Graph.
 	template <typename T>
 	class Graph_TS : public Graph<T>, public ThreadSafe
 	{
@@ -1751,22 +1812,72 @@ namespace CXXGRAPH
 		Graph_TS(const std::list<const Edge<T> *> &edgeSet);
 		Graph_TS(const Graph<T> &graph);
 		~Graph_TS() = default;
-
+		/**
+ 		* \brief
+ 		* Function that return the Edge set of the Graph
+		* Note: Thread Safe
+		*
+ 		* @returns a list of Edges of the graph
+ 		*
+ 		*/
 		const std::list<const Edge<T> *> &getEdgeSet() const override;
+		/**
+ 		* \brief
+ 		* Function set the Edge Set of the Graph
+		* Note: Thread Safe
+ 		*
+ 		* @param edgeSet The Edge Set
+ 		*
+ 		*/
 		void setEdgeSet(std::list<const Edge<T> *> &edgeSet) override;
+		/**
+ 		* \brief
+ 		* Function add an Edge to the Graph Edge Set
+		* Note: Thread Safe
+ 		*
+ 		* @param edge The Edge to insert
+ 		*
+ 		*/
 		void addEdge(const Edge<T> *edge) override;
+		/**
+ 		* \brief
+ 		* Function remove an Edge from the Graph Edge Set
+		* Note: Thread Safe
+ 		*
+ 		* @param edgeId The Edge Id to remove
+ 		*
+ 		*/
 		void removeEdge(unsigned long edgeId) override;
+		/**
+ 		* \brief
+ 		* Function that return the Node Set of the Graph
+		* Note: Thread Safe
+ 		*
+ 		* @returns a list of Nodes of the graph
+ 		*
+ 		*/
 		const std::list<const Node<T> *> getNodeSet() const override;
+		/**
+ 		* \brief
+ 		* Function that return an Edge with specific ID if Exist in the Graph
+		* Note: Thread Safe
+ 		*
+		* @param edgeId The Edge Id to return
+ 		* @returns the Edge if exist
+ 		*
+ 		*/
 		const std::optional<const Edge<T> *> getEdge(unsigned long edgeId) const override;
 		/**
 		* @brief This function generate a list of adjacency matrix with every element of the matrix
 		* contain the node where is directed the link and the Edge corrispondent to the link
+		* Note: Thread Safe
 		*/
 		const AdjacencyMatrix<T> getAdjMatrix() const override;
 		/**
  		* @brief Function runs the dijkstra algorithm for some source node and
  		* target node in the graph and returns the shortest distance of target
  		* from the source.
+		* Note: Thread Safe
  		*
 		* @param source source vertex
  		* @param target target vertex
@@ -1778,6 +1889,7 @@ namespace CXXGRAPH
 		/**
  		* \brief
  		* Function performs the breadth first search algorithm over the graph
+		* Note: Thread Safe
  		*
  		* @param start Node from where traversing starts
  		* @returns a vector of Node indicating which Node were visited during the
@@ -1788,6 +1900,7 @@ namespace CXXGRAPH
 		/**
  		* \brief
  		* Function performs the depth first search algorithm over the graph
+		* Note: Thread Safe
  		*
  		* @param start Node from where traversing starts
  		* @returns a vector of Node indicating which Node were visited during the
@@ -1800,6 +1913,7 @@ namespace CXXGRAPH
 		* \brief
      	* This function uses DFS to check for cycle in the graph.
      	* Pay Attention, this function work only with directed Graph
+		* Note: Thread Safe
      	*
      	* @return true if a cycle is detected, else false. ( false is returned also if the graph in indirected)
      	*/
@@ -1809,6 +1923,7 @@ namespace CXXGRAPH
 		* \brief
      	* This function uses BFS to check for cycle in the graph.
      	* Pay Attention, this function work only with directed Graph
+		* Note: Thread Safe
      	*
      	* @return true if a cycle is detected, else false. ( false is returned also if the graph in indirected)
      	*/
@@ -1817,6 +1932,7 @@ namespace CXXGRAPH
 		/**
      	* \brief
      	* This function checks if a graph is directed
+		* Note: Thread Safe
      	*
      	* @return true if the graph is directed, else false.
      	*/
@@ -1825,6 +1941,7 @@ namespace CXXGRAPH
 		/**
      	* \brief
      	* This function write the graph in an output file
+		* Note: Thread Safe
      	*
 		* @param format The Output format of the file
 		* @param workingDir The path to the directory in which will be placed the output file
@@ -1839,6 +1956,7 @@ namespace CXXGRAPH
  		* @brief Function runs the Dial algorithm  (Optimized Dijkstra for small range weights) for some source node and
  		* target node in the graph and returns the shortest distance of target
  		* from the source.
+		* Note: Thread Safe
  		*
 		* @param source source vertex
 		* @param maxWeight maximum weight of the edge
@@ -1853,6 +1971,7 @@ namespace CXXGRAPH
 		/**
      	* \brief
      	* This function write the graph in an output file
+		* Note: Thread Safe
      	*
 		* @param format The Input format of the file
 		* @param workingDir The path to the directory in which is placed the Input file
@@ -1867,6 +1986,7 @@ namespace CXXGRAPH
 		/**
      	* \brief
      	* This function partition a graph in a set of partitions
+		* Note: Thread Safe
      	*
 		* @param algorithm The partition algorithm
 		* @param numberOfPartition The number of partitions
@@ -2284,7 +2404,6 @@ namespace CXXGRAPH
 	template <typename T>
 	unsigned int getNumberOfNodes(const PartitionMap<T> &partitionMap)
 	{
-
 		unsigned int numberOfNodes = 0;
 		std::list<const Node<T> *> nodeSet;
 
