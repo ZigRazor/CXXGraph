@@ -220,19 +220,19 @@ namespace CXXGRAPH
 	class ThreadSafe
 	{
 	public:
-		void getLock();
-		void releaseLock();
+		void getLock() const;
+		void releaseLock() const;
 
 	protected:
-		std::mutex mutex;
+		mutable std::mutex mutex;
 	};
 	//inline because the implementation of non-template function in header file
-	inline void ThreadSafe::getLock()
+	inline void ThreadSafe::getLock() const
 	{
 		mutex.lock();
 	}
 	//inline because the implementation of non-template function in header file
-	inline void ThreadSafe::releaseLock()
+	inline void ThreadSafe::releaseLock() const
 	{
 		mutex.unlock();
 	}
@@ -560,36 +560,39 @@ namespace CXXGRAPH
 
 	public:
 		/// Specify the Input/Output format of the Graph for Import/Export functions
-		typedef enum E_InputOutputFormat
+		enum E_InputOutputFormat
 		{
 			STANDARD_CSV, ///< A standard csv format
 			STANDARD_TSV, ///< A standard tsv format
 			OUT_1,
 			OUT_2
-		} InputOutputFormat;
+		};
+
+		typedef E_InputOutputFormat InputOutputFormat;
 
 		/// Specify the Partition Algorithm
-		typedef enum E_PartitionAlgorithm
+		enum E_PartitionAlgorithm
 		{
 			GREEDY_VC, ///< A Greedy Vertex-Cut Algorithm
 			ALG_1,
 			ALG_2
-		} PartitionAlgorithm;
+		};
+		typedef E_PartitionAlgorithm PartitionAlgorithm;
 
 		Graph() = default;
 		Graph(const std::list<const Edge<T> *> &edgeSet);
 		~Graph() = default;
-		const std::list<const Edge<T> *> &getEdgeSet() const;
-		void setEdgeSet(std::list<const Edge<T> *> &edgeSet);
-		void addEdge(const Edge<T> *edge);
-		void removeEdge(unsigned long edgeId);
-		const std::list<const Node<T> *> getNodeSet() const;
-		const std::optional<const Edge<T> *> getEdge(unsigned long edgeId) const;
+		virtual const std::list<const Edge<T> *> &getEdgeSet() const;
+		virtual void setEdgeSet(std::list<const Edge<T> *> &edgeSet);
+		virtual void addEdge(const Edge<T> *edge);
+		virtual void removeEdge(unsigned long edgeId);
+		virtual const std::list<const Node<T> *> getNodeSet() const;
+		virtual const std::optional<const Edge<T> *> getEdge(unsigned long edgeId) const;
 		/**
 		* @brief This function generate a list of adjacency matrix with every element of the matrix
 		* contain the node where is directed the link and the Edge corrispondent to the link
 		*/
-		const AdjacencyMatrix<T> getAdjMatrix() const;
+		virtual const AdjacencyMatrix<T> getAdjMatrix() const;
 		/**
  		* @brief Function runs the dijkstra algorithm for some source node and
  		* target node in the graph and returns the shortest distance of target
@@ -601,7 +604,7 @@ namespace CXXGRAPH
  		* @return shortest distance if target is reachable from source else ERROR in
  		* case if target is not reachable from source or there is error in the computation.
  		*/
-		const DijkstraResult dijkstra(const Node<T> &source, const Node<T> &target) const;
+		virtual const DijkstraResult dijkstra(const Node<T> &source, const Node<T> &target) const;
 		/**
  		* \brief
  		* Function performs the breadth first search algorithm over the graph
@@ -611,7 +614,7 @@ namespace CXXGRAPH
  		* search.
  		*
  		*/
-		const std::vector<Node<T>> breadth_first_search(const Node<T> &start) const;
+		virtual const std::vector<Node<T>> breadth_first_search(const Node<T> &start) const;
 		/**
  		* \brief
  		* Function performs the depth first search algorithm over the graph
@@ -621,7 +624,7 @@ namespace CXXGRAPH
  		* search.
  		*
  		*/
-		const std::vector<Node<T>> depth_first_search(const Node<T> &start) const;
+		virtual const std::vector<Node<T>> depth_first_search(const Node<T> &start) const;
 
 		/**
 		* \brief
@@ -630,7 +633,7 @@ namespace CXXGRAPH
      	*
      	* @return true if a cycle is detected, else false. ( false is returned also if the graph in indirected)
      	*/
-		bool isCyclicDirectedGraphDFS() const;
+		virtual bool isCyclicDirectedGraphDFS() const;
 
 		/**
 		* \brief
@@ -639,7 +642,7 @@ namespace CXXGRAPH
      	*
      	* @return true if a cycle is detected, else false. ( false is returned also if the graph in indirected)
      	*/
-		bool isCyclicDirectedGraphBFS() const;
+		virtual bool isCyclicDirectedGraphBFS() const;
 
 		/**
      	* \brief
@@ -647,7 +650,7 @@ namespace CXXGRAPH
      	*
      	* @return true if the graph is directed, else false.
      	*/
-		bool isDirectedGraph() const;
+		virtual bool isDirectedGraph() const;
 
 		/**
      	* \brief
@@ -673,9 +676,9 @@ namespace CXXGRAPH
  		* @return shortest distance for all nodes reachable from source else ERROR in
  		* case there is error in the computation.
  		*/
-		const DialResult dial(const Node<T> &source, int maxWeight) const;
+		virtual const DialResult dial(const Node<T> &source, int maxWeight) const;
 
-		int writeToFile(InputOutputFormat format = InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool writeNodeFeat = false, bool writeEdgeWeight = false) const;
+		virtual int writeToFile(InputOutputFormat format = InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool writeNodeFeat = false, bool writeEdgeWeight = false) const;
 
 		/**
      	* \brief
@@ -689,7 +692,7 @@ namespace CXXGRAPH
 		* @param writeEdgeWeight Indicates if import also Edge Weights
      	* @return 0 if all OK, else return a negative value
      	*/
-		int readFromFile(InputOutputFormat format = InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool readNodeFeat = false, bool readEdgeWeight = false);
+		virtual int readFromFile(InputOutputFormat format = InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool readNodeFeat = false, bool readEdgeWeight = false);
 
 		/**
      	* \brief
@@ -699,7 +702,7 @@ namespace CXXGRAPH
 		* @param numberOfPartition The number of partitions
 		* @return The partiton Map of the partitioned graph
      	*/
-		PartitionMap<T> partitionGraph(PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const;
+		virtual PartitionMap<T> partitionGraph(PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const;
 
 		friend std::ostream &operator<<<>(std::ostream &os, const Graph<T> &graph);
 		friend std::ostream &operator<<<>(std::ostream &os, const AdjacencyMatrix<T> &adj);
@@ -754,7 +757,8 @@ namespace CXXGRAPH
 		auto edgeOpt = getEdge(edgeId);
 		if (edgeOpt.has_value())
 		{
-			edgeSet.erase(edgeSet.find(edgeOpt.value()));
+			edgeSet.erase(std::find_if(this->edgeSet.begin(), this->edgeSet.end(), [edgeOpt](const Edge<T> *edge)
+									   { return (*(edgeOpt.value()) == *edge); }));
 		}
 	}
 
@@ -1737,6 +1741,294 @@ namespace CXXGRAPH
 			partitionMap.clear();
 		}
 		return partitionMap;
+	}
+
+	template <typename T>
+	class Graph_TS : public Graph<T>, public ThreadSafe
+	{
+	public:
+		Graph_TS() = default;
+		Graph_TS(const std::list<const Edge<T> *> &edgeSet);
+		Graph_TS(const Graph<T> &graph);
+		~Graph_TS() = default;
+
+		const std::list<const Edge<T> *> &getEdgeSet() const override;
+		void setEdgeSet(std::list<const Edge<T> *> &edgeSet) override;
+		void addEdge(const Edge<T> *edge) override;
+		void removeEdge(unsigned long edgeId) override;
+		const std::list<const Node<T> *> getNodeSet() const override;
+		const std::optional<const Edge<T> *> getEdge(unsigned long edgeId) const override;
+		/**
+		* @brief This function generate a list of adjacency matrix with every element of the matrix
+		* contain the node where is directed the link and the Edge corrispondent to the link
+		*/
+		const AdjacencyMatrix<T> getAdjMatrix() const override;
+		/**
+ 		* @brief Function runs the dijkstra algorithm for some source node and
+ 		* target node in the graph and returns the shortest distance of target
+ 		* from the source.
+ 		*
+		* @param source source vertex
+ 		* @param target target vertex
+ 		*
+ 		* @return shortest distance if target is reachable from source else ERROR in
+ 		* case if target is not reachable from source or there is error in the computation.
+ 		*/
+		const DijkstraResult dijkstra(const Node<T> &source, const Node<T> &target) const override;
+		/**
+ 		* \brief
+ 		* Function performs the breadth first search algorithm over the graph
+ 		*
+ 		* @param start Node from where traversing starts
+ 		* @returns a vector of Node indicating which Node were visited during the
+ 		* search.
+ 		*
+ 		*/
+		const std::vector<Node<T>> breadth_first_search(const Node<T> &start) const override;
+		/**
+ 		* \brief
+ 		* Function performs the depth first search algorithm over the graph
+ 		*
+ 		* @param start Node from where traversing starts
+ 		* @returns a vector of Node indicating which Node were visited during the
+ 		* search.
+ 		*
+ 		*/
+		const std::vector<Node<T>> depth_first_search(const Node<T> &start) const override;
+
+		/**
+		* \brief
+     	* This function uses DFS to check for cycle in the graph.
+     	* Pay Attention, this function work only with directed Graph
+     	*
+     	* @return true if a cycle is detected, else false. ( false is returned also if the graph in indirected)
+     	*/
+		bool isCyclicDirectedGraphDFS() const override;
+
+		/**
+		* \brief
+     	* This function uses BFS to check for cycle in the graph.
+     	* Pay Attention, this function work only with directed Graph
+     	*
+     	* @return true if a cycle is detected, else false. ( false is returned also if the graph in indirected)
+     	*/
+		bool isCyclicDirectedGraphBFS() const override;
+
+		/**
+     	* \brief
+     	* This function checks if a graph is directed
+     	*
+     	* @return true if the graph is directed, else false.
+     	*/
+		bool isDirectedGraph() const override;
+
+		/**
+     	* \brief
+     	* This function write the graph in an output file
+     	*
+		* @param format The Output format of the file
+		* @param workingDir The path to the directory in which will be placed the output file
+		* @param OFileName The Output File Name ( )
+		* @param compress Indicates if the output will be compressed
+		* @param writeNodeFeat Indicates if export also Node Features
+		* @param writeEdgeWeight Indicates if export also Edge Weights
+     	* @return 0 if all OK, else return a negative value
+     	*/
+
+		/**
+ 		* @brief Function runs the Dial algorithm  (Optimized Dijkstra for small range weights) for some source node and
+ 		* target node in the graph and returns the shortest distance of target
+ 		* from the source.
+ 		*
+		* @param source source vertex
+		* @param maxWeight maximum weight of the edge
+ 		*
+ 		* @return shortest distance for all nodes reachable from source else ERROR in
+ 		* case there is error in the computation.
+ 		*/
+		const DialResult dial(const Node<T> &source, int maxWeight) const override;
+
+		int writeToFile(typename Graph<T>::InputOutputFormat format = Graph<T>::InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool writeNodeFeat = false, bool writeEdgeWeight = false) const override;
+
+		/**
+     	* \brief
+     	* This function write the graph in an output file
+     	*
+		* @param format The Input format of the file
+		* @param workingDir The path to the directory in which is placed the Input file
+		* @param OFileName The Input File Name ( )
+		* @param compress Indicates if the Input is compressed
+		* @param writeNodeFeat Indicates if import also Node Features
+		* @param writeEdgeWeight Indicates if import also Edge Weights
+     	* @return 0 if all OK, else return a negative value
+     	*/
+		int readFromFile(typename Graph<T>::InputOutputFormat format = Graph<T>::InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool readNodeFeat = false, bool readEdgeWeight = false) override;
+
+		/**
+     	* \brief
+     	* This function partition a graph in a set of partitions
+     	*
+		* @param algorithm The partition algorithm
+		* @param numberOfPartition The number of partitions
+		* @return The partiton Map of the partitioned graph
+     	*/
+		PartitionMap<T> partitionGraph(typename Graph<T>::PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const override;
+	};
+
+	template <typename T>
+	Graph_TS<T>::Graph_TS(const std::list<const Edge<T> *> &edgeSet) : Graph<T>(edgeSet), ThreadSafe() {}
+
+	template <typename T>
+	Graph_TS<T>::Graph_TS(const Graph<T> &graph) : Graph<T>(graph), ThreadSafe() {}
+
+	template <typename T>
+	const std::list<const Edge<T> *> &Graph_TS<T>::getEdgeSet() const
+	{
+		getLock();
+		auto es = Graph<T>::getEdgeSet();
+		releaseLock();
+		return es;
+	}
+
+	template <typename T>
+	void Graph_TS<T>::setEdgeSet(std::list<const Edge<T> *> &edgeSet)
+	{
+		getLock();
+		Graph<T>::setEdgeSet(edgeSet);
+		releaseLock();
+	}
+
+	template <typename T>
+	void Graph_TS<T>::addEdge(const Edge<T> *edge)
+	{
+		getLock();
+		Graph<T>::addEdge(edge);
+		releaseLock();
+	}
+
+	template <typename T>
+	void Graph_TS<T>::removeEdge(unsigned long edgeId)
+	{
+		getLock();
+		Graph<T>::removeEdge(edgeId);
+		releaseLock();
+	}
+
+	template <typename T>
+	const std::list<const Node<T> *> Graph_TS<T>::getNodeSet() const
+	{
+		getLock();
+		auto ns = Graph<T>::getNodeSet();
+		releaseLock();
+		return ns;
+	}
+
+	template <typename T>
+	const std::optional<const Edge<T> *> Graph_TS<T>::getEdge(unsigned long edgeId) const
+	{
+		getLock();
+		auto e = Graph<T>::getEdge(edgeId);
+		releaseLock();
+		return e;
+	}
+
+	template <typename T>
+	const AdjacencyMatrix<T> Graph_TS<T>::getAdjMatrix() const
+	{
+		getLock();
+		auto adjm = Graph<T>::getAdjMatrix();
+		releaseLock();
+		return adjm;
+	}
+
+	template <typename T>
+	const DijkstraResult Graph_TS<T>::dijkstra(const Node<T> &source, const Node<T> &target) const
+	{
+		getLock();
+		auto dij = Graph<T>::dijkstra(source, target);
+		releaseLock();
+		return dij;
+	}
+
+	template <typename T>
+	const std::vector<Node<T>> Graph_TS<T>::breadth_first_search(const Node<T> &start) const
+	{
+		getLock();
+		auto bfs = Graph<T>::breadth_first_search(start);
+		releaseLock();
+		return bfs;
+	}
+
+	template <typename T>
+	const std::vector<Node<T>> Graph_TS<T>::depth_first_search(const Node<T> &start) const
+	{
+		getLock();
+		auto dfs = Graph<T>::depth_first_search(start);
+		releaseLock();
+		return dfs;
+	}
+
+	template <typename T>
+	bool Graph_TS<T>::isCyclicDirectedGraphDFS() const
+	{
+		getLock();
+		auto result = Graph<T>::isCyclicDirectedGraphDFS();
+		releaseLock();
+		return result;
+	}
+
+	template <typename T>
+	bool Graph_TS<T>::isCyclicDirectedGraphBFS() const
+	{
+		getLock();
+		auto result = Graph<T>::isCyclicDirectedGraphBFS();
+		releaseLock();
+		return result;
+	}
+
+	template <typename T>
+	bool Graph_TS<T>::isDirectedGraph() const
+	{
+		getLock();
+		auto result = Graph<T>::isDirectedGraph();
+		releaseLock();
+		return result;
+	}
+
+	template <typename T>
+	const DialResult Graph_TS<T>::dial(const Node<T> &source, int maxWeight) const
+	{
+		getLock();
+		auto dial = Graph<T>::dial(source, maxWeight);
+		releaseLock();
+		return dial;
+	}
+
+	template <typename T>
+	int Graph_TS<T>::writeToFile(typename Graph<T>::InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
+	{
+		getLock();
+		auto result = Graph<T>::writeToFile(format, workingDir, OFileName, compress, writeNodeFeat, writeEdgeWeight);
+		releaseLock();
+		return result;
+	}
+
+	template <typename T>
+	int Graph_TS<T>::readFromFile(typename Graph<T>::InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight)
+	{
+		getLock();
+		auto result = Graph<T>::readFromFile(format, workingDir, OFileName, compress, readNodeFeat, readEdgeWeight);
+		releaseLock();
+		return result;
+	}
+
+	template <typename T>
+	PartitionMap<T> Graph_TS<T>::partitionGraph(typename Graph<T>::PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const
+	{
+		getLock();
+		auto partitions = Graph<T>::partitionGraph(algorithm, numberOfPartitions);
+		releaseLock();
+		return partitions;
 	}
 
 	template <typename T>
