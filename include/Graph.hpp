@@ -2004,10 +2004,8 @@ namespace CXXGRAPH
 	template <typename T>
 	const std::list<const Edge<T> *> &Graph_TS<T>::getEdgeSet() const
 	{
-		getLock();
-		auto es = Graph<T>::getEdgeSet();
-		releaseLock();
-		return es;
+		std::lock_guard<std::mutex> lock(mutex);
+		return Graph<T>::getEdgeSet();
 	}
 
 	template <typename T>
