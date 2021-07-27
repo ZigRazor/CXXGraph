@@ -7,7 +7,7 @@ Prefix:/usr
 
 License:        AGPLv3.0
 URL:            https://github.com/ZigRazor/CXXGraph
-Source0:        https://github.com/ZigRazor/CXXGraph/archive/refs/tags/v0.1.4.tar.gz
+Source0:        https://github.com/ZigRazor/CXXGraph/archive/refs/tags/v%{version}.%{release}.tar.gz
 
 #Requires:       bash
 
@@ -58,5 +58,5 @@ rm -rf %{buildroot}
             %{prefix}/include
 
 %changelog
-* Mon Jul 26 2021 ZigRazor <zigrazor@gmail.com> - 0.1-4
+* Mon Jul 26 2021 ZigRazor <zigrazor@gmail.com> - %{version}-%{release}
 - First RPM package
