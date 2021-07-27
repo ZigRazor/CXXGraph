@@ -2,9 +2,8 @@ name: "automatic-tagged-release"
 
 on:
   push:
-    paths:
-      - 'docs/Doxyfile'
-    branches: [ master ]
+    tags:
+      - "v*"
     
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
