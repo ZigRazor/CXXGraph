@@ -1,0 +1,58 @@
+name: "automatic-tagged-release"
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  tagged-release:
+    name: "Tagged Release"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      # ...
+      - name: Install gtest manually
+        run: sudo apt-get install libgtest-dev
+      
+      - name: Install benchmark manually
+        run: |
+          git clone https://github.com/google/benchmark.git
+          git clone https://github.com/google/googletest.git benchmark/googletest
+          cd benchmark
+          cmake -E make_directory "build"
+          cmake -E chdir "build" cmake -DCMAKE_BUILD_TYPE=Release ../
+          cmake --build "build" --config Release
+          sudo cmake --build "build" --config Release --target install
+      - uses: actions/checkout@v2
+
+      - name: Configure CMake
+        # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+        # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+      - name: Build
+        # Build your program with the given configuration
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+        
+      - name: Install rpm
+        run: |
+          sudo apt-get install rpm
+          
+      - name: Build Packages
+        run: |
+          cd packaging
+          ./make_packaging.sh
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.PERSONAL_TOKEN }}"
+          prerelease: false
+          files: |
+            LICENSE
+            README.md
+            packaging/deb/*.deb
+            packaging/rpm/RPMS/noarch/*.noarch.rpm
+            packaging/*.tar.bz2
+            
+            
