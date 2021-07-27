@@ -1,3 +1,3 @@
 #!/bin/bash
 
-tar -cvzf  SOURCES/v0.1.4.tar.gz  ../../include/*
+tar -cvzf  SOURCES/v$VERSION.$RELEASE.tar.gz  ../../include/*

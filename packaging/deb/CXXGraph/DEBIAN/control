@@ -1,0 +1,8 @@
+Package: CXXGraph
+Version: 0.1.4
+Section: custom
+Priority: optional
+Architecture: all
+Essential: no
+Maintainer: zigrazor@gmail.com
+Description: Header-Only C++ Library for Graph Representation and Algorithms

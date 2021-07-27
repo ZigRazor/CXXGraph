@@ -1,6 +1,6 @@
 Name:           CXXGraph
-Version:        0.1
-Release:        4%{?dist}
+Version:        %{getenv:VERSION}
+Release:        %{getenv:RELEASE}%{?dist}
 Summary:        Header-Only C++ Library for Graph Representation and Algorithms
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 Prefix:/usr
