@@ -2,8 +2,9 @@ name: "automatic-tagged-release"
 
 on:
   push:
-    tags:
-      - "v*"
+    paths:
+      - 'docs/Doxyfile'
+    branches: [ master ]
 
 jobs:
   tagged-release:
