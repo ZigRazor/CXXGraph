@@ -45,6 +45,10 @@ Share on [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=
     - [Google Benchmark Installation](#google-benchmark-installation)
     - [How to Compile Benchmark](#how-to-compile-benchmark)
     - [How to Run Benchmark](#how-to-run-benchmark)
+  - [Packaging](#packaging)
+    - [Tarballs](#tarballs)
+    - [RPM](#rpm)
+    - [DEB](#deb)
   - [Example](#example)
   - [How to contribute](#how-to-contribute)
   - [Site](#site)
@@ -211,6 +215,37 @@ After the compilation, you can run the executable that is under the "build" dire
 ### Benchmark Results
 
 You can check benchmark result at this [link](https://zigrazor.github.io/CXXGraph/dev/bench/)
+
+## Packaging
+
+### Tarballs
+To create tarballs package you need to follow the following steps:
+```
+# Enter Packaging Directory
+$ cd packaging
+# execute the script to generate tarballs
+$ ./tarballs.sh
+```
+
+### RPM 
+#### (Fedora/CentOS/RedHat)
+To create rpm package you need to follow the following steps:
+```
+# Enter Packaging Directory
+$ cd packaging/rpm
+# execute the script to generate tarballs
+$ ./make_rpm.sh
+```
+
+### DEB 
+#### (Debian/Ubuntu)
+To create deb package you need to follow the following steps:
+```
+# Enter Packaging Directory
+$ cd packaging/deb
+# execute the script to generate tarballs
+$ ./make_deb.sh
+```
 
 ## Example
 Work in Progess
