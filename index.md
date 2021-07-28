@@ -39,10 +39,12 @@ Share on [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=
   - [How to use](#how-to-use)
   - [Unit-Test Execution](#unit-test-execution)
     - [Google Test Installation](#google-test-installation)
+    - [How to Compile Test](#how-to-compile-test)
+    - [How to Run Test](#how-to-run-test)
   - [Benchmark Execution](#benchmark-execution)
     - [Google Benchmark Installation](#google-benchmark-installation)
-      - [How to Compile](#how-to-compile)
-    - [How to Run](#how-to-run)
+    - [How to Compile Benchmark](#how-to-compile-benchmark)
+    - [How to Run Benchmark](#how-to-run-benchmark)
   - [Example](#example)
   - [How to contribute](#how-to-contribute)
   - [Site](#site)
@@ -162,6 +164,15 @@ make
 sudo make install    # Install in /usr/local/ by default
 ```
 
+### How to Compile Test
+-   If not exist create a directory "build" under the base directory.
+-   Enter the directory
+-   execute command `cmake ..`
+-   if all is succesfull execute the command `make`
+
+### How to Run Test
+After the compilation, you can run the executable that is under the "build" directory with the name "test_exe", with the simple command `./test_exe`.
+
 ## Benchmark Execution
 The Benchmark required the CMake version greater than 3.9 and the **google test** and the **google benchmark** library.
 
@@ -188,18 +199,18 @@ $ cmake --build "build" --config Release
 $ sudo cmake --build "build" --config Release --target install
 ```
 
-### Benchmark Results
-
-You can check benchmark result at this [link](https://zigrazor.github.io/CXXGraph/dev/bench/)
-
-#### How to Compile
+### How to Compile Benchmark
 -   If not exist create a directory "build" under the base directory.
 -   Enter the directory
 -   execute command `cmake ..`
 -   if all is succesfull execute the command `make`
 
-### How to Run
-After the compilation, you can run the executable that is under the "build" directory with the name "test_exe", with the simple command `./test_exe`.
+### How to Run Benchmark
+After the compilation, you can run the executable that is under the "build" directory with the name "benchmark", with the simple command `./benchmark`.
+
+### Benchmark Results
+
+You can check benchmark result at this [link](https://zigrazor.github.io/CXXGraph/dev/bench/)
 
 ## Example
 Work in Progess
