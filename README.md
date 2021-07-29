@@ -49,6 +49,11 @@ Share on [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=
     - [Tarballs](#tarballs)
     - [RPM](#rpm)
     - [DEB](#deb)
+  - [Install and Uninstall](#install-and-uninstall)
+    - [Install Linux Tarballs](#install-linux-tarballs)
+    - [Install RPM](#install-rpm)
+    - [Install DEB](#install-deb)
+    - [Install From Source](#install-from-source)
   - [Example](#example)
   - [How to contribute](#how-to-contribute)
   - [Site](#site)
@@ -246,6 +251,42 @@ $ cd packaging/deb
 # execute the script to generate tarballs
 $ ./make_deb.sh
 ```
+
+## Install and Uninstall
+
+### Install Linux Tarballs
+On Unix/Linux system you need to execute the following command to install:
+
+`$ sudo tar xjf CXXGraph-{version}.tar.bz2`
+
+to uninstall:
+
+`$ sudo rm -f /usr/include/Graph.hpp /usr/include/CXXGraph*`
+
+### Install RPM
+On Fedora/CentOS/RedHat system you need to execute the following command to install:
+
+`$ sudo rpm -ivh CXXGraph-{version}.noarch.rpm`
+
+to uninstall:
+
+`$ sudo rpm -e CXXGraph-{version}`
+
+### Install DEB
+On Debian/Ubuntu system you need to execute the following command to install:
+
+`$ sudo dpkg -i CXXGraph_{version}.deb`
+
+to uninstall:
+
+`$ sudo apt-get remove CXXGraph`
+
+### Install From Source
+You can install from source the library using CMake. After the compilation phase, you can use:
+
+`$ sudo make install`
+
+to install the library.
 
 ## Example
 Work in Progess
