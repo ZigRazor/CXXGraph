@@ -39,10 +39,21 @@ Share on [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=
   - [How to use](#how-to-use)
   - [Unit-Test Execution](#unit-test-execution)
     - [Google Test Installation](#google-test-installation)
+    - [How to Compile Test](#how-to-compile-test)
+    - [How to Run Test](#how-to-run-test)
   - [Benchmark Execution](#benchmark-execution)
     - [Google Benchmark Installation](#google-benchmark-installation)
-      - [How to Compile](#how-to-compile)
-    - [How to Run](#how-to-run)
+    - [How to Compile Benchmark](#how-to-compile-benchmark)
+    - [How to Run Benchmark](#how-to-run-benchmark)
+  - [Packaging](#packaging)
+    - [Tarballs](#tarballs)
+    - [RPM](#rpm)
+    - [DEB](#deb)
+  - [Install and Uninstall](#install-and-uninstall)
+    - [Install Linux Tarballs](#install-linux-tarballs)
+    - [Install RPM](#install-rpm)
+    - [Install DEB](#install-deb)
+    - [Install From Source](#install-from-source)
   - [Example](#example)
   - [How to contribute](#how-to-contribute)
   - [Site](#site)
@@ -162,6 +173,15 @@ make
 sudo make install    # Install in /usr/local/ by default
 ```
 
+### How to Compile Test
+-   If not exist create a directory "build" under the base directory.
+-   Enter the directory
+-   execute command `cmake ..`
+-   if all is succesfull execute the command `make`
+
+### How to Run Test
+After the compilation, you can run the executable that is under the "build" directory with the name "test_exe", with the simple command `./test_exe`.
+
 ## Benchmark Execution
 The Benchmark required the CMake version greater than 3.9 and the **google test** and the **google benchmark** library.
 
@@ -188,18 +208,85 @@ $ cmake --build "build" --config Release
 $ sudo cmake --build "build" --config Release --target install
 ```
 
-### Benchmark Results
-
-You can check benchmark result at this [link](https://zigrazor.github.io/CXXGraph/dev/bench/)
-
-#### How to Compile
+### How to Compile Benchmark
 -   If not exist create a directory "build" under the base directory.
 -   Enter the directory
 -   execute command `cmake ..`
 -   if all is succesfull execute the command `make`
 
-### How to Run
-After the compilation, you can run the executable that is under the "build" directory with the name "test_exe", with the simple command `./test_exe`.
+### How to Run Benchmark
+After the compilation, you can run the executable that is under the "build" directory with the name "benchmark", with the simple command `./benchmark`.
+
+### Benchmark Results
+
+You can check benchmark result at this [link](https://zigrazor.github.io/CXXGraph/dev/bench/)
+
+## Packaging
+
+### Tarballs
+To create tarballs package you need to follow the following steps:
+```
+# Enter Packaging Directory
+$ cd packaging
+# execute the script to generate tarballs
+$ ./tarballs.sh
+```
+
+### RPM 
+#### (Fedora/CentOS/RedHat)
+To create rpm package you need to follow the following steps:
+```
+# Enter Packaging Directory
+$ cd packaging/rpm
+# execute the script to generate tarballs
+$ ./make_rpm.sh
+```
+
+### DEB 
+#### (Debian/Ubuntu)
+To create deb package you need to follow the following steps:
+```
+# Enter Packaging Directory
+$ cd packaging/deb
+# execute the script to generate tarballs
+$ ./make_deb.sh
+```
+
+## Install and Uninstall
+
+### Install Linux Tarballs
+On Unix/Linux system you need to execute the following command to install:
+
+`$ sudo tar xjf CXXGraph-{version}.tar.bz2`
+
+to uninstall:
+
+`$ sudo rm -f /usr/include/Graph.hpp /usr/include/CXXGraph*`
+
+### Install RPM
+On Fedora/CentOS/RedHat system you need to execute the following command to install:
+
+`$ sudo rpm -ivh CXXGraph-{version}.noarch.rpm`
+
+to uninstall:
+
+`$ sudo rpm -e CXXGraph-{version}`
+
+### Install DEB
+On Debian/Ubuntu system you need to execute the following command to install:
+
+`$ sudo dpkg -i CXXGraph_{version}.deb`
+
+to uninstall:
+
+`$ sudo apt-get remove CXXGraph`
+
+### Install From Source
+You can install from source the library using CMake. After the compilation phase, you can use:
+
+`$ sudo make install`
+
+to install the library.
 
 ## Example
 Work in Progess
