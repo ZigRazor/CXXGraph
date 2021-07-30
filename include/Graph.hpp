@@ -12,10 +12,12 @@
 #include <list>
 #include <queue>
 #include <string>
+#include <cstring>
 #include <functional>
 #include <fstream>
 #include <limits.h>
 #include <mutex>
+#include "zlib.h"
 
 namespace CXXGRAPH
 {
@@ -558,6 +560,8 @@ namespace CXXGRAPH
 		int writeToStandardFile_tsv(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const;
 		int readFromStandardFile_tsv(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight);
 		void recreateGraphFromReadFiles(std::map<unsigned long, std::pair<unsigned long, unsigned long>> &edgeMap, std::map<unsigned long, bool> &edgeDirectedMap, std::map<unsigned long, T> &nodeFeatMap, std::map<unsigned long, double> &edgeWeightMap);
+		int compressFile(const std::string &inputFile, const std::string &outputFile) const;
+		int decompressFile(const std::string &inputFile, const std::string &outputFile) const;
 		void greedyPartition(PartitionMap<T> &partitionMap) const;
 
 	public:
@@ -1217,6 +1221,78 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
+	int Graph<T>::compressFile(const std::string &inputFile, const std::string &outputFile) const
+	{
+
+		std::ifstream ifs;
+		ifs.open(inputFile);
+		if (!ifs.is_open())
+		{
+			// ERROR File Not Open
+			return -1;
+		}
+		std::string content((std::istreambuf_iterator<char>(ifs)),
+							(std::istreambuf_iterator<char>()));
+
+		const char *content_ptr = content.c_str();
+		gzFile outFileZ = gzopen(outputFile.c_str(), "wb");
+		if (outFileZ == NULL)
+		{
+			//printf("Error: Failed to gzopen %s\n", outputFile.c_str());
+			return -1;
+		}
+
+		unsigned int zippedBytes;
+		zippedBytes = gzwrite(outFileZ, content_ptr, strlen(content_ptr));
+
+		ifs.close();
+		gzclose(outFileZ);
+		return 0;
+	}
+
+	template <typename T>
+	int Graph<T>::decompressFile(const std::string &inputFile, const std::string &outputFile) const
+	{
+
+		gzFile inFileZ = gzopen(inputFile.c_str(), "rb");
+		if (inFileZ == NULL)
+		{
+			//printf("Error: Failed to gzopen %s\n", inputFile.c_str());
+			return -1;
+		}
+		unsigned char unzipBuffer[8192];
+		unsigned int unzippedBytes;
+		std::vector<unsigned char> unzippedData;
+		std::ofstream ofs;
+		ofs.open(outputFile);
+		if (!ofs.is_open())
+		{
+			// ERROR File Not Open
+			return -1;
+		}
+		while (true)
+		{
+			unzippedBytes = gzread(inFileZ, unzipBuffer, 8192);
+			if (unzippedBytes > 0)
+			{
+				unzippedData.insert(unzippedData.end(), unzipBuffer, unzipBuffer + unzippedBytes);
+			}
+			else
+			{
+				break;
+			}
+		}
+		for (auto c : unzippedData)
+		{
+			ofs << c;
+		}
+		ofs << std::endl;
+		ofs.close();
+		gzclose(inFileZ);
+		return 0;
+	}
+
+	template <typename T>
 	void Graph<T>::greedyPartition(PartitionMap<T> &partitionMap) const
 	{
 		unsigned int index = 0;
@@ -1750,37 +1826,126 @@ namespace CXXGRAPH
 	template <typename T>
 	int Graph<T>::writeToFile(InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
 	{
+		int result = 0;
 		if (format == InputOutputFormat::STANDARD_CSV)
 		{
-			return writeToStandardFile_csv(workingDir, OFileName, compress, writeNodeFeat, writeEdgeWeight);
+			result = writeToStandardFile_csv(workingDir, OFileName, compress, writeNodeFeat, writeEdgeWeight);
 		}
 		else if (format == InputOutputFormat::STANDARD_TSV)
 		{
-			return writeToStandardFile_tsv(workingDir, OFileName, compress, writeNodeFeat, writeEdgeWeight);
+			result = writeToStandardFile_tsv(workingDir, OFileName, compress, writeNodeFeat, writeEdgeWeight);
 		}
 		else
 		{
 			//OUTPUT FORMAT NOT RECOGNIZED
 			return -1;
 		}
+		if (result == 0 && compress)
+		{
+			auto compress = [this, &workingDir, &OFileName, &writeNodeFeat, &writeEdgeWeight](const std::string &extension)
+			{
+				std::string completePathToFileGraph = workingDir + "/" + OFileName + extension;
+				std::string completePathToFileGraphCompressed = workingDir + "/" + OFileName + extension + ".gz";
+				int _result = compressFile(completePathToFileGraph, completePathToFileGraphCompressed);
+				if (_result == 0)
+				{
+					if (writeNodeFeat)
+					{
+						std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat" + extension;
+						std::string completePathToFileNodeFeatCompressed = workingDir + "/" + OFileName + "_NodeFeat" + extension + ".gz";
+						_result = compressFile(completePathToFileNodeFeat, completePathToFileNodeFeatCompressed);
+					}
+				}
+				if (_result == 0)
+				{
+					if (writeEdgeWeight)
+					{
+						std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight" + extension;
+						std::string completePathToFileEdgeWeightCompressed = workingDir + "/" + OFileName + "_EdgeWeight" + extension + ".gz";
+						_result = compressFile(completePathToFileEdgeWeight, completePathToFileEdgeWeightCompressed);
+					}
+				}
+				return _result;
+			};
+			if (format == InputOutputFormat::STANDARD_CSV)
+			{
+				auto result = compress(".csv");
+			}
+			else if (format == InputOutputFormat::STANDARD_TSV)
+			{
+				auto result = compress(".tsv");
+			}
+			else
+			{
+				//OUTPUT FORMAT NOT RECOGNIZED
+				result = -1;
+			}
+		}
+		return result;
 	}
 
 	template <typename T>
 	int Graph<T>::readFromFile(InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight)
 	{
-		if (format == InputOutputFormat::STANDARD_CSV)
+		int result = 0;
+		if (compress)
 		{
-			return readFromStandardFile_csv(workingDir, OFileName, compress, readNodeFeat, readEdgeWeight);
+			auto decompress = [this, &workingDir, &OFileName, &readNodeFeat, &readEdgeWeight](const std::string &extension)
+			{
+				std::string completePathToFileGraph = workingDir + "/" + OFileName + extension;
+				std::string completePathToFileGraphCompressed = workingDir + "/" + OFileName + extension + ".gz";
+				int _result = decompressFile(completePathToFileGraphCompressed, completePathToFileGraph);
+				if (_result == 0)
+				{
+					if (readNodeFeat)
+					{
+						std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat" + extension;
+						std::string completePathToFileNodeFeatCompressed = workingDir + "/" + OFileName + "_NodeFeat" + extension + ".gz";
+						_result = decompressFile(completePathToFileNodeFeatCompressed, completePathToFileNodeFeat);
+					}
+				}
+				if (_result == 0)
+				{
+					if (readEdgeWeight)
+					{
+						std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight" + extension;
+						std::string completePathToFileEdgeWeightCompressed = workingDir + "/" + OFileName + "_EdgeWeight" + extension + ".gz";
+						_result = decompressFile(completePathToFileEdgeWeightCompressed, completePathToFileEdgeWeight);
+					}
+				}
+				return _result;
+			};
+			if (format == InputOutputFormat::STANDARD_CSV)
+			{
+				result = decompress(".csv");
+			}
+			else if (format == InputOutputFormat::STANDARD_TSV)
+			{
+				result = decompress(".tsv");
+			}
+			else
+			{
+				//OUTPUT FORMAT NOT RECOGNIZED
+				result = -1;
+			}
 		}
-		else if (format == InputOutputFormat::STANDARD_TSV)
+		if (result == 0)
 		{
-			return readFromStandardFile_tsv(workingDir, OFileName, compress, readNodeFeat, readEdgeWeight);
+			if (format == InputOutputFormat::STANDARD_CSV)
+			{
+				result = readFromStandardFile_csv(workingDir, OFileName, compress, readNodeFeat, readEdgeWeight);
+			}
+			else if (format == InputOutputFormat::STANDARD_TSV)
+			{
+				result = readFromStandardFile_tsv(workingDir, OFileName, compress, readNodeFeat, readEdgeWeight);
+			}
+			else
+			{
+				//OUTPUT FORMAT NOT RECOGNIZED
+				result = -1;
+			}
 		}
-		else
-		{
-			//OUTPUT FORMAT NOT RECOGNIZED
-			return -1;
-		}
+		return result;
 	}
 
 	template <typename T>

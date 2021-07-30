@@ -63,7 +63,8 @@ target_include_directories(test_exe PUBLIC
 target_link_libraries(test_exe
 					   libgtest.a
 					   libgtest_main.a
-					   pthread )
+					   pthread
+					   z)
 
 
 enable_testing()
@@ -95,6 +96,7 @@ target_include_directories(benchmark PUBLIC
 target_link_libraries(benchmark
 					   libbenchmark.a
 					   libbenchmark_main.a
-					   pthread )
+					   pthread
+					   z)
 
 install(FILES include/Graph.hpp DESTINATION /usr/include)
