@@ -90,13 +90,13 @@ BENCHMARK(AddEdgeX_TS)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned l
 
 static void BM_AddEdgeX_MT_TS(benchmark::State &state)
 {
-    if (state.thread_index == 0)
+    if (state.thread_index() == 0)
     {
         graph_ts = new CXXGRAPH::Graph_TS<int>();
     }
-    auto subrange = state.range(0) / state.threads;
-    auto range_start = edges.find(subrange * state.thread_index);
-    auto range_end = edges.find(subrange * (state.thread_index + 1));
+    auto subrange = state.range(0) / state.threads();
+    auto range_start = edges.find(subrange * state.thread_index());
+    auto range_end = edges.find(subrange * (state.thread_index() + 1));
     std::map<unsigned long, CXXGRAPH::Edge<int> *> edgesX;
     edgesX.insert(range_start, range_end);
     for (auto _ : state)
@@ -106,7 +106,7 @@ static void BM_AddEdgeX_MT_TS(benchmark::State &state)
             graph_ts->addEdge(&(*e.second));
         }
     }
-    if (state.thread_index == 0)
+    if (state.thread_index() == 0)
     {
         delete graph_ts;
     }
@@ -185,14 +185,14 @@ BENCHMARK(RemoveEdgeX_TS)->RangeMultiplier(16)->Range((unsigned long)1, (unsigne
 
 static void RemoveEdgeX_MT_TS(benchmark::State &state)
 {
-    if (state.thread_index == 0)
+    if (state.thread_index() == 0)
     {
         graph_ts = new CXXGRAPH::Graph_TS<int>();
     }
     sleep(1); //let the possibility to create the Graph and avoid segmentation fault
-    auto subrange = state.range(0) / state.threads;
-    auto range_start = edges.find(subrange * state.thread_index);
-    auto range_end = edges.find(subrange * (state.thread_index + 1));
+    auto subrange = state.range(0) / state.threads();
+    auto range_start = edges.find(subrange * state.thread_index());
+    auto range_end = edges.find(subrange * (state.thread_index() + 1));
     std::map<unsigned long, CXXGRAPH::Edge<int> *> edgesX;
     edgesX.insert(range_start, range_end);
     for (auto e : edgesX)
@@ -208,7 +208,7 @@ static void RemoveEdgeX_MT_TS(benchmark::State &state)
         }
     }
 
-    if (state.thread_index == 0)
+    if (state.thread_index() == 0)
     {
         delete graph_ts;
     }
