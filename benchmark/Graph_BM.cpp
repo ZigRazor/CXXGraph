@@ -7,6 +7,7 @@ static auto nodes = generateRandomNodes(100000, 2);
 static auto edges = generateRandomEdges(100000, nodes);
 
 static CXXGRAPH::Graph<int> *graph;
+static CXXGRAPH::Graph_TS<int> *graph_ts;
 
 static void GraphCreation(benchmark::State &state)
 {
@@ -45,7 +46,7 @@ static void AddEdgeX(benchmark::State &state)
         }
     }
 }
-BENCHMARK(AddEdgeX)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned long)1 << 18);
+BENCHMARK(AddEdgeX)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned long)1 << 16);
 
 static void GraphCreation_TS(benchmark::State &state)
 {
@@ -85,13 +86,13 @@ static void AddEdgeX_TS(benchmark::State &state)
         }
     }
 }
-BENCHMARK(AddEdgeX_TS)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned long)1 << 18);
+BENCHMARK(AddEdgeX_TS)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned long)1 << 16);
 
 static void BM_AddEdgeX_MT_TS(benchmark::State &state)
 {
     if (state.thread_index == 0)
     {
-        graph = new CXXGRAPH::Graph_TS<int>();
+        graph_ts = new CXXGRAPH::Graph_TS<int>();
     }
     auto subrange = state.range(0) / state.threads;
     auto range_start = edges.find(subrange * state.thread_index);
@@ -102,15 +103,15 @@ static void BM_AddEdgeX_MT_TS(benchmark::State &state)
     {
         for (auto e : edgesX)
         {
-            graph->addEdge(&(*e.second));
+            graph_ts->addEdge(&(*e.second));
         }
     }
     if (state.thread_index == 0)
     {
-        delete graph;
+        delete graph_ts;
     }
 }
-BENCHMARK(BM_AddEdgeX_MT_TS)->RangeMultiplier(16)->Range((unsigned long)1 << 4, (unsigned long)1 << 18)->ThreadRange(1, 4);
+BENCHMARK(BM_AddEdgeX_MT_TS)->RangeMultiplier(16)->Range((unsigned long)1 << 4, (unsigned long)1 << 16)->ThreadRange(1, 4);
 
 static void RemoveEdge(benchmark::State &state)
 {
@@ -145,7 +146,7 @@ static void RemoveEdgeX(benchmark::State &state)
         }
     }
 }
-BENCHMARK(RemoveEdgeX)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned long)1 << 18);
+BENCHMARK(RemoveEdgeX)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned long)1 << 16);
 
 static void RemoveEdge_TS(benchmark::State &state)
 {
@@ -180,14 +181,15 @@ static void RemoveEdgeX_TS(benchmark::State &state)
         }
     }
 }
-BENCHMARK(RemoveEdgeX_TS)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned long)1 << 18);
+BENCHMARK(RemoveEdgeX_TS)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned long)1 << 16);
 
 static void RemoveEdgeX_MT_TS(benchmark::State &state)
 {
     if (state.thread_index == 0)
     {
-        graph = new CXXGRAPH::Graph_TS<int>();
+        graph_ts = new CXXGRAPH::Graph_TS<int>();
     }
+    sleep(1); //let the possibility to create the Graph and avoid segmentation fault
     auto subrange = state.range(0) / state.threads;
     auto range_start = edges.find(subrange * state.thread_index);
     auto range_end = edges.find(subrange * (state.thread_index + 1));
@@ -195,20 +197,20 @@ static void RemoveEdgeX_MT_TS(benchmark::State &state)
     edgesX.insert(range_start, range_end);
     for (auto e : edgesX)
     {
-        graph->addEdge(&(*e.second));
+        graph_ts->addEdge(&(*e.second));
     }
     for (auto _ : state)
     {
 
         for (auto e : edgesX)
         {
-            graph->removeEdge(e.second->getId());
+            graph_ts->removeEdge(e.second->getId());
         }
     }
 
     if (state.thread_index == 0)
     {
-        delete graph;
+        delete graph_ts;
     }
 }
-BENCHMARK(RemoveEdgeX_MT_TS)->RangeMultiplier(16)->Range((unsigned long)1 << 4, (unsigned long)1 << 18)->ThreadRange(1, 4);
+BENCHMARK(RemoveEdgeX_MT_TS)->RangeMultiplier(16)->Range((unsigned long)1 << 4, (unsigned long)1 << 16)->ThreadRange(1, 4);

@@ -839,7 +839,7 @@ namespace CXXGRAPH
 	template <typename T>
 	void Graph<T>::removeEdge(unsigned long edgeId)
 	{
-		auto edgeOpt = getEdge(edgeId);
+		auto edgeOpt = Graph<T>::getEdge(edgeId);
 		if (edgeOpt.has_value())
 		{
 			edgeSet.erase(std::find_if(this->edgeSet.begin(), this->edgeSet.end(), [edgeOpt](const Edge<T> *edge)
