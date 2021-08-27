@@ -761,11 +761,24 @@ namespace CXXGRAPH
  		*/
 		virtual const DialResult dial(const Node<T> &source, int maxWeight) const;
 
+		/**
+     	* \brief
+     	* This function write the graph in an output file
+		* Note: No Thread Safe
+     	*
+		* @param format The Output format of the file
+		* @param workingDir The path to the directory in which is placed the Output file
+		* @param OFileName The Output File Name ( )
+		* @param compress Indicates if the Output will be compressed ( Pay Attention if compress flag is true, not compressed files will be deleted [ #48 ] )
+		* @param writeNodeFeat Indicates if export also Node Features
+		* @param writeEdgeWeight Indicates if export also Edge Weights
+     	* @return 0 if all OK, else return a negative value
+     	*/
 		virtual int writeToFile(InputOutputFormat format = InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool writeNodeFeat = false, bool writeEdgeWeight = false) const;
 
 		/**
      	* \brief
-     	* This function write the graph in an output file
+     	* This function read the graph from an input file
 		* Note: No Thread Safe
      	*
 		* @param format The Input format of the file
@@ -1868,11 +1881,19 @@ namespace CXXGRAPH
 				int _result = compressFile(completePathToFileGraph, completePathToFileGraphCompressed);
 				if (_result == 0)
 				{
+					_result = remove(completePathToFileGraph.c_str());
+				}
+				if (_result == 0)
+				{
 					if (writeNodeFeat)
 					{
 						std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat" + extension;
 						std::string completePathToFileNodeFeatCompressed = workingDir + "/" + OFileName + "_NodeFeat" + extension + ".gz";
 						_result = compressFile(completePathToFileNodeFeat, completePathToFileNodeFeatCompressed);
+						if (_result == 0)
+						{
+							_result = remove(completePathToFileNodeFeat.c_str());
+						}
 					}
 				}
 				if (_result == 0)
@@ -1882,6 +1903,10 @@ namespace CXXGRAPH
 						std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight" + extension;
 						std::string completePathToFileEdgeWeightCompressed = workingDir + "/" + OFileName + "_EdgeWeight" + extension + ".gz";
 						_result = compressFile(completePathToFileEdgeWeight, completePathToFileEdgeWeightCompressed);
+						if (_result == 0)
+						{
+							_result = remove(completePathToFileEdgeWeight.c_str());
+						}
 					}
 				}
 				return _result;
@@ -2150,19 +2175,32 @@ namespace CXXGRAPH
  		*/
 		const DialResult dial(const Node<T> &source, int maxWeight) const override;
 
+		/**
+     	* \brief
+     	* This function write the graph in an output file
+		* Note: Thread Safe
+     	*
+		* @param format The Output format of the file
+		* @param workingDir The path to the directory in which is placed the Output file
+		* @param OFileName The Output File Name ( )
+		* @param compress Indicates if the Output will be compressed ( Pay Attention if compress flag is true, not compressed files will be deleted [ #48 ] )
+		* @param writeNodeFeat Indicates if export also Node Features
+		* @param writeEdgeWeight Indicates if export also Edge Weights
+     	* @return 0 if all OK, else return a negative value
+     	*/
 		int writeToFile(typename Graph<T>::InputOutputFormat format = Graph<T>::InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool writeNodeFeat = false, bool writeEdgeWeight = false) const override;
 
 		/**
      	* \brief
-     	* This function write the graph in an output file
+     	* This function read the graph from an input file
 		* Note: Thread Safe
      	*
 		* @param format The Input format of the file
 		* @param workingDir The path to the directory in which is placed the Input file
 		* @param OFileName The Input File Name ( )
 		* @param compress Indicates if the Input is compressed
-		* @param writeNodeFeat Indicates if import also Node Features
-		* @param writeEdgeWeight Indicates if import also Edge Weights
+		* @param readNodeFeat Indicates if import also Node Features
+		* @param readEdgeWeight Indicates if import also Edge Weights
      	* @return 0 if all OK, else return a negative value
      	*/
 		int readFromFile(typename Graph<T>::InputOutputFormat format = Graph<T>::InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool readNodeFeat = false, bool readEdgeWeight = false) override;
