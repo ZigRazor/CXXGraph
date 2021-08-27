@@ -699,8 +699,8 @@ TEST(RWOutputTest, test_21)
     CXXGRAPH::Graph<int> graph(edgeSet);
     int res = graph.writeToFile(CXXGRAPH::Graph<int>::InputOutputFormat::STANDARD_CSV, ".", "test_21", true, true, false);
     ASSERT_EQ(res, 0);
-    ASSERT_TRUE(exists_test("test_21.csv"));
-    ASSERT_TRUE(exists_test("test_21_NodeFeat.csv"));
+    ASSERT_FALSE(exists_test("test_21.csv"));
+    ASSERT_FALSE(exists_test("test_21_NodeFeat.csv"));
     ASSERT_FALSE(exists_test("test_21_EdgeWeight.csv"));
     ASSERT_TRUE(exists_test("test_21.csv.gz"));
     ASSERT_TRUE(exists_test("test_21_NodeFeat.csv.gz"));
@@ -723,9 +723,9 @@ TEST(RWOutputTest, test_22)
     CXXGRAPH::Graph<int> graph(edgeSet);
     int res = graph.writeToFile(CXXGRAPH::Graph<int>::InputOutputFormat::STANDARD_CSV, ".", "test_22", true, true, true);
     ASSERT_EQ(res, 0);
-    ASSERT_TRUE(exists_test("test_22.csv"));
-    ASSERT_TRUE(exists_test("test_22_NodeFeat.csv"));
-    ASSERT_TRUE(exists_test("test_22_EdgeWeight.csv"));
+    ASSERT_FALSE(exists_test("test_22.csv"));
+    ASSERT_FALSE(exists_test("test_22_NodeFeat.csv"));
+    ASSERT_FALSE(exists_test("test_22_EdgeWeight.csv"));
     ASSERT_TRUE(exists_test("test_22.csv.gz"));
     ASSERT_TRUE(exists_test("test_22_NodeFeat.csv.gz"));
     ASSERT_TRUE(exists_test("test_22_EdgeWeight.csv.gz"));
@@ -789,7 +789,7 @@ TEST(RWOutputTest, test_23)
     CXXGRAPH::Graph<int> graph(edgeSet);
     int res = graph.writeToFile(CXXGRAPH::Graph<int>::InputOutputFormat::STANDARD_CSV, ".", "test_23", true, false, false);
     ASSERT_EQ(res, 0);
-    ASSERT_TRUE(exists_test("test_23.csv"));
+    ASSERT_FALSE(exists_test("test_23.csv"));
     ASSERT_FALSE(exists_test("test_23_NodeFeat.csv"));
     ASSERT_FALSE(exists_test("test_23_EdgeWeight.csv"));
     ASSERT_TRUE(exists_test("test_23.csv.gz"));
@@ -810,8 +810,8 @@ TEST(RWOutputTest, test_24)
     CXXGRAPH::Graph<int> graph(edgeSet);
     int res = graph.writeToFile(CXXGRAPH::Graph<int>::InputOutputFormat::STANDARD_TSV, ".", "test_24", true, true, false);
     ASSERT_EQ(res, 0);
-    ASSERT_TRUE(exists_test("test_24.tsv"));
-    ASSERT_TRUE(exists_test("test_24_NodeFeat.tsv"));
+    ASSERT_FALSE(exists_test("test_24.tsv"));
+    ASSERT_FALSE(exists_test("test_24_NodeFeat.tsv"));
     ASSERT_FALSE(exists_test("test_24_EdgeWeight.tsv"));
     ASSERT_TRUE(exists_test("test_24.tsv.gz"));
     ASSERT_TRUE(exists_test("test_24_NodeFeat.tsv.gz"));
@@ -834,9 +834,9 @@ TEST(RWOutputTest, test_25)
     CXXGRAPH::Graph<int> graph(edgeSet);
     int res = graph.writeToFile(CXXGRAPH::Graph<int>::InputOutputFormat::STANDARD_TSV, ".", "test_25", true, true, true);
     ASSERT_EQ(res, 0);
-    ASSERT_TRUE(exists_test("test_25.tsv"));
-    ASSERT_TRUE(exists_test("test_25_NodeFeat.tsv"));
-    ASSERT_TRUE(exists_test("test_25_EdgeWeight.tsv"));
+    ASSERT_FALSE(exists_test("test_25.tsv"));
+    ASSERT_FALSE(exists_test("test_25_NodeFeat.tsv"));
+    ASSERT_FALSE(exists_test("test_25_EdgeWeight.tsv"));
     ASSERT_TRUE(exists_test("test_25.tsv.gz"));
     ASSERT_TRUE(exists_test("test_25_NodeFeat.tsv.gz"));
     ASSERT_TRUE(exists_test("test_25_EdgeWeight.tsv.gz"));
@@ -900,7 +900,7 @@ TEST(RWOutputTest, test_26)
     CXXGRAPH::Graph<int> graph(edgeSet);
     int res = graph.writeToFile(CXXGRAPH::Graph<int>::InputOutputFormat::STANDARD_TSV, ".", "test_26", true, false, false);
     ASSERT_EQ(res, 0);
-    ASSERT_TRUE(exists_test("test_26.tsv"));
+    ASSERT_FALSE(exists_test("test_26.tsv"));
     ASSERT_FALSE(exists_test("test_26_NodeFeat.tsv"));
     ASSERT_FALSE(exists_test("test_26_EdgeWeight.tsv"));
     ASSERT_TRUE(exists_test("test_26.tsv.gz"));
@@ -919,7 +919,7 @@ TEST(RWOutputTest, test_27)
     CXXGRAPH::Graph<int> graph(edgeSet);
     int res = graph.writeToFile(CXXGRAPH::Graph<int>::InputOutputFormat::STANDARD_TSV, ".", "test_27", true, false, false);
     ASSERT_EQ(res, 0);
-    ASSERT_TRUE(exists_test("test_27.tsv"));
+    ASSERT_FALSE(exists_test("test_27.tsv"));
     ASSERT_FALSE(exists_test("test_27_NodeFeat.tsv"));
     ASSERT_FALSE(exists_test("test_27_EdgeWeight.tsv"));
     ASSERT_TRUE(exists_test("test_27.tsv.gz"));
