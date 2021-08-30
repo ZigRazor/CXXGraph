@@ -65,11 +65,10 @@ bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a39cf608717962cd84e4a3606135ee1
 \begin{DoxyCompactList}\small\item\em This function checks if a graph is directed Note\+: Thread Safe. \end{DoxyCompactList}\item 
 const \mbox{\hyperlink{structCXXGRAPH_1_1DialResult__struct}{Dial\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_aec71b7cd4b3460b032806c0b870cdbef}{dial}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&source, int max\+Weight) const override
 \begin{DoxyCompactList}\small\item\em This function write the graph in an output file Note\+: Thread Safe. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classCXXGRAPH_1_1Graph__TS_a440ba5244ff714629df57f8a341a7c27}\label{classCXXGRAPH_1_1Graph__TS_a440ba5244ff714629df57f8a341a7c27}} 
-int {\bfseries write\+To\+File} (typename \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}$<$ T $>$\+::\mbox{\hyperlink{classCXXGRAPH_1_1Graph_af40584c5cd15ce35ad36a736b3429c71}{Input\+Output\+Format}} format=\mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}$<$ T $>$\+::Input\+Output\+Format\+::\+STANDARD\+\_\+\+CSV, const std\+::string \&working\+Dir=\char`\"{}.\char`\"{}, const std\+::string \&OFile\+Name=\char`\"{}graph\char`\"{}, bool compress=false, bool write\+Node\+Feat=false, bool write\+Edge\+Weight=false) const override
-\item 
-int \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_aeb611d968d8359fd805dc31f20adc701}{read\+From\+File}} (typename \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}$<$ T $>$\+::\mbox{\hyperlink{classCXXGRAPH_1_1Graph_af40584c5cd15ce35ad36a736b3429c71}{Input\+Output\+Format}} format=\mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}$<$ T $>$\+::Input\+Output\+Format\+::\+STANDARD\+\_\+\+CSV, const std\+::string \&working\+Dir=\char`\"{}.\char`\"{}, const std\+::string \&OFile\+Name=\char`\"{}graph\char`\"{}, bool compress=false, bool read\+Node\+Feat=false, bool read\+Edge\+Weight=false) override
+int \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a440ba5244ff714629df57f8a341a7c27}{write\+To\+File}} (typename \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}$<$ T $>$\+::\mbox{\hyperlink{classCXXGRAPH_1_1Graph_af40584c5cd15ce35ad36a736b3429c71}{Input\+Output\+Format}} format=\mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}$<$ T $>$\+::Input\+Output\+Format\+::\+STANDARD\+\_\+\+CSV, const std\+::string \&working\+Dir=\char`\"{}.\char`\"{}, const std\+::string \&OFile\+Name=\char`\"{}graph\char`\"{}, bool compress=false, bool write\+Node\+Feat=false, bool write\+Edge\+Weight=false) const override
 \begin{DoxyCompactList}\small\item\em This function write the graph in an output file Note\+: Thread Safe. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_aeb611d968d8359fd805dc31f20adc701}{read\+From\+File}} (typename \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}$<$ T $>$\+::\mbox{\hyperlink{classCXXGRAPH_1_1Graph_af40584c5cd15ce35ad36a736b3429c71}{Input\+Output\+Format}} format=\mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}$<$ T $>$\+::Input\+Output\+Format\+::\+STANDARD\+\_\+\+CSV, const std\+::string \&working\+Dir=\char`\"{}.\char`\"{}, const std\+::string \&OFile\+Name=\char`\"{}graph\char`\"{}, bool compress=false, bool read\+Node\+Feat=false, bool read\+Edge\+Weight=false) override
+\begin{DoxyCompactList}\small\item\em This function read the graph from an input file Note\+: Thread Safe. \end{DoxyCompactList}\item 
 Partition\+Map$<$ T $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a5f4fb2d5e1e70ad47bfb39c19c19a12d}{partition\+Graph}} (typename \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}$<$ T $>$\+::\mbox{\hyperlink{classCXXGRAPH_1_1Graph_a1549d3208d57a922c72d0885894f1c32}{Partition\+Algorithm}} algorithm, unsigned int number\+Of\+Partitions) const override
 \begin{DoxyCompactList}\small\item\em This function partition a graph in a set of partitions Note\+: Thread Safe. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Additional Inherited Members}
@@ -361,7 +360,7 @@ int \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS}{CXXGRAPH\+::\+Graph\+\_\+\+TS}}
 
 
 
-This function write the graph in an output file Note\+: Thread Safe. 
+This function read the graph from an input file Note\+: Thread Safe. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -373,9 +372,9 @@ This function write the graph in an output file Note\+: Thread Safe.
 \hline
 {\em compress} & Indicates if the Input is compressed \\
 \hline
-{\em write\+Node\+Feat} & Indicates if import also \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}} Features \\
+{\em read\+Node\+Feat} & Indicates if import also \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}} Features \\
 \hline
-{\em write\+Edge\+Weight} & Indicates if import also \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} Weights \\
+{\em read\+Edge\+Weight} & Indicates if import also \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} Weights \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -421,6 +420,35 @@ Function set the \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} Set of the \mbox
 
 Reimplemented from \mbox{\hyperlink{classCXXGRAPH_1_1Graph_af2cd256d3638bf15ea926b6da6bc6097}{CXXGRAPH\+::\+Graph$<$ T $>$}}.
 
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph__TS_a440ba5244ff714629df57f8a341a7c27}\label{classCXXGRAPH_1_1Graph__TS_a440ba5244ff714629df57f8a341a7c27}} 
+\index{CXXGRAPH::Graph\_TS$<$ T $>$@{CXXGRAPH::Graph\_TS$<$ T $>$}!writeToFile@{writeToFile}}
+\index{writeToFile@{writeToFile}!CXXGRAPH::Graph\_TS$<$ T $>$@{CXXGRAPH::Graph\_TS$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{writeToFile()}{writeToFile()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS}{CXXGRAPH\+::\+Graph\+\_\+\+TS}}$<$ T $>$\+::write\+To\+File (\begin{DoxyParamCaption}\item[{typename \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}$<$ T $>$\+::\mbox{\hyperlink{classCXXGRAPH_1_1Graph_af40584c5cd15ce35ad36a736b3429c71}{Input\+Output\+Format}}}]{format = {\ttfamily \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}$<$T$>$\+:\+:InputOutputFormat\+:\+:STANDARD\+\_\+CSV},  }\item[{const std\+::string \&}]{working\+Dir = {\ttfamily \char`\"{}.\char`\"{}},  }\item[{const std\+::string \&}]{OFile\+Name = {\ttfamily \char`\"{}graph\char`\"{}},  }\item[{bool}]{compress = {\ttfamily false},  }\item[{bool}]{write\+Node\+Feat = {\ttfamily false},  }\item[{bool}]{write\+Edge\+Weight = {\ttfamily false} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}}
+
+
+
+This function write the graph in an output file Note\+: Thread Safe. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em format} & The Output format of the file \\
+\hline
+{\em working\+Dir} & The path to the directory in which is placed the Output file \\
+\hline
+{\em OFile\+Name} & The Output File Name ( ) \\
+\hline
+{\em compress} & Indicates if the Output will be compressed ( Pay Attention if compress flag is true, not compressed files will be deleted \mbox{[} \#48 \mbox{]} ) \\
+\hline
+{\em write\+Node\+Feat} & Indicates if export also \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}} Features \\
+\hline
+{\em write\+Edge\+Weight} & Indicates if export also \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} Weights \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if all OK, else return a negative value 
+\end{DoxyReturn}
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
