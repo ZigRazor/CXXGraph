@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['node_47',['Node',['../d3/dd2/classCXXGRAPH_1_1Node.html',1,'CXXGRAPH']]]
+  ['node_48',['Node',['../d3/dd2/classCXXGRAPH_1_1Node.html',1,'CXXGRAPH']]]
 ];
