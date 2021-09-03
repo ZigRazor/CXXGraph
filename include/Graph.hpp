@@ -42,6 +42,17 @@
 #include <cmath>
 #include "zlib.h"
 
+#include "Edge/Weighted.hpp"
+#include "Node/Node.hpp"
+#include "Edge/Edge.hpp"
+#include "Edge/DirectedEdge.hpp"
+#include "Edge/UndirectedEdge.hpp"
+#include "Edge/DirectedWeightedEdge.hpp"
+#include "Edge/UndirectedWeightedEdge.hpp"
+#include "Utility/ThreadSafe.hpp"
+#include "Utility/Writer.hpp"
+#include "Utility/Reader.hpp"
+
 namespace CXXGRAPH
 {
 	//STRING ERROR CONST EXPRESSION
@@ -138,435 +149,11 @@ namespace CXXGRAPH
 	using AdjacencyMatrix = std::map<const Node<T> *, std::vector<std::pair<const Node<T> *, const Edge<T> *>>>;
 
 	template <typename T>
-	std::ostream &operator<<(std::ostream &o, const Node<T> &node);
-	template <typename T>
-	std::ostream &operator<<(std::ostream &o, const Edge<T> &edge);
-	template <typename T>
-	std::ostream &operator<<(std::ostream &o, const DirectedEdge<T> &edge);
-	template <typename T>
-	std::ostream &operator<<(std::ostream &o, const UndirectedEdge<T> &edge);
-	template <typename T>
-	std::ostream &operator<<(std::ostream &o, const DirectedWeightedEdge<T> &edge);
-	template <typename T>
-	std::ostream &operator<<(std::ostream &o, const UndirectedWeightedEdge<T> &edge);
-	template <typename T>
 	std::ostream &operator<<(std::ostream &o, const Graph<T> &graph);
 	template <typename T>
 	std::ostream &operator<<(std::ostream &o, const AdjacencyMatrix<T> &adj);
 	template <typename T>
 	using PartitionMap = std::map<unsigned int, Partition<T> *>;
-
-	template <typename T>
-	class Node
-	{
-	private:
-		unsigned long id;
-		T data;
-
-	public:
-		Node(const unsigned long id, const T &data);
-		~Node() = default;
-		const unsigned long &getId() const;
-		const T &getData() const;
-		//operator
-		bool operator==(const Node<T> &b) const;
-		bool operator<(const Node<T> &b) const;
-		friend std::ostream &operator<<<>(std::ostream &os, const Node<T> &node);
-	};
-
-	template <typename T>
-	Node<T>::Node(const unsigned long id, const T &data)
-	{
-		this->id = id;
-		this->data = data;
-	}
-
-	template <typename T>
-	const unsigned long &Node<T>::getId() const
-	{
-		return id;
-	}
-
-	template <typename T>
-	const T &Node<T>::getData() const
-	{
-		return data;
-	}
-
-	template <typename T>
-	bool Node<T>::operator==(const Node<T> &b) const
-	{
-		return (this->id == b.id && this->data == b.data);
-	}
-
-	template <typename T>
-	bool Node<T>::operator<(const Node<T> &b) const
-	{
-		return (this->id < b.id);
-	}
-
-	class Weighted
-	{
-	private:
-		double weight;
-
-	public:
-		Weighted();
-		Weighted(const double weight);
-		virtual ~Weighted() = default;
-		double getWeight() const;
-		void setWeight(const double weight);
-	};
-
-	//inline because the implementation of non-template function in header file
-	inline Weighted::Weighted()
-	{
-		weight = 0.0;
-	}
-
-	//inline because the implementation of non-template function in header file
-	inline Weighted::Weighted(const double weight)
-	{
-		this->weight = weight;
-	}
-
-	//inline because the implementation of non-template function in header file
-	inline double Weighted::getWeight() const
-	{
-		return weight;
-	}
-
-	//inline because the implementation of non-template function in header file
-	inline void Weighted::setWeight(const double weight)
-	{
-		this->weight = weight;
-	}
-
-	class ThreadSafe
-	{
-	public:
-		void getLock() const;
-		void releaseLock() const;
-
-	protected:
-		mutable std::mutex mutex;
-	};
-	//inline because the implementation of non-template function in header file
-	inline void ThreadSafe::getLock() const
-	{
-		mutex.lock();
-	}
-	//inline because the implementation of non-template function in header file
-	inline void ThreadSafe::releaseLock() const
-	{
-		mutex.unlock();
-	}
-
-	template <typename T>
-	class Edge
-	{
-	private:
-		unsigned long id;
-		std::pair<const Node<T> *, const Node<T> *> nodePair;
-
-	public:
-		Edge(const unsigned long id, const Node<T> &node1, const Node<T> &node2);
-		Edge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair);
-		virtual ~Edge() = default;
-		const unsigned long &getId() const;
-		const std::pair<const Node<T> *, const Node<T> *> &getNodePair() const;
-		virtual const std::optional<bool> isDirected() const;
-		virtual const std::optional<bool> isWeighted() const;
-		//operator
-		virtual bool operator==(const Edge<T> &b) const;
-		bool operator<(const Edge<T> &b) const;
-		//operator DirectedEdge<T>() const { return DirectedEdge<T>(id, nodePair); }
-		//operator UndirectedEdge<T>() const { return UndirectedEdge<T>(id, nodePair); }
-
-		friend std::ostream &operator<<<>(std::ostream &os, const Edge<T> &edge);
-	};
-
-	template <typename T>
-	Edge<T>::Edge(const unsigned long id, const Node<T> &node1, const Node<T> &node2) : nodePair(&node1, &node2)
-	{
-		this->id = id;
-	}
-
-	template <typename T>
-	Edge<T>::Edge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair) : nodePair(nodepair)
-	{
-		this->id = id;
-	}
-
-	template <typename T>
-	const unsigned long &Edge<T>::getId() const
-	{
-		return id;
-	}
-
-	template <typename T>
-	const std::pair<const Node<T> *, const Node<T> *> &Edge<T>::getNodePair() const
-	{
-		return nodePair;
-	}
-
-	template <typename T>
-	const std::optional<bool> Edge<T>::isDirected() const
-	{
-		return std::nullopt;
-	}
-
-	template <typename T>
-	const std::optional<bool> Edge<T>::isWeighted() const
-	{
-		return std::nullopt;
-	}
-
-	template <typename T>
-	bool Edge<T>::operator==(const Edge<T> &b) const
-	{
-		return (this->id == b.id && this->nodePair == b.nodePair);
-	}
-
-	template <typename T>
-	bool Edge<T>::operator<(const Edge<T> &b) const
-	{
-		return (this->id < b.id);
-	}
-
-	template <typename T>
-	class DirectedEdge : public Edge<T>
-	{
-	public:
-		DirectedEdge(const unsigned long id, const Node<T> &node1, const Node<T> &node2);
-		DirectedEdge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair);
-		DirectedEdge(const Edge<T> &edge);
-		virtual ~DirectedEdge() = default;
-		const Node<T> &getFrom() const;
-		const Node<T> &getTo() const;
-		const std::optional<bool> isDirected() const override;
-		const std::optional<bool> isWeighted() const override;
-		//operator
-		explicit operator UndirectedEdge<T>() const { return UndirectedEdge<T>(Edge<T>::getId(), Edge<T>::getNodePair()); }
-
-		friend std::ostream &operator<<<>(std::ostream &os, const DirectedEdge<T> &edge);
-	};
-
-	template <typename T>
-	DirectedEdge<T>::DirectedEdge(const unsigned long id, const Node<T> &node1, const Node<T> &node2) : Edge<T>(id, node1, node2)
-	{
-	}
-
-	template <typename T>
-	DirectedEdge<T>::DirectedEdge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair) : Edge<T>(id, nodepair)
-	{
-	}
-
-	template <typename T>
-	DirectedEdge<T>::DirectedEdge(const Edge<T> &edge) : DirectedEdge(edge.getId(), *(edge.getNodePair().first), *(edge.getNodePair().second))
-	{
-	}
-
-	template <typename T>
-	const Node<T> &DirectedEdge<T>::getFrom() const
-	{
-		return *(Edge<T>::getNodePair().first);
-	}
-
-	template <typename T>
-	const Node<T> &DirectedEdge<T>::getTo() const
-	{
-		return *(Edge<T>::getNodePair().second);
-	}
-
-	template <typename T>
-	const std::optional<bool> DirectedEdge<T>::isDirected() const
-	{
-		return true;
-	}
-
-	template <typename T>
-	const std::optional<bool> DirectedEdge<T>::isWeighted() const
-	{
-		return false;
-	}
-
-	template <typename T>
-	class UndirectedEdge : public Edge<T>
-	{
-	public:
-		UndirectedEdge(const unsigned long id, const Node<T> &node1, const Node<T> &node2);
-		UndirectedEdge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair);
-		UndirectedEdge(const Edge<T> &edge);
-		virtual ~UndirectedEdge() = default;
-		const Node<T> &getNode1() const;
-		const Node<T> &getNode2() const;
-		const std::optional<bool> isDirected() const override;
-		const std::optional<bool> isWeighted() const override;
-		//operator
-		explicit operator DirectedEdge<T>() const { return DirectedEdge<T>(Edge<T>::getId(), Edge<T>::getNodePair()); }
-
-		friend std::ostream &operator<<<>(std::ostream &os, const UndirectedEdge<T> &edge);
-	};
-
-	template <typename T>
-	UndirectedEdge<T>::UndirectedEdge(const unsigned long id, const Node<T> &node1, const Node<T> &node2) : Edge<T>(id, node1, node2)
-	{
-	}
-
-	template <typename T>
-	UndirectedEdge<T>::UndirectedEdge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair) : Edge<T>(id, nodepair)
-	{
-	}
-
-	template <typename T>
-	UndirectedEdge<T>::UndirectedEdge(const Edge<T> &edge) : UndirectedEdge(edge.getId(), *(edge.getNodePair().first), *(edge.getNodePair().second))
-	{
-	}
-
-	template <typename T>
-	const Node<T> &UndirectedEdge<T>::getNode1() const
-	{
-		return *(Edge<T>::getNodePair().first);
-	}
-
-	template <typename T>
-	const Node<T> &UndirectedEdge<T>::getNode2() const
-	{
-		return *(Edge<T>::getNodePair().second);
-	}
-
-	template <typename T>
-	const std::optional<bool> UndirectedEdge<T>::isDirected() const
-	{
-		return false;
-	}
-
-	template <typename T>
-	const std::optional<bool> UndirectedEdge<T>::isWeighted() const
-	{
-		return false;
-	}
-
-	template <typename T>
-	class DirectedWeightedEdge : public DirectedEdge<T>, public Weighted
-	{
-	public:
-		DirectedWeightedEdge(const unsigned long id, const Node<T> &node1, const Node<T> &node2, const double weight);
-		DirectedWeightedEdge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair, const double weight);
-		DirectedWeightedEdge(const DirectedEdge<T> &edge, const double weight);
-		DirectedWeightedEdge(const Edge<T> &edge, const double weight);
-		DirectedWeightedEdge(const DirectedEdge<T> &edge);
-		DirectedWeightedEdge(const Edge<T> &edge);
-		DirectedWeightedEdge(const UndirectedWeightedEdge<T> &edge);
-		virtual ~DirectedWeightedEdge() = default;
-		const std::optional<bool> isWeighted() const override;
-		//operator
-		explicit operator UndirectedWeightedEdge<T>() const { return UndirectedWeightedEdge<T>(Edge<T>::getId(), Edge<T>::getNodePair(), Weighted::getWeight()); }
-
-		friend std::ostream &operator<<<>(std::ostream &os, const DirectedWeightedEdge<T> &edge);
-	};
-
-	template <typename T>
-	DirectedWeightedEdge<T>::DirectedWeightedEdge(const unsigned long id, const Node<T> &node1, const Node<T> &node2, const double weight) : DirectedEdge<T>(id, node1, node2), Weighted(weight)
-	{
-	}
-
-	template <typename T>
-	DirectedWeightedEdge<T>::DirectedWeightedEdge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair, const double weight) : DirectedEdge<T>(id, nodepair), Weighted(weight)
-	{
-	}
-
-	template <typename T>
-	DirectedWeightedEdge<T>::DirectedWeightedEdge(const DirectedEdge<T> &edge, const double weight) : DirectedEdge<T>(edge), Weighted(weight)
-	{
-	}
-
-	template <typename T>
-	DirectedWeightedEdge<T>::DirectedWeightedEdge(const Edge<T> &edge, const double weight) : DirectedEdge<T>(edge), Weighted(weight)
-	{
-	}
-
-	template <typename T>
-	DirectedWeightedEdge<T>::DirectedWeightedEdge(const DirectedEdge<T> &edge) : DirectedEdge<T>(edge), Weighted()
-	{
-	}
-
-	template <typename T>
-	DirectedWeightedEdge<T>::DirectedWeightedEdge(const Edge<T> &edge) : DirectedEdge<T>(edge), Weighted()
-	{
-	}
-
-	template <typename T>
-	DirectedWeightedEdge<T>::DirectedWeightedEdge(const UndirectedWeightedEdge<T> &edge) : DirectedEdge<T>(edge), Weighted(edge.getWeight())
-	{
-	}
-
-	template <typename T>
-	const std::optional<bool> DirectedWeightedEdge<T>::isWeighted() const
-	{
-		return true;
-	}
-
-	template <typename T>
-	class UndirectedWeightedEdge : public UndirectedEdge<T>, public Weighted
-	{
-	public:
-		UndirectedWeightedEdge(const unsigned long id, const Node<T> &node1, const Node<T> &node2, const double weight);
-		UndirectedWeightedEdge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair, const double weight);
-		UndirectedWeightedEdge(const UndirectedEdge<T> &edge, const double weight);
-		UndirectedWeightedEdge(const Edge<T> &edge, const double weight);
-		UndirectedWeightedEdge(const UndirectedEdge<T> &edge);
-		UndirectedWeightedEdge(const Edge<T> &edge);
-		UndirectedWeightedEdge(const DirectedWeightedEdge<T> &edge);
-		virtual ~UndirectedWeightedEdge() = default;
-		const std::optional<bool> isWeighted() const override;
-		//operator
-		explicit operator DirectedWeightedEdge<T>() const { return DirectedWeightedEdge<T>(Edge<T>::getId(), Edge<T>::getNodePair(), Weighted::getWeight()); }
-
-		friend std::ostream &operator<<<>(std::ostream &os, const UndirectedWeightedEdge<T> &edge);
-	};
-
-	template <typename T>
-	UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const unsigned long id, const Node<T> &node1, const Node<T> &node2, const double weight) : UndirectedEdge<T>(id, node1, node2), Weighted(weight)
-	{
-	}
-
-	template <typename T>
-	UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair, const double weight) : UndirectedEdge<T>(id, nodepair), Weighted(weight)
-	{
-	}
-
-	template <typename T>
-	UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const UndirectedEdge<T> &edge, const double weight) : UndirectedEdge<T>(edge), Weighted(weight)
-	{
-	}
-
-	template <typename T>
-	UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const Edge<T> &edge, const double weight) : UndirectedEdge<T>(edge), Weighted(weight)
-	{
-	}
-
-	template <typename T>
-	UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const UndirectedEdge<T> &edge) : UndirectedEdge<T>(edge), Weighted()
-	{
-	}
-
-	template <typename T>
-	UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const Edge<T> &edge) : UndirectedEdge<T>(edge), Weighted()
-	{
-	}
-
-	template <typename T>
-	UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const DirectedWeightedEdge<T> &edge) : UndirectedEdge<T>(edge), Weighted(edge.getWeight())
-	{
-	}
-
-	template <typename T>
-	const std::optional<bool> UndirectedWeightedEdge<T>::isWeighted() const
-	{
-		return true;
-	}
 
 	template <typename T>
 	class Partition;
@@ -2217,7 +1804,7 @@ namespace CXXGRAPH
 		* @param readEdgeWeight Indicates if import also Edge Weights
      	* @return 0 if all OK, else return a negative value
      	*/
-		int readFromFile( InputOutputFormat format = InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool readNodeFeat = false, bool readEdgeWeight = false) override;
+		int readFromFile(InputOutputFormat format = InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool readNodeFeat = false, bool readEdgeWeight = false) override;
 
 		/**
      	* \brief
@@ -2228,7 +1815,7 @@ namespace CXXGRAPH
 		* @param numberOfPartition The number of partitions
 		* @return The partiton Map of the partitioned graph
      	*/
-		PartitionMap<T> partitionGraph( PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const override;
+		PartitionMap<T> partitionGraph(PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const override;
 	};
 
 	template <typename T>
@@ -2359,7 +1946,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	int Graph_TS<T>::writeToFile( InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
+	int Graph_TS<T>::writeToFile(InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
 	{
 		getLock();
 		auto result = Graph<T>::writeToFile(format, workingDir, OFileName, compress, writeNodeFeat, writeEdgeWeight);
@@ -2368,7 +1955,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	int Graph_TS<T>::readFromFile( InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight)
+	int Graph_TS<T>::readFromFile(InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight)
 	{
 		getLock();
 		auto result = Graph<T>::readFromFile(format, workingDir, OFileName, compress, readNodeFeat, readEdgeWeight);
@@ -2377,7 +1964,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	PartitionMap<T> Graph_TS<T>::partitionGraph( PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const
+	PartitionMap<T> Graph_TS<T>::partitionGraph(PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const
 	{
 		getLock();
 		auto partitions = Graph<T>::partitionGraph(algorithm, numberOfPartitions);
@@ -2680,89 +2267,6 @@ namespace CXXGRAPH
 		return numberOfNodes;
 	}
 
-	/*!
-  	Interface to implement for a custom writer.
-	*/
-
-	template <typename T>
-	class Writer
-	{
-	public:
-		/**
- 		* \brief
- 		* Function performs the writing of the Graph to the file.
- 		*
- 		* @param graph The graph to be written.
-		* @param file The output file to be written.
- 		* @returns a negative value if is impossible to write the graph from the file, else 0 if the graph is write successfully.
- 		*
- 		*/
-		virtual int writeGraph(const Graph<T> &graph, std::ofstream &file) = 0;
-	};
-
-	/*!
-  	Interface to implement for a custom reader.
-	*/
-	template <typename T>
-	class Reader
-	{
-		/**
- 		* \brief
- 		* Function performs the writing of the Graph to the file.
- 		*
- 		* @param graph The graph to be filled.
-		* @param file The input file to be read.
- 		* @returns a negative value if is impossible to read the graph from the file, else 0 if the graph is read successfully.
- 		*
- 		*/
-		virtual int ReadGraph(Graph<T> &graph, std::ifstream &file) = 0;
-	};
-
-	//ostream overload
-	template <typename T>
-	std::ostream &
-	operator<<(std::ostream &os, const Node<T> &node)
-	{
-		os << "Node: {\n"
-		   << "  Id:\t" << node.id << "\n  Data:\t" << node.data << "\n}";
-		return os;
-	}
-
-	template <typename T>
-	std::ostream &operator<<(std::ostream &os, const Edge<T> &edge)
-	{
-		os << "((Node: " << edge.nodePair.first->getId() << ")) ?----- |Edge: " << edge.id << "|-----? ((Node: " << edge.nodePair.second->getId() << "))";
-		return os;
-	}
-
-	template <typename T>
-	std::ostream &operator<<(std::ostream &os, const DirectedEdge<T> &edge)
-	{
-		os << "((Node: " << edge.getFrom().getId() << ")) +----- |Edge: #" << edge.getId() << "|-----> ((Node: " << edge.getTo().getId() << "))";
-		return os;
-	}
-
-	template <typename T>
-	std::ostream &operator<<(std::ostream &os, const UndirectedEdge<T> &edge)
-	{
-		os << "((Node: " << edge.getNode1().getId() << ")) <----- |Edge: #" << edge.getId() << "|-----> ((Node: " << edge.getNode2().getId() << "))";
-		return os;
-	}
-
-	template <typename T>
-	std::ostream &operator<<(std::ostream &os, const DirectedWeightedEdge<T> &edge)
-	{
-		os << "((Node: " << edge.getFrom().getId() << ")) +----- |Edge: #" << edge.getId() << " W:" << edge.getWeight() << "|-----> ((Node: " << edge.getTo().getId() << "))";
-		return os;
-	}
-
-	template <typename T>
-	std::ostream &operator<<(std::ostream &os, const UndirectedWeightedEdge<T> &edge)
-	{
-		os << "((Node: " << edge.getNode1().getId() << ")) <----- |Edge: #" << edge.getId() << " W:" << edge.getWeight() << "|-----> ((Node: " << edge.getNode2().getId() << "))";
-		return os;
-	}
-
 	template <typename T>
 	std::ostream &operator<<(std::ostream &os, const AdjacencyMatrix<T> &adj)
 	{
@@ -2845,11 +2349,11 @@ namespace CXXGRAPH
 		{
 		}
 
-		template<typename T>
+		template <typename T>
 		class Record
 		{
 		public:
-			virtual PartitionMap<T>& getPartitions() = 0;
+			virtual PartitionMap<T> &getPartitions() = 0;
 			virtual void addPartition(int m) = 0;
 			virtual bool hasReplicaInPartition(int m) = 0;
 			virtual bool getLock() = 0;
@@ -2858,7 +2362,7 @@ namespace CXXGRAPH
 			virtual int getDegree() = 0;
 			virtual void incrementDegree() = 0;
 		};
-		template<typename T>
+		template <typename T>
 		class PartitionState
 		{
 		public:
@@ -2872,7 +2376,7 @@ namespace CXXGRAPH
 			virtual int getNumVertices() = 0;
 			virtual std::set<int> getVertexIds() = 0;
 		};
-		template<typename T>
+		template <typename T>
 		class PartitionStrategy
 		{
 		public:
@@ -2884,7 +2388,7 @@ namespace CXXGRAPH
 			virtual void run() = 0;
 		};
 
-		template<typename T>
+		template <typename T>
 		class CoordinatedRecord : public Record<T>
 		{
 		private:
@@ -2896,7 +2400,7 @@ namespace CXXGRAPH
 			CoordinatedRecord();
 			~CoordinatedRecord();
 
-			PartitionMap<T>& getPartitions();
+			PartitionMap<T> &getPartitions();
 			void addPartition(int m);
 			bool hasReplicaInPartition(int m);
 			bool getLock();
@@ -2908,67 +2412,67 @@ namespace CXXGRAPH
 			void addAll(std::set<int> &set);
 			static std::set<int> intersection(CoordinatedRecord &x, CoordinatedRecord &y);
 		};
-		template<typename T>
+		template <typename T>
 		CoordinatedRecord<T>::CoordinatedRecord() : partitions(), lock()
 		{
 			degree = 0;
 		}
-		template<typename T>
+		template <typename T>
 		CoordinatedRecord<T>::~CoordinatedRecord()
 		{
 		}
-		template<typename T>
-		PartitionMap<T>& CoordinatedRecord<T>::getPartitions()
+		template <typename T>
+		PartitionMap<T> &CoordinatedRecord<T>::getPartitions()
 		{
 			return partitions;
 		}
-		template<typename T>
+		template <typename T>
 		void CoordinatedRecord<T>::addPartition(int m)
 		{
 			if (m == -1)
 			{
-		std::cout << "ERROR! record.addPartition(-1)" << std::endl;
-        exit(-1);
+				std::cout << "ERROR! record.addPartition(-1)" << std::endl;
+				exit(-1);
 			}
 			partitions.insert(m);
 		}
-		template<typename T>
+		template <typename T>
 		bool CoordinatedRecord<T>::hasReplicaInPartition(int m)
 		{
 			return partitions.find(m) != partitions.end();
 		}
-		template<typename T>
+		template <typename T>
 		bool CoordinatedRecord<T>::getLock()
 		{
 			return lock.try_lock();
 		}
-		template<typename T>
+		template <typename T>
 		bool CoordinatedRecord<T>::releaseLock()
 		{
 			lock.unlock();
 			return true;
 		}
-		template<typename T>
+		template <typename T>
 		int CoordinatedRecord<T>::getReplicas()
 		{
 			return partitions.size();
 		}
-		template<typename T>
+		template <typename T>
 		int CoordinatedRecord<T>::getDegree()
 		{
 			return degree;
 		}
-		template<typename T>
+		template <typename T>
 		void CoordinatedRecord<T>::incrementDegree()
 		{
 			degree++;
 		}
-		template<typename T>
+		template <typename T>
 		void CoordinatedRecord<T>::addAll(std::set<int> &set)
 		{
 			partitions.insert(set.begin(), set.end());
 		}
-		template<typename T>
+		template <typename T>
 		std::set<int> CoordinatedRecord<T>::intersection(CoordinatedRecord &x, CoordinatedRecord &y)
 		{
 			std::set<int> result;
@@ -2976,8 +2480,8 @@ namespace CXXGRAPH
 							 std::inserter(result, result.begin()));
 			return result;
 		}
-		
-		template<typename T>
+
+		template <typename T>
 		class CoordinatedPartitionState : public PartitionState<T>
 		{
 		private:
@@ -3004,7 +2508,7 @@ namespace CXXGRAPH
 			void incrementMachineLoadVertices(int m);
 			std::vector<int> getMachines_loadVertices();
 		};
-		template<typename T>
+		template <typename T>
 		CoordinatedPartitionState<T>::CoordinatedPartitionState(Globals &G) : record_map()
 		{
 			this->GLOBALS = G;
@@ -3015,11 +2519,11 @@ namespace CXXGRAPH
 			}
 			MAX_LOAD = 0;
 		}
-		template<typename T>
+		template <typename T>
 		CoordinatedPartitionState<T>::~CoordinatedPartitionState()
 		{
 		}
-		template<typename T>
+		template <typename T>
 		Record<T> &CoordinatedPartitionState<T>::getRecord(int x)
 		{
 			if (record_map.find(x) == record_map.end())
@@ -3028,12 +2532,12 @@ namespace CXXGRAPH
 			}
 			return record_map.at(x);
 		}
-		template<typename T>
+		template <typename T>
 		int CoordinatedPartitionState<T>::getMachineLoad(int m)
 		{
 			return machines_load_edges.at(m);
 		}
-		template<typename T>
+		template <typename T>
 		void CoordinatedPartitionState<T>::incrementMachineLoad(int m, Edge<T> &e)
 		{
 			machines_load_edges[m] = machines_load_edges[m] + 1;
@@ -3043,7 +2547,7 @@ namespace CXXGRAPH
 				MAX_LOAD = new_value;
 			}
 		}
-		template<typename T>
+		template <typename T>
 		int CoordinatedPartitionState<T>::getMinLoad()
 		{
 			int MIN_LOAD = std::numeric_limits<int>::max();
@@ -3058,12 +2562,12 @@ namespace CXXGRAPH
 			}
 			return MIN_LOAD;
 		}
-		template<typename T>
+		template <typename T>
 		int CoordinatedPartitionState<T>::getMaxLoad()
 		{
 			return MAX_LOAD;
 		}
-		template<typename T>
+		template <typename T>
 		std::vector<int> CoordinatedPartitionState<T>::getMachines_load()
 		{
 			std::vector<int> result;
@@ -3073,7 +2577,7 @@ namespace CXXGRAPH
 			}
 			return result;
 		}
-		template<typename T>
+		template <typename T>
 		int CoordinatedPartitionState<T>::getTotalReplicas()
 		{
 			//TODO
@@ -3093,12 +2597,12 @@ namespace CXXGRAPH
 			}
 			return result;
 		}
-		template<typename T>
+		template <typename T>
 		int CoordinatedPartitionState<T>::getNumVertices()
 		{
 			return record_map.size();
 		}
-		template<typename T>
+		template <typename T>
 		std::set<int> CoordinatedPartitionState<T>::getVertexIds()
 		{
 			//if (GLOBALS.OUTPUT_FILE_NAME!=null){ out.close(); }
@@ -3110,12 +2614,12 @@ namespace CXXGRAPH
 			}
 			return result;
 		}
-		template<typename T>
+		template <typename T>
 		void CoordinatedPartitionState<T>::incrementMachineLoadVertices(int m)
 		{
 			machines_load_vertices[m] = machines_load_vertices[m] + 1;
 		}
-		template<typename T>
+		template <typename T>
 		std::vector<int> CoordinatedPartitionState<T>::getMachines_loadVertices()
 		{
 			std::vector<int> result;
@@ -3125,7 +2629,7 @@ namespace CXXGRAPH
 			}
 			return result;
 		}
-		template<typename T>
+		template <typename T>
 		class PartitionerThread
 		{
 		private:
@@ -3141,7 +2645,7 @@ namespace CXXGRAPH
 
 			std::list<int> *id_partitions;
 		};
-		template<typename T>
+		template <typename T>
 		PartitionerThread<T>::PartitionerThread(std::vector<Edge<T>> &list, PartitionState<T> *state, PartitionStrategy<T> &algorithm, std::list<int> *ids)
 		{
 			this->list = list;
@@ -3149,11 +2653,11 @@ namespace CXXGRAPH
 			this->algorithm = algorithm;
 			this->id_partitions = ids;
 		}
-		template<typename T>
+		template <typename T>
 		PartitionerThread<T>::~PartitionerThread()
 		{
 		}
-		template<typename T>
+		template <typename T>
 		void PartitionerThread<T>::run()
 		{
 			auto edge_it = list.begin();
@@ -3163,7 +2667,7 @@ namespace CXXGRAPH
 			}
 		}
 
-		template<typename T>
+		template <typename T>
 		class HDRF : public PartitionStrategy<T>
 		{
 		private:
@@ -3175,16 +2679,16 @@ namespace CXXGRAPH
 
 			void performStep(Edge<T> &e, PartitionState<T> &Sstate);
 		};
-		template<typename T>
+		template <typename T>
 		HDRF<T>::HDRF(Globals G)
 		{
 			this->GLOBALS = G;
 		}
-		template<typename T>
+		template <typename T>
 		HDRF<T>::~HDRF()
 		{
 		}
-		template<typename T>
+		template <typename T>
 		void HDRF<T>::performStep(Edge<T> &e, PartitionState<T> &state)
 		{
 
@@ -3332,9 +2836,8 @@ namespace CXXGRAPH
 			u_record.releaseLock();
 			v_record.releaseLock();
 		}
-	
 
-		template<typename T>
+		template <typename T>
 		class Partitioner
 		{
 		private:
@@ -3350,7 +2853,7 @@ namespace CXXGRAPH
 
 			CoordinatedPartitionState<T> performCoordinatedPartition();
 		};
-		template<typename T>
+		template <typename T>
 		Partitioner<T>::Partitioner(std::vector<Edge<T>> &dataset, Globals &G)
 		{
 			this->GLOBALS = G;
@@ -3360,7 +2863,7 @@ namespace CXXGRAPH
 				algorithm = new HDRF<T>(GLOBALS);
 			}
 		}
-		template<typename T>
+		template <typename T>
 		CoordinatedPartitionState<T> Partitioner<T>::startCoordinated()
 		{
 			CoordinatedPartitionState state(GLOBALS);
@@ -3387,16 +2890,16 @@ namespace CXXGRAPH
 			}
 			return state;
 		}
-		template<typename T>
+		template <typename T>
 		Partitioner<T>::~Partitioner()
 		{
 		}
-		template<typename T>
+		template <typename T>
 		CoordinatedPartitionState<T> Partitioner<T>::performCoordinatedPartition()
 		{
 			return startCoordinated();
 		}
-		
+
 	}
 	/////////////////////////
 
