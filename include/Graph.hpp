@@ -36,6 +36,10 @@
 #include <fstream>
 #include <limits.h>
 #include <mutex>
+#include <set>
+#include <atomic>
+#include <thread>
+#include <cmath>
 #include "zlib.h"
 
 namespace CXXGRAPH
@@ -567,6 +571,26 @@ namespace CXXGRAPH
 	template <typename T>
 	class Partition;
 
+	/// Specify the Input/Output format of the Graph for Import/Export functions
+	enum E_InputOutputFormat
+	{
+		STANDARD_CSV, ///< A standard csv format
+		STANDARD_TSV, ///< A standard tsv format
+		OUT_1,
+		OUT_2
+	};
+
+	typedef E_InputOutputFormat InputOutputFormat;
+
+	/// Specify the Partition Algorithm
+	enum E_PartitionAlgorithm
+	{
+		GREEDY_VC, ///< A Greedy Vertex-Cut Algorithm
+		HDRF,	   ///< High-Degree (are) Replicated First (HDRF) Algorithm (Stream-Based Vertex-Cut Partitioning)
+		ALG_2
+	};
+	typedef E_PartitionAlgorithm PartitionAlgorithm;
+
 	/// Class that implement the Graph. ( This class is not Thread Safe )
 	template <typename T>
 	class Graph
@@ -582,28 +606,9 @@ namespace CXXGRAPH
 		int compressFile(const std::string &inputFile, const std::string &outputFile) const;
 		int decompressFile(const std::string &inputFile, const std::string &outputFile) const;
 		void greedyPartition(PartitionMap<T> &partitionMap) const;
+		void HDRFPartition(PartitionMap<T> &partitionMap) const;
 
 	public:
-		/// Specify the Input/Output format of the Graph for Import/Export functions
-		enum E_InputOutputFormat
-		{
-			STANDARD_CSV, ///< A standard csv format
-			STANDARD_TSV, ///< A standard tsv format
-			OUT_1,
-			OUT_2
-		};
-
-		typedef E_InputOutputFormat InputOutputFormat;
-
-		/// Specify the Partition Algorithm
-		enum E_PartitionAlgorithm
-		{
-			GREEDY_VC, ///< A Greedy Vertex-Cut Algorithm
-			ALG_1,
-			ALG_2
-		};
-		typedef E_PartitionAlgorithm PartitionAlgorithm;
-
 		Graph() = default;
 		Graph(const std::list<const Edge<T> *> &edgeSet);
 		~Graph() = default;
@@ -1344,6 +1349,11 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
+	void Graph<T>::HDRFPartition(PartitionMap<T> &partitionMap) const
+	{
+	}
+
+	template <typename T>
 	const AdjacencyMatrix<T> Graph<T>::getAdjMatrix() const
 	{
 		AdjacencyMatrix<T> adj;
@@ -2004,6 +2014,10 @@ namespace CXXGRAPH
 		{
 			greedyPartition(partitionMap);
 		}
+		else if (algorithm == PartitionAlgorithm::HDRF)
+		{
+			HDRFPartition(partitionMap);
+		}
 		else
 		{
 			//Error not recognized algorithm
@@ -2188,7 +2202,7 @@ namespace CXXGRAPH
 		* @param writeEdgeWeight Indicates if export also Edge Weights
      	* @return 0 if all OK, else return a negative value
      	*/
-		int writeToFile(typename Graph<T>::InputOutputFormat format = Graph<T>::InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool writeNodeFeat = false, bool writeEdgeWeight = false) const override;
+		int writeToFile(InputOutputFormat format = InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool writeNodeFeat = false, bool writeEdgeWeight = false) const override;
 
 		/**
      	* \brief
@@ -2203,7 +2217,7 @@ namespace CXXGRAPH
 		* @param readEdgeWeight Indicates if import also Edge Weights
      	* @return 0 if all OK, else return a negative value
      	*/
-		int readFromFile(typename Graph<T>::InputOutputFormat format = Graph<T>::InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool readNodeFeat = false, bool readEdgeWeight = false) override;
+		int readFromFile( InputOutputFormat format = InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool readNodeFeat = false, bool readEdgeWeight = false) override;
 
 		/**
      	* \brief
@@ -2214,7 +2228,7 @@ namespace CXXGRAPH
 		* @param numberOfPartition The number of partitions
 		* @return The partiton Map of the partitioned graph
      	*/
-		PartitionMap<T> partitionGraph(typename Graph<T>::PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const override;
+		PartitionMap<T> partitionGraph( PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const override;
 	};
 
 	template <typename T>
@@ -2345,7 +2359,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	int Graph_TS<T>::writeToFile(typename Graph<T>::InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
+	int Graph_TS<T>::writeToFile( InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
 	{
 		getLock();
 		auto result = Graph<T>::writeToFile(format, workingDir, OFileName, compress, writeNodeFeat, writeEdgeWeight);
@@ -2354,7 +2368,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	int Graph_TS<T>::readFromFile(typename Graph<T>::InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight)
+	int Graph_TS<T>::readFromFile( InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight)
 	{
 		getLock();
 		auto result = Graph<T>::readFromFile(format, workingDir, OFileName, compress, readNodeFeat, readEdgeWeight);
@@ -2363,7 +2377,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	PartitionMap<T> Graph_TS<T>::partitionGraph(typename Graph<T>::PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const
+	PartitionMap<T> Graph_TS<T>::partitionGraph( PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const
 	{
 		getLock();
 		auto partitions = Graph<T>::partitionGraph(algorithm, numberOfPartitions);
@@ -2794,6 +2808,597 @@ namespace CXXGRAPH
 		}
 		return os;
 	}
+
+	// Partitioning Utils //////////////
+
+	namespace PARTITIONING
+	{
+		class Globals
+		{
+		private:
+		public:
+			Globals(int numberOfPartiton, double lambda = 1, PartitionAlgorithm algorithm = PartitionAlgorithm::HDRF, unsigned int threads = std::thread::hardware_concurrency());
+			~Globals();
+
+			void print();
+
+			//CONSTANT
+			const int SLEEP_LIMIT = 1024;
+			const int PLACES = 4;
+
+			int numberOfPartition; //number of partitions
+			//OPTIONAL
+			PartitionAlgorithm partitionStategy;
+			double lambda;
+			unsigned int threads;
+		};
+
+		inline Globals::Globals(int numberOfPartiton, double lambda, PartitionAlgorithm algorithm, unsigned int threads)
+		{
+			this->numberOfPartition = numberOfPartiton;
+			this->partitionStategy = algorithm;
+			this->lambda = lambda;
+			this->threads = threads;
+		}
+
+		inline Globals::~Globals()
+		{
+		}
+
+		template<typename T>
+		class Record
+		{
+		public:
+			virtual PartitionMap<T>& getPartitions() = 0;
+			virtual void addPartition(int m) = 0;
+			virtual bool hasReplicaInPartition(int m) = 0;
+			virtual bool getLock() = 0;
+			virtual bool releaseLock() = 0;
+			virtual int getReplicas() = 0;
+			virtual int getDegree() = 0;
+			virtual void incrementDegree() = 0;
+		};
+		template<typename T>
+		class PartitionState
+		{
+		public:
+			virtual Record<T> &getRecord(int x) = 0;
+			virtual int getMachineLoad(int m) = 0;
+			virtual void incrementMachineLoad(int m, Edge<T> e) = 0;
+			virtual int getMinLoad() = 0;
+			virtual int getMaxLoad() = 0;
+			virtual std::vector<int> getMachines_load() = 0;
+			virtual int getTotalReplicas() = 0;
+			virtual int getNumVertices() = 0;
+			virtual std::set<int> getVertexIds() = 0;
+		};
+		template<typename T>
+		class PartitionStrategy
+		{
+		public:
+			virtual void performStep(Edge<T> &t, PartitionState<T> &Sstate) = 0;
+		};
+		class Runnable
+		{
+		public:
+			virtual void run() = 0;
+		};
+
+		template<typename T>
+		class CoordinatedRecord : public Record<T>
+		{
+		private:
+			PartitionMap<T> partitions;
+			std::mutex lock;
+			int degree;
+
+		public:
+			CoordinatedRecord();
+			~CoordinatedRecord();
+
+			PartitionMap<T>& getPartitions();
+			void addPartition(int m);
+			bool hasReplicaInPartition(int m);
+			bool getLock();
+			bool releaseLock();
+			int getReplicas();
+			int getDegree();
+			void incrementDegree();
+
+			void addAll(std::set<int> &set);
+			static std::set<int> intersection(CoordinatedRecord &x, CoordinatedRecord &y);
+		};
+		template<typename T>
+		CoordinatedRecord<T>::CoordinatedRecord() : partitions(), lock()
+		{
+			degree = 0;
+		}
+		template<typename T>
+		CoordinatedRecord<T>::~CoordinatedRecord()
+		{
+		}
+		template<typename T>
+		PartitionMap<T>& CoordinatedRecord<T>::getPartitions()
+		{
+			return partitions;
+		}
+		template<typename T>
+		void CoordinatedRecord<T>::addPartition(int m)
+		{
+			if (m == -1)
+			{
+		std::cout << "ERROR! record.addPartition(-1)" << std::endl;
+        exit(-1);
+			}
+			partitions.insert(m);
+		}
+		template<typename T>
+		bool CoordinatedRecord<T>::hasReplicaInPartition(int m)
+		{
+			return partitions.find(m) != partitions.end();
+		}
+		template<typename T>
+		bool CoordinatedRecord<T>::getLock()
+		{
+			return lock.try_lock();
+		}
+		template<typename T>
+		bool CoordinatedRecord<T>::releaseLock()
+		{
+			lock.unlock();
+			return true;
+		}
+		template<typename T>
+		int CoordinatedRecord<T>::getReplicas()
+		{
+			return partitions.size();
+		}
+		template<typename T>
+		int CoordinatedRecord<T>::getDegree()
+		{
+			return degree;
+		}
+		template<typename T>
+		void CoordinatedRecord<T>::incrementDegree()
+		{
+			degree++;
+		}
+		template<typename T>
+		void CoordinatedRecord<T>::addAll(std::set<int> &set)
+		{
+			partitions.insert(set.begin(), set.end());
+		}
+		template<typename T>
+		std::set<int> CoordinatedRecord<T>::intersection(CoordinatedRecord &x, CoordinatedRecord &y)
+		{
+			std::set<int> result;
+			set_intersection(x.partitions.begin(), x.partitions.end(), y.partitions.begin(), y.partitions.end(),
+							 std::inserter(result, result.begin()));
+			return result;
+		}
+		
+		template<typename T>
+		class CoordinatedPartitionState : public PartitionState<T>
+		{
+		private:
+			std::map<int, CoordinatedRecord<T>> record_map;
+			std::vector<std::atomic<int>> machines_load_edges;
+			std::vector<std::atomic<int>> machines_load_vertices;
+			Globals GLOBALS;
+			int MAX_LOAD;
+			//DatWriter out; //to print the final partition of each edge
+		public:
+			CoordinatedPartitionState(Globals &G);
+			~CoordinatedPartitionState();
+
+			Record<T> &getRecord(int x);
+			int getMachineLoad(int m);
+			void incrementMachineLoad(int m, Edge<T> &e);
+			int getMinLoad();
+			int getMaxLoad();
+			std::vector<int> getMachines_load();
+			int getTotalReplicas();
+			int getNumVertices();
+			std::set<int> getVertexIds();
+
+			void incrementMachineLoadVertices(int m);
+			std::vector<int> getMachines_loadVertices();
+		};
+		template<typename T>
+		CoordinatedPartitionState<T>::CoordinatedPartitionState(Globals &G) : record_map()
+		{
+			this->GLOBALS = G;
+			for (int i = 0; i < GLOBALS.numberOfPartition; i++)
+			{
+				machines_load_edges.push_back(std::atomic<int>(0));
+				machines_load_vertices.push_back(std::atomic<int>(0));
+			}
+			MAX_LOAD = 0;
+		}
+		template<typename T>
+		CoordinatedPartitionState<T>::~CoordinatedPartitionState()
+		{
+		}
+		template<typename T>
+		Record<T> &CoordinatedPartitionState<T>::getRecord(int x)
+		{
+			if (record_map.find(x) == record_map.end())
+			{
+				record_map[x] = CoordinatedRecord<T>();
+			}
+			return record_map.at(x);
+		}
+		template<typename T>
+		int CoordinatedPartitionState<T>::getMachineLoad(int m)
+		{
+			return machines_load_edges.at(m);
+		}
+		template<typename T>
+		void CoordinatedPartitionState<T>::incrementMachineLoad(int m, Edge<T> &e)
+		{
+			machines_load_edges[m] = machines_load_edges[m] + 1;
+			int new_value = machines_load_edges.at(m);
+			if (new_value > MAX_LOAD)
+			{
+				MAX_LOAD = new_value;
+			}
+		}
+		template<typename T>
+		int CoordinatedPartitionState<T>::getMinLoad()
+		{
+			int MIN_LOAD = std::numeric_limits<int>::max();
+			auto machines_load_edges_it = machines_load_edges.begin();
+			for (machines_load_edges_it; machines_load_edges_it != machines_load_edges.end(); ++machines_load_edges_it)
+			{
+				int loadi = *machines_load_edges_it;
+				if (loadi < MIN_LOAD)
+				{
+					MIN_LOAD = loadi;
+				}
+			}
+			return MIN_LOAD;
+		}
+		template<typename T>
+		int CoordinatedPartitionState<T>::getMaxLoad()
+		{
+			return MAX_LOAD;
+		}
+		template<typename T>
+		std::vector<int> CoordinatedPartitionState<T>::getMachines_load()
+		{
+			std::vector<int> result;
+			for (int i = 0; i < machines_load_edges.size(); i++)
+			{
+				result.push_back(machines_load_edges[i]);
+			}
+			return result;
+		}
+		template<typename T>
+		int CoordinatedPartitionState<T>::getTotalReplicas()
+		{
+			//TODO
+			int result = 0;
+			auto record_map_it = record_map.begin();
+			for (record_map_it; record_map_it != record_map.end(); ++record_map_it)
+			{
+				int r = record_map_it->second.getReplicas();
+				if (r > 0)
+				{
+					result += r;
+				}
+				else
+				{
+					result++;
+				}
+			}
+			return result;
+		}
+		template<typename T>
+		int CoordinatedPartitionState<T>::getNumVertices()
+		{
+			return record_map.size();
+		}
+		template<typename T>
+		std::set<int> CoordinatedPartitionState<T>::getVertexIds()
+		{
+			//if (GLOBALS.OUTPUT_FILE_NAME!=null){ out.close(); }
+			std::set<int> result;
+			auto record_map_it = record_map.begin();
+			for (record_map_it; record_map_it != record_map.end(); ++record_map_it)
+			{
+				result.insert(record_map_it->first);
+			}
+			return result;
+		}
+		template<typename T>
+		void CoordinatedPartitionState<T>::incrementMachineLoadVertices(int m)
+		{
+			machines_load_vertices[m] = machines_load_vertices[m] + 1;
+		}
+		template<typename T>
+		std::vector<int> CoordinatedPartitionState<T>::getMachines_loadVertices()
+		{
+			std::vector<int> result;
+			for (int i = 0; i < machines_load_vertices.size(); i++)
+			{
+				result.push_back(machines_load_vertices.at(i));
+			}
+			return result;
+		}
+		template<typename T>
+		class PartitionerThread
+		{
+		private:
+			std::vector<Edge<T>> list;
+			PartitionState<T> *state;
+			PartitionStrategy<T> algorithm;
+
+		public:
+			PartitionerThread(std::vector<Edge<T>> &list, PartitionState<T> *state, PartitionStrategy<T> &algorithm, std::list<int> *ids);
+			~PartitionerThread();
+
+			void run();
+
+			std::list<int> *id_partitions;
+		};
+		template<typename T>
+		PartitionerThread<T>::PartitionerThread(std::vector<Edge<T>> &list, PartitionState<T> *state, PartitionStrategy<T> &algorithm, std::list<int> *ids)
+		{
+			this->list = list;
+			this->state = state;
+			this->algorithm = algorithm;
+			this->id_partitions = ids;
+		}
+		template<typename T>
+		PartitionerThread<T>::~PartitionerThread()
+		{
+		}
+		template<typename T>
+		void PartitionerThread<T>::run()
+		{
+			auto edge_it = list.begin();
+			for (edge_it; edge_it != list.end(); ++edge_it)
+			{
+				algorithm.performStep(*edge_it, *state);
+			}
+		}
+
+		template<typename T>
+		class HDRF : public PartitionStrategy<T>
+		{
+		private:
+			Globals GLOBALS;
+
+		public:
+			HDRF(Globals G);
+			~HDRF();
+
+			void performStep(Edge<T> &e, PartitionState<T> &Sstate);
+		};
+		template<typename T>
+		HDRF<T>::HDRF(Globals G)
+		{
+			this->GLOBALS = G;
+		}
+		template<typename T>
+		HDRF<T>::~HDRF()
+		{
+		}
+		template<typename T>
+		void HDRF<T>::performStep(Edge<T> &e, PartitionState<T> &state)
+		{
+
+			int P = GLOBALS.numberOfPartition;
+			int epsilon = 1;
+			int u = e.getU();
+			int v = e.getV();
+
+			Record u_record = state.getRecord(u);
+			Record v_record = state.getRecord(v);
+
+			//*** ASK FOR LOCK
+			int sleep_time = 2;
+			while (!u_record.getLock())
+			{
+				sleep(sleep_time);
+				sleep = (int)pow(sleep_time, 2);
+			}
+			sleep_time = 2;
+			while (!v_record.getLock())
+			{
+				sleep(sleep_time);
+				sleep = (int)pow(sleep_time, 2);
+				if (sleep_time > GLOBALS.SLEEP_LIMIT)
+				{
+					u_record.releaseLock();
+					performStep(e, state);
+					return;
+				} //TO AVOID DEADLOCK
+			}
+			//*** LOCK TAKEN
+
+			int machine_id = -1;
+
+			//*** COMPUTE MAX AND MIN LOAD
+			int MIN_LOAD = state.getMinLoad();
+			int MAX_LOAD = state.getMaxLoad();
+
+			//*** COMPUTE SCORES, FIND MIN SCORE, AND COMPUTE CANDIDATES PARITIONS
+			std::list<int> candidates;
+			double MAX_SCORE = 0.0;
+
+			for (int m = 0; m < P; m++)
+			{
+
+				int degree_u = u_record.getDegree() + 1;
+				int degree_v = v_record.getDegree() + 1;
+				int SUM = degree_u + degree_v;
+				double fu = 0;
+				double fv = 0;
+				if (u_record.hasReplicaInPartition(m))
+				{
+					fu = degree_u;
+					fu /= SUM;
+					fu = 1 + (1 - fu);
+				}
+				if (v_record.hasReplicaInPartition(m))
+				{
+					fv = degree_v;
+					fv /= SUM;
+					fv = 1 + (1 - fv);
+				}
+				int load = state.getMachineLoad(m);
+				double bal = (MAX_LOAD - load);
+				bal /= (epsilon + MAX_LOAD - MIN_LOAD);
+				if (bal < 0)
+				{
+					bal = 0;
+				}
+				double SCORE_m = fu + fv + GLOBALS.lambda * bal;
+				if (SCORE_m < 0)
+				{
+					std::cout << "ERRORE: SCORE_m<0" << std::endl;
+					std::cout << "fu: " << fu << std::endl;
+					std::cout << "fv: " << fv << std::endl;
+					std::cout << "GLOBALS.LAMBDA: " << GLOBALS.lambda << std::endl;
+					std::cout << "bal: " << bal << std::endl;
+					exit(-1);
+				}
+				if (SCORE_m > MAX_SCORE)
+				{
+					MAX_SCORE = SCORE_m;
+					candidates.clear();
+					candidates.push_back(m);
+				}
+				else if (SCORE_m == MAX_SCORE)
+				{
+					candidates.push_back(m);
+				}
+			}
+
+			//*** CHECK TO AVOID ERRORS
+			if (candidates.empty())
+			{
+				std::cout << "ERROR: GreedyObjectiveFunction.performStep -> candidates.isEmpty()" << std::endl;
+				std::cout << "MAX_SCORE: " << MAX_SCORE << std::endl;
+				exit(-1);
+			}
+
+			//*** PICK A RANDOM ELEMENT FROM CANDIDATES
+			/* initialize random seed: */
+			srand(time(NULL));
+
+			int choice = rand() % candidates.size();
+			// TODOOOOOOOOO
+			//machine_id = candidates.at(choice);
+
+			try
+			{
+				CoordinatedPartitionState<T> &cord_state = dynamic_cast<CoordinatedPartitionState<T> &>(state);
+				//NEW UPDATE RECORDS RULE TO UPFDATE THE SIZE OF THE PARTITIONS EXPRESSED AS THE NUMBER OF VERTICES THEY CONTAINS
+				if (!u_record.hasReplicaInPartition(machine_id))
+				{
+					u_record.addPartition(machine_id);
+					cord_state.incrementMachineLoadVertices(machine_id);
+				}
+				if (!v_record.hasReplicaInPartition(machine_id))
+				{
+					v_record.addPartition(machine_id);
+					cord_state.incrementMachineLoadVertices(machine_id);
+				}
+			}
+			catch (std::bad_cast)
+			{
+				// use employee's member functions
+				//1-UPDATE RECORDS
+				if (!u_record.hasReplicaInPartition(machine_id))
+				{
+					u_record.addPartition(machine_id);
+				}
+				if (!v_record.hasReplicaInPartition(machine_id))
+				{
+					v_record.addPartition(machine_id);
+				}
+			}
+
+			//2-UPDATE EDGES
+			state.incrementMachineLoad(machine_id, e);
+
+			//3-UPDATE DEGREES
+			u_record.incrementDegree();
+			v_record.incrementDegree();
+
+			//*** RELEASE LOCK
+			u_record.releaseLock();
+			v_record.releaseLock();
+		}
+	
+
+		template<typename T>
+		class Partitioner
+		{
+		private:
+			std::vector<Edge<T>> dataset;
+			PartitionStrategy<T> algorithm;
+			Globals GLOBALS;
+
+			CoordinatedPartitionState<T> startCoordinated();
+
+		public:
+			Partitioner(std::vector<Edge<T>> &dataset, Globals &G);
+			~Partitioner();
+
+			CoordinatedPartitionState<T> performCoordinatedPartition();
+		};
+		template<typename T>
+		Partitioner<T>::Partitioner(std::vector<Edge<T>> &dataset, Globals &G)
+		{
+			this->GLOBALS = G;
+			this->dataset = dataset;
+			if (GLOBALS.partitionStategy == CXXGRAPH::PartitionAlgorithm::HDRF)
+			{
+				algorithm = new HDRF<T>(GLOBALS);
+			}
+		}
+		template<typename T>
+		CoordinatedPartitionState<T> Partitioner<T>::startCoordinated()
+		{
+			CoordinatedPartitionState state(GLOBALS);
+			int processors = GLOBALS.threads;
+
+			std::thread myThreads[processors];
+
+			int n = dataset.size();
+			int subSize = n / processors + 1;
+			for (int t = 0; t < processors; t++)
+			{
+				int iStart = t * subSize;
+				int iEnd = std::min((t + 1) * subSize, n);
+				if (iEnd >= iStart)
+				{
+					std::vector<Edge<T>> list(dataset.begin() + iStart, dataset.begin() + iEnd);
+					Runnable x = PartitionerThread<T>(list, state, algorithm, new std::list<int>());
+					myThreads[t] = std::thread(&Runnable::run, &x);
+				}
+			}
+			for (int t = 0; t < processors; t++)
+			{
+				myThreads[t].join();
+			}
+			return state;
+		}
+		template<typename T>
+		Partitioner<T>::~Partitioner()
+		{
+		}
+		template<typename T>
+		CoordinatedPartitionState<T> Partitioner<T>::performCoordinatedPartition()
+		{
+			return startCoordinated();
+		}
+		
+	}
+	/////////////////////////
 
 } // namespace CXXGRAPH
 #endif // __CXXGRAPH_H__

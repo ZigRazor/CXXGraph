@@ -39,7 +39,7 @@ TEST(PartitonTest, test_1)
     edgeSet.push_back(&edge12);
     CXXGRAPH::Graph<int> graph(edgeSet);
     ASSERT_EQ(graph.getEdgeSet().size(), 12);
-    auto partitionMap = graph.partitionGraph(CXXGRAPH::Graph<int>::PartitionAlgorithm::GREEDY_VC, 4);
+    auto partitionMap = graph.partitionGraph(CXXGRAPH::PartitionAlgorithm::GREEDY_VC, 4);
     unsigned int totalEdgeInPartition = 0;
     for (auto elem : partitionMap)
     {
@@ -90,7 +90,7 @@ TEST(PartitonTest, test_2)
     edgeSet.push_back(&edge12);
     CXXGRAPH::Graph<int> graph(edgeSet);
     ASSERT_EQ(graph.getEdgeSet().size(), 12);
-    auto partitionMap = graph.partitionGraph(CXXGRAPH::Graph<int>::PartitionAlgorithm::GREEDY_VC, 4);
+    auto partitionMap = graph.partitionGraph(CXXGRAPH::PartitionAlgorithm::GREEDY_VC, 4);
     unsigned int totalEdgeInPartition = 0;
     for (auto elem : partitionMap)
     {
