@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "Graph.hpp"
+#include "CXXGraph.hpp"
 
 TEST(DirectedEdgeTest, Constructor_1)
 {

@@ -30,6 +30,11 @@
 
 namespace CXXGRAPH
 {
+	template <typename T>
+	class Edge;
+	// ostream operator
+	template <typename T>
+	std::ostream &operator<<(std::ostream &o, const Edge<T> &edge);
     template <typename T>
 	class Edge
 	{
@@ -51,7 +56,7 @@ namespace CXXGRAPH
 		//operator DirectedEdge<T>() const { return DirectedEdge<T>(id, nodePair); }
 		//operator UndirectedEdge<T>() const { return UndirectedEdge<T>(id, nodePair); }
 
-		friend std::ostream &operator<<<>(std::ostream &os, const Edge<T> &edge);
+		friend std::ostream &operator<< <>(std::ostream &os, const Edge<T> &edge);
 	};
 
 	template <typename T>
@@ -101,10 +106,6 @@ namespace CXXGRAPH
 	{
 		return (this->id < b.id);
 	}
-
-	// ostream operator
-	template <typename T>
-	std::ostream &operator<<(std::ostream &o, const Edge<T> &edge);
 
 	template <typename T>
 	std::ostream &operator<<(std::ostream &os, const Edge<T> &edge)

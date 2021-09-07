@@ -1,6 +1,6 @@
 #ifndef __UTILITIES_H__
 #define __UTILITIES_H__
-#include "../include/Graph.hpp"
+#include "CXXGraph.hpp"
 #include <time.h>
 #include <stdlib.h>
 

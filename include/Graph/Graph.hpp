@@ -17,8 +17,8 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_H__
-#define __CXXGRAPH_H__
+#ifndef __GRAPH_H__
+#define __GRAPH_H__
 
 #pragma once
 
@@ -60,12 +60,15 @@
 
 namespace CXXGRAPH
 {
+	namespace PARTITIONING{
+		template<typename T>
+		class Partition;
+	}
+
 	template <typename T>
 	std::ostream &operator<<(std::ostream &o, const Graph<T> &graph);
 	template <typename T>
 	std::ostream &operator<<(std::ostream &o, const AdjacencyMatrix<T> &adj);
-
-	
 
 	/// Class that implement the Graph. ( This class is not Thread Safe )
 	template <typename T>
@@ -1484,13 +1487,13 @@ namespace CXXGRAPH
 		PartitionMap<T> partitionMap;
 		for (unsigned int i = 0; i < numberOfPartitions; ++i)
 		{
-			partitionMap[i] = new Partition<T>(i);
+			partitionMap[i] = new PARTITIONING::Partition<T>(i);
 		}
-		if (algorithm == PartitionAlgorithm::GREEDY_VC)
+		if (algorithm == PARTITIONING::PartitionAlgorithm::GREEDY_VC_ALG)
 		{
 			greedyPartition(partitionMap);
 		}
-		else if (algorithm == PartitionAlgorithm::HDRF)
+		else if (algorithm == PARTITIONING::PartitionAlgorithm::HDRF_ALG)
 		{
 			HDRFPartition(partitionMap);
 		}
@@ -1550,4 +1553,4 @@ namespace CXXGRAPH
 	}
 
 } // namespace CXXGRAPH
-#endif // __CXXGRAPH_H__
+#endif // __GRAPH_H__

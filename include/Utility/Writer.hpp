@@ -24,6 +24,10 @@
 
 namespace CXXGRAPH
 {
+
+	template<typename T>
+	class Graph;
+
     /*!
   	Interface to implement for a custom writer.
 	*/

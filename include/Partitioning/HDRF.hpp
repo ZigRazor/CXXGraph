@@ -24,7 +24,6 @@
 
 #include "Partitioning/Utility/Globals.hpp"
 #include "Edge/Edge.hpp"
-#include "PartitionState.hpp"
 #include "PartitionStrategy.hpp"
 
 namespace CXXGRAPH

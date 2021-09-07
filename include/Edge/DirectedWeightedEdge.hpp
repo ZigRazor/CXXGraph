@@ -30,6 +30,13 @@ namespace CXXGRAPH
     template <typename T>
 	class UndirectedWeightedEdge;
 
+	template <typename T>
+	class DirectedWeightedEdge;
+
+	//ostream operator
+	template <typename T>
+	std::ostream &operator<<(std::ostream &o, const DirectedWeightedEdge<T> &edge);
+
     template <typename T>
 	class DirectedWeightedEdge : public DirectedEdge<T>, public Weighted
 	{
@@ -89,10 +96,6 @@ namespace CXXGRAPH
 	{
 		return true;
 	}
-
-	//ostream operator
-	template <typename T>
-	std::ostream &operator<<(std::ostream &o, const DirectedWeightedEdge<T> &edge);
 	
 	template <typename T>
 	std::ostream &operator<<(std::ostream &os, const DirectedWeightedEdge<T> &edge)

@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include <fstream>
-#include "Graph.hpp"
+#include "CXXGraph.hpp"
 
 inline bool exists_test(const std::string &name)
 {

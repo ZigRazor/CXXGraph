@@ -22,9 +22,14 @@
 #define __NODE_H__
 
 #pragma once
+#include <iostream>
 
 namespace CXXGRAPH
 {
+	template <typename T>
+	class Node;	
+	template <typename T>
+	std::ostream &operator<<(std::ostream &os, const Node<T> &node);
     template <typename T>
 	class Node
 	{
@@ -77,11 +82,7 @@ namespace CXXGRAPH
 
 	//ostream overload
 	template <typename T>
-	std::ostream &operator<<(std::ostream &o, const Node<T> &node);
-
-	template <typename T>
-	std::ostream &
-	operator<<(std::ostream &os, const Node<T> &node)
+	std::ostream &operator<<(std::ostream &os, const Node<T> &node)
 	{
 		os << "Node: {\n"
 		   << "  Id:\t" << node.id << "\n  Data:\t" << node.data << "\n}";

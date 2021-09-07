@@ -29,8 +29,8 @@ namespace CXXGRAPH
         /// Specify the Partition Algorithm
         enum E_PartitionAlgorithm
         {
-            GREEDY_VC, ///< A Greedy Vertex-Cut Algorithm
-            HDRF,      ///< High-Degree (are) Replicated First (HDRF) Algorithm (Stream-Based Vertex-Cut Partitioning)
+            GREEDY_VC_ALG, ///< A Greedy Vertex-Cut Algorithm
+            HDRF_ALG,      ///< High-Degree (are) Replicated First (HDRF) Algorithm (Stream-Based Vertex-Cut Partitioning)
             ALG_2
         };
         typedef E_PartitionAlgorithm PartitionAlgorithm;

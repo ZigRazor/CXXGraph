@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "Graph.hpp"
+#include "CXXGraph.hpp"
 
 TEST(DijkstraTest, test_1)
 {

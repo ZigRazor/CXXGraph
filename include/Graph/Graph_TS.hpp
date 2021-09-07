@@ -229,7 +229,7 @@ namespace CXXGRAPH
 		* @param numberOfPartition The number of partitions
 		* @return The partiton Map of the partitioned graph
      	*/
-        PartitionMap<T> partitionGraph(PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const override;
+        PartitionMap<T> partitionGraph(PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const override;
     };
 
     template <typename T>
@@ -378,7 +378,7 @@ namespace CXXGRAPH
     }
 
     template <typename T>
-    PartitionMap<T> Graph_TS<T>::partitionGraph(PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const
+    PartitionMap<T> Graph_TS<T>::partitionGraph(PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const
     {
         getLock();
         auto partitions = Graph<T>::partitionGraph(algorithm, numberOfPartitions);

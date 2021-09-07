@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "CXXGraphConfig.h"
+#include "CXXGraph.hpp"
 /*************** EXAMPLE START   ********************
 namespace my {
 namespace project {

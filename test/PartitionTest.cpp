@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "Graph.hpp"
+#include "CXXGraph.hpp"
 
 TEST(PartitonTest, test_1)
 {
@@ -39,7 +39,7 @@ TEST(PartitonTest, test_1)
     edgeSet.push_back(&edge12);
     CXXGRAPH::Graph<int> graph(edgeSet);
     ASSERT_EQ(graph.getEdgeSet().size(), 12);
-    auto partitionMap = graph.partitionGraph(CXXGRAPH::PartitionAlgorithm::GREEDY_VC, 4);
+    auto partitionMap = graph.partitionGraph(CXXGRAPH::PARTITIONING::PartitionAlgorithm::GREEDY_VC_ALG, 4);
     unsigned int totalEdgeInPartition = 0;
     for (auto elem : partitionMap)
     {
@@ -90,7 +90,7 @@ TEST(PartitonTest, test_2)
     edgeSet.push_back(&edge12);
     CXXGRAPH::Graph<int> graph(edgeSet);
     ASSERT_EQ(graph.getEdgeSet().size(), 12);
-    auto partitionMap = graph.partitionGraph(CXXGRAPH::PartitionAlgorithm::GREEDY_VC, 4);
+    auto partitionMap = graph.partitionGraph(CXXGRAPH::PARTITIONING::PartitionAlgorithm::GREEDY_VC_ALG, 4);
     unsigned int totalEdgeInPartition = 0;
     for (auto elem : partitionMap)
     {
@@ -102,6 +102,6 @@ TEST(PartitonTest, test_2)
         ASSERT_EQ(partitionMap.at(i)->getPartitionId(), i);
     }
 
-    CXXGRAPH::PartitioningStats partitioningStats = CXXGRAPH::getPartitionStats(partitionMap);
+    CXXGRAPH::PARTITIONING::PartitioningStats partitioningStats = CXXGRAPH::PARTITIONING::getPartitionStats(partitionMap);
     std::cout <<  partitioningStats << std::endl;
 }

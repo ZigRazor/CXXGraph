@@ -26,6 +26,14 @@
 
 namespace CXXGRAPH
 {
+	template <typename T>
+	class UndirectedEdge;
+
+	template <typename T>
+	class DirectedEdge;
+	// ostream operator
+	template <typename T>
+	std::ostream &operator<<(std::ostream &o, const DirectedEdge<T> &edge);
     template <typename T>
 	class DirectedEdge : public Edge<T>
 	{
@@ -83,9 +91,7 @@ namespace CXXGRAPH
 		return false;
 	}
 
-	// ostream operator
-	template <typename T>
-	std::ostream &operator<<(std::ostream &o, const DirectedEdge<T> &edge);
+	
 
 	template <typename T>
 	std::ostream &operator<<(std::ostream &os, const DirectedEdge<T> &edge)

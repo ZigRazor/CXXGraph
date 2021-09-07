@@ -32,7 +32,7 @@ namespace CXXGRAPH {
 		{
 		private:
 		public:
-			Globals(int numberOfPartiton, double lambda = 1, PartitionAlgorithm algorithm = PartitionAlgorithm::HDRF, unsigned int threads = std::thread::hardware_concurrency());
+			Globals(int numberOfPartiton, double lambda = 1, PartitionAlgorithm algorithm = PartitionAlgorithm::HDRF_ALG, unsigned int threads = std::thread::hardware_concurrency());
 			~Globals();
 
 			void print();

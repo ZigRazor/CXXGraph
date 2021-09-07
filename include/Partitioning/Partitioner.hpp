@@ -26,6 +26,10 @@
 #include "Partitioning/Utility/Globals.hpp"
 #include "Edge/Edge.hpp"
 #include "CoordinatedPartitionState.hpp"
+#include "Utility/Runnable.hpp"
+#include "PartitionerThread.hpp"
+#include "PartitionAlgorithm.hpp"
+#include "HDRF.hpp"
 
 namespace CXXGRAPH
 {
@@ -52,7 +56,7 @@ namespace CXXGRAPH
         {
             this->GLOBALS = G;
             this->dataset = dataset;
-            if (GLOBALS.partitionStategy == CXXGRAPH::PartitionAlgorithm::HDRF)
+            if (GLOBALS.partitionStategy == PartitionAlgorithm::HDRF_ALG)
             {
                 algorithm = new HDRF<T>(GLOBALS);
             }

@@ -25,6 +25,8 @@
 #include "Record.hpp"
 #include "Edge/Edge.hpp"
 #include "Partitioning/Utility/Globals.hpp"
+#include "PartitionState.hpp"
+#include "CoordinatedRecord.hpp"
 #include <vector>
 #include <set>
 

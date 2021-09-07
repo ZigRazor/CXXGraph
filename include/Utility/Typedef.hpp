@@ -26,12 +26,19 @@
 #include <string>
 #include <fstream>
 
-#include "Node/Node.hpp"
-#include "Edge/Edge.hpp"
-#include "Partitioning/Partition.hpp"
-
 namespace CXXGRAPH
 {
+
+	template <typename T>
+	class Node;
+
+	template <typename T>
+	class Edge;
+
+	namespace PARTITIONING{
+		template<typename T>
+		class Partition;
+	}
     // ENUMERATION //////////////////////////////////////
 
     /// Specify the Input/Output format of the Graph for Import/Export functions

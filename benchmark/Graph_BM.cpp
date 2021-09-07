@@ -1,6 +1,6 @@
 #include <benchmark/benchmark.h>
 #include <unistd.h>
-#include "../include/Graph.hpp"
+#include "CXXGraph.hpp"
 #include "Utilities.hpp"
 
 static auto nodes = generateRandomNodes(100000, 2);

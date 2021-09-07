@@ -1,5 +1,5 @@
 #include <benchmark/benchmark.h>
-#include "../include/Graph.hpp"
+#include "CXXGraph.hpp"
 #include "Utilities.hpp"
 
 static void BM_EdgeCreation(benchmark::State &state)
