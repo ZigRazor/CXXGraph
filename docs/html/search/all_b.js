@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['undirectededge_35',['UndirectedEdge',['../df/d71/classCXXGRAPH_1_1UndirectedEdge.html',1,'CXXGRAPH']]],
-  ['undirectedweightededge_36',['UndirectedWeightedEdge',['../d7/d24/classCXXGRAPH_1_1UndirectedWeightedEdge.html',1,'CXXGRAPH']]]
+  ['setedgeset_37',['setEdgeSet',['../d0/df2/classCXXGRAPH_1_1Graph.html#af2cd256d3638bf15ea926b6da6bc6097',1,'CXXGRAPH::Graph::setEdgeSet()'],['../da/da5/classCXXGRAPH_1_1Graph__TS.html#a2fc8067ede63880fd645206ef9a23380',1,'CXXGRAPH::Graph_TS::setEdgeSet()']]],
+  ['setpartitionid_38',['setPartitionId',['../de/d59/classCXXGRAPH_1_1PARTITIONING_1_1Partition.html#a47f17e70d2a19be80e2d0ac0dd055ad1',1,'CXXGRAPH::PARTITIONING::Partition']]]
 ];
