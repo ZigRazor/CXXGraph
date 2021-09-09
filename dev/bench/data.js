@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1631180195968,
+  "lastUpdate": 1631180756482,
   "repoUrl": "https://github.com/ZigRazor/CXXGraph",
   "entries": {
     "Benchmark": [
@@ -4820,6 +4820,378 @@ window.BENCHMARK_DATA = {
             "value": 880246859.1250019,
             "unit": "ns/iter",
             "extra": "iterations: 4\ncpu: 1043488751.7499977 ns\nthreads: 4"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "zigrazor@gmail.com",
+            "name": "ZigRazor",
+            "username": "ZigRazor"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3192e2fa8640ecdafcb93cdf904f06f7d17dd23f",
+          "message": "Documentation Update (#52)\n\n* Updated Doxygen Documentation\r\n\r\n* [CodeFactor] Apply fixes to commit 0527010\r\n\r\nCo-authored-by: codefactor-io <support@codefactor.io>",
+          "timestamp": "2021-09-09T11:37:32+02:00",
+          "tree_id": "40ff0934e05c667559f597f01638f2a0ecfaf488",
+          "url": "https://github.com/ZigRazor/CXXGraph/commit/3192e2fa8640ecdafcb93cdf904f06f7d17dd23f"
+        },
+        "date": 1631180755605,
+        "tool": "googlecpp",
+        "benches": [
+          {
+            "name": "NodeCreation",
+            "value": 8.000000093488779e-7,
+            "unit": "ns/iter",
+            "extra": "iterations: 1000000000\ncpu: 6.999999999923734e-7 ns\nthreads: 1"
+          },
+          {
+            "name": "NodeCreationDestruction_new_delete",
+            "value": 15.749443026844903,
+            "unit": "ns/iter",
+            "extra": "iterations: 44825769\ncpu: 15.56748001356095 ns\nthreads: 1"
+          },
+          {
+            "name": "NodeGetId",
+            "value": 8.000000093488779e-7,
+            "unit": "ns/iter",
+            "extra": "iterations: 1000000000\ncpu: 6.999999999646178e-7 ns\nthreads: 1"
+          },
+          {
+            "name": "NodeGetData",
+            "value": 6.999999868639861e-7,
+            "unit": "ns/iter",
+            "extra": "iterations: 1000000000\ncpu: 7.000000000756402e-7 ns\nthreads: 1"
+          },
+          {
+            "name": "BM_EdgeCreation",
+            "value": 8.000000093488779e-7,
+            "unit": "ns/iter",
+            "extra": "iterations: 1000000000\ncpu: 8.000000000230045e-7 ns\nthreads: 1"
+          },
+          {
+            "name": "EdgeCreationDestruction_new_delete",
+            "value": 15.584332065771633,
+            "unit": "ns/iter",
+            "extra": "iterations: 45067626\ncpu: 15.556163375457144 ns\nthreads: 1"
+          },
+          {
+            "name": "EdgeGetId",
+            "value": 8.000000093488779e-7,
+            "unit": "ns/iter",
+            "extra": "iterations: 1000000000\ncpu: 7.000000001866624e-7 ns\nthreads: 1"
+          },
+          {
+            "name": "NodeGetNodePair",
+            "value": 8.000000093488779e-7,
+            "unit": "ns/iter",
+            "extra": "iterations: 1000000000\ncpu: 8.000000000230045e-7 ns\nthreads: 1"
+          },
+          {
+            "name": "GraphCreation",
+            "value": 7.999999809271685e-7,
+            "unit": "ns/iter",
+            "extra": "iterations: 1000000000\ncpu: 6.999999999646178e-7 ns\nthreads: 1"
+          },
+          {
+            "name": "AddEdge",
+            "value": 3.5427488297367584,
+            "unit": "ns/iter",
+            "extra": "iterations: 197016364\ncpu: 3.5426370319168012 ns\nthreads: 1"
+          },
+          {
+            "name": "AddEdgeX/1",
+            "value": 7.383808789312337,
+            "unit": "ns/iter",
+            "extra": "iterations: 94639396\ncpu: 7.383628790276728 ns\nthreads: 1"
+          },
+          {
+            "name": "AddEdgeX/16",
+            "value": 291.32316921267784,
+            "unit": "ns/iter",
+            "extra": "iterations: 2512826\ncpu: 291.3152096484199 ns\nthreads: 1"
+          },
+          {
+            "name": "AddEdgeX/256",
+            "value": 71933.2499221575,
+            "unit": "ns/iter",
+            "extra": "iterations: 9635\ncpu: 71930.32693305651 ns\nthreads: 1"
+          },
+          {
+            "name": "AddEdgeX/4096",
+            "value": 21616344.440000147,
+            "unit": "ns/iter",
+            "extra": "iterations: 25\ncpu: 21616216.200000018 ns\nthreads: 1"
+          },
+          {
+            "name": "AddEdgeX/65536",
+            "value": 10559933957.999989,
+            "unit": "ns/iter",
+            "extra": "iterations: 1\ncpu: 10559488060.000002 ns\nthreads: 1"
+          },
+          {
+            "name": "GraphCreation_TS",
+            "value": 6.999999868639861e-7,
+            "unit": "ns/iter",
+            "extra": "iterations: 1000000000\ncpu: 7.000000010748408e-7 ns\nthreads: 1"
+          },
+          {
+            "name": "AddEdge_TS",
+            "value": 20.073248714126446,
+            "unit": "ns/iter",
+            "extra": "iterations: 34872776\ncpu: 20.072614981956104 ns\nthreads: 1"
+          },
+          {
+            "name": "AddEdgeX_TS/1",
+            "value": 21.862726258835732,
+            "unit": "ns/iter",
+            "extra": "iterations: 32023335\ncpu: 21.862117296652578 ns\nthreads: 1"
+          },
+          {
+            "name": "AddEdgeX_TS/16",
+            "value": 457.1145607432201,
+            "unit": "ns/iter",
+            "extra": "iterations: 1500933\ncpu: 457.1042158444124 ns\nthreads: 1"
+          },
+          {
+            "name": "AddEdgeX_TS/256",
+            "value": 75853.59668687766,
+            "unit": "ns/iter",
+            "extra": "iterations: 9236\ncpu: 75851.65786054551 ns\nthreads: 1"
+          },
+          {
+            "name": "AddEdgeX_TS/4096",
+            "value": 26041241.393939305,
+            "unit": "ns/iter",
+            "extra": "iterations: 33\ncpu: 26040587.090909123 ns\nthreads: 1"
+          },
+          {
+            "name": "AddEdgeX_TS/65536",
+            "value": 11874725936.000004,
+            "unit": "ns/iter",
+            "extra": "iterations: 1\ncpu: 11874226650 ns\nthreads: 1"
+          },
+          {
+            "name": "BM_AddEdgeX_MT_TS/16/threads:1",
+            "value": 473.92559818017344,
+            "unit": "ns/iter",
+            "extra": "iterations: 1467827\ncpu: 473.9047544431304 ns\nthreads: 1"
+          },
+          {
+            "name": "BM_AddEdgeX_MT_TS/16/threads:2",
+            "value": 516.191214616248,
+            "unit": "ns/iter",
+            "extra": "iterations: 681598\ncpu: 1029.2137447586367 ns\nthreads: 2"
+          },
+          {
+            "name": "BM_AddEdgeX_MT_TS/16/threads:4",
+            "value": 287.36825443106244,
+            "unit": "ns/iter",
+            "extra": "iterations: 1154128\ncpu: 637.4022751375912 ns\nthreads: 4"
+          },
+          {
+            "name": "BM_AddEdgeX_MT_TS/256/threads:1",
+            "value": 75726.61994172877,
+            "unit": "ns/iter",
+            "extra": "iterations: 9267\ncpu: 75723.12711772969 ns\nthreads: 1"
+          },
+          {
+            "name": "BM_AddEdgeX_MT_TS/256/threads:2",
+            "value": 58409.34784411237,
+            "unit": "ns/iter",
+            "extra": "iterations: 7236\ncpu: 91645.98894416862 ns\nthreads: 2"
+          },
+          {
+            "name": "BM_AddEdgeX_MT_TS/256/threads:4",
+            "value": 35815.909055354765,
+            "unit": "ns/iter",
+            "extra": "iterations: 16620\ncpu: 66854.25800240706 ns\nthreads: 4"
+          },
+          {
+            "name": "BM_AddEdgeX_MT_TS/4096/threads:1",
+            "value": 27121469.586207606,
+            "unit": "ns/iter",
+            "extra": "iterations: 29\ncpu: 27050702.827586032 ns\nthreads: 1"
+          },
+          {
+            "name": "BM_AddEdgeX_MT_TS/4096/threads:2",
+            "value": 17714185.125000626,
+            "unit": "ns/iter",
+            "extra": "iterations: 20\ncpu: 29935522.450000037 ns\nthreads: 2"
+          },
+          {
+            "name": "BM_AddEdgeX_MT_TS/4096/threads:4",
+            "value": 8828690.59821407,
+            "unit": "ns/iter",
+            "extra": "iterations: 56\ncpu: 15645868.464285713 ns\nthreads: 4"
+          },
+          {
+            "name": "BM_AddEdgeX_MT_TS/65536/threads:1",
+            "value": 10222786501.000002,
+            "unit": "ns/iter",
+            "extra": "iterations: 1\ncpu: 10222254461.000006 ns\nthreads: 1"
+          },
+          {
+            "name": "BM_AddEdgeX_MT_TS/65536/threads:2",
+            "value": 4952540492.500006,
+            "unit": "ns/iter",
+            "extra": "iterations: 2\ncpu: 5479312412 ns\nthreads: 2"
+          },
+          {
+            "name": "BM_AddEdgeX_MT_TS/65536/threads:4",
+            "value": 2165096522.1875005,
+            "unit": "ns/iter",
+            "extra": "iterations: 4\ncpu: 2727002382.9999986 ns\nthreads: 4"
+          },
+          {
+            "name": "RemoveEdge",
+            "value": 2.482376012922829,
+            "unit": "ns/iter",
+            "extra": "iterations: 281054734\ncpu: 2.482252471150323 ns\nthreads: 1"
+          },
+          {
+            "name": "RemoveEdgeX/1",
+            "value": 5.021235084824145,
+            "unit": "ns/iter",
+            "extra": "iterations: 139471117\ncpu: 5.021103846182038 ns\nthreads: 1"
+          },
+          {
+            "name": "RemoveEdgeX/16",
+            "value": 85.42804932075865,
+            "unit": "ns/iter",
+            "extra": "iterations: 8193710\ncpu: 85.42638951097828 ns\nthreads: 1"
+          },
+          {
+            "name": "RemoveEdgeX/256",
+            "value": 1854.9325769844975,
+            "unit": "ns/iter",
+            "extra": "iterations: 374783\ncpu: 1854.9254021660443 ns\nthreads: 1"
+          },
+          {
+            "name": "RemoveEdgeX/4096",
+            "value": 31158.20738499382,
+            "unit": "ns/iter",
+            "extra": "iterations: 22803\ncpu: 31157.70157435446 ns\nthreads: 1"
+          },
+          {
+            "name": "RemoveEdgeX/65536",
+            "value": 857033.488916222,
+            "unit": "ns/iter",
+            "extra": "iterations: 812\ncpu: 856985.3374384175 ns\nthreads: 1"
+          },
+          {
+            "name": "RemoveEdge_TS",
+            "value": 19.74249128540509,
+            "unit": "ns/iter",
+            "extra": "iterations: 35456901\ncpu: 19.742398214666608 ns\nthreads: 1"
+          },
+          {
+            "name": "RemoveEdgeX_TS/1",
+            "value": 21.750039197526615,
+            "unit": "ns/iter",
+            "extra": "iterations: 32189531\ncpu: 21.74976264798663 ns\nthreads: 1"
+          },
+          {
+            "name": "RemoveEdgeX_TS/16",
+            "value": 334.60812604718825,
+            "unit": "ns/iter",
+            "extra": "iterations: 2091915\ncpu: 334.6045890965895 ns\nthreads: 1"
+          },
+          {
+            "name": "RemoveEdgeX_TS/256",
+            "value": 5440.5263452263525,
+            "unit": "ns/iter",
+            "extra": "iterations: 128733\ncpu: 5440.429975220025 ns\nthreads: 1"
+          },
+          {
+            "name": "RemoveEdgeX_TS/4096",
+            "value": 89227.84614411858,
+            "unit": "ns/iter",
+            "extra": "iterations: 7910\ncpu: 89224.9809102393 ns\nthreads: 1"
+          },
+          {
+            "name": "RemoveEdgeX_TS/65536",
+            "value": 1600787.2064220002,
+            "unit": "ns/iter",
+            "extra": "iterations: 436\ncpu: 1600732.5481651358 ns\nthreads: 1"
+          },
+          {
+            "name": "RemoveEdgeX_MT_TS/16/threads:1",
+            "value": 345.91550443951405,
+            "unit": "ns/iter",
+            "extra": "iterations: 2017893\ncpu: 345.7553299406918 ns\nthreads: 1"
+          },
+          {
+            "name": "RemoveEdgeX_MT_TS/16/threads:2",
+            "value": 449.3320482296843,
+            "unit": "ns/iter",
+            "extra": "iterations: 756878\ncpu: 898.3539725028064 ns\nthreads: 2"
+          },
+          {
+            "name": "RemoveEdgeX_MT_TS/16/threads:4",
+            "value": 230.08369947071233,
+            "unit": "ns/iter",
+            "extra": "iterations: 1495568\ncpu: 465.2338850523619 ns\nthreads: 4"
+          },
+          {
+            "name": "RemoveEdgeX_MT_TS/256/threads:1",
+            "value": 5619.421144231847,
+            "unit": "ns/iter",
+            "extra": "iterations: 121811\ncpu: 5619.029348745149 ns\nthreads: 1"
+          },
+          {
+            "name": "RemoveEdgeX_MT_TS/256/threads:2",
+            "value": 7156.413614374426,
+            "unit": "ns/iter",
+            "extra": "iterations: 49198\ncpu: 14292.524269279029 ns\nthreads: 2"
+          },
+          {
+            "name": "RemoveEdgeX_MT_TS/256/threads:4",
+            "value": 3335.750745986287,
+            "unit": "ns/iter",
+            "extra": "iterations: 95176\ncpu: 7078.481066655519 ns\nthreads: 4"
+          },
+          {
+            "name": "RemoveEdgeX_MT_TS/4096/threads:1",
+            "value": 91277.68794419502,
+            "unit": "ns/iter",
+            "extra": "iterations: 7598\ncpu: 91273.13964200889 ns\nthreads: 1"
+          },
+          {
+            "name": "RemoveEdgeX_MT_TS/4096/threads:2",
+            "value": 429793.9801205075,
+            "unit": "ns/iter",
+            "extra": "iterations: 830\ncpu: 758937.4831325309 ns\nthreads: 2"
+          },
+          {
+            "name": "RemoveEdgeX_MT_TS/4096/threads:4",
+            "value": 1391092.2243589642,
+            "unit": "ns/iter",
+            "extra": "iterations: 624\ncpu: 2367918.1378205046 ns\nthreads: 4"
+          },
+          {
+            "name": "RemoveEdgeX_MT_TS/65536/threads:1",
+            "value": 1711919.1355933202,
+            "unit": "ns/iter",
+            "extra": "iterations: 413\ncpu: 1711859.3656174655 ns\nthreads: 1"
+          },
+          {
+            "name": "RemoveEdgeX_MT_TS/65536/threads:2",
+            "value": 2991751283.499994,
+            "unit": "ns/iter",
+            "extra": "iterations: 2\ncpu: 3150604678.4999967 ns\nthreads: 2"
+          },
+          {
+            "name": "RemoveEdgeX_MT_TS/65536/threads:4",
+            "value": 496145198.1875058,
+            "unit": "ns/iter",
+            "extra": "iterations: 4\ncpu: 714299816.2500006 ns\nthreads: 4"
           }
         ]
       }
