@@ -328,5 +328,8 @@ Thanks to [GeeksForGeeks](https://www.geeksforgeeks.org/) for some algorithms in
 **We are looking for developers and committer**, also at *first experience*, we will guide you step by step to the open-source world!
 If you are interested, please contact us at zigrazor@gmail.com or contribute to this project. We are waiting for you!
 
+## Other Details
+
+View the [Estimated Value of the Project](https://www.openhub.net/p/CXXGraph/estimated_cost)
 
 ![](https://github.com/ZigRazor/CXXGraph/blob/master/Icon2.png)
