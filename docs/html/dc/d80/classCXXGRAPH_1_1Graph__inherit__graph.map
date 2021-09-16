@@ -1,5 +1,5 @@
 <map id="CXXGRAPH::Graph&lt; T &gt;" name="CXXGRAPH::Graph&lt; T &gt;">
-<area shape="rect" id="node1" title="Class that implement the Graph. ( This class is not Thread Safe )" alt="" coords="121,5,288,32"/>
-<area shape="rect" id="node2" href="$da/da5/classCXXGRAPH_1_1Graph__TS.html" title="Class that implement the Thread Safe Graph." alt="" coords="5,80,196,107"/>
-<area shape="rect" id="node3" href="$d4/d32/classCXXGRAPH_1_1Partition.html" title=" " alt="" coords="220,80,400,107"/>
+<area shape="rect" id="node1" title="Class that implement the Graph. ( This class is not Thread Safe )" alt="" coords="127,5,293,32"/>
+<area shape="rect" id="node2" href="$da/da5/classCXXGRAPH_1_1Graph__TS.html" title="Class that implement the Thread Safe Graph." alt="" coords="5,87,196,114"/>
+<area shape="rect" id="node3" href="$de/d59/classCXXGRAPH_1_1PARTITIONING_1_1Partition.html" title=" " alt="" coords="221,80,418,121"/>
 </map>

@@ -1,7 +1,10 @@
 var searchData=
 [
-  ['setedgeset_30',['setEdgeSet',['../d0/df2/classCXXGRAPH_1_1Graph.html#af2cd256d3638bf15ea926b6da6bc6097',1,'CXXGRAPH::Graph::setEdgeSet()'],['../da/da5/classCXXGRAPH_1_1Graph__TS.html#a2fc8067ede63880fd645206ef9a23380',1,'CXXGRAPH::Graph_TS::setEdgeSet()']]],
-  ['setpartitionid_31',['setPartitionId',['../d4/d32/classCXXGRAPH_1_1Partition.html#a71935c588f9f4caac9fcee25b667bd4e',1,'CXXGRAPH::Partition']]],
-  ['standard_5fcsv_32',['STANDARD_CSV',['../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71a12e3f194ab31b8c22b5789dda8d4645c',1,'CXXGRAPH::Graph']]],
-  ['standard_5ftsv_33',['STANDARD_TSV',['../d0/df2/classCXXGRAPH_1_1Graph.html#af40584c5cd15ce35ad36a736b3429c71a28e4461e98949e163fe3ad5982065d76',1,'CXXGRAPH::Graph']]]
+  ['partition_25',['Partition',['../de/d59/classCXXGRAPH_1_1PARTITIONING_1_1Partition.html',1,'CXXGRAPH::PARTITIONING']]],
+  ['partitioner_26',['Partitioner',['../d8/d6d/classCXXGRAPH_1_1PARTITIONING_1_1Partitioner.html',1,'CXXGRAPH::PARTITIONING']]],
+  ['partitionerthread_27',['PartitionerThread',['../d7/d1b/classCXXGRAPH_1_1PARTITIONING_1_1PartitionerThread.html',1,'CXXGRAPH::PARTITIONING']]],
+  ['partitiongraph_28',['partitionGraph',['../d0/df2/classCXXGRAPH_1_1Graph.html#aaf4cfc3ba8383e32db53ffdd6b053f1f',1,'CXXGRAPH::Graph::partitionGraph()'],['../da/da5/classCXXGRAPH_1_1Graph__TS.html#a6ff50fa4f3ecfcdbdd7dbb061ad6f585',1,'CXXGRAPH::Graph_TS::partitionGraph()']]],
+  ['partitioningstats_29',['PartitioningStats',['../da/d71/classCXXGRAPH_1_1PARTITIONING_1_1PartitioningStats.html',1,'CXXGRAPH::PARTITIONING']]],
+  ['partitionstate_30',['PartitionState',['../df/d6f/classCXXGRAPH_1_1PARTITIONING_1_1PartitionState.html',1,'CXXGRAPH::PARTITIONING']]],
+  ['partitionstrategy_31',['PartitionStrategy',['../de/deb/classCXXGRAPH_1_1PARTITIONING_1_1PartitionStrategy.html',1,'CXXGRAPH::PARTITIONING']]]
 ];
