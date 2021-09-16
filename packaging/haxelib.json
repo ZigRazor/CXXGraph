@@ -1,0 +1,12 @@
+{
+    "name": "CXXGraph",
+    "url" : "https://github.com/ZigRazor/CXXGraph",
+    "license": "GPL",
+    "tags": ["Algorithm", "Cpp"],
+    "description": "Header-Only C++ Library for Graph Representation and Algorithms",
+    "version": "0.1.6",
+    "classPath": "",
+    "releasenote": "Release 0.1.6",
+    "contributors": ["ZigRazor"],
+    "dependencies": {}
+  }

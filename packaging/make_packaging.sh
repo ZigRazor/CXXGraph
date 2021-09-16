@@ -15,6 +15,11 @@ echo "Create Tarballs..."
 ./tarballs.sh
 echo "Tarballs Created"
 
+#zip
+echo "Create Zip..."
+./zip.sh
+echo "Zip Created"
+
 #rpm
 echo "Create RPM..."
 cd rpm
