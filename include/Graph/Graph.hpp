@@ -57,6 +57,8 @@
 #include "Utility/Typedef.hpp"
 #include "Partitioning/Partition.hpp"
 #include "Partitioning/PartitionAlgorithm.hpp"
+#include "Partitioning/Partitioner.hpp"
+#include "Partitioning/Utility/Globals.hpp"
 
 namespace CXXGRAPH
 {
@@ -1485,24 +1487,14 @@ namespace CXXGRAPH
 	PartitionMap<T> Graph<T>::partitionGraph(PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const
 	{
 		PartitionMap<T> partitionMap;
-		for (unsigned int i = 0; i < numberOfPartitions; ++i)
-		{
-			partitionMap[i] = new PARTITIONING::Partition<T>(i);
-		}
-		if (algorithm == PARTITIONING::PartitionAlgorithm::GREEDY_VC_ALG)
-		{
-			greedyPartition(partitionMap);
-		}
-		else if (algorithm == PARTITIONING::PartitionAlgorithm::HDRF_ALG)
-		{
-			HDRFPartition(partitionMap);
-		}
-		else
-		{
-			//Error not recognized algorithm
-			partitionMap.clear();
-		}
+		PARTITIONING::Globals globals(numberOfPartitions,algorithm);
+
+		PARTITIONING::Partitioner<T> partitioner(getEdgeSet(), globals);
+		PARTITIONING::CoordinatedPartitionState<T> partitionState = partitioner.performCoordinatedPartition();
+		partitionMap = partitionState.getPartitionMap();
+		
 		return partitionMap;
+		
 	}
 	
 

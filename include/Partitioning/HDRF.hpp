@@ -37,44 +37,45 @@ namespace CXXGRAPH
             Globals GLOBALS;
 
         public:
-            HDRF(Globals G);
+            HDRF(Globals& G);
             ~HDRF();
 
-            void performStep(Edge<T> &e, PartitionState<T> &Sstate);
+            void performStep(const Edge<T> &e, PartitionState<T> &Sstate);
         };
         template <typename T>
-        HDRF<T>::HDRF(Globals G)
+        HDRF<T>::HDRF(Globals& G) : GLOBALS(G) 
         {
-            this->GLOBALS = G;
+            //this->GLOBALS = G;
         }
         template <typename T>
         HDRF<T>::~HDRF()
         {
         }
         template <typename T>
-        void HDRF<T>::performStep(Edge<T> &e, PartitionState<T> &state)
+        void HDRF<T>::performStep(const Edge<T> &e, PartitionState<T> &state)
         {
 
             int P = GLOBALS.numberOfPartition;
             int epsilon = 1;
-            int u = e.getU();
-            int v = e.getV();
+            auto nodePair = e.getNodePair();
+            int u = nodePair.first->getId();
+            int v = nodePair.second->getId();
 
-            Record u_record = state.getRecord(u);
-            Record v_record = state.getRecord(v);
+            Record<T> &u_record = state.getRecord(u);
+            Record<T> &v_record = state.getRecord(v);
 
             //*** ASK FOR LOCK
             int sleep_time = 2;
             while (!u_record.getLock())
             {
                 sleep(sleep_time);
-                sleep = (int)pow(sleep_time, 2);
+                sleep_time = (int)pow(sleep_time, 2);
             }
             sleep_time = 2;
             while (!v_record.getLock())
             {
                 sleep(sleep_time);
-                sleep = (int)pow(sleep_time, 2);
+                sleep_time = (int)pow(sleep_time, 2);
                 if (sleep_time > GLOBALS.SLEEP_LIMIT)
                 {
                     u_record.releaseLock();
@@ -189,7 +190,7 @@ namespace CXXGRAPH
             }
 
             //2-UPDATE EDGES
-            state.incrementMachineLoad(machine_id, e);
+            state.incrementMachineLoad(machine_id, &e);
 
             //3-UPDATE DEGREES
             u_record.incrementDegree();

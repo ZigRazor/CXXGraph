@@ -39,22 +39,23 @@ namespace CXXGRAPH
         class Partitioner
         {
         private:
-            std::vector<Edge<T>> dataset;
-            PartitionStrategy<T> algorithm;
+            std::list<const Edge<T> *> dataset;
+            PartitionStrategy<T>* algorithm;
             Globals GLOBALS;
 
             CoordinatedPartitionState<T> startCoordinated();
+            
 
         public:
-            Partitioner(std::vector<Edge<T>> &dataset, Globals &G);
+            Partitioner(const std::list<const Edge<T> *> &dataset, Globals &G);
             ~Partitioner();
 
             CoordinatedPartitionState<T> performCoordinatedPartition();
         };
         template <typename T>
-        Partitioner<T>::Partitioner(std::vector<Edge<T>> &dataset, Globals &G)
+        Partitioner<T>::Partitioner(const std::list<const Edge<T> *> &dataset, Globals &G) : GLOBALS(G)
         {
-            this->GLOBALS = G;
+            //this->GLOBALS = G;
             this->dataset = dataset;
             if (GLOBALS.partitionStategy == PartitionAlgorithm::HDRF_ALG)
             {
@@ -64,7 +65,7 @@ namespace CXXGRAPH
         template <typename T>
         CoordinatedPartitionState<T> Partitioner<T>::startCoordinated()
         {
-            CoordinatedPartitionState state(GLOBALS);
+            CoordinatedPartitionState<T> state(GLOBALS);
             int processors = GLOBALS.threads;
 
             std::thread myThreads[processors];
@@ -77,9 +78,9 @@ namespace CXXGRAPH
                 int iEnd = std::min((t + 1) * subSize, n);
                 if (iEnd >= iStart)
                 {
-                    std::vector<Edge<T>> list(dataset.begin() + iStart, dataset.begin() + iEnd);
-                    Runnable x = PartitionerThread<T>(list, state, algorithm, new std::list<int>());
-                    myThreads[t] = std::thread(&Runnable::run, &x);
+                    std::vector<const Edge<T>*> list(std::next(dataset.begin(), iStart), std::next(dataset.begin(), iEnd));
+                    Runnable *x = new PartitionerThread<T>(list, &state, algorithm, new std::list<int>());
+                    myThreads[t] = std::thread(&Runnable::run, x);
                 }
             }
             for (int t = 0; t < processors; t++)
@@ -97,6 +98,7 @@ namespace CXXGRAPH
         {
             return startCoordinated();
         }
+
     }
 }
 

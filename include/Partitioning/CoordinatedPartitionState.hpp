@@ -39,8 +39,9 @@ namespace CXXGRAPH
         {
         private:
             std::map<int, CoordinatedRecord<T>> record_map;
-            std::vector<std::atomic<int>> machines_load_edges;
-            std::vector<std::atomic<int>> machines_load_vertices;
+            std::vector<std::shared_ptr<std::atomic<int>>> machines_load_edges;
+            std::vector<std::shared_ptr<std::atomic<int>>> machines_load_vertices;
+            PartitionMap<T> partition_map;
             Globals GLOBALS;
             int MAX_LOAD;
             //DatWriter out; //to print the final partition of each edge
@@ -50,7 +51,7 @@ namespace CXXGRAPH
 
             Record<T> &getRecord(int x);
             int getMachineLoad(int m);
-            void incrementMachineLoad(int m, Edge<T> &e);
+            void incrementMachineLoad(int m, const  Edge<T> *e);
             int getMinLoad();
             int getMaxLoad();
             std::vector<int> getMachines_load();
@@ -60,15 +61,18 @@ namespace CXXGRAPH
 
             void incrementMachineLoadVertices(int m);
             std::vector<int> getMachines_loadVertices();
+            PartitionMap<T> getPartitionMap();
         };
         template <typename T>
-        CoordinatedPartitionState<T>::CoordinatedPartitionState(Globals &G) : record_map()
+        CoordinatedPartitionState<T>::CoordinatedPartitionState(Globals &G) : record_map(), GLOBALS(G)
         {
-            this->GLOBALS = G;
+            //this->GLOBALS = G;
             for (int i = 0; i < GLOBALS.numberOfPartition; i++)
             {
-                machines_load_edges.push_back(std::atomic<int>(0));
-                machines_load_vertices.push_back(std::atomic<int>(0));
+                auto _edge = std::shared_ptr<std::atomic<int>>(new std::atomic<int>(0));
+                auto _vertices = std::shared_ptr<std::atomic<int>>(new std::atomic<int>(0));
+                machines_load_edges[i] = _edge;
+                machines_load_vertices[i] = _vertices;
             }
             MAX_LOAD = 0;
         }
@@ -88,17 +92,19 @@ namespace CXXGRAPH
         template <typename T>
         int CoordinatedPartitionState<T>::getMachineLoad(int m)
         {
-            return machines_load_edges.at(m);
+            return *machines_load_edges.at(m).get();
         }
         template <typename T>
-        void CoordinatedPartitionState<T>::incrementMachineLoad(int m, Edge<T> &e)
+        void CoordinatedPartitionState<T>::incrementMachineLoad(int m, const  Edge<T> *e)
         {
-            machines_load_edges[m] = machines_load_edges[m] + 1;
-            int new_value = machines_load_edges.at(m);
+            *machines_load_edges[m].get() = (*machines_load_edges[m].get()) + 1;
+            int new_value = *(machines_load_edges.at(m).get());
             if (new_value > MAX_LOAD)
             {
                 MAX_LOAD = new_value;
             }
+            partition_map[m]->addEdge(e);
+            
         }
         template <typename T>
         int CoordinatedPartitionState<T>::getMinLoad()
@@ -107,7 +113,7 @@ namespace CXXGRAPH
             auto machines_load_edges_it = machines_load_edges.begin();
             for (machines_load_edges_it; machines_load_edges_it != machines_load_edges.end(); ++machines_load_edges_it)
             {
-                int loadi = *machines_load_edges_it;
+                int loadi = *(machines_load_edges_it->get());
                 if (loadi < MIN_LOAD)
                 {
                     MIN_LOAD = loadi;
@@ -126,7 +132,7 @@ namespace CXXGRAPH
             std::vector<int> result;
             for (int i = 0; i < machines_load_edges.size(); i++)
             {
-                result.push_back(machines_load_edges[i]);
+                result.push_back(*(machines_load_edges[i].get()));
             }
             return result;
         }
@@ -170,7 +176,7 @@ namespace CXXGRAPH
         template <typename T>
         void CoordinatedPartitionState<T>::incrementMachineLoadVertices(int m)
         {
-            machines_load_vertices[m] = machines_load_vertices[m] + 1;
+            *machines_load_vertices[m].get() = *(machines_load_vertices[m].get()) + 1;
         }
         template <typename T>
         std::vector<int> CoordinatedPartitionState<T>::getMachines_loadVertices()
@@ -178,9 +184,15 @@ namespace CXXGRAPH
             std::vector<int> result;
             for (int i = 0; i < machines_load_vertices.size(); i++)
             {
-                result.push_back(machines_load_vertices.at(i));
+                result.push_back(*(machines_load_vertices.at(i).get()));
             }
             return result;
+        }
+        
+        template<typename T>
+        PartitionMap<T> CoordinatedPartitionState<T>::getPartitionMap() 
+        {
+            return partition_map;
         }
     }
 }

@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <set>
 #include "Utility/Typedef.hpp"
 
 namespace CXXGRAPH
@@ -33,15 +34,15 @@ namespace CXXGRAPH
         class CoordinatedRecord : public Record<T>
         {
         private:
-            PartitionMap<T> partitions;
-            std::mutex lock;
+            std::set<int> partitions;
+            std::mutex *lock;
             int degree;
 
         public:
             CoordinatedRecord();
             ~CoordinatedRecord();
 
-            PartitionMap<T> &getPartitions();
+            std::set<int> &getPartitions();
             void addPartition(int m);
             bool hasReplicaInPartition(int m);
             bool getLock();
@@ -51,19 +52,23 @@ namespace CXXGRAPH
             void incrementDegree();
 
             void addAll(std::set<int> &set);
-            static std::set<int> intersection(CoordinatedRecord &x, CoordinatedRecord &y);
+            std::set<int> intersection(CoordinatedRecord &x, CoordinatedRecord &y);
         };
         template <typename T>
-        CoordinatedRecord<T>::CoordinatedRecord() : partitions(), lock()
+        CoordinatedRecord<T>::CoordinatedRecord() : partitions()
         {
+            lock = new std::mutex();
             degree = 0;
         }
         template <typename T>
         CoordinatedRecord<T>::~CoordinatedRecord()
         {
+            if(lock){
+                delete lock;
+            }
         }
         template <typename T>
-        PartitionMap<T> &CoordinatedRecord<T>::getPartitions()
+        std::set<int> &CoordinatedRecord<T>::getPartitions()
         {
             return partitions;
         }
@@ -85,12 +90,12 @@ namespace CXXGRAPH
         template <typename T>
         bool CoordinatedRecord<T>::getLock()
         {
-            return lock.try_lock();
+            return lock->try_lock();
         }
         template <typename T>
         bool CoordinatedRecord<T>::releaseLock()
         {
-            lock.unlock();
+            lock->unlock();
             return true;
         }
         template <typename T>

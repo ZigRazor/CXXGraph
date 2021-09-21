@@ -33,7 +33,7 @@ namespace CXXGRAPH
 		class PartitionStrategy
 		{
 		public:
-			virtual void performStep(Edge<T> &t, PartitionState<T> &Sstate) = 0;
+			virtual void performStep(const Edge<T> &t, PartitionState<T> &Sstate) = 0;
 		};
     }
 }

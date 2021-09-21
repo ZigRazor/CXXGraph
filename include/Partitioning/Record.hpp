@@ -22,13 +22,15 @@
 
 #pragma once
 
+#include <set>
+
 namespace CXXGRAPH {
     namespace PARTITIONING {
         template <typename T>
 		class Record
 		{
 		public:
-			virtual PartitionMap<T> &getPartitions() = 0;
+			virtual std::set<int> &getPartitions() = 0;
 			virtual void addPartition(int m) = 0;
 			virtual bool hasReplicaInPartition(int m) = 0;
 			virtual bool getLock() = 0;
