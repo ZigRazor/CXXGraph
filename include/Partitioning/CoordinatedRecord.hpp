@@ -63,9 +63,11 @@ namespace CXXGRAPH
         template <typename T>
         CoordinatedRecord<T>::~CoordinatedRecord()
         {
-            if(lock){
-                delete lock;
-            }
+            std::cout << "CoordinatedRecord<T>::~CoordinatedRecord()" << std::endl;
+            //TODOOOOOOOO
+            //if(lock){
+            //    delete lock;
+            //}
         }
         template <typename T>
         std::set<int> &CoordinatedRecord<T>::getPartitions()
@@ -89,7 +91,7 @@ namespace CXXGRAPH
         }
         template <typename T>
         bool CoordinatedRecord<T>::getLock()
-        {
+        {   
             return lock->try_lock();
         }
         template <typename T>

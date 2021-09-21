@@ -67,13 +67,16 @@ namespace CXXGRAPH
             //*** ASK FOR LOCK
             int sleep_time = 2;
             while (!u_record.getLock())
-            {
+            {                
+                std::cout << "Waiting for lock on node " << u << std::endl;
                 sleep(sleep_time);
                 sleep_time = (int)pow(sleep_time, 2);
             }
+            std::cout << "Lock Taken for " << u << std::endl;
             sleep_time = 2;
             while (!v_record.getLock())
             {
+                std::cout << "Waiting for lock on node " << v << std::endl;
                 sleep(sleep_time);
                 sleep_time = (int)pow(sleep_time, 2);
                 if (sleep_time > GLOBALS.SLEEP_LIMIT)
@@ -84,7 +87,7 @@ namespace CXXGRAPH
                 } //TO AVOID DEADLOCK
             }
             //*** LOCK TAKEN
-
+            std::cout << "Lock Taken for " << v << std::endl;
             int machine_id = -1;
 
             //*** COMPUTE MAX AND MIN LOAD
@@ -92,7 +95,7 @@ namespace CXXGRAPH
             int MAX_LOAD = state.getMaxLoad();
 
             //*** COMPUTE SCORES, FIND MIN SCORE, AND COMPUTE CANDIDATES PARITIONS
-            std::list<int> candidates;
+            std::vector<int> candidates;
             double MAX_SCORE = 0.0;
 
             for (int m = 0; m < P; m++)
@@ -157,8 +160,7 @@ namespace CXXGRAPH
             srand(time(NULL));
 
             int choice = rand() % candidates.size();
-            // TODOOOOOOOOO
-            //machine_id = candidates.at(choice);
+            machine_id = candidates.at(choice);
 
             try
             {

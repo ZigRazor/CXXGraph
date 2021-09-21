@@ -38,7 +38,7 @@ namespace CXXGRAPH {
 			void print();
 
 			//CONSTANT
-			const int SLEEP_LIMIT = 1024;
+			const int SLEEP_LIMIT = 16;
 			const int PLACES = 4;
 
 			int numberOfPartition; //number of partitions
