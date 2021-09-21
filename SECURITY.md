@@ -14,7 +14,7 @@ Thank you for improving the security of `standard`. We appreciate your efforts a
 responsible disclosure and will make every effort to acknowledge your
 contributions.
 
-Report security bugs by emailing the lead maintainer at feross@feross.org.
+Report security bugs by emailing the lead maintainer at zigrazor@gmail.com.
 
 The lead maintainer will acknowledge your email within 48 hours, and will send a
 more detailed response within 48 hours indicating the next steps in handling
