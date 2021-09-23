@@ -17,7 +17,6 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-
 #ifndef __EDGE_H__
 #define __EDGE_H__
 
@@ -35,7 +34,7 @@ namespace CXXGRAPH
 	// ostream operator
 	template <typename T>
 	std::ostream &operator<<(std::ostream &o, const Edge<T> &edge);
-    template <typename T>
+	template <typename T>
 	class Edge
 	{
 	private:
@@ -56,7 +55,7 @@ namespace CXXGRAPH
 		//operator DirectedEdge<T>() const { return DirectedEdge<T>(id, nodePair); }
 		//operator UndirectedEdge<T>() const { return UndirectedEdge<T>(id, nodePair); }
 
-		friend std::ostream &operator<< <>(std::ostream &os, const Edge<T> &edge);
+		friend std::ostream &operator<<<>(std::ostream &os, const Edge<T> &edge);
 	};
 
 	template <typename T>

@@ -34,6 +34,9 @@ namespace CXXGRAPH
     namespace PARTITIONING
     {
         template <typename T>
+        std::ostream &operator<<(std::ostream &o, const Partition<T> &partition);
+
+        template <typename T>
         class Partition : public Graph<T>
         {
         public:
@@ -326,6 +329,38 @@ namespace CXXGRAPH
                 numberOfNodes += it->second->getNodeSet().size();
             }
             return numberOfNodes;
+        }
+
+        template <typename T>
+        std::ostream &operator<<(std::ostream &os, const Partition<T> &partition)
+        {
+            os << "Partition " << partition.getPartitionId() << ":\n";
+            auto edgeList = partition.getEdgeSet();
+            auto it = edgeList.begin();
+            for (it; it != edgeList.end(); ++it)
+            {
+                if (((*it)->isDirected().has_value()&& (*it)->isDirected().value()) && ((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
+                {
+                    os << dynamic_cast<const DirectedWeightedEdge<T> &>(**it) << "\n";
+                }
+                else if (((*it)->isDirected().has_value() && (*it)->isDirected().value())  && !((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
+                {
+                    os << dynamic_cast<const DirectedEdge<T> &>(**it) << "\n";
+                }
+                else if (!((*it)->isDirected().has_value() && (*it)->isDirected().value()) && ((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
+                {
+                    os << dynamic_cast<const UndirectedWeightedEdge<T> &>(**it) << "\n";
+                }
+                else if (!((*it)->isDirected().has_value() && (*it)->isDirected().value()) && !((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
+                {
+                    os << dynamic_cast<const UndirectedEdge<T> &>(**it) << "\n";
+                }
+                else
+                {
+                    os << **it << "\n";
+                }
+            }
+            return os;
         }
     }
 

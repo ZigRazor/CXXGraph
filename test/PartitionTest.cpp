@@ -157,7 +157,7 @@ TEST(PartitonTest, test_1)
     ASSERT_EQ(totalEdgeInPartition, 12);
     for (int i = 0; i < 4; ++i)
     {
-        std::cout << partitionMap.at(i) << std::endl;
+        std::cout << *partitionMap.at(i) << std::endl;
         ASSERT_EQ(partitionMap.at(i)->getPartitionId(), i);
     }
 }

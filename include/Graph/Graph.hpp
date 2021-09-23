@@ -86,8 +86,6 @@ namespace CXXGRAPH
 		void recreateGraphFromReadFiles(std::map<unsigned long, std::pair<unsigned long, unsigned long>> &edgeMap, std::map<unsigned long, bool> &edgeDirectedMap, std::map<unsigned long, T> &nodeFeatMap, std::map<unsigned long, double> &edgeWeightMap);
 		int compressFile(const std::string &inputFile, const std::string &outputFile) const;
 		int decompressFile(const std::string &inputFile, const std::string &outputFile) const;
-		void greedyPartition(PartitionMap<T> &partitionMap) const;
-		void HDRFPartition(PartitionMap<T> &partitionMap) const;
 
 	public:
 		Graph() = default;
@@ -811,30 +809,6 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	void Graph<T>::greedyPartition(PartitionMap<T> &partitionMap) const
-	{
-		unsigned int index = 0;
-		unsigned int numberOfPartitions = partitionMap.size();
-		if (index == numberOfPartitions)
-		{
-			//ERROR partition map of zero element
-			return;
-		}
-		auto edgeSet = getEdgeSet();
-		for (auto edge : edgeSet)
-		{
-			partitionMap.at(index)->addEdge(edge);
-			index++;
-			index = index % numberOfPartitions;
-		}
-	}
-
-	template <typename T>
-	void Graph<T>::HDRFPartition(PartitionMap<T> &partitionMap) const
-	{
-	}
-
-	template <typename T>
 	const AdjacencyMatrix<T> Graph<T>::getAdjMatrix() const
 	{
 		AdjacencyMatrix<T> adj;
@@ -1496,7 +1470,36 @@ namespace CXXGRAPH
 		return partitionMap;
 		
 	}
-	
+
+	template <typename T>
+	std::ostream &operator<<(std::ostream &os, const Graph<T> &graph){
+		os << "Graph:\n";
+		auto edgeList = graph.getEdgeSet();
+		auto it = edgeList.begin();
+		for(it; it != edgeList.end(); ++it){
+			if (((*it)->isDirected().has_value()&& (*it)->isDirected().value()) && ((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
+                {
+                    os << dynamic_cast<const DirectedWeightedEdge<T> &>(**it) << "\n";
+                }
+                else if (((*it)->isDirected().has_value() && (*it)->isDirected().value())  && !((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
+                {
+                    os << dynamic_cast<const DirectedEdge<T> &>(**it) << "\n";
+                }
+                else if (!((*it)->isDirected().has_value() && (*it)->isDirected().value()) && ((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
+                {
+                    os << dynamic_cast<const UndirectedWeightedEdge<T> &>(**it) << "\n";
+                }
+                else if (!((*it)->isDirected().has_value() && (*it)->isDirected().value()) && !((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
+                {
+                    os << dynamic_cast<const UndirectedEdge<T> &>(**it) << "\n";
+                }
+                else
+                {
+                    os << **it << "\n";
+                }
+		}
+		return os;
+	}
 
 	template <typename T>
 	std::ostream &operator<<(std::ostream &os, const AdjacencyMatrix<T> &adj)
