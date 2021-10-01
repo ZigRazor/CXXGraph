@@ -61,6 +61,7 @@ Share on [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=
   - [Support](#support)
   - [References](#references)
   - [Credits](#credits)
+  - [Hacktoberfest 2k21](#hacktoberfest-2k21)
   - [We are Looking for...](#we-are-looking-for)
 
 ## Introduction
@@ -322,6 +323,12 @@ We are referenced by:
 Thanks to the community of [TheAlgorithms](https://github.com/TheAlgorithms) for some algorithms ispiration.
 
 Thanks to [GeeksForGeeks](https://www.geeksforgeeks.org/) for some algorithms inspiration.
+
+## Hacktoberfest 2k21
+
+We partecipate at Hacktoberfet 2021, if you want to contribute, you can take an [issue](https://github.com/ZigRazor/CXXGraph/issues) and solve it, or if you want to add a functionalities just open a PR with the label `hacktoberfest`.
+
+Happy Hack!
 
 ## We are Looking for...
 
