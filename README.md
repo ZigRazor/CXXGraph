@@ -167,18 +167,21 @@ The Unit-Test required the CMake version greater than 3.9 and the **google test*
 ```
 git clone https://github.com/google/googletest.git
 cd googletest        # Main directory of the cloned repository.
-mkdir build          # Create a directory to hold the build output.
+mkdir -p build       # Create a directory to hold the build output.
 cd build
 cmake ..             # Generate native build scripts for GoogleTest.
-make
+make                 # Compile
 sudo make install    # Install in /usr/local/ by default
 ```
 
 ### How to Compile Test
--   If not exist create a directory "build" under the base directory.
--   Enter the directory
--   execute command `cmake ..`
--   if all is succesfull execute the command `make`
+From the base directory:
+```
+mkdir -p build       # Create a directory to hold the build output.
+cd build             # Enter the build folder
+cmake ..             # Generate native build scripts for GoogleTest.
+make                 # Compile
+```
 
 ### How to Run Test
 After the compilation, you can run the executable that is under the "build" directory with the name "test_exe", with the simple command `./test_exe`.
@@ -210,10 +213,13 @@ $ sudo cmake --build "build" --config Release --target install
 ```
 
 ### How to Compile Benchmark
--   If not exist create a directory "build" under the base directory.
--   Enter the directory
--   execute command `cmake ..`
--   if all is succesfull execute the command `make`
+From the base directory:
+```
+mkdir -p build       # Create a directory to hold the build output.
+cd build             # Enter the build folder
+cmake ..             # Generate native build scripts for GoogleTest.
+make                 # Compile
+```
 
 ### How to Run Benchmark
 After the compilation, you can run the executable that is under the "build" directory with the name "benchmark", with the simple command `./benchmark`.
