@@ -166,6 +166,20 @@ namespace CXXGRAPH
  		*/
 		virtual const DijkstraResult dijkstra(const Node<T> &source, const Node<T> &target) const;
 		/**
+ 		* @brief Function runs the bellman-ford algorithm for some source node and
+ 		* target node in the graph and returns the shortest distance of target
+ 		* from the source. It can also detect if a negative cycle exists in the graph.
+		* Note: No Thread Safe
+ 		*
+		* @param source source vertex
+ 		* @param target target vertex
+ 		*
+ 		* @return shortest distance if target is reachable from source else ERROR in
+ 		* case if target is not reachable from source. If there is no error then also 
+		* returns if the graph contains a negative cycle.
+ 		*/
+		virtual const BellmanFordResult bellmanford(const Node<T> &source, const Node<T> &target) const;
+		/**
  		* \brief
  		* Function performs the breadth first search algorithm over the graph
 		* Note: No Thread Safe
@@ -937,6 +951,112 @@ namespace CXXGRAPH
 		{
 			result.success = true;
 			result.errorMessage = "";
+			result.result = dist[&target];
+			return result;
+		}
+		result.errorMessage = ERR_TARGET_NODE_NOT_REACHABLE;
+		result.result = -1;
+		return result;
+	}
+
+	template <typename T>
+	const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source, const Node<T> &target) const
+	{
+		BellmanFordResult result;
+		result.success = false;
+		result.errorMessage = "";
+		result.result = INF_DOUBLE;
+		auto nodeSet = getNodeSet();
+		if (std::find(nodeSet.begin(), nodeSet.end(), &source) == nodeSet.end())
+		{
+			// check if source node exist in the graph
+			result.errorMessage = ERR_SOURCE_NODE_NOT_IN_GRAPH;
+			return result;
+		}
+		if (std::find(nodeSet.begin(), nodeSet.end(), &target) == nodeSet.end())
+		{
+			// check if target node exist in the graph
+			result.errorMessage = ERR_TARGET_NODE_NOT_IN_GRAPH;
+			return result;
+		}
+		// setting all the distances initially to INF_DOUBLE
+		std::map<const Node<T> *, double> dist, currentDist;
+		// n denotes the number of vertices in graph
+		auto n = nodeSet.size();
+		for (auto elem : nodeSet)
+		{
+			dist[elem] = INF_DOUBLE;
+			currentDist[elem] = INF_DOUBLE;
+		}
+
+		// marking the distance of source as 0
+		dist[&source] = 0;
+		// set if node distances in two consecutive 
+		// iterations remain the same.
+		auto earlyStopping = false;
+		// outer loop for vertex relaxation
+		for (int i=0; i<n-1; i++)
+		{
+			auto edgeSet = this->getEdgeSet();
+			// inner loop for distance updates of
+			// each relaxation
+			for (auto edge : edgeSet)
+			{
+				auto elem = edge->getNodePair();
+				if (edge->isWeighted().has_value() && edge->isWeighted().value())
+				{
+					auto edge_weight = (dynamic_cast<const Weighted *>(edge))->getWeight();
+					if (dist[elem.first] + edge_weight < dist[elem.second])
+						dist[elem.second] = dist[elem.first] + edge_weight;
+				}
+				else
+				{
+						// No Weighted Edge
+						result.errorMessage = ERR_NO_WEIGHTED_EDGE;
+						return result;
+				}
+			}
+			auto flag = true;
+			for (const auto& [key, value] : dist) {
+				if (currentDist[key]!=value)
+				{
+					flag = false;
+					break;
+				}
+			}
+			for (const auto& [key, value] : dist) {
+				currentDist[key] = value;  //update the current distance
+			}
+			if (flag)
+			{
+				earlyStopping = true;
+				break;
+			}
+		}
+
+		// check if there exists a negative cycle
+		if (!earlyStopping)
+		{
+			auto edgeSet = this->getEdgeSet();
+			for (auto edge : edgeSet)
+			{
+				auto elem = edge->getNodePair();
+				auto edge_weight = (dynamic_cast<const Weighted *>(edge))->getWeight();
+				if (dist[elem.first] + edge_weight < dist[elem.second])
+				{
+					result.success = true;
+					result.negativeCycle =  true;
+					result.errorMessage = "";
+					return result;
+				}
+			}
+		}
+
+		if (dist[&target] != INF_DOUBLE)
+		{
+			result.success = true;
+			result.errorMessage = "";
+			result.negativeCycle =  false;
 			result.result = dist[&target];
 			return result;
 		}

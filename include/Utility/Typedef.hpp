@@ -66,6 +66,16 @@ namespace CXXGRAPH
 	};
 	typedef DijkstraResult_struct DijkstraResult;
 
+    /// Struct that contains the information about Dijsktra's Algorithm results
+	struct BellmanFordResult_struct
+	{
+		bool success;			  // TRUE if the function does not return error, FALSE otherwise
+		bool negativeCycle;		  // TRUE if graph contains a negative cycle, FALSE otherwise
+		std::string errorMessage; //message of error
+		double result;			  //result (valid only if success is TRUE & negativeCycle is false )
+	};
+	typedef BellmanFordResult_struct BellmanFordResult;
+
 	/// Struct that contains the information about Dijsktra's Algorithm results
 	struct DialResult_struct
 	{

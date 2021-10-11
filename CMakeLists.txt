@@ -50,6 +50,7 @@ add_executable(test_exe test/main.cpp
 						test/UndirectedWeightedEdgeTest.cpp
 						test/GraphTest.cpp
 						test/DijkstraTest.cpp
+						test/BellmanFordTest.cpp
 						test/BFSTest.cpp
 						test/DFSTest.cpp
 						test/CycleCheckTest.cpp
