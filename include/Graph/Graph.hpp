@@ -994,7 +994,7 @@ namespace CXXGRAPH
 		// iterations remain the same.
 		auto earlyStopping = false;
 		// outer loop for vertex relaxation
-		for(int i=0; i<n-1; i++)
+		for (int i=0; i<n-1; i++)
 		{
 			auto edgeSet = this->getEdgeSet();
 			// inner loop for distance updates of
@@ -1002,7 +1002,7 @@ namespace CXXGRAPH
 			for (auto edge : edgeSet)
 			{
 				auto elem = edge->getNodePair();
-				if (edge->isWeighted())
+				if (edge->isWeighted().has_value() && edge->isWeighted().value())
 				{
 					auto edge_weight = (dynamic_cast<const Weighted *>(edge))->getWeight();
 					if (dist[elem.first] + edge_weight < dist[elem.second])
@@ -1015,8 +1015,6 @@ namespace CXXGRAPH
 						return result;
 				}
 			}
-
-			std::cout<<"Iteration:"<<i<<std::endl;
 			auto flag = true;
 			for (const auto& [key, value] : dist) {
 				if (currentDist[key]!=value)
@@ -1030,7 +1028,6 @@ namespace CXXGRAPH
 			}
 			if (flag)
 			{
-				std::cout<<"Stopping early at iteration "<<i<<std::endl;
 				earlyStopping = true;
 				break;
 			}
