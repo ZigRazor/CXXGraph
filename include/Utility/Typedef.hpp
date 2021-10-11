@@ -76,6 +76,16 @@ namespace CXXGRAPH
 	};
 	typedef BellmanFordResult_struct BellmanFordResult;
 
+	/// Struct that contains the information about Floyd-Warshall Algorithm results
+	struct FWResult_struct
+	{
+		bool success;			  // TRUE if the function does not return error, FALSE otherwise
+		bool negativeCycle;		  // TRUE if graph contains a negative cycle, FALSE otherwise
+		std::string errorMessage; //message of error
+		std::map<std::pair<unsigned long, unsigned long>, double> result;
+	};
+	typedef FWResult_struct FWResult;
+	
 	/// Struct that contains the information about Dijsktra's Algorithm results
 	struct DialResult_struct
 	{
