@@ -168,14 +168,15 @@ namespace CXXGRAPH
 		/**
  		* @brief Function runs the bellman-ford algorithm for some source node and
  		* target node in the graph and returns the shortest distance of target
- 		* from the source.
+ 		* from the source. It can also detect if a negative cycle exists in the graph.
 		* Note: No Thread Safe
  		*
 		* @param source source vertex
  		* @param target target vertex
  		*
  		* @return shortest distance if target is reachable from source else ERROR in
- 		* case if target is not reachable from source or there is negative cycle.
+ 		* case if target is not reachable from source. If there is no error then also 
+		* returns if the graph contains a negative cycle.
  		*/
 		virtual const BellmanFordResult bellmanford(const Node<T> &source, const Node<T> &target) const;
 		/**
