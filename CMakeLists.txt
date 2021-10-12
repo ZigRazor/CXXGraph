@@ -57,6 +57,7 @@ add_executable(test_exe test/main.cpp
 						test/RWOutputTest.cpp
 						test/PartitionTest.cpp
 						test/DialTest.cpp
+						test/FWTest.cpp
 				)
 target_include_directories(test_exe PUBLIC
 						  "${PROJECT_SOURCE_DIR}/include"
