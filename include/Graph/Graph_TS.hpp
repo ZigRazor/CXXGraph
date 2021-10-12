@@ -110,6 +110,20 @@ namespace CXXGRAPH
  		* case if target is not reachable from source or there is error in the computation.
  		*/
         const DijkstraResult dijkstra(const Node<T> &source, const Node<T> &target) const override;
+	/**
+ 		* @brief Function runs the bellmanford algorithm for some source node and
+ 		* target node in the graph and returns the shortest distance of target
+ 		* from the source if there is no negative cycle in the graph.
+		* Note: Thread Safe
+ 		*
+		* @param source source vertex
+ 		* @param target target vertex
+ 		*
+ 		* @return shortest distance if target is reachable from source else ERROR in
+ 		* case if target is not reachable from source or there is negative cycle or
+		* there is error in the computation.
+ 		*/
+	const BellmanFordResult bellmanford(const Node<T> &source, const Node<T> &target) const override;
         /**
  		* \brief
  		* Function performs the breadth first search algorithm over the graph
@@ -303,6 +317,15 @@ namespace CXXGRAPH
         auto dij = Graph<T>::dijkstra(source, target);
         releaseLock();
         return dij;
+    }
+	
+    template <typename T>
+    const BellmanFordResult Graph_TS<T>::bellmanford(const Node<T> &source, const Node<T> &target) const
+    {
+        getLock();
+        auto bellford = Graph<T>::bellmanFord(source, target);
+        releaseLock();
+        return bellford;
     }
 
     template <typename T>
