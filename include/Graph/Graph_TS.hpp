@@ -334,7 +334,7 @@ namespace CXXGRAPH
     const BellmanFordResult Graph_TS<T>::bellmanford(const Node<T> &source, const Node<T> &target) const
     {
         getLock();
-        auto bellford = Graph<T>::bellmanFord(source, target);
+        auto bellford = Graph<T>::bellmanford(source, target);
         releaseLock();
         return bellford;
     }
