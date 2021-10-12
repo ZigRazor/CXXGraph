@@ -180,6 +180,14 @@ namespace CXXGRAPH
  		*/
 		virtual const BellmanFordResult bellmanford(const Node<T> &source, const Node<T> &target) const;
 		/**
+ 		* @brief Function runs the floyd-warshall algorithm and returns the shortest distance of
+ 		* all pair of nodes. It can also detect if a negative cycle exists in the graph.
+		* Note: No Thread Safe
+ 		* @return a map whose keys are node ids and values are the shortest distance. If there is no error then also 
+		* returns if the graph contains a negative cycle.
+ 		*/
+		virtual const FWResult floydWarshall() const;
+		/**
  		* \brief
  		* Function performs the breadth first search algorithm over the graph
 		* Note: No Thread Safe
@@ -1062,6 +1070,89 @@ namespace CXXGRAPH
 		}
 		result.errorMessage = ERR_TARGET_NODE_NOT_REACHABLE;
 		result.result = -1;
+		return result;
+	}
+
+	template <typename T>
+	const FWResult Graph<T>::floydWarshall() const
+	{
+		FWResult result;
+		result.success = false;
+		result.errorMessage = "";
+		std::map<std::pair<unsigned long, unsigned long>, double> pairwise_dist;
+		auto nodeSet = getNodeSet();
+		const AdjacencyMatrix<T> adj = getAdjMatrix();
+		// n denotes the number of vertices in graph
+		auto n = nodeSet.size();
+		// create a pairwise distance matrix with distance node distances
+		// set to inf. Distance of node to itself is set as 0.
+		for (auto elem1 : nodeSet)
+		{
+			for (auto elem2 : nodeSet)
+			{
+				auto key = std::make_pair(elem1->getId(), elem2->getId());
+				if (elem1 != elem2)
+					pairwise_dist[key] = INF_DOUBLE;
+				else
+					pairwise_dist[key] = 0.0;
+			}
+		}
+
+		auto edgeSet = this->getEdgeSet();
+		// update the weights of nodes
+		// connected by edges
+		for (auto edge : edgeSet)
+		{
+			auto elem = edge->getNodePair();
+			if (edge->isWeighted().has_value() && edge->isWeighted().value())
+			{
+				auto edgeWeight = (dynamic_cast<const Weighted *>(edge))->getWeight();
+				auto key = std::make_pair(elem.first->getId(), elem.second->getId());
+				pairwise_dist[key] = edgeWeight;
+			}
+			else
+			{
+				// if an edge exists but has no weight associated
+				// with it, we return an error message
+				result.errorMessage = ERR_NO_WEIGHTED_EDGE;
+				return result;
+			}
+		}
+
+		for (auto k : nodeSet)
+		{
+			// set all vertices as source one by one
+			for (auto src : nodeSet)
+			{
+				// iterate through all vertices as destination for the
+				// current source
+				auto src_k = std::make_pair(src->getId(), k->getId());
+				for (auto dst : nodeSet)
+				{
+					// If vertex k provides a shorter path than
+					// src to dst, update the value of
+					// pairwise_dist[src_to_dst]
+					auto src_dst = std::make_pair(src->getId(), dst->getId());
+					auto k_dst = std::make_pair(k->getId(), dst->getId());
+					if (pairwise_dist[src_dst] > (pairwise_dist[src_k] + pairwise_dist[k_dst]) && (pairwise_dist[k_dst] != INF_DOUBLE && pairwise_dist[src_k] != INF_DOUBLE))
+						pairwise_dist[src_dst] = pairwise_dist[src_k] + pairwise_dist[k_dst];
+				}
+			}
+		}
+
+		result.success = true;
+		// presense of negative number in the diagonal indicates
+		// that that the graph contains a negative cycle
+		for (auto node : nodeSet)
+		{
+			auto diag = std::make_pair(node->getId(), node->getId());
+			if (pairwise_dist[diag] < 0.)
+			{
+				result.negativeCycle = true;
+				return result;
+			}
+		}
+		result.result = std::move(pairwise_dist);
 		return result;
 	}
 
