@@ -124,6 +124,17 @@ namespace CXXGRAPH
 		* there is error in the computation.
  		*/
 	const BellmanFordResult bellmanford(const Node<T> &source, const Node<T> &target) const override;
+	/**
+ 		* @brief Function runs the floyd-Warshall algorithm for every node
+ 		* in the graph and returns the shortest distance of each node from
+ 		* another node if there is no negative cycle in the graph.
+		* Note: Thread Safe
+ 		*
+ 		* @return shortest distance if any node is reachable from other node else ERROR in
+ 		* case if target is not reachable from source or there is negative cycle or
+		* there is error in the computation.
+ 		*/
+	const FWResult floydWarshall() const override;
         /**
  		* \brief
  		* Function performs the breadth first search algorithm over the graph
@@ -323,11 +334,20 @@ namespace CXXGRAPH
     const BellmanFordResult Graph_TS<T>::bellmanford(const Node<T> &source, const Node<T> &target) const
     {
         getLock();
-        auto bellford = Graph<T>::bellmanFord(source, target);
+        auto bellford = Graph<T>::bellmanford(source, target);
         releaseLock();
         return bellford;
     }
-
+	
+    template <typename T>
+    const FWResult Graph_TS<T>::floydWarshall() const
+    {
+        getLock();
+        auto fw = Graph<T>::floydWarshall();
+        releaseLock();
+        return fw;
+    }
+	
     template <typename T>
     const std::vector<Node<T>> Graph_TS<T>::breadth_first_search(const Node<T> &start) const
     {
