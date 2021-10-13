@@ -241,6 +241,24 @@ namespace CXXGRAPH
 
 		/**
      	* \brief
+     	* This function performs Graph Slicing based on connectivity
+		* 
+		* Mathematical definition of the problem:
+		*
+		* Let G be the set of nodes in a graph and n be a given node in that set.
+		* Let C be the non-strict subset of G containing both n and all nodes reachable
+		* from n, and let C' be its complement. There's a third set M, which is the
+		* non-strict subset of C containing all nodes that are reachable from any node in C'.
+		* The problem consists of finding all nodes that belong to C but not to M.
+		 
+		* Note: No Thread Safe
+		* @param start Node from where traversing starts
+     	* @return a vector of nodes that belong to C but not to M.
+     	*/
+		virtual const std::vector<Node<T>> graph_slicing(const Node<T> &start) const;
+
+		/**
+     	* \brief
      	* This function write the graph in an output file
 		* Note: No Thread Safe
      	*
@@ -999,7 +1017,7 @@ namespace CXXGRAPH
 
 		// marking the distance of source as 0
 		dist[&source] = 0;
-		// set if node distances in two consecutive 
+		// set if node distances in two consecutive
 		// iterations remain the same.
 		auto earlyStopping = false;
 		// outer loop for vertex relaxation
@@ -1019,9 +1037,9 @@ namespace CXXGRAPH
 				}
 				else
 				{
-						// No Weighted Edge
-						result.errorMessage = ERR_NO_WEIGHTED_EDGE;
-						return result;
+					// No Weighted Edge
+					result.errorMessage = ERR_NO_WEIGHTED_EDGE;
+					return result;
 				}
 			}
 			auto flag = true;
@@ -1532,6 +1550,45 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
+	const std::vector<Node<T>> Graph<T>::graph_slicing(const Node<T> &start) const
+	{
+		std::vector<Node<T>> result;
+
+		std::list<const Node<T> *> nodeSet = getNodeSet();
+		//check if start node in the graph
+		if (std::find(nodeSet.begin(), nodeSet.end(), &start) == nodeSet.end())
+		{
+			return result;
+		}
+		std::vector<Node<T>> C = depth_first_search(start);
+		std::list<const Node<T> *> C1; //complement of C i.e. nodeSet - C
+		for (auto const node : nodeSet)
+		{
+			// from the set of all nodes, remove nodes that exist in C
+			if (std::find_if(C.begin(), C.end(), [node](const Node<T> nodeC)
+							 { return (*node == nodeC); }) == C.end())
+				C1.push_back(node);
+		}
+
+		// For all nodes in C', apply DFS
+		//  and get the list of reachable nodes and store in M
+		std::vector<Node<T>> M;
+		for (auto const node : C1)
+		{
+			std::vector<Node<T>> reachableNodes = depth_first_search(*node);
+			M.insert(M.end(),reachableNodes.begin(),reachableNodes.end());
+		}
+		// removes nodes from C that are reachable from M.
+		for (const Node<T> nodeC : C)
+		{
+			if (std::find_if(M.begin(), M.end(), [nodeC](const Node<T> nodeM)
+								{ return (nodeM == nodeC); }) == M.end())
+				result.push_back(nodeC);
+		}
+		return result;
+	}
+
+	template <typename T>
 	int Graph<T>::writeToFile(InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
 	{
 		int result = 0;
@@ -1677,9 +1734,9 @@ namespace CXXGRAPH
 		PARTITIONING::Partitioner<T> partitioner(getEdgeSet(), globals);
 		PARTITIONING::CoordinatedPartitionState<T> partitionState = partitioner.performCoordinatedPartition();
 		partitionMap = partitionState.getPartitionMap();
-		
+
 		return partitionMap;
-		
+
 	}
 
 	template <typename T>
@@ -1689,25 +1746,25 @@ namespace CXXGRAPH
 		auto it = edgeList.begin();
 		for(it; it != edgeList.end(); ++it){
 			if (((*it)->isDirected().has_value()&& (*it)->isDirected().value()) && ((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
-                {
-                    os << dynamic_cast<const DirectedWeightedEdge<T> &>(**it) << "\n";
-                }
-                else if (((*it)->isDirected().has_value() && (*it)->isDirected().value())  && !((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
-                {
-                    os << dynamic_cast<const DirectedEdge<T> &>(**it) << "\n";
-                }
-                else if (!((*it)->isDirected().has_value() && (*it)->isDirected().value()) && ((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
-                {
-                    os << dynamic_cast<const UndirectedWeightedEdge<T> &>(**it) << "\n";
-                }
-                else if (!((*it)->isDirected().has_value() && (*it)->isDirected().value()) && !((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
-                {
-                    os << dynamic_cast<const UndirectedEdge<T> &>(**it) << "\n";
-                }
-                else
-                {
-                    os << **it << "\n";
-                }
+			{
+				os << dynamic_cast<const DirectedWeightedEdge<T> &>(**it) << "\n";
+			}
+			else if (((*it)->isDirected().has_value() && (*it)->isDirected().value())  && !((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
+			{
+				os << dynamic_cast<const DirectedEdge<T> &>(**it) << "\n";
+			}
+			else if (!((*it)->isDirected().has_value() && (*it)->isDirected().value()) && ((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
+			{
+				os << dynamic_cast<const UndirectedWeightedEdge<T> &>(**it) << "\n";
+			}
+			else if (!((*it)->isDirected().has_value() && (*it)->isDirected().value()) && !((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
+			{
+				os << dynamic_cast<const UndirectedEdge<T> &>(**it) << "\n";
+			}
+			else
+			{
+				os << **it << "\n";
+			}
 		}
 		return os;
 	}
