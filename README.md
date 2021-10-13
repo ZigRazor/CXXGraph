@@ -360,6 +360,7 @@ To get updated ***watch*** the project  [![GitHub watchers](https://img.shields.
 We are referenced by:
 - [awesome-hpp](https://github.com/p-ranav/awesome-hpp)
 - [cppreference.com](https://en.cppreference.com/w/cpp/links/libs)
+- [awesome-cpp](https://github.com/fffaraz/awesome-cpp)
 
 ## Credits
 
