@@ -933,3 +933,27 @@ TEST(RWOutputTest, test_27)
     int file_compressed_size = fileCompressed.tellg();
     ASSERT_LE(file_compressed_size, file_size);
 }
+
+
+TEST(RWOutputTest, test_28)
+{
+    CXXGRAPH::Node<int> node1(1, 1);
+    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::DirectedWeightedEdge<int> edge1(2, node1, node2, 1);
+    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.push_back(&edge1);
+    CXXGRAPH::Graph<int> graph(edgeSet);
+    // force error by writing to a non-existent directory
+    int res = graph.writeToFile(CXXGRAPH::InputOutputFormat::STANDARD_TSV, "./sid", "test_26", true, false, false);
+    ASSERT_EQ(res, -1);
+    CXXGRAPH::Graph<int> readGraph;
+    // read from a non-existent file
+    res = readGraph.readFromFile(CXXGRAPH::InputOutputFormat::STANDARD_CSV, ".", "./sid/test_8");
+    ASSERT_EQ(res, -1);
+    // try to read csv file in tst format
+    // should result in OUTPUT FORMAT NOT RECOGNIZED
+    res = readGraph.readFromFile(CXXGRAPH::InputOutputFormat::STANDARD_TSV, ".", "test_8");
+    ASSERT_EQ(res, -1);
+    res = readGraph.readFromFile(CXXGRAPH::InputOutputFormat::STANDARD_TSV, ".", "test_8", true);
+    ASSERT_EQ(res, -1);
+}

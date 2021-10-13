@@ -29,3 +29,32 @@ TEST(EdgeTest, print_1)
     std::cout << "Test Print Edge" << std::endl;
     std::cout << edge << std::endl;
 }
+
+TEST(EdgeTest, test)
+{
+    CXXGRAPH::Node<int> node1(1, 1);
+    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node3(3, 3);
+
+    CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node1, node2, 1);
+    CXXGRAPH::UndirectedWeightedEdge<int> edge2(2, node2, node3, 1);
+    CXXGRAPH::DirectedEdge<int> edge3(3, node1, node3);
+
+    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.push_back(&edge1);
+    edgeSet.push_back(&edge2);
+    edgeSet.push_back(&edge3);
+
+    CXXGRAPH::Graph<int> graph;
+    graph.setEdgeSet(edgeSet);
+    auto adj = graph.getAdjMatrix();
+    ASSERT_EQ(adj.size(), 3);
+    graph.removeEdge(3);
+    adj = graph.getAdjMatrix();
+    ASSERT_EQ(adj.size(), 3);
+
+    graph.removeEdge(2);
+    adj = graph.getAdjMatrix();
+    ASSERT_EQ(adj.size(),1);
+    std::cout << adj << std::endl;
+}
