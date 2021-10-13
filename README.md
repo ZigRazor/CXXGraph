@@ -31,9 +31,12 @@ Share on [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=
       - [BFS](#bfs)
       - [DFS](#dfs)
       - [Cycle Detection](#cycle-detection)
+      - [Bellman-Ford](#bellman-ford)
+      - [Floyd Warshall](#floyd-warshall)
   - [Partition Algorithm Explanation](#partition-algorithm-explanation)
     - [Vertex-Cut](#vertex-cut)
       - [Greedy Vertex-Cut](#greedy-vertex-cut)
+      - [Graph Slicing based on connectivity](#graph-slicing-based-on-connectivity)
   - [Classes Explanation](#classes-explanation)
   - [Requirements](#requirements)
   - [How to use](#how-to-use)
@@ -135,7 +138,7 @@ Applications of cycle detection include the use of wait-for graphs to detect dea
 
 WORK IN PROGRESS
 
-#### Bellman-Ford Algorithm
+#### Bellman-Ford
 [Bellman-Ford Algorithm](https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm) can be used to find the shortest distance between a source and a target node. Time Complexity O(|V| . |E|) where V is number of vertices and E is number of edges in graph which is higher than Dijkstra's shortest path algorithm. The time complexity of dijkstra's algorithm is O(|E| + |V| log |v| ). The advantage of bellman-ford over dijkstra is that it can handle graphs with negative edge weights. Further, if the graph contains a negative weight cycle then the algorithm can detect and report the presense of negative cycle.
 
 [This video](https://www.youtube.com/watch?v=24HziTZ8_xo) gives a nice overview of the algorithm implementation. This [MIT lecture](https://courses.csail.mit.edu/6.006/spring11/lectures/lec15.pdf) gives a proof of Bellman-Ford's correctness & its ability to detect negative cycles.
@@ -144,7 +147,7 @@ Applications:
 - Routing Information Protocol (RIP)
 - Interior Gateway Routing Protocol (IGRP)
 
-#### Floyd Warshall Algorithm
+#### Floyd Warshall
 [Floyd Warshall Algorithm](https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm)
 
 We initialize the solution matrix same as the input graph matrix as a first step. Then we update the solution matrix by considering all vertices as an intermediate vertex. The idea is to one by one pick all vertices and updates all shortest paths which include the picked vertex as an intermediate vertex in the shortest path. When we pick vertex number k as an intermediate vertex, we already have considered vertices {0, 1, 2, .. k-1} as intermediate vertices. For every pair (i, j) of the source and destination vertices respectively, there are two possible cases. 
@@ -159,9 +162,27 @@ A vertex-cut partitioning divides edges of a graph into equal size partitions. T
 
 Replication factor quantifies how many vertexes are replicated over computers compared with the the number of vertexes of the original input graph.
 
-#### Greedy Vertex-Cut
+### Greedy Vertex-Cut
 This Algorithm is a simple vertex-cut in Round-Robin fashion.
 It takes the original graph edges and assign them to the partitions, dividing it in equal(or similar) size. This algorithm does not take care of optimization in vertex replication ( Replication Factor) but only balance the edge in the partitions.
+
+### Graph Slicing based on connectivity
+Mathematical definition of the problem:
+Let G be the set of nodes in a graph and n be a given node in that set.
+Let C be the non-strict subset of G containing both n and all nodes reachable
+from n, and let C' be its complement. There's a third set M, which is the
+non-strict subset of C containing all nodes that are reachable from any node in C'.
+The problem consists of finding all nodes that belong to C but not to M.
+
+Currently implemented Algorithm:
+- Use DFS to find all nodes reachable from n. These are elements of set C.
+- Initialize C' to be complement of C (i.e. all nodes - nodes that are in C)
+- For all nodes in C', apply DFS and get the list of reachable nodes. This is set M.
+- Finally removes nodes from C that belong to M. This is our solution.
+
+Application:
+
+This algorithm is used in garbage collection systems to decide which other objects need to be released, given that one object is about to be released.
 
 ## Classes Explanation
 
