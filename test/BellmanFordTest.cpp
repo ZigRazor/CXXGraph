@@ -109,3 +109,41 @@ TEST(BellmanFordTest, test_4)
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_NO_WEIGHTED_EDGE);
     ASSERT_EQ(res.result, CXXGRAPH::INF_DOUBLE);
 }
+
+
+// ERR_SOURCE_NODE_NOT_IN_GRAPH 
+// ERR_TARGET_NODE_NOT_IN_GRAPH
+// ERR_TARGET_NODE_NOT_REACHABLE
+TEST(BellmanFordTest, test_5)
+{
+    CXXGRAPH::Node<int> node1(1, 1);
+    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::DirectedWeightedEdge<int> edge1(2, node1, node2, 1);
+    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.push_back(&edge1);
+    CXXGRAPH::Graph<int> graph(edgeSet);
+    CXXGRAPH::BellmanFordResult res = graph.bellmanford(node3, node1);
+    ASSERT_FALSE(res.success);
+    ASSERT_FALSE(res.negativeCycle);
+    ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_SOURCE_NODE_NOT_IN_GRAPH);
+    ASSERT_EQ(res.result, CXXGRAPH::INF_DOUBLE);
+
+    res = graph.bellmanford(node1, node3);
+    ASSERT_FALSE(res.success);
+    ASSERT_FALSE(res.negativeCycle);
+    ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_TARGET_NODE_NOT_IN_GRAPH);
+    ASSERT_EQ(res.result, CXXGRAPH::INF_DOUBLE);
+
+    CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node3, node2, 1);
+    edgeSet.push_back(&edge2);
+    CXXGRAPH::Graph<int> graph1(edgeSet);
+
+
+    res = graph1.bellmanford(node1, node3);
+    ASSERT_FALSE(res.success);
+    ASSERT_FALSE(res.negativeCycle);
+    ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_TARGET_NODE_NOT_REACHABLE);
+    ASSERT_EQ(res.result, -1);
+}
+
