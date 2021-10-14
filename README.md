@@ -76,8 +76,6 @@ An alternative to [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_7
   * [We are Looking for...](#we-are-looking-for)
   * [Other Details](#other-details)
 
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
 
 ## Install and Uninstall
 
