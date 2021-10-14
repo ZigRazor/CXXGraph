@@ -51,13 +51,14 @@ add_executable(test_exe test/main.cpp
 						test/GraphTest.cpp
 						test/DijkstraTest.cpp
 						test/BellmanFordTest.cpp
+						test/FWTest.cpp
+						test/PrimTest.cpp
 						test/BFSTest.cpp
 						test/DFSTest.cpp
 						test/CycleCheckTest.cpp
 						test/RWOutputTest.cpp
 						test/PartitionTest.cpp
 						test/DialTest.cpp
-						test/FWTest.cpp
 						test/GraphSlicingTest.cpp
 				)
 target_include_directories(test_exe PUBLIC

@@ -188,6 +188,13 @@ namespace CXXGRAPH
  		*/
 		virtual const FWResult floydWarshall() const;
 		/**
+ 		* @brief Function runs the prim algorithm and returns the minimum spanning tree
+ 		* if the graph is undirected.
+		* Note: No Thread Safe
+ 		* @return a vector containing id of nodes in minimum spanning tree.
+ 		*/
+		virtual const PrimResult prim() const;
+		/**
  		* \brief
  		* Function performs the breadth first search algorithm over the graph
 		* Note: No Thread Safe
@@ -239,6 +246,15 @@ namespace CXXGRAPH
      	*/
 		virtual bool isDirectedGraph() const;
 
+		/**
+     	* \brief
+     	* This function checks if a graph is undirected
+		* Note: No Thread Safe
+     	*
+     	* @return true if the graph is undirected, else false.
+     	*/
+		virtual bool isUndirectedGraph() const;
+		
 		/**
      	* \brief
      	* This function performs Graph Slicing based on connectivity
@@ -1099,9 +1115,6 @@ namespace CXXGRAPH
 		result.errorMessage = "";
 		std::map<std::pair<unsigned long, unsigned long>, double> pairwise_dist;
 		auto nodeSet = getNodeSet();
-		const AdjacencyMatrix<T> adj = getAdjMatrix();
-		// n denotes the number of vertices in graph
-		auto n = nodeSet.size();
 		// create a pairwise distance matrix with distance node distances
 		// set to inf. Distance of node to itself is set as 0.
 		for (auto elem1 : nodeSet)
@@ -1171,6 +1184,87 @@ namespace CXXGRAPH
 			}
 		}
 		result.result = std::move(pairwise_dist);
+		return result;
+	}
+
+	template <typename T>
+	const PrimResult Graph<T>::prim() const
+	{
+		PrimResult result;
+		result.success = false;
+		result.errorMessage = "";
+		result.mstCost = INF_DOUBLE;
+		if (!isUndirectedGraph())
+		{
+			result.errorMessage = ERR_DIR_GRAPH;
+			return result;
+		}
+		auto nodeSet = getNodeSet();
+		auto n = nodeSet.size();
+		const AdjacencyMatrix<T> adj = getAdjMatrix();
+
+		// setting all the distances initially to INF_DOUBLE
+		std::map<const Node<T> *, double> dist;
+		for (auto elem : adj)
+		{
+			dist[elem.first] = INF_DOUBLE;
+		}
+
+		// creating a min heap using priority queue
+		// first element of pair contains the distance
+		// second element of pair contains the vertex
+		std::priority_queue<std::pair<double, const Node<T> *>, std::vector<std::pair<double, const Node<T> *>>,
+							std::greater<std::pair<double, const Node<T> *>>>
+			pq;
+
+		// pushing the source vertex 's' with 0 distance in min heap
+		auto source = nodeSet.front();
+		pq.push(std::make_pair(0.0, source));
+		// initialize cost and start node of mst
+		result.result.push_back(source->getId());
+		result.mstCost = 0;
+		while (!pq.empty())
+		{
+			// second element of pair denotes the node / vertex
+			const Node<T> *currentNode = pq.top().second;
+			auto nodeId = currentNode->getId();			
+			if (std::find(result.result.begin(), result.result.end(), nodeId) == result.result.end())
+			{
+				result.result.push_back(nodeId);
+				result.mstCost += pq.top().first;
+			}
+
+			pq.pop();
+			// for all the reachable vertex from the currently exploring vertex
+			// we will try to minimize the distance
+			if (adj.find(currentNode) != adj.end())
+			{
+				for (std::pair<const Node<T> *, const Edge<T> *> elem : adj.at(currentNode))
+				{
+					// minimizing distances
+					if (elem.second->isWeighted().has_value() && elem.second->isWeighted().value())
+					{
+						const UndirectedWeightedEdge<T> *udw_edge = dynamic_cast<const UndirectedWeightedEdge<T> *>(elem.second);
+						if ( 
+							(udw_edge->getWeight() < dist[elem.first]) &&
+							(std::find(result.result.begin(), result.result.end(), elem.first->getId()) == result.result.end())
+						)
+
+						{
+							dist[elem.first] = udw_edge->getWeight();
+							pq.push(std::make_pair(dist[elem.first], elem.first));
+						}
+					}
+					else
+					{
+						// No Weighted Edge
+						result.errorMessage = ERR_NO_WEIGHTED_EDGE;
+						return result;
+					}
+				}
+			}
+		}
+		result.success = true;
 		return result;
 	}
 
@@ -1418,6 +1512,22 @@ namespace CXXGRAPH
 			}
 		}
 		//No Undirected Edge
+		return true;
+	}
+
+	template <typename T>
+	bool Graph<T>::isUndirectedGraph() const
+	{
+		auto edgeSet = this->getEdgeSet();
+		for (auto edge : edgeSet)
+		{
+			if ((edge->isDirected().has_value() && edge->isDirected().value()))
+			{
+				//Found Directed Edge
+				return false;
+			}
+		}
+		//No Directed Edge
 		return true;
 	}
 
