@@ -184,10 +184,10 @@ $ sudo cmake --build "build" --config Release --target install
 ### How to Compile Benchmark
 From the base directory:
 ```
-mkdir -p build       # Create a directory to hold the build output.
-cd build             # Enter the build folder
-cmake ..             # Generate native build scripts for GoogleTest.
-make                 # Compile
+mkdir -p build             # Create a directory to hold the build output.
+cd build                   # Enter the build folder
+cmake -DBENCHMARK=ON ..    # Generate native build scripts for GoogleTest.
+make                       # Compile
 ```
 
 ### How to Run Benchmark
