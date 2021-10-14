@@ -898,7 +898,7 @@ namespace CXXGRAPH
 		result.success = false;
 		result.errorMessage = "";
 		result.result = INF_DOUBLE;
-		auto nodeSet = getNodeSet();
+		auto nodeSet = Graph<T>::getNodeSet();
 		if (std::find(nodeSet.begin(), nodeSet.end(), &source) == nodeSet.end())
 		{
 			// check if source node exist in the graph
@@ -911,7 +911,7 @@ namespace CXXGRAPH
 			result.errorMessage = ERR_TARGET_NODE_NOT_IN_GRAPH;
 			return result;
 		}
-		const AdjacencyMatrix<T> adj = getAdjMatrix();
+		const AdjacencyMatrix<T> adj = Graph<T>::getAdjMatrix();
 		// n denotes the number of vertices in graph
 		int n = adj.size();
 
