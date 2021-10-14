@@ -208,7 +208,7 @@ $ cd packaging
 $ ./tarballs.sh
 ```
 
-### RPM 
+### RPM
 #### (Fedora/CentOS/RedHat)
 To create rpm package you need to follow the following steps:
 ```
@@ -218,7 +218,7 @@ $ cd packaging/rpm
 $ ./make_rpm.sh
 ```
 
-### DEB 
+### DEB
 #### (Debian/Ubuntu)
 To create deb package you need to follow the following steps:
 ```
@@ -255,6 +255,16 @@ Below is complete algorithm:
  8. Process repeated until all vertices are permanently labeled (or distances of all vertices are finalized).
 
 At this [link](https://ocw.mit.edu/courses/sloan-school-of-management/15-082j-network-optimization-fall-2010/animations/MIT15_082JF10_av07.pdf) you can find a step-by-step illustrations.
+
+### Prim's Algorithm
+[Prim's Algorithm](https://en.wikipedia.org/wiki/Prim%27s_algorithm)
+Prim's Algorithm is is a greedy algorithm that finds a minimum spanning tree for a weighted undirected graph. This means it finds a subset of the edges that forms a tree that includes every vertex, where the total weight of all the edges in the tree is minimized. The algorithm operates by building this tree one vertex at a time, from an arbitrary starting vertex, at each step adding the cheapest possible connection from the tree to another vertex.
+
+Steps:
+
+1. Initialize a tree with a single vertex, chosen arbitrarily from the graph.
+2. Grow the tree by one edge: of the edges that connect the tree to vertices not yet in the tree, find the minimum-weight edge, and transfer it to the tree.
+3. Repeat step 2 (until all vertices are in the tree).
 
 #### BFS
 (Breadth First Search)
@@ -306,8 +316,8 @@ Applications:
 #### Floyd Warshall
 [Floyd Warshall Algorithm](https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm)
 
-We initialize the solution matrix same as the input graph matrix as a first step. Then we update the solution matrix by considering all vertices as an intermediate vertex. The idea is to one by one pick all vertices and updates all shortest paths which include the picked vertex as an intermediate vertex in the shortest path. When we pick vertex number k as an intermediate vertex, we already have considered vertices {0, 1, 2, .. k-1} as intermediate vertices. For every pair (i, j) of the source and destination vertices respectively, there are two possible cases. 
-1) k is not an intermediate vertex in shortest path from i to j. We keep the value of dist[i][j] as it is. 
+We initialize the solution matrix same as the input graph matrix as a first step. Then we update the solution matrix by considering all vertices as an intermediate vertex. The idea is to one by one pick all vertices and updates all shortest paths which include the picked vertex as an intermediate vertex in the shortest path. When we pick vertex number k as an intermediate vertex, we already have considered vertices {0, 1, 2, .. k-1} as intermediate vertices. For every pair (i, j) of the source and destination vertices respectively, there are two possible cases.
+1) k is not an intermediate vertex in shortest path from i to j. We keep the value of dist[i][j] as it is.
 2) k is an intermediate vertex in shortest path from i to j. We update the value of dist[i][j] as dist[i][k] + dist[k][j] if dist[i][j] > dist[i][k] + dist[k][j]
 
 ## Partition Algorithm Explanation
