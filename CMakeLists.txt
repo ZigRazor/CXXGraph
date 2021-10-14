@@ -88,19 +88,21 @@ add_test(test_rw_output test_exe --gtest_filter=RWOutputTest*)
 add_test(test_partition test_exe --gtest_filter=PartitionTest*)
 add_test(test_dial test_exe --gtest_filter=DialTest*)
 
-
-add_executable(benchmark 	benchmark/Utilities.hpp
+option(BENCHMARK "Enable Benchmark" OFF)
+if(BENCHMARK)
+	add_executable(benchmark 	benchmark/Utilities.hpp
 							benchmark/Node_BM.cpp
 							benchmark/Edge_BM.cpp
 							benchmark/Graph_BM.cpp
 				)
-target_include_directories(benchmark PUBLIC
+	target_include_directories(benchmark PUBLIC
 						  "${PROJECT_SOURCE_DIR}/include"
 						  )
-target_link_libraries(benchmark
+	target_link_libraries(benchmark
 					   libbenchmark.a
 					   libbenchmark_main.a
 					   pthread
 					   z)
+endif(BENCHMARK)
 
 install(FILES include/Graph.hpp DESTINATION /usr/include)
