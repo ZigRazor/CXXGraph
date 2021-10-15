@@ -20,6 +20,13 @@ TEST(BFSTest, test_1)
     ASSERT_TRUE(std::find(res.begin(), res.end(), node1) != res.end());
     ASSERT_TRUE(std::find(res.begin(), res.end(), node2) != res.end());
     ASSERT_TRUE(std::find(res.begin(), res.end(), node3) != res.end());
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+    std::vector<CXXGRAPH::Node<int>> res_ts = graph_ts.breadth_first_search(node1);
+    ASSERT_EQ(res_ts.size(), 3);
+    ASSERT_TRUE(std::find(res_ts.begin(), res_ts.end(), node1) != res_ts.end());
+    ASSERT_TRUE(std::find(res_ts.begin(), res_ts.end(), node2) != res_ts.end());
+    ASSERT_TRUE(std::find(res_ts.begin(), res_ts.end(), node3) != res_ts.end());
 }
 
 TEST(BFSTest, test_2)
@@ -41,6 +48,13 @@ TEST(BFSTest, test_2)
     ASSERT_FALSE(std::find(res.begin(), res.end(), node1) != res.end());
     ASSERT_TRUE(std::find(res.begin(), res.end(), node2) != res.end());
     ASSERT_TRUE(std::find(res.begin(), res.end(), node3) != res.end());
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+    std::vector<CXXGRAPH::Node<int>> res_ts = graph_ts.breadth_first_search(node2);
+    ASSERT_EQ(res_ts.size(), 2);
+    ASSERT_FALSE(std::find(res_ts.begin(), res_ts.end(), node1) != res_ts.end());
+    ASSERT_TRUE(std::find(res_ts.begin(), res_ts.end(), node2) != res_ts.end());
+    ASSERT_TRUE(std::find(res_ts.begin(), res_ts.end(), node3) != res_ts.end());
 }
 
 TEST(BFSTest, test_3)
@@ -62,6 +76,13 @@ TEST(BFSTest, test_3)
     ASSERT_TRUE(std::find(res.begin(), res.end(), node1) != res.end());
     ASSERT_TRUE(std::find(res.begin(), res.end(), node2) != res.end());
     ASSERT_TRUE(std::find(res.begin(), res.end(), node3) != res.end());
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+    std::vector<CXXGRAPH::Node<int>> res_ts = graph_ts.breadth_first_search(node2);
+    ASSERT_EQ(res_ts.size(), 3);
+    ASSERT_TRUE(std::find(res_ts.begin(), res_ts.end(), node1) != res_ts.end());
+    ASSERT_TRUE(std::find(res_ts.begin(), res_ts.end(), node2) != res_ts.end());
+    ASSERT_TRUE(std::find(res_ts.begin(), res_ts.end(), node3) != res_ts.end());
 }
 
 TEST(BFSTest, test_4)
@@ -83,6 +104,13 @@ TEST(BFSTest, test_4)
     ASSERT_TRUE(std::find(res.begin(), res.end(), node1) != res.end());
     ASSERT_TRUE(std::find(res.begin(), res.end(), node2) != res.end());
     ASSERT_TRUE(std::find(res.begin(), res.end(), node3) != res.end());
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+    std::vector<CXXGRAPH::Node<int>> res_ts = graph.breadth_first_search(node3);
+    ASSERT_EQ(res_ts.size(), 3);
+    ASSERT_TRUE(std::find(res_ts.begin(), res_ts.end(), node1) != res_ts.end());
+    ASSERT_TRUE(std::find(res_ts.begin(), res_ts.end(), node2) != res_ts.end());
+    ASSERT_TRUE(std::find(res_ts.begin(), res_ts.end(), node3) != res_ts.end());
 }
 
 TEST(BFSTest, test_5)
@@ -104,6 +132,13 @@ TEST(BFSTest, test_5)
     ASSERT_FALSE(std::find(res.begin(), res.end(), node1) != res.end());
     ASSERT_FALSE(std::find(res.begin(), res.end(), node2) != res.end());
     ASSERT_TRUE(std::find(res.begin(), res.end(), node3) != res.end());
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+    std::vector<CXXGRAPH::Node<int>> res_ts = graph_ts.breadth_first_search(node3);
+    ASSERT_EQ(res_ts.size(), 1);
+    ASSERT_FALSE(std::find(res_ts.begin(), res_ts.end(), node1) != res_ts.end());
+    ASSERT_FALSE(std::find(res_ts.begin(), res_ts.end(), node2) != res_ts.end());
+    ASSERT_TRUE(std::find(res_ts.begin(), res_ts.end(), node3) != res_ts.end());
 }
 
 TEST(BFSTest, test_6)
@@ -127,4 +162,12 @@ TEST(BFSTest, test_6)
     ASSERT_FALSE(std::find(res.begin(), res.end(), node2) != res.end());
     ASSERT_FALSE(std::find(res.begin(), res.end(), node3) != res.end());
     ASSERT_FALSE(std::find(res.begin(), res.end(), node4) != res.end());
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+    std::vector<CXXGRAPH::Node<int>> res_ts = graph_ts.breadth_first_search(node4);
+    ASSERT_EQ(res_ts.size(), 0);
+    ASSERT_FALSE(std::find(res_ts.begin(), res_ts.end(), node1) != res_ts.end());
+    ASSERT_FALSE(std::find(res_ts.begin(), res_ts.end(), node2) != res_ts.end());
+    ASSERT_FALSE(std::find(res_ts.begin(), res_ts.end(), node3) != res_ts.end());
+    ASSERT_FALSE(std::find(res_ts.begin(), res_ts.end(), node4) != res_ts.end());
 }
