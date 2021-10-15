@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">CXXGraph
-   &#160;<span id="projectnumber">0.1.6</span>
+   &#160;<span id="projectnumber">0.2.0</span>
    </div>
    <div id="projectbrief">CXXGraph is a header only, that manages the Graphs and it&#39;s algorithm in C++</div>
   </td>
@@ -100,12 +100,13 @@ $(function() {
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="comment">//STRING ERROR CONST EXPRESSION</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    constexpr <span class="keywordtype">char</span> ERR_NO_DIR_OR_UNDIR_EDGE[] = <span class="stringliteral">&quot;Edge are neither Directed neither Undirected&quot;</span>;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    constexpr <span class="keywordtype">char</span> ERR_NO_WEIGHTED_EDGE[] = <span class="stringliteral">&quot;Edge are not Weighted&quot;</span>;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    constexpr <span class="keywordtype">char</span> ERR_TARGET_NODE_NOT_REACHABLE[] = <span class="stringliteral">&quot;Target Node not Reachable&quot;</span>;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    constexpr <span class="keywordtype">char</span> ERR_TARGET_NODE_NOT_IN_GRAPH[] = <span class="stringliteral">&quot;Target Node not inside Graph&quot;</span>;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    constexpr <span class="keywordtype">char</span> ERR_SOURCE_NODE_NOT_IN_GRAPH[] = <span class="stringliteral">&quot;Source Node not inside Graph&quot;</span>;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// __CONSTSTRING_H__</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    constexpr <span class="keywordtype">char</span> ERR_DIR_GRAPH[] = <span class="stringliteral">&quot;Graph is directed&quot;</span>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    constexpr <span class="keywordtype">char</span> ERR_NO_WEIGHTED_EDGE[] = <span class="stringliteral">&quot;Edge are not Weighted&quot;</span>;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    constexpr <span class="keywordtype">char</span> ERR_TARGET_NODE_NOT_REACHABLE[] = <span class="stringliteral">&quot;Target Node not Reachable&quot;</span>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    constexpr <span class="keywordtype">char</span> ERR_TARGET_NODE_NOT_IN_GRAPH[] = <span class="stringliteral">&quot;Target Node not inside Graph&quot;</span>;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    constexpr <span class="keywordtype">char</span> ERR_SOURCE_NODE_NOT_IN_GRAPH[] = <span class="stringliteral">&quot;Source Node not inside Graph&quot;</span>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// __CONSTSTRING_H__</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

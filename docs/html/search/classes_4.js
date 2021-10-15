@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hdrf_56',['HDRF',['../d1/d63/classCXXGRAPH_1_1PARTITIONING_1_1HDRF.html',1,'CXXGRAPH::PARTITIONING']]]
+  ['fwresult_5fstruct_62',['FWResult_struct',['../dc/da9/structCXXGRAPH_1_1FWResult__struct.html',1,'CXXGRAPH']]]
 ];

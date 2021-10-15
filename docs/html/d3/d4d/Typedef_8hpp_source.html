@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">CXXGraph
-   &#160;<span id="projectnumber">0.1.6</span>
+   &#160;<span id="projectnumber">0.2.0</span>
    </div>
    <div id="projectbrief">CXXGraph is a header only, that manages the Graphs and it&#39;s algorithm in C++</div>
   </td>
@@ -137,30 +137,60 @@ $(function() {
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    };</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">typedef</span> <a class="code" href="../../dd/d6c/structCXXGRAPH_1_1DijkstraResult__struct.html">DijkstraResult_struct</a> <a class="code" href="../../dd/d6c/structCXXGRAPH_1_1DijkstraResult__struct.html">DijkstraResult</a>;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="../../d5/d93/structCXXGRAPH_1_1DialResult__struct.html">   70</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="../../d5/d93/structCXXGRAPH_1_1DialResult__struct.html">DialResult_struct</a></div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="../../d4/df1/structCXXGRAPH_1_1BellmanFordResult__struct.html">   70</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="../../d4/df1/structCXXGRAPH_1_1BellmanFordResult__struct.html">BellmanFordResult_struct</a></div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordtype">bool</span> success;                                 <span class="comment">// TRUE if the function does not return error, FALSE otherwise</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        std::string errorMessage;                     <span class="comment">//message of error</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        std::map&lt;unsigned long, long&gt; minDistanceMap; <span class="comment">//result a map that contains the node id and the minumum distance from source (valid only if success is TRUE)</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    };</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keyword">typedef</span> <a class="code" href="../../d5/d93/structCXXGRAPH_1_1DialResult__struct.html">DialResult_struct</a> <a class="code" href="../../d5/d93/structCXXGRAPH_1_1DialResult__struct.html">DialResult</a>;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// Using Definition ///////////////////////////////////////////////////////////////</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">using</span> AdjacencyMatrix = std::map&lt;const Node&lt;T&gt; *, std::vector&lt;std::pair&lt;const Node&lt;T&gt; *, <span class="keyword">const</span> <a class="code" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge&lt;T&gt;</a> *&gt;&gt;&gt;;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">using</span> PartitionMap = std::map&lt;unsigned int, PARTITIONING::Partition&lt;T&gt; *&gt;;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// __CXXGRAPH_TYPEDEF_H__</span></div>
-<div class="ttc" id="aclassCXXGRAPH_1_1Edge_html"><div class="ttname"><a href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">CXXGRAPH::Edge</a></div><div class="ttdef"><b>Definition:</b> Edge.hpp:40</div></div>
-<div class="ttc" id="astructCXXGRAPH_1_1DialResult__struct_html"><div class="ttname"><a href="../../d5/d93/structCXXGRAPH_1_1DialResult__struct.html">CXXGRAPH::DialResult_struct</a></div><div class="ttdoc">Struct that contains the information about Dijsktra's Algorithm results.</div><div class="ttdef"><b>Definition:</b> Typedef.hpp:71</div></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordtype">bool</span> success;             <span class="comment">// TRUE if the function does not return error, FALSE otherwise</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordtype">bool</span> negativeCycle;       <span class="comment">// TRUE if graph contains a negative cycle, FALSE otherwise</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        std::string errorMessage; <span class="comment">//message of error</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordtype">double</span> result;            <span class="comment">//result (valid only if success is TRUE &amp; negativeCycle is false )</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    };</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keyword">typedef</span> <a class="code" href="../../d4/df1/structCXXGRAPH_1_1BellmanFordResult__struct.html">BellmanFordResult_struct</a> <a class="code" href="../../d4/df1/structCXXGRAPH_1_1BellmanFordResult__struct.html">BellmanFordResult</a>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="../../dc/da9/structCXXGRAPH_1_1FWResult__struct.html">   80</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="../../dc/da9/structCXXGRAPH_1_1FWResult__struct.html">FWResult_struct</a></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordtype">bool</span> success;             <span class="comment">// TRUE if the function does not return error, FALSE otherwise</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordtype">bool</span> negativeCycle;       <span class="comment">// TRUE if graph contains a negative cycle, FALSE otherwise</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        std::string errorMessage; <span class="comment">//message of error</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        std::map&lt;std::pair&lt;unsigned long, unsigned long&gt;, <span class="keywordtype">double</span>&gt; result;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    };</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">typedef</span> <a class="code" href="../../dc/da9/structCXXGRAPH_1_1FWResult__struct.html">FWResult_struct</a> <a class="code" href="../../dc/da9/structCXXGRAPH_1_1FWResult__struct.html">FWResult</a>;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    </div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="../../df/df1/structCXXGRAPH_1_1PrimResult__struct.html">   90</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="../../df/df1/structCXXGRAPH_1_1PrimResult__struct.html">PrimResult_struct</a></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    {</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordtype">bool</span> success;             <span class="comment">// TRUE if the function does not return error, FALSE otherwise</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        std::string errorMessage; <span class="comment">//message of error</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        std::vector&lt;unsigned long&gt; result;  <span class="comment">// MST</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keywordtype">double</span> mstCost;  <span class="comment">// MST</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    };</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keyword">typedef</span> <a class="code" href="../../df/df1/structCXXGRAPH_1_1PrimResult__struct.html">PrimResult_struct</a> <a class="code" href="../../df/df1/structCXXGRAPH_1_1PrimResult__struct.html">PrimResult</a>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="../../d5/d93/structCXXGRAPH_1_1DialResult__struct.html">  100</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="../../d5/d93/structCXXGRAPH_1_1DialResult__struct.html">DialResult_struct</a></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    {</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordtype">bool</span> success;                                 <span class="comment">// TRUE if the function does not return error, FALSE otherwise</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        std::string errorMessage;                     <span class="comment">//message of error</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        std::map&lt;unsigned long, long&gt; minDistanceMap; <span class="comment">//result a map that contains the node id and the minumum distance from source (valid only if success is TRUE)</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    };</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keyword">typedef</span> <a class="code" href="../../d5/d93/structCXXGRAPH_1_1DialResult__struct.html">DialResult_struct</a> <a class="code" href="../../d5/d93/structCXXGRAPH_1_1DialResult__struct.html">DialResult</a>;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    </div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="comment">// Using Definition ///////////////////////////////////////////////////////////////</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keyword">using</span> AdjacencyMatrix = std::map&lt;const Node&lt;T&gt; *, std::vector&lt;std::pair&lt;const Node&lt;T&gt; *, <span class="keyword">const</span> <a class="code" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge&lt;T&gt;</a> *&gt;&gt;&gt;;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keyword">using</span> PartitionMap = std::map&lt;unsigned int, PARTITIONING::Partition&lt;T&gt; *&gt;;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;}</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// __CXXGRAPH_TYPEDEF_H__</span></div>
+<div class="ttc" id="aclassCXXGRAPH_1_1Edge_html"><div class="ttname"><a href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">CXXGRAPH::Edge</a></div><div class="ttdef"><b>Definition:</b> Edge.hpp:39</div></div>
+<div class="ttc" id="astructCXXGRAPH_1_1BellmanFordResult__struct_html"><div class="ttname"><a href="../../d4/df1/structCXXGRAPH_1_1BellmanFordResult__struct.html">CXXGRAPH::BellmanFordResult_struct</a></div><div class="ttdoc">Struct that contains the information about Dijsktra's Algorithm results.</div><div class="ttdef"><b>Definition:</b> Typedef.hpp:71</div></div>
+<div class="ttc" id="astructCXXGRAPH_1_1DialResult__struct_html"><div class="ttname"><a href="../../d5/d93/structCXXGRAPH_1_1DialResult__struct.html">CXXGRAPH::DialResult_struct</a></div><div class="ttdoc">Struct that contains the information about Dijsktra's Algorithm results.</div><div class="ttdef"><b>Definition:</b> Typedef.hpp:101</div></div>
 <div class="ttc" id="astructCXXGRAPH_1_1DijkstraResult__struct_html"><div class="ttname"><a href="../../dd/d6c/structCXXGRAPH_1_1DijkstraResult__struct.html">CXXGRAPH::DijkstraResult_struct</a></div><div class="ttdoc">Struct that contains the information about Dijsktra's Algorithm results.</div><div class="ttdef"><b>Definition:</b> Typedef.hpp:62</div></div>
+<div class="ttc" id="astructCXXGRAPH_1_1FWResult__struct_html"><div class="ttname"><a href="../../dc/da9/structCXXGRAPH_1_1FWResult__struct.html">CXXGRAPH::FWResult_struct</a></div><div class="ttdoc">Struct that contains the information about Floyd-Warshall Algorithm results.</div><div class="ttdef"><b>Definition:</b> Typedef.hpp:81</div></div>
+<div class="ttc" id="astructCXXGRAPH_1_1PrimResult__struct_html"><div class="ttname"><a href="../../df/df1/structCXXGRAPH_1_1PrimResult__struct.html">CXXGRAPH::PrimResult_struct</a></div><div class="ttdoc">Struct that contains the information about Prim Algorithm results.</div><div class="ttdef"><b>Definition:</b> Typedef.hpp:91</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

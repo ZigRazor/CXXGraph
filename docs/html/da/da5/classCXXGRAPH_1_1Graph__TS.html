@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">CXXGraph
-   &#160;<span id="projectnumber">0.1.6</span>
+   &#160;<span id="projectnumber">0.2.0</span>
    </div>
    <div id="projectbrief">CXXGraph is a header only, that manages the Graphs and it&#39;s algorithm in C++</div>
   </td>
@@ -134,6 +134,12 @@ const AdjacencyMatrix&lt; T &gt;&#160;</td><td class="memItemRight" valign="bott
 <tr class="memitem:a423f7d958e9c758682178ad6204b81af"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="../../dd/d6c/structCXXGRAPH_1_1DijkstraResult__struct.html">DijkstraResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#a423f7d958e9c758682178ad6204b81af">dijkstra</a> (const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;source, const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;target) const override</td></tr>
 <tr class="memdesc:a423f7d958e9c758682178ad6204b81af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function runs the dijkstra algorithm for some source node and target node in the graph and returns the shortest distance of target from the source. Note: Thread Safe.  <a href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#a423f7d958e9c758682178ad6204b81af">More...</a><br /></td></tr>
 <tr class="separator:a423f7d958e9c758682178ad6204b81af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa20e497824c23f6c7ed4074ce83e83ec"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="../../d4/df1/structCXXGRAPH_1_1BellmanFordResult__struct.html">BellmanFordResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#aa20e497824c23f6c7ed4074ce83e83ec">bellmanford</a> (const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;source, const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;target) const override</td></tr>
+<tr class="memdesc:aa20e497824c23f6c7ed4074ce83e83ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function runs the bellmanford algorithm for some source node and target node in the graph and returns the shortest distance of target from the source if there is no negative cycle in the graph. Note: Thread Safe.  <a href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#aa20e497824c23f6c7ed4074ce83e83ec">More...</a><br /></td></tr>
+<tr class="separator:aa20e497824c23f6c7ed4074ce83e83ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8a6fd3000941159525092acc612a34a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="../../dc/da9/structCXXGRAPH_1_1FWResult__struct.html">FWResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#ac8a6fd3000941159525092acc612a34a">floydWarshall</a> () const override</td></tr>
+<tr class="memdesc:ac8a6fd3000941159525092acc612a34a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function runs the floyd-Warshall algorithm for every node in the graph and returns the shortest distance of each node from another node if there is no negative cycle in the graph. Note: Thread Safe.  <a href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#ac8a6fd3000941159525092acc612a34a">More...</a><br /></td></tr>
+<tr class="separator:ac8a6fd3000941159525092acc612a34a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88122ab10e34ecb9aae4c64c907a82b9"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#a88122ab10e34ecb9aae4c64c907a82b9">breadth_first_search</a> (const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;start) const override</td></tr>
 <tr class="memdesc:a88122ab10e34ecb9aae4c64c907a82b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function performs the breadth first search algorithm over the graph Note: Thread Safe.  <a href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html#a88122ab10e34ecb9aae4c64c907a82b9">More...</a><br /></td></tr>
 <tr class="separator:a88122ab10e34ecb9aae4c64c907a82b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -165,6 +171,15 @@ const AdjacencyMatrix&lt; T &gt;&#160;</td><td class="memItemRight" valign="bott
 <tr class="memitem:a49433844912894835ea1142fd90abfb1 inherit pub_methods_classCXXGRAPH_1_1Graph"><td class="memItemLeft" align="right" valign="top"><a id="a49433844912894835ea1142fd90abfb1"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Graph</b> (const std::list&lt; const <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>&lt; T &gt; * &gt; &amp;edgeSet)</td></tr>
 <tr class="separator:a49433844912894835ea1142fd90abfb1 inherit pub_methods_classCXXGRAPH_1_1Graph"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e6a7b4332ecb1433a45aad29e7211f1 inherit pub_methods_classCXXGRAPH_1_1Graph"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="../../df/df1/structCXXGRAPH_1_1PrimResult__struct.html">PrimResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a9e6a7b4332ecb1433a45aad29e7211f1">prim</a> () const</td></tr>
+<tr class="memdesc:a9e6a7b4332ecb1433a45aad29e7211f1 inherit pub_methods_classCXXGRAPH_1_1Graph"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function runs the prim algorithm and returns the minimum spanning tree if the graph is undirected. Note: No Thread Safe.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a9e6a7b4332ecb1433a45aad29e7211f1">More...</a><br /></td></tr>
+<tr class="separator:a9e6a7b4332ecb1433a45aad29e7211f1 inherit pub_methods_classCXXGRAPH_1_1Graph"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13abdb1d53937f7349cd72f527125edf inherit pub_methods_classCXXGRAPH_1_1Graph"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a13abdb1d53937f7349cd72f527125edf">isUndirectedGraph</a> () const</td></tr>
+<tr class="memdesc:a13abdb1d53937f7349cd72f527125edf inherit pub_methods_classCXXGRAPH_1_1Graph"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function checks if a graph is undirected Note: No Thread Safe.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a13abdb1d53937f7349cd72f527125edf">More...</a><br /></td></tr>
+<tr class="separator:a13abdb1d53937f7349cd72f527125edf inherit pub_methods_classCXXGRAPH_1_1Graph"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c6d8a66538ecec3c33c4ff0574cdb2d inherit pub_methods_classCXXGRAPH_1_1Graph"><td class="memItemLeft" align="right" valign="top">virtual const std::vector&lt; <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a7c6d8a66538ecec3c33c4ff0574cdb2d">graph_slicing</a> (const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;start) const</td></tr>
+<tr class="memdesc:a7c6d8a66538ecec3c33c4ff0574cdb2d inherit pub_methods_classCXXGRAPH_1_1Graph"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function performs <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html" title="Class that implement the Graph. ( This class is not Thread Safe )">Graph</a> Slicing based on connectivity.  <a href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a7c6d8a66538ecec3c33c4ff0574cdb2d">More...</a><br /></td></tr>
+<tr class="separator:a7c6d8a66538ecec3c33c4ff0574cdb2d inherit pub_methods_classCXXGRAPH_1_1Graph"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classCXXGRAPH_1_1ThreadSafe"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classCXXGRAPH_1_1ThreadSafe')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d9/d2f/classCXXGRAPH_1_1ThreadSafe.html">CXXGRAPH::ThreadSafe</a></td></tr>
 <tr class="memitem:a6ce64f32a982da50181c2684722a4800 inherit pub_methods_classCXXGRAPH_1_1ThreadSafe"><td class="memItemLeft" align="right" valign="top"><a id="a6ce64f32a982da50181c2684722a4800"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>getLock</b> () const</td></tr>
@@ -221,6 +236,56 @@ template&lt;typename T &gt; </div>
 </dl>
 
 <p>Reimplemented from <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a95fc676b51609323126e1d6f2366c4bb">CXXGRAPH::Graph&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<a id="aa20e497824c23f6c7ed4074ce83e83ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa20e497824c23f6c7ed4074ce83e83ec">&#9670;&nbsp;</a></span>bellmanford()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="../../d4/df1/structCXXGRAPH_1_1BellmanFordResult__struct.html">BellmanFordResult</a> <a class="el" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html">CXXGRAPH::Graph_TS</a>&lt; T &gt;::bellmanford </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>target</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Function runs the bellmanford algorithm for some source node and target node in the graph and returns the shortest distance of target from the source if there is no negative cycle in the graph. Note: Thread Safe. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>source vertex </td></tr>
+    <tr><td class="paramname">target</td><td>target vertex</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>shortest distance if target is reachable from source else ERROR in case if target is not reachable from source or there is negative cycle or there is error in the computation. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#ae88da3d693fb461b53435d94e12e166c">CXXGRAPH::Graph&lt; T &gt;</a>.</p>
 
 </div>
 </div>
@@ -412,6 +477,35 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>shortest distance if target is reachable from source else ERROR in case if target is not reachable from source or there is error in the computation. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a8d655cd624cedf47ee366d8c0ab31921">CXXGRAPH::Graph&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<a id="ac8a6fd3000941159525092acc612a34a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8a6fd3000941159525092acc612a34a">&#9670;&nbsp;</a></span>floydWarshall()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="../../dc/da9/structCXXGRAPH_1_1FWResult__struct.html">FWResult</a> <a class="el" href="../../da/da5/classCXXGRAPH_1_1Graph__TS.html">CXXGRAPH::Graph_TS</a>&lt; T &gt;::floydWarshall</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Function runs the floyd-Warshall algorithm for every node in the graph and returns the shortest distance of each node from another node if there is no negative cycle in the graph. Note: Thread Safe. </p>
+<dl class="section return"><dt>Returns</dt><dd>shortest distance if any node is reachable from other node else ERROR in case if target is not reachable from source or there is negative cycle or there is error in the computation. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="../../d0/df2/classCXXGRAPH_1_1Graph.html#a00b6780a5167547fe05db00e01011223">CXXGRAPH::Graph&lt; T &gt;</a>.</p>
 
 </div>
 </div>

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['coordinatedpartitionstate_46',['CoordinatedPartitionState',['../d0/d70/classCXXGRAPH_1_1PARTITIONING_1_1CoordinatedPartitionState.html',1,'CXXGRAPH::PARTITIONING']]],
-  ['coordinatedrecord_47',['CoordinatedRecord',['../de/d1d/classCXXGRAPH_1_1PARTITIONING_1_1CoordinatedRecord.html',1,'CXXGRAPH::PARTITIONING']]]
+  ['bellmanfordresult_5fstruct_54',['BellmanFordResult_struct',['../d4/df1/structCXXGRAPH_1_1BellmanFordResult__struct.html',1,'CXXGRAPH']]]
 ];
