@@ -4,7 +4,7 @@
     white-space : nowrap;
     background: white;
     border-radius: 0.65em;
-    box-shadow: inset 0.5px 0.5px 3px 0 #555;
+    box-shadow: inset 0.5px 0.5px 3px 0px #555;
     z-index: 102;
 }
 
@@ -34,8 +34,8 @@
     color: #909090;
     outline: none;
     font-family: Arial, Verdana, sans-serif;
-    -webkit-border-radius: 0;
-    border-radius: 0;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
     background: none;
 }
 
@@ -100,7 +100,7 @@
     font: 8pt Arial, Verdana, sans-serif;
     padding-left:  2px;
     padding-right: 12px;
-    border: 0;
+    border: 0px;
 }
 
 span.SelectionMark {
@@ -231,7 +231,7 @@ div.searchresults {
 
 .pages b {
    color: white;
-   padding: 5px 5px 3px;
+   padding: 5px 5px 3px 5px;
    background-image: url("../tab_a.png");
    background-repeat: repeat-x;
    text-shadow: 0 1px 1px #000000;

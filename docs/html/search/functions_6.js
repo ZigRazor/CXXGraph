@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['readfromfile_86',['readFromFile',['../d0/df2/classCXXGRAPH_1_1Graph.html#abd5baeb88c2b588c14383155fff4ec3e',1,'CXXGRAPH::Graph::readFromFile()'],['../da/da5/classCXXGRAPH_1_1Graph__TS.html#a7e43a7d1fa001375edce51d801d6a94f',1,'CXXGRAPH::Graph_TS::readFromFile()']]],
-  ['removeedge_87',['removeEdge',['../d0/df2/classCXXGRAPH_1_1Graph.html#a4fe93321484d4144d3ff7db0ef33707c',1,'CXXGRAPH::Graph::removeEdge()'],['../da/da5/classCXXGRAPH_1_1Graph__TS.html#a8e74dba5178c47c0abd054b1015c734a',1,'CXXGRAPH::Graph_TS::removeEdge()']]]
+  ['partitiongraph_100',['partitionGraph',['../d0/df2/classCXXGRAPH_1_1Graph.html#aaf4cfc3ba8383e32db53ffdd6b053f1f',1,'CXXGRAPH::Graph::partitionGraph()'],['../da/da5/classCXXGRAPH_1_1Graph__TS.html#a6ff50fa4f3ecfcdbdd7dbb061ad6f585',1,'CXXGRAPH::Graph_TS::partitionGraph()']]],
+  ['prim_101',['prim',['../d0/df2/classCXXGRAPH_1_1Graph.html#a9e6a7b4332ecb1433a45aad29e7211f1',1,'CXXGRAPH::Graph']]]
 ];

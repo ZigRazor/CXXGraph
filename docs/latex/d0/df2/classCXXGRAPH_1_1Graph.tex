@@ -11,8 +11,7 @@ Class that implement the \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}. ( Thi
 
 
 
-Inheritance diagram for CXXGRAPH\+::Graph$<$ T $>$\+:
-\nopagebreak
+Inheritance diagram for CXXGRAPH\+::Graph$<$ T $>$\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -42,6 +41,12 @@ virtual const Adjacency\+Matrix$<$ T $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph
 \begin{DoxyCompactList}\small\item\em This function generate a list of adjacency matrix with every element of the matrix contain the node where is directed the link and the \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} corrispondent to the link Note\+: No Thread Safe. \end{DoxyCompactList}\item 
 virtual const \mbox{\hyperlink{structCXXGRAPH_1_1DijkstraResult__struct}{Dijkstra\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a8d655cd624cedf47ee366d8c0ab31921}{dijkstra}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&source, const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&target) const
 \begin{DoxyCompactList}\small\item\em Function runs the dijkstra algorithm for some source node and target node in the graph and returns the shortest distance of target from the source. Note\+: No Thread Safe. \end{DoxyCompactList}\item 
+virtual const \mbox{\hyperlink{structCXXGRAPH_1_1BellmanFordResult__struct}{Bellman\+Ford\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph_ae88da3d693fb461b53435d94e12e166c}{bellmanford}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&source, const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&target) const
+\begin{DoxyCompactList}\small\item\em Function runs the bellman-\/ford algorithm for some source node and target node in the graph and returns the shortest distance of target from the source. It can also detect if a negative cycle exists in the graph. Note\+: No Thread Safe. \end{DoxyCompactList}\item 
+virtual const \mbox{\hyperlink{structCXXGRAPH_1_1FWResult__struct}{FWResult}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a00b6780a5167547fe05db00e01011223}{floyd\+Warshall}} () const
+\begin{DoxyCompactList}\small\item\em Function runs the floyd-\/warshall algorithm and returns the shortest distance of all pair of nodes. It can also detect if a negative cycle exists in the graph. Note\+: No Thread Safe. \end{DoxyCompactList}\item 
+virtual const \mbox{\hyperlink{structCXXGRAPH_1_1PrimResult__struct}{Prim\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a9e6a7b4332ecb1433a45aad29e7211f1}{prim}} () const
+\begin{DoxyCompactList}\small\item\em Function runs the prim algorithm and returns the minimum spanning tree if the graph is undirected. Note\+: No Thread Safe. \end{DoxyCompactList}\item 
 virtual const std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph_ae94a68dc57331c26070c3aec035264ef}{breadth\+\_\+first\+\_\+search}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&start) const
 \begin{DoxyCompactList}\small\item\em Function performs the breadth first search algorithm over the graph Note\+: No Thread Safe. \end{DoxyCompactList}\item 
 virtual const std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a05d230bd6185b99b624227c4c82b7811}{depth\+\_\+first\+\_\+search}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&start) const
@@ -52,6 +57,10 @@ virtual bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a4f76bb7230c1654dd6b1ec24d0
 \begin{DoxyCompactList}\small\item\em This function uses BFS to check for cycle in the graph. Pay Attention, this function work only with directed \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} Note\+: No Thread Safe. \end{DoxyCompactList}\item 
 virtual bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a5c7ddb5c91f3ab7456c8203a740f52c9}{is\+Directed\+Graph}} () const
 \begin{DoxyCompactList}\small\item\em This function checks if a graph is directed Note\+: No Thread Safe. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a13abdb1d53937f7349cd72f527125edf}{is\+Undirected\+Graph}} () const
+\begin{DoxyCompactList}\small\item\em This function checks if a graph is undirected Note\+: No Thread Safe. \end{DoxyCompactList}\item 
+virtual const std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a7c6d8a66538ecec3c33c4ff0574cdb2d}{graph\+\_\+slicing}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&start) const
+\begin{DoxyCompactList}\small\item\em This function performs \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} Slicing based on connectivity. \end{DoxyCompactList}\item 
 virtual const \mbox{\hyperlink{structCXXGRAPH_1_1DialResult__struct}{Dial\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a662a0e15cd997252639e7a257b830190}{dial}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&source, int max\+Weight) const
 \begin{DoxyCompactList}\small\item\em This function write the graph in an output file Note\+: No Thread Safe. \end{DoxyCompactList}\item 
 virtual int \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a5a1ffeb9ef3b62b38c10bd84b44170a0}{write\+To\+File}} (Input\+Output\+Format format=Input\+Output\+Format\+::\+STANDARD\+\_\+\+CSV, const std\+::string \&working\+Dir=\char`\"{}.\char`\"{}, const std\+::string \&OFile\+Name=\char`\"{}graph\char`\"{}, bool compress=false, bool write\+Node\+Feat=false, bool write\+Edge\+Weight=false) const
@@ -97,6 +106,31 @@ Function add an \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} to the \mbox{\hyp
 
 
 Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a5bdacfe9db0d77fec01c46420d7d7024}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
+
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_ae88da3d693fb461b53435d94e12e166c}\label{classCXXGRAPH_1_1Graph_ae88da3d693fb461b53435d94e12e166c}} 
+\index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!bellmanford@{bellmanford}}
+\index{bellmanford@{bellmanford}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{bellmanford()}{bellmanford()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const \mbox{\hyperlink{structCXXGRAPH_1_1BellmanFordResult__struct}{Bellman\+Ford\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::bellmanford (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{source,  }\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{target }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Function runs the bellman-\/ford algorithm for some source node and target node in the graph and returns the shortest distance of target from the source. It can also detect if a negative cycle exists in the graph. Note\+: No Thread Safe. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em source} & source vertex \\
+\hline
+{\em target} & target vertex\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+shortest distance if target is reachable from source else ERROR in case if target is not reachable from source. If there is no error then also returns if the graph contains a negative cycle. 
+\end{DoxyReturn}
+
+
+Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_aa20e497824c23f6c7ed4074ce83e83ec}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
 
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_ae94a68dc57331c26070c3aec035264ef}\label{classCXXGRAPH_1_1Graph_ae94a68dc57331c26070c3aec035264ef}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!breadth\_first\_search@{breadth\_first\_search}}
@@ -214,6 +248,24 @@ shortest distance if target is reachable from source else ERROR in case if targe
 
 Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a423f7d958e9c758682178ad6204b81af}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
 
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a00b6780a5167547fe05db00e01011223}\label{classCXXGRAPH_1_1Graph_a00b6780a5167547fe05db00e01011223}} 
+\index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!floydWarshall@{floydWarshall}}
+\index{floydWarshall@{floydWarshall}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{floydWarshall()}{floydWarshall()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const \mbox{\hyperlink{structCXXGRAPH_1_1FWResult__struct}{FWResult}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::floyd\+Warshall\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Function runs the floyd-\/warshall algorithm and returns the shortest distance of all pair of nodes. It can also detect if a negative cycle exists in the graph. Note\+: No Thread Safe. 
+
+\begin{DoxyReturn}{Returns}
+a map whose keys are node ids and values are the shortest distance. If there is no error then also returns if the graph contains a negative cycle. 
+\end{DoxyReturn}
+
+
+Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_ac8a6fd3000941159525092acc612a34a}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
+
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a4671c249cc900ab644b9142e1deaa534}\label{classCXXGRAPH_1_1Graph_a4671c249cc900ab644b9142e1deaa534}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!getEdge@{getEdge}}
 \index{getEdge@{getEdge}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
@@ -273,6 +325,29 @@ a list of Nodes of the graph
 
 Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a2c9873692bef042d5f94ab8e7018bf95}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
 
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a7c6d8a66538ecec3c33c4ff0574cdb2d}\label{classCXXGRAPH_1_1Graph_a7c6d8a66538ecec3c33c4ff0574cdb2d}} 
+\index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!graph\_slicing@{graph\_slicing}}
+\index{graph\_slicing@{graph\_slicing}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{graph\_slicing()}{graph\_slicing()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::graph\+\_\+slicing (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{start }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+This function performs \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} Slicing based on connectivity. 
+
+Mathematical definition of the problem\+:
+
+Let G be the set of nodes in a graph and n be a given node in that set. Let C be the non-\/strict subset of G containing both n and all nodes reachable from n, and let C\textquotesingle{} be its complement. There\textquotesingle{}s a third set M, which is the non-\/strict subset of C containing all nodes that are reachable from any node in C\textquotesingle{}. The problem consists of finding all nodes that belong to C but not to M.
+
+Note\+: No Thread Safe 
+\begin{DoxyParams}{Parameters}
+{\em start} & \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}} from where traversing starts \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a vector of nodes that belong to C but not to M. 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a4f76bb7230c1654dd6b1ec24d0291875}\label{classCXXGRAPH_1_1Graph_a4f76bb7230c1654dd6b1ec24d0291875}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!isCyclicDirectedGraphBFS@{isCyclicDirectedGraphBFS}}
 \index{isCyclicDirectedGraphBFS@{isCyclicDirectedGraphBFS}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
@@ -327,6 +402,20 @@ true if the graph is directed, else false.
 
 Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a39cf608717962cd84e4a3606135ee1f4}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
 
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a13abdb1d53937f7349cd72f527125edf}\label{classCXXGRAPH_1_1Graph_a13abdb1d53937f7349cd72f527125edf}} 
+\index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!isUndirectedGraph@{isUndirectedGraph}}
+\index{isUndirectedGraph@{isUndirectedGraph}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{isUndirectedGraph()}{isUndirectedGraph()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::is\+Undirected\+Graph\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+This function checks if a graph is undirected Note\+: No Thread Safe. 
+
+\begin{DoxyReturn}{Returns}
+true if the graph is undirected, else false. 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_aaf4cfc3ba8383e32db53ffdd6b053f1f}\label{classCXXGRAPH_1_1Graph_aaf4cfc3ba8383e32db53ffdd6b053f1f}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!partitionGraph@{partitionGraph}}
 \index{partitionGraph@{partitionGraph}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
@@ -352,6 +441,20 @@ The partiton Map of the partitioned graph
 
 Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a6ff50fa4f3ecfcdbdd7dbb061ad6f585}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
 
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a9e6a7b4332ecb1433a45aad29e7211f1}\label{classCXXGRAPH_1_1Graph_a9e6a7b4332ecb1433a45aad29e7211f1}} 
+\index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!prim@{prim}}
+\index{prim@{prim}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{prim()}{prim()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const \mbox{\hyperlink{structCXXGRAPH_1_1PrimResult__struct}{Prim\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::prim\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Function runs the prim algorithm and returns the minimum spanning tree if the graph is undirected. Note\+: No Thread Safe. 
+
+\begin{DoxyReturn}{Returns}
+a vector containing id of nodes in minimum spanning tree. 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_abd5baeb88c2b588c14383155fff4ec3e}\label{classCXXGRAPH_1_1Graph_abd5baeb88c2b588c14383155fff4ec3e}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!readFromFile@{readFromFile}}
 \index{readFromFile@{readFromFile}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}

@@ -53,6 +53,10 @@ const Adjacency\+Matrix$<$ T $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_af4
 \begin{DoxyCompactList}\small\item\em This function generate a list of adjacency matrix with every element of the matrix contain the node where is directed the link and the \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} corrispondent to the link Note\+: Thread Safe. \end{DoxyCompactList}\item 
 const \mbox{\hyperlink{structCXXGRAPH_1_1DijkstraResult__struct}{Dijkstra\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a423f7d958e9c758682178ad6204b81af}{dijkstra}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&source, const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&target) const override
 \begin{DoxyCompactList}\small\item\em Function runs the dijkstra algorithm for some source node and target node in the graph and returns the shortest distance of target from the source. Note\+: Thread Safe. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{structCXXGRAPH_1_1BellmanFordResult__struct}{Bellman\+Ford\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_aa20e497824c23f6c7ed4074ce83e83ec}{bellmanford}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&source, const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&target) const override
+\begin{DoxyCompactList}\small\item\em Function runs the bellmanford algorithm for some source node and target node in the graph and returns the shortest distance of target from the source if there is no negative cycle in the graph. Note\+: Thread Safe. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{structCXXGRAPH_1_1FWResult__struct}{FWResult}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_ac8a6fd3000941159525092acc612a34a}{floyd\+Warshall}} () const override
+\begin{DoxyCompactList}\small\item\em Function runs the floyd-\/\+Warshall algorithm for every node in the graph and returns the shortest distance of each node from another node if there is no negative cycle in the graph. Note\+: Thread Safe. \end{DoxyCompactList}\item 
 const std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a88122ab10e34ecb9aae4c64c907a82b9}{breadth\+\_\+first\+\_\+search}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&start) const override
 \begin{DoxyCompactList}\small\item\em Function performs the breadth first search algorithm over the graph Note\+: Thread Safe. \end{DoxyCompactList}\item 
 const std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_aa8844339395cc7e6cecd1a4e0ab57804}{depth\+\_\+first\+\_\+search}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&start) const override
@@ -100,6 +104,31 @@ Function add an \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} to the \mbox{\hyp
 
 
 Reimplemented from \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a95fc676b51609323126e1d6f2366c4bb}{CXXGRAPH\+::\+Graph$<$ T $>$}}.
+
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph__TS_aa20e497824c23f6c7ed4074ce83e83ec}\label{classCXXGRAPH_1_1Graph__TS_aa20e497824c23f6c7ed4074ce83e83ec}} 
+\index{CXXGRAPH::Graph\_TS$<$ T $>$@{CXXGRAPH::Graph\_TS$<$ T $>$}!bellmanford@{bellmanford}}
+\index{bellmanford@{bellmanford}!CXXGRAPH::Graph\_TS$<$ T $>$@{CXXGRAPH::Graph\_TS$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{bellmanford()}{bellmanford()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const \mbox{\hyperlink{structCXXGRAPH_1_1BellmanFordResult__struct}{Bellman\+Ford\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS}{CXXGRAPH\+::\+Graph\+\_\+\+TS}}$<$ T $>$\+::bellmanford (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{source,  }\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{target }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Function runs the bellmanford algorithm for some source node and target node in the graph and returns the shortest distance of target from the source if there is no negative cycle in the graph. Note\+: Thread Safe. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em source} & source vertex \\
+\hline
+{\em target} & target vertex\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+shortest distance if target is reachable from source else ERROR in case if target is not reachable from source or there is negative cycle or there is error in the computation. 
+\end{DoxyReturn}
+
+
+Reimplemented from \mbox{\hyperlink{classCXXGRAPH_1_1Graph_ae88da3d693fb461b53435d94e12e166c}{CXXGRAPH\+::\+Graph$<$ T $>$}}.
 
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph__TS_a88122ab10e34ecb9aae4c64c907a82b9}\label{classCXXGRAPH_1_1Graph__TS_a88122ab10e34ecb9aae4c64c907a82b9}} 
 \index{CXXGRAPH::Graph\_TS$<$ T $>$@{CXXGRAPH::Graph\_TS$<$ T $>$}!breadth\_first\_search@{breadth\_first\_search}}
@@ -216,6 +245,24 @@ shortest distance if target is reachable from source else ERROR in case if targe
 
 
 Reimplemented from \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a8d655cd624cedf47ee366d8c0ab31921}{CXXGRAPH\+::\+Graph$<$ T $>$}}.
+
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph__TS_ac8a6fd3000941159525092acc612a34a}\label{classCXXGRAPH_1_1Graph__TS_ac8a6fd3000941159525092acc612a34a}} 
+\index{CXXGRAPH::Graph\_TS$<$ T $>$@{CXXGRAPH::Graph\_TS$<$ T $>$}!floydWarshall@{floydWarshall}}
+\index{floydWarshall@{floydWarshall}!CXXGRAPH::Graph\_TS$<$ T $>$@{CXXGRAPH::Graph\_TS$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{floydWarshall()}{floydWarshall()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const \mbox{\hyperlink{structCXXGRAPH_1_1FWResult__struct}{FWResult}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS}{CXXGRAPH\+::\+Graph\+\_\+\+TS}}$<$ T $>$\+::floyd\+Warshall\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Function runs the floyd-\/\+Warshall algorithm for every node in the graph and returns the shortest distance of each node from another node if there is no negative cycle in the graph. Note\+: Thread Safe. 
+
+\begin{DoxyReturn}{Returns}
+shortest distance if any node is reachable from other node else ERROR in case if target is not reachable from source or there is negative cycle or there is error in the computation. 
+\end{DoxyReturn}
+
+
+Reimplemented from \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a00b6780a5167547fe05db00e01011223}{CXXGRAPH\+::\+Graph$<$ T $>$}}.
 
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph__TS_a2514461be9e322c242b44e414f76efc8}\label{classCXXGRAPH_1_1Graph__TS_a2514461be9e322c242b44e414f76efc8}} 
 \index{CXXGRAPH::Graph\_TS$<$ T $>$@{CXXGRAPH::Graph\_TS$<$ T $>$}!getEdge@{getEdge}}
