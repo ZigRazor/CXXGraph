@@ -19,6 +19,13 @@ TEST(DijkstraTest, test_1)
     ASSERT_TRUE(res.success);
     ASSERT_EQ(res.errorMessage, "");
     ASSERT_EQ(res.result, 2);
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+    CXXGRAPH::DijkstraResult res_ts = graph_ts.dijkstra(node1, node3);
+    ASSERT_TRUE(res_ts.success);
+    ASSERT_EQ(res_ts.errorMessage, "");
+    ASSERT_EQ(res_ts.result, 2);
+
 }
 
 TEST(DijkstraTest, test_2)
@@ -39,6 +46,12 @@ TEST(DijkstraTest, test_2)
     ASSERT_TRUE(res.success);
     ASSERT_EQ(res.errorMessage, "");
     ASSERT_EQ(res.result, 6);
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+    CXXGRAPH::DijkstraResult res_ts = graph_ts.dijkstra(node1, node3);
+    ASSERT_TRUE(res_ts.success);
+    ASSERT_EQ(res_ts.errorMessage, "");
+    ASSERT_EQ(res_ts.result, 6);
 }
 
 TEST(DijkstraTest, test_3)
@@ -59,6 +72,12 @@ TEST(DijkstraTest, test_3)
     ASSERT_FALSE(res.success);
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_NO_WEIGHTED_EDGE);
     ASSERT_EQ(res.result, CXXGRAPH::INF_DOUBLE);
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+    CXXGRAPH::DijkstraResult res_ts = graph_ts.dijkstra(node1, node3);
+    ASSERT_FALSE(res_ts.success);
+    ASSERT_EQ(res_ts.errorMessage, CXXGRAPH::ERR_NO_WEIGHTED_EDGE);
+    ASSERT_EQ(res_ts.result, CXXGRAPH::INF_DOUBLE);
 }
 
 TEST(DijkstraTest, test_4)
@@ -76,6 +95,12 @@ TEST(DijkstraTest, test_4)
     ASSERT_FALSE(res.success);
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_TARGET_NODE_NOT_REACHABLE);
     ASSERT_EQ(res.result, -1);
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+    CXXGRAPH::DijkstraResult res_ts = graph_ts.dijkstra(node1, node2);
+    ASSERT_FALSE(res_ts.success);
+    ASSERT_EQ(res_ts.errorMessage, CXXGRAPH::ERR_TARGET_NODE_NOT_REACHABLE);
+    ASSERT_EQ(res_ts.result, -1);
 }
 
 TEST(DijkstraTest, test_5)
@@ -94,6 +119,12 @@ TEST(DijkstraTest, test_5)
     ASSERT_FALSE(res.success);
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_SOURCE_NODE_NOT_IN_GRAPH);
     ASSERT_EQ(res.result, CXXGRAPH::INF_DOUBLE);
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+    CXXGRAPH::DijkstraResult res_ts = graph_ts.dijkstra(node4, node2);
+    ASSERT_FALSE(res_ts.success);
+    ASSERT_EQ(res_ts.errorMessage, CXXGRAPH::ERR_SOURCE_NODE_NOT_IN_GRAPH);
+    ASSERT_EQ(res_ts.result, CXXGRAPH::INF_DOUBLE);
 }
 
 TEST(DijkstraTest, test_6)
@@ -112,4 +143,10 @@ TEST(DijkstraTest, test_6)
     ASSERT_FALSE(res.success);
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_TARGET_NODE_NOT_IN_GRAPH);
     ASSERT_EQ(res.result, CXXGRAPH::INF_DOUBLE);
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+    CXXGRAPH::DijkstraResult res_ts = graph_ts.dijkstra(node1, node4);
+    ASSERT_FALSE(res_ts.success);
+    ASSERT_EQ(res_ts.errorMessage, CXXGRAPH::ERR_TARGET_NODE_NOT_IN_GRAPH);
+    ASSERT_EQ(res_ts.result, CXXGRAPH::INF_DOUBLE);
 }

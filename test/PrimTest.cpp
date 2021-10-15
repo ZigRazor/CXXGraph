@@ -57,6 +57,15 @@ TEST(PrimTest, test_1)
     ASSERT_EQ(res.result.size(), graph.getNodeSet().size());
     ASSERT_EQ(res.mstCost, 37);
     ASSERT_EQ(res.errorMessage, "");
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+
+    CXXGRAPH::PrimResult res_ts = graph_ts.prim();
+
+    ASSERT_TRUE(res_ts.success);
+    ASSERT_EQ(res_ts.result.size(), graph.getNodeSet().size());
+    ASSERT_EQ(res_ts.mstCost, 37);
+    ASSERT_EQ(res_ts.errorMessage, "");
 }
 
 
@@ -95,14 +104,18 @@ TEST(PrimTest, test_2)
 
     CXXGRAPH::Graph<int> graph(edgeSet);
     CXXGRAPH::PrimResult res = graph.prim();
-
-    // double values[4][4] = {{0, -1, -2, 0}, {4, 0, 2, 4}, {5, 1, 0, 2}, {3, -1, 1, 0}};
-    // unsigned long mst[] = {}
     ASSERT_TRUE(res.success);
     ASSERT_EQ(res.result.size(), graph.getNodeSet().size());
     ASSERT_EQ(res.mstCost, 99);
     ASSERT_EQ(res.errorMessage, "");
 
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+
+    CXXGRAPH::PrimResult res_ts = graph_ts.prim();
+    ASSERT_TRUE(res_ts.success);
+    ASSERT_EQ(res_ts.result.size(), graph_ts.getNodeSet().size());
+    ASSERT_EQ(res_ts.mstCost, 99);
+    ASSERT_EQ(res_ts.errorMessage, "");
 }
 
 
@@ -147,11 +160,18 @@ TEST(PrimTest, test_3)
 
     CXXGRAPH::Graph<int> graph(edgeSet);
     CXXGRAPH::PrimResult res = graph.prim();
-
     ASSERT_TRUE(res.success);
     ASSERT_EQ(res.result.size(), graph.getNodeSet().size());
     ASSERT_EQ(res.mstCost, 26);
     ASSERT_EQ(res.errorMessage, "");
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+
+    CXXGRAPH::PrimResult res_ts = graph_ts.prim();
+    ASSERT_TRUE(res_ts.success);
+    ASSERT_EQ(res_ts.result.size(), graph_ts.getNodeSet().size());
+    ASSERT_EQ(res_ts.mstCost, 26);
+    ASSERT_EQ(res_ts.errorMessage, "");
 }
 
 // test for directed and no weighted edge errors
@@ -165,16 +185,29 @@ TEST(PrimTest, test_4)
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
+ 
     CXXGRAPH::Graph<int> graph(edgeSet);
     CXXGRAPH::PrimResult res = graph.prim();
     ASSERT_FALSE(res.success);
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_DIR_GRAPH);
 
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+
+    CXXGRAPH::PrimResult res_ts = graph_ts.prim();
+    ASSERT_FALSE(res_ts.success);
+    ASSERT_EQ(res_ts.errorMessage, CXXGRAPH::ERR_DIR_GRAPH);
+
     CXXGRAPH::UndirectedEdge<int> edge3(3, node1, node2);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet1;
     edgeSet1.push_back(&edge3);
+ 
     CXXGRAPH::Graph<int> graph1(edgeSet1);
     res = graph1.prim();
     ASSERT_FALSE(res.success);
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_NO_WEIGHTED_EDGE);
+
+    CXXGRAPH::Graph<int> graph1_ts(edgeSet1);
+    res_ts = graph1_ts.prim();
+    ASSERT_FALSE(res_ts.success);
+    ASSERT_EQ(res_ts.errorMessage, CXXGRAPH::ERR_NO_WEIGHTED_EDGE);
 }

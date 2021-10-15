@@ -898,7 +898,7 @@ namespace CXXGRAPH
 		result.success = false;
 		result.errorMessage = "";
 		result.result = INF_DOUBLE;
-		auto nodeSet = getNodeSet();
+		auto nodeSet = Graph<T>::getNodeSet();
 		if (std::find(nodeSet.begin(), nodeSet.end(), &source) == nodeSet.end())
 		{
 			// check if source node exist in the graph
@@ -911,7 +911,7 @@ namespace CXXGRAPH
 			result.errorMessage = ERR_TARGET_NODE_NOT_IN_GRAPH;
 			return result;
 		}
-		const AdjacencyMatrix<T> adj = getAdjMatrix();
+		const AdjacencyMatrix<T> adj = Graph<T>::getAdjMatrix();
 		// n denotes the number of vertices in graph
 		int n = adj.size();
 
@@ -1008,7 +1008,7 @@ namespace CXXGRAPH
 		result.success = false;
 		result.errorMessage = "";
 		result.result = INF_DOUBLE;
-		auto nodeSet = getNodeSet();
+		auto nodeSet = Graph<T>::getNodeSet();
 		if (std::find(nodeSet.begin(), nodeSet.end(), &source) == nodeSet.end())
 		{
 			// check if source node exist in the graph
@@ -1039,7 +1039,7 @@ namespace CXXGRAPH
 		// outer loop for vertex relaxation
 		for (int i=0; i<n-1; i++)
 		{
-			auto edgeSet = this->getEdgeSet();
+			auto edgeSet = Graph<T>::getEdgeSet();
 			// inner loop for distance updates of
 			// each relaxation
 			for (auto edge : edgeSet)
@@ -1079,7 +1079,7 @@ namespace CXXGRAPH
 		// check if there exists a negative cycle
 		if (!earlyStopping)
 		{
-			auto edgeSet = this->getEdgeSet();
+			auto edgeSet = Graph<T>::getEdgeSet();
 			for (auto edge : edgeSet)
 			{
 				auto elem = edge->getNodePair();
@@ -1114,7 +1114,7 @@ namespace CXXGRAPH
 		result.success = false;
 		result.errorMessage = "";
 		std::map<std::pair<unsigned long, unsigned long>, double> pairwise_dist;
-		auto nodeSet = getNodeSet();
+		auto nodeSet = Graph<T>::getNodeSet();
 		// create a pairwise distance matrix with distance node distances
 		// set to inf. Distance of node to itself is set as 0.
 		for (auto elem1 : nodeSet)
@@ -1129,7 +1129,7 @@ namespace CXXGRAPH
 			}
 		}
 
-		auto edgeSet = this->getEdgeSet();
+		auto edgeSet = Graph<T>::getEdgeSet();
 		// update the weights of nodes
 		// connected by edges
 		for (auto edge : edgeSet)
@@ -1199,9 +1199,9 @@ namespace CXXGRAPH
 			result.errorMessage = ERR_DIR_GRAPH;
 			return result;
 		}
-		auto nodeSet = getNodeSet();
+		auto nodeSet = Graph<T>::getNodeSet();
 		auto n = nodeSet.size();
-		const AdjacencyMatrix<T> adj = getAdjMatrix();
+		const AdjacencyMatrix<T> adj = Graph<T>::getAdjMatrix();
 
 		// setting all the distances initially to INF_DOUBLE
 		std::map<const Node<T> *, double> dist;
@@ -1273,13 +1273,13 @@ namespace CXXGRAPH
 	{
 		// vector to keep track of visited nodes
 		std::vector<Node<T>> visited;
-		auto nodeSet = getNodeSet();
+		auto nodeSet = Graph<T>::getNodeSet();
 		//check is exist node in the graph
 		if (std::find(nodeSet.begin(), nodeSet.end(), &start) == nodeSet.end())
 		{
 			return visited;
 		}
-		const AdjacencyMatrix<T> adj = getAdjMatrix();
+		const AdjacencyMatrix<T> adj = Graph<T>::getAdjMatrix();
 		// queue that stores vertices that need to be further explored
 		std::queue<const Node<T> *> tracker;
 
@@ -1313,13 +1313,13 @@ namespace CXXGRAPH
 	{
 		// vector to keep track of visited nodes
 		std::vector<Node<T>> visited;
-		auto nodeSet = getNodeSet();
+		auto nodeSet = Graph<T>::getNodeSet();
 		//check is exist node in the graph
 		if (std::find(nodeSet.begin(), nodeSet.end(), &start) == nodeSet.end())
 		{
 			return visited;
 		}
-		const AdjacencyMatrix<T> adj = getAdjMatrix();
+		const AdjacencyMatrix<T> adj = Graph<T>::getAdjMatrix();
 		std::function<void(const AdjacencyMatrix<T> &, const Node<T> &, std::vector<Node<T>> &)> explore;
 		explore = [&explore](const AdjacencyMatrix<T> &adj, const Node<T> &node, std::vector<Node<T>> &visited) -> void
 		{
@@ -1353,8 +1353,8 @@ namespace CXXGRAPH
 			in_stack,
 			visited
 		};
-		auto nodeSet = this->getNodeSet();
-		auto adjMatrix = this->getAdjMatrix();
+		auto nodeSet = Graph<T>::getNodeSet();
+		auto adjMatrix = Graph<T>::getAdjMatrix();
 
 		/* State of the node.
          *
@@ -1437,8 +1437,8 @@ namespace CXXGRAPH
 		{
 			return false;
 		}
-		auto adjMatrix = this->getAdjMatrix();
-		auto nodeSet = this->getNodeSet();
+		auto adjMatrix = Graph<T>::getAdjMatrix();
+		auto nodeSet = Graph<T>::getNodeSet();
 
 		std::map<unsigned long, unsigned int> indegree;
 		for (auto node : nodeSet)
@@ -1467,7 +1467,7 @@ namespace CXXGRAPH
 		}
 
 		// Vertices that need to be traversed.
-		auto remain = this->getNodeSet().size();
+		auto remain = Graph<T>::getNodeSet().size();
 		// While there are safe nodes that we can visit.
 		while (!can_be_solved.empty())
 		{
@@ -1502,7 +1502,7 @@ namespace CXXGRAPH
 	template <typename T>
 	bool Graph<T>::isDirectedGraph() const
 	{
-		auto edgeSet = this->getEdgeSet();
+		auto edgeSet = Graph<T>::getEdgeSet();
 		for (auto edge : edgeSet)
 		{
 			if (!(edge->isDirected().has_value() && edge->isDirected().value()))
@@ -1518,7 +1518,7 @@ namespace CXXGRAPH
 	template <typename T>
 	bool Graph<T>::isUndirectedGraph() const
 	{
-		auto edgeSet = this->getEdgeSet();
+		auto edgeSet = Graph<T>::getEdgeSet();
 		for (auto edge : edgeSet)
 		{
 			if ((edge->isDirected().has_value() && edge->isDirected().value()))
@@ -1537,8 +1537,8 @@ namespace CXXGRAPH
 		DialResult result;
 		result.success = false;
 
-		auto adj = getAdjMatrix();
-		auto nodeSet = getNodeSet();
+		auto adj = Graph<T>::getAdjMatrix();
+		auto nodeSet = Graph<T>::getNodeSet();
 
 		if (std::find(nodeSet.begin(), nodeSet.end(), &source) == nodeSet.end())
 		{
@@ -1664,13 +1664,13 @@ namespace CXXGRAPH
 	{
 		std::vector<Node<T>> result;
 
-		std::list<const Node<T> *> nodeSet = getNodeSet();
+		std::list<const Node<T> *> nodeSet = Graph<T>::getNodeSet();
 		//check if start node in the graph
 		if (std::find(nodeSet.begin(), nodeSet.end(), &start) == nodeSet.end())
 		{
 			return result;
 		}
-		std::vector<Node<T>> C = depth_first_search(start);
+		std::vector<Node<T>> C = Graph<T>::depth_first_search(start);
 		std::list<const Node<T> *> C1; //complement of C i.e. nodeSet - C
 		for (auto const node : nodeSet)
 		{
@@ -1685,7 +1685,7 @@ namespace CXXGRAPH
 		std::vector<Node<T>> M;
 		for (auto const node : C1)
 		{
-			std::vector<Node<T>> reachableNodes = depth_first_search(*node);
+			std::vector<Node<T>> reachableNodes = Graph<T>::depth_first_search(*node);
 			M.insert(M.end(),reachableNodes.begin(),reachableNodes.end());
 		}
 		// removes nodes from C that are reachable from M.

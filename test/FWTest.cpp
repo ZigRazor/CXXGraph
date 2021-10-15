@@ -50,6 +50,19 @@ TEST(FWTest, test_1)
     ASSERT_FALSE(res.negativeCycle);
     ASSERT_TRUE(isEqual);
     ASSERT_EQ(res.errorMessage, "");
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+
+    CXXGRAPH::FWResult res_ts = graph_ts.floydWarshall();
+    isEqual = pairwise_dist.size() == res_ts.result.size() && std::equal(pairwise_dist.begin(), pairwise_dist.end(), res_ts.result.begin(),
+                                                                           [](auto a, auto b)
+                                                                           { return a.first == b.first; });
+
+    ASSERT_TRUE(res_ts.success);
+    ASSERT_FALSE(res_ts.negativeCycle);
+    ASSERT_TRUE(isEqual);
+    ASSERT_EQ(res_ts.errorMessage, "");
+
 }
 
 // a graph with negative cycle
@@ -70,6 +83,14 @@ TEST(FWTest, test_2)
     ASSERT_TRUE(res.success);
     ASSERT_TRUE(res.negativeCycle);
     ASSERT_EQ(res.errorMessage, "");
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+
+    CXXGRAPH::FWResult res_ts = graph_ts.floydWarshall();
+    ASSERT_TRUE(res_ts.success);
+    ASSERT_TRUE(res_ts.negativeCycle);
+    ASSERT_EQ(res_ts.errorMessage, "");
+
 }
 
 // UndirectedWeightedEdge
@@ -91,6 +112,13 @@ TEST(FWTest, test_3)
     ASSERT_TRUE(res.success);
     ASSERT_FALSE(res.negativeCycle);
     ASSERT_EQ(res.errorMessage, "");
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+
+    CXXGRAPH::FWResult res_ts = graph_ts.floydWarshall();
+    ASSERT_TRUE(res_ts.success);
+    ASSERT_FALSE(res_ts.negativeCycle);
+    ASSERT_EQ(res_ts.errorMessage, "");
 }
 
 // No weighted edge
@@ -111,4 +139,10 @@ TEST(FWTest, test_4)
     CXXGRAPH::FWResult res = graph.floydWarshall();
     ASSERT_FALSE(res.success);
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_NO_WEIGHTED_EDGE);
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+
+    CXXGRAPH::FWResult res_ts = graph_ts.floydWarshall();
+    ASSERT_FALSE(res_ts.success);
+    ASSERT_EQ(res_ts.errorMessage, CXXGRAPH::ERR_NO_WEIGHTED_EDGE);
 }

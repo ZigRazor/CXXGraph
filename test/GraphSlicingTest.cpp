@@ -32,6 +32,14 @@ TEST(GraphSlicingTest, test_1)
     ASSERT_TRUE(std::find(res.begin(), res.end(), node1) != res.end());
     ASSERT_TRUE(std::find(res.begin(), res.end(), node2) != res.end());
     ASSERT_TRUE(std::find(res.begin(), res.end(), node5) != res.end());
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+
+    std::vector<CXXGRAPH::Node<int>> res_ts = graph.graph_slicing(node1);
+    ASSERT_EQ(res_ts.size(), 3);
+    ASSERT_TRUE(std::find(res_ts.begin(), res_ts.end(), node1) != res_ts.end());
+    ASSERT_TRUE(std::find(res_ts.begin(), res_ts.end(), node2) != res_ts.end());
+    ASSERT_TRUE(std::find(res_ts.begin(), res_ts.end(), node5) != res_ts.end());
 }
 
 // DirectedWeightedEdge
@@ -66,6 +74,14 @@ TEST(GraphSlicingTest, test_2)
     ASSERT_TRUE(std::find(res.begin(), res.end(), node1) != res.end());
     ASSERT_TRUE(std::find(res.begin(), res.end(), node2) != res.end());
     ASSERT_TRUE(std::find(res.begin(), res.end(), node5) != res.end());
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+
+    std::vector<CXXGRAPH::Node<int>> res_ts = graph_ts.graph_slicing(node1);
+    ASSERT_EQ(res_ts.size(), 3);
+    ASSERT_TRUE(std::find(res_ts.begin(), res_ts.end(), node1) != res_ts.end());
+    ASSERT_TRUE(std::find(res_ts.begin(), res_ts.end(), node2) != res_ts.end());
+    ASSERT_TRUE(std::find(res_ts.begin(), res_ts.end(), node5) != res_ts.end());
 }
 
 // UndirectedWeightedEdge
@@ -96,6 +112,11 @@ TEST(GraphSlicingTest, test_3)
     CXXGRAPH::Graph<int> graph(edgeSet);
     std::vector<CXXGRAPH::Node<int>> res = graph.graph_slicing(node1);
     ASSERT_EQ(res.size(), 6);
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+
+    std::vector<CXXGRAPH::Node<int>> res_ts = graph_ts.graph_slicing(node1);
+    ASSERT_EQ(res_ts.size(), 6);
 }
 
 // UndirectedWeightedEdge
@@ -127,6 +148,11 @@ TEST(GraphSlicingTest, test_4)
     CXXGRAPH::Graph<int> graph(edgeSet);
     std::vector<CXXGRAPH::Node<int>> res = graph.graph_slicing(node1);
     ASSERT_EQ(res.size(), 6);
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+
+    std::vector<CXXGRAPH::Node<int>> res_ts = graph_ts.graph_slicing(node1);
+    ASSERT_EQ(res_ts.size(), 6);
 }
 
 // start node is disconnected from rest of the graph
@@ -146,4 +172,9 @@ TEST(GraphSlicingTest, test_5)
     CXXGRAPH::Graph<int> graph(edgeSet);
     std::vector<CXXGRAPH::Node<int>> res = graph.graph_slicing(node4);
     ASSERT_EQ(res.size(), 0);
+
+    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
+
+    std::vector<CXXGRAPH::Node<int>> res_ts = graph_ts.graph_slicing(node4);
+    ASSERT_EQ(res_ts.size(), 0);
 }
