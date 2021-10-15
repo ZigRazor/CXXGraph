@@ -20,7 +20,6 @@ Share on [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=
 <br/><br/>
 <br/><br/>
 <br/><br/>
-<br/><br/>
 
 ## Introduction
 **CXXGraph** is a small library, header only, that manages the Graph and it's algorithms in **C++**. In other words a "Comprehensive C++ Graph Library".
