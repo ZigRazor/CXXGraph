@@ -153,6 +153,25 @@ namespace CXXGRAPH
 		*/
 		virtual const AdjacencyMatrix<T> getAdjMatrix() const;
 		/**
+		* @brief This function finds the subset of given a nodeId
+		* @param subset query subset, we want to find target in this subset
+		* @param elem elem that we wish to find in the subset
+ 		*
+ 		* @return parent node of elem 
+		* Note: No Thread Safe
+		*/
+		virtual const unsigned long setFind(Subset subsets [], const unsigned long elem) const;
+		/**
+		* @brief This function modifies the original subset array
+		* such that it the union of two sets a and b
+		* @param subset query subset, we want to find target in this subset
+		* @param a parent id of set1
+		* @param b parent id of set2
+ 		*
+		* Note: No Thread Safe
+		*/
+		virtual void setUnion(Subset subsets [], const unsigned long set1, const unsigned long elem2) const;		
+		/**
  		* @brief Function runs the dijkstra algorithm for some source node and
  		* target node in the graph and returns the shortest distance of target
  		* from the source.
@@ -864,6 +883,39 @@ namespace CXXGRAPH
 		return 0;
 	}
 
+	template <typename T>
+	const unsigned long Graph<T>::setFind(Subset subsets [], const unsigned long nodeId) const
+	{
+		// find root and make root as parent of i
+		// (path compression)
+		if (subsets[nodeId].parent != nodeId)
+		{
+			subsets[nodeId].parent = Graph<T>::setFind(subsets, subsets[nodeId].parent);
+		}
+		
+		return subsets[nodeId].parent;
+	}
+
+	template <typename T>
+	void Graph<T>::setUnion(Subset subsets [], const unsigned long elem1, const unsigned long elem2) const
+	{
+		// if both sets have same parent
+		// then there's nothing to be done
+		if (subsets[elem1].parent==subsets[elem2].parent)
+			return;
+		auto elem1Parent = Graph<T>::setFind(subsets, elem1);
+		auto elem2Parent = Graph<T>::setFind(subsets, elem2);
+		if(subsets[elem1Parent].rank < subsets[elem2Parent].rank) 
+			subsets[elem1Parent].parent = elem2Parent;
+		else if(subsets[elem1Parent].rank > subsets[elem2Parent].rank) 
+			subsets[elem2Parent].parent = elem1Parent;
+		else
+		{
+			subsets[elem2Parent].parent = elem1Parent;
+			subsets[elem1Parent].rank++;
+		}	
+	}
+	
 	template <typename T>
 	const AdjacencyMatrix<T> Graph<T>::getAdjMatrix() const
 	{
