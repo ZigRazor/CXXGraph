@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+# ignore the build folder contents from git
+build/
