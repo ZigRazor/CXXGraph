@@ -56,7 +56,15 @@ namespace CXXGRAPH
 
     /////////////////////////////////////////////////////
     // Structures ///////////////////////////////////////
-    
+
+    /// Struct useful for union-find operations
+	struct Subset_struct
+	{
+		unsigned long parent;		   // parent of the current set
+		unsigned long rank; 		  // rank of the current set, used for balancing the trees
+	};
+	typedef Subset_struct Subset;
+
     /// Struct that contains the information about Dijsktra's Algorithm results
 	struct DijkstraResult_struct
 	{
