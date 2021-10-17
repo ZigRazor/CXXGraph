@@ -95,14 +95,14 @@ namespace CXXGRAPH
 	typedef FWResult_struct FWResult;
 	
 	/// Struct that contains the information about Prim Algorithm results
-	struct PrimResult_struct
+	struct MstResult_struct
 	{
 		bool success;			  // TRUE if the function does not return error, FALSE otherwise
 		std::string errorMessage; //message of error
-		std::vector<unsigned long> result;  // MST
+		std::vector<std::pair<unsigned long, unsigned long>> mst;  // MST
 		double mstCost;  // MST
 	};
-	typedef PrimResult_struct PrimResult;
+	typedef MstResult_struct MstResult;
 
 	/// Struct that contains the information about Dijsktra's Algorithm results
 	struct DialResult_struct
