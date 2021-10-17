@@ -17,8 +17,8 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-#ifndef __WEIGHTED_H__
-#define __WEIGHTED_H__
+#ifndef __CXXGRAPH_WEIGHTED_H__
+#define __CXXGRAPH_WEIGHTED_H__
 
 #pragma once
 
@@ -64,4 +64,4 @@ namespace CXXGRAPH
 }
 
 
-#endif // __WEIGHTED_H__
+#endif // __CXXGRAPH_WEIGHTED_H__

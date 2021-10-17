@@ -17,8 +17,8 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-#ifndef __CONSTVALUE_H__
-#define __CONSTVALUE_H__
+#ifndef __CXXGRAPH_CONSTVALUE_H__
+#define __CXXGRAPH_CONSTVALUE_H__
 
 #pragma once
 
@@ -29,4 +29,4 @@ namespace CXXGRAPH
     constexpr double INF_DOUBLE = std::numeric_limits<double>::max();
 }
 
-#endif // __CONSTVALUE_H__
+#endif // __CXXGRAPH_CONSTVALUE_H__

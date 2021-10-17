@@ -17,8 +17,8 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-#ifndef __UNDIRECTEDWEIGHTEDEDGE_H__
-#define __UNDIRECTEDWEIGHTEDEDGE_H__
+#ifndef __CXXGRAPH_UNDIRECTEDWEIGHTEDEDGE_H__
+#define __CXXGRAPH_UNDIRECTEDWEIGHTEDEDGE_H__
 
 #pragma once
 
@@ -107,4 +107,4 @@ namespace CXXGRAPH
 
 }
 
-#endif // __UNDIRECTEDWEIGHTEDEDGE_H__
+#endif // __CXXGRAPH_UNDIRECTEDWEIGHTEDEDGE_H__
