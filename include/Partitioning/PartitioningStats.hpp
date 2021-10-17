@@ -17,8 +17,8 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-#ifndef __PARTITIONINGSTATS_H__
-#define __PARTITIONINGSTATS_H__
+#ifndef __CXXGRAPH_PARTITIONINGSTATS_H__
+#define __CXXGRAPH_PARTITIONINGSTATS_H__
 
 #include <iostream>
 #include "Utility/Typedef.hpp"
@@ -66,4 +66,4 @@ namespace CXXGRAPH
 
 }
 
-#endif // __PARTITIONINGSTATS_H__
+#endif // __CXXGRAPH_PARTITIONINGSTATS_H__

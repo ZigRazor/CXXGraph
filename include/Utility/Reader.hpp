@@ -17,8 +17,8 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-#ifndef __READER_H__
-#define __READER_H__
+#ifndef __CXXGRAPH_READER_H__
+#define __CXXGRAPH_READER_H__
 
 #pragma once   // This is to make sure that this header is only included once
 
@@ -43,4 +43,4 @@ namespace CXXGRAPH
 	};
 }
 
-#endif // __READER_H__
+#endif // __CXXGRAPH_READER_H__

@@ -17,8 +17,8 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-#ifndef __WRITER_H__
-#define __WRITER_H__
+#ifndef __CXXGRAPH_WRITER_H__
+#define __CXXGRAPH_WRITER_H__
 
 #pragma once   // This is to make sure that this header is only included once
 
@@ -49,4 +49,4 @@ namespace CXXGRAPH
 	};
 }
 
-#endif // __WRITER_H__
+#endif // __CXXGRAPH_WRITER_H__

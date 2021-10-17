@@ -17,8 +17,8 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-#ifndef __EDGE_H__
-#define __EDGE_H__
+#ifndef __CXXGRAPH_EDGE_H__
+#define __CXXGRAPH_EDGE_H__
 
 #pragma once
 
@@ -114,4 +114,4 @@ namespace CXXGRAPH
 	}
 }
 
-#endif // __EDGE_H__
+#endif // __CXXGRAPH_EDGE_H__
