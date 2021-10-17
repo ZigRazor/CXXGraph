@@ -51,19 +51,19 @@ TEST(PrimTest, test_1)
     edgeSet.push_back(&edge14);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
-    CXXGRAPH::PrimResult res = graph.prim();
+    CXXGRAPH::MstResult res = graph.prim();
 
     ASSERT_TRUE(res.success);
-    ASSERT_EQ(res.result.size(), graph.getNodeSet().size());
+    ASSERT_EQ(res.mst.size(), graph.getNodeSet().size()-1);
     ASSERT_EQ(res.mstCost, 37);
     ASSERT_EQ(res.errorMessage, "");
 
     CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
 
-    CXXGRAPH::PrimResult res_ts = graph_ts.prim();
+    CXXGRAPH::MstResult res_ts = graph_ts.prim();
 
     ASSERT_TRUE(res_ts.success);
-    ASSERT_EQ(res_ts.result.size(), graph.getNodeSet().size());
+    ASSERT_EQ(res_ts.mst.size(), graph.getNodeSet().size()-1);
     ASSERT_EQ(res_ts.mstCost, 37);
     ASSERT_EQ(res_ts.errorMessage, "");
 }
@@ -103,17 +103,17 @@ TEST(PrimTest, test_2)
     edgeSet.push_back(&edge9);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
-    CXXGRAPH::PrimResult res = graph.prim();
+    CXXGRAPH::MstResult res = graph.prim();
     ASSERT_TRUE(res.success);
-    ASSERT_EQ(res.result.size(), graph.getNodeSet().size());
+    ASSERT_EQ(res.mst.size(), graph.getNodeSet().size()-1);
     ASSERT_EQ(res.mstCost, 99);
     ASSERT_EQ(res.errorMessage, "");
 
     CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
 
-    CXXGRAPH::PrimResult res_ts = graph_ts.prim();
+    CXXGRAPH::MstResult res_ts = graph_ts.prim();
     ASSERT_TRUE(res_ts.success);
-    ASSERT_EQ(res_ts.result.size(), graph_ts.getNodeSet().size());
+    ASSERT_EQ(res_ts.mst.size(), graph_ts.getNodeSet().size()-1);
     ASSERT_EQ(res_ts.mstCost, 99);
     ASSERT_EQ(res_ts.errorMessage, "");
 }
@@ -159,17 +159,17 @@ TEST(PrimTest, test_3)
     edgeSet.push_back(&edge12);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
-    CXXGRAPH::PrimResult res = graph.prim();
+    CXXGRAPH::MstResult res = graph.prim();
     ASSERT_TRUE(res.success);
-    ASSERT_EQ(res.result.size(), graph.getNodeSet().size());
+    ASSERT_EQ(res.mst.size(), graph.getNodeSet().size()-1);
     ASSERT_EQ(res.mstCost, 26);
     ASSERT_EQ(res.errorMessage, "");
 
     CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
 
-    CXXGRAPH::PrimResult res_ts = graph_ts.prim();
+    CXXGRAPH::MstResult res_ts = graph_ts.prim();
     ASSERT_TRUE(res_ts.success);
-    ASSERT_EQ(res_ts.result.size(), graph_ts.getNodeSet().size());
+    ASSERT_EQ(res_ts.mst.size(), graph_ts.getNodeSet().size()-1);
     ASSERT_EQ(res_ts.mstCost, 26);
     ASSERT_EQ(res_ts.errorMessage, "");
 }
@@ -187,13 +187,13 @@ TEST(PrimTest, test_4)
     edgeSet.push_back(&edge2);
  
     CXXGRAPH::Graph<int> graph(edgeSet);
-    CXXGRAPH::PrimResult res = graph.prim();
+    CXXGRAPH::MstResult res = graph.prim();
     ASSERT_FALSE(res.success);
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_DIR_GRAPH);
 
     CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
 
-    CXXGRAPH::PrimResult res_ts = graph_ts.prim();
+    CXXGRAPH::MstResult res_ts = graph_ts.prim();
     ASSERT_FALSE(res_ts.success);
     ASSERT_EQ(res_ts.errorMessage, CXXGRAPH::ERR_DIR_GRAPH);
 
