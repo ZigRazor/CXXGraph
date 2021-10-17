@@ -17,8 +17,8 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-#ifndef __GRAPH_H__
-#define __GRAPH_H__
+#ifndef __CXXGRAPH_GRAPH_H__
+#define __CXXGRAPH_GRAPH_H__
 
 #pragma once
 
@@ -1978,4 +1978,4 @@ namespace CXXGRAPH
 	}
 
 } // namespace CXXGRAPH
-#endif // __GRAPH_H__
+#endif // __CXXGRAPH_GRAPH_H__

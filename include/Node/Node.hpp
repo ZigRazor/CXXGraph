@@ -18,8 +18,8 @@
 /***********************************************************/
 
 
-#ifndef __NODE_H__
-#define __NODE_H__
+#ifndef __CXXGRAPH_NODE_H__
+#define __CXXGRAPH_NODE_H__
 
 #pragma once
 #include <iostream>
@@ -90,4 +90,4 @@ namespace CXXGRAPH
 	}
 }
 
-#endif // __NODE_H__
+#endif // __CXXGRAPH_NODE_H__

@@ -17,8 +17,8 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-#ifndef __GRAPH_TS_H__
-#define __GRAPH_TS_H__
+#ifndef __CXXGRAPH_GRAPH_TS_H__
+#define __CXXGRAPH_GRAPH_TS_H__
 
 #pragma once
 
@@ -429,4 +429,4 @@ namespace CXXGRAPH
         return partitions;
     }
 }
-#endif // __GRAPH_TS_H__
+#endif // __CXXGRAPH_GRAPH_TS_H__
