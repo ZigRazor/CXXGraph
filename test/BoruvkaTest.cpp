@@ -7,7 +7,7 @@
 
 // example taken from
 // https://www.geeksforgeeks.org/prims-mst-for-adjacency-list-representation-greedy-algo-6/TEST(FWTest, test_1)
-TEST(PrimTest, test_1)
+TEST(BoruvkaTest, test_1)
 {
     CXXGRAPH::Node<int> node0(0, 0);
     CXXGRAPH::Node<int> node1(1, 1);
@@ -22,17 +22,17 @@ TEST(PrimTest, test_1)
     CXXGRAPH::UndirectedWeightedEdge<int> edge1(1, node0, node1, 4);
     CXXGRAPH::UndirectedWeightedEdge<int> edge2(2, node0, node7, 8);
     CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node7, 11);
-    CXXGRAPH::UndirectedWeightedEdge<int> edge4(3, node1, node2, 8);
-    CXXGRAPH::UndirectedWeightedEdge<int> edge5(4, node7, node8, 7);
-    CXXGRAPH::UndirectedWeightedEdge<int> edge6(3, node7, node6, 1);
-    CXXGRAPH::UndirectedWeightedEdge<int> edge7(3, node8, node2, 2);
-    CXXGRAPH::UndirectedWeightedEdge<int> edge8(3, node8, node6, 6);
-    CXXGRAPH::UndirectedWeightedEdge<int> edge9(3, node2, node5, 4);
-    CXXGRAPH::UndirectedWeightedEdge<int> edge10(3, node2, node3, 7);
-    CXXGRAPH::UndirectedWeightedEdge<int> edge11(3, node6, node5, 2);
-    CXXGRAPH::UndirectedWeightedEdge<int> edge12(3, node3, node4, 9);
-    CXXGRAPH::UndirectedWeightedEdge<int> edge13(3, node3, node5, 14);
-    CXXGRAPH::UndirectedWeightedEdge<int> edge14(3, node5, node4, 10);
+    CXXGRAPH::UndirectedWeightedEdge<int> edge4(4, node1, node2, 8);
+    CXXGRAPH::UndirectedWeightedEdge<int> edge5(5, node7, node8, 7);
+    CXXGRAPH::UndirectedWeightedEdge<int> edge6(6, node7, node6, 1);
+    CXXGRAPH::UndirectedWeightedEdge<int> edge7(7, node8, node2, 2);
+    CXXGRAPH::UndirectedWeightedEdge<int> edge8(8, node8, node6, 6);
+    CXXGRAPH::UndirectedWeightedEdge<int> edge9(9, node2, node5, 4);
+    CXXGRAPH::UndirectedWeightedEdge<int> edge10(19, node2, node3, 7);
+    CXXGRAPH::UndirectedWeightedEdge<int> edge11(11, node6, node5, 2);
+    CXXGRAPH::UndirectedWeightedEdge<int> edge12(12, node3, node4, 9);
+    CXXGRAPH::UndirectedWeightedEdge<int> edge13(13, node3, node5, 14);
+    CXXGRAPH::UndirectedWeightedEdge<int> edge14(14, node5, node4, 10);
 
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
@@ -51,7 +51,7 @@ TEST(PrimTest, test_1)
     edgeSet.push_back(&edge14);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
-    CXXGRAPH::MstResult res = graph.prim();
+    CXXGRAPH::MstResult res = graph.boruvka();
 
     ASSERT_TRUE(res.success);
     ASSERT_EQ(res.mst.size(), graph.getNodeSet().size()-1);
@@ -60,7 +60,7 @@ TEST(PrimTest, test_1)
 
     CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
 
-    CXXGRAPH::MstResult res_ts = graph_ts.prim();
+    CXXGRAPH::MstResult res_ts = graph_ts.boruvka();
 
     ASSERT_TRUE(res_ts.success);
     ASSERT_EQ(res_ts.mst.size(), graph.getNodeSet().size()-1);
@@ -69,9 +69,10 @@ TEST(PrimTest, test_1)
 }
 
 
+
 // example taken from
 // https://www.gatevidyalay.com/prims-algorithm-prim-algorithm-example/
-TEST(PrimTest, test_2)
+TEST(BoruvkaTest, test_2)
 {
     CXXGRAPH::Node<int> node1(1, 1);
     CXXGRAPH::Node<int> node2(2, 2);
@@ -103,7 +104,7 @@ TEST(PrimTest, test_2)
     edgeSet.push_back(&edge9);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
-    CXXGRAPH::MstResult res = graph.prim();
+    CXXGRAPH::MstResult res = graph.boruvka();
     ASSERT_TRUE(res.success);
     ASSERT_EQ(res.mst.size(), graph.getNodeSet().size()-1);
     ASSERT_EQ(res.mstCost, 99);
@@ -111,7 +112,7 @@ TEST(PrimTest, test_2)
 
     CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
 
-    CXXGRAPH::MstResult res_ts = graph_ts.prim();
+    CXXGRAPH::MstResult res_ts = graph_ts.boruvka();
     ASSERT_TRUE(res_ts.success);
     ASSERT_EQ(res_ts.mst.size(), graph_ts.getNodeSet().size()-1);
     ASSERT_EQ(res_ts.mstCost, 99);
@@ -121,7 +122,7 @@ TEST(PrimTest, test_2)
 
 // example taken from
 // https://www.gatevidyalay.com/prims-algorithm-prim-algorithm-example/
-TEST(PrimTest, test_3)
+TEST(BoruvkaTest, test_3)
 {
     CXXGRAPH::Node<int> node1(1, 1);
     CXXGRAPH::Node<int> node2(2, 2);
@@ -140,9 +141,9 @@ TEST(PrimTest, test_3)
     CXXGRAPH::UndirectedWeightedEdge<int> edge7(7, node3, node6, 2);
     CXXGRAPH::UndirectedWeightedEdge<int> edge8(8, node4, node6, 9);
     CXXGRAPH::UndirectedWeightedEdge<int> edge9(9, node4, node5, 11);
-    CXXGRAPH::UndirectedWeightedEdge<int> edge10(9, node5, node7, 10);
-    CXXGRAPH::UndirectedWeightedEdge<int> edge11(9, node5, node6, 3);
-    CXXGRAPH::UndirectedWeightedEdge<int> edge12(9, node6, node7, 12);
+    CXXGRAPH::UndirectedWeightedEdge<int> edge10(10, node5, node7, 10);
+    CXXGRAPH::UndirectedWeightedEdge<int> edge11(11, node5, node6, 3);
+    CXXGRAPH::UndirectedWeightedEdge<int> edge12(12, node6, node7, 12);
 
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
@@ -159,7 +160,7 @@ TEST(PrimTest, test_3)
     edgeSet.push_back(&edge12);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
-    CXXGRAPH::MstResult res = graph.prim();
+    CXXGRAPH::MstResult res = graph.boruvka();
     ASSERT_TRUE(res.success);
     ASSERT_EQ(res.mst.size(), graph.getNodeSet().size()-1);
     ASSERT_EQ(res.mstCost, 26);
@@ -167,7 +168,7 @@ TEST(PrimTest, test_3)
 
     CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
 
-    CXXGRAPH::MstResult res_ts = graph_ts.prim();
+    CXXGRAPH::MstResult res_ts = graph_ts.boruvka();
     ASSERT_TRUE(res_ts.success);
     ASSERT_EQ(res_ts.mst.size(), graph_ts.getNodeSet().size()-1);
     ASSERT_EQ(res_ts.mstCost, 26);
@@ -175,7 +176,7 @@ TEST(PrimTest, test_3)
 }
 
 // test for directed and no weighted edge errors
-TEST(PrimTest, test_4)
+TEST(BoruvkaTest, test_4)
 {
     CXXGRAPH::Node<int> node1(1, 1);
     CXXGRAPH::Node<int> node2(2, 2);
@@ -187,13 +188,13 @@ TEST(PrimTest, test_4)
     edgeSet.push_back(&edge2);
  
     CXXGRAPH::Graph<int> graph(edgeSet);
-    CXXGRAPH::MstResult res = graph.prim();
+    CXXGRAPH::MstResult res = graph.boruvka();
     ASSERT_FALSE(res.success);
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_DIR_GRAPH);
 
     CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
 
-    CXXGRAPH::MstResult res_ts = graph_ts.prim();
+    CXXGRAPH::MstResult res_ts = graph_ts.boruvka();
     ASSERT_FALSE(res_ts.success);
     ASSERT_EQ(res_ts.errorMessage, CXXGRAPH::ERR_DIR_GRAPH);
 
@@ -202,12 +203,12 @@ TEST(PrimTest, test_4)
     edgeSet1.push_back(&edge3);
  
     CXXGRAPH::Graph<int> graph1(edgeSet1);
-    res = graph1.prim();
+    res = graph1.boruvka();
     ASSERT_FALSE(res.success);
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_NO_WEIGHTED_EDGE);
 
     CXXGRAPH::Graph<int> graph1_ts(edgeSet1);
-    res_ts = graph1_ts.prim();
+    res_ts = graph1_ts.boruvka();
     ASSERT_FALSE(res_ts.success);
     ASSERT_EQ(res_ts.errorMessage, CXXGRAPH::ERR_NO_WEIGHTED_EDGE);
 }

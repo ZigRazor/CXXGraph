@@ -53,6 +53,7 @@ add_executable(test_exe test/main.cpp
 						test/BellmanFordTest.cpp
 						test/FWTest.cpp
 						test/PrimTest.cpp
+						test/BoruvkaTest.cpp
 						test/BFSTest.cpp
 						test/DFSTest.cpp
 						test/CycleCheckTest.cpp
