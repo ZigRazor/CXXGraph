@@ -61,6 +61,7 @@ An alternative to [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_7
       - [Cycle Detection](#cycle-detection)
       - [Bellman-Ford](#bellman-ford)
       - [Floyd Warshall](#floyd-warshall)
+      - [Kruskal Algorithm](#kruskal-algorithm)
   * [Partition Algorithm Explanation](#partition-algorithm-explanation)
     + [Vertex-Cut](#vertex-cut)
     + [Greedy Vertex-Cut](#greedy-vertex-cut)
@@ -318,6 +319,18 @@ Applications:
 We initialize the solution matrix same as the input graph matrix as a first step. Then we update the solution matrix by considering all vertices as an intermediate vertex. The idea is to one by one pick all vertices and updates all shortest paths which include the picked vertex as an intermediate vertex in the shortest path. When we pick vertex number k as an intermediate vertex, we already have considered vertices {0, 1, 2, .. k-1} as intermediate vertices. For every pair (i, j) of the source and destination vertices respectively, there are two possible cases.
 1) k is not an intermediate vertex in shortest path from i to j. We keep the value of dist[i][j] as it is.
 2) k is an intermediate vertex in shortest path from i to j. We update the value of dist[i][j] as dist[i][k] + dist[k][j] if dist[i][j] > dist[i][k] + dist[k][j]
+
+#### Kruskal Algorithm
+[Kruskal Algorithm](https://en.wikipedia.org/wiki/Kruskal%27s_algorithm) can be used to find the minimum spanning forest of an undirected edge-weighted graph.  Time Complexity O(E log E) = O(E log V) where V is number of vertices and E is number of edges in graph. The main speed limitation for this algorithm is sorting the edges.
+
+For a quick understanding of the algorithm procedure, check [this video](https://www.youtube.com/watch?v=71UQH7Pr9kU).
+Some of the real life applications are:
+- LAN/TV Network
+- Tour Operations
+- Water/gas pipe network
+- Electric grid
+
+Other algorithms to find the minimum spanning forest are Prim's algorithm or Borůvka's algorithm.
 
 ## Partition Algorithm Explanation
 
