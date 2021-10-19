@@ -863,9 +863,6 @@ TEST(RWOutputTest, test_22)
         }
     }
 
-    remove("test_22.csv");
-    remove("test_22_NodeFeat.csv");
-    remove("test_22_EdgeWeight.csv");
     remove("test_22.csv.gz");
     remove("test_22_NodeFeat.csv.gz");
     remove("test_22_EdgeWeight.csv.gz");
@@ -995,9 +992,6 @@ TEST(RWOutputTest, test_25)
         }
     }
 
-    remove("test_25.tsv");
-    remove("test_25_NodeFeat.tsv");
-    remove("test_25_EdgeWeight.tsv");
     remove("test_25.tsv.gz");
     remove("test_25_NodeFeat.tsv.gz");
     remove("test_25_EdgeWeight.tsv.gz");
