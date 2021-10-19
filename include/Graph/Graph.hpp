@@ -164,10 +164,10 @@ namespace CXXGRAPH
 		/**
 		* @brief This function modifies the original subset array
 		* such that it the union of two sets a and b
-		* @param subset query subset, we want to find target in this subset
+		* @param subset original subset is modified to obtain union of a & b
 		* @param a parent id of set1
 		* @param b parent id of set2
- 		*
+ 		* NOTE: Original subset is no longer available after union.
 		* Note: No Thread Safe
 		*/
 		virtual void setUnion(std::vector<Subset>*, const unsigned long set1, const unsigned long elem2) const;		
@@ -217,10 +217,24 @@ namespace CXXGRAPH
  		* @brief Function runs the boruvka algorithm and returns the minimum spanning tree & cost
  		* if the graph is undirected.
 		* Note: No Thread Safe
- 		* @return a vector containing id of nodes in minimum spanning tree & cost of MST
-		* returns errors if graph is undirected
+ 		* @return struct of type MstResult with following fields
+		* success: true if algorithm completed successfully ELSE false
+		* mst: vector containing id of nodes in minimum spanning tree & cost of MST
+		* mstCost: Cost of MST
+		* errorMessage: "" if no error ELSE report the encountered error
  		*/
 		virtual const MstResult boruvka() const;
+		/**
+ 		* @brief Function runs the kruskal algorithm and returns the minimum spanning tree
+ 		* if the graph is undirected.
+		* Note: No Thread Safe
+ 		* @return struct of type MstResult with following fields
+		* success: true if algorithm completed successfully ELSE false
+		* mst: vector containing id of nodes in minimum spanning tree & cost of MST
+		* mstCost: Cost of MST
+		* errorMessage: "" if no error ELSE report the encountered error
+ 		*/
+		virtual const MstResult kruskal() const;
 		/**
  		* \brief
  		* Function performs the breadth first search algorithm over the graph
@@ -1463,6 +1477,77 @@ namespace CXXGRAPH
 					numTrees--;
 				}
 			}
+		}
+		result.success = true;
+		return result;
+	}
+
+	template <typename T>
+	const MstResult Graph<T>::kruskal() const
+	{
+		MstResult result;
+		result.success = false;
+		result.errorMessage = "";
+		result.mstCost = INF_DOUBLE;
+		if (!isUndirectedGraph())
+		{
+			result.errorMessage = ERR_DIR_GRAPH;
+			return result;
+		}
+		auto nodeSet = Graph<T>::getNodeSet();
+		auto n = nodeSet.size();
+
+		// check if all edges are weighted and store the weights
+		// in a map whose keys are the edge ids and values are the edge weights
+		auto edgeSet = Graph<T>::getEdgeSet();
+		std::vector<std::pair<double, const Edge<T> *>> sortedEdges;
+		for (auto edge : edgeSet)
+		{
+			if (edge->isWeighted().has_value() && edge->isWeighted().value())
+			{
+				auto weight = (dynamic_cast<const Weighted *>(edge))->getWeight();
+				sortedEdges.push_back(std::make_pair(weight, edge));
+			}
+			else
+			{
+				// No Weighted Edge
+				result.errorMessage = ERR_NO_WEIGHTED_EDGE;
+				return result;
+			}
+		}
+		// we sort the edges in descending order of their edge weight
+		std::sort(sortedEdges.begin(), sortedEdges.end(), [](const auto a, const auto b)
+				  { return a.first > b.first; });
+
+		std::vector<Subset> subset;
+
+		// user can give arbitrary ids to nodes
+		// we map these ids from 0 to 1 for consistency
+		// NOTE: WE CAN REMOVE THIS WHEN WE TAKE CARE OF THIS GLOBALLY
+		// WHILE CONSTRUCTING THE GRAPH
+		std::map<unsigned long, unsigned long> userNodeMap;
+		unsigned long i = 0;
+		for (auto node : nodeSet)
+		{
+			userNodeMap[node->getId()] = i;
+			Subset set{i, 0};
+			subset.push_back(set);
+			i++;
+		}
+		result.mstCost = 0;
+		while ((!sortedEdges.empty()) && (result.mst.size() < n))
+		{
+			auto [edgeWeight, cheapestEdge] = sortedEdges.back();
+			sortedEdges.pop_back();
+			auto &[first, second] = cheapestEdge->getNodePair();
+			auto set1 = Graph<T>::setFind(&subset, userNodeMap[first->getId()]);
+			auto set2 = Graph<T>::setFind(&subset, userNodeMap[second->getId()]);
+			if (set1 != set2)
+			{
+				result.mst.push_back(std::make_pair(userNodeMap[first->getId()], userNodeMap[second->getId()]));
+				result.mstCost += edgeWeight;
+			}
+			Graph<T>::setUnion(&subset, set1, set2);
 		}
 		result.success = true;
 		return result;
