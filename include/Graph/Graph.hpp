@@ -164,10 +164,10 @@ namespace CXXGRAPH
 		/**
 		* @brief This function modifies the original subset array
 		* such that it the union of two sets a and b
-		* @param subset query subset, we want to find target in this subset
+		* @param subset original subset is modified to obtain union of a & b
 		* @param a parent id of set1
 		* @param b parent id of set2
- 		*
+ 		* NOTE: Original subset is no longer available after union.
 		* Note: No Thread Safe
 		*/
 		virtual void setUnion(std::vector<Subset>*, const unsigned long set1, const unsigned long elem2) const;		
@@ -217,10 +217,24 @@ namespace CXXGRAPH
  		* @brief Function runs the boruvka algorithm and returns the minimum spanning tree & cost
  		* if the graph is undirected.
 		* Note: No Thread Safe
- 		* @return a vector containing id of nodes in minimum spanning tree & cost of MST
-		* returns errors if graph is undirected
+ 		* @return struct of type MstResult with following fields
+		* success: true if algorithm completed successfully ELSE false
+		* mst: vector containing id of nodes in minimum spanning tree & cost of MST
+		* mstCost: Cost of MST
+		* errorMessage: "" if no error ELSE report the encountered error
  		*/
 		virtual const MstResult boruvka() const;
+		/**
+ 		* @brief Function runs the kruskal algorithm and returns the minimum spanning tree
+ 		* if the graph is undirected.
+		* Note: No Thread Safe
+ 		* @return struct of type MstResult with following fields
+		* success: true if algorithm completed successfully ELSE false
+		* mst: vector containing id of nodes in minimum spanning tree & cost of MST
+		* mstCost: Cost of MST
+		* errorMessage: "" if no error ELSE report the encountered error
+ 		*/
+		virtual const MstResult kruskal() const;
 		/**
  		* \brief
  		* Function performs the breadth first search algorithm over the graph
@@ -909,7 +923,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	const unsigned long Graph<T>::setFind(std::vector<Subset>* subsets, const unsigned long nodeId) const
+	const unsigned long Graph<T>::setFind(std::vector<Subset> *subsets, const unsigned long nodeId) const
 	{
 		// find root and make root as parent of i
 		// (path compression)
@@ -927,21 +941,21 @@ namespace CXXGRAPH
 		// return;
 		// if both sets have same parent
 		// then there's nothing to be done
-		if ((*subsets)[elem1].parent==(*subsets)[elem2].parent)
+		if ((*subsets)[elem1].parent == (*subsets)[elem2].parent)
 			return;
 		auto elem1Parent = Graph<T>::setFind(subsets, elem1);
 		auto elem2Parent = Graph<T>::setFind(subsets, elem2);
-		if((*subsets)[elem1Parent].rank < (*subsets)[elem2Parent].rank) 
+		if ((*subsets)[elem1Parent].rank < (*subsets)[elem2Parent].rank)
 			(*subsets)[elem1].parent = elem2Parent;
-		else if((*subsets)[elem1Parent].rank > (*subsets)[elem2Parent].rank) 
+		else if ((*subsets)[elem1Parent].rank > (*subsets)[elem2Parent].rank)
 			(*subsets)[elem2].parent = elem1Parent;
 		else
 		{
 			(*subsets)[elem2].parent = elem1Parent;
 			(*subsets)[elem1Parent].rank++;
-		}	
-	}
-	
+		}
+  }
+
 	template <typename T>
 	const AdjacencyMatrix<T> Graph<T>::getAdjMatrix() const
 	{
@@ -1303,14 +1317,14 @@ namespace CXXGRAPH
 		// mark source node as done
 		// otherwise we get (0, 0) also in mst
 		doneNode.push_back(source->getId());
-		// stores the parent and corresponding child node 
+		// stores the parent and corresponding child node
 		// of the edges that are part of MST
 		std::map<unsigned long, unsigned long> parentNode;
 		while (!pq.empty())
 		{
 			// second element of pair denotes the node / vertex
 			const Node<T> *currentNode = pq.top().second;
-			auto nodeId = currentNode->getId();			
+			auto nodeId = currentNode->getId();
 			if (std::find(doneNode.begin(), doneNode.end(), nodeId) == doneNode.end())
 			{
 				auto pair = std::make_pair(parentNode[nodeId], nodeId);
@@ -1330,10 +1344,9 @@ namespace CXXGRAPH
 					if (elem.second->isWeighted().has_value() && elem.second->isWeighted().value())
 					{
 						const UndirectedWeightedEdge<T> *udw_edge = dynamic_cast<const UndirectedWeightedEdge<T> *>(elem.second);
-						if ( 
+						if (
 							(udw_edge->getWeight() < dist[elem.first]) &&
-							(std::find(doneNode.begin(), doneNode.end(), elem.first->getId()) == doneNode.end())
-						)
+							(std::find(doneNode.begin(), doneNode.end(), elem.first->getId()) == doneNode.end()))
 						{
 							dist[elem.first] = udw_edge->getWeight();
 							parentNode[elem.first->getId()] = currentNode->getId();
@@ -1353,7 +1366,6 @@ namespace CXXGRAPH
 		return result;
 	}
 
-
 	template <typename T>
 	const MstResult Graph<T>::boruvka() const
 	{
@@ -1368,14 +1380,14 @@ namespace CXXGRAPH
 		}
 		auto nodeSet = Graph<T>::getNodeSet();
 		auto n = nodeSet.size();
-		
+
 		// Use std vector for storing n subsets.
 		std::vector<Subset> subsets;
 
 		// Initially there are n different trees.
 		// Finally there will be one tree that will be MST
 		int numTrees = n;
-		
+
 		// check if all edges are weighted and store the weights
 		// in a map whose keys are the edge ids and values are the edge weights
 		auto edgeSet = Graph<T>::getEdgeSet();
@@ -1383,7 +1395,7 @@ namespace CXXGRAPH
 		for (auto edge : edgeSet)
 		{
 			if (edge->isWeighted().has_value() && edge->isWeighted().value())
-				edgeWeight[edge->getId()] =  (dynamic_cast<const Weighted *>(edge))->getWeight();
+				edgeWeight[edge->getId()] = (dynamic_cast<const Weighted *>(edge))->getWeight();
 			else
 			{
 				// No Weighted Edge
@@ -1404,7 +1416,7 @@ namespace CXXGRAPH
 		for (auto node : nodeSet)
 		{
 			userNodeMap[node->getId()] = i;
-			Subset set{i, 0};  
+			Subset set{i, 0};
 			subsets.push_back(set);
 			i++;
 		}
@@ -1415,7 +1427,7 @@ namespace CXXGRAPH
 		{
 			// Everytime initialize cheapest array
 			std::fill(cheapest.begin(), cheapest.end(), -1);
-	
+
 			// Traverse through all edges and update
 			// cheapest of every component
 			for (auto edge : edgeSet)
@@ -1426,26 +1438,26 @@ namespace CXXGRAPH
 				// of current edge
 				auto set1 = Graph<T>::setFind(&subsets, userNodeMap[elem.first->getId()]);
 				auto set2 = Graph<T>::setFind(&subsets, userNodeMap[elem.second->getId()]);
-	
+
 				// If two corners of current edge belong to
 				// same set, ignore current edge
 				if (set1 == set2)
 					continue;
-	
+
 				// Else check if current edge is closer to previous
 				// cheapest edges of set1 and set2
 				if (cheapest[set1] == -1 ||
 					edgeWeight[cheapest[set1]] > edgeWeight[edgeId])
 					cheapest[set1] = edgeId;
-	
+
 				if (cheapest[set2] == -1 ||
 					edgeWeight[cheapest[set2]] > edgeWeight[edgeId])
 					cheapest[set2] = edgeId;
 			}
-				
-			// iterate over all the vertices and add picked 
+
+			// iterate over all the vertices and add picked
 			// cheapest edges to MST
-			for(int i=0; i<n;i++)
+			for (int i = 0; i < n; i++)
 			{
 				// Check if cheapest for current set exists
 				if (cheapest[i] != -1)
@@ -1463,6 +1475,76 @@ namespace CXXGRAPH
 					numTrees--;
 				}
 			}
+		}
+		result.success = true;
+		return result;
+	}
+
+	template <typename T>
+	const MstResult Graph<T>::kruskal() const
+	{
+		MstResult result;
+		result.success = false;
+		result.errorMessage = "";
+		result.mstCost = INF_DOUBLE;
+		if (!isUndirectedGraph())
+		{
+			result.errorMessage = ERR_DIR_GRAPH;
+			return result;
+		}
+		auto nodeSet = Graph<T>::getNodeSet();
+		auto n = nodeSet.size();
+
+		// check if all edges are weighted and store the weights
+		// in a map whose keys are the edge ids and values are the edge weights
+		auto edgeSet = Graph<T>::getEdgeSet();
+		std::priority_queue< std::pair<double, const Edge<T> *>, std::vector<std::pair<double, const Edge<T> *>>,
+		 					 std::greater<std::pair<double, const Edge<T> *>>>
+							sortedEdges;
+		for (auto edge : edgeSet)
+		{
+			if (edge->isWeighted().has_value() && edge->isWeighted().value())
+			{
+				auto weight = (dynamic_cast<const Weighted *>(edge))->getWeight();
+				sortedEdges.push(std::make_pair(weight, edge));
+			}
+			else
+			{
+				// No Weighted Edge
+				result.errorMessage = ERR_NO_WEIGHTED_EDGE;
+				return result;
+			}
+		}
+
+		std::vector<Subset> subset;
+
+		// user can give arbitrary ids to nodes
+		// we map these ids from 0 to 1 for consistency
+		// NOTE: WE CAN REMOVE THIS WHEN WE TAKE CARE OF THIS GLOBALLY
+		// WHILE CONSTRUCTING THE GRAPH
+		std::map<unsigned long, unsigned long> userNodeMap;
+		unsigned long i = 0;
+		for (auto node : nodeSet)
+		{
+			userNodeMap[node->getId()] = i;
+			Subset set{i, 0};
+			subset.push_back(set);
+			i++;
+		}
+		result.mstCost = 0;
+		while ((!sortedEdges.empty()) && (result.mst.size() < n))
+		{
+			auto [edgeWeight, cheapestEdge] = sortedEdges.top();
+			sortedEdges.pop();
+			auto &[first, second] = cheapestEdge->getNodePair();
+			auto set1 = Graph<T>::setFind(&subset, userNodeMap[first->getId()]);
+			auto set2 = Graph<T>::setFind(&subset, userNodeMap[second->getId()]);
+			if (set1 != set2)
+			{
+				result.mst.push_back(std::make_pair(userNodeMap[first->getId()], userNodeMap[second->getId()]));
+				result.mstCost += edgeWeight;
+			}
+			Graph<T>::setUnion(&subset, set1, set2);
 		}
 		result.success = true;
 		return result;
