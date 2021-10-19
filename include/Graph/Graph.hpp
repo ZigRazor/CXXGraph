@@ -589,6 +589,7 @@ namespace CXXGRAPH
 			ifileGraph.ignore(128, '\n');
 		}
 		ifileGraph.close();
+		if (compress) remove(completePathToFileGraph.c_str());
 
 		if (readNodeFeat)
 		{
@@ -611,6 +612,7 @@ namespace CXXGRAPH
 				ifileNodeFeat.ignore(128, '\n');
 			}
 			ifileNodeFeat.close();
+			if (compress) remove(completePathToFileNodeFeat.c_str());
 		}
 
 		if (readEdgeWeight)
@@ -638,6 +640,7 @@ namespace CXXGRAPH
 				ifileEdgeWeight.ignore(128, '\n');
 			}
 			ifileEdgeWeight.close();
+			if (compress) remove(completePathToFileEdgeWeight.c_str());
 		}
 		recreateGraphFromReadFiles(edgeMap, edgeDirectedMap, nodeFeatMap, edgeWeightMap);
 		return 0;
@@ -728,6 +731,7 @@ namespace CXXGRAPH
 			ifileGraph.ignore(128, '\n');
 		}
 		ifileGraph.close();
+		if (compress) remove(completePathToFileGraph.c_str());
 
 		if (readNodeFeat)
 		{
@@ -750,6 +754,7 @@ namespace CXXGRAPH
 				ifileNodeFeat.ignore(128, '\n');
 			}
 			ifileNodeFeat.close();
+			if (compress) remove(completePathToFileNodeFeat.c_str());
 		}
 
 		if (readEdgeWeight)
@@ -777,6 +782,7 @@ namespace CXXGRAPH
 				ifileEdgeWeight.ignore(128, '\n');
 			}
 			ifileEdgeWeight.close();
+			if (compress) remove(completePathToFileEdgeWeight.c_str());
 		}
 		recreateGraphFromReadFiles(edgeMap, edgeDirectedMap, nodeFeatMap, edgeWeightMap);
 		return 0;
