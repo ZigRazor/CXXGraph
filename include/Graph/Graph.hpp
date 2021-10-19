@@ -1498,13 +1498,15 @@ namespace CXXGRAPH
 		// check if all edges are weighted and store the weights
 		// in a map whose keys are the edge ids and values are the edge weights
 		auto edgeSet = Graph<T>::getEdgeSet();
-		std::vector<std::pair<double, const Edge<T> *>> sortedEdges;
+		std::priority_queue< std::pair<double, const Edge<T> *>, std::vector<std::pair<double, const Edge<T> *>>,
+		 					 std::greater<std::pair<double, const Edge<T> *>>>
+							sortedEdges;
 		for (auto edge : edgeSet)
 		{
 			if (edge->isWeighted().has_value() && edge->isWeighted().value())
 			{
 				auto weight = (dynamic_cast<const Weighted *>(edge))->getWeight();
-				sortedEdges.push_back(std::make_pair(weight, edge));
+				sortedEdges.push(std::make_pair(weight, edge));
 			}
 			else
 			{
@@ -1513,9 +1515,6 @@ namespace CXXGRAPH
 				return result;
 			}
 		}
-		// we sort the edges in descending order of their edge weight
-		std::sort(sortedEdges.begin(), sortedEdges.end(), [](const auto a, const auto b)
-				  { return a.first > b.first; });
 
 		std::vector<Subset> subset;
 
@@ -1535,8 +1534,8 @@ namespace CXXGRAPH
 		result.mstCost = 0;
 		while ((!sortedEdges.empty()) && (result.mst.size() < n))
 		{
-			auto [edgeWeight, cheapestEdge] = sortedEdges.back();
-			sortedEdges.pop_back();
+			auto [edgeWeight, cheapestEdge] = sortedEdges.top();
+			sortedEdges.pop();
 			auto &[first, second] = cheapestEdge->getNodePair();
 			auto set1 = Graph<T>::setFind(&subset, userNodeMap[first->getId()]);
 			auto set2 = Graph<T>::setFind(&subset, userNodeMap[second->getId()]);
