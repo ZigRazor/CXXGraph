@@ -17,8 +17,8 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-#ifndef __THREADSAFE_H__
-#define __THREADSAFE_H__
+#ifndef __CXXGRAPH_THREADSAFE_H__
+#define __CXXGRAPH_THREADSAFE_H__
 
 #pragma once
 
@@ -47,4 +47,4 @@ namespace CXXGRAPH
 	}
 }
 
-#endif // __THREADSAFE_H__
+#endif // __CXXGRAPH_THREADSAFE_H__

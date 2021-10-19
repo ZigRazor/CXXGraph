@@ -17,8 +17,8 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-#ifndef __CONSTSTRING_H__
-#define __CONSTSTRING_H__
+#ifndef __CXXGRAPH_CONSTSTRING_H__
+#define __CXXGRAPH_CONSTSTRING_H__
 
 #pragma once
 
@@ -33,4 +33,4 @@ namespace CXXGRAPH
 	constexpr char ERR_SOURCE_NODE_NOT_IN_GRAPH[] = "Source Node not inside Graph";
 	///////////////////////////////
 }
-#endif // __CONSTSTRING_H__
+#endif // __CXXGRAPH_CONSTSTRING_H__

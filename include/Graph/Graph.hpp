@@ -17,8 +17,8 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-#ifndef __GRAPH_H__
-#define __GRAPH_H__
+#ifndef __CXXGRAPH_GRAPH_H__
+#define __CXXGRAPH_GRAPH_H__
 
 #pragma once
 
@@ -931,12 +931,12 @@ namespace CXXGRAPH
 		{
 			(*subsets)[nodeId].parent = Graph<T>::setFind(subsets, (*subsets)[nodeId].parent);
 		}
-
+		
 		return (*subsets)[nodeId].parent;
 	}
 
 	template <typename T>
-	void Graph<T>::setUnion(std::vector<Subset> *subsets, const unsigned long elem1, const unsigned long elem2) const
+	void Graph<T>::setUnion(std::vector<Subset>* subsets, const unsigned long elem1, const unsigned long elem2) const
 	{
 		// return;
 		// if both sets have same parent
@@ -954,7 +954,7 @@ namespace CXXGRAPH
 			(*subsets)[elem2].parent = elem1Parent;
 			(*subsets)[elem1Parent].rank++;
 		}
-	}
+  }
 
 	template <typename T>
 	const AdjacencyMatrix<T> Graph<T>::getAdjMatrix() const
@@ -2251,4 +2251,4 @@ namespace CXXGRAPH
 	}
 
 } // namespace CXXGRAPH
-#endif // __GRAPH_H__
+#endif // __CXXGRAPH_GRAPH_H__

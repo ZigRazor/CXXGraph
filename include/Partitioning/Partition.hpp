@@ -17,8 +17,8 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-#ifndef __PARTITION_H__
-#define __PARTITION_H__
+#ifndef __CXXGRAPH_PARTITION_H__
+#define __CXXGRAPH_PARTITION_H__
 
 #pragma once
 
@@ -366,4 +366,4 @@ namespace CXXGRAPH
 
 }
 
-#endif // __PARTITION_H__
+#endif // __CXXGRAPH_PARTITION_H__
