@@ -257,7 +257,7 @@ Below is complete algorithm:
 
 At this [link](https://ocw.mit.edu/courses/sloan-school-of-management/15-082j-network-optimization-fall-2010/animations/MIT15_082JF10_av07.pdf) you can find a step-by-step illustrations.
 
-### Prim's Algorithm
+#### Prim's Algorithm
 [Prim's Algorithm](https://en.wikipedia.org/wiki/Prim%27s_algorithm)
 Prim's Algorithm is is a greedy algorithm that finds a minimum spanning tree for a weighted undirected graph. This means it finds a subset of the edges that forms a tree that includes every vertex, where the total weight of all the edges in the tree is minimized. The algorithm operates by building this tree one vertex at a time, from an arbitrary starting vertex, at each step adding the cheapest possible connection from the tree to another vertex.
 
