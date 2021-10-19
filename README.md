@@ -56,6 +56,7 @@ An alternative to [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_7
   * [Algorithm Explanation](#algorithm-explanation)
       - [Dijkstra](#dijkstra)
       - [Dial](#dial)
+      - [Prim's Algorithm](#prims-algorithm)
       - [BFS](#bfs)
       - [DFS](#dfs)
       - [Cycle Detection](#cycle-detection)
