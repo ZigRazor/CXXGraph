@@ -330,7 +330,7 @@ Some of the real life applications are:
 - Water/gas pipe network
 - Electric grid
 
-Kruskal algorithm could be compared with Prim's algorithm or Borůvka's algorithm.
+Other algorithms to find the minimum spanning forest are Prim's algorithm or Borůvka's algorithm.
 
 ## Partition Algorithm Explanation
 
