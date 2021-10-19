@@ -54,6 +54,7 @@ add_executable(test_exe test/main.cpp
 						test/FWTest.cpp
 						test/PrimTest.cpp
 						test/BoruvkaTest.cpp
+						test/KruskalTest.cpp
 						test/BFSTest.cpp
 						test/DFSTest.cpp
 						test/CycleCheckTest.cpp
