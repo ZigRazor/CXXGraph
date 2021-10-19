@@ -61,7 +61,7 @@ An alternative to [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_7
       - [Cycle Detection](#cycle-detection)
       - [Bellman-Ford](#bellman-ford)
       - [Floyd Warshall](#floyd-warshall)
-      - [Kruskal Algorithm](#krustal-algorithm)
+      - [Kruskal Algorithm](#kruskal-algorithm)
   * [Partition Algorithm Explanation](#partition-algorithm-explanation)
     + [Vertex-Cut](#vertex-cut)
     + [Greedy Vertex-Cut](#greedy-vertex-cut)
