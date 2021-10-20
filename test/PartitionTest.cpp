@@ -1,6 +1,9 @@
 #include "gtest/gtest.h"
 #include "CXXGraph.hpp"
+#include "Utilities.hpp"
 
+static auto nodes = generateRandomNodes(1000, 2);
+static auto edges = generateRandomEdges(1000, nodes);
 
 /*
 TEST(PartitonTest, test_1)
@@ -109,6 +112,8 @@ TEST(PartitonTest, test_2)
 }
 */
 
+
+
 TEST(PartitonTest, test_1)
 {
     CXXGRAPH::Node<int> node1(1, 1);
@@ -153,11 +158,33 @@ TEST(PartitonTest, test_1)
     {
         totalEdgeInPartition += elem.second->getEdgeSet().size();
     }
-    std::cout << "Total Edge in Partition: " << totalEdgeInPartition << std::endl;
+    //std::cout << "Total Edge in Partition: " << totalEdgeInPartition << std::endl;
     ASSERT_EQ(totalEdgeInPartition, 12);
     for (int i = 0; i < 4; ++i)
     {
-        std::cout << *partitionMap.at(i) << std::endl;
+        //std::cout << *partitionMap.at(i) << std::endl;
+        ASSERT_EQ(partitionMap.at(i)->getPartitionId(), i);
+    }
+}
+
+TEST(PartitonTest, test_2)
+{
+    CXXGRAPH::Graph<int> graph;
+    for (auto e : edges)
+    {
+        graph.addEdge(&(*e.second));
+    }
+    auto partitionMap = graph.partitionGraph(CXXGRAPH::PARTITIONING::PartitionAlgorithm::HDRF_ALG, 4);
+    unsigned int totalEdgeInPartition = 0;
+    for (auto elem : partitionMap)
+    {
+        totalEdgeInPartition += elem.second->getEdgeSet().size();
+    }
+    //std::cout << "Total Edge in Partition: " << totalEdgeInPartition << std::endl;
+    ASSERT_EQ(totalEdgeInPartition, 1000);
+    for (int i = 0; i < 4; ++i)
+    {
+        //std::cout << *partitionMap.at(i) << std::endl;
         ASSERT_EQ(partitionMap.at(i)->getPartitionId(), i);
     }
 }

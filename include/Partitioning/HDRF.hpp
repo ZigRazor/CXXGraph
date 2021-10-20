@@ -37,13 +37,13 @@ namespace CXXGRAPH
             Globals GLOBALS;
 
         public:
-            HDRF(Globals& G);
+            HDRF(Globals &G);
             ~HDRF();
 
             void performStep(const Edge<T> &e, PartitionState<T> &Sstate);
         };
         template <typename T>
-        HDRF<T>::HDRF(Globals& G) : GLOBALS(G) 
+        HDRF<T>::HDRF(Globals &G) : GLOBALS(G)
         {
             //this->GLOBALS = G;
         }
@@ -65,29 +65,38 @@ namespace CXXGRAPH
             Record<T> &v_record = state.getRecord(v);
 
             //*** ASK FOR LOCK
-            int sleep_time = 2;
-            while (!u_record.getLock())
-            {                
-                std::cout << "Waiting for lock on node " << u << std::endl;
-                sleep(sleep_time);
-                sleep_time = (int)pow(sleep_time, 2);
-            }
-            std::cout << "Lock Taken for " << u << std::endl;
-            sleep_time = 2;
-            while (!v_record.getLock())
+            bool locks_taken = false;
+            while (!locks_taken)
             {
-                std::cout << "Waiting for lock on node " << v << std::endl;
-                sleep(sleep_time);
-                sleep_time = (int)pow(sleep_time, 2);
-                if (sleep_time > GLOBALS.SLEEP_LIMIT)
+
+                int usleep_time = 2;
+                while (!u_record.getLock())
                 {
-                    u_record.releaseLock();
-                    performStep(e, state);
-                    return;
-                } //TO AVOID DEADLOCK
+                    //std::cout << "Waiting for lock on node " << u << std::endl;
+                    usleep(usleep_time);
+                    usleep_time = (int)pow(usleep_time, 2);
+                }
+                //std::cout << "Lock Taken for " << u << std::endl;
+                usleep_time = 2;
+                while (!v_record.getLock())
+                {
+                    //std::cout << "Waiting for lock on node " << v << std::endl;
+                    usleep(usleep_time);
+                    usleep_time = (int)pow(usleep_time, 2);
+
+                    if (usleep_time > GLOBALS.SLEEP_LIMIT)
+                    {
+                        //std::cout << "Releases all Lock" << std::endl;
+                        u_record.releaseLock();
+                        //performStep(e, state);
+                        //return;
+                    } //TO AVOID DEADLOCK
+                }
+                locks_taken = true;
             }
+
             //*** LOCK TAKEN
-            std::cout << "Lock Taken for " << v << std::endl;
+            //std::cout << "Lock Taken for " << v << std::endl;
             int machine_id = -1;
 
             //*** COMPUTE MAX AND MIN LOAD

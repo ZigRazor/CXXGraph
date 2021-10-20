@@ -96,10 +96,10 @@ namespace CXXGRAPH
         {
             if (record_map.find(x) == record_map.end())
             {
-                std::cout << "Record " << x << " not found" << std::endl;
+                //std::cout << "Record " << x << " not found" << std::endl;
                 record_map[x] = CoordinatedRecord<T>();
             }
-            std::cout << "Return Record " << x << std::endl;
+            //std::cout << "Return Record " << x << std::endl;
             return record_map.at(x);
         }
         template <typename T>
