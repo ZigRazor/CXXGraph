@@ -172,6 +172,13 @@ namespace CXXGRAPH
 		*/
 		virtual void setUnion(std::vector<Subset>*, const unsigned long set1, const unsigned long elem2) const;		
 		/**
+		* @brief This function finds the eulerian path of a directed graph using hierholzers algorithm
+ 		*
+ 		* @return a vector containing nodes in eulerian path
+		* Note: No Thread Safe
+		*/
+		virtual std::vector<Node<T>> eulerianPath() const;
+		/**
  		* @brief Function runs the dijkstra algorithm for some source node and
  		* target node in the graph and returns the shortest distance of target
  		* from the source.
@@ -960,6 +967,38 @@ namespace CXXGRAPH
 			(*subsets)[elem2].parent = elem1Parent;
 			(*subsets)[elem1Parent].rank++;
 		}
+  }
+
+  template <typename T>
+  std::vector<Node<T>> Graph<T>::eulerianPath() const
+  {
+	  const auto nodeSet = Graph<T>::getNodeSet();
+	  auto adj = Graph<T>::getAdjMatrix();
+	  std::vector<Node<T>> eulerPath;
+	  std::vector<const Node<T> *> currentPath;
+	  auto currentNode = nodeSet.front();
+	  currentPath.push_back(currentNode);
+	  while (currentPath.size() > 0)
+	  {
+		  auto &edges = adj.at(currentNode);
+		  // we keep removing the edges that 
+		  // have been traversed from the adjacency list
+		  if (edges.size())
+		  {
+			  auto firstEdge = edges.back().second;
+			  auto nextNodeId = firstEdge->getNodePair().second;
+			  currentPath.push_back(nextNodeId);
+			  currentNode = nextNodeId;
+			  edges.pop_back();
+		  }
+		  else
+		  {
+			  eulerPath.push_back(*currentNode);
+			  currentNode = currentPath.back();
+			  currentPath.pop_back();
+		  }
+	  }
+	  return eulerPath;
   }
 
 	template <typename T>
