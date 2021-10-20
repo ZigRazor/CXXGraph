@@ -63,6 +63,7 @@ add_executable(test_exe test/main.cpp
 						test/DialTest.cpp
 						test/GraphSlicingTest.cpp
 						test/UnionFindTest.cpp
+						test/EulerPathTest.cpp
 				)
 target_include_directories(test_exe PUBLIC
 						  "${PROJECT_SOURCE_DIR}/include"
