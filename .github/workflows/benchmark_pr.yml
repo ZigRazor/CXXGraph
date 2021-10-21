@@ -4,7 +4,7 @@ on:
   #  branches: [ master ]
   pull_request:
     branches: [ master ]
-    
+
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
@@ -41,7 +41,7 @@ jobs:
         with:
           path: ./cache
           key: ${{ runner.os }}-benchmark
-          
+
       - name: Benchmarking
         working-directory: ${{github.workspace}}/build
         run: ./benchmark --benchmark_format=json | tee benchmark_result.json
