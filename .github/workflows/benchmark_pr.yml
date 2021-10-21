@@ -58,7 +58,7 @@ jobs:
             fail-on-alert: false
             # Upload the updated cache file for the next job by actions/cache
             # Personal access token to deploy GitHub Pages branch
-            #github-token: ${{ secrets.PERSONAL_TOKEN }}
+            github-token: ${{ secrets.PERSONAL_TOKEN }}
             # Push and deploy GitHub pages branch automatically
             #auto-push: true
             # Enable alert commit comment
