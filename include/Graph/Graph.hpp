@@ -90,7 +90,7 @@ namespace CXXGRAPH
 	public:
 		Graph() = default;
 		Graph(const std::list<const Edge<T> *> &edgeSet);
-		~Graph() = default;
+		virtual ~Graph() = default;
 		/**
  		* \brief
  		* Function that return the Edge set of the Graph
@@ -160,7 +160,7 @@ namespace CXXGRAPH
  		* @return parent node of elem 
 		* Note: No Thread Safe
 		*/
-		virtual const unsigned long setFind(std::vector<Subset>*, const unsigned long elem) const;
+		virtual unsigned long setFind(std::vector<Subset>*, const unsigned long elem) const;
 		/**
 		* @brief This function modifies the original subset array
 		* such that it the union of two sets a and b
@@ -936,7 +936,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	const unsigned long Graph<T>::setFind(std::vector<Subset> *subsets, const unsigned long nodeId) const
+	unsigned long Graph<T>::setFind(std::vector<Subset> *subsets, const unsigned long nodeId) const
 	{
 		// find root and make root as parent of i
 		// (path compression)
@@ -2087,7 +2087,7 @@ namespace CXXGRAPH
 		}
 		if (result == 0 && compress)
 		{
-			auto compress = [this, &workingDir, &OFileName, &writeNodeFeat, &writeEdgeWeight](const std::string &extension)
+			auto _compress = [this, &workingDir, &OFileName, &writeNodeFeat, &writeEdgeWeight](const std::string &extension)
 			{
 				std::string completePathToFileGraph = workingDir + "/" + OFileName + extension;
 				std::string completePathToFileGraphCompressed = workingDir + "/" + OFileName + extension + ".gz";
@@ -2126,11 +2126,11 @@ namespace CXXGRAPH
 			};
 			if (format == InputOutputFormat::STANDARD_CSV)
 			{
-				auto result = compress(".csv");
+				auto result = _compress(".csv");
 			}
 			else if (format == InputOutputFormat::STANDARD_TSV)
 			{
-				auto result = compress(".tsv");
+				auto result = _compress(".tsv");
 			}
 			else
 			{
