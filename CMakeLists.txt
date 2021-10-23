@@ -72,6 +72,8 @@ target_link_libraries(test_exe
 					   libgtest.a
 					   libgtest_main.a
 					   pthread
+					   ssl
+					   crypto
 					   z)
 
 
