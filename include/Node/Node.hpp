@@ -24,6 +24,8 @@
 #pragma once
 #include <iostream>
 #include <openssl/sha.h>
+#include <iomanip>
+
 
 namespace CXXGRAPH
 {
