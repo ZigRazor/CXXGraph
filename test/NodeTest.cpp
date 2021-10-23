@@ -261,10 +261,11 @@ TEST(StringNodeTest, StringprintOperator)
     std::string testString = "abc";
     testStruct TestStruct(42, true, "abc");
     std::ostringstream expectedInt, expectedDouble, expectedString, expectedStruct;
-    expectedInt << "Node: {\n  Id:\t1\n  Data:\t2\n}";
-    expectedDouble << "Node: {\n  Id:\t1\n  Data:\t4.321\n}";
-    expectedString << "Node: {\n  Id:\t1\n  Data:\tabc\n}";
-    expectedStruct << "Node: {\n  Id:\t1\n  Data:\t42 1 abc\n}";
+    // first 4 bytes of sha512 hash = 896145707
+    expectedInt << "Node: {\n  Id:\t896145707\n  Data:\t2\n}";
+    expectedDouble << "Node: {\n  Id:\t896145707\n  Data:\t4.321\n}";
+    expectedString << "Node: {\n  Id:\t896145707\n  Data:\tabc\n}";
+    expectedStruct << "Node: {\n  Id:\t896145707\n  Data:\t42 1 abc\n}";
 
     CXXGRAPH::Node<int> intNode(nodesId, testInt);
     CXXGRAPH::Node<double> doubleNode(nodesId, testDouble);
