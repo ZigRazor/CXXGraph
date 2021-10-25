@@ -37,7 +37,7 @@ namespace CXXGRAPH
 	class Node
 	{
 	private:
-		unsigned long id;
+		unsigned long long id;
 		std::string userId;
 		T data;
 
@@ -45,7 +45,7 @@ namespace CXXGRAPH
 		Node(const unsigned long id, const T &data);
 		Node(std::string id, const T &data);
 		~Node() = default;
-		const unsigned long &getId() const;
+		const unsigned long long &getId() const;
 		const std::string &getUserId() const;
 		const T &getData() const;
 		//operator
@@ -68,28 +68,28 @@ namespace CXXGRAPH
 		this->userId = id;
 		this->data = data;
 		const unsigned char* userId = reinterpret_cast<const unsigned char *>(id.c_str() );
-		unsigned char obuf[20];
-		SHA1(userId, id.length(), obuf);
+		unsigned char obuf[64];
+		SHA512(userId, id.length(), obuf);
 		// Transform byte-array to string
 		std::stringstream shastr;
 		shastr << std::hex << std::setfill('0');
 		int i = 0;
-		//unsigned long can only store 4 bytes so we truncate the hash to 4 bytes
+		//unsigned long can only store 8 bytes so we truncate the hash to 8 bytes
 		for (const auto &byte: obuf)
 		{
 			shastr << std::setw(2) << (int)byte;
 			i++;
-			if (i==4) break;
+			if (i==8) break;
 		}
 		auto idStr =  shastr.str();
-		// convert hex string to unsigned long
+		// convert hex string to unsigned long long
 		size_t hashId;
 		std::istringstream iss(idStr);
 		iss >> std::hex >> this->id;
 	}
 
 	template <typename T>
-	const unsigned long &Node<T>::getId() const
+	const unsigned long long &Node<T>::getId() const
 	{
 		return id;
 	}
