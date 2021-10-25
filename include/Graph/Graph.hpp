@@ -126,7 +126,7 @@ namespace CXXGRAPH
  		* @param edgeId The Edge Id to remove
  		*
  		*/
-		virtual void removeEdge(unsigned long edgeId);
+		virtual void removeEdge(unsigned long long edgeId);
 		/**
  		* \brief
  		* Function that return the Node Set of the Graph
@@ -145,7 +145,7 @@ namespace CXXGRAPH
  		* @returns the Edge if exist
  		*
  		*/
-		virtual const std::optional<const Edge<T> *> getEdge(unsigned long edgeId) const;
+		virtual const std::optional<const Edge<T> *> getEdge(unsigned long long edgeId) const;
 		/**
 		* @brief This function generate a list of adjacency matrix with every element of the matrix
 		* contain the node where is directed the link and the Edge corrispondent to the link
@@ -455,7 +455,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	void Graph<T>::removeEdge(unsigned long edgeId)
+	void Graph<T>::removeEdge(unsigned long long edgeId)
 	{
 		auto edgeOpt = Graph<T>::getEdge(edgeId);
 		if (edgeOpt.has_value())
@@ -486,7 +486,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	const std::optional<const Edge<T> *> Graph<T>::getEdge(unsigned long edgeId) const
+	const std::optional<const Edge<T> *> Graph<T>::getEdge(unsigned long long edgeId) const
 	{
 
 		auto it = edgeSet.begin();
