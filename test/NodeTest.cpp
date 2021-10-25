@@ -248,8 +248,9 @@ TEST(StringNodeTest, StringltOperator)
 
     ASSERT_FALSE(nodeInt1 < nodeInt2); // Same id same data
     ASSERT_FALSE(nodeDouble1 < nodeDouble2);   // Same id different data
-    ASSERT_TRUE(nodeString1 < nodeString2);   // Different id different id
-    ASSERT_FALSE(nodeStruct1 < nodeStruct2);   // completely different
+    // hash of 1 is greater than 2
+    ASSERT_TRUE(nodeString2 < nodeString1);   // Different id different id
+    ASSERT_FALSE(nodeStruct2 < nodeStruct1);   // completely different
 }
 
 TEST(StringNodeTest, StringprintOperator)
@@ -261,11 +262,11 @@ TEST(StringNodeTest, StringprintOperator)
     std::string testString = "abc";
     testStruct TestStruct(42, true, "abc");
     std::ostringstream expectedInt, expectedDouble, expectedString, expectedStruct;
-    // first 4 bytes of sha512 hash = 896145707
-    expectedInt << "Node: {\n  Id:\t896145707\n  Data:\t2\n}";
-    expectedDouble << "Node: {\n  Id:\t896145707\n  Data:\t4.321\n}";
-    expectedString << "Node: {\n  Id:\t896145707\n  Data:\tabc\n}";
-    expectedStruct << "Node: {\n  Id:\t896145707\n  Data:\t42 1 abc\n}";
+    // first 4 bytes of sha512 hash = 5620297323057817635
+    expectedInt << "Node: {\n  Id:\t5620297323057817635\n  Data:\t2\n}";
+    expectedDouble << "Node: {\n  Id:\t5620297323057817635\n  Data:\t4.321\n}";
+    expectedString << "Node: {\n  Id:\t5620297323057817635\n  Data:\tabc\n}";
+    expectedStruct << "Node: {\n  Id:\t5620297323057817635\n  Data:\t42 1 abc\n}";
 
     CXXGRAPH::Node<int> intNode(nodesId, testInt);
     CXXGRAPH::Node<double> doubleNode(nodesId, testDouble);
