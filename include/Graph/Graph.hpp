@@ -91,7 +91,7 @@ namespace CXXGRAPH
 	public:
 		Graph() = default;
 		Graph(const std::list<const Edge<T> *> &edgeSet);
-		~Graph() = default;
+		virtual ~Graph() = default;
 		/**
  		* \brief
  		* Function that return the Edge set of the Graph
@@ -161,7 +161,7 @@ namespace CXXGRAPH
  		* @return parent node of elem 
 		* Note: No Thread Safe
 		*/
-		virtual const unsigned long setFind(std::vector<Subset> *, const unsigned long elem) const;
+		virtual unsigned long setFind(std::vector<Subset>*, const unsigned long elem) const;
 		/**
 		* @brief This function modifies the original subset array
 		* such that it the union of two sets a and b
@@ -172,6 +172,13 @@ namespace CXXGRAPH
 		* Note: No Thread Safe
 		*/
 		virtual void setUnion(std::vector<Subset> *, const unsigned long set1, const unsigned long elem2) const;
+		/**
+		* @brief This function finds the eulerian path of a directed graph using hierholzers algorithm
+ 		*
+ 		* @return a vector containing nodes in eulerian path
+		* Note: No Thread Safe
+		*/
+		virtual std::vector<Node<T>> eulerianPath() const;
 		/**
  		* @brief Function runs the dijkstra algorithm for some source node and
  		* target node in the graph and returns the shortest distance of target
@@ -936,7 +943,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	const unsigned long Graph<T>::setFind(std::vector<Subset> *subsets, const unsigned long nodeId) const
+	unsigned long Graph<T>::setFind(std::vector<Subset> *subsets, const unsigned long nodeId) const
 	{
 		// find root and make root as parent of i
 		// (path compression)
@@ -968,6 +975,38 @@ namespace CXXGRAPH
 			(*subsets)[elem1Parent].rank++;
 		}
 	}
+
+  template <typename T>
+  std::vector<Node<T>> Graph<T>::eulerianPath() const
+  {
+	  const auto nodeSet = Graph<T>::getNodeSet();
+	  auto adj = Graph<T>::getAdjMatrix();
+	  std::vector<Node<T>> eulerPath;
+	  std::vector<const Node<T> *> currentPath;
+	  auto currentNode = nodeSet.front();
+	  currentPath.push_back(currentNode);
+	  while (currentPath.size() > 0)
+	  {
+		  auto &edges = adj.at(currentNode);
+		  // we keep removing the edges that 
+		  // have been traversed from the adjacency list
+		  if (edges.size())
+		  {
+			  auto firstEdge = edges.back().second;
+			  auto nextNodeId = firstEdge->getNodePair().second;
+			  currentPath.push_back(nextNodeId);
+			  currentNode = nextNodeId;
+			  edges.pop_back();
+		  }
+		  else
+		  {
+			  eulerPath.push_back(*currentNode);
+			  currentNode = currentPath.back();
+			  currentPath.pop_back();
+		  }
+	  }
+	  return eulerPath;
+  }
 
 	template <typename T>
 	const AdjacencyMatrix<T> Graph<T>::getAdjMatrix() const
@@ -2057,7 +2096,7 @@ namespace CXXGRAPH
 		}
 		if (result == 0 && compress)
 		{
-			auto compress = [this, &workingDir, &OFileName, &writeNodeFeat, &writeEdgeWeight](const std::string &extension)
+			auto _compress = [this, &workingDir, &OFileName, &writeNodeFeat, &writeEdgeWeight](const std::string &extension)
 			{
 				std::string completePathToFileGraph = workingDir + "/" + OFileName + extension;
 				std::string completePathToFileGraphCompressed = workingDir + "/" + OFileName + extension + ".gz";
@@ -2096,11 +2135,11 @@ namespace CXXGRAPH
 			};
 			if (format == InputOutputFormat::STANDARD_CSV)
 			{
-				auto result = compress(".csv");
+				auto result = _compress(".csv");
 			}
 			else if (format == InputOutputFormat::STANDARD_TSV)
 			{
-				auto result = compress(".tsv");
+				auto result = _compress(".tsv");
 			}
 			else
 			{

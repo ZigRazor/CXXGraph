@@ -1,10 +1,9 @@
 name: Benchmark
 on:
-  push:
-    branches: [ master ]
-  #pull_request:
+  #push:
   #  branches: [ master ]
-    
+  pull_request:
+    branches: [ master ]
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
@@ -41,7 +40,7 @@ jobs:
         with:
           path: ./cache
           key: ${{ runner.os }}-benchmark
-          
+
       - name: Benchmarking
         working-directory: ${{github.workspace}}/build
         run: ./benchmark --benchmark_format=json | tee benchmark_result.json
@@ -56,12 +55,12 @@ jobs:
             # Where the previous data file is stored
             #external-data-json-path: ./cache/benchmark-data.json
             # Workflow will fail when an alert happens
-            fail-on-alert: true
+            fail-on-alert: false
             # Upload the updated cache file for the next job by actions/cache
             # Personal access token to deploy GitHub Pages branch
             github-token: ${{ secrets.PERSONAL_TOKEN }}
             # Push and deploy GitHub pages branch automatically
-            auto-push: true
+            #auto-push: true
             # Enable alert commit comment
             comment-on-alert: true
             # Mention @rhysd in the commit comment
