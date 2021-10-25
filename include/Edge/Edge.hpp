@@ -38,14 +38,14 @@ namespace CXXGRAPH
 	class Edge
 	{
 	private:
-		unsigned long id;
+		unsigned long long id;
 		std::pair<const Node<T> *, const Node<T> *> nodePair;
 
 	public:
-		Edge(const unsigned long id, const Node<T> &node1, const Node<T> &node2);
-		Edge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair);
+		Edge(const unsigned long long id, const Node<T> &node1, const Node<T> &node2);
+		Edge(const unsigned long long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair);
 		virtual ~Edge() = default;
-		const unsigned long &getId() const;
+		const unsigned long long &getId() const;
 		const std::pair<const Node<T> *, const Node<T> *> &getNodePair() const;
 		virtual const std::optional<bool> isDirected() const;
 		virtual const std::optional<bool> isWeighted() const;
@@ -59,19 +59,19 @@ namespace CXXGRAPH
 	};
 
 	template <typename T>
-	Edge<T>::Edge(const unsigned long id, const Node<T> &node1, const Node<T> &node2) : nodePair(&node1, &node2)
+	Edge<T>::Edge(const unsigned long long id, const Node<T> &node1, const Node<T> &node2) : nodePair(&node1, &node2)
 	{
 		this->id = id;
 	}
 
 	template <typename T>
-	Edge<T>::Edge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair) : nodePair(nodepair)
+	Edge<T>::Edge(const unsigned long long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair) : nodePair(nodepair)
 	{
 		this->id = id;
 	}
 
 	template <typename T>
-	const unsigned long &Edge<T>::getId() const
+	const unsigned long long &Edge<T>::getId() const
 	{
 		return id;
 	}
