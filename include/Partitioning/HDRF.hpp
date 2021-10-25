@@ -25,6 +25,7 @@
 #include "Partitioning/Utility/Globals.hpp"
 #include "Edge/Edge.hpp"
 #include "PartitionStrategy.hpp"
+#include <chrono>
 
 namespace CXXGRAPH
 {
@@ -60,9 +61,9 @@ namespace CXXGRAPH
             auto nodePair = e.getNodePair();
             int u = nodePair.first->getId();
             int v = nodePair.second->getId();
-
-            Record<T> &u_record = state.getRecord(u);
-            Record<T> &v_record = state.getRecord(v);
+            
+            Record<T> *u_record = state.getRecord(u);
+            Record<T> *v_record = state.getRecord(v);
 
             //*** ASK FOR LOCK
             bool locks_taken = false;
@@ -70,33 +71,28 @@ namespace CXXGRAPH
             {
 
                 int usleep_time = 2;
-                while (!u_record.getLock())
+                while (!u_record->getLock())
                 {
-                    //std::cout << "Waiting for lock on node " << u << std::endl;
-                    usleep(usleep_time);
+                    //usleep(usleep_time);
+                    std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
                     usleep_time = (int)pow(usleep_time, 2);
                 }
-                //std::cout << "Lock Taken for " << u << std::endl;
                 usleep_time = 2;
-                while (!v_record.getLock())
+                while (!v_record->getLock())
                 {
-                    //std::cout << "Waiting for lock on node " << v << std::endl;
                     usleep(usleep_time);
                     usleep_time = (int)pow(usleep_time, 2);
 
                     if (usleep_time > GLOBALS.SLEEP_LIMIT)
                     {
-                        //std::cout << "Releases all Lock" << std::endl;
-                        u_record.releaseLock();
+                        u_record->releaseLock();
                         //performStep(e, state);
                         //return;
                     } //TO AVOID DEADLOCK
                 }
                 locks_taken = true;
             }
-
             //*** LOCK TAKEN
-            //std::cout << "Lock Taken for " << v << std::endl;
             int machine_id = -1;
 
             //*** COMPUTE MAX AND MIN LOAD
@@ -106,22 +102,21 @@ namespace CXXGRAPH
             //*** COMPUTE SCORES, FIND MIN SCORE, AND COMPUTE CANDIDATES PARITIONS
             std::vector<int> candidates;
             double MAX_SCORE = 0.0;
-
             for (int m = 0; m < P; m++)
             {
 
-                int degree_u = u_record.getDegree() + 1;
-                int degree_v = v_record.getDegree() + 1;
+                int degree_u = u_record->getDegree() + 1;
+                int degree_v = v_record->getDegree() + 1;
                 int SUM = degree_u + degree_v;
                 double fu = 0;
                 double fv = 0;
-                if (u_record.hasReplicaInPartition(m))
+                if (u_record->hasReplicaInPartition(m))
                 {
                     fu = degree_u;
                     fu /= SUM;
                     fu = 1 + (1 - fu);
                 }
-                if (v_record.hasReplicaInPartition(m))
+                if (v_record->hasReplicaInPartition(m))
                 {
                     fv = degree_v;
                     fv /= SUM;
@@ -155,7 +150,6 @@ namespace CXXGRAPH
                     candidates.push_back(m);
                 }
             }
-
             //*** CHECK TO AVOID ERRORS
             if (candidates.empty())
             {
@@ -166,23 +160,22 @@ namespace CXXGRAPH
 
             //*** PICK A RANDOM ELEMENT FROM CANDIDATES
             /* initialize random seed: */
-            srand(time(NULL));
-
-            int choice = rand() % candidates.size();
+            unsigned int seed = (unsigned int)time(NULL);
+            srand(seed);
+            int choice = rand_r(&seed) % candidates.size();
             machine_id = candidates.at(choice);
-
             try
             {
                 CoordinatedPartitionState<T> &cord_state = dynamic_cast<CoordinatedPartitionState<T> &>(state);
                 //NEW UPDATE RECORDS RULE TO UPFDATE THE SIZE OF THE PARTITIONS EXPRESSED AS THE NUMBER OF VERTICES THEY CONTAINS
-                if (!u_record.hasReplicaInPartition(machine_id))
+                if (!u_record->hasReplicaInPartition(machine_id))
                 {
-                    u_record.addPartition(machine_id);
+                    u_record->addPartition(machine_id);
                     cord_state.incrementMachineLoadVertices(machine_id);
                 }
-                if (!v_record.hasReplicaInPartition(machine_id))
+                if (!v_record->hasReplicaInPartition(machine_id))
                 {
-                    v_record.addPartition(machine_id);
+                    v_record->addPartition(machine_id);
                     cord_state.incrementMachineLoadVertices(machine_id);
                 }
             }
@@ -190,13 +183,13 @@ namespace CXXGRAPH
             {
                 // use employee's member functions
                 //1-UPDATE RECORDS
-                if (!u_record.hasReplicaInPartition(machine_id))
+                if (!u_record->hasReplicaInPartition(machine_id))
                 {
-                    u_record.addPartition(machine_id);
+                    u_record->addPartition(machine_id);
                 }
-                if (!v_record.hasReplicaInPartition(machine_id))
+                if (!v_record->hasReplicaInPartition(machine_id))
                 {
-                    v_record.addPartition(machine_id);
+                    v_record->addPartition(machine_id);
                 }
             }
 
@@ -204,12 +197,12 @@ namespace CXXGRAPH
             state.incrementMachineLoad(machine_id, &e);
 
             //3-UPDATE DEGREES
-            u_record.incrementDegree();
-            v_record.incrementDegree();
+            u_record->incrementDegree();
+            v_record->incrementDegree();
 
             //*** RELEASE LOCK
-            u_record.releaseLock();
-            v_record.releaseLock();
+            u_record->releaseLock();
+            v_record->releaseLock();
         }
     }
 }

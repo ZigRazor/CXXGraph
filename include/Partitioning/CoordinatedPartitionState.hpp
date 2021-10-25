@@ -39,7 +39,7 @@ namespace CXXGRAPH
         class CoordinatedPartitionState : public PartitionState<T>
         {
         private:
-            std::map<int, CoordinatedRecord<T>> record_map;
+            std::map<int, CoordinatedRecord<T>*> record_map;
             std::vector<int> machines_load_edges;
             std::vector<int> machines_load_vertices;
             PartitionMap<T> partition_map;
@@ -47,12 +47,13 @@ namespace CXXGRAPH
             int MAX_LOAD;
             std::mutex* machines_load_edges_mutex;
             std::mutex* machines_load_vertices_mutex;
+            std::mutex* record_map_mutex;
             //DatWriter out; //to print the final partition of each edge
         public:
             CoordinatedPartitionState(Globals &G);
             ~CoordinatedPartitionState();
 
-            Record<T> &getRecord(int x);
+            Record<T>* getRecord(int x);
             int getMachineLoad(int m);
             void incrementMachineLoad(int m, const  Edge<T> *e);
             int getMinLoad();
@@ -71,6 +72,7 @@ namespace CXXGRAPH
         {
             machines_load_edges_mutex = new std::mutex();
             machines_load_vertices_mutex = new std::mutex();
+            record_map_mutex = new std::mutex();
             //this->GLOBALS = G;
             for (int i = 0; i < GLOBALS.numberOfPartition; i++)
             {
@@ -92,16 +94,16 @@ namespace CXXGRAPH
             //}
         }
         template <typename T>
-        Record<T> &CoordinatedPartitionState<T>::getRecord(int x)
+        Record<T>* CoordinatedPartitionState<T>::getRecord(int x)
         {
+            std::lock_guard<std::mutex> lock(*record_map_mutex);
             if (record_map.find(x) == record_map.end())
             {
-                //std::cout << "Record " << x << " not found" << std::endl;
-                record_map[x] = CoordinatedRecord<T>();
+                record_map[x] = new CoordinatedRecord<T>();
             }
-            //std::cout << "Return Record " << x << std::endl;
             return record_map.at(x);
         }
+
         template <typename T>
         int CoordinatedPartitionState<T>::getMachineLoad(int m)
         {
@@ -157,11 +159,12 @@ namespace CXXGRAPH
         int CoordinatedPartitionState<T>::getTotalReplicas()
         {
             //TODO
+            std::lock_guard<std::mutex> lock(*record_map_mutex);
             int result = 0;
             auto record_map_it = record_map.begin();
             for (record_map_it; record_map_it != record_map.end(); ++record_map_it)
             {
-                int r = record_map_it->second.getReplicas();
+                int r = record_map_it->second->getReplicas();
                 if (r > 0)
                 {
                     result += r;
@@ -176,11 +179,13 @@ namespace CXXGRAPH
         template <typename T>
         int CoordinatedPartitionState<T>::getNumVertices()
         {
+            std::lock_guard<std::mutex> lock(*record_map_mutex);
             return record_map.size();
         }
         template <typename T>
         std::set<int> CoordinatedPartitionState<T>::getVertexIds()
         {
+            std::lock_guard<std::mutex> lock(*record_map_mutex);
             //if (GLOBALS.OUTPUT_FILE_NAME!=null){ out.close(); }
             std::set<int> result;
             auto record_map_it = record_map.begin();

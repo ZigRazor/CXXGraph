@@ -2,8 +2,8 @@
 #include "CXXGraph.hpp"
 #include "Utilities.hpp"
 
-static auto nodes = generateRandomNodes(1000, 2);
-static auto edges = generateRandomEdges(1000, nodes);
+static auto nodes = generateRandomNodes(10000, 2);
+static auto edges = generateRandomEdges(10000, nodes);
 
 /*
 TEST(PartitonTest, test_1)
@@ -114,7 +114,7 @@ TEST(PartitonTest, test_2)
 
 
 
-TEST(PartitonTest, test_1)
+TEST(PartitionTest, test_1)
 {
     CXXGRAPH::Node<int> node1(1, 1);
     CXXGRAPH::Node<int> node2(2, 2);
@@ -167,7 +167,7 @@ TEST(PartitonTest, test_1)
     }
 }
 
-TEST(PartitonTest, test_2)
+TEST(PartitionTest, test_2)
 {
     CXXGRAPH::Graph<int> graph;
     for (auto e : edges)
@@ -181,7 +181,7 @@ TEST(PartitonTest, test_2)
         totalEdgeInPartition += elem.second->getEdgeSet().size();
     }
     //std::cout << "Total Edge in Partition: " << totalEdgeInPartition << std::endl;
-    ASSERT_EQ(totalEdgeInPartition, 1000);
+    ASSERT_EQ(totalEdgeInPartition, 10000);
     for (int i = 0; i < 4; ++i)
     {
         //std::cout << *partitionMap.at(i) << std::endl;
