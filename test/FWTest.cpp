@@ -5,10 +5,10 @@
 // https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm#Example
 TEST(FWTest, test_1)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
-    CXXGRAPH::Node<int> node4(4, 4);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
+    CXXGRAPH::Node<int> node4("4", 4);
 
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node2, node1, 4);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node1, node3, -2);
@@ -68,9 +68,9 @@ TEST(FWTest, test_1)
 // a graph with negative cycle
 TEST(FWTest, test_2)
 {
-    CXXGRAPH::Node<int> node0(0, 0);
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node0("0", 0);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node0, node1, 2);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node1, node2, 3);
     CXXGRAPH::DirectedWeightedEdge<int> edge3(3, node2, node0, -7);
@@ -96,9 +96,9 @@ TEST(FWTest, test_2)
 // UndirectedWeightedEdge
 TEST(FWTest, test_3)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
@@ -124,9 +124,9 @@ TEST(FWTest, test_3)
 // No weighted edge
 TEST(FWTest, test_4)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
