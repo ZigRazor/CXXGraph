@@ -12,7 +12,7 @@ static std::map<unsigned long, CXXGRAPH::Node<int> *> generateRandomNodes(unsign
     for (auto index = 0; index < numberOfNodes; index++)
     {
         randomNumber = (rand() % MaxValue) + 1;
-        CXXGRAPH::Node<int> *newNode = new CXXGRAPH::Node<int>(index, randomNumber);
+        CXXGRAPH::Node<int> *newNode = new CXXGRAPH::Node<int>(std::to_string(index), randomNumber);
         nodes[index] = newNode;
     }
     return nodes;
