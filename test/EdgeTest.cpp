@@ -47,14 +47,14 @@ TEST(EdgeTest, test)
 
     CXXGRAPH::Graph<int> graph;
     graph.setEdgeSet(edgeSet);
-    // auto adj = graph.getAdjMatrix();
-    // ASSERT_EQ(adj.size(), 3);
-    // graph.removeEdge(3);
-    // adj = graph.getAdjMatrix();
-    // ASSERT_EQ(adj.size(), 3);
+    auto adj = graph.getAdjMatrix();
+    ASSERT_EQ(adj.size(), 3);
+    graph.removeEdge(3);
+    adj = graph.getAdjMatrix();
+    ASSERT_EQ(adj.size(), 3);
 
-    // graph.removeEdge(2);
-    // adj = graph.getAdjMatrix();
-    // ASSERT_EQ(adj.size(),1);
-    // std::cout << adj << std::endl;
+    graph.removeEdge(2);
+    adj = graph.getAdjMatrix();
+    ASSERT_EQ(adj.size(),1);
+    std::cout << adj << std::endl;
 }
