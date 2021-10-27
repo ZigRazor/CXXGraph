@@ -4,11 +4,11 @@
 // check if algorithm works using a complicated test case
 TEST(BellmanFordTest, test_1)
 {
-    CXXGRAPH::Node<int> node0(0, 0);
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
-    CXXGRAPH::Node<int> node4(4, 4);
+    CXXGRAPH::Node<int> node0("0", 0);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
+    CXXGRAPH::Node<int> node4("4", 4);
 
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node0, node1, 6);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(1, node0, node2, 7);
@@ -55,9 +55,9 @@ TEST(BellmanFordTest, test_1)
 // a graph with negative cycle
 TEST(BellmanFordTest, test_2)
 {
-    CXXGRAPH::Node<int> node0(0, 0);
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node0("0", 0);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node0, node1, 2);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node1, node2, 3);
     CXXGRAPH::DirectedWeightedEdge<int> edge3(3, node2, node0, -7);
@@ -83,9 +83,9 @@ TEST(BellmanFordTest, test_2)
 // UndirectedWeightedEdge
 TEST(BellmanFordTest, test_3)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
@@ -113,9 +113,9 @@ TEST(BellmanFordTest, test_3)
 // No weighted edge
 TEST(BellmanFordTest, test_4)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
@@ -145,9 +145,9 @@ TEST(BellmanFordTest, test_4)
 // ERR_TARGET_NODE_NOT_REACHABLE
 TEST(BellmanFordTest, test_5)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
     CXXGRAPH::DirectedWeightedEdge<int> edge1(2, node1, node2, 1);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);

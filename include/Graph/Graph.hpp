@@ -522,7 +522,7 @@ namespace CXXGRAPH
 			return -1;
 		}
 		auto printOutGraph = [&ofileGraph](const Edge<T> *e)
-		{ ofileGraph << e->getId() << "," << e->getNodePair().first->getId() << "," << e->getNodePair().second->getId() << "," << ((e->isDirected().has_value() && e->isDirected().value()) ? 1 : 0) << std::endl; };
+		{ ofileGraph << e->getId() << "," << e->getNodePair().first->getUserId() << "," << e->getNodePair().second->getUserId() << "," << ((e->isDirected().has_value() && e->isDirected().value()) ? 1 : 0) << std::endl; };
 		std::for_each(edgeSet.cbegin(), edgeSet.cend(), printOutGraph);
 		ofileGraph.close();
 
@@ -538,7 +538,7 @@ namespace CXXGRAPH
 				return -1;
 			}
 			auto printOutNodeFeat = [&ofileNodeFeat](const Node<T> *node)
-			{ ofileNodeFeat << node->getId() << "," << node->getData() << std::endl; };
+			{ ofileNodeFeat << node->getUserId() << "," << node->getData() << std::endl; };
 			auto nodeSet = getNodeSet();
 			std::for_each(nodeSet.cbegin(), nodeSet.cend(), printOutNodeFeat);
 			ofileNodeFeat.close();
@@ -665,7 +665,7 @@ namespace CXXGRAPH
 			return -1;
 		}
 		auto printOutGraph = [&ofileGraph](const Edge<T> *e)
-		{ ofileGraph << e->getId() << "\t" << e->getNodePair().first->getId() << "\t" << e->getNodePair().second->getId() << "\t" << ((e->isDirected().has_value() && e->isDirected().value()) ? 1 : 0) << std::endl; };
+		{ ofileGraph << e->getId() << "\t" << e->getNodePair().first->getUserId() << "\t" << e->getNodePair().second->getUserId() << "\t" << ((e->isDirected().has_value() && e->isDirected().value()) ? 1 : 0) << std::endl; };
 		std::for_each(edgeSet.cbegin(), edgeSet.cend(), printOutGraph);
 		ofileGraph.close();
 
@@ -681,7 +681,7 @@ namespace CXXGRAPH
 				return -1;
 			}
 			auto printOutNodeFeat = [&ofileNodeFeat](const Node<T> *node)
-			{ ofileNodeFeat << node->getId() << "\t" << node->getData() << std::endl; };
+			{ ofileNodeFeat << node->getUserId() << "\t" << node->getData() << std::endl; };
 			auto nodeSet = getNodeSet();
 			std::for_each(nodeSet.cbegin(), nodeSet.cend(), printOutNodeFeat);
 			ofileNodeFeat.close();
@@ -811,7 +811,7 @@ namespace CXXGRAPH
 				{
 					feat = nodeFeatMap.at(edgeIt->second.first);
 				}
-				node1 = new Node<T>(edgeIt->second.first, feat);
+				node1 = new Node<T>(std::to_string(edgeIt->second.first), feat);
 				nodeMap[edgeIt->second.first] = node1;
 			}
 			else
@@ -826,7 +826,7 @@ namespace CXXGRAPH
 				{
 					feat = nodeFeatMap.at(edgeIt->second.second);
 				}
-				node2 = new Node<T>(edgeIt->second.second, feat);
+				node2 = new Node<T>(std::to_string(edgeIt->second.second), feat);
 				nodeMap[edgeIt->second.second] = node2;
 			}
 			else
