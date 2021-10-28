@@ -9,10 +9,9 @@
 // once in the eulerian path
 TEST(EulerPathTest, test_1)
 {
-    CXXGRAPH::Node<int> node0(0, 0);
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    // CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node0("0", 0);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
 
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node0, node1, 4);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node1, node2, 8);
@@ -29,7 +28,7 @@ TEST(EulerPathTest, test_1)
     {
         auto check = std::find_if(res.begin(), res.end(),
                                   [node](auto it)
-                                  { return (node->getId() == it.getId()); }) == res.end();
+                                  { return (node->getUserId() == it.getUserId()); }) == res.end();
 
         ASSERT_FALSE(check);
     }
@@ -37,11 +36,11 @@ TEST(EulerPathTest, test_1)
 
 TEST(EulerPathTest, test_2)
 {
-    CXXGRAPH::Node<int> node0(0, 0);
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
-    CXXGRAPH::Node<int> node4(4, 4);
+    CXXGRAPH::Node<int> node0("0", 0);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
+    CXXGRAPH::Node<int> node4("4", 4);
 
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node0, node1, 4);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node1, node2, 8);
@@ -65,7 +64,7 @@ TEST(EulerPathTest, test_2)
     {
         auto check = std::find_if(res.begin(), res.end(),
                                   [node](auto it)
-                                  { return (node->getId() == it.getId()); }) == res.end();
+                                  { return (node->getUserId() == it.getUserId()); }) == res.end();
 
         ASSERT_FALSE(check);
     }
@@ -73,13 +72,13 @@ TEST(EulerPathTest, test_2)
 
 TEST(EulerPathTest, test_3)
 {
-    CXXGRAPH::Node<int> node0(0, 0);
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
-    CXXGRAPH::Node<int> node4(4, 4);
-    CXXGRAPH::Node<int> node5(5, 5);
-    CXXGRAPH::Node<int> node6(6, 6);
+    CXXGRAPH::Node<int> node0("0", 0);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
+    CXXGRAPH::Node<int> node4("4", 4);
+    CXXGRAPH::Node<int> node5("5", 5);
+    CXXGRAPH::Node<int> node6("6", 6);
 
     CXXGRAPH::DirectedEdge<int> edge1(1, node0, node1);
     CXXGRAPH::DirectedEdge<int> edge2(2, node0, node6);
@@ -107,7 +106,7 @@ TEST(EulerPathTest, test_3)
     {
         auto check = std::find_if(res.begin(), res.end(),
                                   [node](auto it)
-                                  { return (node->getId() == it.getId()); }) == res.end();
+                                  { return (node->getUserId() == it.getUserId()); }) == res.end();
 
         ASSERT_FALSE(check);
     }

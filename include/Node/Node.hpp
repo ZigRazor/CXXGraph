@@ -23,6 +23,9 @@
 
 #pragma once
 #include <iostream>
+#include <openssl/sha.h>
+#include <iomanip>
+
 
 namespace CXXGRAPH
 {
@@ -34,13 +37,16 @@ namespace CXXGRAPH
 	class Node
 	{
 	private:
-		unsigned long id;
+		unsigned long long id;
+		std::string userId;
 		T data;
+		void setId(const std::string*);
 
 	public:
-		Node(const unsigned long id, const T &data);
+		Node(const std::string, const T &data);
 		~Node() = default;
-		const unsigned long &getId() const;
+		const unsigned long long &getId() const;
+		const std::string &getUserId() const;
 		const T &getData() const;
 		//operator
 		bool operator==(const Node<T> &b) const;
@@ -49,16 +55,47 @@ namespace CXXGRAPH
 	};
 
 	template <typename T>
-	Node<T>::Node(const unsigned long id, const T &data)
+	Node<T>::Node(const std::string id, const T &data)
 	{
-		this->id = id;
+		this->userId = id;
+		// the userid is set as sha512 hash of the user provided id
+		setId(&id);
 		this->data = data;
 	}
 
 	template <typename T>
-	const unsigned long &Node<T>::getId() const
+	void Node<T>::setId(const std::string* inpId)
+	{
+		const unsigned char* userId = reinterpret_cast<const unsigned char *>((*inpId).c_str() );
+		unsigned char obuf[64];
+		SHA512(userId, (*inpId).length(), obuf);
+		// Transform byte-array to string
+		std::stringstream shastr;
+		shastr << std::hex << std::setfill('0');
+		int i = 0;
+		//unsigned long can only store 8 bytes so we truncate the hash to 8 bytes
+		for (const auto &byte: obuf)
+		{
+			shastr << std::setw(2) << (int)byte;
+			i++;
+			if (i==8) break;
+		}
+		auto idStr =  shastr.str();
+		// convert hex string to unsigned long long
+		std::istringstream iss(idStr);
+		iss >> std::hex >> this->id;
+	}	
+
+	template <typename T>
+	const unsigned long long &Node<T>::getId() const
 	{
 		return id;
+	}
+
+	template <typename T>
+	const std::string &Node<T>::getUserId() const
+	{
+		return userId;
 	}
 
 	template <typename T>
@@ -85,7 +122,7 @@ namespace CXXGRAPH
 	std::ostream &operator<<(std::ostream &os, const Node<T> &node)
 	{
 		os << "Node: {\n"
-		   << "  Id:\t" << node.id << "\n  Data:\t" << node.data << "\n}";
+		   << "  Id:\t" << node.userId << "\n  Data:\t" << node.data << "\n}";
 		return os;
 	}
 }

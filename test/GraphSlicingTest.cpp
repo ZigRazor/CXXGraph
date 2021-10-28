@@ -4,12 +4,12 @@
 // DirectedEdge
 TEST(GraphSlicingTest, test_1)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
-    CXXGRAPH::Node<int> node4(4, 4);
-    CXXGRAPH::Node<int> node5(5, 5);
-    CXXGRAPH::Node<int> node6(6, 6);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
+    CXXGRAPH::Node<int> node4("4", 4);
+    CXXGRAPH::Node<int> node5("5", 5);
+    CXXGRAPH::Node<int> node6("6", 6);
 
     CXXGRAPH::DirectedEdge<int> edge1(1, node1, node2);
     CXXGRAPH::DirectedEdge<int> edge2(2, node2, node3);
@@ -46,12 +46,12 @@ TEST(GraphSlicingTest, test_1)
 // weights shouldn't matter
 TEST(GraphSlicingTest, test_2)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
-    CXXGRAPH::Node<int> node4(4, 4);
-    CXXGRAPH::Node<int> node5(5, 5);
-    CXXGRAPH::Node<int> node6(6, 6);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
+    CXXGRAPH::Node<int> node4("4", 4);
+    CXXGRAPH::Node<int> node5("5", 5);
+    CXXGRAPH::Node<int> node6("6", 6);
 
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node1, node2, 10);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, -1);
@@ -87,12 +87,12 @@ TEST(GraphSlicingTest, test_2)
 // UndirectedWeightedEdge
 TEST(GraphSlicingTest, test_3)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
-    CXXGRAPH::Node<int> node4(4, 4);
-    CXXGRAPH::Node<int> node5(5, 5);
-    CXXGRAPH::Node<int> node6(6, 6);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
+    CXXGRAPH::Node<int> node4("4", 4);
+    CXXGRAPH::Node<int> node5("5", 5);
+    CXXGRAPH::Node<int> node6("6", 6);
 
     CXXGRAPH::UndirectedEdge<int> edge1(1, node1, node2);
     CXXGRAPH::UndirectedEdge<int> edge2(2, node2, node3);
@@ -123,12 +123,12 @@ TEST(GraphSlicingTest, test_3)
 // weights shouldn't matter
 TEST(GraphSlicingTest, test_4)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
-    CXXGRAPH::Node<int> node4(4, 4);
-    CXXGRAPH::Node<int> node5(5, 5);
-    CXXGRAPH::Node<int> node6(6, 6);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
+    CXXGRAPH::Node<int> node4("4", 4);
+    CXXGRAPH::Node<int> node5("5", 5);
+    CXXGRAPH::Node<int> node6("6", 6);
 
     CXXGRAPH::UndirectedWeightedEdge<int> edge1(1, node1, node2, 10);
     CXXGRAPH::UndirectedWeightedEdge<int> edge2(2, node2, node3, -1);
@@ -158,10 +158,10 @@ TEST(GraphSlicingTest, test_4)
 // start node is disconnected from rest of the graph
 TEST(GraphSlicingTest, test_5)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
-    CXXGRAPH::Node<int> node4(4, 4);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
+    CXXGRAPH::Node<int> node4("4", 4);
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node1, node2, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge3(3, node1, node3, 6);

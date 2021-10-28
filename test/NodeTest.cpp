@@ -26,7 +26,7 @@ std::ostream &operator<<(std::ostream &os, const testStruct &TestStruct)
 }
 
 
-TEST(NodeTest, Constructor)
+TEST(StringNodeTest, StringConstructor)
 {
     // Testing constructor and getters with different types of data
     int intTest = 42;
@@ -39,37 +39,37 @@ TEST(NodeTest, Constructor)
     std::map<int,int> mapTest = {{1,2},{3,4},{5,6},{7,8}};
     testStruct structTest(42, true, "abc");
 
-    CXXGRAPH::Node<int> intNode(1, intTest);
-    CXXGRAPH::Node<float> floatNode(2, floatTest);
-    CXXGRAPH::Node<double> doubleNode(3, doubleTest);
-    CXXGRAPH::Node<bool> boolNode(4, boolTest);
-    CXXGRAPH::Node<char> charNode(5, charTest);
-    CXXGRAPH::Node<std::string> stringNode(6, stringTest);
-    CXXGRAPH::Node<std::vector<int>> vectorNode(7, vectorTest);
-    CXXGRAPH::Node<std::map<int,int>> mapNode(8, mapTest);
-    CXXGRAPH::Node<testStruct> structNode(9, structTest);
+    CXXGRAPH::Node<int> intNode("1", intTest);
+    CXXGRAPH::Node<float> floatNode("2", floatTest);
+    CXXGRAPH::Node<double> doubleNode("3", doubleTest);
+    CXXGRAPH::Node<bool> boolNode("4", boolTest);
+    CXXGRAPH::Node<char> charNode("5", charTest);
+    CXXGRAPH::Node<std::string> stringNode("6", stringTest);
+    CXXGRAPH::Node<std::vector<int>> vectorNode("7", vectorTest);
+    CXXGRAPH::Node<std::map<int,int>> mapNode("8", mapTest);
+    CXXGRAPH::Node<testStruct> structNode("9", structTest);
 
-    ASSERT_EQ(intNode.getId(), 1);
+    ASSERT_EQ(intNode.getUserId(), "1");
     ASSERT_EQ(intNode.getData(), intTest);
-    ASSERT_EQ(floatNode.getId(), 2);
+    ASSERT_EQ(floatNode.getUserId(), "2");
     ASSERT_EQ(floatNode.getData(), floatTest);
-    ASSERT_EQ(doubleNode.getId(), 3);
+    ASSERT_EQ(doubleNode.getUserId(), "3");
     ASSERT_EQ(doubleNode.getData(), doubleTest);
-    ASSERT_EQ(boolNode.getId(), 4);
+    ASSERT_EQ(boolNode.getUserId(), "4");
     ASSERT_EQ(boolNode.getData(), boolTest);
-    ASSERT_EQ(charNode.getId(), 5);
+    ASSERT_EQ(charNode.getUserId(), "5");
     ASSERT_EQ(charNode.getData(), charTest);
-    ASSERT_EQ(stringNode.getId(), 6);
+    ASSERT_EQ(stringNode.getUserId(), "6");
     ASSERT_EQ(stringNode.getData(), stringTest);
-    ASSERT_EQ(vectorNode.getId(), 7);
+    ASSERT_EQ(vectorNode.getUserId(), "7");
     ASSERT_EQ(vectorNode.getData(), vectorTest);
-    ASSERT_EQ(mapNode.getId(), 8);
+    ASSERT_EQ(mapNode.getUserId(), "8");
     ASSERT_EQ(mapNode.getData(), mapTest);
-    ASSERT_EQ(structNode.getId(), 9);
+    ASSERT_EQ(structNode.getUserId(), "9");
     ASSERT_EQ(structNode.getData(), structTest);
 }
 
-TEST(NodeTest, eqOperator)
+TEST(StringNodeTest, StringeqOperator)
 {
     // Testing equal operator with different types of data
     int int1 = 2;
@@ -81,14 +81,14 @@ TEST(NodeTest, eqOperator)
     testStruct struct1(42, true, "abc");
     testStruct struct2(41, true, "cba");
 
-    CXXGRAPH::Node<int> nodeInt1(1, int1);
-    CXXGRAPH::Node<int> nodeInt2(1, int2);
-    CXXGRAPH::Node<double> nodeDouble1(2, double1);
-    CXXGRAPH::Node<double> nodeDouble2(2, double2);
-    CXXGRAPH::Node<std::string> nodeString1(1, string1);
-    CXXGRAPH::Node<std::string> nodeString2(2, string2);
-    CXXGRAPH::Node<testStruct> nodeStruct1(1, struct1);
-    CXXGRAPH::Node<testStruct> nodeStruct2(2, struct2);
+    CXXGRAPH::Node<int> nodeInt1("1", int1);
+    CXXGRAPH::Node<int> nodeInt2("1", int2);
+    CXXGRAPH::Node<double> nodeDouble1("2", double1);
+    CXXGRAPH::Node<double> nodeDouble2("2", double2);
+    CXXGRAPH::Node<std::string> nodeString1("1", string1);
+    CXXGRAPH::Node<std::string> nodeString2("2", string2);
+    CXXGRAPH::Node<testStruct> nodeStruct1("1", struct1);
+    CXXGRAPH::Node<testStruct> nodeStruct2("2", struct2);
 
     ASSERT_TRUE(nodeInt1 == nodeInt2); // Equal nodes
     ASSERT_FALSE(nodeDouble1 == nodeDouble2);   // different data
@@ -96,7 +96,7 @@ TEST(NodeTest, eqOperator)
     ASSERT_FALSE(nodeStruct1 == nodeStruct2);   // completely different
 }
 
-TEST(NodeTest, ltOperator)
+TEST(StringNodeTest, StringltOperator)
 {
     // Testing Less Than operator with different types of data
     int int1 = 2;
@@ -108,25 +108,26 @@ TEST(NodeTest, ltOperator)
     testStruct struct1(42, true, "abc");
     testStruct struct2(41, true, "cba");
 
-    CXXGRAPH::Node<int> nodeInt1(1, int1);
-    CXXGRAPH::Node<int> nodeInt2(1, int2);
-    CXXGRAPH::Node<double> nodeDouble1(2, double1);
-    CXXGRAPH::Node<double> nodeDouble2(2, double2);
-    CXXGRAPH::Node<std::string> nodeString1(1, string1);
-    CXXGRAPH::Node<std::string> nodeString2(2, string2);
-    CXXGRAPH::Node<testStruct> nodeStruct1(2, struct1);
-    CXXGRAPH::Node<testStruct> nodeStruct2(1, struct2);
+    CXXGRAPH::Node<int> nodeInt1("1", int1);
+    CXXGRAPH::Node<int> nodeInt2("1", int2);
+    CXXGRAPH::Node<double> nodeDouble1("2", double1);
+    CXXGRAPH::Node<double> nodeDouble2("2", double2);
+    CXXGRAPH::Node<std::string> nodeString1("1", string1);
+    CXXGRAPH::Node<std::string> nodeString2("2", string2);
+    CXXGRAPH::Node<testStruct> nodeStruct1("2", struct1);
+    CXXGRAPH::Node<testStruct> nodeStruct2("1", struct2);
 
     ASSERT_FALSE(nodeInt1 < nodeInt2); // Same id same data
     ASSERT_FALSE(nodeDouble1 < nodeDouble2);   // Same id different data
-    ASSERT_TRUE(nodeString1 < nodeString2);   // Different id different id
-    ASSERT_FALSE(nodeStruct1 < nodeStruct2);   // completely different
+    // hash of 1 is greater than 2
+    ASSERT_TRUE(nodeString2 < nodeString1);   // Different id different id
+    ASSERT_FALSE(nodeStruct2 < nodeStruct1);   // completely different
 }
 
-TEST(NodeTest, printOperator)
+TEST(StringNodeTest, StringprintOperator)
 {
     // Testing << operator with different types of data
-    int nodesId = 1;
+    std::string nodesId = "1";
     int testInt = 2;
     double testDouble = 4.321;
     std::string testString = "abc";

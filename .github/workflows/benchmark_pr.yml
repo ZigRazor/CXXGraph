@@ -62,6 +62,6 @@ jobs:
             # Push and deploy GitHub pages branch automatically
             #auto-push: true
             # Enable alert commit comment
-            comment-on-alert: true
+            comment-on-alert: false
             # Mention @rhysd in the commit comment
             alert-comment-cc-users: '@ZigRazor'

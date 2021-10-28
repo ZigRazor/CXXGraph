@@ -3,8 +3,8 @@
 
 TEST(GraphTest, Constructor_1)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::Edge<int> edge(1, pairNode);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
@@ -15,8 +15,8 @@ TEST(GraphTest, Constructor_1)
 
 TEST(GraphTest, GetEdge_1)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::Edge<int> edge(1, pairNode);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
@@ -27,8 +27,8 @@ TEST(GraphTest, GetEdge_1)
 
 TEST(GraphTest, GetEdge_2)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::Edge<int> edge(1, pairNode);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
@@ -39,8 +39,8 @@ TEST(GraphTest, GetEdge_2)
 
 TEST(GraphTest, GetEdge_3)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::Edge<int> edge(1, pairNode);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
@@ -51,8 +51,8 @@ TEST(GraphTest, GetEdge_3)
 
 TEST(GraphTest, GetNodeSet_1)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::Edge<int> edge(1, pairNode);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
@@ -66,9 +66,9 @@ TEST(GraphTest, GetNodeSet_1)
 
 TEST(GraphTest, GetNodeSet_2)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::Edge<int> edge(1, pairNode);
     CXXGRAPH::UndirectedEdge<int> edge2(2, node2, node3);
@@ -85,8 +85,8 @@ TEST(GraphTest, GetNodeSet_2)
 
 TEST(GraphTest, adj_print_1)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::Edge<int> edge(1, pairNode);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
@@ -98,8 +98,8 @@ TEST(GraphTest, adj_print_1)
 
 TEST(GraphTest, adj_print_2)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::DirectedEdge<int> edge(1, pairNode);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
@@ -111,8 +111,8 @@ TEST(GraphTest, adj_print_2)
 
 TEST(GraphTest, adj_print_3)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::UndirectedEdge<int> edge(1, pairNode);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
@@ -124,9 +124,9 @@ TEST(GraphTest, adj_print_3)
 
 TEST(GraphTest, adj_print_4)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::UndirectedEdge<int> edge1(1, pairNode);
     CXXGRAPH::UndirectedEdge<int> edge2(2, node2, node3);
@@ -142,9 +142,9 @@ TEST(GraphTest, adj_print_4)
 
 TEST(GraphTest, adj_print_5)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::DirectedEdge<int> edge1(1, pairNode);
     CXXGRAPH::DirectedEdge<int> edge2(2, node2, node3);
@@ -160,9 +160,9 @@ TEST(GraphTest, adj_print_5)
 
 TEST(GraphTest, adj_print_6)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::DirectedEdge<int> edge1(1, pairNode);
     CXXGRAPH::DirectedEdge<int> edge2(2, node2, node3);
@@ -178,8 +178,8 @@ TEST(GraphTest, adj_print_6)
 
 TEST(Graph_TSTest, Constructor_1)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::Edge<int> edge(1, pairNode);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
@@ -190,8 +190,8 @@ TEST(Graph_TSTest, Constructor_1)
 
 TEST(Graph_TSTest, GetEdge_1)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::Edge<int> edge(1, pairNode);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
@@ -202,8 +202,8 @@ TEST(Graph_TSTest, GetEdge_1)
 
 TEST(Graph_TSTest, GetEdge_2)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::Edge<int> edge(1, pairNode);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
@@ -214,8 +214,8 @@ TEST(Graph_TSTest, GetEdge_2)
 
 TEST(Graph_TSTest, GetEdge_3)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::Edge<int> edge(1, pairNode);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
@@ -226,8 +226,8 @@ TEST(Graph_TSTest, GetEdge_3)
 
 TEST(Graph_TSTest, GetNodeSet_1)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::Edge<int> edge(1, pairNode);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
@@ -241,9 +241,9 @@ TEST(Graph_TSTest, GetNodeSet_1)
 
 TEST(Graph_TSTest, GetNodeSet_2)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::Edge<int> edge(1, pairNode);
     CXXGRAPH::UndirectedEdge<int> edge2(2, node2, node3);
@@ -260,8 +260,8 @@ TEST(Graph_TSTest, GetNodeSet_2)
 
 TEST(Graph_TSTest, adj_print_1)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::Edge<int> edge(1, pairNode);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
@@ -273,8 +273,8 @@ TEST(Graph_TSTest, adj_print_1)
 
 TEST(Graph_TSTest, adj_print_2)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::DirectedEdge<int> edge(1, pairNode);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
@@ -286,8 +286,8 @@ TEST(Graph_TSTest, adj_print_2)
 
 TEST(Graph_TSTest, adj_print_3)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::UndirectedEdge<int> edge(1, pairNode);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
@@ -299,9 +299,9 @@ TEST(Graph_TSTest, adj_print_3)
 
 TEST(Graph_TSTest, adj_print_4)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::UndirectedEdge<int> edge1(1, pairNode);
     CXXGRAPH::UndirectedEdge<int> edge2(2, node2, node3);
@@ -317,9 +317,9 @@ TEST(Graph_TSTest, adj_print_4)
 
 TEST(Graph_TSTest, adj_print_5)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::DirectedEdge<int> edge1(1, pairNode);
     CXXGRAPH::DirectedEdge<int> edge2(2, node2, node3);
@@ -335,9 +335,9 @@ TEST(Graph_TSTest, adj_print_5)
 
 TEST(Graph_TSTest, adj_print_6)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::DirectedEdge<int> edge1(1, pairNode);
     CXXGRAPH::DirectedEdge<int> edge2(2, node2, node3);
