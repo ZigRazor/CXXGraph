@@ -154,13 +154,14 @@ namespace CXXGRAPH
 		virtual const AdjacencyMatrix<T> getAdjMatrix() const;
 		/**
 		* @brief This function finds the subset of given a nodeId
+		* Subset is stored in a map where keys are the hash-id of the node & values is the subset.
 		* @param subset query subset, we want to find target in this subset
 		* @param elem elem that we wish to find in the subset
  		*
  		* @return parent node of elem 
 		* Note: No Thread Safe
 		*/
-		virtual unsigned long long setFind(std::vector<Subset>*, const unsigned long long elem) const;
+		virtual unsigned long long setFind(std::map<unsigned long long, Subset>* , const unsigned long long elem) const;
 		/**
 		* @brief This function modifies the original subset array
 		* such that it the union of two sets a and b
@@ -170,7 +171,7 @@ namespace CXXGRAPH
  		* NOTE: Original subset is no longer available after union.
 		* Note: No Thread Safe
 		*/
-		virtual void setUnion(std::vector<Subset>*, const unsigned long long set1, const unsigned long long elem2) const;		
+		virtual void setUnion(std::map<unsigned long long, Subset>* , const unsigned long long set1, const unsigned long long elem2) const;		
 		/**
 		* @brief This function finds the eulerian path of a directed graph using hierholzers algorithm
  		*
@@ -300,7 +301,7 @@ namespace CXXGRAPH
 		 * 
 		 * @return true if a cycle is detected, else false
 		 */
-		virtual bool containsCycle(const std::list<const Edge<T>* >* edgeSet, std::vector<Subset>*) const;
+		virtual bool containsCycle(const std::list<const Edge<T>* >* edgeSet, std::map<unsigned long long, Subset>*) const;
 
 		/**
      	* \brief
@@ -936,7 +937,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	unsigned long long Graph<T>::setFind(std::vector<Subset> *subsets, const unsigned long long nodeId) const
+	unsigned long long Graph<T>::setFind(std::map<unsigned long long, Subset> *subsets, const unsigned long long nodeId) const
 	{
 		// find root and make root as parent of i
 		// (path compression)
@@ -949,9 +950,8 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	void Graph<T>::setUnion(std::vector<Subset>* subsets, const unsigned long long elem1, const unsigned long long elem2) const
+	void Graph<T>::setUnion(std::map<unsigned long long, Subset>* subsets, const unsigned long long elem1, const unsigned long long elem2) const
 	{
-		// return;
 		// if both sets have same parent
 		// then there's nothing to be done
 		if ((*subsets)[elem1].parent == (*subsets)[elem2].parent)
@@ -1423,11 +1423,11 @@ namespace CXXGRAPH
 			result.errorMessage = ERR_DIR_GRAPH;
 			return result;
 		}
-		auto nodeSet = Graph<T>::getNodeSet();
-		auto n = nodeSet.size();
+		const auto nodeSet = Graph<T>::getNodeSet();
+		const auto n = nodeSet.size();
 
-		// Use std vector for storing n subsets.
-		std::vector<Subset> subsets;
+		// Use std map for storing n subsets.
+		std::map<unsigned long long, Subset> subsets;
 
 		// Initially there are n different trees.
 		// Finally there will be one tree that will be MST
@@ -1435,7 +1435,7 @@ namespace CXXGRAPH
 
 		// check if all edges are weighted and store the weights
 		// in a map whose keys are the edge ids and values are the edge weights
-		auto edgeSet = Graph<T>::getEdgeSet();
+		const auto edgeSet = Graph<T>::getEdgeSet();
 		std::map<unsigned long long, double> edgeWeight;
 		for (auto edge : edgeSet)
 		{
@@ -1449,29 +1449,21 @@ namespace CXXGRAPH
 			}
 		}
 
-		// An array to store index of the cheapest edge of
-		// subset.  stored index refers to the edgeId
-		std::vector<long> cheapest(n, -1);
-		// user can give arbitrary ids to nodes
-		// we map these ids from 0 to 1 for consistency
-		// NOTE: WE CAN REMOVE THIS WHEN WE TAKE CARE OF THIS GLOBALLY
-		// WHILE CONSTRUCTING THE GRAPH
-		std::map<unsigned long long, unsigned long long> userNodeMap;
-		unsigned long long i = 0;
 		for (auto node : nodeSet)
 		{
-			userNodeMap[node->getId()] = i;
-			Subset set{i, 0};
-			subsets.push_back(set);
-			i++;
+			Subset set{node->getId(), 0};
+			subsets[node->getId()] = set;
 		}
 
 		result.mstCost = 0; //we will store the cost here
 		//exit when only 1 tree i.e. mst
 		while (numTrees > 1)
 		{
-			// Everytime initialize cheapest array
-			std::fill(cheapest.begin(), cheapest.end(), -1);
+			// Everytime initialize cheapest map
+			// It stores index of the cheapest edge of subset.
+			std::map<unsigned long long, unsigned long long> cheapest;
+			for (auto node : nodeSet)
+				cheapest[node->getId()] = INT_MAX;
 
 			// Traverse through all edges and update
 			// cheapest of every component
@@ -1479,10 +1471,9 @@ namespace CXXGRAPH
 			{
 				auto elem = edge->getNodePair();
 				auto edgeId = edge->getId();
-				// Find components (or sets) of two corners
-				// of current edge
-				auto set1 = Graph<T>::setFind(&subsets, userNodeMap[elem.first->getId()]);
-				auto set2 = Graph<T>::setFind(&subsets, userNodeMap[elem.second->getId()]);
+				// Find sets of two corners of current edge
+				auto set1 = Graph<T>::setFind(&subsets, elem.first->getId());
+				auto set2 = Graph<T>::setFind(&subsets, elem.second->getId());
 
 				// If two corners of current edge belong to
 				// same set, ignore current edge
@@ -1491,28 +1482,28 @@ namespace CXXGRAPH
 
 				// Else check if current edge is closer to previous
 				// cheapest edges of set1 and set2
-				if (cheapest[set1] == -1 ||
+				if (cheapest[set1] == INT_MAX ||
 					edgeWeight[cheapest[set1]] > edgeWeight[edgeId])
 					cheapest[set1] = edgeId;
 
-				if (cheapest[set2] == -1 ||
+				if (cheapest[set2] == INT_MAX ||
 					edgeWeight[cheapest[set2]] > edgeWeight[edgeId])
 					cheapest[set2] = edgeId;
 			}
 
 			// iterate over all the vertices and add picked
 			// cheapest edges to MST
-			for (int i = 0; i < n; i++)
+			for (const auto &[nodeId, edgeId] : cheapest)
 			{
 				// Check if cheapest for current set exists
-				if (cheapest[i] != -1)
+				if (edgeId != INT_MAX)
 				{
-					auto cheapestNode = Graph<T>::getEdge(cheapest[i]).value()->getNodePair();
-					int set1 = Graph<T>::setFind(&subsets, userNodeMap[cheapestNode.first->getId()]);
-					int set2 = Graph<T>::setFind(&subsets, userNodeMap[cheapestNode.second->getId()]);
+					auto cheapestNode = Graph<T>::getEdge(edgeId).value()->getNodePair();
+					auto set1 = Graph<T>::setFind(&subsets, cheapestNode.first->getId());
+					auto set2 = Graph<T>::setFind(&subsets, cheapestNode.second->getId());
 					if (set1 == set2)
 						continue;
-					result.mstCost += edgeWeight[cheapest[i]];
+					result.mstCost += edgeWeight[edgeId];
 					auto newEdgeMST = std::make_pair(cheapestNode.first->getId(), cheapestNode.second->getId());
 					result.mst.push_back(newEdgeMST);
 					// take union of set1 and set2 and decrease number of trees
@@ -1561,20 +1552,12 @@ namespace CXXGRAPH
 			}
 		}
 
-		std::vector<Subset> subset;
+		std::map<unsigned long long, Subset> subset;
 
-		// user can give arbitrary ids to nodes
-		// we map these ids from 0 to 1 for consistency
-		// NOTE: WE CAN REMOVE THIS WHEN WE TAKE CARE OF THIS GLOBALLY
-		// WHILE CONSTRUCTING THE GRAPH
-		std::map<unsigned long long, unsigned long long> userNodeMap;
-		unsigned long long i = 0;
 		for (auto node : nodeSet)
 		{
-			userNodeMap[node->getId()] = i;
-			Subset set{i, 0};
-			subset.push_back(set);
-			i++;
+			Subset set{node->getId(), 0};
+			subset[node->getId()] = set;
 		}
 		result.mstCost = 0;
 		while ((!sortedEdges.empty()) && (result.mst.size() < n))
@@ -1582,11 +1565,11 @@ namespace CXXGRAPH
 			auto [edgeWeight, cheapestEdge] = sortedEdges.top();
 			sortedEdges.pop();
 			auto &[first, second] = cheapestEdge->getNodePair();
-			auto set1 = Graph<T>::setFind(&subset, userNodeMap[first->getId()]);
-			auto set2 = Graph<T>::setFind(&subset, userNodeMap[second->getId()]);
+			auto set1 = Graph<T>::setFind(&subset, first->getId());
+			auto set2 = Graph<T>::setFind(&subset, second->getId());
 			if (set1 != set2)
 			{
-				result.mst.push_back(std::make_pair(userNodeMap[first->getId()], userNodeMap[second->getId()]));
+				result.mst.push_back(std::make_pair(first->getId(), second->getId()));
 				result.mstCost += edgeWeight;
 			}
 			Graph<T>::setUnion(&subset, set1, set2);
@@ -1760,7 +1743,7 @@ namespace CXXGRAPH
 	template <typename T>
 	bool Graph<T>::containsCycle(const std::list<const Edge<T>* >* edgeSet) const
 	{
-		std::vector<Subset> subset;
+		std::map<unsigned long long, Subset> subset;
 		// initialize the subset parent and rank values
 		for (auto edge: *edgeSet)
 		{	
@@ -1770,15 +1753,15 @@ namespace CXXGRAPH
 			nodeId.push_back(second->getId());
 			for (auto id: nodeId)
 			{
-				auto nodeExists = [id](const Subset& it)
-						{ return (id == (it).parent); };
+				auto nodeExists = [id](const auto& it)
+						{ return (id == (it.second).parent); };
 
 				if (std::find_if(subset.begin(), subset.end(), nodeExists) == subset.end())
 				{
 					Subset set;
 					set.parent = id;
 					set.rank = 0;
-					subset.push_back(set);
+					subset[id] = set;
 				}
 			}
 		}
@@ -1786,7 +1769,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	bool Graph<T>::containsCycle(const std::list<const Edge<T>* >* edgeSet, std::vector<Subset>* subset) const
+	bool Graph<T>::containsCycle(const std::list<const Edge<T>* >* edgeSet, std::map<unsigned long long, Subset>* subset) const
 	{		
 		for (const auto edge: *edgeSet)
 		{			
