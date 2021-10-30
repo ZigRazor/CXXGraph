@@ -6,7 +6,7 @@
 // like the length & cost of mst which must remain the same
 
 // example taken from
-// https://www.geeksforgeeks.org/prims-mst-for-adjacency-list-representation-greedy-algo-6/TEST(FWTest, test_1)
+// https://www.geeksforgeeks.org/prims-mst-for-adjacency-list-representation-greedy-algo-6/
 TEST(BoruvkaTest, test_1)
 {
     CXXGRAPH::Node<int> node0("0", 0);
