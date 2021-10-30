@@ -94,12 +94,12 @@ namespace CXXGRAPH
 	};
 	typedef FWResult_struct FWResult;
 	
-	/// Struct that contains the information about Prim Algorithm results
+	/// Struct that contains the information about Prim, Boruvka & Kruskal Algorithm results
 	struct MstResult_struct
 	{
 		bool success;			  // TRUE if the function does not return error, FALSE otherwise
 		std::string errorMessage; //message of error
-		std::vector<std::pair<unsigned long long, unsigned long long>> mst;  // MST
+		std::vector<std::pair<std::string, std::string>> mst;  // Stores the nodes of MST (string node-names are set by user during init)
 		double mstCost;  // MST
 	};
 	typedef MstResult_struct MstResult;

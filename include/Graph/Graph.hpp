@@ -1364,7 +1364,7 @@ namespace CXXGRAPH
 		doneNode.push_back(source->getId());
 		// stores the parent and corresponding child node
 		// of the edges that are part of MST
-		std::map<unsigned long long, unsigned long long> parentNode;
+		std::map<unsigned long long, std::string> parentNode;
 		while (!pq.empty())
 		{
 			// second element of pair denotes the node / vertex
@@ -1372,7 +1372,7 @@ namespace CXXGRAPH
 			auto nodeId = currentNode->getId();
 			if (std::find(doneNode.begin(), doneNode.end(), nodeId) == doneNode.end())
 			{
-				auto pair = std::make_pair(parentNode[nodeId], nodeId);
+				auto pair = std::make_pair(parentNode[nodeId], currentNode->getUserId());
 				result.mst.push_back(pair);
 				result.mstCost += pq.top().first;
 				doneNode.push_back(nodeId);
@@ -1394,7 +1394,7 @@ namespace CXXGRAPH
 							(std::find(doneNode.begin(), doneNode.end(), elem.first->getId()) == doneNode.end()))
 						{
 							dist[elem.first] = udw_edge->getWeight();
-							parentNode[elem.first->getId()] = currentNode->getId();
+							parentNode[elem.first->getId()] = currentNode->getUserId();
 							pq.push(std::make_pair(dist[elem.first], elem.first));
 						}
 					}
@@ -1504,7 +1504,7 @@ namespace CXXGRAPH
 					if (set1 == set2)
 						continue;
 					result.mstCost += edgeWeight[edgeId];
-					auto newEdgeMST = std::make_pair(cheapestNode.first->getId(), cheapestNode.second->getId());
+					auto newEdgeMST = std::make_pair(cheapestNode.first->getUserId(), cheapestNode.second->getUserId());
 					result.mst.push_back(newEdgeMST);
 					// take union of set1 and set2 and decrease number of trees
 					Graph<T>::setUnion(&subsets, set1, set2);
@@ -1569,7 +1569,7 @@ namespace CXXGRAPH
 			auto set2 = Graph<T>::setFind(&subset, second->getId());
 			if (set1 != set2)
 			{
-				result.mst.push_back(std::make_pair(first->getId(), second->getId()));
+				result.mst.push_back(std::make_pair(first->getUserId(), second->getUserId()));
 				result.mstCost += edgeWeight;
 			}
 			Graph<T>::setUnion(&subset, set1, set2);
