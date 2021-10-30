@@ -60,8 +60,8 @@ namespace CXXGRAPH
     /// Struct useful for union-find operations
 	struct Subset_struct
 	{
-		unsigned long parent;		   // parent of the current set
-		unsigned long rank; 		  // rank of the current set, used for balancing the trees
+		unsigned long long parent;		   // parent of the current set
+		unsigned long long rank; 		  // rank of the current set, used for balancing the trees
 	};
 	typedef Subset_struct Subset;
 
@@ -90,7 +90,7 @@ namespace CXXGRAPH
 		bool success;			  // TRUE if the function does not return error, FALSE otherwise
 		bool negativeCycle;		  // TRUE if graph contains a negative cycle, FALSE otherwise
 		std::string errorMessage; //message of error
-		std::map<std::pair<unsigned long, unsigned long>, double> result;
+		std::map<std::pair<unsigned long long, unsigned long long>, double> result;
 	};
 	typedef FWResult_struct FWResult;
 	
@@ -99,7 +99,7 @@ namespace CXXGRAPH
 	{
 		bool success;			  // TRUE if the function does not return error, FALSE otherwise
 		std::string errorMessage; //message of error
-		std::vector<std::pair<unsigned long, unsigned long>> mst;  // MST
+		std::vector<std::pair<unsigned long long, unsigned long long>> mst;  // MST
 		double mstCost;  // MST
 	};
 	typedef MstResult_struct MstResult;
@@ -109,7 +109,7 @@ namespace CXXGRAPH
 	{
 		bool success;								  // TRUE if the function does not return error, FALSE otherwise
 		std::string errorMessage;					  //message of error
-		std::map<unsigned long, long> minDistanceMap; //result a map that contains the node id and the minumum distance from source (valid only if success is TRUE)
+		std::map<unsigned long long, long> minDistanceMap; //result a map that contains the node id and the minumum distance from source (valid only if success is TRUE)
 	};
 	typedef DialResult_struct DialResult;
 

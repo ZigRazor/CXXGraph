@@ -63,6 +63,7 @@ add_executable(test_exe test/main.cpp
 						test/DialTest.cpp
 						test/GraphSlicingTest.cpp
 						test/UnionFindTest.cpp
+						test/EulerPathTest.cpp
 				)
 target_include_directories(test_exe PUBLIC
 						  "${PROJECT_SOURCE_DIR}/include"
@@ -71,6 +72,8 @@ target_link_libraries(test_exe
 					   libgtest.a
 					   libgtest_main.a
 					   pthread
+					   ssl
+					   crypto
 					   z)
 
 
@@ -105,6 +108,8 @@ if(BENCHMARK)
 					   libbenchmark.a
 					   libbenchmark_main.a
 					   pthread
+					   ssl
+					   crypto
 					   z)
 endif(BENCHMARK)
 

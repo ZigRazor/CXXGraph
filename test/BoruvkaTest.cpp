@@ -6,18 +6,18 @@
 // like the length & cost of mst which must remain the same
 
 // example taken from
-// https://www.geeksforgeeks.org/prims-mst-for-adjacency-list-representation-greedy-algo-6/TEST(FWTest, test_1)
+// https://www.geeksforgeeks.org/prims-mst-for-adjacency-list-representation-greedy-algo-6/
 TEST(BoruvkaTest, test_1)
 {
-    CXXGRAPH::Node<int> node0(0, 0);
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
-    CXXGRAPH::Node<int> node4(4, 4);
-    CXXGRAPH::Node<int> node5(5, 5);
-    CXXGRAPH::Node<int> node6(6, 6);
-    CXXGRAPH::Node<int> node7(7, 7);
-    CXXGRAPH::Node<int> node8(8, 8);
+    CXXGRAPH::Node<int> node0("0", 0);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
+    CXXGRAPH::Node<int> node4("4", 4);
+    CXXGRAPH::Node<int> node5("5", 5);
+    CXXGRAPH::Node<int> node6("6", 6);
+    CXXGRAPH::Node<int> node7("7", 7);
+    CXXGRAPH::Node<int> node8("8", 8);
 
     CXXGRAPH::UndirectedWeightedEdge<int> edge1(1, node0, node1, 4);
     CXXGRAPH::UndirectedWeightedEdge<int> edge2(2, node0, node7, 8);
@@ -74,13 +74,13 @@ TEST(BoruvkaTest, test_1)
 // https://www.gatevidyalay.com/prims-algorithm-prim-algorithm-example/
 TEST(BoruvkaTest, test_2)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
-    CXXGRAPH::Node<int> node4(4, 4);
-    CXXGRAPH::Node<int> node5(5, 5);
-    CXXGRAPH::Node<int> node6(6, 6);
-    CXXGRAPH::Node<int> node7(7, 7);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
+    CXXGRAPH::Node<int> node4("4", 4);
+    CXXGRAPH::Node<int> node5("5", 5);
+    CXXGRAPH::Node<int> node6("6", 6);
+    CXXGRAPH::Node<int> node7("7", 7);
 
     CXXGRAPH::UndirectedWeightedEdge<int> edge1(1, node1, node2, 28);
     CXXGRAPH::UndirectedWeightedEdge<int> edge2(2, node1, node6, 10);
@@ -124,13 +124,13 @@ TEST(BoruvkaTest, test_2)
 // https://www.gatevidyalay.com/prims-algorithm-prim-algorithm-example/
 TEST(BoruvkaTest, test_3)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
-    CXXGRAPH::Node<int> node4(4, 4);
-    CXXGRAPH::Node<int> node5(5, 5);
-    CXXGRAPH::Node<int> node6(6, 6);
-    CXXGRAPH::Node<int> node7(7, 7);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
+    CXXGRAPH::Node<int> node4("4", 4);
+    CXXGRAPH::Node<int> node5("5", 5);
+    CXXGRAPH::Node<int> node6("6", 6);
+    CXXGRAPH::Node<int> node7("7", 7);
 
     CXXGRAPH::UndirectedWeightedEdge<int> edge1(1, node1, node2, 1);
     CXXGRAPH::UndirectedWeightedEdge<int> edge2(2, node1, node3, 5);
@@ -178,9 +178,9 @@ TEST(BoruvkaTest, test_3)
 // test for directed and no weighted edge errors
 TEST(BoruvkaTest, test_4)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node1, node2, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;

@@ -3,9 +3,9 @@
 
 TEST(DijkstraTest, test_1)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
@@ -30,9 +30,9 @@ TEST(DijkstraTest, test_1)
 
 TEST(DijkstraTest, test_2)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 4);
@@ -56,9 +56,9 @@ TEST(DijkstraTest, test_2)
 
 TEST(DijkstraTest, test_3)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
     CXXGRAPH::DirectedEdge<int> edge2(2, node2, node3);
@@ -82,9 +82,9 @@ TEST(DijkstraTest, test_3)
 
 TEST(DijkstraTest, test_4)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
     CXXGRAPH::DirectedEdge<int> edge2(2, node2, node3);
     CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
@@ -105,10 +105,10 @@ TEST(DijkstraTest, test_4)
 
 TEST(DijkstraTest, test_5)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
-    CXXGRAPH::Node<int> node4(4, 4);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
+    CXXGRAPH::Node<int> node4("4", 4);
     CXXGRAPH::DirectedEdge<int> edge2(2, node2, node3);
     CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
@@ -129,10 +129,10 @@ TEST(DijkstraTest, test_5)
 
 TEST(DijkstraTest, test_6)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
-    CXXGRAPH::Node<int> node4(4, 4);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
+    CXXGRAPH::Node<int> node4("4", 4);
     CXXGRAPH::DirectedEdge<int> edge2(2, node2, node3);
     CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
