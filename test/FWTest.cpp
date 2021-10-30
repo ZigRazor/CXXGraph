@@ -31,10 +31,10 @@ TEST(FWTest, test_1)
     auto nodeSet = graph.getNodeSet();
     double values[4][4] = {{0, -1, -2, 0}, {4, 0, 2, 4}, {5, 1, 0, 2}, {3, -1, 1, 0}};
     int row(0), col(0);
-    for (auto elem1 : nodeSet)
+    for (const auto& elem1 : nodeSet)
     {
         col = 0;
-        for (auto elem2 : nodeSet)
+        for (const auto& elem2 : nodeSet)
         {
             auto key = std::make_pair(elem1->getId(), elem2->getId());
             pairwise_dist[key] = values[row][col];

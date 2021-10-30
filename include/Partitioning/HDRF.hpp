@@ -98,7 +98,7 @@ namespace CXXGRAPH
             std::vector<int> candidates;
             double MAX_SCORE = 0.0;
 
-            for (int m = 0; m < P; m++)
+            for (int m = 0; m < P; ++m)
             {
 
                 int degree_u = u_record.getDegree() + 1;

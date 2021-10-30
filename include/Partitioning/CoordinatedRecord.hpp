@@ -47,7 +47,7 @@ namespace CXXGRAPH
             bool hasReplicaInPartition(int m);
             bool getLock();
             bool releaseLock();
-            int getReplicas();
+            int getReplicas() const;
             int getDegree();
             void incrementDegree();
 
@@ -101,7 +101,7 @@ namespace CXXGRAPH
             return true;
         }
         template <typename T>
-        int CoordinatedRecord<T>::getReplicas()
+        int CoordinatedRecord<T>::getReplicas() const
         {
             return partitions.size();
         }
