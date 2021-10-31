@@ -11,9 +11,9 @@ inline bool exists_test(const std::string &name)
 static std::map<unsigned long, CXXGRAPH::Node<int> *> generateRandomNodes(unsigned long numberOfNodes, int MaxValue)
 {
     std::map<unsigned long, CXXGRAPH::Node<int> *> nodes;
-    srand((unsigned)time(NULL));
+    srand(static_cast<unsigned>(time(NULL)));
     int randomNumber;
-    for (auto index = 0; index < numberOfNodes; index++)
+    for (auto index = 0; index < numberOfNodes; ++index)
     {
         // auto index = std::to_string(index);
         randomNumber = (rand() % MaxValue) + 1;
@@ -26,11 +26,11 @@ static std::map<unsigned long, CXXGRAPH::Node<int> *> generateRandomNodes(unsign
 static std::map<unsigned long, CXXGRAPH::Edge<int> *> generateRandomEdges(unsigned long numberOfEdges, std::map<unsigned long, CXXGRAPH::Node<int> *> nodes)
 {
     std::map<unsigned long, CXXGRAPH::Edge<int> *> edges;
-    srand((unsigned)time(NULL));
+    srand(static_cast<unsigned>(time(NULL)));
     int randomNumber1;
     int randomNumber2;
     auto MaxValue = nodes.size();
-    for (auto index = 0; index < numberOfEdges; index++)
+    for (auto index = 0; index < numberOfEdges; ++index)
     {
         randomNumber1 = (rand() % MaxValue);
         randomNumber2 = (rand() % MaxValue);
@@ -233,31 +233,31 @@ TEST(RWOutputTest, test_8)
     ASSERT_EQ(readEdge.size(), 3);
     ASSERT_EQ(readNode.size(), 3);
 
-    for (auto readEdgeIt = readEdge.begin(); readEdgeIt != readEdge.end(); ++readEdgeIt)
+    for (const auto& readEdgeIt : readEdge)
     {
-        if ((*readEdgeIt)->getId() == 1)
+        if (readEdgeIt->getId() == 1)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && (*readEdgeIt)->isDirected().value());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node1.getUserId());
-            //ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node1.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node2.getUserId());
-            //ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node2.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && readEdgeIt->isDirected().value());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node1.getUserId());
+            //ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node2.getUserId());
+            //ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
         }
-        else if ((*readEdgeIt)->getId() == 2)
+        else if (readEdgeIt->getId() == 2)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && (*readEdgeIt)->isDirected().value());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node2.getUserId());
-            //ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node2.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node3.getUserId());
-            //ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node3.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && readEdgeIt->isDirected().value());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node2.getUserId());
+            //ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node3.getUserId());
+            //ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
         }
-        else if ((*readEdgeIt)->getId() == 3)
+        else if (readEdgeIt->getId() == 3)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && !(*readEdgeIt)->isDirected().value());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node1.getUserId());
-            //ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node1.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node3.getUserId());
-            //ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node3.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && !readEdgeIt->isDirected().value());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node1.getUserId());
+            //ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node3.getUserId());
+            //ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
         }
         else
         {
@@ -296,31 +296,31 @@ TEST(RWOutputTest, test_9)
     ASSERT_EQ(readEdge.size(), 3);
     ASSERT_EQ(readNode.size(), 3);
 
-    for (auto readEdgeIt = readEdge.begin(); readEdgeIt != readEdge.end(); ++readEdgeIt)
+    for (const auto& readEdgeIt : readEdge)
     {
-        if ((*readEdgeIt)->getId() == 1)
+        if (readEdgeIt->getId() == 1)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && (*readEdgeIt)->isDirected().value());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node1.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node1.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node2.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node2.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && readEdgeIt->isDirected().value());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node1.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node2.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
         }
-        else if ((*readEdgeIt)->getId() == 2)
+        else if (readEdgeIt->getId() == 2)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && (*readEdgeIt)->isDirected().value());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node2.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node2.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node3.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node3.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && readEdgeIt->isDirected().value());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node2.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node3.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
         }
-        else if ((*readEdgeIt)->getId() == 3)
+        else if (readEdgeIt->getId() == 3)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && !(*readEdgeIt)->isDirected().value());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node1.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node1.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node3.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node3.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && !readEdgeIt->isDirected().value());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node1.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node3.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
         }
         else
         {
@@ -361,36 +361,36 @@ TEST(RWOutputTest, test_10)
     ASSERT_EQ(readEdge.size(), 3);
     ASSERT_EQ(readNode.size(), 3);
 
-    for (auto readEdgeIt = readEdge.begin(); readEdgeIt != readEdge.end(); ++readEdgeIt)
+    for (const auto& readEdgeIt : readEdge)
     {
-        if ((*readEdgeIt)->getId() == 1)
+        if (readEdgeIt->getId() == 1)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && (*readEdgeIt)->isDirected().value());
-            ASSERT_TRUE((*readEdgeIt)->isWeighted().has_value() && (*readEdgeIt)->isWeighted().value());
-            ASSERT_EQ((dynamic_cast<const CXXGRAPH::Weighted *>(*readEdgeIt))->getWeight(), 5);
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node1.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node1.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node2.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node2.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && readEdgeIt->isDirected().value());
+            ASSERT_TRUE(readEdgeIt->isWeighted().has_value() && readEdgeIt->isWeighted().value());
+            ASSERT_EQ((dynamic_cast<const CXXGRAPH::Weighted *>(readEdgeIt))->getWeight(), 5);
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node1.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node2.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
         }
-        else if ((*readEdgeIt)->getId() == 2)
+        else if (readEdgeIt->getId() == 2)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && (*readEdgeIt)->isDirected().value());
-            ASSERT_TRUE((*readEdgeIt)->isWeighted().has_value() && !(*readEdgeIt)->isWeighted().value());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node2.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node2.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node3.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node3.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && readEdgeIt->isDirected().value());
+            ASSERT_TRUE(readEdgeIt->isWeighted().has_value() && !readEdgeIt->isWeighted().value());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node2.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node3.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
         }
-        else if ((*readEdgeIt)->getId() == 3)
+        else if (readEdgeIt->getId() == 3)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && !(*readEdgeIt)->isDirected().value());
-            ASSERT_TRUE((*readEdgeIt)->isWeighted().has_value() && (*readEdgeIt)->isWeighted().value());
-            ASSERT_EQ((dynamic_cast<const CXXGRAPH::Weighted *>(*readEdgeIt))->getWeight(), 6);
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node1.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node1.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node3.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node3.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && !readEdgeIt->isDirected().value());
+            ASSERT_TRUE(readEdgeIt->isWeighted().has_value() && readEdgeIt->isWeighted().value());
+            ASSERT_EQ((dynamic_cast<const CXXGRAPH::Weighted *>(readEdgeIt))->getWeight(), 6);
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node1.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node3.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
         }
         else
         {
@@ -597,31 +597,31 @@ TEST(RWOutputTest, test_18)
     ASSERT_EQ(readEdge.size(), 3);
     ASSERT_EQ(readNode.size(), 3);
 
-    for (auto readEdgeIt = readEdge.begin(); readEdgeIt != readEdge.end(); ++readEdgeIt)
+    for (const auto& readEdgeIt : readEdge)
     {
-        if ((*readEdgeIt)->getId() == 1)
+        if (readEdgeIt->getId() == 1)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && (*readEdgeIt)->isDirected().value());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node1.getUserId());
-            //ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node1.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node2.getUserId());
-            //ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node2.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && readEdgeIt->isDirected().value());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node1.getUserId());
+            //ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node2.getUserId());
+            //ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
         }
-        else if ((*readEdgeIt)->getId() == 2)
+        else if (readEdgeIt->getId() == 2)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && (*readEdgeIt)->isDirected().value());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node2.getUserId());
-            //ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node2.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node3.getUserId());
-            //ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node3.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && readEdgeIt->isDirected().value());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node2.getUserId());
+            //ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node3.getUserId());
+            //ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
         }
-        else if ((*readEdgeIt)->getId() == 3)
+        else if (readEdgeIt->getId() == 3)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && !(*readEdgeIt)->isDirected().value());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node1.getUserId());
-            //ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node1.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node3.getUserId());
-            //ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node3.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && !readEdgeIt->isDirected().value());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node1.getUserId());
+            //ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node3.getUserId());
+            //ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
         }
         else
         {
@@ -660,31 +660,31 @@ TEST(RWOutputTest, test_19)
     ASSERT_EQ(readEdge.size(), 3);
     ASSERT_EQ(readNode.size(), 3);
 
-    for (auto readEdgeIt = readEdge.begin(); readEdgeIt != readEdge.end(); ++readEdgeIt)
+    for (const auto& readEdgeIt : readEdge)
     {
-        if ((*readEdgeIt)->getId() == 1)
+        if (readEdgeIt->getId() == 1)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && (*readEdgeIt)->isDirected().value());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node1.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node1.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node2.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node2.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && readEdgeIt->isDirected().value());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node1.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node2.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
         }
-        else if ((*readEdgeIt)->getId() == 2)
+        else if (readEdgeIt->getId() == 2)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && (*readEdgeIt)->isDirected().value());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node2.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node2.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node3.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node3.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && readEdgeIt->isDirected().value());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node2.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node3.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
         }
-        else if ((*readEdgeIt)->getId() == 3)
+        else if (readEdgeIt->getId() == 3)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && !(*readEdgeIt)->isDirected().value());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node1.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node1.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node3.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node3.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && !readEdgeIt->isDirected().value());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node1.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node3.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
         }
         else
         {
@@ -725,36 +725,36 @@ TEST(RWOutputTest, test_20)
     ASSERT_EQ(readEdge.size(), 3);
     ASSERT_EQ(readNode.size(), 3);
 
-    for (auto readEdgeIt = readEdge.begin(); readEdgeIt != readEdge.end(); ++readEdgeIt)
+    for (const auto& readEdgeIt : readEdge)
     {
-        if ((*readEdgeIt)->getId() == 1)
+        if (readEdgeIt->getId() == 1)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && (*readEdgeIt)->isDirected().value());
-            ASSERT_TRUE((*readEdgeIt)->isWeighted().has_value() && (*readEdgeIt)->isWeighted().value());
-            ASSERT_EQ((dynamic_cast<const CXXGRAPH::Weighted *>(*readEdgeIt))->getWeight(), 5);
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node1.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node1.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node2.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node2.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && readEdgeIt->isDirected().value());
+            ASSERT_TRUE(readEdgeIt->isWeighted().has_value() && readEdgeIt->isWeighted().value());
+            ASSERT_EQ((dynamic_cast<const CXXGRAPH::Weighted *>(readEdgeIt))->getWeight(), 5);
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node1.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node2.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
         }
-        else if ((*readEdgeIt)->getId() == 2)
+        else if (readEdgeIt->getId() == 2)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && (*readEdgeIt)->isDirected().value());
-            ASSERT_TRUE((*readEdgeIt)->isWeighted().has_value() && !(*readEdgeIt)->isWeighted().value());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node2.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node2.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node3.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node3.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && readEdgeIt->isDirected().value());
+            ASSERT_TRUE(readEdgeIt->isWeighted().has_value() && !readEdgeIt->isWeighted().value());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node2.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node3.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
         }
-        else if ((*readEdgeIt)->getId() == 3)
+        else if (readEdgeIt->getId() == 3)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && !(*readEdgeIt)->isDirected().value());
-            ASSERT_TRUE((*readEdgeIt)->isWeighted().has_value() && (*readEdgeIt)->isWeighted().value());
-            ASSERT_EQ((dynamic_cast<const CXXGRAPH::Weighted *>(*readEdgeIt))->getWeight(), 6);
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node1.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node1.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node3.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node3.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && !readEdgeIt->isDirected().value());
+            ASSERT_TRUE(readEdgeIt->isWeighted().has_value() && readEdgeIt->isWeighted().value());
+            ASSERT_EQ((dynamic_cast<const CXXGRAPH::Weighted *>(readEdgeIt))->getWeight(), 6);
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node1.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node3.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
         }
         else
         {
@@ -827,36 +827,36 @@ TEST(RWOutputTest, test_22)
     ASSERT_EQ(readEdge.size(), 3);
     ASSERT_EQ(readNode.size(), 3);
 
-    for (auto readEdgeIt = readEdge.begin(); readEdgeIt != readEdge.end(); ++readEdgeIt)
+    for (const auto& readEdgeIt : readEdge)
     {
-        if ((*readEdgeIt)->getId() == 1)
+        if (readEdgeIt->getId() == 1)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && (*readEdgeIt)->isDirected().value());
-            ASSERT_TRUE((*readEdgeIt)->isWeighted().has_value() && (*readEdgeIt)->isWeighted().value());
-            ASSERT_EQ((dynamic_cast<const CXXGRAPH::Weighted *>(*readEdgeIt))->getWeight(), 5);
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node1.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node1.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node2.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node2.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && readEdgeIt->isDirected().value());
+            ASSERT_TRUE(readEdgeIt->isWeighted().has_value() && readEdgeIt->isWeighted().value());
+            ASSERT_EQ((dynamic_cast<const CXXGRAPH::Weighted *>(readEdgeIt))->getWeight(), 5);
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node1.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node2.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
         }
-        else if ((*readEdgeIt)->getId() == 2)
+        else if (readEdgeIt->getId() == 2)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && (*readEdgeIt)->isDirected().value());
-            ASSERT_TRUE((*readEdgeIt)->isWeighted().has_value() && !(*readEdgeIt)->isWeighted().value());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node2.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node2.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node3.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node3.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && readEdgeIt->isDirected().value());
+            ASSERT_TRUE(readEdgeIt->isWeighted().has_value() && !readEdgeIt->isWeighted().value());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node2.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node3.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
         }
-        else if ((*readEdgeIt)->getId() == 3)
+        else if (readEdgeIt->getId() == 3)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && !(*readEdgeIt)->isDirected().value());
-            ASSERT_TRUE((*readEdgeIt)->isWeighted().has_value() && (*readEdgeIt)->isWeighted().value());
-            ASSERT_EQ((dynamic_cast<const CXXGRAPH::Weighted *>(*readEdgeIt))->getWeight(), 6);
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node1.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node1.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node3.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node3.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && !readEdgeIt->isDirected().value());
+            ASSERT_TRUE(readEdgeIt->isWeighted().has_value() && readEdgeIt->isWeighted().value());
+            ASSERT_EQ((dynamic_cast<const CXXGRAPH::Weighted *>(readEdgeIt))->getWeight(), 6);
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node1.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node3.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
         }
         else
         {
@@ -956,36 +956,36 @@ TEST(RWOutputTest, test_25)
     ASSERT_EQ(readEdge.size(), 3);
     ASSERT_EQ(readNode.size(), 3);
 
-    for (auto readEdgeIt = readEdge.begin(); readEdgeIt != readEdge.end(); ++readEdgeIt)
+    for (const auto& readEdgeIt : readEdge)
     {
-        if ((*readEdgeIt)->getId() == 1)
+        if (readEdgeIt->getId() == 1)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && (*readEdgeIt)->isDirected().value());
-            ASSERT_TRUE((*readEdgeIt)->isWeighted().has_value() && (*readEdgeIt)->isWeighted().value());
-            ASSERT_EQ((dynamic_cast<const CXXGRAPH::Weighted *>(*readEdgeIt))->getWeight(), 5);
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node1.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node1.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node2.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node2.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && readEdgeIt->isDirected().value());
+            ASSERT_TRUE(readEdgeIt->isWeighted().has_value() && readEdgeIt->isWeighted().value());
+            ASSERT_EQ((dynamic_cast<const CXXGRAPH::Weighted *>(readEdgeIt))->getWeight(), 5);
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node1.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node2.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
         }
-        else if ((*readEdgeIt)->getId() == 2)
+        else if (readEdgeIt->getId() == 2)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && (*readEdgeIt)->isDirected().value());
-            ASSERT_TRUE((*readEdgeIt)->isWeighted().has_value() && !(*readEdgeIt)->isWeighted().value());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node2.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node2.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node3.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node3.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && readEdgeIt->isDirected().value());
+            ASSERT_TRUE(readEdgeIt->isWeighted().has_value() && !readEdgeIt->isWeighted().value());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node2.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node3.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
         }
-        else if ((*readEdgeIt)->getId() == 3)
+        else if (readEdgeIt->getId() == 3)
         {
-            ASSERT_TRUE((*readEdgeIt)->isDirected().has_value() && !(*readEdgeIt)->isDirected().value());
-            ASSERT_TRUE((*readEdgeIt)->isWeighted().has_value() && (*readEdgeIt)->isWeighted().value());
-            ASSERT_EQ((dynamic_cast<const CXXGRAPH::Weighted *>(*readEdgeIt))->getWeight(), 6);
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getUserId(), node1.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().first->getData(), node1.getData());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getUserId(), node3.getUserId());
-            ASSERT_EQ((*readEdgeIt)->getNodePair().second->getData(), node3.getData());
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && !readEdgeIt->isDirected().value());
+            ASSERT_TRUE(readEdgeIt->isWeighted().has_value() && readEdgeIt->isWeighted().value());
+            ASSERT_EQ((dynamic_cast<const CXXGRAPH::Weighted *>(readEdgeIt))->getWeight(), 6);
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node1.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node3.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
         }
         else
         {
@@ -1030,9 +1030,8 @@ TEST(RWOutputTest, test_26)
 
 TEST(RWOutputTest, test_27)
 {
-
     std::list<const CXXGRAPH::Edge<int> *> edgeSet;
-    for (auto edge : edges)
+    for (const auto& edge : edges)
     {
         edgeSet.push_back(edge.second);
     }
