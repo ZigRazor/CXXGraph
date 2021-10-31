@@ -27,7 +27,7 @@ namespace CXXGRAPH
     class Weighted
 	{
 	private:
-		double weight;
+		double weight = 0.0;
 
 	public:
 		Weighted();

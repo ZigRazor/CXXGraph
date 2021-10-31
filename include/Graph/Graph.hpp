@@ -77,7 +77,7 @@ namespace CXXGRAPH
 	class Graph
 	{
 	private:
-		std::list<const Edge<T> *> edgeSet;
+		std::list<const Edge<T> *> edgeSet = {};
 		void addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge) const;
 		int writeToStandardFile_csv(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const;
 		int readFromStandardFile_csv(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight);

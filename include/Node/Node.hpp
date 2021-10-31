@@ -37,8 +37,8 @@ namespace CXXGRAPH
 	class Node
 	{
 	private:
-		unsigned long long id;
-		std::string userId;
+		unsigned long long id = 0;
+		std::string userId = "";
 		T data;
 		void setId(const std::string*);
 
