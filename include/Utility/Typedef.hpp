@@ -90,7 +90,7 @@ namespace CXXGRAPH
 		bool success;			  // TRUE if the function does not return error, FALSE otherwise
 		bool negativeCycle;		  // TRUE if graph contains a negative cycle, FALSE otherwise
 		std::string errorMessage; //message of error
-		std::map<std::pair<unsigned long long, unsigned long long>, double> result;
+		std::map<std::pair<std::string, std::string>, double> result;
 	};
 	typedef FWResult_struct FWResult;
 	
