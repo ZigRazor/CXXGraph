@@ -64,10 +64,9 @@ namespace CXXGRAPH
 		template <typename T>
 		void PartitionerThread<T>::run()
 		{
-			auto edge_it = list.begin();
-			for (edge_it; edge_it != list.end(); ++edge_it)
+			for (const auto& edge_it : list)
 			{
-				algorithm->performStep(*(*edge_it), *state);
+				algorithm->performStep(*edge_it, *state);
 			}
 		}
     }
