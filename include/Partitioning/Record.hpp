@@ -35,7 +35,7 @@ namespace CXXGRAPH {
 			virtual bool hasReplicaInPartition(int m) = 0;
 			virtual bool getLock() = 0;
 			virtual bool releaseLock() = 0;
-			virtual int getReplicas() = 0;
+			virtual int getReplicas() const = 0;
 			virtual int getDegree() = 0;
 			virtual void incrementDegree() = 0;
 		};

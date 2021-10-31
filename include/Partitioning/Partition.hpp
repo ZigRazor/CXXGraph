@@ -212,11 +212,11 @@ namespace CXXGRAPH
         unsigned int getMaxEdgesLoad(const PartitionMap<T> &partitionMap)
         {
             unsigned int maxLoad = 0;
-            for (auto it = partitionMap.begin(); it != partitionMap.end(); ++it)
+            for (const auto& it : partitionMap)
             {
-                if (it->second->getEdgeSet().size() > maxLoad)
+                if (it.second->getEdgeSet().size() > maxLoad)
                 {
-                    maxLoad = it->second->getEdgeSet().size();
+                    maxLoad = it.second->getEdgeSet().size();
                 }
             }
             return maxLoad;
@@ -226,11 +226,11 @@ namespace CXXGRAPH
         unsigned int getMinEdgesLoad(const PartitionMap<T> &partitionMap)
         {
             unsigned int minLoad = std::numeric_limits<unsigned int>::max();
-            for (auto it = partitionMap.begin(); it != partitionMap.end(); ++it)
+            for (const auto& it : partitionMap)
             {
-                if (it->second->getEdgeSet().size() < minLoad)
+                if (it.second->getEdgeSet().size() < minLoad)
                 {
-                    minLoad = it->second->getEdgeSet().size();
+                    minLoad = it.second->getEdgeSet().size();
                 }
             }
             return minLoad;
@@ -240,11 +240,11 @@ namespace CXXGRAPH
         unsigned int getMaxNodesLoad(const PartitionMap<T> &partitionMap)
         {
             unsigned int maxLoad = 0;
-            for (auto it = partitionMap.begin(); it != partitionMap.end(); ++it)
+            for (const auto& it : partitionMap)
             {
-                if (it->second->getNodeSet().size() > maxLoad)
+                if (it.second->getNodeSet().size() > maxLoad)
                 {
-                    maxLoad = it->second->getNodeSet().size();
+                    maxLoad = it.second->getNodeSet().size();
                 }
             }
             return maxLoad;
@@ -254,11 +254,11 @@ namespace CXXGRAPH
         unsigned int getMinNodesLoad(const PartitionMap<T> &partitionMap)
         {
             unsigned int minLoad = std::numeric_limits<unsigned int>::max();
-            for (auto it = partitionMap.begin(); it != partitionMap.end(); ++it)
+            for (const auto& it : partitionMap)
             {
-                if (it->second->getNodeSet().size() < minLoad)
+                if (it.second->getNodeSet().size() < minLoad)
                 {
-                    minLoad = it->second->getNodeSet().size();
+                    minLoad = it.second->getNodeSet().size();
                 }
             }
             return minLoad;
@@ -270,15 +270,15 @@ namespace CXXGRAPH
             unsigned int numberOfEdges = 0;
             std::list<const Edge<T> *> edgeSet;
 
-            for (auto it = partitionMap.begin(); it != partitionMap.end(); ++it)
+            for (const auto& it : partitionMap)
             {
-                const std::list<const Edge<T> *> partitionEdgeSet = it->second->getEdgeSet();
-                for (auto it2 = partitionEdgeSet.begin(); it2 != partitionEdgeSet.end(); ++it2)
+                const std::list<const Edge<T> *> partitionEdgeSet = it.second->getEdgeSet();
+                for (const auto& it2 : partitionEdgeSet)
                 {
                     if (std::find_if(edgeSet.begin(), edgeSet.end(), [it2](const Edge<T> *edge)
-                                     { return (*(*it2) == *edge); }) == edgeSet.end())
+                                     { return (*it2 == *edge); }) == edgeSet.end())
                     {
-                        edgeSet.push_back(*it2);
+                        edgeSet.push_back(it2);
                     }
                 }
             }
@@ -292,13 +292,13 @@ namespace CXXGRAPH
             unsigned int numberOfNodes = 0;
             std::list<const Node<T> *> nodeSet;
 
-            for (auto it = partitionMap.begin(); it != partitionMap.end(); ++it)
+            for (const auto& it : partitionMap)
             {
                 const std::list<const Node<T> *> partitionNodeSet = it->second->getNodeSet();
-                for (auto it2 = partitionNodeSet.begin(); it2 != partitionNodeSet.end(); ++it2)
+                for (const auto& it2 : partitionNodeSet)
                 {
                     if (std::find_if(nodeSet.begin(), nodeSet.end(), [it2](const Node<T> *node)
-                                     { return (*(*it2) == *node); }) == nodeSet.end())
+                                     { return (*it2 == *node); }) == nodeSet.end())
                     {
                         nodeSet.push_back(*it2);
                     }
@@ -313,9 +313,9 @@ namespace CXXGRAPH
         {
 
             unsigned int numberOfEdges = 0;
-            for (auto it = partitionMap.begin(); it != partitionMap.end(); ++it)
+            for (const auto& it : partitionMap)
             {
-                numberOfEdges += it->second->getEdgeSet().size();
+                numberOfEdges += it.second->getEdgeSet().size();
             }
             return numberOfEdges;
         }
@@ -324,9 +324,9 @@ namespace CXXGRAPH
         unsigned int getNumberOfReplicatedNodes(const PartitionMap<T> &partitionMap)
         {
             unsigned int numberOfNodes = 0;
-            for (auto it = partitionMap.begin(); it != partitionMap.end(); ++it)
+            for (const auto& it : partitionMap)
             {
-                numberOfNodes += it->second->getNodeSet().size();
+                numberOfNodes += it.second->getNodeSet().size();
             }
             return numberOfNodes;
         }
@@ -336,28 +336,27 @@ namespace CXXGRAPH
         {
             os << "Partition " << partition.getPartitionId() << ":\n";
             auto edgeList = partition.getEdgeSet();
-            auto it = edgeList.begin();
-            for (it; it != edgeList.end(); ++it)
+            for (const auto& it : edgeList)
             {
-                if (((*it)->isDirected().has_value()&& (*it)->isDirected().value()) && ((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
+                if ((it->isDirected().has_value()&& it->isDirected().value()) && (it->isWeighted().has_value() && it->isWeighted().value()))
                 {
-                    os << dynamic_cast<const DirectedWeightedEdge<T> &>(**it) << "\n";
+                    os << dynamic_cast<const DirectedWeightedEdge<T> &>(*it) << "\n";
                 }
-                else if (((*it)->isDirected().has_value() && (*it)->isDirected().value())  && !((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
+                else if ((it->isDirected().has_value() && it->isDirected().value())  && !(it->isWeighted().has_value() && it->isWeighted().value()))
                 {
-                    os << dynamic_cast<const DirectedEdge<T> &>(**it) << "\n";
+                    os << dynamic_cast<const DirectedEdge<T> &>(*it) << "\n";
                 }
-                else if (!((*it)->isDirected().has_value() && (*it)->isDirected().value()) && ((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
+                else if (!(it->isDirected().has_value() && it->isDirected().value()) && (it->isWeighted().has_value() && it->isWeighted().value()))
                 {
-                    os << dynamic_cast<const UndirectedWeightedEdge<T> &>(**it) << "\n";
+                    os << dynamic_cast<const UndirectedWeightedEdge<T> &>(*it) << "\n";
                 }
-                else if (!((*it)->isDirected().has_value() && (*it)->isDirected().value()) && !((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
+                else if (!(it->isDirected().has_value() && it->isDirected().value()) && !(it->isWeighted().has_value() && it->isWeighted().value()))
                 {
-                    os << dynamic_cast<const UndirectedEdge<T> &>(**it) << "\n";
+                    os << dynamic_cast<const UndirectedEdge<T> &>(*it) << "\n";
                 }
                 else
                 {
-                    os << **it << "\n";
+                    os << *it << "\n";
                 }
             }
             return os;
