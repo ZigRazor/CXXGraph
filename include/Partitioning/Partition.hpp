@@ -201,10 +201,10 @@ namespace CXXGRAPH
             result.minEdgesLoad = getMinEdgesLoad(partitionMap);
             result.maxNodesLoad = getMaxNodesLoad(partitionMap);
             result.minNodesLoad = getMinNodesLoad(partitionMap);
-            result.edgesReplicationFactor = (double)result.replicatedEdgesCount / result.numberOfEdges;
-            result.nodesReplicationFactor = (double)result.replicatedNodesCount / result.numberOfNodes;
-            result.balanceEdgesFactor = (double)(result.maxEdgesLoad - result.minEdgesLoad) / (result.maxEdgesLoad);
-            result.balanceNodesFactor = (double)(result.maxNodesLoad - result.minNodesLoad) / (result.maxNodesLoad);
+            result.edgesReplicationFactor = static_cast<double>(result.replicatedEdgesCount / result.numberOfEdges);
+            result.nodesReplicationFactor = static_cast<double>(result.replicatedNodesCount / result.numberOfNodes);
+            result.balanceEdgesFactor = static_cast<double>((result.maxEdgesLoad - result.minEdgesLoad) / (result.maxEdgesLoad));
+            result.balanceNodesFactor = static_cast<double>((result.maxNodesLoad - result.minNodesLoad) / (result.maxNodesLoad));
             return result;
         }
 

@@ -70,7 +70,7 @@ namespace CXXGRAPH
             {                
                 std::cout << "Waiting for lock on node " << u << std::endl;
                 sleep(sleep_time);
-                sleep_time = (int)pow(sleep_time, 2);
+                sleep_time = static_cast<int>(pow(sleep_time, 2));
             }
             std::cout << "Lock Taken for " << u << std::endl;
             sleep_time = 2;
@@ -78,7 +78,7 @@ namespace CXXGRAPH
             {
                 std::cout << "Waiting for lock on node " << v << std::endl;
                 sleep(sleep_time);
-                sleep_time = (int)pow(sleep_time, 2);
+                sleep_time = static_cast<int>(pow(sleep_time, 2));
                 if (sleep_time > GLOBALS.SLEEP_LIMIT)
                 {
                     u_record.releaseLock();

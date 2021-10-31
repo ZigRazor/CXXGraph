@@ -76,7 +76,7 @@ namespace CXXGRAPH
 		//unsigned long can only store 8 bytes so we truncate the hash to 8 bytes
 		for (const auto &byte: obuf)
 		{
-			shastr << std::setw(2) << (int)byte;
+			shastr << std::setw(2) << static_cast<int>(byte);
 			i++;
 			if (i==8) break;
 		}
