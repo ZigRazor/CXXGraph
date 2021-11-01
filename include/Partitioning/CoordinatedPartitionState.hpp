@@ -39,14 +39,14 @@ namespace CXXGRAPH
         class CoordinatedPartitionState : public PartitionState<T>
         {
         private:
-            std::map<int, CoordinatedRecord<T>> record_map;
-            std::vector<int> machines_load_edges;
-            std::vector<int> machines_load_vertices;
+            std::map<int, CoordinatedRecord<T>> record_map = {};
+            std::vector<int> machines_load_edges = {};
+            std::vector<int> machines_load_vertices = {};
             PartitionMap<T> partition_map;
             Globals GLOBALS;
-            int MAX_LOAD;
-            std::mutex* machines_load_edges_mutex;
-            std::mutex* machines_load_vertices_mutex;
+            int MAX_LOAD = 0;
+            std::mutex* machines_load_edges_mutex = nullptr;
+            std::mutex* machines_load_vertices_mutex = nullptr;
             //DatWriter out; //to print the final partition of each edge
         public:
             CoordinatedPartitionState(Globals &G);

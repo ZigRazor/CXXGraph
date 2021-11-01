@@ -34,9 +34,9 @@ namespace CXXGRAPH
         class CoordinatedRecord : public Record<T>
         {
         private:
-            std::set<int> partitions;
-            std::mutex *lock;
-            int degree;
+            std::set<int> partitions = {};
+            std::mutex *lock = nullptr;
+            int degree = 0;
 
         public:
             CoordinatedRecord();

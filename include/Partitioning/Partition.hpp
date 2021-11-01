@@ -59,7 +59,7 @@ namespace CXXGRAPH
             void setPartitionId(unsigned int partitionId);
 
         private:
-            unsigned int partitionId;
+            unsigned int partitionId = 0;
         };
 
         /**

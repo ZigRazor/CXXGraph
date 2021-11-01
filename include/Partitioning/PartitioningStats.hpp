@@ -29,19 +29,19 @@ namespace CXXGRAPH
         class PartitioningStats
         {
         public:
-            unsigned int numberOfPartitions;   // The number of Partitions
-            unsigned int numberOfNodes;        // The number of Nodes
-            unsigned int replicatedNodesCount; // The number of Nodes that are replicated
-            unsigned int numberOfEdges;        // The number of edges
-            unsigned int replicatedEdgesCount; // The number of edges that are replicated
-            unsigned int maxEdgesLoad;         // Maximum edges load of the partitions
-            unsigned int minEdgesLoad;         // Minimun edges load of the partitions
-            unsigned int maxNodesLoad;         // Maximum nodes load of the partitions
-            unsigned int minNodesLoad;         // Minimun nodes load of the partitions
-            double balanceEdgesFactor;         // The balance edges factor of the partitions (maxEdgesLoad - minEdgesLoad) / (maxEdgesLoad), 0 is the optimal partitioning
-            double balanceNodesFactor;         // The balance edges factor of the partitions (maxNodesLoad - minNodesLoad) / (maxNodesLoad), 0 is the optimal partitioning
-            double nodesReplicationFactor;     // The replication factor of the Nodes (replicatedNodesCount / numberOfNodes), 1 is the optimal partitioning
-            double edgesReplicationFactor;     // The replication factor of the edges (replicatedEdgesCount / numberOfEdges), 1 is the optimal partitioning
+            unsigned int numberOfPartitions = 0;   // The number of Partitions
+            unsigned int numberOfNodes = 0;        // The number of Nodes
+            unsigned int replicatedNodesCount = 0; // The number of Nodes that are replicated
+            unsigned int numberOfEdges = 0;        // The number of edges
+            unsigned int replicatedEdgesCount = 0; // The number of edges that are replicated
+            unsigned int maxEdgesLoad = 0;         // Maximum edges load of the partitions
+            unsigned int minEdgesLoad = 0;         // Minimun edges load of the partitions
+            unsigned int maxNodesLoad = 0;         // Maximum nodes load of the partitions
+            unsigned int minNodesLoad = 0;         // Minimun nodes load of the partitions
+            double balanceEdgesFactor = 0.0;         // The balance edges factor of the partitions (maxEdgesLoad - minEdgesLoad) / (maxEdgesLoad), 0 is the optimal partitioning
+            double balanceNodesFactor = 0.0;         // The balance edges factor of the partitions (maxNodesLoad - minNodesLoad) / (maxNodesLoad), 0 is the optimal partitioning
+            double nodesReplicationFactor = 0.0;     // The replication factor of the Nodes (replicatedNodesCount / numberOfNodes), 1 is the optimal partitioning
+            double edgesReplicationFactor = 0.0;     // The replication factor of the edges (replicatedEdgesCount / numberOfEdges), 1 is the optimal partitioning
 
             friend std::ostream &operator<<(std::ostream &os, const PartitioningStats &partitionStats)
             {

@@ -39,8 +39,8 @@ namespace CXXGRAPH
         class Partitioner
         {
         private:
-            std::list<const Edge<T> *> dataset;
-            PartitionStrategy<T>* algorithm;
+            std::list<const Edge<T> *> dataset = {};
+            PartitionStrategy<T>* algorithm = nullptr;
             Globals GLOBALS;
 
             CoordinatedPartitionState<T> startCoordinated();
