@@ -28,6 +28,7 @@ namespace CXXGRAPH
 	constexpr char ERR_NO_DIR_OR_UNDIR_EDGE[] = "Edge are neither Directed neither Undirected";
 	constexpr char ERR_DIR_GRAPH[] = "Graph is directed";
 	constexpr char ERR_NO_WEIGHTED_EDGE[] = "Edge are not Weighted";
+	constexpr char ERR_NEGATIVE_WEIGHTED_EDGE[] = "Edge negative Weighted";
 	constexpr char ERR_TARGET_NODE_NOT_REACHABLE[] = "Target Node not Reachable";
 	constexpr char ERR_TARGET_NODE_NOT_IN_GRAPH[] = "Target Node not inside Graph";
 	constexpr char ERR_SOURCE_NODE_NOT_IN_GRAPH[] = "Source Node not inside Graph";
