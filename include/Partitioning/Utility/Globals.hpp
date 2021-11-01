@@ -41,11 +41,11 @@ namespace CXXGRAPH {
 			const int SLEEP_LIMIT = 16;
 			const int PLACES = 4;
 
-			int numberOfPartition; //number of partitions
+			int numberOfPartition = 0; //number of partitions
 			//OPTIONAL
 			PartitionAlgorithm partitionStategy;
-			double lambda;
-			unsigned int threads;
+			double lambda = 0.0;
+			unsigned int threads = 0;
 		};
 
 		inline Globals::Globals(int numberOfPartiton, PartitionAlgorithm algorithm, unsigned int threads,double lambda)
