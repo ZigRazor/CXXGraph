@@ -83,7 +83,7 @@ namespace CXXGRAPH
 		int readFromStandardFile_csv(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight);
 		int writeToStandardFile_tsv(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const;
 		int readFromStandardFile_tsv(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight);
-		void recreateGraphFromReadFiles(std::map<unsigned long long, std::pair<unsigned long long, unsigned long long>> &edgeMap, std::map<unsigned long long, bool> &edgeDirectedMap, std::map<unsigned long long, T> &nodeFeatMap, std::map<unsigned long long, double> &edgeWeightMap);
+		void recreateGraphFromReadFiles(std::unordered_map<unsigned long long, std::pair<unsigned long long, unsigned long long>> &edgeMap, std::unordered_map<unsigned long long, bool> &edgeDirectedMap, std::unordered_map<unsigned long long, T> &nodeFeatMap, std::unordered_map<unsigned long long, double> &edgeWeightMap);
 		int compressFile(const std::string &inputFile, const std::string &outputFile) const;
 		int decompressFile(const std::string &inputFile, const std::string &outputFile) const;
 
@@ -161,7 +161,7 @@ namespace CXXGRAPH
  		* @return parent node of elem 
 		* Note: No Thread Safe
 		*/
-		virtual unsigned long long setFind(std::map<unsigned long long, Subset>* , const unsigned long long elem) const;
+		virtual unsigned long long setFind(std::unordered_map<unsigned long long, Subset>* , const unsigned long long elem) const;
 		/**
 		* @brief This function modifies the original subset array
 		* such that it the union of two sets a and b
@@ -171,7 +171,7 @@ namespace CXXGRAPH
  		* NOTE: Original subset is no longer available after union.
 		* Note: No Thread Safe
 		*/
-		virtual void setUnion(std::map<unsigned long long, Subset>* , const unsigned long long set1, const unsigned long long elem2) const;		
+		virtual void setUnion(std::unordered_map<unsigned long long, Subset>* , const unsigned long long set1, const unsigned long long elem2) const;		
 		/**
 		* @brief This function finds the eulerian path of a directed graph using hierholzers algorithm
  		*
@@ -301,7 +301,7 @@ namespace CXXGRAPH
 		 * 
 		 * @return true if a cycle is detected, else false
 		 */
-		virtual bool containsCycle(const std::list<const Edge<T>* >* edgeSet, std::map<unsigned long long, Subset>*) const;
+		virtual bool containsCycle(const std::list<const Edge<T>* >* edgeSet, std::unordered_map<unsigned long long, Subset>*) const;
 
 		/**
      	* \brief
@@ -569,10 +569,10 @@ namespace CXXGRAPH
 		std::ifstream ifileGraph;
 		std::ifstream ifileNodeFeat;
 		std::ifstream ifileEdgeWeight;
-		std::map<unsigned long long, std::pair<unsigned long long, unsigned long long>> edgeMap;
-		std::map<unsigned long long, bool> edgeDirectedMap;
-		std::map<unsigned long long, T> nodeFeatMap;
-		std::map<unsigned long long, double> edgeWeightMap;
+		std::unordered_map<unsigned long long, std::pair<unsigned long long, unsigned long long>> edgeMap;
+		std::unordered_map<unsigned long long, bool> edgeDirectedMap;
+		std::unordered_map<unsigned long long, T> nodeFeatMap;
+		std::unordered_map<unsigned long long, double> edgeWeightMap;
 		std::string completePathToFileGraph = workingDir + "/" + OFileName + ".csv";
 		ifileGraph.open(completePathToFileGraph);
 		if (!ifileGraph.is_open())
@@ -712,10 +712,10 @@ namespace CXXGRAPH
 		std::ifstream ifileGraph;
 		std::ifstream ifileNodeFeat;
 		std::ifstream ifileEdgeWeight;
-		std::map<unsigned long long, std::pair<unsigned long long, unsigned long long>> edgeMap;
-		std::map<unsigned long long, bool> edgeDirectedMap;
-		std::map<unsigned long long, T> nodeFeatMap;
-		std::map<unsigned long long, double> edgeWeightMap;
+		std::unordered_map<unsigned long long, std::pair<unsigned long long, unsigned long long>> edgeMap;
+		std::unordered_map<unsigned long long, bool> edgeDirectedMap;
+		std::unordered_map<unsigned long long, T> nodeFeatMap;
+		std::unordered_map<unsigned long long, double> edgeWeightMap;
 		std::string completePathToFileGraph = workingDir + "/" + OFileName + ".tsv";
 		ifileGraph.open(completePathToFileGraph);
 		if (!ifileGraph.is_open())
@@ -795,9 +795,9 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	void Graph<T>::recreateGraphFromReadFiles(std::map<unsigned long long, std::pair<unsigned long long, unsigned long long>> &edgeMap, std::map<unsigned long long, bool> &edgeDirectedMap, std::map<unsigned long long, T> &nodeFeatMap, std::map<unsigned long long, double> &edgeWeightMap)
+	void Graph<T>::recreateGraphFromReadFiles(std::unordered_map<unsigned long long, std::pair<unsigned long long, unsigned long long>> &edgeMap, std::unordered_map<unsigned long long, bool> &edgeDirectedMap, std::unordered_map<unsigned long long, T> &nodeFeatMap, std::unordered_map<unsigned long long, double> &edgeWeightMap)
 	{
-		std::map<unsigned long long, Node<T> *> nodeMap;
+		std::unordered_map<unsigned long long, Node<T> *> nodeMap;
 		for (const auto& edgeIt : edgeMap)
 		{
 			Node<T> *node1 = nullptr;
@@ -935,7 +935,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	unsigned long long Graph<T>::setFind(std::map<unsigned long long, Subset> *subsets, const unsigned long long nodeId) const
+	unsigned long long Graph<T>::setFind(std::unordered_map<unsigned long long, Subset> *subsets, const unsigned long long nodeId) const
 	{
 		// find root and make root as parent of i
 		// (path compression)
@@ -948,7 +948,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	void Graph<T>::setUnion(std::map<unsigned long long, Subset>* subsets, const unsigned long long elem1, const unsigned long long elem2) const
+	void Graph<T>::setUnion(std::unordered_map<unsigned long long, Subset>* subsets, const unsigned long long elem1, const unsigned long long elem2) const
 	{
 		// if both sets have same parent
 		// then there's nothing to be done
@@ -1050,7 +1050,7 @@ namespace CXXGRAPH
 		int n = adj.size();
 
 		// setting all the distances initially to INF_DOUBLE
-		std::map<const Node<T> *, double> dist;
+		std::unordered_map<const Node<T> *, double> dist;
 
 		for (const auto& elem : adj)
 		{
@@ -1156,7 +1156,7 @@ namespace CXXGRAPH
 			return result;
 		}
 		// setting all the distances initially to INF_DOUBLE
-		std::map<const Node<T> *, double> dist, currentDist;
+		std::unordered_map<const Node<T> *, double> dist, currentDist;
 		// n denotes the number of vertices in graph
 		auto n = nodeSet.size();
 		for (const auto& elem : nodeSet)
@@ -1247,7 +1247,7 @@ namespace CXXGRAPH
 		FWResult result;
 		result.success = false;
 		result.errorMessage = "";
-		std::map<std::pair<std::string, std::string>, double> pairwise_dist;
+		std::unordered_map<std::pair<std::string, std::string>, double, CXXGRAPH::pair_hash> pairwise_dist;
 		auto nodeSet = Graph<T>::getNodeSet();
 		// create a pairwise distance matrix with distance node distances
 		// set to inf. Distance of node to itself is set as 0.
@@ -1338,7 +1338,7 @@ namespace CXXGRAPH
 		const AdjacencyMatrix<T> adj = Graph<T>::getAdjMatrix();
 
 		// setting all the distances initially to INF_DOUBLE
-		std::map<const Node<T> *, double> dist;
+		std::unordered_map<const Node<T> *, double> dist;
 		for (const auto& elem : adj)
 		{
 			dist[elem.first] = INF_DOUBLE;
@@ -1361,7 +1361,7 @@ namespace CXXGRAPH
 		doneNode.push_back(source->getId());
 		// stores the parent and corresponding child node
 		// of the edges that are part of MST
-		std::map<unsigned long long, std::string> parentNode;
+		std::unordered_map<unsigned long long, std::string> parentNode;
 		while (!pq.empty())
 		{
 			// second element of pair denotes the node / vertex
@@ -1424,7 +1424,7 @@ namespace CXXGRAPH
 		const auto n = nodeSet.size();
 
 		// Use std map for storing n subsets.
-		std::map<unsigned long long, Subset> subsets;
+		std::unordered_map<unsigned long long, Subset> subsets;
 
 		// Initially there are n different trees.
 		// Finally there will be one tree that will be MST
@@ -1433,7 +1433,7 @@ namespace CXXGRAPH
 		// check if all edges are weighted and store the weights
 		// in a map whose keys are the edge ids and values are the edge weights
 		const auto edgeSet = Graph<T>::getEdgeSet();
-		std::map<unsigned long long, double> edgeWeight;
+		std::unordered_map<unsigned long long, double> edgeWeight;
 		for (const auto& edge : edgeSet)
 		{
 			if (edge->isWeighted().has_value() && edge->isWeighted().value())
@@ -1458,7 +1458,7 @@ namespace CXXGRAPH
 		{
 			// Everytime initialize cheapest map
 			// It stores index of the cheapest edge of subset.
-			std::map<unsigned long long, unsigned long long> cheapest;
+			std::unordered_map<unsigned long long, unsigned long long> cheapest;
 			for (const auto& node : nodeSet)
 				cheapest[node->getId()] = INT_MAX;
 
@@ -1549,7 +1549,7 @@ namespace CXXGRAPH
 			}
 		}
 
-		std::map<unsigned long long, Subset> subset;
+		std::unordered_map<unsigned long long, Subset> subset;
 
 		for (const auto& node : nodeSet)
 		{
@@ -1670,7 +1670,7 @@ namespace CXXGRAPH
          *
          * Initially, all nodes are in "not_visited" state.
          */
-		std::map<unsigned long long, nodeStates> state;
+		std::unordered_map<unsigned long long, nodeStates> state;
 		for (const auto& node : nodeSet)
 		{
 			state[node->getId()] = not_visited;
@@ -1686,8 +1686,8 @@ namespace CXXGRAPH
 			if (state[node->getId()] == not_visited)
 			{
 				// Check for cycle.
-				std::function<bool(AdjacencyMatrix<T> &, std::map<unsigned long long, nodeStates> &, const Node<T> *)> isCyclicDFSHelper;
-				isCyclicDFSHelper = [this, &isCyclicDFSHelper](AdjacencyMatrix<T> &adjMatrix, std::map<unsigned long long, nodeStates> &states, const Node<T> *node)
+				std::function<bool(AdjacencyMatrix<T> &, std::unordered_map<unsigned long long, nodeStates> &, const Node<T> *)> isCyclicDFSHelper;
+				isCyclicDFSHelper = [this, &isCyclicDFSHelper](AdjacencyMatrix<T> &adjMatrix, std::unordered_map<unsigned long long, nodeStates> &states, const Node<T> *node)
 				{
 					// Add node "in_stack" state.
 					states[node->getId()] = in_stack;
@@ -1740,7 +1740,7 @@ namespace CXXGRAPH
 	template <typename T>
 	bool Graph<T>::containsCycle(const std::list<const Edge<T>* >* edgeSet) const
 	{
-		std::map<unsigned long long, Subset> subset;
+		std::unordered_map<unsigned long long, Subset> subset;
 		// initialize the subset parent and rank values
 		for (const auto& edge: *edgeSet)
 		{	
@@ -1766,7 +1766,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	bool Graph<T>::containsCycle(const std::list<const Edge<T>* >* edgeSet, std::map<unsigned long long, Subset>* subset) const
+	bool Graph<T>::containsCycle(const std::list<const Edge<T>* >* edgeSet, std::unordered_map<unsigned long long, Subset>* subset) const
 	{		
 		for (const auto& edge: *edgeSet)
 		{			
@@ -1790,7 +1790,7 @@ namespace CXXGRAPH
 		auto adjMatrix = Graph<T>::getAdjMatrix();
 		auto nodeSet = Graph<T>::getNodeSet();
 
-		std::map<unsigned long, unsigned int> indegree;
+		std::unordered_map<unsigned long, unsigned int> indegree;
 		for (const auto& node : nodeSet)
 		{
 			indegree[node->getId()] = 0;
@@ -1902,7 +1902,7 @@ namespace CXXGRAPH
     		dist[i].first = distance of ith vertex from src vertex
     		dits[i].second = vertex i in bucket number */
 		unsigned int V = nodeSet.size();
-		std::map<const Node<T> *, std::pair<long, const Node<T> *>> dist;
+		std::unordered_map<const Node<T> *, std::pair<long, const Node<T> *>> dist;
 
 		// Initialize all distances as infinite (INF)
 		for (const auto& node : nodeSet)
