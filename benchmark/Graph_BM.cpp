@@ -36,7 +36,7 @@ static void AddEdgeX(benchmark::State &state)
     CXXGRAPH::Graph<int> g;
     auto range_start = edges.begin();
     auto range_end = edges.find(state.range(0));
-    std::map<unsigned long, CXXGRAPH::Edge<int> *> edgesX;
+    std::unordered_map<unsigned long, CXXGRAPH::Edge<int> *> edgesX;
     edgesX.insert(range_start, range_end);
     for (auto _ : state)
     {
@@ -76,7 +76,7 @@ static void AddEdgeX_TS(benchmark::State &state)
     CXXGRAPH::Graph_TS<int> g;
     auto range_start = edges.begin();
     auto range_end = edges.find(state.range(0));
-    std::map<unsigned long, CXXGRAPH::Edge<int> *> edgesX;
+    std::unordered_map<unsigned long, CXXGRAPH::Edge<int> *> edgesX;
     edgesX.insert(range_start, range_end);
     for (auto _ : state)
     {
@@ -97,7 +97,7 @@ static void BM_AddEdgeX_MT_TS(benchmark::State &state)
     auto subrange = state.range(0) / state.threads();
     auto range_start = edges.find(subrange * state.thread_index());
     auto range_end = edges.find(subrange * (state.thread_index() + 1));
-    std::map<unsigned long, CXXGRAPH::Edge<int> *> edgesX;
+    std::unordered_map<unsigned long, CXXGRAPH::Edge<int> *> edgesX;
     edgesX.insert(range_start, range_end);
     for (auto _ : state)
     {
@@ -132,7 +132,7 @@ static void RemoveEdgeX(benchmark::State &state)
     CXXGRAPH::Graph<int> g;
     auto range_start = edges.begin();
     auto range_end = edges.find(state.range(0));
-    std::map<unsigned long, CXXGRAPH::Edge<int> *> edgesX;
+    std::unordered_map<unsigned long, CXXGRAPH::Edge<int> *> edgesX;
     edgesX.insert(range_start, range_end);
     for (auto e : edgesX)
     {
@@ -167,7 +167,7 @@ static void RemoveEdgeX_TS(benchmark::State &state)
     CXXGRAPH::Graph_TS<int> g;
     auto range_start = edges.begin();
     auto range_end = edges.find(state.range(0));
-    std::map<unsigned long, CXXGRAPH::Edge<int> *> edgesX;
+    std::unordered_map<unsigned long, CXXGRAPH::Edge<int> *> edgesX;
     edgesX.insert(range_start, range_end);
     for (auto e : edgesX)
     {
@@ -193,7 +193,7 @@ static void RemoveEdgeX_MT_TS(benchmark::State &state)
     auto subrange = state.range(0) / state.threads();
     auto range_start = edges.find(subrange * state.thread_index());
     auto range_end = edges.find(subrange * (state.thread_index() + 1));
-    std::map<unsigned long, CXXGRAPH::Edge<int> *> edgesX;
+    std::unordered_map<unsigned long, CXXGRAPH::Edge<int> *> edgesX;
     edgesX.insert(range_start, range_end);
     for (auto e : edgesX)
     {

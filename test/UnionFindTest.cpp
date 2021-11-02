@@ -25,7 +25,7 @@ TEST(UnionFindTest, setFindTest1)
     CXXGRAPH::Graph<int> graph(edgeSet);
 
     // every element is a subset of itself
-    std::map<unsigned long long, CXXGRAPH::Subset> subset;
+    std::unordered_map<unsigned long long, CXXGRAPH::Subset> subset;
     // {{0, 0}, {1, 0}, {2, 0}, {3, 0}};
     CXXGRAPH::Subset set1{0, 0}, set2{1, 0}, set3{2, 0}, set4{3, 0};
     subset = { {0, set1}, {1, set2}, {2, set3}, {3, set4}};
@@ -46,7 +46,7 @@ TEST(UnionFindTest, setFindTest2)
     CXXGRAPH::Node<int> node3("3", 3);
     // element 2 & 4 are subset of 0
     // element 4 is subset of 1
-    std::map<unsigned long long, CXXGRAPH::Subset> subset;
+    std::unordered_map<unsigned long long, CXXGRAPH::Subset> subset;
     CXXGRAPH::Subset set1{0, 0}, set2{0, 0}, set3{0, 0}, set4{1, 0};
     subset = { {0, set1}, {1, set2}, {2, set3}, {3, set4}};
 
@@ -70,7 +70,7 @@ TEST(UnionFindTest, setUnionTest3)
     CXXGRAPH::Node<int> node2("2", 2);
     CXXGRAPH::Node<int> node3("3", 3);
     // union of (node 1 & node3)  should increase node0 rank by 1
-    std::map<unsigned long long, CXXGRAPH::Subset> subset;
+    std::unordered_map<unsigned long long, CXXGRAPH::Subset> subset;
     CXXGRAPH::Subset set1{0, 0}, set2{0, 0}, set3{0, 0}, set4{1, 0};
     subset = { {0, set1}, {1, set2}, {2, set3}, {3, set4}};
 
