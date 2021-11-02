@@ -70,7 +70,7 @@ namespace CXXGRAPH
 	{
 		bool success = false;			  // TRUE if the function does not return error, FALSE otherwise
 		std::string errorMessage = ""; //message of error
-		double result = 0.0;			  //result (valid only if success is TRUE)
+		double result = INF_DOUBLE;			  //result (valid only if success is TRUE)
 	};
 	typedef DijkstraResult_struct DijkstraResult;
 

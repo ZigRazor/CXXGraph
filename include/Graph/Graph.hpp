@@ -1029,9 +1029,6 @@ namespace CXXGRAPH
 	const DijkstraResult Graph<T>::dijkstra(const Node<T> &source, const Node<T> &target) const
 	{
 		DijkstraResult result;
-		result.success = false;
-		result.errorMessage = "";
-		result.result = INF_DOUBLE;
 		auto nodeSet = Graph<T>::getNodeSet();
 		if (std::find(nodeSet.begin(), nodeSet.end(), &source) == nodeSet.end())
 		{
@@ -1092,7 +1089,12 @@ namespace CXXGRAPH
 						if (elem.second->isDirected().has_value() && elem.second->isDirected().value())
 						{
 							const DirectedWeightedEdge<T> *dw_edge = dynamic_cast<const DirectedWeightedEdge<T> *>(elem.second);
-							if (currentDist + dw_edge->getWeight() < dist[elem.first])
+							if (dw_edge->getWeight() < 0)
+							{
+								result.errorMessage = ERR_NEGATIVE_WEIGHTED_EDGE;
+								return result;
+							}
+							else if (currentDist + dw_edge->getWeight() < dist[elem.first])
 							{
 								dist[elem.first] = currentDist + dw_edge->getWeight();
 								pq.push(std::make_pair(dist[elem.first], elem.first));
@@ -1101,7 +1103,12 @@ namespace CXXGRAPH
 						else if (elem.second->isDirected().has_value() && !elem.second->isDirected().value())
 						{
 							const UndirectedWeightedEdge<T> *udw_edge = dynamic_cast<const UndirectedWeightedEdge<T> *>(elem.second);
-							if (currentDist + udw_edge->getWeight() < dist[elem.first])
+							if (udw_edge->getWeight() < 0)
+							{
+								result.errorMessage = ERR_NEGATIVE_WEIGHTED_EDGE;
+								return result;
+							}
+							else if (currentDist + udw_edge->getWeight() < dist[elem.first])
 							{
 								dist[elem.first] = currentDist + udw_edge->getWeight();
 								pq.push(std::make_pair(dist[elem.first], elem.first));
@@ -1131,7 +1138,6 @@ namespace CXXGRAPH
 			return result;
 		}
 		result.errorMessage = ERR_TARGET_NODE_NOT_REACHABLE;
-		result.result = -1;
 		return result;
 	}
 
