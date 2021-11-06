@@ -80,18 +80,8 @@ namespace CXXGRAPH
 		std::list<const Edge<T> *> edgeSet = {};
 		void addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge) const;
 		std::optional<std::pair<std::string, char>> getExtenstionAndSeparator(InputOutputFormat format) const;
-		int writeToStandardFile(const std::string &workingDir, 
-		                        const std::string &OFileName, 
-								bool compress, 
-								bool writeNodeFeat, 
-								bool writeEdgeWeight,
-								InputOutputFormat format) const;
-		int readFromStandardFile(const std::string &workingDir, 
-		                         const std::string &OFileName, 
-								 bool compress, 
-								 bool readNodeFeat, 
-								 bool readEdgeWeight, 
-								 InputOutputFormat format);
+		int writeToStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight, InputOutputFormat format) const;
+		int readFromStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight, InputOutputFormat format);
 		void recreateGraphFromReadFiles(std::unordered_map<unsigned long long, std::pair<unsigned long long, unsigned long long>> &edgeMap, std::unordered_map<unsigned long long, bool> &edgeDirectedMap, std::unordered_map<unsigned long long, T> &nodeFeatMap, std::unordered_map<unsigned long long, double> &edgeWeightMap);
 		int compressFile(const std::string &inputFile, const std::string &outputFile) const;
 		int decompressFile(const std::string &inputFile, const std::string &outputFile) const;
@@ -530,12 +520,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	int Graph<T>::writeToStandardFile(const std::string &workingDir, 
-													          const std::string &OFileName, 
-																		bool compress, 
-																		bool writeNodeFeat, 
-																		bool writeEdgeWeight,
-																		InputOutputFormat format) const
+	int Graph<T>::writeToStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight, InputOutputFormat format) const
 	{
 		auto result = getExtenstionAndSeparator(format);
 		if (!result) {
@@ -616,12 +601,7 @@ namespace CXXGRAPH
 	};
 
 	template <typename T>
-	int Graph<T>::readFromStandardFile( const std::string &workingDir, 
-									    const std::string &OFileName, 
-										bool compress, 
-										bool readNodeFeat, 
-										bool readEdgeWeight,
-										InputOutputFormat format) 
+	int Graph<T>::readFromStandardFile( const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight, InputOutputFormat format) 
 	{
 		auto result = getExtenstionAndSeparator(format);
 		if (!result) {
