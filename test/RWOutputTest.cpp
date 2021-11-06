@@ -8,9 +8,9 @@ inline bool exists_test(const std::string &name)
     return (stat(name.c_str(), &buffer) == 0);
 }
 
-static std::map<unsigned long, CXXGRAPH::Node<int> *> generateRandomNodes(unsigned long numberOfNodes, int MaxValue)
+static std::unordered_map<unsigned long, CXXGRAPH::Node<int> *> generateRandomNodes(unsigned long numberOfNodes, int MaxValue)
 {
-    std::map<unsigned long, CXXGRAPH::Node<int> *> nodes;
+    std::unordered_map<unsigned long, CXXGRAPH::Node<int> *> nodes;
     srand(static_cast<unsigned>(time(NULL)));
     int randomNumber;
     for (auto index = 0; index < numberOfNodes; ++index)
@@ -23,9 +23,9 @@ static std::map<unsigned long, CXXGRAPH::Node<int> *> generateRandomNodes(unsign
     return nodes;
 }
 
-static std::map<unsigned long, CXXGRAPH::Edge<int> *> generateRandomEdges(unsigned long numberOfEdges, std::map<unsigned long, CXXGRAPH::Node<int> *> nodes)
+static std::unordered_map<unsigned long, CXXGRAPH::Edge<int> *> generateRandomEdges(unsigned long numberOfEdges, std::unordered_map<unsigned long, CXXGRAPH::Node<int> *> nodes)
 {
-    std::map<unsigned long, CXXGRAPH::Edge<int> *> edges;
+    std::unordered_map<unsigned long, CXXGRAPH::Edge<int> *> edges;
     srand(static_cast<unsigned>(time(NULL)));
     int randomNumber1;
     int randomNumber2;

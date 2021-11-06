@@ -39,7 +39,7 @@ namespace CXXGRAPH
         class CoordinatedPartitionState : public PartitionState<T>
         {
         private:
-            std::map<int, CoordinatedRecord<T>> record_map = {};
+            std::unordered_map<int, CoordinatedRecord<T>> record_map = {};
             std::vector<int> machines_load_edges = {};
             std::vector<int> machines_load_vertices = {};
             PartitionMap<T> partition_map;

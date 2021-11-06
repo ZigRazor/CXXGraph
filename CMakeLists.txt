@@ -100,6 +100,7 @@ if(BENCHMARK)
 							benchmark/Node_BM.cpp
 							benchmark/Edge_BM.cpp
 							benchmark/Graph_BM.cpp
+							benchmark/FloydWarshall_BM.cpp
 				)
 	target_include_directories(benchmark PUBLIC
 						  "${PROJECT_SOURCE_DIR}/include"
