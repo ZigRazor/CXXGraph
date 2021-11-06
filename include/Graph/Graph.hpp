@@ -95,7 +95,6 @@ namespace CXXGRAPH
 		void recreateGraphFromReadFiles(std::unordered_map<unsigned long long, std::pair<unsigned long long, unsigned long long>> &edgeMap, std::unordered_map<unsigned long long, bool> &edgeDirectedMap, std::unordered_map<unsigned long long, T> &nodeFeatMap, std::unordered_map<unsigned long long, double> &edgeWeightMap);
 		int compressFile(const std::string &inputFile, const std::string &outputFile) const;
 		int decompressFile(const std::string &inputFile, const std::string &outputFile) const;
-		std::vector<std::string> getTokens(const std::string& line, const char delimiter) const;
 
 	public:
 		Graph() = default;
@@ -602,16 +601,19 @@ namespace CXXGRAPH
 		return 0;
 	}
 
-	template <typename T>
-	std::vector<std::string> Graph<T>::getTokens(const std::string& line, const char delimiter) const{
-		std::vector<std::string> tokens;
-		std::string token;
-		std::stringstream lineStream(line);
-		while(std::getline(lineStream, token, delimiter)) {
-			tokens.push_back(token);
-		}
-		return tokens;
-	}
+	// This ctype facet classifies ',' and '\t' as whitespace
+	struct csv_whitespace : std::ctype<char> {
+	    static const mask* make_table()
+	    {
+	        // make a copy of the "C" locale table
+	        static std::vector<mask> v(classic_table(), classic_table() + table_size);
+	        v[','] |=  space;  // comma will be classified as whitespace
+	        v['\t'] |= space;
+	        v[' '] &= ~space;      // space will not be classified as whitespace
+	        return &v[0];
+	    }
+	    csv_whitespace(std::size_t refs = 0) : ctype(make_table(), false, refs) {}
+	};
 
 	template <typename T>
 	int Graph<T>::readFromStandardFile( const std::string &workingDir, 
@@ -636,7 +638,7 @@ namespace CXXGRAPH
 		std::unordered_map<unsigned long long, bool> edgeDirectedMap;
 		std::unordered_map<unsigned long long, T> nodeFeatMap;
 		std::unordered_map<unsigned long long, double> edgeWeightMap;
-    std::string completePathToFileGraph = workingDir + "/" + OFileName + extension;
+		std::string completePathToFileGraph = workingDir + "/" + OFileName + extension;
 
 		ifileGraph.open(completePathToFileGraph);
 		if (!ifileGraph.is_open())
@@ -645,20 +647,16 @@ namespace CXXGRAPH
 			return -1;
 		}
 
-		std::string str;
-		while (std::getline(ifileGraph, str)) { // read each line
-			std::vector<std::string> tokens = getTokens(str, separator);
-			if (tokens.size() > 0) {
-				std::cout << "\n";
-				unsigned long long edgeId = std::stoll(tokens.at(0));
-				unsigned long long nodeId1 = std::stoll(tokens.at(1));
-				unsigned long long nodeId2 = std::stoll(tokens.at(2));
-				bool directed = std::stoi(tokens[3]);
-				edgeMap[edgeId] = std::pair<unsigned long long, unsigned long long>(nodeId1, nodeId2);
-				edgeDirectedMap[edgeId] = directed;
-			}
+		ifileGraph.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
+		unsigned long long edgeId;
+		unsigned long long nodeId1;
+		unsigned long long nodeId2;
+		bool directed;
+		while (ifileGraph >> edgeId >> nodeId1 >> nodeId2 >> directed)
+		{ /* loop continually */
+			edgeMap[edgeId] = std::pair<unsigned long long, unsigned long long>(nodeId1, nodeId2);
+			edgeDirectedMap[edgeId] = directed;
 		}
-
 		ifileGraph.close();
 		if (compress) remove(completePathToFileGraph.c_str());
 
@@ -671,22 +669,12 @@ namespace CXXGRAPH
 				// ERROR File Not Open
 				return -1;
 			}
-			while (std::getline(ifileNodeFeat, str)) { // read each line
-				std::vector<std::string> tokens = getTokens(str, separator);
-				if (tokens.size() > 0) {
-					std::cout << "\n";
-					unsigned long long nodeId = std::stoll(tokens[0]);
-					T nodeFeat;
-					// convert from string to respective data type based on T
-					if constexpr (std::is_same_v<T, std::string>) {
-						nodeFeat = tokens[1];
-					} else if constexpr (std::is_same_v<T, long>) {
-						nodeFeat = std::stol(tokens[1]);
-					} else if constexpr (std::is_same_v<T, long long>) {
-						nodeFeat = std::stoll(tokens[1]);
-					}
-					nodeFeatMap[nodeId] = nodeFeat;
-				}
+			ifileNodeFeat.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
+			unsigned long long nodeId;
+			T nodeFeat;
+			while (ifileNodeFeat >> nodeId >> nodeFeat) 
+			{
+				nodeFeatMap[nodeId] = nodeFeat;
 			}
 			ifileNodeFeat.close();
 			if (compress) remove(completePathToFileNodeFeat.c_str());
@@ -701,17 +689,14 @@ namespace CXXGRAPH
 				// ERROR File Not Open
 				return -1;
 			}
-			while (std::getline(ifileEdgeWeight, str)) { // read each line
-				std::vector<std::string> tokens = getTokens(str, separator);
-				if (tokens.size() > 0) {
-					std::cout << "\n";
-					unsigned long long edgeId = std::stoll(tokens.at(0));
-					double weight = std::stod(tokens.at(1));
-					bool weighted = std::stoi(tokens.at(2));
-					bool directed = std::stoi(tokens[3]);
-					if (weighted) {
-						edgeWeightMap[edgeId] = weight;
-					}
+			ifileEdgeWeight.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
+			unsigned long long edgeId;
+			double weight;
+			bool weighted;
+			while (ifileEdgeWeight >> edgeId >> weight >> weighted)
+			{ /* loop continually */
+				if (weighted) {
+					edgeWeightMap[edgeId] = weight;
 				}
 			}
 			ifileEdgeWeight.close();
