@@ -680,8 +680,6 @@ namespace CXXGRAPH
 					// convert from string to respective data type based on T
 					if constexpr (std::is_same_v<T, std::string>) {
 						nodeFeat = tokens[1];
-					} else if constexpr (std::is_same_v<T, int>) {
-						nodeFeat = std::stoi(tokens[1]);
 					} else if constexpr (std::is_same_v<T, long>) {
 						nodeFeat = std::stol(tokens[1]);
 					} else if constexpr (std::is_same_v<T, long long>) {
