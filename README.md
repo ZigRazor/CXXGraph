@@ -396,6 +396,12 @@ Thanks to the community of [TheAlgorithms](https://github.com/TheAlgorithms) for
 
 Thanks to [GeeksForGeeks](https://www.geeksforgeeks.org/) for some algorithms inspiration.
 
+## Contributors
+
+Thank you to all the people who have already contributed to CXXGraph!
+
+[![Contributors](https://contrib.rocks/image?repo=zigrazor/CXXGraph)](https://github.com/ZigRazor/CXXGraph/graphs/contributors)
+
 ## Hacktoberfest 2k21
 
 We participate at Hacktoberfest 2021, if you want to contribute, you can take an [issue](https://github.com/ZigRazor/CXXGraph/issues) and solve it, or if you want to add a functionalities just open a PR with the label `hacktoberfest`.
