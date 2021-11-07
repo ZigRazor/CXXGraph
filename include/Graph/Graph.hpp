@@ -79,10 +79,9 @@ namespace CXXGRAPH
 	private:
 		std::list<const Edge<T> *> edgeSet = {};
 		void addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge) const;
-		int writeToStandardFile_csv(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const;
-		int readFromStandardFile_csv(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight);
-		int writeToStandardFile_tsv(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const;
-		int readFromStandardFile_tsv(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight);
+		std::optional<std::pair<std::string, char>> getExtenstionAndSeparator(InputOutputFormat format) const;
+		int writeToStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight, InputOutputFormat format) const;
+		int readFromStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight, InputOutputFormat format);
 		void recreateGraphFromReadFiles(std::unordered_map<unsigned long long, std::pair<unsigned long long, unsigned long long>> &edgeMap, std::unordered_map<unsigned long long, bool> &edgeDirectedMap, std::unordered_map<unsigned long long, T> &nodeFeatMap, std::unordered_map<unsigned long long, double> &edgeWeightMap);
 		int compressFile(const std::string &inputFile, const std::string &outputFile) const;
 		int decompressFile(const std::string &inputFile, const std::string &outputFile) const;
@@ -510,112 +509,152 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	int Graph<T>::writeToStandardFile_csv(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
+	std::optional<std::pair<std::string, char>> Graph<T>::getExtenstionAndSeparator(InputOutputFormat format) const{
+		if (format == InputOutputFormat::STANDARD_CSV) {
+			return std::pair<std::string, char>(".csv", ',');
+		} else if (format == InputOutputFormat::STANDARD_TSV) {
+			return std::pair<std::string, char>(".tsv", '\t');
+		} else {
+			return std::nullopt;
+		}
+	}
+
+	template <typename T>
+	int Graph<T>::writeToStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight, InputOutputFormat format) const
 	{
+		auto result = getExtenstionAndSeparator(format);
+		if (!result) {
+			std::cerr << "Unknown format\n";
+			return -1;
+		}
+		auto& [extension, separator] = *result;
+
 		std::ofstream ofileGraph;
-		std::string completePathToFileGraph = workingDir + "/" + OFileName + ".csv";
+		std::string completePathToFileGraph = workingDir + "/" + OFileName + extension;
 		ofileGraph.open(completePathToFileGraph);
 		if (!ofileGraph.is_open())
 		{
 			// ERROR File Not Open
 			return -1;
 		}
-		auto printOutGraph = [&ofileGraph](const Edge<T> *e)
-		{ ofileGraph << e->getId() << "," << e->getNodePair().first->getUserId() << "," << e->getNodePair().second->getUserId() << "," << ((e->isDirected().has_value() && e->isDirected().value()) ? 1 : 0) << std::endl; };
-		std::for_each(edgeSet.cbegin(), edgeSet.cend(), printOutGraph);
+
+		for (const auto& edge:edgeSet) {
+			ofileGraph << edge->getId() << separator 
+			           << edge->getNodePair().first->getUserId() << separator 
+								 << edge->getNodePair().second->getUserId() << separator 
+								 << ((edge->isDirected().has_value() && edge->isDirected().value()) ? 1 : 0) 
+								 << std::endl; 
+		}
 		ofileGraph.close();
 
 		if (writeNodeFeat)
 		{
 			std::ofstream ofileNodeFeat;
-			std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat"
-																					".csv";
+			std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat" + extension;
 			ofileNodeFeat.open(completePathToFileNodeFeat);
 			if (!ofileNodeFeat.is_open())
 			{
 				// ERROR File Not Open
 				return -1;
 			}
-			auto printOutNodeFeat = [&ofileNodeFeat](const Node<T> *node)
-			{ ofileNodeFeat << node->getUserId() << "," << node->getData() << std::endl; };
 			auto nodeSet = getNodeSet();
-			std::for_each(nodeSet.cbegin(), nodeSet.cend(), printOutNodeFeat);
+			for (const auto& node:nodeSet) {
+				ofileNodeFeat << node->getUserId() << separator << node->getData() << std::endl;
+			}
 			ofileNodeFeat.close();
 		}
 
 		if (writeEdgeWeight)
 		{
 			std::ofstream ofileEdgeWeight;
-			std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight"
-																					  ".csv";
+			std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight" + extension;
 			ofileEdgeWeight.open(completePathToFileEdgeWeight);
 			if (!ofileEdgeWeight.is_open())
 			{
 				// ERROR File Not Open
 				return -1;
 			}
-			auto printOutEdgeWeight = [&ofileEdgeWeight](const Edge<T> *e)
-			{ ofileEdgeWeight << e->getId() << "," << (e->isWeighted().has_value() && e->isWeighted().value() ? (dynamic_cast<const Weighted *>(e))->getWeight() : 0.0) << "," << (e->isWeighted().has_value() && e->isWeighted().value() ? 1 : 0) << std::endl; };
 
-			std::for_each(edgeSet.cbegin(), edgeSet.cend(), printOutEdgeWeight);
+			for (const auto& edge:edgeSet) {
+				ofileEdgeWeight << edge->getId() << separator 
+				                << (edge->isWeighted().has_value() && edge->isWeighted().value() ? (dynamic_cast<const Weighted *>(edge))->getWeight() : 0.0) << separator 
+												<< (edge->isWeighted().has_value() && edge->isWeighted().value() ? 1 : 0) 
+												<< std::endl;
+			}
 			ofileEdgeWeight.close();
 		}
 		return 0;
 	}
 
+	// This ctype facet classifies ',' and '\t' as whitespace
+	struct csv_whitespace : std::ctype<char> {
+	    static const mask* make_table()
+	    {
+	        // make a copy of the "C" locale table
+	        static std::vector<mask> v(classic_table(), classic_table() + table_size);
+	        v[','] |=  space;  // comma will be classified as whitespace
+	        v['\t'] |= space;
+	        v[' '] &= ~space;      // space will not be classified as whitespace
+	        return &v[0];
+	    }
+	    csv_whitespace(std::size_t refs = 0) : ctype(make_table(), false, refs) {}
+	};
+
 	template <typename T>
-	int Graph<T>::readFromStandardFile_csv(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight)
+	int Graph<T>::readFromStandardFile( const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight, InputOutputFormat format) 
 	{
+		auto result = getExtenstionAndSeparator(format);
+		if (!result) {
+			std::cerr << "Unknown format\n";
+			return -1;
+		}
+		auto& [extension, separator] = *result;
+
 		std::ifstream ifileGraph;
 		std::ifstream ifileNodeFeat;
 		std::ifstream ifileEdgeWeight;
+
 		std::unordered_map<unsigned long long, std::pair<unsigned long long, unsigned long long>> edgeMap;
 		std::unordered_map<unsigned long long, bool> edgeDirectedMap;
 		std::unordered_map<unsigned long long, T> nodeFeatMap;
 		std::unordered_map<unsigned long long, double> edgeWeightMap;
-		std::string completePathToFileGraph = workingDir + "/" + OFileName + ".csv";
+		std::string completePathToFileGraph = workingDir + "/" + OFileName + extension;
+
 		ifileGraph.open(completePathToFileGraph);
 		if (!ifileGraph.is_open())
 		{
 			// ERROR File Not Open
 			return -1;
 		}
-		char comma;
-		for (;;)
+
+		ifileGraph.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
+		unsigned long long edgeId;
+		unsigned long long nodeId1;
+		unsigned long long nodeId2;
+		bool directed;
+		while (ifileGraph >> edgeId >> nodeId1 >> nodeId2 >> directed)
 		{ /* loop continually */
-			unsigned long long edgeId;
-			unsigned long long nodeId1;
-			unsigned long long nodeId2;
-			bool directed;
-			ifileGraph >> edgeId >> comma >> nodeId1 >> comma >> nodeId2 >> comma >> directed;
 			edgeMap[edgeId] = std::pair<unsigned long long, unsigned long long>(nodeId1, nodeId2);
 			edgeDirectedMap[edgeId] = directed;
-			if (ifileGraph.fail() || ifileGraph.eof())
-				break;
-			ifileGraph.ignore(128, '\n');
 		}
 		ifileGraph.close();
 		if (compress) remove(completePathToFileGraph.c_str());
 
 		if (readNodeFeat)
 		{
-			std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat"
-																					".csv";
+			std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat" + extension;
 			ifileNodeFeat.open(completePathToFileNodeFeat);
 			if (!ifileNodeFeat.is_open())
 			{
 				// ERROR File Not Open
 				return -1;
 			}
-			for (;;)
-			{ /* loop continually */
-				unsigned long long nodeId;
-				T nodeFeat;
-				ifileNodeFeat >> nodeId >> comma >> nodeFeat;
+			ifileNodeFeat.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
+			unsigned long long nodeId;
+			T nodeFeat;
+			while (ifileNodeFeat >> nodeId >> nodeFeat) 
+			{
 				nodeFeatMap[nodeId] = nodeFeat;
-				if (ifileNodeFeat.fail() || ifileNodeFeat.eof())
-					break;
-				ifileNodeFeat.ignore(128, '\n');
 			}
 			ifileNodeFeat.close();
 			if (compress) remove(completePathToFileNodeFeat.c_str());
@@ -623,169 +662,22 @@ namespace CXXGRAPH
 
 		if (readEdgeWeight)
 		{
-			std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight"
-																					  ".csv";
+			std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight" + extension;
 			ifileEdgeWeight.open(completePathToFileEdgeWeight);
 			if (!ifileEdgeWeight.is_open())
 			{
 				// ERROR File Not Open
 				return -1;
 			}
-			for (;;)
-			{ /* loop continually */
-				unsigned long long edgeId;
-				double weight;
-				bool weighted;
-				ifileEdgeWeight >> edgeId >> comma >> weight >> comma >> weighted;
-				if (weighted)
-				{
-					edgeWeightMap[edgeId] = weight;
-				}
-				if (ifileEdgeWeight.fail() || ifileEdgeWeight.eof())
-					break;
-				ifileEdgeWeight.ignore(128, '\n');
-			}
-			ifileEdgeWeight.close();
-			if (compress) remove(completePathToFileEdgeWeight.c_str());
-		}
-		recreateGraphFromReadFiles(edgeMap, edgeDirectedMap, nodeFeatMap, edgeWeightMap);
-		return 0;
-	}
-
-	template <typename T>
-	int Graph<T>::writeToStandardFile_tsv(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
-	{
-		std::ofstream ofileGraph;
-		std::string completePathToFileGraph = workingDir + "/" + OFileName + ".tsv";
-		ofileGraph.open(completePathToFileGraph);
-		if (!ofileGraph.is_open())
-		{
-			// ERROR File Not Open
-			return -1;
-		}
-		auto printOutGraph = [&ofileGraph](const Edge<T> *e)
-		{ ofileGraph << e->getId() << "\t" << e->getNodePair().first->getUserId() << "\t" << e->getNodePair().second->getUserId() << "\t" << ((e->isDirected().has_value() && e->isDirected().value()) ? 1 : 0) << std::endl; };
-		std::for_each(edgeSet.cbegin(), edgeSet.cend(), printOutGraph);
-		ofileGraph.close();
-
-		if (writeNodeFeat)
-		{
-			std::ofstream ofileNodeFeat;
-			std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat"
-																					".tsv";
-			ofileNodeFeat.open(completePathToFileNodeFeat);
-			if (!ofileNodeFeat.is_open())
-			{
-				// ERROR File Not Open
-				return -1;
-			}
-			auto printOutNodeFeat = [&ofileNodeFeat](const Node<T> *node)
-			{ ofileNodeFeat << node->getUserId() << "\t" << node->getData() << std::endl; };
-			auto nodeSet = getNodeSet();
-			std::for_each(nodeSet.cbegin(), nodeSet.cend(), printOutNodeFeat);
-			ofileNodeFeat.close();
-		}
-
-		if (writeEdgeWeight)
-		{
-			std::ofstream ofileEdgeWeight;
-			std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight"
-																					  ".tsv";
-			ofileEdgeWeight.open(completePathToFileEdgeWeight);
-			if (!ofileEdgeWeight.is_open())
-			{
-				// ERROR File Not Open
-				return -1;
-			}
-			auto printOutEdgeWeight = [&ofileEdgeWeight](const Edge<T> *e)
-			{ ofileEdgeWeight << e->getId() << "\t" << (e->isWeighted().has_value() && e->isWeighted().value() ? (dynamic_cast<const Weighted *>(e))->getWeight() : 0.0) << "\t" << (e->isWeighted().has_value() && e->isWeighted().value() ? 1 : 0) << std::endl; };
-
-			std::for_each(edgeSet.cbegin(), edgeSet.cend(), printOutEdgeWeight);
-			ofileEdgeWeight.close();
-		}
-		return 0;
-	}
-
-	template <typename T>
-	int Graph<T>::readFromStandardFile_tsv(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight)
-	{
-		std::ifstream ifileGraph;
-		std::ifstream ifileNodeFeat;
-		std::ifstream ifileEdgeWeight;
-		std::unordered_map<unsigned long long, std::pair<unsigned long long, unsigned long long>> edgeMap;
-		std::unordered_map<unsigned long long, bool> edgeDirectedMap;
-		std::unordered_map<unsigned long long, T> nodeFeatMap;
-		std::unordered_map<unsigned long long, double> edgeWeightMap;
-		std::string completePathToFileGraph = workingDir + "/" + OFileName + ".tsv";
-		ifileGraph.open(completePathToFileGraph);
-		if (!ifileGraph.is_open())
-		{
-			// ERROR File Not Open
-			return -1;
-		}
-		for (;;)
-		{ /* loop continually */
+			ifileEdgeWeight.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
 			unsigned long long edgeId;
-			unsigned long long nodeId1;
-			unsigned long long nodeId2;
-			bool directed;
-			ifileGraph >> edgeId >> std::ws >> nodeId1 >> std::ws >> nodeId2 >> std::ws >> directed;
-			edgeMap[edgeId] = std::pair<unsigned long long, unsigned long long>(nodeId1, nodeId2);
-			edgeDirectedMap[edgeId] = directed;
-			if (ifileGraph.fail() || ifileGraph.eof())
-				break;
-			ifileGraph.ignore(128, '\n');
-		}
-		ifileGraph.close();
-		if (compress) remove(completePathToFileGraph.c_str());
-
-		if (readNodeFeat)
-		{
-			std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat"
-																					".tsv";
-			ifileNodeFeat.open(completePathToFileNodeFeat);
-			if (!ifileNodeFeat.is_open())
-			{
-				// ERROR File Not Open
-				return -1;
-			}
-			for (;;)
+			double weight;
+			bool weighted;
+			while (ifileEdgeWeight >> edgeId >> weight >> weighted)
 			{ /* loop continually */
-				unsigned long long nodeId;
-				T nodeFeat;
-				ifileNodeFeat >> nodeId >> std::ws >> nodeFeat;
-				nodeFeatMap[nodeId] = nodeFeat;
-				if (ifileNodeFeat.fail() || ifileNodeFeat.eof())
-					break;
-				ifileNodeFeat.ignore(128, '\n');
-			}
-			ifileNodeFeat.close();
-			if (compress) remove(completePathToFileNodeFeat.c_str());
-		}
-
-		if (readEdgeWeight)
-		{
-			std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight"
-																					  ".tsv";
-			ifileEdgeWeight.open(completePathToFileEdgeWeight);
-			if (!ifileEdgeWeight.is_open())
-			{
-				// ERROR File Not Open
-				return -1;
-			}
-			for (;;)
-			{ /* loop continually */
-				unsigned long long edgeId;
-				double weight;
-				bool weighted;
-				ifileEdgeWeight >> edgeId >> std::ws >> weight >> std::ws >> weighted;
-				if (weighted)
-				{
+				if (weighted) {
 					edgeWeightMap[edgeId] = weight;
 				}
-				if (ifileEdgeWeight.fail() || ifileEdgeWeight.eof())
-					break;
-				ifileEdgeWeight.ignore(128, '\n');
 			}
 			ifileEdgeWeight.close();
 			if (compress) remove(completePathToFileEdgeWeight.c_str());
@@ -2058,19 +1950,7 @@ namespace CXXGRAPH
 	int Graph<T>::writeToFile(InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
 	{
 		int result = 0;
-		if (format == InputOutputFormat::STANDARD_CSV)
-		{
-			result = writeToStandardFile_csv(workingDir, OFileName, compress, writeNodeFeat, writeEdgeWeight);
-		}
-		else if (format == InputOutputFormat::STANDARD_TSV)
-		{
-			result = writeToStandardFile_tsv(workingDir, OFileName, compress, writeNodeFeat, writeEdgeWeight);
-		}
-		else
-		{
-			//OUTPUT FORMAT NOT RECOGNIZED
-			return -1;
-		}
+		result = writeToStandardFile(workingDir, OFileName, compress, writeNodeFeat, writeEdgeWeight, format);
 		if (result == 0 && compress)
 		{
 			auto _compress = [this, &workingDir, &OFileName, &writeNodeFeat, &writeEdgeWeight](const std::string &extension)
@@ -2174,19 +2054,7 @@ namespace CXXGRAPH
 		}
 		if (result == 0)
 		{
-			if (format == InputOutputFormat::STANDARD_CSV)
-			{
-				result = readFromStandardFile_csv(workingDir, OFileName, compress, readNodeFeat, readEdgeWeight);
-			}
-			else if (format == InputOutputFormat::STANDARD_TSV)
-			{
-				result = readFromStandardFile_tsv(workingDir, OFileName, compress, readNodeFeat, readEdgeWeight);
-			}
-			else
-			{
-				//OUTPUT FORMAT NOT RECOGNIZED
-				result = -1;
-			}
+			result = readFromStandardFile(workingDir, OFileName, compress, readNodeFeat, readEdgeWeight, format);
 		}
 		return result;
 	}
