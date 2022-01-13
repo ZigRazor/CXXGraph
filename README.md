@@ -339,7 +339,7 @@ Other algorithms to find the minimum spanning forest are Prim's algorithm or Bor
 
 A vertex-cut partitioning divides edges of a graph into equal size partitions. The vertices that hold the endpoints of an edge are also placed in the same partition as the edge itself. However, the vertices are not unique across partitions and might have to be replicated (cut), due to the distribution of their edge across different partitions.
 
-Replication factor quantifies how many vertexes are replicated over computers compared with the the number of vertexes of the original input graph.
+Replication factor quantifies how many vertices are replicated over computers compared with the the number of vertices of the original input graph.
 
 ### Greedy Vertex-Cut
 This Algorithm is a simple vertex-cut in Round-Robin fashion.
