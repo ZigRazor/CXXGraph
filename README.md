@@ -4,6 +4,8 @@
 
 <img src="https://img.shields.io/badge/c++%20-%2300599C.svg?&style=for-the-badge&logo=c%2B%2B&ogoColor=white"/> <img src="https://img.shields.io/badge/github%20-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white"/>
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5878832.svg)](https://doi.org/10.5281/zenodo.5878832)
+
 [![codecov](https://codecov.io/gh/ZigRazor/CXXGraph/branch/master/graph/badge.svg?token=773AQ2H9RQ)](https://codecov.io/gh/ZigRazor/CXXGraph)
 [![CodeFactor](https://www.codefactor.io/repository/github/zigrazor/cxxgraph/badge)](https://www.codefactor.io/repository/github/zigrazor/cxxgraph)
 
