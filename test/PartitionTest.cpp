@@ -192,14 +192,14 @@ TEST(PartitionTest, test_2)
 
 TEST(PartitionTest, test_3)
 {
-    CXXGRAPH::Node<int> node1(1, 1);
-    CXXGRAPH::Node<int> node2(2, 2);
-    CXXGRAPH::Node<int> node3(3, 3);
-    CXXGRAPH::Node<int> node4(4, 4);
-    CXXGRAPH::Node<int> node5(5, 5);
-    CXXGRAPH::Node<int> node6(6, 6);
-    CXXGRAPH::Node<int> node7(7, 7);
-    CXXGRAPH::Node<int> node8(8, 8);
+    CXXGRAPH::Node<int> node1("1", 1);
+    CXXGRAPH::Node<int> node2("2", 2);
+    CXXGRAPH::Node<int> node3("3", 3);
+    CXXGRAPH::Node<int> node4("4", 4);
+    CXXGRAPH::Node<int> node5("5", 5);
+    CXXGRAPH::Node<int> node6("6", 6);
+    CXXGRAPH::Node<int> node7("7", 7);
+    CXXGRAPH::Node<int> node8("8", 8);
     std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);

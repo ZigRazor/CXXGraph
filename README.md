@@ -27,33 +27,37 @@ An alternative to [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_7
 
 ## Table of Contents
 - [CXXGraph](#cxxgraph)
-  * [Introduction](#introduction)
-  * [Table of Contents](#table-of-contents)
-  * [Install and Uninstall](#install-and-uninstall)
-    + [Install Linux Tarballs](#install-linux-tarballs)
-    + [Install RPM](#install-rpm)
-    + [Install DEB](#install-deb)
-    + [Install From Source](#install-from-source)
-  * [Classes Explanation](#classes-explanation)
-  * [Requirements](#requirements)
-  * [How to use](#how-to-use)
-  * [Example](#example)
-  * [Unit-Test Execution](#unit-test-execution)
-    + [Google Test Installation](#google-test-installation)
-    + [How to Compile Test](#how-to-compile-test)
-    + [How to Run Test](#how-to-run-test)
-  * [Benchmark Execution](#benchmark-execution)
-    + [Google Benchmark Installation](#google-benchmark-installation)
-    + [How to Compile Benchmark](#how-to-compile-benchmark)
-    + [How to Run Benchmark](#how-to-run-benchmark)
-    + [Benchmark Results](#benchmark-results)
-  * [Packaging](#packaging)
-    + [Tarballs](#tarballs)
-    + [RPM](#rpm)
-      - [(Fedora/CentOS/RedHat)](#-fedora-centos-redhat-)
-    + [DEB](#deb)
-      - [(Debian/Ubuntu)](#-debian-ubuntu-)
-  * [Algorithm Explanation](#algorithm-explanation)
+  - [Introduction](#introduction)
+  - [Table of Contents](#table-of-contents)
+  - [Install and Uninstall](#install-and-uninstall)
+    - [Install Linux Tarballs](#install-linux-tarballs)
+    - [Install RPM](#install-rpm)
+    - [Install DEB](#install-deb)
+    - [Install From Source](#install-from-source)
+  - [Classes Explanation](#classes-explanation)
+  - [Requirements](#requirements)
+  - [How to use](#how-to-use)
+  - [Example](#example)
+  - [Unit-Test Execution](#unit-test-execution)
+    - [OpenSSL installation](#openssl-installation)
+      - [Ubuntu/Debian](#ubuntudebian)
+      - [RedHat/CentOS/RockyLinux/Fedora](#redhatcentosrockylinuxfedora)
+      - [Other System](#other-system)
+    - [Google Test Installation](#google-test-installation)
+    - [How to Compile Test](#how-to-compile-test)
+    - [How to Run Test](#how-to-run-test)
+  - [Benchmark Execution](#benchmark-execution)
+    - [Google Benchmark Installation](#google-benchmark-installation)
+    - [How to Compile Benchmark](#how-to-compile-benchmark)
+    - [How to Run Benchmark](#how-to-run-benchmark)
+    - [Benchmark Results](#benchmark-results)
+  - [Packaging](#packaging)
+    - [Tarballs](#tarballs)
+    - [RPM](#rpm)
+      - [(Fedora/CentOS/RedHat)](#fedoracentosredhat)
+    - [DEB](#deb)
+      - [(Debian/Ubuntu)](#debianubuntu)
+  - [Algorithm Explanation](#algorithm-explanation)
       - [Dijkstra](#dijkstra)
       - [Dial](#dial)
       - [Prim's Algorithm](#prims-algorithm)
@@ -63,19 +67,19 @@ An alternative to [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_7
       - [Bellman-Ford](#bellman-ford)
       - [Floyd Warshall](#floyd-warshall)
       - [Kruskal Algorithm](#kruskal-algorithm)
-  * [Partition Algorithm Explanation](#partition-algorithm-explanation)
-    + [Vertex-Cut](#vertex-cut)
-    + [Greedy Vertex-Cut](#greedy-vertex-cut)
-    + [Graph Slicing based on connectivity](#graph-slicing-based-on-connectivity)
-  * [How to contribute](#how-to-contribute)
-  * [Site](#site)
-  * [Contact](#contact)
-  * [Support](#support)
-  * [References](#references)
-  * [Credits](#credits)
-  * [Hacktoberfest 2k21](#hacktoberfest-2k21)
-  * [We are Looking for...](#we-are-looking-for)
-  * [Other Details](#other-details)
+  - [Partition Algorithm Explanation](#partition-algorithm-explanation)
+    - [Vertex-Cut](#vertex-cut)
+    - [Greedy Vertex-Cut](#greedy-vertex-cut)
+    - [Graph Slicing based on connectivity](#graph-slicing-based-on-connectivity)
+  - [How to contribute](#how-to-contribute)
+  - [Site](#site)
+  - [Contact](#contact)
+  - [Support](#support)
+  - [References](#references)
+  - [Credits](#credits)
+  - [Hacktoberfest 2k21](#hacktoberfest-2k21)
+  - [We are Looking for...](#we-are-looking-for)
+  - [Other Details](#other-details)
 
 
 ## Install and Uninstall
@@ -120,6 +124,7 @@ The Classes Explanation can be found in the [Doxygen Documentation](https://rawc
 
 ## Requirements
 The minimun C++ standard required is **C++17** and a G++ compiler version greater than 7.3.0.
+Are also required [OpenSSL library](https://www.openssl.org/) 
 
 ## How to use
 The use of the library is very simple, **just put the header file where you need!**
@@ -129,6 +134,26 @@ Work in Progess
 
 ## Unit-Test Execution
 The Unit-Test required the CMake version greater than 3.9 and the **google test**  library.
+
+### OpenSSL installation
+
+[OpenSSL](https://www.openssl.org/)
+
+#### Ubuntu/Debian
+
+``` bash
+sudo apt-get install openssl libssl-dev
+```
+
+#### RedHat/CentOS/RockyLinux/Fedora
+
+``` bash
+yum install openssl-devel
+```
+
+#### Other System
+
+You can find more information on how to install OpenSSL at this [link](https://github.com/openssl/openssl)
 
 ### Google Test Installation
 
