@@ -74,7 +74,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
       - [Kruskal Algorithm](#kruskal-algorithm)
   - [Partition Algorithm Explanation](#partition-algorithm-explanation)
     - [Vertex-Cut](#vertex-cut)
-    - [Greedy Vertex-Cut](#greedy-vertex-cut)
+    - [Edges Balanced Vertex-Cut](#edges-balanced-vertex-cut)
     - [Graph Slicing based on connectivity](#graph-slicing-based-on-connectivity)
   - [How to contribute](#how-to-contribute)
   - [Site](#site)
@@ -371,7 +371,7 @@ A vertex-cut partitioning divides edges of a graph into equal size partitions. T
 
 Replication factor quantifies how many vertices are replicated over computers compared with the the number of vertices of the original input graph.
 
-### Greedy Vertex-Cut
+### Edge Balanced Vertex-Cut
 This Algorithm is a simple vertex-cut in Round-Robin fashion.
 It takes the original graph edges and assign them to the partitions, dividing it in equal(or similar) size. This algorithm does not take care of optimization in vertex replication ( Replication Factor) but only balance the edge in the partitions.
 
