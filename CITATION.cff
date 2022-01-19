@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Botticci"
+  given-names: "Matteo"
+  orcid: "https://orcid.org/0000-0002-1860-0165"
+title: "CXXGraph"
+version: 0.2.2
+doi: 10.5281/zenodo.5878831
+date-released: 2022-01-19
+url: "https://github.com/ZigRazor/CXXGraph/"
