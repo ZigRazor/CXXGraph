@@ -1,0 +1,20 @@
+To cite this Software in Pubblication please use:
+
+Matteo Botticci. (2022). ZigRazor/CXXGraph: Release v0.2.2 (v0.2.2). Zenodo. https://doi.org/10.5281/zenodo.5878832
+
+(for updated Citation check https://doi.org/10.5281/zenodo.5878832)
+
+A BibTeX entry for LaTeX users is
+
+@software{matteo_botticci_2022_5878832,
+  author       = {Matteo Botticci},
+  title        = {ZigRazor/CXXGraph: Release v0.2.2},
+  month        = jan,
+  year         = 2022,
+  publisher    = {Zenodo},
+  version      = {v0.2.2},
+  doi          = {10.5281/zenodo.5878832},
+  url          = {https://doi.org/10.5281/zenodo.5878832}
+}
+
+(for updated Citation check https://doi.org/10.5281/zenodo.5878832)
