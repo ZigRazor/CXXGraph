@@ -338,7 +338,11 @@ namespace CXXGRAPH
             auto edgeList = partition.getEdgeSet();
             for (const auto& it : edgeList)
             {
-                if ((it->isDirected().has_value()&& it->isDirected().value()) && (it->isWeighted().has_value() && it->isWeighted().value()))
+                if(!(*it)->isDirected().has_value() && !(*it)->isWeighted().has_value()){
+                    // Edge Case 
+                    os << **it << "\n";
+                }
+                else if (((*it)->isDirected().has_value()&& (*it)->isDirected().value()) && ((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
                 {
                     os << dynamic_cast<const DirectedWeightedEdge<T> &>(*it) << "\n";
                 }
@@ -356,7 +360,8 @@ namespace CXXGRAPH
                 }
                 else
                 {
-                    os << *it << "\n";
+                    //Should never happens
+                    os << "Wrong Edge Class" << "\n";
                 }
             }
             return os;

@@ -63,7 +63,7 @@ namespace CXXGRAPH
         template <typename T>
         CoordinatedRecord<T>::~CoordinatedRecord()
         {
-            std::cout << "CoordinatedRecord<T>::~CoordinatedRecord()" << std::endl;
+            //std::cout << "CoordinatedRecord<T>::~CoordinatedRecord()" << std::endl;
             //TODOOOOOOOO
             //if(lock){
             //    delete lock;

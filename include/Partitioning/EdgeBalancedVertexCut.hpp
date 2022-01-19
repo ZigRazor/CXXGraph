@@ -17,8 +17,8 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_PARTITIONING_HDRF_H__
-#define __CXXGRAPH_PARTITIONING_HDRF_H__
+#ifndef __CXXGRAPH_PARTITIONING_GREEDY_VERTEX_CUT_H__
+#define __CXXGRAPH_PARTITIONING_GREEDY_VERTEX_CUT_H__
 
 #pragma once
 
@@ -32,36 +32,35 @@ namespace CXXGRAPH
     namespace PARTITIONING
     {
         /**
-         * @brief A Vertex Cut Partioning Algorithm ( as described by this paper https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf )
-         * @details This algorithm is a greedy algorithm that partitions the graph into n sets of vertices ( as described by this paper https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf ).
+         * @brief A Vertex Cut Partioning Algorithm that assign an edge in the partition with less load
+         * @details This algorithm is a greedy algorithm that assign an edge in the partition with less load  
          */
-        template <typename T>
-        class HDRF : public PartitionStrategy<T>
+        template<typename T>
+        class EdgeBalancedVertexCut : public PartitionStrategy<T>
         {
         private:
             Globals GLOBALS;
 
         public:
-            HDRF(Globals &G);
-            ~HDRF();
+            EdgeBalancedVertexCut(Globals &G);
+            ~EdgeBalancedVertexCut();
 
             void performStep(const Edge<T> &e, PartitionState<T> &Sstate);
         };
         template <typename T>
-        HDRF<T>::HDRF(Globals &G) : GLOBALS(G)
+        EdgeBalancedVertexCut<T>::EdgeBalancedVertexCut(Globals &G) : GLOBALS(G)
         {
             //this->GLOBALS = G;
         }
         template <typename T>
-        HDRF<T>::~HDRF()
+        EdgeBalancedVertexCut<T>::~EdgeBalancedVertexCut()
         {
         }
         template <typename T>
-        void HDRF<T>::performStep(const Edge<T> &e, PartitionState<T> &state)
+        void EdgeBalancedVertexCut<T>::performStep(const Edge<T> &e, PartitionState<T> &state)
         {
 
-            int P = GLOBALS.numberOfPartition;
-            int epsilon = 1;
+            int P = GLOBALS.numberOfPartition;            
             auto nodePair = e.getNodePair();
             int u = nodePair.first->getId();
             int v = nodePair.second->getId();
@@ -90,84 +89,25 @@ namespace CXXGRAPH
                     if (usleep_time > GLOBALS.SLEEP_LIMIT)
                     {
                         u_record->releaseLock();
-                        //performStep(e, state);
-                        //return;
                     } //TO AVOID DEADLOCK
                 }
                 locks_taken = true;
             }
             //*** LOCK TAKEN
-            int machine_id = -1;
 
-            //*** COMPUTE MAX AND MIN LOAD
-            int MIN_LOAD = state.getMinLoad();
-            int MAX_LOAD = state.getMaxLoad();
-
-            //*** COMPUTE SCORES, FIND MIN SCORE, AND COMPUTE CANDIDATES PARITIONS
-            std::vector<int> candidates;
+            //*** Check which partition has the less load
+            int MIN_LOAD = state.getMachineLoad(0);
+            int machine_id = 0;
             double MAX_SCORE = 0.0;
+            
             for (int m = 0; m < P; m++)
             {
-
-                int degree_u = u_record->getDegree() + 1;
-                int degree_v = v_record->getDegree() + 1;
-                int SUM = degree_u + degree_v;
-                double fu = 0;
-                double fv = 0;
-                if (u_record->hasReplicaInPartition(m))
-                {
-                    fu = degree_u;
-                    fu /= SUM;
-                    fu = 1 + (1 - fu);
-                }
-                if (v_record->hasReplicaInPartition(m))
-                {
-                    fv = degree_v;
-                    fv /= SUM;
-                    fv = 1 + (1 - fv);
-                }
                 int load = state.getMachineLoad(m);
-                double bal = (MAX_LOAD - load);
-                bal /= (epsilon + MAX_LOAD - MIN_LOAD);
-                if (bal < 0)
-                {
-                    bal = 0;
-                }
-                double SCORE_m = fu + fv + GLOBALS.lambda * bal;
-                if (SCORE_m < 0)
-                {
-                    std::cout << "ERRORE: SCORE_m<0" << std::endl;
-                    std::cout << "fu: " << fu << std::endl;
-                    std::cout << "fv: " << fv << std::endl;
-                    std::cout << "GLOBALS.LAMBDA: " << GLOBALS.lambda << std::endl;
-                    std::cout << "bal: " << bal << std::endl;
-                    exit(-1);
-                }
-                if (SCORE_m > MAX_SCORE)
-                {
-                    MAX_SCORE = SCORE_m;
-                    candidates.clear();
-                    candidates.push_back(m);
-                }
-                else if (SCORE_m == MAX_SCORE)
-                {
-                    candidates.push_back(m);
+                if ( load <= MIN_LOAD ){
+                    MIN_LOAD = load;
+                    machine_id = m;
                 }
             }
-            //*** CHECK TO AVOID ERRORS
-            if (candidates.empty())
-            {
-                std::cout << "ERROR: GreedyObjectiveFunction.performStep -> candidates.isEmpty()" << std::endl;
-                std::cout << "MAX_SCORE: " << MAX_SCORE << std::endl;
-                exit(-1);
-            }
-
-            //*** PICK A RANDOM ELEMENT FROM CANDIDATES
-            /* initialize random seed: */
-            unsigned int seed = (unsigned int)time(NULL);
-            srand(seed);
-            int choice = rand_r(&seed) % candidates.size();
-            machine_id = candidates.at(choice);
             try
             {
                 CoordinatedPartitionState<T> &cord_state = dynamic_cast<CoordinatedPartitionState<T> &>(state);
@@ -211,4 +151,4 @@ namespace CXXGRAPH
     }
 }
 
-#endif // __CXXGRAPH_PARTITIONING_HDRF_H__
+#endif // __CXXGRAPH_PARTITIONING_GREEDY_VERTEX_CUT_H__

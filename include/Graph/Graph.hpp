@@ -62,8 +62,9 @@
 
 namespace CXXGRAPH
 {
-	namespace PARTITIONING{
-		template<typename T>
+	namespace PARTITIONING
+	{
+		template <typename T>
 		class Partition;
 	}
 
@@ -292,7 +293,7 @@ namespace CXXGRAPH
 		 * 
 		 * @return true if a cycle is detected, else false
 		 */
-		virtual bool containsCycle(const std::list<const Edge<T>* >*) const;
+		virtual bool containsCycle(const std::list<const Edge<T> *> *) const;
 		/**
 		 * @brief 
 		 * This function checks if the given Subset
@@ -319,7 +320,7 @@ namespace CXXGRAPH
      	* @return true if the graph is undirected, else false.
      	*/
 		virtual bool isUndirectedGraph() const;
-		
+
 		/**
      	* \brief
      	* This function performs Graph Slicing based on connectivity
@@ -638,7 +639,8 @@ namespace CXXGRAPH
 			edgeDirectedMap[edgeId] = directed;
 		}
 		ifileGraph.close();
-		if (compress) remove(completePathToFileGraph.c_str());
+		if (compress)
+			remove(completePathToFileGraph.c_str());
 
 		if (readNodeFeat)
 		{
@@ -657,7 +659,8 @@ namespace CXXGRAPH
 				nodeFeatMap[nodeId] = nodeFeat;
 			}
 			ifileNodeFeat.close();
-			if (compress) remove(completePathToFileNodeFeat.c_str());
+			if (compress)
+				remove(completePathToFileNodeFeat.c_str());
 		}
 
 		if (readEdgeWeight)
@@ -680,7 +683,8 @@ namespace CXXGRAPH
 				}
 			}
 			ifileEdgeWeight.close();
-			if (compress) remove(completePathToFileEdgeWeight.c_str());
+			if (compress)
+				remove(completePathToFileEdgeWeight.c_str());
 		}
 		recreateGraphFromReadFiles(edgeMap, edgeDirectedMap, nodeFeatMap, edgeWeightMap);
 		return 0;
@@ -835,7 +839,7 @@ namespace CXXGRAPH
 		{
 			(*subsets)[nodeId].parent = Graph<T>::setFind(subsets, (*subsets)[nodeId].parent);
 		}
-		
+
 		return (*subsets)[nodeId].parent;
 	}
 
@@ -857,7 +861,7 @@ namespace CXXGRAPH
 			(*subsets)[elem2].parent = elem1Parent;
 			(*subsets)[elem1Parent].rank++;
 		}
-  }
+	}
 
   template <typename T>
   std::vector<Node<T>> Graph<T>::eulerianPath() const
@@ -1091,15 +1095,17 @@ namespace CXXGRAPH
 				}
 			}
 			auto flag = true;
-			for (const auto& [key, value] : dist) {
-				if (currentDist[key]!=value)
+			for (const auto &[key, value] : dist)
+			{
+				if (currentDist[key] != value)
 				{
 					flag = false;
 					break;
 				}
 			}
-			for (const auto& [key, value] : dist) {
-				currentDist[key] = value;  //update the current distance
+			for (const auto &[key, value] : dist)
+			{
+				currentDist[key] = value; //update the current distance
 			}
 			if (flag)
 			{
@@ -1119,7 +1125,7 @@ namespace CXXGRAPH
 				if (dist[elem.first] + edge_weight < dist[elem.second])
 				{
 					result.success = true;
-					result.negativeCycle =  true;
+					result.negativeCycle = true;
 					result.errorMessage = "";
 					return result;
 				}
@@ -1130,7 +1136,7 @@ namespace CXXGRAPH
 		{
 			result.success = true;
 			result.errorMessage = "";
-			result.negativeCycle =  false;
+			result.negativeCycle = false;
 			result.result = dist[&target];
 			return result;
 		}
@@ -1636,7 +1642,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	bool Graph<T>::containsCycle(const std::list<const Edge<T>* >* edgeSet) const
+	bool Graph<T>::containsCycle(const std::list<const Edge<T> *> *edgeSet) const
 	{
 		std::unordered_map<unsigned long long, Subset> subset;
 		// initialize the subset parent and rank values
@@ -1671,9 +1677,9 @@ namespace CXXGRAPH
 			auto& [first, second] = edge->getNodePair();
 			auto set1 = Graph<T>::setFind(subset, first->getId());
 			auto set2 = Graph<T>::setFind(subset, second->getId());
-			if (set1==set2)
+			if (set1 == set2)
 				return true;
-			Graph<T>::setUnion(subset, set1, set2);		
+			Graph<T>::setUnion(subset, set1, set2);
 		}
 		return false;
 	}
@@ -1934,13 +1940,13 @@ namespace CXXGRAPH
 		for (auto const& node : C1)
 		{
 			std::vector<Node<T>> reachableNodes = Graph<T>::depth_first_search(*node);
-			M.insert(M.end(),reachableNodes.begin(),reachableNodes.end());
+			M.insert(M.end(), reachableNodes.begin(), reachableNodes.end());
 		}
 		// removes nodes from C that are reachable from M.
 		for (const auto& nodeC : C)
 		{
 			if (std::find_if(M.begin(), M.end(), [nodeC](const Node<T> nodeM)
-								{ return (nodeM == nodeC); }) == M.end())
+							 { return (nodeM == nodeC); }) == M.end())
 				result.push_back(nodeC);
 		}
 		return result;
@@ -2063,26 +2069,33 @@ namespace CXXGRAPH
 	PartitionMap<T> Graph<T>::partitionGraph(PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const
 	{
 		PartitionMap<T> partitionMap;
-		PARTITIONING::Globals globals(numberOfPartitions,algorithm);
+		PARTITIONING::Globals globals(numberOfPartitions, algorithm);
 
 		PARTITIONING::Partitioner<T> partitioner(getEdgeSet(), globals);
 		PARTITIONING::CoordinatedPartitionState<T> partitionState = partitioner.performCoordinatedPartition();
 		partitionMap = partitionState.getPartitionMap();
 
 		return partitionMap;
-
 	}
 
 	template <typename T>
-	std::ostream &operator<<(std::ostream &os, const Graph<T> &graph){
+	std::ostream &operator<<(std::ostream &os, const Graph<T> &graph)
+	{
 		os << "Graph:\n";
 		auto edgeList = graph.getEdgeSet();
-		for(const auto& it : edgeList){
-			if ((it->isDirected().has_value()&& it->isDirected().value()) && (it->isWeighted().has_value() && it->isWeighted().value()))
+		auto it = edgeList.begin();
+		for (it; it != edgeList.end(); ++it)
+		{
+			if (!(*it)->isDirected().has_value() && !(*it)->isWeighted().has_value())
+			{
+				// Edge Case
+				os << **it << "\n";
+			}
+			else if (((*it)->isDirected().has_value() && (*it)->isDirected().value()) && ((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
 			{
 				os << dynamic_cast<const DirectedWeightedEdge<T> &>(*it) << "\n";
 			}
-			else if ((it->isDirected().has_value() && it->isDirected().value())  && !(it->isWeighted().has_value() && it->isWeighted().value()))
+			else if (((*it)->isDirected().has_value() && (*it)->isDirected().value()) && !((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
 			{
 				os << dynamic_cast<const DirectedEdge<T> &>(*it) << "\n";
 			}

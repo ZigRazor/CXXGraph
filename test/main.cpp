@@ -43,6 +43,7 @@ class FooTest : public ::testing::Test {
 }  // namespace project
 }  // namespace my
 *******       EXAMPLE END  ***********/
+
 int main(int argc, char **argv)
 {
    ::testing::InitGoogleTest(&argc, argv);
