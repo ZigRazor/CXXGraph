@@ -20,8 +20,6 @@
 
 Share on [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Header-Only%20C++%20Library%20for%20Graph%20Representation%20and%20Algorithms%204&url=https://github.com/ZigRazor/CXXGraph&hashtags=cpp,headeronly,library,opensource,developers)
 <br/><br/>
-<br/><br/>
-<br/><br/>
 
 ## Introduction
 **CXXGraph** is a small library, header only, that manages the Graph and it's algorithms in **C++**. In other words a "Comprehensive C++ Graph Library".
@@ -408,6 +406,11 @@ Thanks to [GeeksForGeeks](https://www.geeksforgeeks.org/) for some algorithms in
 Thank you to all the people who have already contributed to CXXGraph!
 
 [![Contributors](https://contrib.rocks/image?repo=zigrazor/CXXGraph)](https://github.com/ZigRazor/CXXGraph/graphs/contributors)
+
+## Cite Us
+
+If you use this software please follow the [CITATION](https://github.com/ZigRazor/CXXGraph/blob/master/CITATION) istruction.
+Thank you!
 
 ## Hacktoberfest 2k21
 
