@@ -34,9 +34,9 @@ namespace CXXGRAPH
         class CoordinatedRecord : public Record<T>
         {
         private:
-            std::set<int> partitions;
-            std::mutex *lock;
-            int degree;
+            std::set<int> partitions = {};
+            std::mutex *lock = nullptr;
+            int degree = 0;
 
         public:
             CoordinatedRecord();
@@ -47,7 +47,7 @@ namespace CXXGRAPH
             bool hasReplicaInPartition(int m);
             bool getLock();
             bool releaseLock();
-            int getReplicas();
+            int getReplicas() const;
             int getDegree();
             void incrementDegree();
 
@@ -101,7 +101,7 @@ namespace CXXGRAPH
             return true;
         }
         template <typename T>
-        int CoordinatedRecord<T>::getReplicas()
+        int CoordinatedRecord<T>::getReplicas() const
         {
             return partitions.size();
         }

@@ -38,7 +38,7 @@ namespace CXXGRAPH
 	class Edge
 	{
 	private:
-		unsigned long long id;
+		unsigned long long id = 0;
 		std::pair<const Node<T> *, const Node<T> *> nodePair;
 
 	public:

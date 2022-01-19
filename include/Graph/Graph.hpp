@@ -78,13 +78,12 @@ namespace CXXGRAPH
 	class Graph
 	{
 	private:
-		std::list<const Edge<T> *> edgeSet;
+		std::list<const Edge<T> *> edgeSet = {};
 		void addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge) const;
-		int writeToStandardFile_csv(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const;
-		int readFromStandardFile_csv(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight);
-		int writeToStandardFile_tsv(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const;
-		int readFromStandardFile_tsv(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight);
-		void recreateGraphFromReadFiles(std::map<unsigned long long, std::pair<unsigned long long, unsigned long long>> &edgeMap, std::map<unsigned long long, bool> &edgeDirectedMap, std::map<unsigned long long, T> &nodeFeatMap, std::map<unsigned long long, double> &edgeWeightMap);
+		std::optional<std::pair<std::string, char>> getExtenstionAndSeparator(InputOutputFormat format) const;
+		int writeToStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight, InputOutputFormat format) const;
+		int readFromStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight, InputOutputFormat format);
+		void recreateGraphFromReadFiles(std::unordered_map<unsigned long long, std::pair<unsigned long long, unsigned long long>> &edgeMap, std::unordered_map<unsigned long long, bool> &edgeDirectedMap, std::unordered_map<unsigned long long, T> &nodeFeatMap, std::unordered_map<unsigned long long, double> &edgeWeightMap);
 		int compressFile(const std::string &inputFile, const std::string &outputFile) const;
 		int decompressFile(const std::string &inputFile, const std::string &outputFile) const;
 
@@ -155,13 +154,14 @@ namespace CXXGRAPH
 		virtual const AdjacencyMatrix<T> getAdjMatrix() const;
 		/**
 		* @brief This function finds the subset of given a nodeId
+		* Subset is stored in a map where keys are the hash-id of the node & values is the subset.
 		* @param subset query subset, we want to find target in this subset
 		* @param elem elem that we wish to find in the subset
  		*
  		* @return parent node of elem 
 		* Note: No Thread Safe
 		*/
-		virtual unsigned long long setFind(std::vector<Subset>*, const unsigned long long elem) const;
+		virtual unsigned long long setFind(std::unordered_map<unsigned long long, Subset>* , const unsigned long long elem) const;
 		/**
 		* @brief This function modifies the original subset array
 		* such that it the union of two sets a and b
@@ -171,7 +171,7 @@ namespace CXXGRAPH
  		* NOTE: Original subset is no longer available after union.
 		* Note: No Thread Safe
 		*/
-		virtual void setUnion(std::vector<Subset>*, const unsigned long long set1, const unsigned long long elem2) const;		
+		virtual void setUnion(std::unordered_map<unsigned long long, Subset>* , const unsigned long long set1, const unsigned long long elem2) const;		
 		/**
 		* @brief This function finds the eulerian path of a directed graph using hierholzers algorithm
  		*
@@ -301,7 +301,7 @@ namespace CXXGRAPH
 		 * 
 		 * @return true if a cycle is detected, else false
 		 */
-		virtual bool containsCycle(const std::list<const Edge<T> *> *edgeSet, std::vector<Subset> *) const;
+		virtual bool containsCycle(const std::list<const Edge<T>* >* edgeSet, std::unordered_map<unsigned long long, Subset>*) const;
 
 		/**
      	* \brief
@@ -415,12 +415,12 @@ namespace CXXGRAPH
 	template <typename T>
 	Graph<T>::Graph(const std::list<const Edge<T> *> &edgeSet)
 	{
-		for (auto edgeSetIt = edgeSet.begin(); edgeSetIt != edgeSet.end(); ++edgeSetIt)
+		for (const auto& edgeSetIt : edgeSet)
 		{
 			if (std::find_if(this->edgeSet.begin(), this->edgeSet.end(), [edgeSetIt](const Edge<T> *edge)
-							 { return (*edge == **edgeSetIt); }) == this->edgeSet.end())
+							 { return (*edge == *edgeSetIt); }) == this->edgeSet.end())
 			{
-				this->edgeSet.push_back(*edgeSetIt);
+				this->edgeSet.push_back(edgeSetIt);
 			}
 		}
 	}
@@ -435,12 +435,12 @@ namespace CXXGRAPH
 	void Graph<T>::setEdgeSet(std::list<const Edge<T> *> &edgeSet)
 	{
 		this->edgeSet.clear();
-		for (auto edgeSetIt = edgeSet.begin(); edgeSetIt != edgeSet.end(); ++edgeSetIt)
+		for (const auto& edgeSetIt : edgeSet)
 		{
 			if (std::find_if(this->edgeSet.begin(), this->edgeSet.end(), [edgeSetIt](const Edge<T> *edge)
-							 { return (*edge == **edgeSetIt); }) == this->edgeSet.end())
+							 { return (*edge == *edgeSetIt); }) == this->edgeSet.end())
 			{
-				this->edgeSet.push_back(*edgeSetIt);
+				this->edgeSet.push_back(edgeSetIt);
 			}
 		}
 	}
@@ -470,7 +470,7 @@ namespace CXXGRAPH
 	const std::list<const Node<T> *> Graph<T>::getNodeSet() const
 	{
 		std::list<const Node<T> *> nodeSet;
-		for (auto edge : edgeSet)
+		for (const auto& edge : edgeSet)
 		{
 			if (std::find_if(nodeSet.begin(), nodeSet.end(), [edge](const Node<T> *node)
 							 { return (*edge->getNodePair().first == *node); }) == nodeSet.end())
@@ -489,13 +489,11 @@ namespace CXXGRAPH
 	template <typename T>
 	const std::optional<const Edge<T> *> Graph<T>::getEdge(unsigned long long edgeId) const
 	{
-
-		auto it = edgeSet.begin();
-		for (it; it != edgeSet.end(); ++it)
+		for (const auto& it : edgeSet)
 		{
-			if ((*it)->getId() == edgeId)
+			if (it->getId() == edgeId)
 			{
-				return *it;
+				return it;
 			}
 		}
 
@@ -512,89 +510,133 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	int Graph<T>::writeToStandardFile_csv(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
+	std::optional<std::pair<std::string, char>> Graph<T>::getExtenstionAndSeparator(InputOutputFormat format) const{
+		if (format == InputOutputFormat::STANDARD_CSV) {
+			return std::pair<std::string, char>(".csv", ',');
+		} else if (format == InputOutputFormat::STANDARD_TSV) {
+			return std::pair<std::string, char>(".tsv", '\t');
+		} else {
+			return std::nullopt;
+		}
+	}
+
+	template <typename T>
+	int Graph<T>::writeToStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight, InputOutputFormat format) const
 	{
+		auto result = getExtenstionAndSeparator(format);
+		if (!result) {
+			std::cerr << "Unknown format\n";
+			return -1;
+		}
+		auto& [extension, separator] = *result;
+
 		std::ofstream ofileGraph;
-		std::string completePathToFileGraph = workingDir + "/" + OFileName + ".csv";
+		std::string completePathToFileGraph = workingDir + "/" + OFileName + extension;
 		ofileGraph.open(completePathToFileGraph);
 		if (!ofileGraph.is_open())
 		{
 			// ERROR File Not Open
 			return -1;
 		}
-		auto printOutGraph = [&ofileGraph](const Edge<T> *e)
-		{ ofileGraph << e->getId() << "," << e->getNodePair().first->getUserId() << "," << e->getNodePair().second->getUserId() << "," << ((e->isDirected().has_value() && e->isDirected().value()) ? 1 : 0) << std::endl; };
-		std::for_each(edgeSet.cbegin(), edgeSet.cend(), printOutGraph);
+
+		for (const auto& edge:edgeSet) {
+			ofileGraph << edge->getId() << separator 
+			           << edge->getNodePair().first->getUserId() << separator 
+								 << edge->getNodePair().second->getUserId() << separator 
+								 << ((edge->isDirected().has_value() && edge->isDirected().value()) ? 1 : 0) 
+								 << std::endl; 
+		}
 		ofileGraph.close();
 
 		if (writeNodeFeat)
 		{
 			std::ofstream ofileNodeFeat;
-			std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat"
-																					".csv";
+			std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat" + extension;
 			ofileNodeFeat.open(completePathToFileNodeFeat);
 			if (!ofileNodeFeat.is_open())
 			{
 				// ERROR File Not Open
 				return -1;
 			}
-			auto printOutNodeFeat = [&ofileNodeFeat](const Node<T> *node)
-			{ ofileNodeFeat << node->getUserId() << "," << node->getData() << std::endl; };
 			auto nodeSet = getNodeSet();
-			std::for_each(nodeSet.cbegin(), nodeSet.cend(), printOutNodeFeat);
+			for (const auto& node:nodeSet) {
+				ofileNodeFeat << node->getUserId() << separator << node->getData() << std::endl;
+			}
 			ofileNodeFeat.close();
 		}
 
 		if (writeEdgeWeight)
 		{
 			std::ofstream ofileEdgeWeight;
-			std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight"
-																					  ".csv";
+			std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight" + extension;
 			ofileEdgeWeight.open(completePathToFileEdgeWeight);
 			if (!ofileEdgeWeight.is_open())
 			{
 				// ERROR File Not Open
 				return -1;
 			}
-			auto printOutEdgeWeight = [&ofileEdgeWeight](const Edge<T> *e)
-			{ ofileEdgeWeight << e->getId() << "," << (e->isWeighted().has_value() && e->isWeighted().value() ? (dynamic_cast<const Weighted *>(e))->getWeight() : 0.0) << "," << (e->isWeighted().has_value() && e->isWeighted().value() ? 1 : 0) << std::endl; };
 
-			std::for_each(edgeSet.cbegin(), edgeSet.cend(), printOutEdgeWeight);
+			for (const auto& edge:edgeSet) {
+				ofileEdgeWeight << edge->getId() << separator 
+				                << (edge->isWeighted().has_value() && edge->isWeighted().value() ? (dynamic_cast<const Weighted *>(edge))->getWeight() : 0.0) << separator 
+												<< (edge->isWeighted().has_value() && edge->isWeighted().value() ? 1 : 0) 
+												<< std::endl;
+			}
 			ofileEdgeWeight.close();
 		}
 		return 0;
 	}
 
+	// This ctype facet classifies ',' and '\t' as whitespace
+	struct csv_whitespace : std::ctype<char> {
+	    static const mask* make_table()
+	    {
+	        // make a copy of the "C" locale table
+	        static std::vector<mask> v(classic_table(), classic_table() + table_size);
+	        v[','] |=  space;  // comma will be classified as whitespace
+	        v['\t'] |= space;
+	        v[' '] &= ~space;      // space will not be classified as whitespace
+	        return &v[0];
+	    }
+	    csv_whitespace(std::size_t refs = 0) : ctype(make_table(), false, refs) {}
+	};
+
 	template <typename T>
-	int Graph<T>::readFromStandardFile_csv(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight)
+	int Graph<T>::readFromStandardFile( const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight, InputOutputFormat format) 
 	{
+		auto result = getExtenstionAndSeparator(format);
+		if (!result) {
+			std::cerr << "Unknown format\n";
+			return -1;
+		}
+		auto& [extension, separator] = *result;
+
 		std::ifstream ifileGraph;
 		std::ifstream ifileNodeFeat;
 		std::ifstream ifileEdgeWeight;
-		std::map<unsigned long long, std::pair<unsigned long long, unsigned long long>> edgeMap;
-		std::map<unsigned long long, bool> edgeDirectedMap;
-		std::map<unsigned long long, T> nodeFeatMap;
-		std::map<unsigned long long, double> edgeWeightMap;
-		std::string completePathToFileGraph = workingDir + "/" + OFileName + ".csv";
+
+		std::unordered_map<unsigned long long, std::pair<unsigned long long, unsigned long long>> edgeMap;
+		std::unordered_map<unsigned long long, bool> edgeDirectedMap;
+		std::unordered_map<unsigned long long, T> nodeFeatMap;
+		std::unordered_map<unsigned long long, double> edgeWeightMap;
+		std::string completePathToFileGraph = workingDir + "/" + OFileName + extension;
+
 		ifileGraph.open(completePathToFileGraph);
 		if (!ifileGraph.is_open())
 		{
 			// ERROR File Not Open
 			return -1;
 		}
-		char comma;
-		for (;;)
+
+		ifileGraph.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
+		unsigned long long edgeId;
+		unsigned long long nodeId1;
+		unsigned long long nodeId2;
+		bool directed;
+		while (ifileGraph >> edgeId >> nodeId1 >> nodeId2 >> directed)
 		{ /* loop continually */
-			unsigned long long edgeId;
-			unsigned long long nodeId1;
-			unsigned long long nodeId2;
-			bool directed;
-			ifileGraph >> edgeId >> comma >> nodeId1 >> comma >> nodeId2 >> comma >> directed;
 			edgeMap[edgeId] = std::pair<unsigned long long, unsigned long long>(nodeId1, nodeId2);
 			edgeDirectedMap[edgeId] = directed;
-			if (ifileGraph.fail() || ifileGraph.eof())
-				break;
-			ifileGraph.ignore(128, '\n');
 		}
 		ifileGraph.close();
 		if (compress)
@@ -602,23 +644,19 @@ namespace CXXGRAPH
 
 		if (readNodeFeat)
 		{
-			std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat"
-																					".csv";
+			std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat" + extension;
 			ifileNodeFeat.open(completePathToFileNodeFeat);
 			if (!ifileNodeFeat.is_open())
 			{
 				// ERROR File Not Open
 				return -1;
 			}
-			for (;;)
-			{ /* loop continually */
-				unsigned long long nodeId;
-				T nodeFeat;
-				ifileNodeFeat >> nodeId >> comma >> nodeFeat;
+			ifileNodeFeat.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
+			unsigned long long nodeId;
+			T nodeFeat;
+			while (ifileNodeFeat >> nodeId >> nodeFeat) 
+			{
 				nodeFeatMap[nodeId] = nodeFeat;
-				if (ifileNodeFeat.fail() || ifileNodeFeat.eof())
-					break;
-				ifileNodeFeat.ignore(128, '\n');
 			}
 			ifileNodeFeat.close();
 			if (compress)
@@ -627,27 +665,22 @@ namespace CXXGRAPH
 
 		if (readEdgeWeight)
 		{
-			std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight"
-																					  ".csv";
+			std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight" + extension;
 			ifileEdgeWeight.open(completePathToFileEdgeWeight);
 			if (!ifileEdgeWeight.is_open())
 			{
 				// ERROR File Not Open
 				return -1;
 			}
-			for (;;)
+			ifileEdgeWeight.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
+			unsigned long long edgeId;
+			double weight;
+			bool weighted;
+			while (ifileEdgeWeight >> edgeId >> weight >> weighted)
 			{ /* loop continually */
-				unsigned long long edgeId;
-				double weight;
-				bool weighted;
-				ifileEdgeWeight >> edgeId >> comma >> weight >> comma >> weighted;
-				if (weighted)
-				{
+				if (weighted) {
 					edgeWeightMap[edgeId] = weight;
 				}
-				if (ifileEdgeWeight.fail() || ifileEdgeWeight.eof())
-					break;
-				ifileEdgeWeight.ignore(128, '\n');
 			}
 			ifileEdgeWeight.close();
 			if (compress)
@@ -658,212 +691,67 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	int Graph<T>::writeToStandardFile_tsv(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
+	void Graph<T>::recreateGraphFromReadFiles(std::unordered_map<unsigned long long, std::pair<unsigned long long, unsigned long long>> &edgeMap, std::unordered_map<unsigned long long, bool> &edgeDirectedMap, std::unordered_map<unsigned long long, T> &nodeFeatMap, std::unordered_map<unsigned long long, double> &edgeWeightMap)
 	{
-		std::ofstream ofileGraph;
-		std::string completePathToFileGraph = workingDir + "/" + OFileName + ".tsv";
-		ofileGraph.open(completePathToFileGraph);
-		if (!ofileGraph.is_open())
-		{
-			// ERROR File Not Open
-			return -1;
-		}
-		auto printOutGraph = [&ofileGraph](const Edge<T> *e)
-		{ ofileGraph << e->getId() << "\t" << e->getNodePair().first->getUserId() << "\t" << e->getNodePair().second->getUserId() << "\t" << ((e->isDirected().has_value() && e->isDirected().value()) ? 1 : 0) << std::endl; };
-		std::for_each(edgeSet.cbegin(), edgeSet.cend(), printOutGraph);
-		ofileGraph.close();
-
-		if (writeNodeFeat)
-		{
-			std::ofstream ofileNodeFeat;
-			std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat"
-																					".tsv";
-			ofileNodeFeat.open(completePathToFileNodeFeat);
-			if (!ofileNodeFeat.is_open())
-			{
-				// ERROR File Not Open
-				return -1;
-			}
-			auto printOutNodeFeat = [&ofileNodeFeat](const Node<T> *node)
-			{ ofileNodeFeat << node->getUserId() << "\t" << node->getData() << std::endl; };
-			auto nodeSet = getNodeSet();
-			std::for_each(nodeSet.cbegin(), nodeSet.cend(), printOutNodeFeat);
-			ofileNodeFeat.close();
-		}
-
-		if (writeEdgeWeight)
-		{
-			std::ofstream ofileEdgeWeight;
-			std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight"
-																					  ".tsv";
-			ofileEdgeWeight.open(completePathToFileEdgeWeight);
-			if (!ofileEdgeWeight.is_open())
-			{
-				// ERROR File Not Open
-				return -1;
-			}
-			auto printOutEdgeWeight = [&ofileEdgeWeight](const Edge<T> *e)
-			{ ofileEdgeWeight << e->getId() << "\t" << (e->isWeighted().has_value() && e->isWeighted().value() ? (dynamic_cast<const Weighted *>(e))->getWeight() : 0.0) << "\t" << (e->isWeighted().has_value() && e->isWeighted().value() ? 1 : 0) << std::endl; };
-
-			std::for_each(edgeSet.cbegin(), edgeSet.cend(), printOutEdgeWeight);
-			ofileEdgeWeight.close();
-		}
-		return 0;
-	}
-
-	template <typename T>
-	int Graph<T>::readFromStandardFile_tsv(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight)
-	{
-		std::ifstream ifileGraph;
-		std::ifstream ifileNodeFeat;
-		std::ifstream ifileEdgeWeight;
-		std::map<unsigned long long, std::pair<unsigned long long, unsigned long long>> edgeMap;
-		std::map<unsigned long long, bool> edgeDirectedMap;
-		std::map<unsigned long long, T> nodeFeatMap;
-		std::map<unsigned long long, double> edgeWeightMap;
-		std::string completePathToFileGraph = workingDir + "/" + OFileName + ".tsv";
-		ifileGraph.open(completePathToFileGraph);
-		if (!ifileGraph.is_open())
-		{
-			// ERROR File Not Open
-			return -1;
-		}
-		for (;;)
-		{ /* loop continually */
-			unsigned long long edgeId;
-			unsigned long long nodeId1;
-			unsigned long long nodeId2;
-			bool directed;
-			ifileGraph >> edgeId >> std::ws >> nodeId1 >> std::ws >> nodeId2 >> std::ws >> directed;
-			edgeMap[edgeId] = std::pair<unsigned long long, unsigned long long>(nodeId1, nodeId2);
-			edgeDirectedMap[edgeId] = directed;
-			if (ifileGraph.fail() || ifileGraph.eof())
-				break;
-			ifileGraph.ignore(128, '\n');
-		}
-		ifileGraph.close();
-		if (compress)
-			remove(completePathToFileGraph.c_str());
-
-		if (readNodeFeat)
-		{
-			std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat"
-																					".tsv";
-			ifileNodeFeat.open(completePathToFileNodeFeat);
-			if (!ifileNodeFeat.is_open())
-			{
-				// ERROR File Not Open
-				return -1;
-			}
-			for (;;)
-			{ /* loop continually */
-				unsigned long long nodeId;
-				T nodeFeat;
-				ifileNodeFeat >> nodeId >> std::ws >> nodeFeat;
-				nodeFeatMap[nodeId] = nodeFeat;
-				if (ifileNodeFeat.fail() || ifileNodeFeat.eof())
-					break;
-				ifileNodeFeat.ignore(128, '\n');
-			}
-			ifileNodeFeat.close();
-			if (compress)
-				remove(completePathToFileNodeFeat.c_str());
-		}
-
-		if (readEdgeWeight)
-		{
-			std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight"
-																					  ".tsv";
-			ifileEdgeWeight.open(completePathToFileEdgeWeight);
-			if (!ifileEdgeWeight.is_open())
-			{
-				// ERROR File Not Open
-				return -1;
-			}
-			for (;;)
-			{ /* loop continually */
-				unsigned long long edgeId;
-				double weight;
-				bool weighted;
-				ifileEdgeWeight >> edgeId >> std::ws >> weight >> std::ws >> weighted;
-				if (weighted)
-				{
-					edgeWeightMap[edgeId] = weight;
-				}
-				if (ifileEdgeWeight.fail() || ifileEdgeWeight.eof())
-					break;
-				ifileEdgeWeight.ignore(128, '\n');
-			}
-			ifileEdgeWeight.close();
-			if (compress)
-				remove(completePathToFileEdgeWeight.c_str());
-		}
-		recreateGraphFromReadFiles(edgeMap, edgeDirectedMap, nodeFeatMap, edgeWeightMap);
-		return 0;
-	}
-
-	template <typename T>
-	void Graph<T>::recreateGraphFromReadFiles(std::map<unsigned long long, std::pair<unsigned long long, unsigned long long>> &edgeMap, std::map<unsigned long long, bool> &edgeDirectedMap, std::map<unsigned long long, T> &nodeFeatMap, std::map<unsigned long long, double> &edgeWeightMap)
-	{
-		std::map<unsigned long long, Node<T> *> nodeMap;
-		for (auto edgeIt = edgeMap.begin(); edgeIt != edgeMap.end(); ++edgeIt)
+		std::unordered_map<unsigned long long, Node<T> *> nodeMap;
+		for (const auto& edgeIt : edgeMap)
 		{
 			Node<T> *node1 = nullptr;
 			Node<T> *node2 = nullptr;
-			if (nodeMap.find(edgeIt->second.first) == nodeMap.end())
+			if (nodeMap.find(edgeIt.second.first) == nodeMap.end())
 			{
 				//Create new Node
 				T feat;
-				if (nodeFeatMap.find(edgeIt->second.first) != nodeFeatMap.end())
+				if (nodeFeatMap.find(edgeIt.second.first) != nodeFeatMap.end())
 				{
-					feat = nodeFeatMap.at(edgeIt->second.first);
+					feat = nodeFeatMap.at(edgeIt.second.first);
 				}
-				node1 = new Node<T>(std::to_string(edgeIt->second.first), feat);
-				nodeMap[edgeIt->second.first] = node1;
+				node1 = new Node<T>(std::to_string(edgeIt.second.first), feat);
+				nodeMap[edgeIt.second.first] = node1;
 			}
 			else
 			{
-				node1 = nodeMap.at(edgeIt->second.first);
+				node1 = nodeMap.at(edgeIt.second.first);
 			}
-			if (nodeMap.find(edgeIt->second.second) == nodeMap.end())
+			if (nodeMap.find(edgeIt.second.second) == nodeMap.end())
 			{
 				//Create new Node
 				T feat;
-				if (nodeFeatMap.find(edgeIt->second.second) != nodeFeatMap.end())
+				if (nodeFeatMap.find(edgeIt.second.second) != nodeFeatMap.end())
 				{
-					feat = nodeFeatMap.at(edgeIt->second.second);
+					feat = nodeFeatMap.at(edgeIt.second.second);
 				}
-				node2 = new Node<T>(std::to_string(edgeIt->second.second), feat);
-				nodeMap[edgeIt->second.second] = node2;
+				node2 = new Node<T>(std::to_string(edgeIt.second.second), feat);
+				nodeMap[edgeIt.second.second] = node2;
 			}
 			else
 			{
-				node2 = nodeMap.at(edgeIt->second.second);
+				node2 = nodeMap.at(edgeIt.second.second);
 			}
 
-			if (edgeWeightMap.find(edgeIt->first) != edgeWeightMap.end())
+			if (edgeWeightMap.find(edgeIt.first) != edgeWeightMap.end())
 			{
-				if (edgeDirectedMap.find(edgeIt->first) != edgeDirectedMap.end() && edgeDirectedMap.at(edgeIt->first))
+				if (edgeDirectedMap.find(edgeIt.first) != edgeDirectedMap.end() && edgeDirectedMap.at(edgeIt.first))
 				{
-					auto edge = new DirectedWeightedEdge<T>(edgeIt->first, *node1, *node2, edgeWeightMap.at(edgeIt->first));
+					auto edge = new DirectedWeightedEdge<T>(edgeIt.first, *node1, *node2, edgeWeightMap.at(edgeIt.first));
 					addEdge(edge);
 				}
 				else
 				{
-					auto edge = new UndirectedWeightedEdge<T>(edgeIt->first, *node1, *node2, edgeWeightMap.at(edgeIt->first));
+					auto edge = new UndirectedWeightedEdge<T>(edgeIt.first, *node1, *node2, edgeWeightMap.at(edgeIt.first));
 					addEdge(edge);
 				}
 			}
 			else
 			{
-				if (edgeDirectedMap.find(edgeIt->first) != edgeDirectedMap.end() && edgeDirectedMap.at(edgeIt->first))
+				if (edgeDirectedMap.find(edgeIt.first) != edgeDirectedMap.end() && edgeDirectedMap.at(edgeIt.first))
 				{
-					auto edge = new DirectedEdge<T>(edgeIt->first, *node1, *node2);
+					auto edge = new DirectedEdge<T>(edgeIt.first, *node1, *node2);
 					addEdge(edge);
 				}
 				else
 				{
-					auto edge = new UndirectedEdge<T>(edgeIt->first, *node1, *node2);
+					auto edge = new UndirectedEdge<T>(edgeIt.first, *node1, *node2);
 					addEdge(edge);
 				}
 			}
@@ -932,7 +820,7 @@ namespace CXXGRAPH
 				break;
 			}
 		}
-		for (auto c : unzippedData)
+		for (const auto& c : unzippedData)
 		{
 			ofs << c;
 		}
@@ -943,7 +831,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	unsigned long long Graph<T>::setFind(std::vector<Subset> *subsets, const unsigned long long nodeId) const
+	unsigned long long Graph<T>::setFind(std::unordered_map<unsigned long long, Subset> *subsets, const unsigned long long nodeId) const
 	{
 		// find root and make root as parent of i
 		// (path compression)
@@ -956,9 +844,8 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	void Graph<T>::setUnion(std::vector<Subset>* subsets, const unsigned long long elem1, const unsigned long long elem2) const
+	void Graph<T>::setUnion(std::unordered_map<unsigned long long, Subset>* subsets, const unsigned long long elem1, const unsigned long long elem2) const
 	{
-		// return;
 		// if both sets have same parent
 		// then there's nothing to be done
 		if ((*subsets)[elem1].parent == (*subsets)[elem2].parent)
@@ -1012,17 +899,16 @@ namespace CXXGRAPH
 	const AdjacencyMatrix<T> Graph<T>::getAdjMatrix() const
 	{
 		AdjacencyMatrix<T> adj;
-		auto edgeSetIt = edgeSet.begin();
-		for (edgeSetIt; edgeSetIt != edgeSet.end(); ++edgeSetIt)
+		for (const auto& edgeSetIt : edgeSet)
 		{
-			if ((*edgeSetIt)->isDirected().has_value() && (*edgeSetIt)->isDirected().value())
+			if (edgeSetIt->isDirected().has_value() && edgeSetIt->isDirected().value())
 			{
-				const DirectedEdge<T> *d_edge = dynamic_cast<const DirectedEdge<T> *>(*edgeSetIt);
+				const DirectedEdge<T> *d_edge = dynamic_cast<const DirectedEdge<T> *>(edgeSetIt);
 				addElementToAdjMatrix(adj, &(d_edge->getFrom()), &(d_edge->getTo()), d_edge);
 			}
-			else if ((*edgeSetIt)->isDirected().has_value() && !(*edgeSetIt)->isDirected().value())
+			else if (edgeSetIt->isDirected().has_value() && !edgeSetIt->isDirected().value())
 			{
-				const UndirectedEdge<T> *ud_edge = dynamic_cast<const UndirectedEdge<T> *>(*edgeSetIt);
+				const UndirectedEdge<T> *ud_edge = dynamic_cast<const UndirectedEdge<T> *>(edgeSetIt);
 				;
 				addElementToAdjMatrix(adj, &(ud_edge->getNode1()), &(ud_edge->getNode2()), ud_edge);
 				addElementToAdjMatrix(adj, &(ud_edge->getNode2()), &(ud_edge->getNode1()), ud_edge);
@@ -1039,9 +925,6 @@ namespace CXXGRAPH
 	const DijkstraResult Graph<T>::dijkstra(const Node<T> &source, const Node<T> &target) const
 	{
 		DijkstraResult result;
-		result.success = false;
-		result.errorMessage = "";
-		result.result = INF_DOUBLE;
 		auto nodeSet = Graph<T>::getNodeSet();
 		if (std::find(nodeSet.begin(), nodeSet.end(), &source) == nodeSet.end())
 		{
@@ -1060,9 +943,9 @@ namespace CXXGRAPH
 		int n = adj.size();
 
 		// setting all the distances initially to INF_DOUBLE
-		std::map<const Node<T> *, double> dist;
+		std::unordered_map<const Node<T> *, double> dist;
 
-		for (auto elem : adj)
+		for (const auto& elem : adj)
 		{
 			dist[elem.first] = INF_DOUBLE;
 		}
@@ -1094,7 +977,7 @@ namespace CXXGRAPH
 			// we will try to minimize the distance
 			if (adj.find(currentNode) != adj.end())
 			{
-				for (std::pair<const Node<T> *, const Edge<T> *> elem : adj.at(currentNode))
+				for (const auto& elem : adj.at(currentNode))
 				{
 					// minimizing distances
 					if (elem.second->isWeighted().has_value() && elem.second->isWeighted().value())
@@ -1102,7 +985,12 @@ namespace CXXGRAPH
 						if (elem.second->isDirected().has_value() && elem.second->isDirected().value())
 						{
 							const DirectedWeightedEdge<T> *dw_edge = dynamic_cast<const DirectedWeightedEdge<T> *>(elem.second);
-							if (currentDist + dw_edge->getWeight() < dist[elem.first])
+							if (dw_edge->getWeight() < 0)
+							{
+								result.errorMessage = ERR_NEGATIVE_WEIGHTED_EDGE;
+								return result;
+							}
+							else if (currentDist + dw_edge->getWeight() < dist[elem.first])
 							{
 								dist[elem.first] = currentDist + dw_edge->getWeight();
 								pq.push(std::make_pair(dist[elem.first], elem.first));
@@ -1111,7 +999,12 @@ namespace CXXGRAPH
 						else if (elem.second->isDirected().has_value() && !elem.second->isDirected().value())
 						{
 							const UndirectedWeightedEdge<T> *udw_edge = dynamic_cast<const UndirectedWeightedEdge<T> *>(elem.second);
-							if (currentDist + udw_edge->getWeight() < dist[elem.first])
+							if (udw_edge->getWeight() < 0)
+							{
+								result.errorMessage = ERR_NEGATIVE_WEIGHTED_EDGE;
+								return result;
+							}
+							else if (currentDist + udw_edge->getWeight() < dist[elem.first])
 							{
 								dist[elem.first] = currentDist + udw_edge->getWeight();
 								pq.push(std::make_pair(dist[elem.first], elem.first));
@@ -1141,7 +1034,6 @@ namespace CXXGRAPH
 			return result;
 		}
 		result.errorMessage = ERR_TARGET_NODE_NOT_REACHABLE;
-		result.result = -1;
 		return result;
 	}
 
@@ -1166,10 +1058,10 @@ namespace CXXGRAPH
 			return result;
 		}
 		// setting all the distances initially to INF_DOUBLE
-		std::map<const Node<T> *, double> dist, currentDist;
+		std::unordered_map<const Node<T> *, double> dist, currentDist;
 		// n denotes the number of vertices in graph
 		auto n = nodeSet.size();
-		for (auto elem : nodeSet)
+		for (const auto& elem : nodeSet)
 		{
 			dist[elem] = INF_DOUBLE;
 			currentDist[elem] = INF_DOUBLE;
@@ -1181,12 +1073,12 @@ namespace CXXGRAPH
 		// iterations remain the same.
 		auto earlyStopping = false;
 		// outer loop for vertex relaxation
-		for (int i = 0; i < n - 1; i++)
+		for (int i=0; i<n-1; ++i)
 		{
 			auto edgeSet = Graph<T>::getEdgeSet();
 			// inner loop for distance updates of
 			// each relaxation
-			for (auto edge : edgeSet)
+			for (const auto& edge : edgeSet)
 			{
 				auto elem = edge->getNodePair();
 				if (edge->isWeighted().has_value() && edge->isWeighted().value())
@@ -1226,7 +1118,7 @@ namespace CXXGRAPH
 		if (!earlyStopping)
 		{
 			auto edgeSet = Graph<T>::getEdgeSet();
-			for (auto edge : edgeSet)
+			for (const auto& edge : edgeSet)
 			{
 				auto elem = edge->getNodePair();
 				auto edge_weight = (dynamic_cast<const Weighted *>(edge))->getWeight();
@@ -1259,15 +1151,15 @@ namespace CXXGRAPH
 		FWResult result;
 		result.success = false;
 		result.errorMessage = "";
-		std::map<std::pair<unsigned long long, unsigned long long>, double> pairwise_dist;
+		std::unordered_map<std::pair<std::string, std::string>, double, CXXGRAPH::pair_hash> pairwise_dist;
 		auto nodeSet = Graph<T>::getNodeSet();
 		// create a pairwise distance matrix with distance node distances
 		// set to inf. Distance of node to itself is set as 0.
-		for (auto elem1 : nodeSet)
+		for (const auto& elem1 : nodeSet)
 		{
-			for (auto elem2 : nodeSet)
+			for (const auto& elem2 : nodeSet)
 			{
-				auto key = std::make_pair(elem1->getId(), elem2->getId());
+				auto key = std::make_pair(elem1->getUserId(), elem2->getUserId());
 				if (elem1 != elem2)
 					pairwise_dist[key] = INF_DOUBLE;
 				else
@@ -1278,13 +1170,13 @@ namespace CXXGRAPH
 		auto edgeSet = Graph<T>::getEdgeSet();
 		// update the weights of nodes
 		// connected by edges
-		for (auto edge : edgeSet)
+		for (const auto& edge : edgeSet)
 		{
 			auto elem = edge->getNodePair();
 			if (edge->isWeighted().has_value() && edge->isWeighted().value())
 			{
 				auto edgeWeight = (dynamic_cast<const Weighted *>(edge))->getWeight();
-				auto key = std::make_pair(elem.first->getId(), elem.second->getId());
+				auto key = std::make_pair(elem.first->getUserId(), elem.second->getUserId());
 				pairwise_dist[key] = edgeWeight;
 			}
 			else
@@ -1296,21 +1188,21 @@ namespace CXXGRAPH
 			}
 		}
 
-		for (auto k : nodeSet)
+		for (const auto& k : nodeSet)
 		{
 			// set all vertices as source one by one
-			for (auto src : nodeSet)
+			for (const auto& src : nodeSet)
 			{
 				// iterate through all vertices as destination for the
 				// current source
-				auto src_k = std::make_pair(src->getId(), k->getId());
-				for (auto dst : nodeSet)
+				auto src_k = std::make_pair(src->getUserId(), k->getUserId());
+				for (const auto& dst : nodeSet)
 				{
 					// If vertex k provides a shorter path than
 					// src to dst, update the value of
 					// pairwise_dist[src_to_dst]
-					auto src_dst = std::make_pair(src->getId(), dst->getId());
-					auto k_dst = std::make_pair(k->getId(), dst->getId());
+					auto src_dst = std::make_pair(src->getUserId(), dst->getUserId());
+					auto k_dst = std::make_pair(k->getUserId(), dst->getUserId());
 					if (pairwise_dist[src_dst] > (pairwise_dist[src_k] + pairwise_dist[k_dst]) && (pairwise_dist[k_dst] != INF_DOUBLE && pairwise_dist[src_k] != INF_DOUBLE))
 						pairwise_dist[src_dst] = pairwise_dist[src_k] + pairwise_dist[k_dst];
 				}
@@ -1320,9 +1212,9 @@ namespace CXXGRAPH
 		result.success = true;
 		// presense of negative number in the diagonal indicates
 		// that that the graph contains a negative cycle
-		for (auto node : nodeSet)
+		for (const auto& node : nodeSet)
 		{
-			auto diag = std::make_pair(node->getId(), node->getId());
+			auto diag = std::make_pair(node->getUserId(), node->getUserId());
 			if (pairwise_dist[diag] < 0.)
 			{
 				result.negativeCycle = true;
@@ -1350,8 +1242,8 @@ namespace CXXGRAPH
 		const AdjacencyMatrix<T> adj = Graph<T>::getAdjMatrix();
 
 		// setting all the distances initially to INF_DOUBLE
-		std::map<const Node<T> *, double> dist;
-		for (auto elem : adj)
+		std::unordered_map<const Node<T> *, double> dist;
+		for (const auto& elem : adj)
 		{
 			dist[elem.first] = INF_DOUBLE;
 		}
@@ -1373,7 +1265,7 @@ namespace CXXGRAPH
 		doneNode.push_back(source->getId());
 		// stores the parent and corresponding child node
 		// of the edges that are part of MST
-		std::map<unsigned long long, unsigned long long> parentNode;
+		std::unordered_map<unsigned long long, std::string> parentNode;
 		while (!pq.empty())
 		{
 			// second element of pair denotes the node / vertex
@@ -1381,7 +1273,7 @@ namespace CXXGRAPH
 			auto nodeId = currentNode->getId();
 			if (std::find(doneNode.begin(), doneNode.end(), nodeId) == doneNode.end())
 			{
-				auto pair = std::make_pair(parentNode[nodeId], nodeId);
+				auto pair = std::make_pair(parentNode[nodeId], currentNode->getUserId());
 				result.mst.push_back(pair);
 				result.mstCost += pq.top().first;
 				doneNode.push_back(nodeId);
@@ -1392,7 +1284,7 @@ namespace CXXGRAPH
 			// we will try to minimize the distance
 			if (adj.find(currentNode) != adj.end())
 			{
-				for (std::pair<const Node<T> *, const Edge<T> *> elem : adj.at(currentNode))
+				for (const auto& elem : adj.at(currentNode))
 				{
 					// minimizing distances
 					if (elem.second->isWeighted().has_value() && elem.second->isWeighted().value())
@@ -1403,7 +1295,7 @@ namespace CXXGRAPH
 							(std::find(doneNode.begin(), doneNode.end(), elem.first->getId()) == doneNode.end()))
 						{
 							dist[elem.first] = udw_edge->getWeight();
-							parentNode[elem.first->getId()] = currentNode->getId();
+							parentNode[elem.first->getId()] = currentNode->getUserId();
 							pq.push(std::make_pair(dist[elem.first], elem.first));
 						}
 					}
@@ -1432,11 +1324,11 @@ namespace CXXGRAPH
 			result.errorMessage = ERR_DIR_GRAPH;
 			return result;
 		}
-		auto nodeSet = Graph<T>::getNodeSet();
-		auto n = nodeSet.size();
+		const auto nodeSet = Graph<T>::getNodeSet();
+		const auto n = nodeSet.size();
 
-		// Use std vector for storing n subsets.
-		std::vector<Subset> subsets;
+		// Use std map for storing n subsets.
+		std::unordered_map<unsigned long long, Subset> subsets;
 
 		// Initially there are n different trees.
 		// Finally there will be one tree that will be MST
@@ -1444,9 +1336,9 @@ namespace CXXGRAPH
 
 		// check if all edges are weighted and store the weights
 		// in a map whose keys are the edge ids and values are the edge weights
-		auto edgeSet = Graph<T>::getEdgeSet();
-		std::map<unsigned long long, double> edgeWeight;
-		for (auto edge : edgeSet)
+		const auto edgeSet = Graph<T>::getEdgeSet();
+		std::unordered_map<unsigned long long, double> edgeWeight;
+		for (const auto& edge : edgeSet)
 		{
 			if (edge->isWeighted().has_value() && edge->isWeighted().value())
 				edgeWeight[edge->getId()] = (dynamic_cast<const Weighted *>(edge))->getWeight();
@@ -1458,40 +1350,31 @@ namespace CXXGRAPH
 			}
 		}
 
-		// An array to store index of the cheapest edge of
-		// subset.  stored index refers to the edgeId
-		std::vector<long> cheapest(n, -1);
-		// user can give arbitrary ids to nodes
-		// we map these ids from 0 to 1 for consistency
-		// NOTE: WE CAN REMOVE THIS WHEN WE TAKE CARE OF THIS GLOBALLY
-		// WHILE CONSTRUCTING THE GRAPH
-		std::map<unsigned long long, unsigned long long> userNodeMap;
-		unsigned long long i = 0;
-		for (auto node : nodeSet)
+		for (const auto& node : nodeSet)
 		{
-			userNodeMap[node->getId()] = i;
-			Subset set{i, 0};
-			subsets.push_back(set);
-			i++;
+			Subset set{node->getId(), 0};
+			subsets[node->getId()] = set;
 		}
 
 		result.mstCost = 0; //we will store the cost here
 		//exit when only 1 tree i.e. mst
 		while (numTrees > 1)
 		{
-			// Everytime initialize cheapest array
-			std::fill(cheapest.begin(), cheapest.end(), -1);
+			// Everytime initialize cheapest map
+			// It stores index of the cheapest edge of subset.
+			std::unordered_map<unsigned long long, unsigned long long> cheapest;
+			for (const auto& node : nodeSet)
+				cheapest[node->getId()] = INT_MAX;
 
 			// Traverse through all edges and update
 			// cheapest of every component
-			for (auto edge : edgeSet)
+			for (const auto& edge : edgeSet)
 			{
 				auto elem = edge->getNodePair();
 				auto edgeId = edge->getId();
-				// Find components (or sets) of two corners
-				// of current edge
-				auto set1 = Graph<T>::setFind(&subsets, userNodeMap[elem.first->getId()]);
-				auto set2 = Graph<T>::setFind(&subsets, userNodeMap[elem.second->getId()]);
+				// Find sets of two corners of current edge
+				auto set1 = Graph<T>::setFind(&subsets, elem.first->getId());
+				auto set2 = Graph<T>::setFind(&subsets, elem.second->getId());
 
 				// If two corners of current edge belong to
 				// same set, ignore current edge
@@ -1500,29 +1383,29 @@ namespace CXXGRAPH
 
 				// Else check if current edge is closer to previous
 				// cheapest edges of set1 and set2
-				if (cheapest[set1] == -1 ||
+				if (cheapest[set1] == INT_MAX ||
 					edgeWeight[cheapest[set1]] > edgeWeight[edgeId])
 					cheapest[set1] = edgeId;
 
-				if (cheapest[set2] == -1 ||
+				if (cheapest[set2] == INT_MAX ||
 					edgeWeight[cheapest[set2]] > edgeWeight[edgeId])
 					cheapest[set2] = edgeId;
 			}
 
 			// iterate over all the vertices and add picked
 			// cheapest edges to MST
-			for (int i = 0; i < n; i++)
+			for (const auto &[nodeId, edgeId] : cheapest)
 			{
 				// Check if cheapest for current set exists
-				if (cheapest[i] != -1)
+				if (edgeId != INT_MAX)
 				{
-					auto cheapestNode = Graph<T>::getEdge(cheapest[i]).value()->getNodePair();
-					int set1 = Graph<T>::setFind(&subsets, userNodeMap[cheapestNode.first->getId()]);
-					int set2 = Graph<T>::setFind(&subsets, userNodeMap[cheapestNode.second->getId()]);
+					auto cheapestNode = Graph<T>::getEdge(edgeId).value()->getNodePair();
+					auto set1 = Graph<T>::setFind(&subsets, cheapestNode.first->getId());
+					auto set2 = Graph<T>::setFind(&subsets, cheapestNode.second->getId());
 					if (set1 == set2)
 						continue;
-					result.mstCost += edgeWeight[cheapest[i]];
-					auto newEdgeMST = std::make_pair(cheapestNode.first->getId(), cheapestNode.second->getId());
+					result.mstCost += edgeWeight[edgeId];
+					auto newEdgeMST = std::make_pair(cheapestNode.first->getUserId(), cheapestNode.second->getUserId());
 					result.mst.push_back(newEdgeMST);
 					// take union of set1 and set2 and decrease number of trees
 					Graph<T>::setUnion(&subsets, set1, set2);
@@ -1552,10 +1435,10 @@ namespace CXXGRAPH
 		// check if all edges are weighted and store the weights
 		// in a map whose keys are the edge ids and values are the edge weights
 		auto edgeSet = Graph<T>::getEdgeSet();
-		std::priority_queue<std::pair<double, const Edge<T> *>, std::vector<std::pair<double, const Edge<T> *>>,
-							std::greater<std::pair<double, const Edge<T> *>>>
-			sortedEdges;
-		for (auto edge : edgeSet)
+		std::priority_queue< std::pair<double, const Edge<T> *>, std::vector<std::pair<double, const Edge<T> *>>,
+		 					 std::greater<std::pair<double, const Edge<T> *>>>
+							sortedEdges;
+		for (const auto& edge : edgeSet)
 		{
 			if (edge->isWeighted().has_value() && edge->isWeighted().value())
 			{
@@ -1570,20 +1453,12 @@ namespace CXXGRAPH
 			}
 		}
 
-		std::vector<Subset> subset;
+		std::unordered_map<unsigned long long, Subset> subset;
 
-		// user can give arbitrary ids to nodes
-		// we map these ids from 0 to 1 for consistency
-		// NOTE: WE CAN REMOVE THIS WHEN WE TAKE CARE OF THIS GLOBALLY
-		// WHILE CONSTRUCTING THE GRAPH
-		std::map<unsigned long long, unsigned long long> userNodeMap;
-		unsigned long long i = 0;
-		for (auto node : nodeSet)
+		for (const auto& node : nodeSet)
 		{
-			userNodeMap[node->getId()] = i;
-			Subset set{i, 0};
-			subset.push_back(set);
-			i++;
+			Subset set{node->getId(), 0};
+			subset[node->getId()] = set;
 		}
 		result.mstCost = 0;
 		while ((!sortedEdges.empty()) && (result.mst.size() < n))
@@ -1591,11 +1466,11 @@ namespace CXXGRAPH
 			auto [edgeWeight, cheapestEdge] = sortedEdges.top();
 			sortedEdges.pop();
 			auto &[first, second] = cheapestEdge->getNodePair();
-			auto set1 = Graph<T>::setFind(&subset, userNodeMap[first->getId()]);
-			auto set2 = Graph<T>::setFind(&subset, userNodeMap[second->getId()]);
+			auto set1 = Graph<T>::setFind(&subset, first->getId());
+			auto set2 = Graph<T>::setFind(&subset, second->getId());
 			if (set1 != set2)
 			{
-				result.mst.push_back(std::make_pair(userNodeMap[first->getId()], userNodeMap[second->getId()]));
+				result.mst.push_back(std::make_pair(first->getUserId(), second->getUserId()));
 				result.mstCost += edgeWeight;
 			}
 			Graph<T>::setUnion(&subset, set1, set2);
@@ -1628,7 +1503,7 @@ namespace CXXGRAPH
 			tracker.pop();
 			if (adj.find(node) != adj.end())
 			{
-				for (auto elem : adj.at(node))
+				for (const auto& elem : adj.at(node))
 				{
 					// if the node is not visited then mark it as visited
 					// and push it to the queue
@@ -1662,7 +1537,7 @@ namespace CXXGRAPH
 			visited.push_back(node);
 			if (adj.find(&node) != adj.end())
 			{
-				for (auto x : adj.at(&node))
+				for (const auto& x : adj.at(&node))
 				{
 					if (std::find(visited.begin(), visited.end(), *(x.first)) == visited.end())
 					{
@@ -1699,15 +1574,15 @@ namespace CXXGRAPH
          *
          * Initially, all nodes are in "not_visited" state.
          */
-		std::map<unsigned long long, nodeStates> state;
-		for (auto node : nodeSet)
+		std::unordered_map<unsigned long long, nodeStates> state;
+		for (const auto& node : nodeSet)
 		{
 			state[node->getId()] = not_visited;
 		}
 		int stateCounter = 0;
 
 		// Start visiting each node.
-		for (auto node : nodeSet)
+		for (const auto& node : nodeSet)
 		{
 			// If a node is not visited, only then check for presence of cycle.
 			// There is no need to check for presence of cycle for a visited
@@ -1715,8 +1590,8 @@ namespace CXXGRAPH
 			if (state[node->getId()] == not_visited)
 			{
 				// Check for cycle.
-				std::function<bool(AdjacencyMatrix<T> &, std::map<unsigned long long, nodeStates> &, const Node<T> *)> isCyclicDFSHelper;
-				isCyclicDFSHelper = [this, &isCyclicDFSHelper](AdjacencyMatrix<T> &adjMatrix, std::map<unsigned long long, nodeStates> &states, const Node<T> *node)
+				std::function<bool(AdjacencyMatrix<T> &, std::unordered_map<unsigned long long, nodeStates> &, const Node<T> *)> isCyclicDFSHelper;
+				isCyclicDFSHelper = [this, &isCyclicDFSHelper](AdjacencyMatrix<T> &adjMatrix, std::unordered_map<unsigned long long, nodeStates> &states, const Node<T> *node)
 				{
 					// Add node "in_stack" state.
 					states[node->getId()] = in_stack;
@@ -1726,7 +1601,7 @@ namespace CXXGRAPH
 					auto const it = adjMatrix.find(node);
 					if (it != adjMatrix.end())
 					{
-						for (auto child : it->second)
+						for (const auto& child : it->second)
 						{
 							// If state of child node is "not_visited", evaluate that child
 							// for presence of cycle.
@@ -1769,25 +1644,25 @@ namespace CXXGRAPH
 	template <typename T>
 	bool Graph<T>::containsCycle(const std::list<const Edge<T> *> *edgeSet) const
 	{
-		std::vector<Subset> subset;
+		std::unordered_map<unsigned long long, Subset> subset;
 		// initialize the subset parent and rank values
-		for (auto edge: *edgeSet)
+		for (const auto& edge: *edgeSet)
 		{	
 			auto& [first, second] = edge->getNodePair();
 			std::vector<unsigned long long> nodeId(2);
 			nodeId.push_back(first->getId());
 			nodeId.push_back(second->getId());
-			for (auto id : nodeId)
+			for (const auto& id: nodeId)
 			{
-				auto nodeExists = [id](const Subset &it)
-				{ return (id == (it).parent); };
+				auto nodeExists = [id](const auto& it)
+						{ return (id == (it.second).parent); };
 
 				if (std::find_if(subset.begin(), subset.end(), nodeExists) == subset.end())
 				{
 					Subset set;
 					set.parent = id;
 					set.rank = 0;
-					subset.push_back(set);
+					subset[id] = set;
 				}
 			}
 		}
@@ -1795,11 +1670,11 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	bool Graph<T>::containsCycle(const std::list<const Edge<T> *> *edgeSet, std::vector<Subset> *subset) const
-	{
-		for (const auto edge : *edgeSet)
-		{
-			auto &[first, second] = edge->getNodePair();
+	bool Graph<T>::containsCycle(const std::list<const Edge<T>* >* edgeSet, std::unordered_map<unsigned long long, Subset>* subset) const
+	{		
+		for (const auto& edge: *edgeSet)
+		{			
+			auto& [first, second] = edge->getNodePair();
 			auto set1 = Graph<T>::setFind(subset, first->getId());
 			auto set2 = Graph<T>::setFind(subset, second->getId());
 			if (set1 == set2)
@@ -1819,8 +1694,8 @@ namespace CXXGRAPH
 		auto adjMatrix = Graph<T>::getAdjMatrix();
 		auto nodeSet = Graph<T>::getNodeSet();
 
-		std::map<unsigned long, unsigned int> indegree;
-		for (auto node : nodeSet)
+		std::unordered_map<unsigned long, unsigned int> indegree;
+		for (const auto& node : nodeSet)
 		{
 			indegree[node->getId()] = 0;
 		}
@@ -1835,7 +1710,7 @@ namespace CXXGRAPH
 		}
 
 		std::queue<const Node<T> *> can_be_solved;
-		for (auto node : nodeSet)
+		for (const auto& node : nodeSet)
 		{
 			// If a node doesn't have any input edges, then that node will
 			// definately not result in a cycle and can be visited safely.
@@ -1860,7 +1735,7 @@ namespace CXXGRAPH
 			auto it = adjMatrix.find(solved);
 			if (it != adjMatrix.end())
 			{
-				for (auto child : it->second)
+				for (const auto& child : it->second)
 				{
 					// Check if we can visited the node safely.
 					if (--indegree[std::get<0>(child)->getId()] == 0)
@@ -1882,7 +1757,7 @@ namespace CXXGRAPH
 	bool Graph<T>::isDirectedGraph() const
 	{
 		auto edgeSet = Graph<T>::getEdgeSet();
-		for (auto edge : edgeSet)
+		for (const auto& edge : edgeSet)
 		{
 			if (!(edge->isDirected().has_value() && edge->isDirected().value()))
 			{
@@ -1898,7 +1773,7 @@ namespace CXXGRAPH
 	bool Graph<T>::isUndirectedGraph() const
 	{
 		auto edgeSet = Graph<T>::getEdgeSet();
-		for (auto edge : edgeSet)
+		for (const auto& edge : edgeSet)
 		{
 			if ((edge->isDirected().has_value() && edge->isDirected().value()))
 			{
@@ -1931,10 +1806,10 @@ namespace CXXGRAPH
     		dist[i].first = distance of ith vertex from src vertex
     		dits[i].second = vertex i in bucket number */
 		unsigned int V = nodeSet.size();
-		std::map<const Node<T> *, std::pair<long, const Node<T> *>> dist;
+		std::unordered_map<const Node<T> *, std::pair<long, const Node<T> *>> dist;
 
 		// Initialize all distances as infinite (INF)
-		for (auto node : nodeSet)
+		for (const auto& node : nodeSet)
 		{
 			dist[&(*node)].first = std::numeric_limits<long>::max();
 		}
@@ -1968,20 +1843,20 @@ namespace CXXGRAPH
 
 			// Process all adjacents of extracted vertex 'u' and
 			// update their distanced if required.
-			for (auto i = adj[u].begin(); i != adj[u].end(); ++i)
+			for (const auto& i : adj[u])
 			{
-				auto v = (*i).first;
+				auto v = i.first;
 				int weight = 0;
-				if ((*i).second->isWeighted().has_value() && (*i).second->isWeighted().value())
+				if (i.second->isWeighted().has_value() && i.second->isWeighted().value())
 				{
-					if ((*i).second->isDirected().has_value() && (*i).second->isDirected().value())
+					if (i.second->isDirected().has_value() && i.second->isDirected().value())
 					{
-						const DirectedWeightedEdge<T> *dw_edge = dynamic_cast<const DirectedWeightedEdge<T> *>((*i).second);
+						const DirectedWeightedEdge<T> *dw_edge = dynamic_cast<const DirectedWeightedEdge<T> *>(i.second);
 						weight = dw_edge->getWeight();
 					}
-					else if ((*i).second->isDirected().has_value() && !(*i).second->isDirected().value())
+					else if (i.second->isDirected().has_value() && !i.second->isDirected().value())
 					{
-						const UndirectedWeightedEdge<T> *udw_edge = dynamic_cast<const UndirectedWeightedEdge<T> *>((*i).second);
+						const UndirectedWeightedEdge<T> *udw_edge = dynamic_cast<const UndirectedWeightedEdge<T> *>(i.second);
 						weight = udw_edge->getWeight();
 					}
 					else
@@ -2029,7 +1904,7 @@ namespace CXXGRAPH
 				}
 			}
 		}
-		for (auto dist_i : dist)
+		for (const auto& dist_i : dist)
 		{
 			result.minDistanceMap[dist_i.first->getId()] = dist_i.second.first;
 		}
@@ -2051,7 +1926,7 @@ namespace CXXGRAPH
 		}
 		std::vector<Node<T>> C = Graph<T>::depth_first_search(start);
 		std::list<const Node<T> *> C1; //complement of C i.e. nodeSet - C
-		for (auto const node : nodeSet)
+		for (auto const& node : nodeSet)
 		{
 			// from the set of all nodes, remove nodes that exist in C
 			if (std::find_if(C.begin(), C.end(), [node](const Node<T> nodeC)
@@ -2062,13 +1937,13 @@ namespace CXXGRAPH
 		// For all nodes in C', apply DFS
 		//  and get the list of reachable nodes and store in M
 		std::vector<Node<T>> M;
-		for (auto const node : C1)
+		for (auto const& node : C1)
 		{
 			std::vector<Node<T>> reachableNodes = Graph<T>::depth_first_search(*node);
 			M.insert(M.end(), reachableNodes.begin(), reachableNodes.end());
 		}
 		// removes nodes from C that are reachable from M.
-		for (const Node<T> nodeC : C)
+		for (const auto& nodeC : C)
 		{
 			if (std::find_if(M.begin(), M.end(), [nodeC](const Node<T> nodeM)
 							 { return (nodeM == nodeC); }) == M.end())
@@ -2081,19 +1956,7 @@ namespace CXXGRAPH
 	int Graph<T>::writeToFile(InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
 	{
 		int result = 0;
-		if (format == InputOutputFormat::STANDARD_CSV)
-		{
-			result = writeToStandardFile_csv(workingDir, OFileName, compress, writeNodeFeat, writeEdgeWeight);
-		}
-		else if (format == InputOutputFormat::STANDARD_TSV)
-		{
-			result = writeToStandardFile_tsv(workingDir, OFileName, compress, writeNodeFeat, writeEdgeWeight);
-		}
-		else
-		{
-			//OUTPUT FORMAT NOT RECOGNIZED
-			return -1;
-		}
+		result = writeToStandardFile(workingDir, OFileName, compress, writeNodeFeat, writeEdgeWeight, format);
 		if (result == 0 && compress)
 		{
 			auto _compress = [this, &workingDir, &OFileName, &writeNodeFeat, &writeEdgeWeight](const std::string &extension)
@@ -2197,19 +2060,7 @@ namespace CXXGRAPH
 		}
 		if (result == 0)
 		{
-			if (format == InputOutputFormat::STANDARD_CSV)
-			{
-				result = readFromStandardFile_csv(workingDir, OFileName, compress, readNodeFeat, readEdgeWeight);
-			}
-			else if (format == InputOutputFormat::STANDARD_TSV)
-			{
-				result = readFromStandardFile_tsv(workingDir, OFileName, compress, readNodeFeat, readEdgeWeight);
-			}
-			else
-			{
-				//OUTPUT FORMAT NOT RECOGNIZED
-				result = -1;
-			}
+			result = readFromStandardFile(workingDir, OFileName, compress, readNodeFeat, readEdgeWeight, format);
 		}
 		return result;
 	}
@@ -2242,23 +2093,23 @@ namespace CXXGRAPH
 			}
 			else if (((*it)->isDirected().has_value() && (*it)->isDirected().value()) && ((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
 			{
-				os << dynamic_cast<const DirectedWeightedEdge<T> &>(**it) << "\n";
+				os << dynamic_cast<const DirectedWeightedEdge<T> &>(*it) << "\n";
 			}
 			else if (((*it)->isDirected().has_value() && (*it)->isDirected().value()) && !((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
 			{
-				os << dynamic_cast<const DirectedEdge<T> &>(**it) << "\n";
+				os << dynamic_cast<const DirectedEdge<T> &>(*it) << "\n";
 			}
-			else if (!((*it)->isDirected().has_value() && (*it)->isDirected().value()) && ((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
+			else if (!(it->isDirected().has_value() && it->isDirected().value()) && (it->isWeighted().has_value() && it->isWeighted().value()))
 			{
-				os << dynamic_cast<const UndirectedWeightedEdge<T> &>(**it) << "\n";
+				os << dynamic_cast<const UndirectedWeightedEdge<T> &>(*it) << "\n";
 			}
-			else if (!((*it)->isDirected().has_value() && (*it)->isDirected().value()) && !((*it)->isWeighted().has_value() && (*it)->isWeighted().value()))
+			else if (!(it->isDirected().has_value() && it->isDirected().value()) && !(it->isWeighted().has_value() && it->isWeighted().value()))
 			{
-				os << dynamic_cast<const UndirectedEdge<T> &>(**it) << "\n";
+				os << dynamic_cast<const UndirectedEdge<T> &>(*it) << "\n";
 			}
 			else
 			{
-				os << **it << "\n";
+				os << *it << "\n";
 			}
 		}
 		return os;
@@ -2268,13 +2119,12 @@ namespace CXXGRAPH
 	std::ostream &operator<<(std::ostream &os, const AdjacencyMatrix<T> &adj)
 	{
 		os << "Adjacency Matrix:\n";
-		auto it = adj.begin();
 		unsigned long max_column = 0;
-		for (it; it != adj.end(); ++it)
+		for (const auto &it : adj)
 		{
-			if (it->second.size() > max_column)
+			if (it.second.size() > max_column)
 			{
-				max_column = it->second.size();
+				max_column = it.second.size();
 			}
 		}
 		if (max_column == 0)
@@ -2284,23 +2134,21 @@ namespace CXXGRAPH
 		}
 		else
 		{
-			it = adj.begin();
 			os << "|--|";
-			for (int i = 0; i < max_column; i++)
+			for (int i = 0; i < max_column; ++i)
 			{
 				os << "-----|";
 			}
 			os << "\n";
-			for (it; it != adj.end(); ++it)
+			for (const auto& it : adj)
 			{
-				os << "|N" << it->first->getId() << "|";
-				auto it2 = it->second.begin();
-				for (it2; it2 != it->second.end(); ++it2)
+				os << "|N" << it.first->getId() << "|";
+				for (const auto& it2 : it.second)
 				{
-					os << "N" << it2->first->getId() << ",E" << it2->second->getId() << "|";
+					os << "N" << it2.first->getId() << ",E" << it2.second->getId() << "|";
 				}
 				os << "\n|--|";
-				for (int i = 0; i < max_column; i++)
+				for (int i = 0; i < max_column; ++i)
 				{
 					os << "-----|";
 				}

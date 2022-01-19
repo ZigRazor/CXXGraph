@@ -24,7 +24,7 @@ TEST(EulerPathTest, test_1)
     CXXGRAPH::Graph<int> graph(edgeSet);
     auto res = graph.eulerianPath();
     auto nodeSet = graph.getNodeSet();
-    for (auto node : nodeSet)
+    for (const auto& node : nodeSet)
     {
         auto check = std::find_if(res.begin(), res.end(),
                                   [node](auto it)
@@ -60,7 +60,7 @@ TEST(EulerPathTest, test_2)
     CXXGRAPH::Graph<int> graph(edgeSet);
     auto res = graph.eulerianPath();
     auto nodeSet = graph.getNodeSet();
-    for (auto node : nodeSet)
+    for (const auto& node : nodeSet)
     {
         auto check = std::find_if(res.begin(), res.end(),
                                   [node](auto it)
@@ -102,7 +102,7 @@ TEST(EulerPathTest, test_3)
     CXXGRAPH::Graph<int> graph(edgeSet);
     auto res = graph.eulerianPath();
     auto nodeSet = graph.getNodeSet();
-    for (auto node : nodeSet)
+    for (const auto& node : nodeSet)
     {
         auto check = std::find_if(res.begin(), res.end(),
                                   [node](auto it)

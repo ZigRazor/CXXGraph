@@ -74,7 +74,7 @@ namespace CXXGRAPH
             machines_load_vertices_mutex = new std::mutex();
             record_map_mutex = new std::mutex();
             //this->GLOBALS = G;
-            for (int i = 0; i < GLOBALS.numberOfPartition; i++)
+            for (int i = 0; i < GLOBALS.numberOfPartition; ++i)
             {
                 machines_load_edges.push_back(0);
                 machines_load_vertices.push_back(0);
@@ -128,10 +128,9 @@ namespace CXXGRAPH
         {
             std::lock_guard<std::mutex> lock(*machines_load_edges_mutex);
             int MIN_LOAD = std::numeric_limits<int>::max();
-            auto machines_load_edges_it = machines_load_edges.begin();
-            for (machines_load_edges_it; machines_load_edges_it != machines_load_edges.end(); ++machines_load_edges_it)
+            for (const auto& machines_load_edges_it : machines_load_edges)
             {
-                int loadi = *machines_load_edges_it;
+                int loadi = machines_load_edges_it;
                 if (loadi < MIN_LOAD)
                 {
                     MIN_LOAD = loadi;
@@ -149,9 +148,9 @@ namespace CXXGRAPH
         {
             std::lock_guard<std::mutex> lock(*machines_load_edges_mutex);
             std::vector<int> result;
-            for (int i = 0; i < machines_load_edges.size(); i++)
+            for (const auto& machines_load_edges_it : machines_load_edges)
             {
-                result.push_back(machines_load_edges[i]);
+                result.push_back(machines_load_edges_it);
             }
             return result;
         }
@@ -161,10 +160,9 @@ namespace CXXGRAPH
             //TODO
             std::lock_guard<std::mutex> lock(*record_map_mutex);
             int result = 0;
-            auto record_map_it = record_map.begin();
-            for (record_map_it; record_map_it != record_map.end(); ++record_map_it)
+            for (const auto& record_map_it : record_map)
             {
-                int r = record_map_it->second->getReplicas();
+                int r = record_map_it.second->getReplicas();
                 if (r > 0)
                 {
                     result += r;
@@ -188,10 +186,9 @@ namespace CXXGRAPH
             std::lock_guard<std::mutex> lock(*record_map_mutex);
             //if (GLOBALS.OUTPUT_FILE_NAME!=null){ out.close(); }
             std::set<int> result;
-            auto record_map_it = record_map.begin();
-            for (record_map_it; record_map_it != record_map.end(); ++record_map_it)
+            for (const auto& record_map_it : record_map)
             {
-                result.insert(record_map_it->first);
+                result.insert(record_map_it.first);
             }
             return result;
         }
@@ -206,9 +203,9 @@ namespace CXXGRAPH
         {
             std::lock_guard<std::mutex> lock(*machines_load_vertices_mutex);
             std::vector<int> result;
-            for (int i = 0; i < machines_load_vertices.size(); i++)
+            for (const auto& machines_load_vertices_it : machines_load_vertices)
             {
-                result.push_back(machines_load_vertices.at(i));
+                result.push_back(machines_load_vertices_it);
             }
             return result;
         }

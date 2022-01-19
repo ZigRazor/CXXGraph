@@ -40,8 +40,8 @@ namespace CXXGRAPH
         class Partitioner
         {
         private:
-            std::list<const Edge<T> *> dataset;
-            PartitionStrategy<T>* algorithm;
+            std::list<const Edge<T> *> dataset = {};
+            PartitionStrategy<T>* algorithm = nullptr;
             Globals GLOBALS;
 
             CoordinatedPartitionState<T> startCoordinated();
@@ -76,7 +76,7 @@ namespace CXXGRAPH
 
             int n = dataset.size();
             int subSize = n / processors + 1;
-            for (int t = 0; t < processors; t++)
+            for (int t = 0; t < processors; ++t)
             {
                 int iStart = t * subSize;
                 int iEnd = std::min((t + 1) * subSize, n);
@@ -87,7 +87,7 @@ namespace CXXGRAPH
                     myThreads[t] = std::thread(&Runnable::run, x);
                 }
             }
-            for (int t = 0; t < processors; t++)
+            for (int t = 0; t < processors; ++t)
             {
                 myThreads[t].join();
             }

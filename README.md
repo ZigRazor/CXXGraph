@@ -4,6 +4,8 @@
 
 <img src="https://img.shields.io/badge/c++%20-%2300599C.svg?&style=for-the-badge&logo=c%2B%2B&ogoColor=white"/> <img src="https://img.shields.io/badge/github%20-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white"/>
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5878832.svg)](https://doi.org/10.5281/zenodo.5878832)
+
 [![codecov](https://codecov.io/gh/ZigRazor/CXXGraph/branch/master/graph/badge.svg?token=773AQ2H9RQ)](https://codecov.io/gh/ZigRazor/CXXGraph)
 [![CodeFactor](https://www.codefactor.io/repository/github/zigrazor/cxxgraph/badge)](https://www.codefactor.io/repository/github/zigrazor/cxxgraph)
 
@@ -18,12 +20,15 @@
 
 Share on [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Header-Only%20C++%20Library%20for%20Graph%20Representation%20and%20Algorithms%204&url=https://github.com/ZigRazor/CXXGraph&hashtags=cpp,headeronly,library,opensource,developers)
 <br/><br/>
-<br/><br/>
-<br/><br/>
 
 ## Introduction
 **CXXGraph** is a small library, header only, that manages the Graph and it's algorithms in **C++**. In other words a "Comprehensive C++ Graph Library".
 An alternative to [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_77_0/libs/graph/doc/index.html).
+
+## We are Looking for...
+
+**We are looking for developers and committer**, also at *first experience*, we will guide you step by step to the open-source world!
+If you are interested, please contact us at zigrazor@gmail.com or contribute to this project. We are waiting for you!
 
 ## Table of Contents
 - [CXXGraph](#cxxgraph)
@@ -364,7 +369,7 @@ Other algorithms to find the minimum spanning forest are Prim's algorithm or Bor
 
 A vertex-cut partitioning divides edges of a graph into equal size partitions. The vertices that hold the endpoints of an edge are also placed in the same partition as the edge itself. However, the vertices are not unique across partitions and might have to be replicated (cut), due to the distribution of their edge across different partitions.
 
-Replication factor quantifies how many vertexes are replicated over computers compared with the the number of vertexes of the original input graph.
+Replication factor quantifies how many vertices are replicated over computers compared with the the number of vertices of the original input graph.
 
 ### Greedy Vertex-Cut
 This Algorithm is a simple vertex-cut in Round-Robin fashion.
@@ -421,16 +426,20 @@ Thanks to the community of [TheAlgorithms](https://github.com/TheAlgorithms) for
 
 Thanks to [GeeksForGeeks](https://www.geeksforgeeks.org/) for some algorithms inspiration.
 
+## Contributors
+
+Thank you to all the people who have already contributed to CXXGraph!
+
+[![Contributors](https://contrib.rocks/image?repo=zigrazor/CXXGraph)](https://github.com/ZigRazor/CXXGraph/graphs/contributors)
+
+## Cite Us
+
+If you use this software please follow the [CITATION](https://github.com/ZigRazor/CXXGraph/blob/master/CITATION) istruction.
+Thank you!
+
 ## Hacktoberfest 2k21
 
-We participate at Hacktoberfest 2021, if you want to contribute, you can take an [issue](https://github.com/ZigRazor/CXXGraph/issues) and solve it, or if you want to add a functionalities just open a PR with the label `hacktoberfest`.
-
-Happy Hack!
-
-## We are Looking for...
-
-**We are looking for developers and committer**, also at *first experience*, we will guide you step by step to the open-source world!
-If you are interested, please contact us at zigrazor@gmail.com or contribute to this project. We are waiting for you!
+We have been participated at Hacktoberfest 2021, thank you to all the contributors!
 
 ## Other Details
 

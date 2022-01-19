@@ -121,7 +121,7 @@ TEST(PartitionTest, test_3)
     ASSERT_EQ(graph.getEdgeSet().size(), 12);
     auto partitionMap = graph.partitionGraph(CXXGRAPH::PARTITIONING::PartitionAlgorithm::EDGEBALANCED_VC_ALG, 4);
     unsigned int totalEdgeInPartition = 0;
-    for (auto elem : partitionMap)
+    for (const auto& elem : partitionMap)
     {
         totalEdgeInPartition += elem.second->getEdgeSet().size();
     }
