@@ -17,8 +17,8 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_PARTITIONING_HDRF_H__
-#define __CXXGRAPH_PARTITIONING_HDRF_H__
+#ifndef __CXXGRAPH_PARTITIONING_GREEDYVERTEXCUT_H__
+#define __CXXGRAPH_PARTITIONING_GREEDYVERTEXCUT_H__
 
 #pragma once
 
@@ -32,37 +32,35 @@ namespace CXXGRAPH
     namespace PARTITIONING
     {
         /**
-         * @brief A Vertex Cut Partioning Algorithm ( as described by this paper https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf )
-         * @details This algorithm is a greedy algorithm that partitions the graph into n sets of vertices ( as described by this paper https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf ).
+         * @brief A Greedy Vertex Cut Partioning Algorithm
+         * @details This algorithm is a greedy algorithm that partitions the graph into n sets of vertices.
          */
         template <typename T>
-        class HDRF : public PartitionStrategy<T>
+        class GreedyVertexCut : public PartitionStrategy<T>
         {
         private:
             Globals GLOBALS;
 
         public:
-            HDRF(Globals &G);
-            ~HDRF();
+            GreedyVertexCut(Globals &G);
+            ~GreedyVertexCut();
 
             void performStep(const Edge<T> &e, PartitionState<T> &Sstate);
         };
         template <typename T>
-        HDRF<T>::HDRF(Globals &G) : GLOBALS(G)
+        GreedyVertexCut<T>::GreedyVertexCut(Globals &G) : GLOBALS(G)
         {
             //this->GLOBALS = G;
         }
         template <typename T>
-        HDRF<T>::~HDRF()
+        GreedyVertexCut<T>::~GreedyVertexCut()
         {
         }
         template <typename T>
-        void HDRF<T>::performStep(const Edge<T> &e, PartitionState<T> &state)
+        void GreedyVertexCut<T>::performStep(const Edge<T> &e, PartitionState<T> &state)
         {
 
             int P = GLOBALS.numberOfPartition;
-            double lambda = GLOBALS.param1;
-            int epsilon = GLOBALS.param2;
             auto nodePair = e.getNodePair();
             int u = nodePair.first->getId();
             int v = nodePair.second->getId();
@@ -100,66 +98,94 @@ namespace CXXGRAPH
             //*** LOCK TAKEN
             int machine_id = -1;
 
-            //*** COMPUTE MAX AND MIN LOAD
-            int MIN_LOAD = state.getMinLoad();
-            int MAX_LOAD = state.getMaxLoad();
-
-            //*** COMPUTE SCORES, FIND MIN SCORE, AND COMPUTE CANDIDATES PARITIONS
+            //*** COMPUTE CANDIDATES PARITIONS
             std::vector<int> candidates;
-            double MAX_SCORE = 0.0;
-            for (int m = 0; m < P; m++)
-            {
+            
+            if(u_record->getPartitions().empty() && v_record->getPartitions().empty()){
+                //Find the partition with min load
+                int min_load = INT_MAX;
+                int machine_id = 0;
+                for (int i = 0; i < P; i++)
+                {
+                    if (state.getMachineLoad(i) < min_load)
+                    {
+                        min_load = state.getMachineLoad(i);
+                        machine_id = i;
+                    }
+                }
+                candidates.push_back(machine_id);
+            }
+            else if(!u_record->getPartitions().empty() && v_record->getPartitions().empty()){
+                //Find the partition with min load in u
+                int min_load = INT_MAX;
+                int machine_id = 0;
+                for (auto &partition : u_record->getPartitions())
+                {
+                    if (state.getMachineLoad(partition) < min_load)
+                    {
+                        min_load = state.getMachineLoad(partition);
+                        machine_id = partition;
+                    }
+                }
+                candidates.push_back(machine_id);
 
-                int degree_u = u_record->getDegree() + 1;
-                int degree_v = v_record->getDegree() + 1;
-                int SUM = degree_u + degree_v;
-                double fu = 0;
-                double fv = 0;
-                if (u_record->hasReplicaInPartition(m))
+            }else if(u_record->getPartitions().empty() && !v_record->getPartitions().empty()){
+                //Find the partition with min load in v
+                int min_load = INT_MAX;
+                int machine_id = 0;
+                for (auto &partition : v_record->getPartitions())
                 {
-                    fu = degree_u;
-                    fu /= SUM;
-                    fu = 1 + (1 - fu);
+                    if (state.getMachineLoad(partition) < min_load)
+                    {
+                        min_load = state.getMachineLoad(partition);
+                        machine_id = partition;
+                    }
                 }
-                if (v_record->hasReplicaInPartition(m))
-                {
-                    fv = degree_v;
-                    fv /= SUM;
-                    fv = 1 + (1 - fv);
-                }
-                int load = state.getMachineLoad(m);
-                double bal = (MAX_LOAD - load);
-                bal /= (epsilon + MAX_LOAD - MIN_LOAD);
-                if (bal < 0)
-                {
-                    bal = 0;
-                }
-                double SCORE_m = fu + fv + lambda * bal;
-                if (SCORE_m < 0)
-                {
-                    std::cout << "ERRORE: SCORE_m<0" << std::endl;
-                    std::cout << "fu: " << fu << std::endl;
-                    std::cout << "fv: " << fv << std::endl;
-                    std::cout << "lambda: " << lambda << std::endl;
-                    std::cout << "bal: " << bal << std::endl;
-                    exit(-1);
-                }
-                if (SCORE_m > MAX_SCORE)
-                {
-                    MAX_SCORE = SCORE_m;
-                    candidates.clear();
-                    candidates.push_back(m);
-                }
-                else if (SCORE_m == MAX_SCORE)
-                {
-                    candidates.push_back(m);
+                candidates.push_back(machine_id);
+
+            }else if(!u_record->getPartitions().empty() && !v_record->getPartitions().empty()){
+                //check if have intersection
+                std::set<int> intersection;
+                std::set_intersection(u_record->getPartitions().begin(), u_record->getPartitions().end(),
+                                      v_record->getPartitions().begin(), v_record->getPartitions().end(),
+                                      std::inserter(intersection, intersection.begin()));
+                if(!intersection.empty()){
+                    //Find the partition with min load in the intersection of u and v
+                    int min_load = INT_MAX;
+                    int machine_id = 0;
+                    for (auto &partition : intersection)
+                    {
+                        if (state.getMachineLoad(partition) < min_load)
+                        {
+                            min_load = state.getMachineLoad(partition);
+                            machine_id = partition;
+                        }
+                    }
+                    candidates.push_back(machine_id);
+                }else{
+                    //Find the partition with min load in the union of u and v
+                    std::set<int> part_union;
+                    std::set_union(u_record->getPartitions().begin(), u_record->getPartitions().end(),
+                                   v_record->getPartitions().begin(), v_record->getPartitions().end(),
+                                   std::inserter(part_union, part_union.begin()));
+                    int min_load = INT_MAX;
+                    int machine_id = 0;
+                    for (auto &partition : part_union)
+                    {
+                        if (state.getMachineLoad(partition) < min_load)
+                        {
+                            min_load = state.getMachineLoad(partition);
+                            machine_id = partition;
+                        }
+                    }
+                    candidates.push_back(machine_id);
                 }
             }
+            
             //*** CHECK TO AVOID ERRORS
             if (candidates.empty())
             {
                 std::cout << "ERROR: GreedyObjectiveFunction.performStep -> candidates.isEmpty()" << std::endl;
-                std::cout << "MAX_SCORE: " << MAX_SCORE << std::endl;
                 exit(-1);
             }
 
@@ -212,4 +238,4 @@ namespace CXXGRAPH
     }
 }
 
-#endif // __CXXGRAPH_PARTITIONING_HDRF_H__
+#endif // __CXXGRAPH_PARTITIONING_GREEDYVERTEXCUT_H__

@@ -32,7 +32,7 @@ namespace CXXGRAPH {
 		{
 		private:
 		public:
-			Globals(int numberOfPartiton, PartitionAlgorithm algorithm = PartitionAlgorithm::HDRF_ALG, unsigned int threads = std::thread::hardware_concurrency(), double lambda = 1);
+			Globals(int numberOfPartiton, PartitionAlgorithm algorithm = PartitionAlgorithm::HDRF_ALG, unsigned int threads = std::thread::hardware_concurrency(), double param1 = 1, double param2 = 1, double param3 = 1);
 			~Globals();
 
 			void print();
@@ -43,17 +43,21 @@ namespace CXXGRAPH {
 
 			int numberOfPartition = 0; //number of partitions
 			//OPTIONAL
-			PartitionAlgorithm partitionStategy;
-			double lambda = 0.0;
+			PartitionAlgorithm partitionStategy;			
 			unsigned int threads = 0;
+			double param1 = 0.0;
+			double param2 = 0.0;
+			double param3 = 0.0;
 		};
 
-		inline Globals::Globals(int numberOfPartiton, PartitionAlgorithm algorithm, unsigned int threads,double lambda)
+		inline Globals::Globals(int numberOfPartiton, PartitionAlgorithm algorithm, unsigned int threads,double param1, double param2, double param3)
 		{
 			this->numberOfPartition = numberOfPartiton;
-			this->partitionStategy = algorithm;
-			this->lambda = lambda;
+			this->partitionStategy = algorithm;			
 			this->threads = threads;
+			this->param1 = param1;
+			this->param2 = param2;
+			this->param3 = param3;
 		}
 
 		inline Globals::~Globals()

@@ -31,6 +31,7 @@
 #include "PartitionAlgorithm.hpp"
 #include "HDRF.hpp"
 #include "EdgeBalancedVertexCut.hpp"
+#include "GreedyVertexCut.hpp"
 
 namespace CXXGRAPH
 {
@@ -64,6 +65,9 @@ namespace CXXGRAPH
             } else if (GLOBALS.partitionStategy == PartitionAlgorithm::EDGEBALANCED_VC_ALG)
             {
                 algorithm = new EdgeBalancedVertexCut<T>(GLOBALS);
+            } else if (GLOBALS.partitionStategy == PartitionAlgorithm::GREEDY_VC_ALG)
+            {
+                algorithm = new GreedyVertexCut<T>(GLOBALS);
             }
         }
         template <typename T>

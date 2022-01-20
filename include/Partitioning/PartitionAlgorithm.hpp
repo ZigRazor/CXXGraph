@@ -30,6 +30,7 @@ namespace CXXGRAPH
         enum E_PartitionAlgorithm
         {
             EDGEBALANCED_VC_ALG, ///< A Edge Balanced Vertex-Cut Algorithm
+            GREEDY_VC_ALG, ///< A Greedy Algorithm
             HDRF_ALG,      ///< High-Degree (are) Replicated First (HDRF) Algorithm (Stream-Based Vertex-Cut Partitioning)
             ALG_2
         };

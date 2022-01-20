@@ -17,8 +17,8 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_PARTITIONING_GREEDY_VERTEX_CUT_H__
-#define __CXXGRAPH_PARTITIONING_GREEDY_VERTEX_CUT_H__
+#ifndef __CXXGRAPH_PARTITIONING_EDGEBALANCEDVERTEXCUT_H__
+#define __CXXGRAPH_PARTITIONING_EDGEBALANCEDVERTEXCUT_H__
 
 #pragma once
 
@@ -151,4 +151,4 @@ namespace CXXGRAPH
     }
 }
 
-#endif // __CXXGRAPH_PARTITIONING_GREEDY_VERTEX_CUT_H__
+#endif // __CXXGRAPH_PARTITIONING_EDGEBALANCEDVERTEXCUT_H__
