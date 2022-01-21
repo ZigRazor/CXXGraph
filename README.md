@@ -81,6 +81,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
     - [Edge Balanced Vertex-Cut](#edge-balanced-vertex-cut)
     - [Greedy Vertex-Cut](#greedy-vertex-cut)
     - [HDRF](#hdrf)
+    - [EBV](#ebv)
     - [Graph Slicing based on connectivity](#graph-slicing-based-on-connectivity)
   - [How to contribute](#how-to-contribute)
   - [Site](#site)
@@ -431,12 +432,26 @@ When processing edge e ∈ E connecting vertices vi, vj ∈ V , the greedy algor
 
 ### HDRF
 
-High Degree (are) Replicated First(HDRF) Algorithm is a greedy vertex-cut algorithm as desscrived by this [paper](https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf).
+High Degree (are) Replicated First(HDRF) Algorithm is a greedy vertex-cut algorithm as described by this [paper](https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf).
 This Algorithm try to optimize Replication Factor by using the history of the edge assignements amd the incremental vertex degree.
 With a function that take in consideration this two factors calculate the best partition to assign the analyzed edge.
 The replica created are based on the degree of the verteices, and the vertices replicated are probably a so called "Hub-Node", which are the vertices with higher degree.
 
+### EBV
+
+Efficient and Balanced Vertex-cut(EBV) is an offline vertex-cut algorithm as described by this [paper](https://arxiv.org/abs/2010.09007).
+This algorithm try to balance the partitions with respect to the number of edges and vertices of each partitions and the Replication Factor.
+It apply a formula to evaluate the partition in which assigns the edge that take into consideration also the total number of edges and vertices of the graph.
+The evaluation formula is the following:
+
+```math
+Eva(u,v)(i) =I(u ∈ keep[i]) + I(v ∈ keep[i]) +α * \frac{ecount[i]}{(|E|/p)} + β * \frac{vcount[i]}{(|V|/p)}
+```
+
+The lowest value is taken as partition Id.
+
 ### Graph Slicing based on connectivity
+
 Mathematical definition of the problem:
 Let G be the set of nodes in a graph and n be a given node in that set.
 Let C be the non-strict subset of G containing both n and all nodes reachable
