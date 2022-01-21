@@ -32,6 +32,7 @@
 #include "HDRF.hpp"
 #include "EdgeBalancedVertexCut.hpp"
 #include "GreedyVertexCut.hpp"
+#include "EBV.hpp"
 
 namespace CXXGRAPH
 {
@@ -68,7 +69,11 @@ namespace CXXGRAPH
             } else if (GLOBALS.partitionStategy == PartitionAlgorithm::GREEDY_VC_ALG)
             {
                 algorithm = new GreedyVertexCut<T>(GLOBALS);
+            } else if (GLOBALS.partitionStategy == PartitionAlgorithm::EBV_ALG)
+            {
+                algorithm = new EBV<T>(GLOBALS);
             }
+
         }
         template <typename T>
         CoordinatedPartitionState<T> Partitioner<T>::startCoordinated()

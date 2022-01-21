@@ -55,6 +55,7 @@ namespace CXXGRAPH
 
             Record<T>* getRecord(int x);
             int getMachineLoad(int m);
+            int getMachineLoadVertices(int m);
             void incrementMachineLoad(int m, const  Edge<T> *e);
             int getMinLoad();
             int getMaxLoad();
@@ -65,7 +66,7 @@ namespace CXXGRAPH
 
             void incrementMachineLoadVertices(int m);
             std::vector<int> getMachines_loadVertices();
-            PartitionMap<T> getPartitionMap();
+            const PartitionMap<T>& getPartitionMap();
         };
         template <typename T>
         CoordinatedPartitionState<T>::CoordinatedPartitionState(Globals &G) : record_map(), GLOBALS(G)
@@ -109,6 +110,13 @@ namespace CXXGRAPH
         {
             std::lock_guard<std::mutex> lock(*machines_load_edges_mutex);
             return machines_load_edges.at(m);
+        }
+
+        template <typename T>
+        int CoordinatedPartitionState<T>::getMachineLoadVertices(int m)
+        {
+            std::lock_guard<std::mutex> lock(*machines_load_vertices_mutex);
+            return machines_load_vertices.at(m);
         }
         template <typename T>
         void CoordinatedPartitionState<T>::incrementMachineLoad(int m, const  Edge<T> *e)
@@ -211,7 +219,7 @@ namespace CXXGRAPH
         }
         
         template<typename T>
-        PartitionMap<T> CoordinatedPartitionState<T>::getPartitionMap() 
+        const PartitionMap<T>& CoordinatedPartitionState<T>::getPartitionMap() 
         {
             return partition_map;
         }

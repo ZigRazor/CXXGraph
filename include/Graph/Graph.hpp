@@ -406,7 +406,7 @@ namespace CXXGRAPH
 		* @param numberOfPartition The number of partitions
 		* @return The partiton Map of the partitioned graph
      	*/
-		virtual PartitionMap<T> partitionGraph(PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const;
+		virtual PartitionMap<T> partitionGraph(PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions,double param1 = 0.0,double param2 = 0.0,double param3 = 0.0,unsigned int numberOfthreads = std::thread::hardware_concurrency()) const;
 
 		friend std::ostream &operator<<<>(std::ostream &os, const Graph<T> &graph);
 		friend std::ostream &operator<<<>(std::ostream &os, const AdjacencyMatrix<T> &adj);
@@ -2066,11 +2066,12 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	PartitionMap<T> Graph<T>::partitionGraph(PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const
+	PartitionMap<T> Graph<T>::partitionGraph(PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions,double param1,double param2,double param3,unsigned int numberOfthreads) const
 	{
 		PartitionMap<T> partitionMap;
-		PARTITIONING::Globals globals(numberOfPartitions, algorithm);
-
+		PARTITIONING::Globals globals(numberOfPartitions, algorithm,param1,param2,param3,numberOfthreads);
+		globals.edgeCardinality = this->getEdgeSet().size();
+		globals.vertexCardinality = this->getNodeSet().size();
 		PARTITIONING::Partitioner<T> partitioner(getEdgeSet(), globals);
 		PARTITIONING::CoordinatedPartitionState<T> partitionState = partitioner.performCoordinatedPartition();
 		partitionMap = partitionState.getPartitionMap();

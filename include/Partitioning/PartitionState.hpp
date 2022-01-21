@@ -34,6 +34,7 @@ namespace CXXGRAPH
         public:
             virtual Record<T> *getRecord(int x) = 0;
             virtual int getMachineLoad(int m) = 0;
+            virtual int getMachineLoadVertices(int m) = 0;
             virtual void incrementMachineLoad(int m,const Edge<T>* e) = 0;
             virtual int getMinLoad() = 0;
             virtual int getMaxLoad() = 0;

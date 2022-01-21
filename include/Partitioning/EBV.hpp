@@ -17,14 +17,15 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_PARTITIONING_HDRF_H__
-#define __CXXGRAPH_PARTITIONING_HDRF_H__
+#ifndef __CXXGRAPH_PARTITIONING_EBV_H__
+#define __CXXGRAPH_PARTITIONING_EBV_H__
 
 #pragma once
 
 #include "Partitioning/Utility/Globals.hpp"
 #include "Edge/Edge.hpp"
 #include "PartitionStrategy.hpp"
+#include <unordered_map>
 #include <chrono>
 
 namespace CXXGRAPH
@@ -32,41 +33,44 @@ namespace CXXGRAPH
     namespace PARTITIONING
     {
         /**
-         * @brief A Vertex Cut Partioning Algorithm ( as described by this paper https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf )
-         * @details This algorithm is a greedy algorithm that partitions the graph into n sets of vertices ( as described by this paper https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf ).
+         * @brief A Vertex Cut Partioning Algorithm ( as described by this paper https://arxiv.org/abs/2010.09007 )
+         * @details This algorithm is an offline algorithm that partitions the graph into n sets of vertices ( as described by this paper https://arxiv.org/abs/2010.09007 ).
          */
         template <typename T>
-        class HDRF : public PartitionStrategy<T>
+        class EBV : public PartitionStrategy<T>
         {
         private:
             Globals GLOBALS;
 
         public:
-            HDRF(Globals &G);
-            ~HDRF();
+            EBV(Globals &G);
+            ~EBV();
 
             void performStep(const Edge<T> &e, PartitionState<T> &Sstate);
         };
         template <typename T>
-        HDRF<T>::HDRF(Globals &G) : GLOBALS(G)
+        EBV<T>::EBV(Globals &G) : GLOBALS(G)
         {
             //this->GLOBALS = G;
         }
         template <typename T>
-        HDRF<T>::~HDRF()
+        EBV<T>::~EBV()
         {
         }
         template <typename T>
-        void HDRF<T>::performStep(const Edge<T> &e, PartitionState<T> &state)
+        void EBV<T>::performStep(const Edge<T> &e, PartitionState<T> &state)
         {
+            GLOBALS.edgeAnalyzed++;
 
             int P = GLOBALS.numberOfPartition;
-            double lambda = GLOBALS.param1;
-            double epsilon = GLOBALS.param2;
+            double alpha = GLOBALS.param1;
+            double beta = GLOBALS.param2;
+            unsigned long long edgeCardinality = GLOBALS.edgeCardinality;
+            unsigned long long vertexCardinality = GLOBALS.vertexCardinality;
             auto nodePair = e.getNodePair();
             int u = nodePair.first->getId();
             int v = nodePair.second->getId();
-            
+
             Record<T> *u_record = state.getRecord(u);
             Record<T> *v_record = state.getRecord(v);
 
@@ -100,75 +104,36 @@ namespace CXXGRAPH
             //*** LOCK TAKEN
             int machine_id = -1;
 
-            //*** COMPUTE MAX AND MIN LOAD
-            int MIN_LOAD = state.getMinLoad();
-            int MAX_LOAD = state.getMaxLoad();
-
-            //*** COMPUTE SCORES, FIND MIN SCORE, AND COMPUTE CANDIDATES PARITIONS
-            std::vector<int> candidates;
-            double MAX_SCORE = 0.0;
-            for (int m = 0; m < P; m++)
+            //*** COMPUTE SCORES, FIND MIN SCORE, AND COMPUTE CANDIDATES PARTITIONS
+            std::map<int, double> eva;
+            auto u_partition = u_record->getPartitions();
+            auto v_partition = v_record->getPartitions();
+            auto optimalEdgesNumber = edgeCardinality / P;
+            auto optimalVerticesNumber = vertexCardinality / P;
+            for (int i = 0; i < P; i++)
             {
-
-                int degree_u = u_record->getDegree() + 1;
-                int degree_v = v_record->getDegree() + 1;
-                int SUM = degree_u + degree_v;
-                double fu = 0;
-                double fv = 0;
-                if (u_record->hasReplicaInPartition(m))
+                eva[i] = 0;
+                if (u_partition.empty() || u_partition.find(i) == u_partition.end())
                 {
-                    fu = degree_u;
-                    fu /= SUM;
-                    fu = 1 + (1 - fu);
+                    eva[i] += 1;
                 }
-                if (v_record->hasReplicaInPartition(m))
+                if (v_partition.empty() || v_partition.find(i) == v_partition.end())
                 {
-                    fv = degree_v;
-                    fv /= SUM;
-                    fv = 1 + (1 - fv);
+                    eva[i] += 1;
                 }
-                int load = state.getMachineLoad(m);
-                double bal = (MAX_LOAD - load);
-                bal /= (epsilon + MAX_LOAD - MIN_LOAD);
-                if (bal < 0)
+                eva[i] += alpha * (state.getMachineLoad(i) / optimalEdgesNumber) + beta * (state.getMachineLoadVertices(i) / optimalVerticesNumber);
+            }
+            //find min between eva
+            double min = eva.at(0);
+            machine_id = 0;
+            for (auto &it : eva)
+            {
+                if (it.second < min)
                 {
-                    bal = 0;
-                }
-                double SCORE_m = fu + fv + lambda * bal;
-                if (SCORE_m < 0)
-                {
-                    std::cout << "ERRORE: SCORE_m<0" << std::endl;
-                    std::cout << "fu: " << fu << std::endl;
-                    std::cout << "fv: " << fv << std::endl;
-                    std::cout << "lambda: " << lambda << std::endl;
-                    std::cout << "bal: " << bal << std::endl;
-                    exit(-1);
-                }
-                if (SCORE_m > MAX_SCORE)
-                {
-                    MAX_SCORE = SCORE_m;
-                    candidates.clear();
-                    candidates.push_back(m);
-                }
-                else if (SCORE_m == MAX_SCORE)
-                {
-                    candidates.push_back(m);
+                    min = it.second;
+                    machine_id = it.first;
                 }
             }
-            //*** CHECK TO AVOID ERRORS
-            if (candidates.empty())
-            {
-                std::cout << "ERROR: GreedyObjectiveFunction.performStep -> candidates.isEmpty()" << std::endl;
-                std::cout << "MAX_SCORE: " << MAX_SCORE << std::endl;
-                exit(-1);
-            }
-
-            //*** PICK A RANDOM ELEMENT FROM CANDIDATES
-            /* initialize random seed: */
-            unsigned int seed = (unsigned int)time(NULL);
-            srand(seed);
-            int choice = rand_r(&seed) % candidates.size();
-            machine_id = candidates.at(choice);
             try
             {
                 CoordinatedPartitionState<T> &cord_state = dynamic_cast<CoordinatedPartitionState<T> &>(state);
@@ -212,4 +177,4 @@ namespace CXXGRAPH
     }
 }
 
-#endif // __CXXGRAPH_PARTITIONING_HDRF_H__
+#endif // __CXXGRAPH_PARTITIONING_EBV_H__
