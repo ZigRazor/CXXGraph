@@ -31,18 +31,18 @@
 
 namespace CXXGRAPH
 {
-    namespace PARTITIONING
-    {
-        template <typename T>
+	namespace PARTITIONING
+	{
+		template <typename T>
 		class PartitionerThread : public Runnable
 		{
 		private:
-			std::vector<const Edge<T>*> list = {};
+			std::vector<const Edge<T> *> list = {};
 			PartitionState<T> *state = nullptr;
 			PartitionStrategy<T> *algorithm = nullptr;
 
 		public:
-			PartitionerThread(std::vector<const Edge<T>*> &list, PartitionState<T> *state, PartitionStrategy<T> *algorithm, std::list<int> *ids);
+			PartitionerThread(std::vector<const Edge<T> *> &list, PartitionState<T> *state, PartitionStrategy<T> *algorithm, std::list<int> *ids);
 			~PartitionerThread();
 
 			void run();
@@ -50,7 +50,7 @@ namespace CXXGRAPH
 			std::list<int> *id_partitions = nullptr;
 		};
 		template <typename T>
-		PartitionerThread<T>::PartitionerThread(std::vector<const Edge<T>*> &list, PartitionState<T> *state, PartitionStrategy<T> *algorithm, std::list<int> *ids)
+		PartitionerThread<T>::PartitionerThread(std::vector<const Edge<T> *> &list, PartitionState<T> *state, PartitionStrategy<T> *algorithm, std::list<int> *ids)
 		{
 			this->list = list;
 			this->state = state;
@@ -64,12 +64,12 @@ namespace CXXGRAPH
 		template <typename T>
 		void PartitionerThread<T>::run()
 		{
-			for (const auto& edge_it : list)
+			for (const auto &edge_it : list)
 			{
 				algorithm->performStep(*edge_it, *state);
 			}
 		}
-    }
+	}
 }
 
 #endif // __CXXGRAPH_PARTITIONING_PARTITIONERTHREAD_H__

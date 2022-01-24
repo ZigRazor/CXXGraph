@@ -63,7 +63,7 @@ namespace CXXGRAPH
             auto nodePair = e.getNodePair();
             int u = nodePair.first->getId();
             int v = nodePair.second->getId();
-            
+
             Record<T> *u_record = state.getRecord(u);
             Record<T> *v_record = state.getRecord(v);
 
@@ -71,6 +71,7 @@ namespace CXXGRAPH
             bool locks_taken = false;
             while (!locks_taken)
             {
+                srand((unsigned)time(NULL));
                 int usleep_time = 2;
                 while (!u_record->getLock())
                 {
@@ -78,17 +79,20 @@ namespace CXXGRAPH
                     usleep_time = (int)pow(usleep_time, 2);
                 }
                 usleep_time = 2;
-                while (!v_record->getLock())
+                if (u != v)
                 {
-                    std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
-                    usleep_time = (int)pow(usleep_time, 2);
-
-                    if (usleep_time > GLOBALS.SLEEP_LIMIT)
+                    while (!v_record->getLock())
                     {
-                        u_record->releaseLock();
-                        performStep(e, state);
-                        return;
-                    } //TO AVOID DEADLOCK
+                        std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
+                        usleep_time = (int)pow(usleep_time, 2);
+
+                        if (usleep_time > GLOBALS.SLEEP_LIMIT)
+                        {
+                            u_record->releaseLock();
+                            performStep(e, state);
+                            return;
+                        } //TO AVOID DEADLOCK
+                    }
                 }
                 locks_taken = true;
             }
@@ -97,8 +101,9 @@ namespace CXXGRAPH
 
             //*** COMPUTE CANDIDATES PARITIONS
             std::vector<int> candidates;
-            
-            if(u_record->getPartitions().empty() && v_record->getPartitions().empty()){
+
+            if (u_record->getPartitions().empty() && v_record->getPartitions().empty())
+            {
                 //Find the partition with min load
                 int min_load = INT_MAX;
                 int machine_id = 0;
@@ -112,7 +117,8 @@ namespace CXXGRAPH
                 }
                 candidates.push_back(machine_id);
             }
-            else if(!u_record->getPartitions().empty() && v_record->getPartitions().empty()){
+            else if (!u_record->getPartitions().empty() && v_record->getPartitions().empty())
+            {
                 //Find the partition with min load in u
                 int min_load = INT_MAX;
                 int machine_id = 0;
@@ -125,7 +131,9 @@ namespace CXXGRAPH
                     }
                 }
                 candidates.push_back(machine_id);
-            }else if(u_record->getPartitions().empty() && !v_record->getPartitions().empty()){
+            }
+            else if (u_record->getPartitions().empty() && !v_record->getPartitions().empty())
+            {
                 //Find the partition with min load in v
                 int min_load = INT_MAX;
                 int machine_id = 0;
@@ -138,13 +146,16 @@ namespace CXXGRAPH
                     }
                 }
                 candidates.push_back(machine_id);
-            }else if(!u_record->getPartitions().empty() && !v_record->getPartitions().empty()){
+            }
+            else if (!u_record->getPartitions().empty() && !v_record->getPartitions().empty())
+            {
                 //check if have intersection
                 std::set<int> intersection;
                 std::set_intersection(u_record->getPartitions().begin(), u_record->getPartitions().end(),
                                       v_record->getPartitions().begin(), v_record->getPartitions().end(),
                                       std::inserter(intersection, intersection.begin()));
-                if(!intersection.empty()){
+                if (!intersection.empty())
+                {
                     //Find the partition with min load in the intersection of u and v
                     int min_load = INT_MAX;
                     int machine_id = 0;
@@ -157,7 +168,9 @@ namespace CXXGRAPH
                         }
                     }
                     candidates.push_back(machine_id);
-                }else{
+                }
+                else
+                {
                     //Find the partition with min load in the union of u and v
                     std::set<int> part_union;
                     std::set_union(u_record->getPartitions().begin(), u_record->getPartitions().end(),
@@ -176,7 +189,7 @@ namespace CXXGRAPH
                     candidates.push_back(machine_id);
                 }
             }
-            
+
             //*** CHECK TO AVOID ERRORS
             if (candidates.empty())
             {
@@ -205,7 +218,7 @@ namespace CXXGRAPH
                     cord_state.incrementMachineLoadVertices(machine_id);
                 }
             }
-            catch (std::bad_cast& e)
+            catch (const std::bad_cast &e)
             {
                 // use employee's member functions
                 //1-UPDATE RECORDS
@@ -229,6 +242,7 @@ namespace CXXGRAPH
             //*** RELEASE LOCK
             u_record->releaseLock();
             v_record->releaseLock();
+            return;
         }
     }
 }

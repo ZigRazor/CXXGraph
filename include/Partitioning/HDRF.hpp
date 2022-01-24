@@ -59,14 +59,12 @@ namespace CXXGRAPH
         template <typename T>
         void HDRF<T>::performStep(const Edge<T> &e, PartitionState<T> &state)
         {
-
             int P = GLOBALS.numberOfPartition;
             double lambda = GLOBALS.param1;
             double epsilon = GLOBALS.param2;
             auto nodePair = e.getNodePair();
             int u = nodePair.first->getId();
             int v = nodePair.second->getId();
-            
             Record<T> *u_record = state.getRecord(u);
             Record<T> *v_record = state.getRecord(v);
 
@@ -74,7 +72,7 @@ namespace CXXGRAPH
             bool locks_taken = false;
             while (!locks_taken)
             {
-
+                srand((unsigned)time(NULL));
                 int usleep_time = 2;
                 while (!u_record->getLock())
                 {
@@ -82,17 +80,20 @@ namespace CXXGRAPH
                     usleep_time = (int)pow(usleep_time, 2);
                 }
                 usleep_time = 2;
-                while (!v_record->getLock())
+                if (u != v)
                 {
-                    std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
-                    usleep_time = (int)pow(usleep_time, 2);
-
-                    if (usleep_time > GLOBALS.SLEEP_LIMIT)
+                    while (!v_record->getLock())
                     {
-                        u_record->releaseLock();
-                        performStep(e, state);
-                        return;
-                    } //TO AVOID DEADLOCK
+                        std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
+                        usleep_time = (int)pow(usleep_time, 2);
+
+                        if (usleep_time > GLOBALS.SLEEP_LIMIT)
+                        {
+                            u_record->releaseLock();
+                            performStep(e, state);
+                            return;
+                        } //TO AVOID DEADLOCK
+                    }
                 }
                 locks_taken = true;
             }
@@ -183,7 +184,7 @@ namespace CXXGRAPH
                     cord_state.incrementMachineLoadVertices(machine_id);
                 }
             }
-            catch (std::bad_cast& e)
+            catch (const std::bad_cast &e)
             {
                 // use employee's member functions
                 //1-UPDATE RECORDS
@@ -207,6 +208,7 @@ namespace CXXGRAPH
             //*** RELEASE LOCK
             u_record->releaseLock();
             v_record->releaseLock();
+            return;
         }
     }
 }

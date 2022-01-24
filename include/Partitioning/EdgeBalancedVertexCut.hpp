@@ -72,7 +72,7 @@ namespace CXXGRAPH
             bool locks_taken = false;
             while (!locks_taken)
             {
-
+                srand((unsigned)time(NULL));
                 int usleep_time = 2;
                 while (!u_record->getLock())
                 {
@@ -80,6 +80,8 @@ namespace CXXGRAPH
                     usleep_time = (int)pow(usleep_time, 2);
                 }
                 usleep_time = 2;
+                if (u != v)
+                {
                 while (!v_record->getLock())
                 {
                     std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
@@ -91,6 +93,7 @@ namespace CXXGRAPH
                         performStep(e, state);
                         return;
                     } //TO AVOID DEADLOCK
+                }
                 }
                 locks_taken = true;
             }
@@ -124,7 +127,7 @@ namespace CXXGRAPH
                     cord_state.incrementMachineLoadVertices(machine_id);
                 }
             }
-            catch (std::bad_cast& e)
+            catch (const std::bad_cast& e)
             {
                 // use employee's member functions
                 //1-UPDATE RECORDS
@@ -148,6 +151,7 @@ namespace CXXGRAPH
             //*** RELEASE LOCK
             u_record->releaseLock();
             v_record->releaseLock();
+            return;
         }
     }
 }

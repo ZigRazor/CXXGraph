@@ -43,9 +43,9 @@ TEST(PartitionTest, test_1)
     edgeSet.push_back(&edge12);
     CXXGRAPH::Graph<int> graph(edgeSet);
     ASSERT_EQ(graph.getEdgeSet().size(), 12);
-    auto partitionMap = graph.partitionGraph(CXXGRAPH::PARTITIONING::PartitionAlgorithm::HDRF_ALG,4,1,0.001);
+    auto partitionMap = graph.partitionGraph(CXXGRAPH::PARTITIONING::PartitionAlgorithm::HDRF_ALG, 4, 1, 0.001);
     unsigned int totalEdgeInPartition = 0;
-    for (auto elem : partitionMap)
+    for (const auto &elem : partitionMap)
     {
         totalEdgeInPartition += elem.second->getEdgeSet().size();
     }
@@ -65,9 +65,9 @@ TEST(PartitionTest, test_2)
     {
         graph.addEdge(&(*e.second));
     }
-    auto partitionMap = graph.partitionGraph(CXXGRAPH::PARTITIONING::PartitionAlgorithm::HDRF_ALG, 4,1,0.001);
+    auto partitionMap = graph.partitionGraph(CXXGRAPH::PARTITIONING::PartitionAlgorithm::HDRF_ALG, 4, 1, 0.001);
     unsigned int totalEdgeInPartition = 0;
-    for (auto elem : partitionMap)
+    for (const auto &elem : partitionMap)
     {
         totalEdgeInPartition += elem.second->getEdgeSet().size();
     }
@@ -79,7 +79,6 @@ TEST(PartitionTest, test_2)
         ASSERT_EQ(partitionMap.at(i)->getPartitionId(), i);
     }
 }
-
 
 TEST(PartitionTest, test_3)
 {
@@ -121,11 +120,11 @@ TEST(PartitionTest, test_3)
     ASSERT_EQ(graph.getEdgeSet().size(), 12);
     auto partitionMap = graph.partitionGraph(CXXGRAPH::PARTITIONING::PartitionAlgorithm::EDGEBALANCED_VC_ALG, 4);
     unsigned int totalEdgeInPartition = 0;
-    for (const auto& elem : partitionMap)
+    for (const auto &elem : partitionMap)
     {
         totalEdgeInPartition += elem.second->getEdgeSet().size();
     }
-    //std::cout << "Total Edge in Partition: " << totalEdgeInPartition << std::endl;git 
+    //std::cout << "Total Edge in Partition: " << totalEdgeInPartition << std::endl;git
     ASSERT_EQ(totalEdgeInPartition, 12);
     for (int i = 0; i < 4; ++i)
     {
@@ -143,7 +142,7 @@ TEST(PartitionTest, test_4)
     }
     auto partitionMap = graph.partitionGraph(CXXGRAPH::PARTITIONING::PartitionAlgorithm::EDGEBALANCED_VC_ALG, 4);
     unsigned int totalEdgeInPartition = 0;
-    for (auto elem : partitionMap)
+    for (const auto &elem : partitionMap)
     {
         totalEdgeInPartition += elem.second->getEdgeSet().size();
     }
@@ -196,7 +195,7 @@ TEST(PartitionTest, test_5)
     ASSERT_EQ(graph.getEdgeSet().size(), 12);
     auto partitionMap = graph.partitionGraph(CXXGRAPH::PARTITIONING::PartitionAlgorithm::GREEDY_VC_ALG, 4);
     unsigned int totalEdgeInPartition = 0;
-    for (const auto& elem : partitionMap)
+    for (const auto &elem : partitionMap)
     {
         totalEdgeInPartition += elem.second->getEdgeSet().size();
     }
@@ -218,7 +217,7 @@ TEST(PartitionTest, test_6)
     }
     auto partitionMap = graph.partitionGraph(CXXGRAPH::PARTITIONING::PartitionAlgorithm::GREEDY_VC_ALG, 4);
     unsigned int totalEdgeInPartition = 0;
-    for (auto elem : partitionMap)
+    for (const auto &elem : partitionMap)
     {
         totalEdgeInPartition += elem.second->getEdgeSet().size();
     }
@@ -269,9 +268,9 @@ TEST(PartitionTest, test_7)
     edgeSet.push_back(&edge12);
     CXXGRAPH::Graph<int> graph(edgeSet);
     ASSERT_EQ(graph.getEdgeSet().size(), 12);
-    auto partitionMap = graph.partitionGraph(CXXGRAPH::PARTITIONING::PartitionAlgorithm::EBV_ALG, 4,1,1);
+    auto partitionMap = graph.partitionGraph(CXXGRAPH::PARTITIONING::PartitionAlgorithm::EBV_ALG, 4, 1, 1);
     unsigned int totalEdgeInPartition = 0;
-    for (const auto& elem : partitionMap)
+    for (const auto &elem : partitionMap)
     {
         totalEdgeInPartition += elem.second->getEdgeSet().size();
     }
@@ -291,9 +290,9 @@ TEST(PartitionTest, test_8)
     {
         graph.addEdge(&(*e.second));
     }
-    auto partitionMap = graph.partitionGraph(CXXGRAPH::PARTITIONING::PartitionAlgorithm::EBV_ALG, 4,1,1);
+    auto partitionMap = graph.partitionGraph(CXXGRAPH::PARTITIONING::PartitionAlgorithm::EBV_ALG, 4, 1, 1);
     unsigned int totalEdgeInPartition = 0;
-    for (auto elem : partitionMap)
+    for (const auto &elem : partitionMap)
     {
         totalEdgeInPartition += elem.second->getEdgeSet().size();
     }
