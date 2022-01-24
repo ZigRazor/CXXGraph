@@ -42,7 +42,7 @@ namespace CXXGRAPH
             Globals GLOBALS;
 
         public:
-            GreedyVertexCut(Globals &G);
+            explicit GreedyVertexCut(Globals &G);
             ~GreedyVertexCut();
 
             void performStep(const Edge<T> &e, PartitionState<T> &Sstate);
@@ -86,8 +86,8 @@ namespace CXXGRAPH
                     if (usleep_time > GLOBALS.SLEEP_LIMIT)
                     {
                         u_record->releaseLock();
-                        //performStep(e, state);
-                        //return;
+                        performStep(e, state);
+                        return;
                     } //TO AVOID DEADLOCK
                 }
                 locks_taken = true;
