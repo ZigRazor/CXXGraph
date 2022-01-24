@@ -105,6 +105,10 @@ namespace CXXGRAPH
         template <typename T>
         Partitioner<T>::~Partitioner()
         {
+            if(algorithm != nullptr)
+            {
+                delete algorithm;
+            }
         }
         template <typename T>
         CoordinatedPartitionState<T> Partitioner<T>::performCoordinatedPartition()
