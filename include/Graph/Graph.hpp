@@ -761,7 +761,6 @@ namespace CXXGRAPH
 	template <typename T>
 	int Graph<T>::compressFile(const std::string &inputFile, const std::string &outputFile) const
 	{
-
 		std::ifstream ifs;
 		ifs.open(inputFile);
 		if (!ifs.is_open())
@@ -791,7 +790,6 @@ namespace CXXGRAPH
 	template <typename T>
 	int Graph<T>::decompressFile(const std::string &inputFile, const std::string &outputFile) const
 	{
-
 		gzFile inFileZ = gzopen(inputFile.c_str(), "rb");
 		if (inFileZ == NULL)
 		{

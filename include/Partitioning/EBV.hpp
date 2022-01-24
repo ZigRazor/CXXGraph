@@ -149,7 +149,7 @@ namespace CXXGRAPH
                     cord_state.incrementMachineLoadVertices(machine_id);
                 }
             }
-            catch (std::bad_cast)
+            catch (std::bad_cast& e)
             {
                 // use employee's member functions
                 //1-UPDATE RECORDS

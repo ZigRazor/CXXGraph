@@ -59,7 +59,6 @@ namespace CXXGRAPH
         template <typename T>
         void GreedyVertexCut<T>::performStep(const Edge<T> &e, PartitionState<T> &state)
         {
-
             int P = GLOBALS.numberOfPartition;
             auto nodePair = e.getNodePair();
             int u = nodePair.first->getId();
@@ -72,7 +71,6 @@ namespace CXXGRAPH
             bool locks_taken = false;
             while (!locks_taken)
             {
-
                 int usleep_time = 2;
                 while (!u_record->getLock())
                 {
@@ -128,7 +126,6 @@ namespace CXXGRAPH
                     }
                 }
                 candidates.push_back(machine_id);
-
             }else if(u_record->getPartitions().empty() && !v_record->getPartitions().empty()){
                 //Find the partition with min load in v
                 int min_load = INT_MAX;
@@ -142,7 +139,6 @@ namespace CXXGRAPH
                     }
                 }
                 candidates.push_back(machine_id);
-
             }else if(!u_record->getPartitions().empty() && !v_record->getPartitions().empty()){
                 //check if have intersection
                 std::set<int> intersection;
@@ -210,7 +206,7 @@ namespace CXXGRAPH
                     cord_state.incrementMachineLoadVertices(machine_id);
                 }
             }
-            catch (std::bad_cast)
+            catch (std::bad_cast& e)
             {
                 // use employee's member functions
                 //1-UPDATE RECORDS
