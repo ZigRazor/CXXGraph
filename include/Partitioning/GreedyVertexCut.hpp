@@ -74,14 +74,13 @@ namespace CXXGRAPH
                 int usleep_time = 2;
                 while (!u_record->getLock())
                 {
-                    //usleep(usleep_time);
                     std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
                     usleep_time = (int)pow(usleep_time, 2);
                 }
                 usleep_time = 2;
                 while (!v_record->getLock())
                 {
-                    usleep(usleep_time);
+                    std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
                     usleep_time = (int)pow(usleep_time, 2);
 
                     if (usleep_time > GLOBALS.SLEEP_LIMIT)
