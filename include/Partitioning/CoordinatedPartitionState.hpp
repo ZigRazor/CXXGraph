@@ -27,6 +27,7 @@
 #include "Partitioning/Utility/Globals.hpp"
 #include "PartitionState.hpp"
 #include "CoordinatedRecord.hpp"
+#include <memory>
 #include <mutex>
 #include <vector>
 #include <set>
@@ -45,9 +46,9 @@ namespace CXXGRAPH
             PartitionMap<T> partition_map;
             Globals GLOBALS;
             int MAX_LOAD;
-            std::mutex* machines_load_edges_mutex;
-            std::mutex* machines_load_vertices_mutex;
-            std::mutex* record_map_mutex;
+            std::shared_ptr<std::mutex> machines_load_edges_mutex = nullptr;
+            std::shared_ptr<std::mutex> machines_load_vertices_mutex = nullptr;
+            std::shared_ptr<std::mutex> record_map_mutex = nullptr;
             //DatWriter out; //to print the final partition of each edge
         public:
             CoordinatedPartitionState(Globals &G);
@@ -71,9 +72,9 @@ namespace CXXGRAPH
         template <typename T>
         CoordinatedPartitionState<T>::CoordinatedPartitionState(Globals &G) : record_map(), GLOBALS(G)
         {
-            machines_load_edges_mutex = new std::mutex();
-            machines_load_vertices_mutex = new std::mutex();
-            record_map_mutex = new std::mutex();
+            machines_load_edges_mutex = std::make_shared<std::mutex>();
+            machines_load_vertices_mutex = std::make_shared<std::mutex>();
+            record_map_mutex = std::make_shared<std::mutex>();
             //this->GLOBALS = G;
             for (int i = 0; i < GLOBALS.numberOfPartition; ++i)
             {
@@ -87,12 +88,17 @@ namespace CXXGRAPH
         CoordinatedPartitionState<T>::~CoordinatedPartitionState()
         {
             //TODOOOOOOOOOOOO
-            //if (machines_load_edges_mutex != NULL){
-            //    delete machines_load_edges_mutex;
-            //}
-            //if (machines_load_vertices_mutex != NULL){
-            //    delete machines_load_vertices_mutex;
-            //}
+            /**
+            if (machines_load_edges_mutex != NULL){
+                delete machines_load_edges_mutex;
+            }
+            if (machines_load_vertices_mutex != NULL){
+                delete machines_load_vertices_mutex;
+            }
+            if (record_map_mutex != NULL){
+                delete record_map_mutex;
+            }
+            **/
         }
         template <typename T>
         Record<T>* CoordinatedPartitionState<T>::getRecord(int x)
