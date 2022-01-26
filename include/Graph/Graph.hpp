@@ -83,7 +83,7 @@ namespace CXXGRAPH
 		std::optional<std::pair<std::string, char>> getExtenstionAndSeparator(InputOutputFormat format) const;
 		int writeToStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight, InputOutputFormat format) const;
 		int readFromStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight, InputOutputFormat format);
-		void recreateGraphFromReadFiles(std::unordered_map<unsigned long long, std::pair<unsigned long long, unsigned long long>> &edgeMap, std::unordered_map<unsigned long long, bool> &edgeDirectedMap, std::unordered_map<unsigned long long, T> &nodeFeatMap, std::unordered_map<unsigned long long, double> &edgeWeightMap);
+		void recreateGraphFromReadFiles(std::unordered_map<unsigned long long, std::pair<std::string, std::string>> &edgeMap, std::unordered_map<unsigned long long, bool> &edgeDirectedMap, std::unordered_map<std::string, T> &nodeFeatMap, std::unordered_map<unsigned long long, double> &edgeWeightMap);
 		int compressFile(const std::string &inputFile, const std::string &outputFile) const;
 		int decompressFile(const std::string &inputFile, const std::string &outputFile) const;
 
@@ -406,7 +406,7 @@ namespace CXXGRAPH
 		* @param numberOfPartition The number of partitions
 		* @return The partiton Map of the partitioned graph
      	*/
-		virtual PartitionMap<T> partitionGraph(PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const;
+		virtual PartitionMap<T> partitionGraph(PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions,double param1 = 0.0,double param2 = 0.0,double param3 = 0.0,unsigned int numberOfthreads = std::thread::hardware_concurrency()) const;
 
 		friend std::ostream &operator<<<>(std::ostream &os, const Graph<T> &graph);
 		friend std::ostream &operator<<<>(std::ostream &os, const AdjacencyMatrix<T> &adj);
@@ -615,9 +615,9 @@ namespace CXXGRAPH
 		std::ifstream ifileNodeFeat;
 		std::ifstream ifileEdgeWeight;
 
-		std::unordered_map<unsigned long long, std::pair<unsigned long long, unsigned long long>> edgeMap;
+		std::unordered_map<unsigned long long, std::pair<std::string, std::string>> edgeMap;
 		std::unordered_map<unsigned long long, bool> edgeDirectedMap;
-		std::unordered_map<unsigned long long, T> nodeFeatMap;
+		std::unordered_map<std::string, T> nodeFeatMap;
 		std::unordered_map<unsigned long long, double> edgeWeightMap;
 		std::string completePathToFileGraph = workingDir + "/" + OFileName + extension;
 
@@ -630,12 +630,12 @@ namespace CXXGRAPH
 
 		ifileGraph.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
 		unsigned long long edgeId;
-		unsigned long long nodeId1;
-		unsigned long long nodeId2;
+		std::string nodeId1;
+		std::string nodeId2;
 		bool directed;
 		while (ifileGraph >> edgeId >> nodeId1 >> nodeId2 >> directed)
 		{ /* loop continually */
-			edgeMap[edgeId] = std::pair<unsigned long long, unsigned long long>(nodeId1, nodeId2);
+			edgeMap[edgeId] = std::pair<std::string,std::string>(nodeId1, nodeId2);
 			edgeDirectedMap[edgeId] = directed;
 		}
 		ifileGraph.close();
@@ -652,7 +652,7 @@ namespace CXXGRAPH
 				return -1;
 			}
 			ifileNodeFeat.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
-			unsigned long long nodeId;
+			std::string nodeId;
 			T nodeFeat;
 			while (ifileNodeFeat >> nodeId >> nodeFeat) 
 			{
@@ -691,9 +691,9 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	void Graph<T>::recreateGraphFromReadFiles(std::unordered_map<unsigned long long, std::pair<unsigned long long, unsigned long long>> &edgeMap, std::unordered_map<unsigned long long, bool> &edgeDirectedMap, std::unordered_map<unsigned long long, T> &nodeFeatMap, std::unordered_map<unsigned long long, double> &edgeWeightMap)
+	void Graph<T>::recreateGraphFromReadFiles(std::unordered_map<unsigned long long, std::pair<std::string, std::string>> &edgeMap, std::unordered_map<unsigned long long, bool> &edgeDirectedMap, std::unordered_map<std::string, T> &nodeFeatMap, std::unordered_map<unsigned long long, double> &edgeWeightMap)
 	{
-		std::unordered_map<unsigned long long, Node<T> *> nodeMap;
+		std::unordered_map<std::string, Node<T> *> nodeMap;
 		for (const auto& edgeIt : edgeMap)
 		{
 			Node<T> *node1 = nullptr;
@@ -706,7 +706,7 @@ namespace CXXGRAPH
 				{
 					feat = nodeFeatMap.at(edgeIt.second.first);
 				}
-				node1 = new Node<T>(std::to_string(edgeIt.second.first), feat);
+				node1 = new Node<T>(edgeIt.second.first, feat);
 				nodeMap[edgeIt.second.first] = node1;
 			}
 			else
@@ -721,7 +721,7 @@ namespace CXXGRAPH
 				{
 					feat = nodeFeatMap.at(edgeIt.second.second);
 				}
-				node2 = new Node<T>(std::to_string(edgeIt.second.second), feat);
+				node2 = new Node<T>(edgeIt.second.second, feat);
 				nodeMap[edgeIt.second.second] = node2;
 			}
 			else
@@ -761,7 +761,6 @@ namespace CXXGRAPH
 	template <typename T>
 	int Graph<T>::compressFile(const std::string &inputFile, const std::string &outputFile) const
 	{
-
 		std::ifstream ifs;
 		ifs.open(inputFile);
 		if (!ifs.is_open())
@@ -791,7 +790,6 @@ namespace CXXGRAPH
 	template <typename T>
 	int Graph<T>::decompressFile(const std::string &inputFile, const std::string &outputFile) const
 	{
-
 		gzFile inFileZ = gzopen(inputFile.c_str(), "rb");
 		if (inFileZ == NULL)
 		{
@@ -2066,11 +2064,12 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	PartitionMap<T> Graph<T>::partitionGraph(PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const
+	PartitionMap<T> Graph<T>::partitionGraph(PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions,double param1,double param2,double param3,unsigned int numberOfthreads) const
 	{
 		PartitionMap<T> partitionMap;
-		PARTITIONING::Globals globals(numberOfPartitions, algorithm);
-
+		PARTITIONING::Globals globals(numberOfPartitions, algorithm,param1,param2,param3,numberOfthreads);
+		globals.edgeCardinality = this->getEdgeSet().size();
+		globals.vertexCardinality = this->getNodeSet().size();
 		PARTITIONING::Partitioner<T> partitioner(getEdgeSet(), globals);
 		PARTITIONING::CoordinatedPartitionState<T> partitionState = partitioner.performCoordinatedPartition();
 		partitionMap = partitionState.getPartitionMap();

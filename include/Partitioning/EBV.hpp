@@ -17,14 +17,15 @@
 /***	 License: AGPL v3.0							     ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_PARTITIONING_EDGEBALANCEDVERTEXCUT_H__
-#define __CXXGRAPH_PARTITIONING_EDGEBALANCEDVERTEXCUT_H__
+#ifndef __CXXGRAPH_PARTITIONING_EBV_H__
+#define __CXXGRAPH_PARTITIONING_EBV_H__
 
 #pragma once
 
 #include "Partitioning/Utility/Globals.hpp"
 #include "Edge/Edge.hpp"
 #include "PartitionStrategy.hpp"
+#include <unordered_map>
 #include <chrono>
 
 namespace CXXGRAPH
@@ -32,39 +33,44 @@ namespace CXXGRAPH
     namespace PARTITIONING
     {
         /**
-         * @brief A Vertex Cut Partioning Algorithm that assign an edge in the partition with less load
-         * @details This algorithm is a greedy algorithm that assign an edge in the partition with less load  
+         * @brief A Vertex Cut Partioning Algorithm ( as described by this paper https://arxiv.org/abs/2010.09007 )
+         * @details This algorithm is an offline algorithm that partitions the graph into n sets of vertices ( as described by this paper https://arxiv.org/abs/2010.09007 ).
          */
-        template<typename T>
-        class EdgeBalancedVertexCut : public PartitionStrategy<T>
+        template <typename T>
+        class EBV : public PartitionStrategy<T>
         {
         private:
             Globals GLOBALS;
 
         public:
-            explicit EdgeBalancedVertexCut(Globals &G);
-            ~EdgeBalancedVertexCut();
+            explicit EBV(Globals &G);
+            ~EBV();
 
             void performStep(const Edge<T> &e, PartitionState<T> &Sstate);
         };
         template <typename T>
-        EdgeBalancedVertexCut<T>::EdgeBalancedVertexCut(Globals &G) : GLOBALS(G)
+        EBV<T>::EBV(Globals &G) : GLOBALS(G)
         {
             //this->GLOBALS = G;
         }
         template <typename T>
-        EdgeBalancedVertexCut<T>::~EdgeBalancedVertexCut()
+        EBV<T>::~EBV()
         {
         }
         template <typename T>
-        void EdgeBalancedVertexCut<T>::performStep(const Edge<T> &e, PartitionState<T> &state)
+        void EBV<T>::performStep(const Edge<T> &e, PartitionState<T> &state)
         {
+            GLOBALS.edgeAnalyzed++;
 
-            int P = GLOBALS.numberOfPartition;            
+            int P = GLOBALS.numberOfPartition;
+            double alpha = GLOBALS.param1;
+            double beta = GLOBALS.param2;
+            unsigned long long edgeCardinality = GLOBALS.edgeCardinality;
+            unsigned long long vertexCardinality = GLOBALS.vertexCardinality;
             auto nodePair = e.getNodePair();
             int u = nodePair.first->getId();
             int v = nodePair.second->getId();
-            
+
             Record<T> *u_record = state.getRecord(u);
             Record<T> *v_record = state.getRecord(v);
 
@@ -82,34 +88,52 @@ namespace CXXGRAPH
                 usleep_time = 2;
                 if (u != v)
                 {
-                while (!v_record->getLock())
-                {
-                    std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
-                    usleep_time = (int)pow(usleep_time, 2);
-
-                    if (usleep_time > GLOBALS.SLEEP_LIMIT)
+                    while (!v_record->getLock())
                     {
-                        u_record->releaseLock();
-                        performStep(e, state);
-                        return;
-                    } //TO AVOID DEADLOCK
-                }
+                        std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
+                        usleep_time = (int)pow(usleep_time, 2);
+
+                        if (usleep_time > GLOBALS.SLEEP_LIMIT)
+                        {
+                            u_record->releaseLock();
+                            performStep(e, state);
+                            return;
+                        } //TO AVOID DEADLOCK
+                    }
                 }
                 locks_taken = true;
             }
             //*** LOCK TAKEN
+            int machine_id = -1;
 
-            //*** Check which partition has the less load
-            int MIN_LOAD = state.getMachineLoad(0);
-            int machine_id = 0;
-            double MAX_SCORE = 0.0;
-            
-            for (int m = 0; m < P; m++)
+            //*** COMPUTE SCORES, FIND MIN SCORE, AND COMPUTE CANDIDATES PARTITIONS
+            std::map<int, double> eva;
+            auto u_partition = u_record->getPartitions();
+            auto v_partition = v_record->getPartitions();
+            auto optimalEdgesNumber = edgeCardinality / P;
+            auto optimalVerticesNumber = vertexCardinality / P;
+            for (int i = 0; i < P; i++)
             {
-                int load = state.getMachineLoad(m);
-                if ( load <= MIN_LOAD ){
-                    MIN_LOAD = load;
-                    machine_id = m;
+                eva[i] = 0;
+                if (u_partition.empty() || u_partition.find(i) == u_partition.end())
+                {
+                    eva[i] += 1;
+                }
+                if (v_partition.empty() || v_partition.find(i) == v_partition.end())
+                {
+                    eva[i] += 1;
+                }
+                eva[i] += alpha * (state.getMachineLoad(i) / optimalEdgesNumber) + beta * (state.getMachineLoadVertices(i) / optimalVerticesNumber);
+            }
+            //find min between eva
+            double min = eva.at(0);
+            machine_id = 0;
+            for (auto &it : eva)
+            {
+                if (it.second < min)
+                {
+                    min = it.second;
+                    machine_id = it.first;
                 }
             }
             try
@@ -127,7 +151,7 @@ namespace CXXGRAPH
                     cord_state.incrementMachineLoadVertices(machine_id);
                 }
             }
-            catch (const std::bad_cast& e)
+            catch (const std::bad_cast &e)
             {
                 // use employee's member functions
                 //1-UPDATE RECORDS
@@ -156,4 +180,4 @@ namespace CXXGRAPH
     }
 }
 
-#endif // __CXXGRAPH_PARTITIONING_EDGEBALANCEDVERTEXCUT_H__
+#endif // __CXXGRAPH_PARTITIONING_EBV_H__

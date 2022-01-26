@@ -32,6 +32,7 @@ namespace CXXGRAPH
             EDGEBALANCED_VC_ALG, ///< A Edge Balanced Vertex-Cut Algorithm
             GREEDY_VC_ALG, ///< A Greedy Algorithm
             HDRF_ALG,      ///< High-Degree (are) Replicated First (HDRF) Algorithm (Stream-Based Vertex-Cut Partitioning)
+            EBV_ALG,       ///< Edge-Balanced Vertex-Cut Offline Algorithm (EBV)
             ALG_2
         };
         typedef E_PartitionAlgorithm PartitionAlgorithm;

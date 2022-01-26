@@ -254,7 +254,7 @@ namespace CXXGRAPH
 		* @param numberOfPartition The number of partitions
 		* @return The partiton Map of the partitioned graph
      	*/
-        PartitionMap<T> partitionGraph(PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const override;
+        PartitionMap<T> partitionGraph(PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions,double param1 = 0.0,double param2 = 0.0,double param3 = 0.0,unsigned int numberOfthreads = std::thread::hardware_concurrency()) const override;
     };
 
     template <typename T>
@@ -421,10 +421,10 @@ namespace CXXGRAPH
     }
 
     template <typename T>
-    PartitionMap<T> Graph_TS<T>::partitionGraph(PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions) const
+    PartitionMap<T> Graph_TS<T>::partitionGraph(PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions,double param1,double param2,double param3,unsigned int numberOfthreads) const
     {
         getLock();
-        auto partitions = Graph<T>::partitionGraph(algorithm, numberOfPartitions);
+        auto partitions = Graph<T>::partitionGraph(algorithm, numberOfPartitions, param1, param2, param3, numberOfthreads);
         releaseLock();
         return partitions;
     }

@@ -44,7 +44,7 @@ jobs:
           
       - name: Benchmarking
         working-directory: ${{github.workspace}}/build
-        run: ./benchmark --benchmark_format=json | tee benchmark_result.json
+        run: ./benchmark --benchmark_format=json --benchmark_out=benchmark_result.json
         # Run `github-action-benchmark` action
       - name: Store benchmark result
         uses: rhysd/github-action-benchmark@v1

@@ -1079,3 +1079,82 @@ TEST(RWOutputTest, test_28)
     res = readGraph.readFromFile(CXXGRAPH::InputOutputFormat::STANDARD_TSV, ".", "test_8", true);
     ASSERT_EQ(res, -1);
 }
+
+TEST(RWOutputTest, test_29)
+{
+    CXXGRAPH::Node<int> node1("first", 1);
+    CXXGRAPH::Node<int> node2("second", 2);
+    CXXGRAPH::Node<int> node3("Third", 3);
+    std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(&node1, &node2);
+    CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
+    CXXGRAPH::DirectedEdge<int> edge2(2, node2, node3);
+    CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.push_back(&edge1);
+    edgeSet.push_back(&edge2);
+    edgeSet.push_back(&edge3);
+    CXXGRAPH::Graph<int> graph(edgeSet);
+    int res = graph.writeToFile(CXXGRAPH::InputOutputFormat::STANDARD_TSV, ".", "test_29", true, true, true);
+    ASSERT_EQ(res, 0);
+    ASSERT_FALSE(exists_test("test_29.tsv"));
+    ASSERT_FALSE(exists_test("test_29_NodeFeat.tsv"));
+    ASSERT_FALSE(exists_test("test_29_EdgeWeight.tsv"));
+    ASSERT_TRUE(exists_test("test_29.tsv.gz"));
+    ASSERT_TRUE(exists_test("test_29_NodeFeat.tsv.gz"));
+    ASSERT_TRUE(exists_test("test_29_EdgeWeight.tsv.gz"));
+
+    CXXGRAPH::Graph<int> readGraph;
+    auto readResult = readGraph.readFromFile(CXXGRAPH::InputOutputFormat::STANDARD_TSV, ".", "test_29", true, true, true);
+    ASSERT_EQ(readResult, 0);
+    auto readNode = readGraph.getNodeSet();
+    auto readEdge = readGraph.getEdgeSet();
+    ASSERT_EQ(readEdge.size(), 3);
+    ASSERT_EQ(readNode.size(), 3);
+
+    for (const auto& readEdgeIt : readEdge)
+    {
+        if (readEdgeIt->getId() == 1)
+        {
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && readEdgeIt->isDirected().value());
+            ASSERT_TRUE(readEdgeIt->isWeighted().has_value() && readEdgeIt->isWeighted().value());
+            ASSERT_EQ((dynamic_cast<const CXXGRAPH::Weighted *>(readEdgeIt))->getWeight(), 5);
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node1.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node2.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
+        }
+        else if (readEdgeIt->getId() == 2)
+        {
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && readEdgeIt->isDirected().value());
+            ASSERT_TRUE(readEdgeIt->isWeighted().has_value() && !readEdgeIt->isWeighted().value());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node2.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node3.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
+        }
+        else if (readEdgeIt->getId() == 3)
+        {
+            ASSERT_TRUE(readEdgeIt->isDirected().has_value() && !readEdgeIt->isDirected().value());
+            ASSERT_TRUE(readEdgeIt->isWeighted().has_value() && readEdgeIt->isWeighted().value());
+            ASSERT_EQ((dynamic_cast<const CXXGRAPH::Weighted *>(readEdgeIt))->getWeight(), 6);
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(), node1.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(), node3.getUserId());
+            ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
+        }
+        else
+        {
+            ASSERT_TRUE(false); // forced Error
+        }
+    }
+
+    remove("test_29.tsv.gz");
+    remove("test_29_NodeFeat.tsv.gz");
+    remove("test_29_EdgeWeight.tsv.gz");
+    ASSERT_FALSE(exists_test("test_29.tsv"));
+    ASSERT_FALSE(exists_test("test_29_NodeFeat.tsv"));
+    ASSERT_FALSE(exists_test("test_29_EdgeWeight.tsv"));
+    ASSERT_FALSE(exists_test("test_29.tsv.gz"));
+    ASSERT_FALSE(exists_test("test_29_NodeFeat.tsv.gz"));
+    ASSERT_FALSE(exists_test("test_29_EdgeWeight.tsv.gz"));
+}

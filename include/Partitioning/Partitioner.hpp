@@ -32,6 +32,7 @@
 #include "HDRF.hpp"
 #include "EdgeBalancedVertexCut.hpp"
 #include "GreedyVertexCut.hpp"
+#include "EBV.hpp"
 
 namespace CXXGRAPH
 {
@@ -50,6 +51,7 @@ namespace CXXGRAPH
 
         public:
             Partitioner(const std::list<const Edge<T> *> &dataset, Globals &G);
+            Partitioner(const Partitioner& other);
             ~Partitioner();
 
             CoordinatedPartitionState<T> performCoordinatedPartition();
@@ -68,8 +70,32 @@ namespace CXXGRAPH
             } else if (GLOBALS.partitionStategy == PartitionAlgorithm::GREEDY_VC_ALG)
             {
                 algorithm = new GreedyVertexCut<T>(GLOBALS);
+            } else if (GLOBALS.partitionStategy == PartitionAlgorithm::EBV_ALG)
+            {
+                algorithm = new EBV<T>(GLOBALS);
+            }
+
+        }
+
+        template <typename T>
+        Partitioner<T>::Partitioner(const Partitioner& other){
+            this->dataset = other.dataset;
+            this->GLOBALS = other.GLOBALS;
+            if (GLOBALS.partitionStategy == PartitionAlgorithm::HDRF_ALG)
+            {
+                algorithm = new HDRF<T>(GLOBALS);
+            } else if (GLOBALS.partitionStategy == PartitionAlgorithm::EDGEBALANCED_VC_ALG)
+            {
+                algorithm = new EdgeBalancedVertexCut<T>(GLOBALS);
+            } else if (GLOBALS.partitionStategy == PartitionAlgorithm::GREEDY_VC_ALG)
+            {
+                algorithm = new GreedyVertexCut<T>(GLOBALS);
+            } else if (GLOBALS.partitionStategy == PartitionAlgorithm::EBV_ALG)
+            {
+                algorithm = new EBV<T>(GLOBALS);
             }
         }
+
         template <typename T>
         CoordinatedPartitionState<T> Partitioner<T>::startCoordinated()
         {
@@ -100,6 +126,10 @@ namespace CXXGRAPH
         template <typename T>
         Partitioner<T>::~Partitioner()
         {
+            if(algorithm != nullptr)
+            {
+                delete algorithm;
+            }
         }
         template <typename T>
         CoordinatedPartitionState<T> Partitioner<T>::performCoordinatedPartition()
