@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">CXXGraph
-   &#160;<span id="projectnumber">0.2.0</span>
+   &#160;<span id="projectnumber">0.3.0</span>
    </div>
    <div id="projectbrief">CXXGraph is a header only, that manages the Graphs and it&#39;s algorithm in C++</div>
   </td>
@@ -91,8 +91,8 @@ $(function() {
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">/***     License: AGPL v3.0                              ***/</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">/***********************************************************/</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#ifndef __EDGE_H__</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#define __EDGE_H__</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#ifndef __CXXGRAPH_EDGE_H__</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#define __CXXGRAPH_EDGE_H__</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
@@ -112,14 +112,14 @@ $(function() {
 <div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">   38</a></span>&#160;    <span class="keyword">class </span><a class="code" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    {</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> id;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">id</span> = 0;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        std::pair&lt;const Node&lt;T&gt; *, <span class="keyword">const</span> <a class="code" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node&lt;T&gt;</a> *&gt; nodePair;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <a class="code" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">id</span>, <span class="keyword">const</span> <a class="code" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node&lt;T&gt;</a> &amp;node1, <span class="keyword">const</span> <a class="code" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node&lt;T&gt;</a> &amp;node2);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <a class="code" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">id</span>, <span class="keyword">const</span> std::pair&lt;<span class="keyword">const</span> <a class="code" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node&lt;T&gt;</a> *, <span class="keyword">const</span> <a class="code" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node&lt;T&gt;</a> *&gt; &amp;nodepair);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <a class="code" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">id</span>, <span class="keyword">const</span> <a class="code" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node&lt;T&gt;</a> &amp;node1, <span class="keyword">const</span> <a class="code" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node&lt;T&gt;</a> &amp;node2);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <a class="code" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">id</span>, <span class="keyword">const</span> std::pair&lt;<span class="keyword">const</span> <a class="code" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node&lt;T&gt;</a> *, <span class="keyword">const</span> <a class="code" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node&lt;T&gt;</a> *&gt; &amp;nodepair);</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keyword">virtual</span> ~<a class="code" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> &amp;getId() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> &amp;getId() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keyword">const</span> std::pair&lt;const Node&lt;T&gt; *, <span class="keyword">const</span> <a class="code" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node&lt;T&gt;</a> *&gt; &amp;getNodePair() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keyword">virtual</span> <span class="keyword">const</span> std::optional&lt;bool&gt; isDirected() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keyword">virtual</span> <span class="keyword">const</span> std::optional&lt;bool&gt; isWeighted() <span class="keyword">const</span>;</div>
@@ -133,19 +133,19 @@ $(function() {
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    };</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge&lt;T&gt;::Edge</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">id</span>, <span class="keyword">const</span> <a class="code" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node&lt;T&gt;</a> &amp;node1, <span class="keyword">const</span> <a class="code" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node&lt;T&gt;</a> &amp;node2) : nodePair(&amp;node1, &amp;node2)</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge&lt;T&gt;::Edge</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">id</span>, <span class="keyword">const</span> <a class="code" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node&lt;T&gt;</a> &amp;node1, <span class="keyword">const</span> <a class="code" href="../../d3/dd2/classCXXGRAPH_1_1Node.html">Node&lt;T&gt;</a> &amp;node2) : nodePair(&amp;node1, &amp;node2)</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    {</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        this-&gt;<span class="keywordtype">id</span> = id;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    }</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    Edge&lt;T&gt;::Edge(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">id</span>, <span class="keyword">const</span> std::pair&lt;<span class="keyword">const</span> Node&lt;T&gt; *, <span class="keyword">const</span> Node&lt;T&gt; *&gt; &amp;nodepair) : nodePair(nodepair)</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    Edge&lt;T&gt;::Edge(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">id</span>, <span class="keyword">const</span> std::pair&lt;<span class="keyword">const</span> Node&lt;T&gt; *, <span class="keyword">const</span> Node&lt;T&gt; *&gt; &amp;nodepair) : nodePair(nodepair)</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    {</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        this-&gt;<span class="keywordtype">id</span> = id;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> &amp;Edge&lt;T&gt;::getId()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> &amp;Edge&lt;T&gt;::getId()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">    </span>{</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keywordflow">return</span> id;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    }</div>
@@ -188,9 +188,9 @@ $(function() {
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    }</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;}</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// __EDGE_H__</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// __CXXGRAPH_EDGE_H__</span></div>
 <div class="ttc" id="aclassCXXGRAPH_1_1Edge_html"><div class="ttname"><a href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">CXXGRAPH::Edge</a></div><div class="ttdef"><b>Definition:</b> Edge.hpp:39</div></div>
-<div class="ttc" id="aclassCXXGRAPH_1_1Node_html"><div class="ttname"><a href="../../d3/dd2/classCXXGRAPH_1_1Node.html">CXXGRAPH::Node</a></div><div class="ttdef"><b>Definition:</b> Node.hpp:35</div></div>
+<div class="ttc" id="aclassCXXGRAPH_1_1Node_html"><div class="ttname"><a href="../../d3/dd2/classCXXGRAPH_1_1Node.html">CXXGRAPH::Node</a></div><div class="ttdef"><b>Definition:</b> Node.hpp:38</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

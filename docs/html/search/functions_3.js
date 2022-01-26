@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['floydwarshall_89',['floydWarshall',['../d0/df2/classCXXGRAPH_1_1Graph.html#a00b6780a5167547fe05db00e01011223',1,'CXXGRAPH::Graph::floydWarshall()'],['../da/da5/classCXXGRAPH_1_1Graph__TS.html#ac8a6fd3000941159525092acc612a34a',1,'CXXGRAPH::Graph_TS::floydWarshall()']]]
+  ['depth_5ffirst_5fsearch_106',['depth_first_search',['../d0/df2/classCXXGRAPH_1_1Graph.html#a05d230bd6185b99b624227c4c82b7811',1,'CXXGRAPH::Graph::depth_first_search()'],['../da/da5/classCXXGRAPH_1_1Graph__TS.html#aa8844339395cc7e6cecd1a4e0ab57804',1,'CXXGRAPH::Graph_TS::depth_first_search()']]],
+  ['dial_107',['dial',['../d0/df2/classCXXGRAPH_1_1Graph.html#a662a0e15cd997252639e7a257b830190',1,'CXXGRAPH::Graph::dial()'],['../da/da5/classCXXGRAPH_1_1Graph__TS.html#aec71b7cd4b3460b032806c0b870cdbef',1,'CXXGRAPH::Graph_TS::dial()']]],
+  ['dijkstra_108',['dijkstra',['../d0/df2/classCXXGRAPH_1_1Graph.html#a8d655cd624cedf47ee366d8c0ab31921',1,'CXXGRAPH::Graph::dijkstra()'],['../da/da5/classCXXGRAPH_1_1Graph__TS.html#a423f7d958e9c758682178ad6204b81af',1,'CXXGRAPH::Graph_TS::dijkstra()']]]
 ];

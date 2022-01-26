@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['undirectededge_79',['UndirectedEdge',['../df/d71/classCXXGRAPH_1_1UndirectedEdge.html',1,'CXXGRAPH']]],
-  ['undirectedweightededge_80',['UndirectedWeightedEdge',['../d7/d24/classCXXGRAPH_1_1UndirectedWeightedEdge.html',1,'CXXGRAPH']]]
+  ['subset_5fstruct_95',['Subset_struct',['../dc/daa/structCXXGRAPH_1_1Subset__struct.html',1,'CXXGRAPH']]]
 ];

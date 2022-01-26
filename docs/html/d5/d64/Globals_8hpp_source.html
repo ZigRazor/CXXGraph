@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">CXXGraph
-   &#160;<span id="projectnumber">0.2.0</span>
+   &#160;<span id="projectnumber">0.3.0</span>
    </div>
    <div id="projectbrief">CXXGraph is a header only, that manages the Graphs and it&#39;s algorithm in C++</div>
   </td>
@@ -106,37 +106,45 @@ $(function() {
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        {</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <a class="code" href="../../db/d5b/classCXXGRAPH_1_1PARTITIONING_1_1Globals.html">Globals</a>(<span class="keywordtype">int</span> numberOfPartiton, PartitionAlgorithm algorithm = PartitionAlgorithm::HDRF_ALG, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> threads = std::thread::hardware_concurrency(), <span class="keywordtype">double</span> lambda = 1);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <a class="code" href="../../db/d5b/classCXXGRAPH_1_1PARTITIONING_1_1Globals.html">Globals</a>(<span class="keywordtype">int</span> numberOfPartiton, PartitionAlgorithm algorithm = PartitionAlgorithm::HDRF_ALG, <span class="keywordtype">double</span> param1 = 1, <span class="keywordtype">double</span> param2 = 1, <span class="keywordtype">double</span> param3 = 1, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> threads = std::thread::hardware_concurrency());</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            ~<a class="code" href="../../db/d5b/classCXXGRAPH_1_1PARTITIONING_1_1Globals.html">Globals</a>();</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <span class="keywordtype">void</span> print();</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="comment">//CONSTANT</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">int</span> SLEEP_LIMIT = 16;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">int</span> SLEEP_LIMIT = 16; <span class="comment">// In microseconds</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">int</span> PLACES = 4;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordtype">int</span> numberOfPartition; <span class="comment">//number of partitions</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordtype">int</span> numberOfPartition = 0; <span class="comment">//number of partitions</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="comment">//OPTIONAL</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            PartitionAlgorithm partitionStategy;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <span class="keywordtype">double</span> lambda;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> threads;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        };</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keyword">inline</span> Globals::Globals(<span class="keywordtype">int</span> numberOfPartiton, PartitionAlgorithm algorithm, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> threads,<span class="keywordtype">double</span> lambda)</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            this-&gt;numberOfPartition = numberOfPartiton;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            this-&gt;partitionStategy = algorithm;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            this-&gt;lambda = lambda;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            this-&gt;threads = threads;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keyword">inline</span> Globals::~Globals()</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// __CXXGRAPH_PARTITIONING_GLOBALS_H__</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            PartitionAlgorithm partitionStategy;            </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> threads = 0;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordtype">double</span> param1 = 0.0;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keywordtype">double</span> param2 = 0.0;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordtype">double</span> param3 = 0.0;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> edgeCardinality = 0;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> vertexCardinality = 0;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> edgeAnalyzed = 0;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        };</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keyword">inline</span> Globals::Globals(<span class="keywordtype">int</span> numberOfPartiton, PartitionAlgorithm algorithm,<span class="keywordtype">double</span> param1, <span class="keywordtype">double</span> param2, <span class="keywordtype">double</span> param3, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> threads)</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            this-&gt;numberOfPartition = numberOfPartiton;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            this-&gt;partitionStategy = algorithm;         </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            this-&gt;threads = threads;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            this-&gt;param1 = param1;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            this-&gt;param2 = param2;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            this-&gt;param3 = param3;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keyword">inline</span> Globals::~Globals()</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// __CXXGRAPH_PARTITIONING_GLOBALS_H__</span></div>
 <div class="ttc" id="aclassCXXGRAPH_1_1PARTITIONING_1_1Globals_html"><div class="ttname"><a href="../../db/d5b/classCXXGRAPH_1_1PARTITIONING_1_1Globals.html">CXXGRAPH::PARTITIONING::Globals</a></div><div class="ttdef"><b>Definition:</b> Globals.hpp:32</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
