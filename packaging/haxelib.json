@@ -4,9 +4,9 @@
     "license": "GPL",
     "tags": ["Algorithm", "Cpp"],
     "description": "Header-Only C++ Library for Graph Representation and Algorithms",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "classPath": "",
-    "releasenote": "Release 0.2.0 see https://github.com/ZigRazor/CXXGraph/releases/tag/v0.2.0 for more details",
+    "releasenote": "Release 0.3.0 see https://github.com/ZigRazor/CXXGraph/releases/tag/v0.3.0 for more details",
     "contributors": ["ZigRazor"],
     "dependencies": {}
   }
