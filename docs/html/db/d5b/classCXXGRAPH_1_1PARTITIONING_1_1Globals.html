@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">CXXGraph
-   &#160;<span id="projectnumber">0.2.0</span>
+   &#160;<span id="projectnumber">0.3.0</span>
    </div>
    <div id="projectbrief">CXXGraph is a header only, that manages the Graphs and it&#39;s algorithm in C++</div>
   </td>
@@ -79,9 +79,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad07372eab67f40543868e4a642a8ce85"><td class="memItemLeft" align="right" valign="top"><a id="ad07372eab67f40543868e4a642a8ce85"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Globals</b> (int numberOfPartiton, PartitionAlgorithm algorithm=PartitionAlgorithm::HDRF_ALG, unsigned int threads=std::thread::hardware_concurrency(), double lambda=1)</td></tr>
-<tr class="separator:ad07372eab67f40543868e4a642a8ce85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ad6d5e38516e8b532a1c65be54c2fa1"><td class="memItemLeft" align="right" valign="top"><a id="a2ad6d5e38516e8b532a1c65be54c2fa1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Globals</b> (int numberOfPartiton, PartitionAlgorithm algorithm=PartitionAlgorithm::HDRF_ALG, double param1=1, double param2=1, double param3=1, unsigned int threads=std::thread::hardware_concurrency())</td></tr>
+<tr class="separator:a2ad6d5e38516e8b532a1c65be54c2fa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdaf33f869fb6617b2f8df284ae960f6"><td class="memItemLeft" align="right" valign="top"><a id="abdaf33f869fb6617b2f8df284ae960f6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>print</b> ()</td></tr>
 <tr class="separator:abdaf33f869fb6617b2f8df284ae960f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -95,17 +95,32 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>SLEEP_LIMIT</b> 
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>PLACES</b> = 4</td></tr>
 <tr class="separator:a73b5c73d6f5a2f2389ccfa3a2d707eb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a576a3e51722faa1507a9f5a8e74f0588"><td class="memItemLeft" align="right" valign="top"><a id="a576a3e51722faa1507a9f5a8e74f0588"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>numberOfPartition</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>numberOfPartition</b> = 0</td></tr>
 <tr class="separator:a576a3e51722faa1507a9f5a8e74f0588"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70dfc6a61ac045e3fba5fd2e21724b8b"><td class="memItemLeft" align="right" valign="top"><a id="a70dfc6a61ac045e3fba5fd2e21724b8b"></a>
 PartitionAlgorithm&#160;</td><td class="memItemRight" valign="bottom"><b>partitionStategy</b></td></tr>
 <tr class="separator:a70dfc6a61ac045e3fba5fd2e21724b8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a8ada4cdea9afb6288e9680061f179f"><td class="memItemLeft" align="right" valign="top"><a id="a7a8ada4cdea9afb6288e9680061f179f"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>lambda</b></td></tr>
-<tr class="separator:a7a8ada4cdea9afb6288e9680061f179f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4522777f12c22f4aaf3b120b6ff8a394"><td class="memItemLeft" align="right" valign="top"><a id="a4522777f12c22f4aaf3b120b6ff8a394"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>threads</b></td></tr>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>threads</b> = 0</td></tr>
 <tr class="separator:a4522777f12c22f4aaf3b120b6ff8a394"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a324dc340b9f2a70a8b0b77104f92a5e2"><td class="memItemLeft" align="right" valign="top"><a id="a324dc340b9f2a70a8b0b77104f92a5e2"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>param1</b> = 0.0</td></tr>
+<tr class="separator:a324dc340b9f2a70a8b0b77104f92a5e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cdbf42310402b1ab3028b8d15ad6cf5"><td class="memItemLeft" align="right" valign="top"><a id="a3cdbf42310402b1ab3028b8d15ad6cf5"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>param2</b> = 0.0</td></tr>
+<tr class="separator:a3cdbf42310402b1ab3028b8d15ad6cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc67efa057cf565d054eb19bdb6eed19"><td class="memItemLeft" align="right" valign="top"><a id="afc67efa057cf565d054eb19bdb6eed19"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>param3</b> = 0.0</td></tr>
+<tr class="separator:afc67efa057cf565d054eb19bdb6eed19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a667df6d76369e9c5c8cb8fa510d9e72b"><td class="memItemLeft" align="right" valign="top"><a id="a667df6d76369e9c5c8cb8fa510d9e72b"></a>
+unsigned long long&#160;</td><td class="memItemRight" valign="bottom"><b>edgeCardinality</b> = 0</td></tr>
+<tr class="separator:a667df6d76369e9c5c8cb8fa510d9e72b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae6078d407c64777a60a02f63cee57a3"><td class="memItemLeft" align="right" valign="top"><a id="aae6078d407c64777a60a02f63cee57a3"></a>
+unsigned long long&#160;</td><td class="memItemRight" valign="bottom"><b>vertexCardinality</b> = 0</td></tr>
+<tr class="separator:aae6078d407c64777a60a02f63cee57a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78988a09f6a03c510c532b3febec37e6"><td class="memItemLeft" align="right" valign="top"><a id="a78988a09f6a03c510c532b3febec37e6"></a>
+unsigned long long&#160;</td><td class="memItemRight" valign="bottom"><b>edgeAnalyzed</b> = 0</td></tr>
+<tr class="separator:a78988a09f6a03c510c532b3febec37e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/github/workspace/include/Partitioning/Utility/<a class="el" href="../../d5/d64/Globals_8hpp_source.html">Globals.hpp</a></li>

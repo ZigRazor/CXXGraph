@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['writegraph_106',['writeGraph',['../d7/dde/classCXXGRAPH_1_1Writer.html#aee299d7e7dbda1ca99c35b9f2d92149c',1,'CXXGRAPH::Writer']]],
-  ['writetofile_107',['writeToFile',['../d0/df2/classCXXGRAPH_1_1Graph.html#a5a1ffeb9ef3b62b38c10bd84b44170a0',1,'CXXGRAPH::Graph::writeToFile()'],['../da/da5/classCXXGRAPH_1_1Graph__TS.html#a5a14ae46f7b1476f03439e7910237948',1,'CXXGRAPH::Graph_TS::writeToFile()']]]
+  ['partitiongraph_122',['partitionGraph',['../d0/df2/classCXXGRAPH_1_1Graph.html#a70da23746ecfd20c8b5b226322813af2',1,'CXXGRAPH::Graph::partitionGraph()'],['../da/da5/classCXXGRAPH_1_1Graph__TS.html#a4377de905685f5b82e5326b4708790c0',1,'CXXGRAPH::Graph_TS::partitionGraph()']]],
+  ['prim_123',['prim',['../d0/df2/classCXXGRAPH_1_1Graph.html#a1dd966cbf26d661a017e36d568fa3223',1,'CXXGRAPH::Graph']]]
 ];

@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">CXXGraph
-   &#160;<span id="projectnumber">0.2.0</span>
+   &#160;<span id="projectnumber">0.3.0</span>
    </div>
    <div id="projectbrief">CXXGraph is a header only, that manages the Graphs and it&#39;s algorithm in C++</div>
   </td>
@@ -91,8 +91,8 @@ $(function() {
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">/***     License: AGPL v3.0                              ***/</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">/***********************************************************/</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#ifndef __PARTITIONINGSTATS_H__</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#define __PARTITIONINGSTATS_H__</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#ifndef __CXXGRAPH_PARTITIONINGSTATS_H__</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#define __CXXGRAPH_PARTITIONINGSTATS_H__</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;Utility/Typedef.hpp&quot;</span></div>
@@ -103,19 +103,19 @@ $(function() {
 <div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="../../da/d71/classCXXGRAPH_1_1PARTITIONING_1_1PartitioningStats.html">   29</a></span>&#160;        <span class="keyword">class </span><a class="code" href="../../da/d71/classCXXGRAPH_1_1PARTITIONING_1_1PartitioningStats.html">PartitioningStats</a></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        {</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numberOfPartitions;   <span class="comment">// The number of Partitions</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numberOfNodes;        <span class="comment">// The number of Nodes</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> replicatedNodesCount; <span class="comment">// The number of Nodes that are replicated</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numberOfEdges;        <span class="comment">// The number of edges</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> replicatedEdgesCount; <span class="comment">// The number of edges that are replicated</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> maxEdgesLoad;         <span class="comment">// Maximum edges load of the partitions</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> minEdgesLoad;         <span class="comment">// Minimun edges load of the partitions</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> maxNodesLoad;         <span class="comment">// Maximum nodes load of the partitions</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> minNodesLoad;         <span class="comment">// Minimun nodes load of the partitions</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keywordtype">double</span> balanceEdgesFactor;         <span class="comment">// The balance edges factor of the partitions (maxEdgesLoad - minEdgesLoad) / (maxEdgesLoad), 0 is the optimal partitioning</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <span class="keywordtype">double</span> balanceNodesFactor;         <span class="comment">// The balance edges factor of the partitions (maxNodesLoad - minNodesLoad) / (maxNodesLoad), 0 is the optimal partitioning</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            <span class="keywordtype">double</span> nodesReplicationFactor;     <span class="comment">// The replication factor of the Nodes (replicatedNodesCount / numberOfNodes), 1 is the optimal partitioning</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordtype">double</span> edgesReplicationFactor;     <span class="comment">// The replication factor of the edges (replicatedEdgesCount / numberOfEdges), 1 is the optimal partitioning</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numberOfPartitions = 0;   <span class="comment">// The number of Partitions</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numberOfNodes = 0;        <span class="comment">// The number of Nodes</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> replicatedNodesCount = 0; <span class="comment">// The number of Nodes that are replicated</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numberOfEdges = 0;        <span class="comment">// The number of edges</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> replicatedEdgesCount = 0; <span class="comment">// The number of edges that are replicated</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> maxEdgesLoad = 0;         <span class="comment">// Maximum edges load of the partitions</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> minEdgesLoad = 0;         <span class="comment">// Minimun edges load of the partitions</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> maxNodesLoad = 0;         <span class="comment">// Maximum nodes load of the partitions</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> minNodesLoad = 0;         <span class="comment">// Minimun nodes load of the partitions</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keywordtype">double</span> balanceEdgesFactor = 0.0;         <span class="comment">// The balance edges factor of the partitions (maxEdgesLoad - minEdgesLoad) / (maxEdgesLoad), 0 is the optimal partitioning</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <span class="keywordtype">double</span> balanceNodesFactor = 0.0;         <span class="comment">// The balance edges factor of the partitions (maxNodesLoad - minNodesLoad) / (maxNodesLoad), 0 is the optimal partitioning</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            <span class="keywordtype">double</span> nodesReplicationFactor = 0.0;     <span class="comment">// The replication factor of the Nodes (replicatedNodesCount / numberOfNodes), 1 is the optimal partitioning</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordtype">double</span> edgesReplicationFactor = 0.0;     <span class="comment">// The replication factor of the edges (replicatedEdgesCount / numberOfEdges), 1 is the optimal partitioning</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="keyword">friend</span> std::ostream &amp;operator&lt;&lt;(std::ostream &amp;os, <span class="keyword">const</span> <a class="code" href="../../da/d71/classCXXGRAPH_1_1PARTITIONING_1_1PartitioningStats.html">PartitioningStats</a> &amp;partitionStats)</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            {</div>
@@ -140,7 +140,7 @@ $(function() {
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// __PARTITIONINGSTATS_H__</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// __CXXGRAPH_PARTITIONINGSTATS_H__</span></div>
 <div class="ttc" id="aclassCXXGRAPH_1_1PARTITIONING_1_1PartitioningStats_html"><div class="ttname"><a href="../../da/d71/classCXXGRAPH_1_1PARTITIONING_1_1PartitioningStats.html">CXXGRAPH::PARTITIONING::PartitioningStats</a></div><div class="ttdef"><b>Definition:</b> PartitioningStats.hpp:30</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

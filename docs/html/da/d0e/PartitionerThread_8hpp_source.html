@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">CXXGraph
-   &#160;<span id="projectnumber">0.2.0</span>
+   &#160;<span id="projectnumber">0.3.0</span>
    </div>
    <div id="projectbrief">CXXGraph is a header only, that manages the Graphs and it&#39;s algorithm in C++</div>
   </td>
@@ -111,20 +111,20 @@ $(function() {
 <div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="../../d7/d1b/classCXXGRAPH_1_1PARTITIONING_1_1PartitionerThread.html">   37</a></span>&#160;        <span class="keyword">class </span><a class="code" href="../../d7/d1b/classCXXGRAPH_1_1PARTITIONING_1_1PartitionerThread.html">PartitionerThread</a> : <span class="keyword">public</span> <a class="code" href="../../d5/d2e/classCXXGRAPH_1_1Runnable.html">Runnable</a></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        {</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            std::vector&lt;const Edge&lt;T&gt;*&gt; list;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <a class="code" href="../../df/d6f/classCXXGRAPH_1_1PARTITIONING_1_1PartitionState.html">PartitionState&lt;T&gt;</a> *state;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <a class="code" href="../../de/deb/classCXXGRAPH_1_1PARTITIONING_1_1PartitionStrategy.html">PartitionStrategy&lt;T&gt;</a> *algorithm;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            std::vector&lt;const Edge&lt;T&gt; *&gt; list = {};</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <a class="code" href="../../df/d6f/classCXXGRAPH_1_1PARTITIONING_1_1PartitionState.html">PartitionState&lt;T&gt;</a> *state = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <a class="code" href="../../de/deb/classCXXGRAPH_1_1PARTITIONING_1_1PartitionStrategy.html">PartitionStrategy&lt;T&gt;</a> *algorithm = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <a class="code" href="../../d7/d1b/classCXXGRAPH_1_1PARTITIONING_1_1PartitionerThread.html">PartitionerThread</a>(std::vector&lt;<span class="keyword">const</span> <a class="code" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge&lt;T&gt;</a>*&gt; &amp;list, <a class="code" href="../../df/d6f/classCXXGRAPH_1_1PARTITIONING_1_1PartitionState.html">PartitionState&lt;T&gt;</a> *state, <a class="code" href="../../de/deb/classCXXGRAPH_1_1PARTITIONING_1_1PartitionStrategy.html">PartitionStrategy&lt;T&gt;</a> *algorithm, std::list&lt;int&gt; *ids);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <a class="code" href="../../d7/d1b/classCXXGRAPH_1_1PARTITIONING_1_1PartitionerThread.html">PartitionerThread</a>(std::vector&lt;<span class="keyword">const</span> <a class="code" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge&lt;T&gt;</a> *&gt; &amp;list, <a class="code" href="../../df/d6f/classCXXGRAPH_1_1PARTITIONING_1_1PartitionState.html">PartitionState&lt;T&gt;</a> *state, <a class="code" href="../../de/deb/classCXXGRAPH_1_1PARTITIONING_1_1PartitionStrategy.html">PartitionStrategy&lt;T&gt;</a> *algorithm, std::list&lt;int&gt; *ids);</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            ~<a class="code" href="../../d7/d1b/classCXXGRAPH_1_1PARTITIONING_1_1PartitionerThread.html">PartitionerThread</a>();</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordtype">void</span> run();</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            std::list&lt;int&gt; *id_partitions;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            std::list&lt;int&gt; *id_partitions = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        };</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <a class="code" href="../../d7/d1b/classCXXGRAPH_1_1PARTITIONING_1_1PartitionerThread.html">PartitionerThread&lt;T&gt;::PartitionerThread</a>(std::vector&lt;<span class="keyword">const</span> <a class="code" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge&lt;T&gt;</a>*&gt; &amp;list, <a class="code" href="../../df/d6f/classCXXGRAPH_1_1PARTITIONING_1_1PartitionState.html">PartitionState&lt;T&gt;</a> *state, <a class="code" href="../../de/deb/classCXXGRAPH_1_1PARTITIONING_1_1PartitionStrategy.html">PartitionStrategy&lt;T&gt;</a> *algorithm, std::list&lt;int&gt; *ids)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <a class="code" href="../../d7/d1b/classCXXGRAPH_1_1PARTITIONING_1_1PartitionerThread.html">PartitionerThread&lt;T&gt;::PartitionerThread</a>(std::vector&lt;<span class="keyword">const</span> <a class="code" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge&lt;T&gt;</a> *&gt; &amp;list, <a class="code" href="../../df/d6f/classCXXGRAPH_1_1PARTITIONING_1_1PartitionState.html">PartitionState&lt;T&gt;</a> *state, <a class="code" href="../../de/deb/classCXXGRAPH_1_1PARTITIONING_1_1PartitionStrategy.html">PartitionStrategy&lt;T&gt;</a> *algorithm, std::list&lt;int&gt; *ids)</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        {</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            this-&gt;list = list;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            this-&gt;state = state;</div>
@@ -138,16 +138,15 @@ $(function() {
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordtype">void</span> PartitionerThread&lt;T&gt;::run()</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keyword">auto</span> edge_it = list.begin();</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keywordflow">for</span> (edge_it; edge_it != list.end(); ++edge_it)</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                algorithm-&gt;performStep(*(*edge_it), *state);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// __CXXGRAPH_PARTITIONING_PARTITIONERTHREAD_H__</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;edge_it : list)</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                algorithm-&gt;performStep(*edge_it, *state);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        }</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// __CXXGRAPH_PARTITIONING_PARTITIONERTHREAD_H__</span></div>
 <div class="ttc" id="aclassCXXGRAPH_1_1Edge_html"><div class="ttname"><a href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">CXXGRAPH::Edge</a></div><div class="ttdef"><b>Definition:</b> Edge.hpp:39</div></div>
 <div class="ttc" id="aclassCXXGRAPH_1_1PARTITIONING_1_1PartitionState_html"><div class="ttname"><a href="../../df/d6f/classCXXGRAPH_1_1PARTITIONING_1_1PartitionState.html">CXXGRAPH::PARTITIONING::PartitionState</a></div><div class="ttdef"><b>Definition:</b> PartitionState.hpp:33</div></div>
 <div class="ttc" id="aclassCXXGRAPH_1_1PARTITIONING_1_1PartitionStrategy_html"><div class="ttname"><a href="../../de/deb/classCXXGRAPH_1_1PARTITIONING_1_1PartitionStrategy.html">CXXGRAPH::PARTITIONING::PartitionStrategy</a></div><div class="ttdef"><b>Definition:</b> PartitionStrategy.hpp:34</div></div>

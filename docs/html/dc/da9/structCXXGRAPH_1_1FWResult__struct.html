@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">CXXGraph
-   &#160;<span id="projectnumber">0.2.0</span>
+   &#160;<span id="projectnumber">0.3.0</span>
    </div>
    <div id="projectbrief">CXXGraph is a header only, that manages the Graphs and it&#39;s algorithm in C++</div>
   </td>
@@ -84,17 +84,17 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a5b80bd1862bb8e6c0614abee86d89dba"><td class="memItemLeft" align="right" valign="top"><a id="a5b80bd1862bb8e6c0614abee86d89dba"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>success</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>success</b> = false</td></tr>
 <tr class="separator:a5b80bd1862bb8e6c0614abee86d89dba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ef4be8d21e9851f16eb9d4341b1d5ae"><td class="memItemLeft" align="right" valign="top"><a id="a9ef4be8d21e9851f16eb9d4341b1d5ae"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>negativeCycle</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>negativeCycle</b> = false</td></tr>
 <tr class="separator:a9ef4be8d21e9851f16eb9d4341b1d5ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acab046badf1ff6a72c74f6f51dbfb4d0"><td class="memItemLeft" align="right" valign="top"><a id="acab046badf1ff6a72c74f6f51dbfb4d0"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>errorMessage</b></td></tr>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>errorMessage</b> = &quot;&quot;</td></tr>
 <tr class="separator:acab046badf1ff6a72c74f6f51dbfb4d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3853f286d441d22e3d3257b3176a89b"><td class="memItemLeft" align="right" valign="top"><a id="ad3853f286d441d22e3d3257b3176a89b"></a>
-std::map&lt; std::pair&lt; unsigned long, unsigned long &gt;, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>result</b></td></tr>
-<tr class="separator:ad3853f286d441d22e3d3257b3176a89b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf556b120454a5f6eaaba130ffd4533f"><td class="memItemLeft" align="right" valign="top"><a id="aaf556b120454a5f6eaaba130ffd4533f"></a>
+std::unordered_map&lt; std::pair&lt; std::string, std::string &gt;, double, <a class="el" href="../../db/d31/structCXXGRAPH_1_1pair__hash.html">pair_hash</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>result</b> = {}</td></tr>
+<tr class="separator:aaf556b120454a5f6eaaba130ffd4533f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Struct that contains the information about Floyd-Warshall Algorithm results. </p>

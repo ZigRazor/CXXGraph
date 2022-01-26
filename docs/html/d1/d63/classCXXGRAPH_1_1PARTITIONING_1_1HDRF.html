@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">CXXGraph
-   &#160;<span id="projectnumber">0.2.0</span>
+   &#160;<span id="projectnumber">0.3.0</span>
    </div>
    <div id="projectbrief">CXXGraph is a header only, that manages the Graphs and it&#39;s algorithm in C++</div>
   </td>
@@ -75,12 +75,17 @@ $(function() {
 <div class="title">CXXGRAPH::PARTITIONING::HDRF&lt; T &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A Vertex Cut Partioning Algorithm ( as described by this paper <a href="https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf">https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf</a> )  
+ <a href="../../d1/d63/classCXXGRAPH_1_1PARTITIONING_1_1HDRF.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d2/df2/HDRF_8hpp_source.html">HDRF.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for CXXGRAPH::PARTITIONING::HDRF&lt; T &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/d27/classCXXGRAPH_1_1PARTITIONING_1_1HDRF__inherit__graph.png" border="0" usemap="#aCXXGRAPH_1_1PARTITIONING_1_1HDRF_3_01T_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="aCXXGRAPH_1_1PARTITIONING_1_1HDRF_3_01T_01_4_inherit__map" id="aCXXGRAPH_1_1PARTITIONING_1_1HDRF_3_01T_01_4_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,95,203,136"/>
+<area shape="rect" title="A Vertex Cut Partioning Algorithm ( as described by this paper https://www.fabiopetroni...." alt="" coords="5,95,203,136"/>
 <area shape="rect" href="../../de/deb/classCXXGRAPH_1_1PARTITIONING_1_1PartitionStrategy.html" title=" " alt="" coords="5,5,203,47"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
@@ -89,7 +94,7 @@ Collaboration diagram for CXXGRAPH::PARTITIONING::HDRF&lt; T &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/d11/classCXXGRAPH_1_1PARTITIONING_1_1HDRF__coll__graph.png" border="0" usemap="#aCXXGRAPH_1_1PARTITIONING_1_1HDRF_3_01T_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="aCXXGRAPH_1_1PARTITIONING_1_1HDRF_3_01T_01_4_coll__map" id="aCXXGRAPH_1_1PARTITIONING_1_1HDRF_3_01T_01_4_coll__map">
-<area shape="rect" title=" " alt="" coords="5,95,203,136"/>
+<area shape="rect" title="A Vertex Cut Partioning Algorithm ( as described by this paper https://www.fabiopetroni...." alt="" coords="5,95,203,136"/>
 <area shape="rect" href="../../de/deb/classCXXGRAPH_1_1PARTITIONING_1_1PartitionStrategy.html" title=" " alt="" coords="5,5,203,47"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
@@ -103,7 +108,13 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>performStep</b> (const <a class="el" href="../../d7/d2a/classCXXGRAPH_1_1Edge.html">Edge</a>&lt; T &gt; &amp;e, <a class="el" href="../../df/d6f/classCXXGRAPH_1_1PARTITIONING_1_1PartitionState.html">PartitionState</a>&lt; T &gt; &amp;Sstate)</td></tr>
 <tr class="separator:a0fa1fecff504475767807ae048f2fe64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename T&gt;<br />
+class CXXGRAPH::PARTITIONING::HDRF&lt; T &gt;</h3>
+
+<p>A Vertex Cut Partioning Algorithm ( as described by this paper <a href="https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf">https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf</a> ) </p>
+<p>This algorithm is a greedy algorithm that partitions the graph into n sets of vertices ( as described by this paper <a href="https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf">https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf</a> ). </p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>/github/workspace/include/Partitioning/<a class="el" href="../../d2/df2/HDRF_8hpp_source.html">HDRF.hpp</a></li>
 </ul>
 </div><!-- contents -->

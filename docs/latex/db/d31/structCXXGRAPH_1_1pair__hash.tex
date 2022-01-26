@@ -1,0 +1,20 @@
+\hypertarget{structCXXGRAPH_1_1pair__hash}{}\doxysection{CXXGRAPH\+::pair\+\_\+hash Struct Reference}
+\label{structCXXGRAPH_1_1pair__hash}\index{CXXGRAPH::pair\_hash@{CXXGRAPH::pair\_hash}}
+
+
+{\ttfamily \#include $<$Typedef.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structCXXGRAPH_1_1pair__hash_ac55530c2e8bffb7c4bf7a4900501ae33}\label{structCXXGRAPH_1_1pair__hash_ac55530c2e8bffb7c4bf7a4900501ae33}} 
+{\footnotesize template$<$class T1 , class T2 $>$ }\\std\+::size\+\_\+t {\bfseries operator()} (const std\+::pair$<$ T1, T2 $>$ \&p) const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The C++ Standard doesn\textquotesingle{}t provide a hash for std\+::pair type, which is required when using std\+::pair as a key in std\+::unordered\+\_\+map. So, hash function for pair needs to be provided. Hash for a pair is calculated by calcuating hash for individual elements and then combining. For combining, an implmentation similar to boost hash\+\_\+combine is implemented. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/github/workspace/include/\+Utility/Typedef.\+hpp\end{DoxyCompactItemize}

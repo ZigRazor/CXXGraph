@@ -2,7 +2,17 @@
 \label{classCXXGRAPH_1_1PARTITIONING_1_1HDRF}\index{CXXGRAPH::PARTITIONING::HDRF$<$ T $>$@{CXXGRAPH::PARTITIONING::HDRF$<$ T $>$}}
 
 
-Inheritance diagram for CXXGRAPH\+::PARTITIONING\+::HDRF$<$ T $>$\+:\nopagebreak
+A Vertex Cut Partioning Algorithm ( as described by this paper \href{https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf}{\texttt{ https\+://www.\+fabiopetroni.\+com/\+Download/petroni2015\+HDRF.\+pdf}} )  
+
+
+
+
+{\ttfamily \#include $<$HDRF.\+hpp$>$}
+
+
+
+Inheritance diagram for CXXGRAPH\+::PARTITIONING\+::HDRF$<$ T $>$\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -11,7 +21,8 @@ Inheritance diagram for CXXGRAPH\+::PARTITIONING\+::HDRF$<$ T $>$\+:\nopagebreak
 \end{figure}
 
 
-Collaboration diagram for CXXGRAPH\+::PARTITIONING\+::HDRF$<$ T $>$\+:\nopagebreak
+Collaboration diagram for CXXGRAPH\+::PARTITIONING\+::HDRF$<$ T $>$\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -28,6 +39,14 @@ Collaboration diagram for CXXGRAPH\+::PARTITIONING\+::HDRF$<$ T $>$\+:\nopagebre
 void {\bfseries perform\+Step} (const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ \&e, \mbox{\hyperlink{classCXXGRAPH_1_1PARTITIONING_1_1PartitionState}{Partition\+State}}$<$ T $>$ \&Sstate)
 \end{DoxyCompactItemize}
 
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class CXXGRAPH\+::\+PARTITIONING\+::\+HDRF$<$ T $>$}
+
+A Vertex Cut Partioning Algorithm ( as described by this paper \href{https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf}{\texttt{ https\+://www.\+fabiopetroni.\+com/\+Download/petroni2015\+HDRF.\+pdf}} ) 
+
+This algorithm is a greedy algorithm that partitions the graph into n sets of vertices ( as described by this paper \href{https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf}{\texttt{ https\+://www.\+fabiopetroni.\+com/\+Download/petroni2015\+HDRF.\+pdf}} ). 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
