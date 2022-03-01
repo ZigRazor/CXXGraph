@@ -1,4 +1,4 @@
-<img style="float: right;" align="left" src="https://github.com/ZigRazor/CXXGraph/blob/master/Icon.png">
+<img style="float: right;" align="left" src="logos/CXXGraph.gif">
 
 # CXXGraph
 
@@ -527,4 +527,4 @@ We have been participated at Hacktoberfest 2021, thank you to all the contributo
 
 View the [Estimated Value of the Project](https://www.openhub.net/p/CXXGraph/estimated_cost)
 
-![footer](https://github.com/ZigRazor/CXXGraph/blob/master/Icon2.png)
+![footer](logos/CXXGraph_footer.gif)
