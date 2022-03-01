@@ -93,6 +93,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
   - [Cite Us](#cite-us)
   - [Hacktoberfest 2k21](#hacktoberfest-2k21)
   - [Other Details](#other-details)
+  - [Author](#author)
 
 
 ## Install and Uninstall
@@ -526,5 +527,10 @@ We have been participated at Hacktoberfest 2021, thank you to all the contributo
 ## Other Details
 
 View the [Estimated Value of the Project](https://www.openhub.net/p/CXXGraph/estimated_cost)
+
+## Author
+
+| [<img src="https://avatars0.githubusercontent.com/u/6591180?s=460&v=4" width="100"><br><sub>@ZigRazor</sub>](https://github.com/ZigRazor) |
+|:----:|
 
 ![footer](logos/CXXGraph_footer.gif)
