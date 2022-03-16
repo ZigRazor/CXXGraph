@@ -43,13 +43,6 @@ TEST(BellmanFordTest, test_1)
     ASSERT_FALSE(res.negativeCycle);
     ASSERT_EQ(res.errorMessage, "");
     ASSERT_EQ(res.result, -2);
-
-    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
-    CXXGRAPH::BellmanFordResult res_ts = graph_ts.bellmanford(node0, node3);
-    ASSERT_TRUE(res_ts.success);
-    ASSERT_FALSE(res_ts.negativeCycle);
-    ASSERT_EQ(res_ts.errorMessage, "");
-    ASSERT_EQ(res_ts.result, -2);
 }
 
 // a graph with negative cycle
@@ -72,12 +65,6 @@ TEST(BellmanFordTest, test_2)
     ASSERT_EQ(res.errorMessage, "");
     ASSERT_EQ(res.result, CXXGRAPH::INF_DOUBLE);
 
-    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
-    CXXGRAPH::BellmanFordResult res_ts = graph_ts.bellmanford(node0, node2);
-    ASSERT_TRUE(res_ts.success);
-    ASSERT_TRUE(res_ts.negativeCycle);
-    ASSERT_EQ(res_ts.errorMessage, "");
-    ASSERT_EQ(res_ts.result, CXXGRAPH::INF_DOUBLE);
 }
 
 // UndirectedWeightedEdge
@@ -100,13 +87,6 @@ TEST(BellmanFordTest, test_3)
     ASSERT_FALSE(res.negativeCycle);
     ASSERT_EQ(res.errorMessage, "");
     ASSERT_EQ(res.result, 2);
-
-    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
-    CXXGRAPH::BellmanFordResult res_ts = graph_ts.bellmanford(node1, node3);
-    ASSERT_TRUE(res_ts.success);
-    ASSERT_FALSE(res_ts.negativeCycle);
-    ASSERT_EQ(res_ts.errorMessage, "");
-    ASSERT_EQ(res_ts.result, 2);
 
 }
 
@@ -131,12 +111,6 @@ TEST(BellmanFordTest, test_4)
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_NO_WEIGHTED_EDGE);
     ASSERT_EQ(res.result, CXXGRAPH::INF_DOUBLE);
 
-    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
-    CXXGRAPH::BellmanFordResult res_ts = graph_ts.bellmanford(node1, node3);
-    ASSERT_FALSE(res_ts.success);
-    ASSERT_FALSE(res_ts.negativeCycle);
-    ASSERT_EQ(res_ts.errorMessage, CXXGRAPH::ERR_NO_WEIGHTED_EDGE);
-    ASSERT_EQ(res_ts.result, CXXGRAPH::INF_DOUBLE);
 }
 
 
@@ -158,24 +132,12 @@ TEST(BellmanFordTest, test_5)
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_SOURCE_NODE_NOT_IN_GRAPH);
     ASSERT_EQ(res.result, CXXGRAPH::INF_DOUBLE);
 
-    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
-    CXXGRAPH::BellmanFordResult res_ts = graph.bellmanford(node3, node1);
-    ASSERT_FALSE(res_ts.success);
-    ASSERT_FALSE(res_ts.negativeCycle);
-    ASSERT_EQ(res_ts.errorMessage, CXXGRAPH::ERR_SOURCE_NODE_NOT_IN_GRAPH);
-    ASSERT_EQ(res_ts.result, CXXGRAPH::INF_DOUBLE);
-
     res = graph.bellmanford(node1, node3);
     ASSERT_FALSE(res.success);
     ASSERT_FALSE(res.negativeCycle);
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_TARGET_NODE_NOT_IN_GRAPH);
     ASSERT_EQ(res.result, CXXGRAPH::INF_DOUBLE);
 
-    res_ts = graph_ts.bellmanford(node1, node3);
-    ASSERT_FALSE(res_ts.success);
-    ASSERT_FALSE(res_ts.negativeCycle);
-    ASSERT_EQ(res_ts.errorMessage, CXXGRAPH::ERR_TARGET_NODE_NOT_IN_GRAPH);
-    ASSERT_EQ(res_ts.result, CXXGRAPH::INF_DOUBLE);
 
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node3, node2, 1);
     edgeSet.push_back(&edge2);
@@ -186,13 +148,6 @@ TEST(BellmanFordTest, test_5)
     ASSERT_FALSE(res.negativeCycle);
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_TARGET_NODE_NOT_REACHABLE);
     ASSERT_EQ(res.result, -1);
-
-    CXXGRAPH::Graph<int> graph1_ts(edgeSet);
-    res_ts = graph1_ts.bellmanford(node1, node3);
-    ASSERT_FALSE(res_ts.success);
-    ASSERT_FALSE(res_ts.negativeCycle);
-    ASSERT_EQ(res_ts.errorMessage, CXXGRAPH::ERR_TARGET_NODE_NOT_REACHABLE);
-    ASSERT_EQ(res_ts.result, -1);
 
 }
 

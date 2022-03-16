@@ -57,15 +57,7 @@ TEST(BoruvkaTest, test_1)
     ASSERT_EQ(res.mst.size(), graph.getNodeSet().size()-1);
     ASSERT_EQ(res.mstCost, 37);
     ASSERT_EQ(res.errorMessage, "");
-
-    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
-
-    CXXGRAPH::MstResult res_ts = graph_ts.boruvka();
-
-    ASSERT_TRUE(res_ts.success);
-    ASSERT_EQ(res_ts.mst.size(), graph.getNodeSet().size()-1);
-    ASSERT_EQ(res_ts.mstCost, 37);
-    ASSERT_EQ(res_ts.errorMessage, "");
+    
 }
 
 
@@ -110,13 +102,6 @@ TEST(BoruvkaTest, test_2)
     ASSERT_EQ(res.mstCost, 99);
     ASSERT_EQ(res.errorMessage, "");
 
-    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
-
-    CXXGRAPH::MstResult res_ts = graph_ts.boruvka();
-    ASSERT_TRUE(res_ts.success);
-    ASSERT_EQ(res_ts.mst.size(), graph_ts.getNodeSet().size()-1);
-    ASSERT_EQ(res_ts.mstCost, 99);
-    ASSERT_EQ(res_ts.errorMessage, "");
 }
 
 
@@ -166,13 +151,6 @@ TEST(BoruvkaTest, test_3)
     ASSERT_EQ(res.mstCost, 26);
     ASSERT_EQ(res.errorMessage, "");
 
-    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
-
-    CXXGRAPH::MstResult res_ts = graph_ts.boruvka();
-    ASSERT_TRUE(res_ts.success);
-    ASSERT_EQ(res_ts.mst.size(), graph_ts.getNodeSet().size()-1);
-    ASSERT_EQ(res_ts.mstCost, 26);
-    ASSERT_EQ(res_ts.errorMessage, "");
 }
 
 // test for directed and no weighted edge errors
@@ -192,12 +170,6 @@ TEST(BoruvkaTest, test_4)
     ASSERT_FALSE(res.success);
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_DIR_GRAPH);
 
-    CXXGRAPH::Graph_TS<int> graph_ts(edgeSet);
-
-    CXXGRAPH::MstResult res_ts = graph_ts.boruvka();
-    ASSERT_FALSE(res_ts.success);
-    ASSERT_EQ(res_ts.errorMessage, CXXGRAPH::ERR_DIR_GRAPH);
-
     CXXGRAPH::UndirectedEdge<int> edge3(3, node1, node2);
     std::list<const CXXGRAPH::Edge<int> *> edgeSet1;
     edgeSet1.push_back(&edge3);
@@ -207,8 +179,4 @@ TEST(BoruvkaTest, test_4)
     ASSERT_FALSE(res.success);
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_NO_WEIGHTED_EDGE);
 
-    CXXGRAPH::Graph<int> graph1_ts(edgeSet1);
-    res_ts = graph1_ts.boruvka();
-    ASSERT_FALSE(res_ts.success);
-    ASSERT_EQ(res_ts.errorMessage, CXXGRAPH::ERR_NO_WEIGHTED_EDGE);
 }
