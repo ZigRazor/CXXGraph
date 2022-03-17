@@ -47,7 +47,6 @@ TEST(ConnectivityTest, test_1)
     CXXGRAPH::Graph<int> graph(edgeSet);
 
     ASSERT_TRUE(graph.isConnectedGraph());
-
 }
 
 TEST(ConnectivityTest, test_2)
@@ -96,7 +95,6 @@ TEST(ConnectivityTest, test_2)
     CXXGRAPH::Graph<int> graph(edgeSet);
 
     ASSERT_FALSE(graph.isStronglyConnectedGraph());
-
 }
 
 TEST(ConnectivityTest, test_3)
@@ -158,11 +156,9 @@ TEST(ConnectivityTest, test_3)
     edgeSet.push_back(&edge21);
     edgeSet.push_back(&edge22);
 
-
     CXXGRAPH::Graph<int> graph(edgeSet);
 
     ASSERT_TRUE(graph.isStronglyConnectedGraph());
-
 }
 
 TEST(ConnectivityTest, test_4)
@@ -211,10 +207,9 @@ TEST(ConnectivityTest, test_4)
     CXXGRAPH::Graph<int> graph(edgeSet);
 
     ASSERT_FALSE(graph.isConnectedGraph());
-
 }
 /////////////////////////////////////////////////////////
-//Not a possible test until not implemented addNode function. All the undirected graph can be only connected with this interface.
+// Not a possible test until not implemented addNode function. All the undirected graph can be only connected with this interface.
 /*
 TEST(ConnectivityTest, test_5)
 {
@@ -323,7 +318,6 @@ TEST(ConnectivityTest, test_6)
     CXXGRAPH::Graph<int> graph(edgeSet);
 
     ASSERT_FALSE(graph.isStronglyConnectedGraph());
-
 }
 
 TEST(ConnectivityTest, test_7)
@@ -372,7 +366,6 @@ TEST(ConnectivityTest, test_7)
     CXXGRAPH::Graph<int> graph(edgeSet);
 
     ASSERT_FALSE(graph.isConnectedGraph());
-
 }
 
 TEST(ConnectivityTest, test_8)
@@ -437,5 +430,4 @@ TEST(ConnectivityTest, test_8)
     CXXGRAPH::Graph<int> graph(edgeSet);
 
     ASSERT_FALSE(graph.isStronglyConnectedGraph());
-
 }
