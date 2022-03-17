@@ -1266,7 +1266,7 @@ namespace CXXGRAPH
 			result.errorMessage = ERR_DIR_GRAPH;
 			return result;
 		}
-		if(!isConnectedGraph())
+		if (!isConnectedGraph())
 		{
 			result.errorMessage = ERR_NOT_STRONG_CONNECTED;
 			return result;
@@ -1822,7 +1822,7 @@ namespace CXXGRAPH
 	template <typename T>
 	bool Graph<T>::isConnectedGraph() const
 	{
-		if (isDirectedGraph())
+		if (!isUndirectedGraph())
 		{
 			return false;
 		}
@@ -1870,7 +1870,7 @@ namespace CXXGRAPH
 	template <typename T>
 	bool Graph<T>::isStronglyConnectedGraph() const
 	{
-		if (isUndirectedGraph())
+		if (!isDirectedGraph())
 		{
 			return false;
 		}
@@ -1878,37 +1878,41 @@ namespace CXXGRAPH
 		{
 			auto nodeSet = getNodeSet();
 			auto adjMatrix = getAdjMatrix();
-			// created visited map
-			std::unordered_map<unsigned long, bool> visited;
-			for (const auto &node : nodeSet)
+			for (const auto &start_node : nodeSet)
 			{
-				visited[node->getId()] = false;
-			}
-			std::function<void(const Node<T> *)> dfs_helper = [this, &adjMatrix, &visited, &dfs_helper](const Node<T> *source)
-			{
-				// mark the vertex visited
-				visited[source->getId()] = true;
 
-				// travel the neighbors
-				for (int i = 0; i < adjMatrix[source].size(); i++)
+				// created visited map
+				std::unordered_map<unsigned long, bool> visited;
+				for (const auto &node : nodeSet)
 				{
-					const Node<T> *neighbor = adjMatrix[source].at(i).first;
-					if (visited[neighbor->getId()] == false)
-					{
-						// make recursive call from neighbor
-						dfs_helper(neighbor);
-					}
+					visited[node->getId()] = false;
 				}
-			};
-			// call dfs_helper for the first node
-			dfs_helper(nodeSet.front());
-
-			// check if all the nodes are visited
-			for (const auto &node : nodeSet)
-			{
-				if (visited[node->getId()] == false)
+				std::function<void(const Node<T> *)> dfs_helper = [this, &adjMatrix, &visited, &dfs_helper](const Node<T> *source)
 				{
-					return false;
+					// mark the vertex visited
+					visited[source->getId()] = true;
+
+					// travel the neighbors
+					for (int i = 0; i < adjMatrix[source].size(); i++)
+					{
+						const Node<T> *neighbor = adjMatrix[source].at(i).first;
+						if (visited[neighbor->getId()] == false)
+						{
+							// make recursive call from neighbor
+							dfs_helper(neighbor);
+						}
+					}
+				};
+				// call dfs_helper for the first node
+				dfs_helper(start_node);
+
+				// check if all the nodes are visited
+				for (const auto &node : nodeSet)
+				{
+					if (visited[node->getId()] == false)
+					{
+						return false;
+					}
 				}
 			}
 			return true;
