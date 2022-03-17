@@ -492,6 +492,8 @@ This algorithm is used in garbage collection systems to decide which other objec
 If you want give your support you can create a ***pull request***   [![GitHub pull-requests](https://img.shields.io/github/issues-pr/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/pull/) or report an ***issue***  [![GitHub issues](https://img.shields.io/github/issues/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/issues/).
 If you want to change the code, or fix issue, or implement a new feature please read our [CONTRIBUTING Guide](https://github.com/ZigRazor/CXXGraph/blob/master/CONTRIBUTING.md)
 
+If you want to disscuss new feature or you have any question or suggestion about library please open a [Discussion](https://github.com/ZigRazor/CXXGraph/discussions).
+
 ## Site
 
 [CXXGraph Site](https://zigrazor.github.io/CXXGraph/)
