@@ -41,30 +41,10 @@ endif(CODE_COVERAGE)
 
 # add the library
 
-add_executable(test_exe test/main.cpp
-						test/NodeTest.cpp
-						test/EdgeTest.cpp
-						test/DirectedEdgeTest.cpp
-						test/UndirectedEdgeTest.cpp
-						test/DirectedWeightedEdgeTest.cpp
-						test/UndirectedWeightedEdgeTest.cpp
-						test/GraphTest.cpp
-						test/DijkstraTest.cpp
-						test/BellmanFordTest.cpp
-						test/FWTest.cpp
-						test/PrimTest.cpp
-						test/BoruvkaTest.cpp
-						test/KruskalTest.cpp
-						test/BFSTest.cpp
-						test/DFSTest.cpp
-						test/CycleCheckTest.cpp
-						test/RWOutputTest.cpp
-						test/PartitionTest.cpp
-						test/DialTest.cpp
-						test/GraphSlicingTest.cpp
-						test/UnionFindTest.cpp
-						test/EulerPathTest.cpp
-				)
+file (GLOB TEST_FILES "test/*.cpp" "test/*.hpp")
+
+add_executable(test_exe ${TEST_FILES})
+
 target_include_directories(test_exe PUBLIC
 						  "${PROJECT_SOURCE_DIR}/include"
 						  )
@@ -96,12 +76,9 @@ add_test(test_dial test_exe --gtest_filter=DialTest*)
 
 option(BENCHMARK "Enable Benchmark" OFF)
 if(BENCHMARK)
-	add_executable(benchmark 	benchmark/Utilities.hpp
-							benchmark/Node_BM.cpp
-							benchmark/Edge_BM.cpp
-							benchmark/Graph_BM.cpp
-							benchmark/FloydWarshall_BM.cpp
-				)
+
+	file (GLOB BENCHMARK_FILES "benchmark/*.cpp" "benchmark/*.hpp")
+	add_executable(benchmark ${BENCHMARK_FILES})
 	target_include_directories(benchmark PUBLIC
 						  "${PROJECT_SOURCE_DIR}/include"
 						  )
