@@ -29,7 +29,11 @@ An alternative to [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_7
 
 ## We are Looking for...
 
-**We are looking for developers and committer**, also at *first experience*, we will guide you step by step to the open-source world!
+**We are looking for:**
+
+- **Site Developer** for the development of the CXXGraph site ( for the moment on GitHub Page );
+- **Developers and Committers**, also at *first experience*, we will guide you step by step to the open-source world!
+
 If you are interested, please contact us at zigrazor@gmail.com or contribute to this project. We are waiting for you!
 
 ## Table of Contents
@@ -67,16 +71,16 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
     - [DEB](#deb)
       - [(Debian/Ubuntu)](#debianubuntu)
   - [Algorithm Explanation](#algorithm-explanation)
-      - [Dijkstra](#dijkstra)
-      - [Dial](#dial)
-      - [Prim's Algorithm](#prims-algorithm)
-      - [BFS](#bfs)
-      - [DFS](#dfs)
-      - [Cycle Detection](#cycle-detection)
-      - [Bellman-Ford](#bellman-ford)
-      - [Floyd Warshall](#floyd-warshall)
-      - [Kruskal Algorithm](#kruskal-algorithm)
-      - [Borůvka's Algorithm](#borůvkas-algorithm)
+    - [Dijkstra](#dijkstra)
+    - [Dial](#dial)
+    - [Prim's Algorithm](#prims-algorithm)
+    - [BFS](#bfs)
+    - [DFS](#dfs)
+    - [Cycle Detection](#cycle-detection)
+    - [Bellman-Ford](#bellman-ford)
+    - [Floyd Warshall](#floyd-warshall)
+    - [Kruskal Algorithm](#kruskal-algorithm)
+    - [Borůvka's Algorithm](#borůvkas-algorithm)
   - [Partition Algorithm Explanation](#partition-algorithm-explanation)
     - [Vertex-Cut](#vertex-cut)
     - [Edge Balanced Vertex-Cut](#edge-balanced-vertex-cut)
@@ -144,7 +148,7 @@ The Classes Explanation can be found in the [Doxygen Documentation](https://rawc
 ## Requirements
 
 The minimun C++ standard required is **C++17** and a G++ compiler version greater than 7.3.0.
-Are also required [OpenSSL library](https://www.openssl.org/) 
+Are also required [OpenSSL library](https://www.openssl.org/)
 
 ## How to use
 
@@ -182,7 +186,7 @@ You can find more information on how to install OpenSSL at this [link](https://g
 
 [GoogleTest](https://github.com/google/googletest)
 
-```
+```bash
 git clone https://github.com/google/googletest.git
 cd googletest        # Main directory of the cloned repository.
 mkdir -p build       # Create a directory to hold the build output.
@@ -195,7 +199,8 @@ sudo make install    # Install in /usr/local/ by default
 ### How to Compile Test
 
 From the base directory:
-```
+
+```bash
 mkdir -p build       # Create a directory to hold the build output.
 cd build             # Enter the build folder
 cmake ..             # Generate native build scripts for GoogleTest.
@@ -293,13 +298,13 @@ $ ./make_deb.sh
 
 ## Algorithm Explanation
 
-#### Dijkstra
+### Dijkstra
 
 [Graph Dijkstras Shortest Path Algorithm(Dijkstra's Shortest Path)](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
 **Dijkstra's Algorithm** is used to find the shortest path from a source node to all other reachable nodes in the graph. The algorithm initially assumes all the nodes are unreachable from the given source node so we mark the distances of all nodes as infinity.
 (infinity) from source node (INF / infinity denotes unable to reach).
 
-#### Dial
+### Dial
 
 Dial specialization of dijkstra’s algorithm.
 
@@ -322,7 +327,7 @@ Below is complete algorithm:
 
 At this [link](https://ocw.mit.edu/courses/sloan-school-of-management/15-082j-network-optimization-fall-2010/animations/MIT15_082JF10_av07.pdf) you can find a step-by-step illustrations.
 
-#### Prim's Algorithm
+### Prim's Algorithm
 
 [Prim's Algorithm](https://en.wikipedia.org/wiki/Prim%27s_algorithm)
 Prim's Algorithm is is a greedy algorithm that finds a minimum spanning tree for a weighted undirected graph. This means it finds a subset of the edges that forms a tree that includes every vertex, where the total weight of all the edges in the tree is minimized. The algorithm operates by building this tree one vertex at a time, from an arbitrary starting vertex, at each step adding the cheapest possible connection from the tree to another vertex.
@@ -333,7 +338,8 @@ Steps:
 2. Grow the tree by one edge: of the edges that connect the tree to vertices not yet in the tree, find the minimum-weight edge, and transfer it to the tree.
 3. Repeat step 2 (until all vertices are in the tree).
 
-#### BFS
+### BFS
+
 (Breadth First Search)
 [Breadth First Search Algorithm(Breadth First Search)](https://en.wikipedia.org/wiki/Breadth-first_search)
 **Breadth First Search**, also quoted as **BFS**, is a Graph Traversal Algorithm. Time Complexity O(|V| + |E|) where V are the number of vertices and E are the number of edges in the graph.
@@ -346,7 +352,7 @@ Applications of Breadth First Search are :
 
   And there are many more...
 
-#### DFS
+### DFS
 
 (Depth First Search)
 [Depth First Search Algorithm (Depth First Search)](https://en.wikipedia.org/wiki/Depth-first_search)
@@ -362,7 +368,7 @@ Application of Depth First Search are:
 
   And there are many more...
 
-#### Cycle Detection
+### Cycle Detection
 
 [Cycle (graph theory)](https://en.wikipedia.org/wiki/Cycle_(graph_theory))
 
@@ -374,7 +380,7 @@ For directed graphs, distributed message based algorithms can be used. These alg
 
 Applications of cycle detection include the use of wait-for graphs to detect deadlocks in concurrent systems.
 
-#### Bellman-Ford
+### Bellman-Ford
 
 [Bellman-Ford Algorithm](https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm) can be used to find the shortest distance between a source and a target node. Time Complexity O(|V| . |E|) where V is number of vertices and E is number of edges in graph which is higher than Dijkstra's shortest path algorithm. The time complexity of dijkstra's algorithm is O(|E| + |V| log |v| ). The advantage of bellman-ford over dijkstra is that it can handle graphs with negative edge weights. Further, if the graph contains a negative weight cycle then the algorithm can detect and report the presense of negative cycle.
 
@@ -385,7 +391,7 @@ Applications:
 - Routing Information Protocol (RIP)
 - Interior Gateway Routing Protocol (IGRP)
 
-#### Floyd Warshall
+### Floyd Warshall
 
 [Floyd Warshall Algorithm](https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm)
 
@@ -394,7 +400,7 @@ We initialize the solution matrix same as the input graph matrix as a first step
 1) k is not an intermediate vertex in shortest path from i to j. We keep the value of dist[i][j] as it is.
 2) k is an intermediate vertex in shortest path from i to j. We update the value of dist[i][j] as dist[i][k] + dist[k][j] if dist[i][j] > dist[i][k] + dist[k][j]
 
-#### Kruskal Algorithm
+### Kruskal Algorithm
 
 [Kruskal Algorithm](https://en.wikipedia.org/wiki/Kruskal%27s_algorithm) can be used to find the minimum spanning forest of an undirected edge-weighted graph.  Time Complexity O(E log E) = O(E log V) where V is number of vertices and E is number of edges in graph. The main speed limitation for this algorithm is sorting the edges.
 
@@ -408,14 +414,13 @@ Some of the real life applications are:
 
 Other algorithms to find the minimum spanning forest are Prim's algorithm or Borůvka's algorithm.
 
-#### Borůvka's Algorithm
+### Borůvka's Algorithm
 
 [Borůvka's Algorithm](https://en.wikipedia.org/wiki/Bor%C5%AFvka%27s_algorithm#)  is a greedy algorithm that can be used for finding a minimum spanning tree in a graph, or a minimum spanning forest in the case of a graph that is not connected.
 
 The algorithm begins by finding the minimum-weight edge incident to each vertex of the graph, and adding all of those edges to the forest. Then, it repeats a similar process of finding the minimum-weight edge from each tree constructed so far to a different tree, and adding all of those edges to the forest. Each repetition of this process reduces the number of trees, within each connected component of the graph, to at most half of this former value, so after logarithmically many repetitions the process finishes. When it does, the set of edges it has added forms the minimum spanning forest.
 
 Borůvka's algorithm can be shown to take O(log V) iterations of the outer loop until it terminates, and therefore to run in time O(E log V), where E is the number of edges, and V is the number of vertices in G (assuming E ≥ V).
-
 
 ## Partition Algorithm Explanation
 
