@@ -530,7 +530,7 @@ Thanks to [GeeksForGeeks](https://www.geeksforgeeks.org/) for some algorithms in
 
 Thank you to all the people who have already contributed to CXXGraph!
 
-[![Contributors](https://contrib.rocks/image?repo=zigrazor/CXXGraph)](https://github.com/ZigRazor/CXXGraph/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=zigrazor/CXXGraph)](https://github.com/ZigRazor/CXXGraph/graphs/contributors) [![Join the chat at https://gitter.im/CXXGraph/community](https://badges.gitter.im/CXXGraph/community.svg)](https://gitter.im/CXXGraph/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Cite Us
 
