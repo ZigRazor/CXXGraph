@@ -32,6 +32,7 @@ namespace CXXGRAPH
 	constexpr char ERR_TARGET_NODE_NOT_REACHABLE[] = "Target Node not Reachable";
 	constexpr char ERR_TARGET_NODE_NOT_IN_GRAPH[] = "Target Node not inside Graph";
 	constexpr char ERR_SOURCE_NODE_NOT_IN_GRAPH[] = "Source Node not inside Graph";
+	constexpr char ERR_NOT_STRONG_CONNECTED[] = "Graph is not strongly connected";
 	///////////////////////////////
 }
 #endif // __CXXGRAPH_CONSTSTRING_H__
