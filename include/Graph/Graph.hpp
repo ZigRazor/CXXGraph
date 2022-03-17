@@ -1880,7 +1880,6 @@ namespace CXXGRAPH
 			auto adjMatrix = getAdjMatrix();
 			for (const auto &start_node : nodeSet)
 			{
-
 				// created visited map
 				std::unordered_map<unsigned long, bool> visited;
 				for (const auto &node : nodeSet)
