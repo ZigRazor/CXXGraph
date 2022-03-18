@@ -20,6 +20,8 @@
 
 [![Generic badge](https://img.shields.io/badge/Build-Passed-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/UnitTest-Passed-Green.svg)](https://shields.io/)
 
+[![Join the chat at https://gitter.im/CXXGraph-Community/community](https://badges.gitter.im/CXXGraph-Community/community.svg)](https://gitter.im/CXXGraph-Community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Share on [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Header-Only%20C++%20Library%20for%20Graph%20Representation%20and%20Algorithms%204&url=https://github.com/ZigRazor/CXXGraph&hashtags=cpp,headeronly,library,opensource,developers)
 <br/><br/>
 
@@ -492,7 +494,7 @@ This algorithm is used in garbage collection systems to decide which other objec
 If you want give your support you can create a ***pull request***   [![GitHub pull-requests](https://img.shields.io/github/issues-pr/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/pull/) or report an ***issue***  [![GitHub issues](https://img.shields.io/github/issues/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/issues/).
 If you want to change the code, or fix issue, or implement a new feature please read our [CONTRIBUTING Guide](https://github.com/ZigRazor/CXXGraph/blob/master/CONTRIBUTING.md)
 
-If you want to disscuss new feature or you have any question or suggestion about library please open a [Discussion](https://github.com/ZigRazor/CXXGraph/discussions).
+If you want to disscuss new feature or you have any question or suggestion about library please open a [Discussion](https://github.com/ZigRazor/CXXGraph/discussions) or simply chat on [![Join the chat at https://gitter.im/CXXGraph-Community/community](https://badges.gitter.im/CXXGraph-Community/community.svg)](https://gitter.im/CXXGraph-Community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Site
 
@@ -501,6 +503,8 @@ If you want to disscuss new feature or you have any question or suggestion about
 ## Contact
 
 E-Mail : zigrazor@gmail.com
+
+[![Join the chat at https://gitter.im/CXXGraph-Community/community](https://badges.gitter.im/CXXGraph-Community/community.svg)](https://gitter.im/CXXGraph-Community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [GitHub Profile](https://github.com/ZigRazor) ![Profile views](https://gpvc.arturio.dev/ZigRazor)
 
@@ -530,7 +534,7 @@ Thanks to [GeeksForGeeks](https://www.geeksforgeeks.org/) for some algorithms in
 
 Thank you to all the people who have already contributed to CXXGraph!
 
-[![Contributors](https://contrib.rocks/image?repo=zigrazor/CXXGraph)](https://github.com/ZigRazor/CXXGraph/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=zigrazor/CXXGraph)](https://github.com/ZigRazor/CXXGraph/graphs/contributors) 
 
 ## Cite Us
 
