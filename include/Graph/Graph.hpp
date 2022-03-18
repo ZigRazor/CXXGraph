@@ -391,9 +391,9 @@ namespace CXXGRAPH
 		 *
 		 * @param source source vertex
 		 * @param target  target vertex
-		 * @return double Max-Flow value
+		 * @return double Max-Flow value or -1 in case of error
 		 */
-		virtual double FordFulkersonMaxFlow(const Node<T> &source, const Node<T> &target) const;
+		virtual double fordFulkersonMaxFlow(const Node<T> &source, const Node<T> &target) const;
 
 		/**
 		 * \brief
@@ -2057,7 +2057,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	double Graph<T>::FordFulkersonMaxFlow(const Node<T> &source, const Node<T> &target) const
+	double Graph<T>::fordFulkersonMaxFlow(const Node<T> &source, const Node<T> &target) const
 	{
 		if (!isDirectedGraph())
 		{
@@ -2065,7 +2065,7 @@ namespace CXXGRAPH
 		}
 		double maxFlow = 0;
 		std::unordered_map<const Node<T> *, const Node<T> *> parent;
-		std::map < const Node<T> *, std::map<const Node<T> *, double> weightMap;
+		std::map < const Node<T> *, std::map<const Node<T> *, double>> weightMap;
 		// build weight map
 		auto edgeSet = this->getEdgeSet();
 		for (const auto &edge : edgeSet)
@@ -2074,15 +2074,15 @@ namespace CXXGRAPH
 			if (edge->isWeighted().value_or(false))
 			{
 				const DirectedWeightedEdge<T> *dw_edge = dynamic_cast<const DirectedWeightedEdge<T> *>(edge);
-				weightMap[edge->getNodePair().first)][edge->getNodePair().second] = dw_edge->getWeight();
+				weightMap[edge->getNodePair().first][edge->getNodePair().second] = dw_edge->getWeight();
 			}
 			else
 			{
-				weightMap[edge->getNodePair().first)][edge->getNodePair().second] = 0; //No Weighted Edge are assumed to be 0 weigthed
+				weightMap[edge->getNodePair().first][edge->getNodePair().second] = 0; //No Weighted Edge are assumed to be 0 weigthed
 			}
 		}
 
-		auto bfs_helper = [this, bfs_helper]() -> bool
+		auto bfs_helper = [this,&source, &target, &parent, &weightMap]() -> bool
 		{
 			std::unordered_map<const Node<T> *, bool> visited;
 			std::queue<const Node<T> *> queue;
@@ -2122,7 +2122,7 @@ namespace CXXGRAPH
 				weightMap[v][u] += pathFlow;
 			}
 			// Adding the path flows
-			max_flow += path_flow;
+			maxFlow += pathFlow;
 		}
 
 		return maxFlow;
