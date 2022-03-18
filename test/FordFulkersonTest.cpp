@@ -9,7 +9,6 @@ TEST(FordFulkersonTest, test_1)
     CXXGRAPH::Node<int> node3("3", 3);
     CXXGRAPH::Node<int> node4("4", 4);
     CXXGRAPH::Node<int> node5("5", 5);
-    
 
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node0, node1, 11);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node0, node2, 12);
@@ -30,7 +29,7 @@ TEST(FordFulkersonTest, test_1)
     edgeSet.push_back(&edge8);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
-    
+
     ASSERT_EQ(graph.fordFulkersonMaxFlow(node0, node5), 23);
 }
 
@@ -42,7 +41,6 @@ TEST(FordFulkersonTest, test_2)
     CXXGRAPH::Node<int> node3("3", 3);
     CXXGRAPH::Node<int> node4("4", 4);
     CXXGRAPH::Node<int> node5("5", 5);
-    
 
     CXXGRAPH::UndirectedWeightedEdge<int> edge1(1, node0, node1, 11);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node0, node2, 12);
@@ -63,10 +61,9 @@ TEST(FordFulkersonTest, test_2)
     edgeSet.push_back(&edge8);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
-    
+
     ASSERT_EQ(graph.fordFulkersonMaxFlow(node0, node5), -1);
 }
-
 
 TEST(FordFulkersonTest, test_3)
 {
@@ -76,7 +73,6 @@ TEST(FordFulkersonTest, test_3)
     CXXGRAPH::Node<int> node3("3", 3);
     CXXGRAPH::Node<int> node4("4", 4);
     CXXGRAPH::Node<int> node5("5", 5);
-    
 
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node0, node1, 11);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node0, node2, 12);
@@ -97,7 +93,7 @@ TEST(FordFulkersonTest, test_3)
     edgeSet.push_back(&edge8);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
-    
+
     ASSERT_EQ(graph.fordFulkersonMaxFlow(node0, node5), 8);
 }
 
@@ -109,7 +105,6 @@ TEST(FordFulkersonTest, test_4)
     CXXGRAPH::Node<int> node3("3", 3);
     CXXGRAPH::Node<int> node4("4", 4);
     CXXGRAPH::Node<int> node5("5", 5);
-    
 
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node0, node1, 11);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node0, node2, 12);
@@ -130,6 +125,6 @@ TEST(FordFulkersonTest, test_4)
     edgeSet.push_back(&edge8);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
-    
+
     ASSERT_EQ(graph.fordFulkersonMaxFlow(node0, node5), 4);
 }

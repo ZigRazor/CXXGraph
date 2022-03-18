@@ -2065,7 +2065,7 @@ namespace CXXGRAPH
 		}
 		double maxFlow = 0;
 		std::unordered_map<const Node<T> *, const Node<T> *> parent;
-		std::map < const Node<T> *, std::map<const Node<T> *, double>> weightMap;
+		std::map<const Node<T> *, std::map<const Node<T> *, double>> weightMap;
 		// build weight map
 		auto edgeSet = this->getEdgeSet();
 		for (const auto &edge : edgeSet)
@@ -2078,11 +2078,11 @@ namespace CXXGRAPH
 			}
 			else
 			{
-				weightMap[edge->getNodePair().first][edge->getNodePair().second] = 0; //No Weighted Edge are assumed to be 0 weigthed
+				weightMap[edge->getNodePair().first][edge->getNodePair().second] = 0; // No Weighted Edge are assumed to be 0 weigthed
 			}
 		}
 
-		auto bfs_helper = [this,&source, &target, &parent, &weightMap]() -> bool
+		auto bfs_helper = [this, &source, &target, &parent, &weightMap]() -> bool
 		{
 			std::unordered_map<const Node<T> *, bool> visited;
 			std::queue<const Node<T> *> queue;
