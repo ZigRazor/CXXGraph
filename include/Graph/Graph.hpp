@@ -386,6 +386,16 @@ namespace CXXGRAPH
 		virtual const DialResult dial(const Node<T> &source, int maxWeight) const;
 
 		/**
+		 * @brief Function runs the Ford-Fulkerson algorithm for some source node and
+		 * target node in the graph and returns the maximum flow of the graph
+		 *
+		 * @param source source vertex
+		 * @param target  target vertex
+		 * @return double Max-Flow value or -1 in case of error
+		 */
+		virtual double fordFulkersonMaxFlow(const Node<T> &source, const Node<T> &target) const;
+
+		/**
 		 * \brief
 		 * This function write the graph in an output file
 		 * Note: No Thread Safe
@@ -2044,6 +2054,78 @@ namespace CXXGRAPH
 		result.success = true;
 
 		return result;
+	}
+
+	template <typename T>
+	double Graph<T>::fordFulkersonMaxFlow(const Node<T> &source, const Node<T> &target) const
+	{
+		if (!isDirectedGraph())
+		{
+			return -1;
+		}
+		double maxFlow = 0;
+		std::unordered_map<const Node<T> *, const Node<T> *> parent;
+		std::map<const Node<T> *, std::map<const Node<T> *, double>> weightMap;
+		// build weight map
+		auto edgeSet = this->getEdgeSet();
+		for (const auto &edge : edgeSet)
+		{
+			// The Edge are all Directed at this point because is checked at the start
+			if (edge->isWeighted().value_or(false))
+			{
+				const DirectedWeightedEdge<T> *dw_edge = dynamic_cast<const DirectedWeightedEdge<T> *>(edge);
+				weightMap[edge->getNodePair().first][edge->getNodePair().second] = dw_edge->getWeight();
+			}
+			else
+			{
+				weightMap[edge->getNodePair().first][edge->getNodePair().second] = 0; // No Weighted Edge are assumed to be 0 weigthed
+			}
+		}
+
+		auto bfs_helper = [this, &source, &target, &parent, &weightMap]() -> bool
+		{
+			std::unordered_map<const Node<T> *, bool> visited;
+			std::queue<const Node<T> *> queue;
+			queue.push(&source);
+			visited[&source] = true;
+			parent[&source] = nullptr;
+			while (!queue.empty())
+			{
+				auto u = queue.front();
+				queue.pop();
+				for (auto &v : weightMap[u])
+				{
+					if (!visited[v.first] && v.second > 0)
+					{
+						queue.push(v.first);
+						visited[v.first] = true;
+						parent[v.first] = u;
+					}
+				}
+			}
+
+			return (visited[&target]);
+		};
+		// Updating the residual values of edges
+		while (bfs_helper())
+		{
+			double pathFlow = std::numeric_limits<double>::max();
+			for (auto v = &target; v != &source; v = parent[v])
+			{
+				auto u = parent[v];
+				pathFlow = std::min(pathFlow, weightMap[u][v]);
+			}
+			for (auto v = &target; v != &source; v = parent[v])
+			{
+				auto u = parent[v];
+				weightMap[u][v] -= pathFlow;
+				weightMap[v][u] += pathFlow;
+			}
+			// Adding the path flows
+			maxFlow += pathFlow;
+		}
+
+		return maxFlow;
 	}
 
 	template <typename T>

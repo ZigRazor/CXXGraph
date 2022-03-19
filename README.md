@@ -83,13 +83,14 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
     - [Floyd Warshall](#floyd-warshall)
     - [Kruskal Algorithm](#kruskal-algorithm)
     - [Borůvka's Algorithm](#borůvkas-algorithm)
+    - [Graph Slicing based on connectivity](#graph-slicing-based-on-connectivity)
+    - [Ford-Fulkerson Algorithm](#ford-fulkerson-algorithm)
   - [Partition Algorithm Explanation](#partition-algorithm-explanation)
     - [Vertex-Cut](#vertex-cut)
     - [Edge Balanced Vertex-Cut](#edge-balanced-vertex-cut)
     - [Greedy Vertex-Cut](#greedy-vertex-cut)
     - [HDRF](#hdrf)
     - [EBV](#ebv)
-    - [Graph Slicing based on connectivity](#graph-slicing-based-on-connectivity)
   - [How to contribute](#how-to-contribute)
   - [Site](#site)
   - [Contact](#contact)
@@ -424,6 +425,31 @@ The algorithm begins by finding the minimum-weight edge incident to each vertex 
 
 Borůvka's algorithm can be shown to take O(log V) iterations of the outer loop until it terminates, and therefore to run in time O(E log V), where E is the number of edges, and V is the number of vertices in G (assuming E ≥ V).
 
+### Graph Slicing based on connectivity
+
+Mathematical definition of the problem:
+Let G be the set of nodes in a graph and n be a given node in that set.
+Let C be the non-strict subset of G containing both n and all nodes reachable
+from n, and let C' be its complement. There's a third set M, which is the
+non-strict subset of C containing all nodes that are reachable from any node in C'.
+The problem consists of finding all nodes that belong to C but not to M.
+
+Currently implemented Algorithm:
+
+- Use DFS to find all nodes reachable from n. These are elements of set C.
+- Initialize C' to be complement of C (i.e. all nodes - nodes that are in C)
+- For all nodes in C', apply DFS and get the list of reachable nodes. This is set M.
+- Finally removes nodes from C that belong to M. This is our solution.
+
+Application:
+
+This algorithm is used in garbage collection systems to decide which other objects need to be released, given that one object is about to be released.
+
+### Ford-Fulkerson Algorithm
+
+[Ford-Fulkerson Algorithm](https://en.wikipedia.org/wiki/Ford%E2%80%93Fulkerson_algorithm) is a greedy algorithm for finding a maximum flow in a flow network.
+The idea behind the algorithm is as follows: as long as there is a path from the source (start node) to the sink (end node), with available capacity on all edges in the path, we send flow along one of the paths. Then we find another path, and so on. A path with available capacity is called an augmenting path.
+
 ## Partition Algorithm Explanation
 
 ### Vertex-Cut
@@ -467,26 +493,6 @@ Eva(u,v)(i) =I(u ∈ keep[i]) + I(v ∈ keep[i]) +α * \frac{ecount[i]}{(|E|/p)}
 ```
 
 The lowest value is taken as partition Id.
-
-### Graph Slicing based on connectivity
-
-Mathematical definition of the problem:
-Let G be the set of nodes in a graph and n be a given node in that set.
-Let C be the non-strict subset of G containing both n and all nodes reachable
-from n, and let C' be its complement. There's a third set M, which is the
-non-strict subset of C containing all nodes that are reachable from any node in C'.
-The problem consists of finding all nodes that belong to C but not to M.
-
-Currently implemented Algorithm:
-
-- Use DFS to find all nodes reachable from n. These are elements of set C.
-- Initialize C' to be complement of C (i.e. all nodes - nodes that are in C)
-- For all nodes in C', apply DFS and get the list of reachable nodes. This is set M.
-- Finally removes nodes from C that belong to M. This is our solution.
-
-Application:
-
-This algorithm is used in garbage collection systems to decide which other objects need to be released, given that one object is about to be released.
 
 ## How to contribute
 
