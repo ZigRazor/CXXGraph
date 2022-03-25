@@ -80,7 +80,6 @@ namespace CXXGRAPH
 	{
 	private:
 		std::deque<const Edge<T> *> edgeSet = {};
-		void _addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge) const;
 		std::optional<std::pair<std::string, char>> getExtenstionAndSeparator(InputOutputFormat format) const;
 		int writeToStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight, InputOutputFormat format) const;
 		int readFromStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight, InputOutputFormat format);
@@ -527,15 +526,6 @@ namespace CXXGRAPH
 		}
 
 		return std::nullopt;
-	}
-
-	template <typename T>
-	void Graph<T>::_addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge) const
-	{
-		std::pair<const Node<T> *, const Edge<T> *> elem = {nodeTo, edge};
-		adjMatrix[nodeFrom].push_back(elem);
-
-		// adjMatrix[nodeFrom.getId()].push_back(std::make_pair<const Node<T>,const Edge<T>>(nodeTo, edge));
 	}
 
 	template <typename T>
