@@ -80,7 +80,7 @@ namespace CXXGRAPH
 	{
 	private:
 		std::deque<const Edge<T> *> edgeSet = {};
-		void addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge) const;
+		void _addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge) const;
 		std::optional<std::pair<std::string, char>> getExtenstionAndSeparator(InputOutputFormat format) const;
 		int writeToStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight, InputOutputFormat format) const;
 		int readFromStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight, InputOutputFormat format);
@@ -530,7 +530,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	void Graph<T>::addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge) const
+	void Graph<T>::_addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge) const
 	{
 		std::pair<const Node<T> *, const Edge<T> *> elem = {nodeTo, edge};
 		adjMatrix[nodeFrom].push_back(elem);
@@ -938,20 +938,25 @@ namespace CXXGRAPH
 	template <typename T>
 	const AdjacencyMatrix<T> Graph<T>::getAdjMatrix() const
 	{
+		
 		AdjacencyMatrix<T> adj;
+		auto addElementToAdjMatrix = [&adj](const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge){
+			std::pair<const Node<T> *, const Edge<T> *> elem = {nodeTo, edge};
+			adj[nodeFrom].push_back(std::move(elem));
+		};
 		for (const auto &edgeSetIt : edgeSet)
 		{
 			if (edgeSetIt->isDirected().has_value() && edgeSetIt->isDirected().value())
 			{
 				const DirectedEdge<T> *d_edge = dynamic_cast<const DirectedEdge<T> *>(edgeSetIt);
-				addElementToAdjMatrix(adj, &(d_edge->getFrom()), &(d_edge->getTo()), d_edge);
+				addElementToAdjMatrix(&(d_edge->getFrom()), &(d_edge->getTo()), d_edge);
 			}
 			else if (edgeSetIt->isDirected().has_value() && !edgeSetIt->isDirected().value())
 			{
 				const UndirectedEdge<T> *ud_edge = dynamic_cast<const UndirectedEdge<T> *>(edgeSetIt);
 				;
-				addElementToAdjMatrix(adj, &(ud_edge->getNode1()), &(ud_edge->getNode2()), ud_edge);
-				addElementToAdjMatrix(adj, &(ud_edge->getNode2()), &(ud_edge->getNode1()), ud_edge);
+				addElementToAdjMatrix(&(ud_edge->getNode1()), &(ud_edge->getNode2()), ud_edge);
+				addElementToAdjMatrix(&(ud_edge->getNode2()), &(ud_edge->getNode1()), ud_edge);
 			}
 			else
 			{ // is a simple edge we cannot create adj matrix
@@ -1535,7 +1540,7 @@ namespace CXXGRAPH
 		{
 			return visited;
 		}
-		const AdjacencyMatrix<T> adj = Graph<T>::getAdjMatrix();
+		const AdjacencyMatrix<T> &adj = Graph<T>::getAdjMatrix();
 		// queue that stores vertices that need to be further explored
 		std::queue<const Node<T> *> tracker;
 
