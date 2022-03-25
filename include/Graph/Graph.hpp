@@ -136,7 +136,7 @@ namespace CXXGRAPH
 		 * @returns a list of Nodes of the graph
 		 *
 		 */
-		virtual const std::list<const Node<T> *> getNodeSet() const;
+		virtual const std::deque<const Node<T> *> getNodeSet() const;
 		/**
 		 * \brief
 		 * Function that return an Edge with specific ID if Exist in the Graph
@@ -496,9 +496,9 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	const std::list<const Node<T> *> Graph<T>::getNodeSet() const
+	const std::deque<const Node<T> *> Graph<T>::getNodeSet() const
 	{
-		std::list<const Node<T> *> nodeSet;
+		std::deque<const Node<T> *> nodeSet;
 		for (const auto &edge : edgeSet)
 		{
 			if (std::find_if(nodeSet.begin(), nodeSet.end(), [edge](const Node<T> *node)
@@ -1960,7 +1960,7 @@ namespace CXXGRAPH
 
 		// Create buckets B[].
 		// B[i] keep vertex of distance label i
-		std::list<const Node<T> *> B[maxWeight * V + 1];
+		std::deque<const Node<T> *> B[maxWeight * V + 1];
 
 		B[0].push_back(&source);
 		dist[&source].first = 0;
@@ -2134,14 +2134,14 @@ namespace CXXGRAPH
 	{
 		std::vector<Node<T>> result;
 
-		std::list<const Node<T> *> nodeSet = Graph<T>::getNodeSet();
+		std::deque<const Node<T> *> nodeSet = Graph<T>::getNodeSet();
 		// check if start node in the graph
 		if (std::find(nodeSet.begin(), nodeSet.end(), &start) == nodeSet.end())
 		{
 			return result;
 		}
 		std::vector<Node<T>> C = Graph<T>::depth_first_search(start);
-		std::list<const Node<T> *> C1; // complement of C i.e. nodeSet - C
+		std::deque<const Node<T> *> C1; // complement of C i.e. nodeSet - C
 		for (auto const &node : nodeSet)
 		{
 			// from the set of all nodes, remove nodes that exist in C

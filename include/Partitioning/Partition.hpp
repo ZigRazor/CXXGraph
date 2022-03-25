@@ -290,11 +290,11 @@ namespace CXXGRAPH
         unsigned int getNumberOfNodes(const PartitionMap<T> &partitionMap)
         {
             unsigned int numberOfNodes = 0;
-            std::list<const Node<T> *> nodeSet;
+            std::deque<const Node<T> *> nodeSet;
 
             for (const auto& it : partitionMap)
             {
-                const std::list<const Node<T> *> partitionNodeSet = it->second->getNodeSet();
+                const std::deque<const Node<T> *> partitionNodeSet = it->second->getNodeSet();
                 for (const auto& it2 : partitionNodeSet)
                 {
                     if (std::find_if(nodeSet.begin(), nodeSet.end(), [it2](const Node<T> *node)
