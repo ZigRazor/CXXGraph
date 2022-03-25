@@ -29,6 +29,7 @@
 #include <iostream>
 #include <limits>
 #include <list>
+#include <deque>
 #include <queue>
 #include <string>
 #include <cstring>
@@ -78,7 +79,7 @@ namespace CXXGRAPH
 	class Graph
 	{
 	private:
-		std::list<const Edge<T> *> edgeSet = {};
+		std::deque<const Edge<T> *> edgeSet = {};
 		void addElementToAdjMatrix(AdjacencyMatrix<T> &adjMatrix, const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge) const;
 		std::optional<std::pair<std::string, char>> getExtenstionAndSeparator(InputOutputFormat format) const;
 		int writeToStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight, InputOutputFormat format) const;
@@ -89,7 +90,7 @@ namespace CXXGRAPH
 
 	public:
 		Graph() = default;
-		Graph(const std::list<const Edge<T> *> &edgeSet);
+		Graph(const std::deque<const Edge<T> *> &edgeSet);
 		virtual ~Graph() = default;
 		/**
 		 * \brief
@@ -99,7 +100,7 @@ namespace CXXGRAPH
 		 * @returns a list of Edges of the graph
 		 *
 		 */
-		virtual const std::list<const Edge<T> *> &getEdgeSet() const;
+		virtual const std::deque<const Edge<T> *> &getEdgeSet() const;
 		/**
 		 * \brief
 		 * Function set the Edge Set of the Graph
@@ -108,7 +109,7 @@ namespace CXXGRAPH
 		 * @param edgeSet The Edge Set
 		 *
 		 */
-		virtual void setEdgeSet(std::list<const Edge<T> *> &edgeSet);
+		virtual void setEdgeSet(std::deque<const Edge<T> *> &edgeSet);
 		/**
 		 * \brief
 		 * Function add an Edge to the Graph Edge Set
@@ -293,7 +294,7 @@ namespace CXXGRAPH
 		 *
 		 * @return true if a cycle is detected, else false
 		 */
-		virtual bool containsCycle(const std::list<const Edge<T> *> *) const;
+		virtual bool containsCycle(const std::deque<const Edge<T> *> *) const;
 		/**
 		 * @brief
 		 * This function checks if the given Subset
@@ -301,7 +302,7 @@ namespace CXXGRAPH
 		 *
 		 * @return true if a cycle is detected, else false
 		 */
-		virtual bool containsCycle(const std::list<const Edge<T> *> *edgeSet, std::unordered_map<unsigned long long, Subset> *) const;
+		virtual bool containsCycle(const std::deque<const Edge<T> *> *edgeSet, std::unordered_map<unsigned long long, Subset> *) const;
 
 		/**
 		 * \brief
@@ -441,7 +442,7 @@ namespace CXXGRAPH
 	};
 
 	template <typename T>
-	Graph<T>::Graph(const std::list<const Edge<T> *> &edgeSet)
+	Graph<T>::Graph(const std::deque<const Edge<T> *> &edgeSet)
 	{
 		for (const auto &edgeSetIt : edgeSet)
 		{
@@ -454,13 +455,13 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	const std::list<const Edge<T> *> &Graph<T>::getEdgeSet() const
+	const std::deque<const Edge<T> *> &Graph<T>::getEdgeSet() const
 	{
 		return edgeSet;
 	}
 
 	template <typename T>
-	void Graph<T>::setEdgeSet(std::list<const Edge<T> *> &edgeSet)
+	void Graph<T>::setEdgeSet(std::deque<const Edge<T> *> &edgeSet)
 	{
 		this->edgeSet.clear();
 		for (const auto &edgeSetIt : edgeSet)
@@ -1191,7 +1192,7 @@ namespace CXXGRAPH
 		result.success = false;
 		result.errorMessage = "";
 		std::unordered_map<std::pair<std::string, std::string>, double, CXXGRAPH::pair_hash> pairwise_dist;
-		auto nodeSet = Graph<T>::getNodeSet();
+		const auto &nodeSet = Graph<T>::getNodeSet();
 		// create a pairwise distance matrix with distance node distances
 		// set to inf. Distance of node to itself is set as 0.
 		for (const auto &elem1 : nodeSet)
@@ -1206,12 +1207,12 @@ namespace CXXGRAPH
 			}
 		}
 
-		auto edgeSet = Graph<T>::getEdgeSet();
+		const auto &edgeSet = Graph<T>::getEdgeSet();
 		// update the weights of nodes
 		// connected by edges
 		for (const auto &edge : edgeSet)
 		{
-			auto elem = edge->getNodePair();
+			const auto &elem = edge->getNodePair();
 			if (edge->isWeighted().has_value() && edge->isWeighted().value())
 			{
 				auto edgeWeight = (dynamic_cast<const Weighted *>(edge))->getWeight();
@@ -1686,7 +1687,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	bool Graph<T>::containsCycle(const std::list<const Edge<T> *> *edgeSet) const
+	bool Graph<T>::containsCycle(const std::deque<const Edge<T> *> *edgeSet) const
 	{
 		std::unordered_map<unsigned long long, Subset> subset;
 		// initialize the subset parent and rank values
@@ -1714,7 +1715,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	bool Graph<T>::containsCycle(const std::list<const Edge<T> *> *edgeSet, std::unordered_map<unsigned long long, Subset> *subset) const
+	bool Graph<T>::containsCycle(const std::deque<const Edge<T> *> *edgeSet, std::unordered_map<unsigned long long, Subset> *subset) const
 	{
 		for (const auto &edge : *edgeSet)
 		{

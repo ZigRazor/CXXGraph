@@ -10,7 +10,7 @@ TEST(DFSTest, test_1)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
@@ -31,7 +31,7 @@ TEST(DFSTest, test_2)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge3(3, node1, node3, 6);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
@@ -52,7 +52,7 @@ TEST(DFSTest, test_3)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
@@ -73,7 +73,7 @@ TEST(DFSTest, test_4)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
@@ -94,7 +94,7 @@ TEST(DFSTest, test_5)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge3(3, node1, node3, 6);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
@@ -116,7 +116,7 @@ TEST(DFSTest, test_6)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge3(3, node1, node3, 6);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);

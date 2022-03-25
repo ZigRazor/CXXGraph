@@ -42,8 +42,8 @@ namespace CXXGRAPH
         public:
             Partition();
             Partition(unsigned int partitionId);
-            Partition(const std::list<const Edge<T> *> &edgeSet);
-            Partition(unsigned int partitionId, const std::list<const Edge<T> *> &edgeSet);
+            Partition(const std::deque<const Edge<T> *> &edgeSet);
+            Partition(unsigned int partitionId, const std::deque<const Edge<T> *> &edgeSet);
             ~Partition() = default;
             /**
 		    * @brief Get the Partition ID
@@ -165,13 +165,13 @@ namespace CXXGRAPH
         }
 
         template <typename T>
-        Partition<T>::Partition(const std::list<const Edge<T> *> &edgeSet) : Graph<T>(edgeSet)
+        Partition<T>::Partition(const std::deque<const Edge<T> *> &edgeSet) : Graph<T>(edgeSet)
         {
             partitionId = 0;
         }
 
         template <typename T>
-        Partition<T>::Partition(unsigned int partitionId, const std::list<const Edge<T> *> &edgeSet) : Graph<T>(edgeSet)
+        Partition<T>::Partition(unsigned int partitionId, const std::deque<const Edge<T> *> &edgeSet) : Graph<T>(edgeSet)
         {
             this->partitionId = partitionId;
         }
@@ -268,11 +268,11 @@ namespace CXXGRAPH
         unsigned int getNumberOfEdges(const PartitionMap<T> &partitionMap)
         {
             unsigned int numberOfEdges = 0;
-            std::list<const Edge<T> *> edgeSet;
+            std::deque<const Edge<T> *> edgeSet;
 
             for (const auto& it : partitionMap)
             {
-                const std::list<const Edge<T> *> partitionEdgeSet = it.second->getEdgeSet();
+                const std::deque<const Edge<T> *> partitionEdgeSet = it.second->getEdgeSet();
                 for (const auto& it2 : partitionEdgeSet)
                 {
                     if (std::find_if(edgeSet.begin(), edgeSet.end(), [it2](const Edge<T> *edge)

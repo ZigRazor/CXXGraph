@@ -40,7 +40,7 @@ TEST(EdgeTest, test)
     CXXGRAPH::UndirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::DirectedEdge<int> edge3(3, node1, node3);
 
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);

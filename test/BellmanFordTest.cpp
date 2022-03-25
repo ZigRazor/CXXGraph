@@ -25,7 +25,7 @@ TEST(BellmanFordTest, test_1)
     CXXGRAPH::DirectedWeightedEdge<int> edge9(1, node3, node0, 2);
 
     CXXGRAPH::DirectedWeightedEdge<int> edge10(1, node4, node1, -2);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
@@ -54,7 +54,7 @@ TEST(BellmanFordTest, test_2)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node0, node1, 2);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node1, node2, 3);
     CXXGRAPH::DirectedWeightedEdge<int> edge3(3, node2, node0, -7);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
@@ -77,7 +77,7 @@ TEST(BellmanFordTest, test_3)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
@@ -100,7 +100,7 @@ TEST(BellmanFordTest, test_4)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::DirectedEdge<int> edge3(3, node1, node3);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
@@ -123,7 +123,7 @@ TEST(BellmanFordTest, test_5)
     CXXGRAPH::Node<int> node2("2", 2);
     CXXGRAPH::Node<int> node3("3", 3);
     CXXGRAPH::DirectedWeightedEdge<int> edge1(2, node1, node2, 1);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     CXXGRAPH::Graph<int> graph(edgeSet);
     CXXGRAPH::BellmanFordResult res = graph.bellmanford(node3, node1);

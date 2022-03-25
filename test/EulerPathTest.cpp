@@ -16,7 +16,7 @@ TEST(EulerPathTest, test_1)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node0, node1, 4);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node1, node2, 8);
     CXXGRAPH::DirectedWeightedEdge<int> edge3(3, node2, node0, 11);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
@@ -49,7 +49,7 @@ TEST(EulerPathTest, test_2)
     CXXGRAPH::DirectedWeightedEdge<int> edge5(5, node3, node4, 11);
     CXXGRAPH::DirectedWeightedEdge<int> edge6(6, node4, node1, 11);
 
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
@@ -89,7 +89,7 @@ TEST(EulerPathTest, test_3)
     CXXGRAPH::DirectedEdge<int> edge7(6, node5, node0);
     CXXGRAPH::DirectedEdge<int> edge8(6, node6, node4);
 
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);

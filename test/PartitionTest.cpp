@@ -28,7 +28,7 @@ TEST(PartitionTest, test_1)
     CXXGRAPH::UndirectedWeightedEdge<int> edge10(10, node3, node5, 1);
     CXXGRAPH::UndirectedWeightedEdge<int> edge11(11, node3, node6, 1);
     CXXGRAPH::UndirectedWeightedEdge<int> edge12(12, node4, node8, 1);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
@@ -103,7 +103,7 @@ TEST(PartitionTest, test_3)
     CXXGRAPH::UndirectedWeightedEdge<int> edge10(10, node3, node5, 1);
     CXXGRAPH::UndirectedWeightedEdge<int> edge11(11, node3, node6, 1);
     CXXGRAPH::UndirectedWeightedEdge<int> edge12(12, node4, node8, 1);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
@@ -178,7 +178,7 @@ TEST(PartitionTest, test_5)
     CXXGRAPH::UndirectedWeightedEdge<int> edge10(10, node3, node5, 1);
     CXXGRAPH::UndirectedWeightedEdge<int> edge11(11, node3, node6, 1);
     CXXGRAPH::UndirectedWeightedEdge<int> edge12(12, node4, node8, 1);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
@@ -253,7 +253,7 @@ TEST(PartitionTest, test_7)
     CXXGRAPH::UndirectedWeightedEdge<int> edge10(10, node3, node5, 1);
     CXXGRAPH::UndirectedWeightedEdge<int> edge11(11, node3, node6, 1);
     CXXGRAPH::UndirectedWeightedEdge<int> edge12(12, node4, node8, 1);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);

@@ -18,7 +18,7 @@ TEST(FordFulkersonTest, test_1)
     CXXGRAPH::DirectedWeightedEdge<int> edge6(6, node4, node3, 7);
     CXXGRAPH::DirectedWeightedEdge<int> edge7(7, node4, node5, 4);
     CXXGRAPH::DirectedWeightedEdge<int> edge8(8, node3, node5, 19);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
@@ -50,7 +50,7 @@ TEST(FordFulkersonTest, test_2)
     CXXGRAPH::DirectedWeightedEdge<int> edge6(6, node4, node3, 7);
     CXXGRAPH::DirectedWeightedEdge<int> edge7(7, node4, node5, 4);
     CXXGRAPH::DirectedWeightedEdge<int> edge8(8, node3, node5, 19);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
@@ -82,7 +82,7 @@ TEST(FordFulkersonTest, test_3)
     CXXGRAPH::DirectedWeightedEdge<int> edge6(6, node4, node3, 7);
     CXXGRAPH::DirectedWeightedEdge<int> edge7(7, node4, node5, 4);
     CXXGRAPH::DirectedWeightedEdge<int> edge8(8, node3, node5, 4);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
@@ -114,7 +114,7 @@ TEST(FordFulkersonTest, test_4)
     CXXGRAPH::DirectedWeightedEdge<int> edge6(6, node4, node3, 7);
     CXXGRAPH::DirectedEdge<int> edge7(7, node4, node5);
     CXXGRAPH::DirectedWeightedEdge<int> edge8(8, node3, node5, 4);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
     edgeSet.push_back(&edge1);
     edgeSet.push_back(&edge2);
     edgeSet.push_back(&edge3);
