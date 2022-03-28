@@ -12,11 +12,11 @@ int main() {
     CXXGRAPH::UndirectedWeightedEdge<int> edge4(4, node0, node3, 1.0);
 
 
-    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
-    edgeSet.push_back(&edge4);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
+    edgeSet.insert(&edge4);
 
     // Can print out the edges for debugging
     std::cout << edge1 << "\n";

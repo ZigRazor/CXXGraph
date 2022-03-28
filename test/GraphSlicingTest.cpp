@@ -18,13 +18,13 @@ TEST(GraphSlicingTest, test_1)
     CXXGRAPH::DirectedEdge<int> edge5(5, node3, node6);
     CXXGRAPH::DirectedEdge<int> edge6(6, node4, node3);
 
-    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
-    edgeSet.push_back(&edge4);
-    edgeSet.push_back(&edge5);
-    edgeSet.push_back(&edge6);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
+    edgeSet.insert(&edge4);
+    edgeSet.insert(&edge5);
+    edgeSet.insert(&edge6);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
     std::vector<CXXGRAPH::Node<int>> res = graph.graph_slicing(node1);
@@ -53,13 +53,13 @@ TEST(GraphSlicingTest, test_2)
     CXXGRAPH::DirectedWeightedEdge<int> edge5(5, node3, node6, 8);
     CXXGRAPH::DirectedWeightedEdge<int> edge6(6, node4, node3, 0);
 
-    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
-    edgeSet.push_back(&edge4);
-    edgeSet.push_back(&edge5);
-    edgeSet.push_back(&edge6);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
+    edgeSet.insert(&edge4);
+    edgeSet.insert(&edge5);
+    edgeSet.insert(&edge6);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
     std::vector<CXXGRAPH::Node<int>> res = graph.graph_slicing(node1);
@@ -87,13 +87,13 @@ TEST(GraphSlicingTest, test_3)
     CXXGRAPH::UndirectedEdge<int> edge5(5, node3, node6);
     CXXGRAPH::UndirectedEdge<int> edge6(6, node4, node3);
 
-    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
-    edgeSet.push_back(&edge4);
-    edgeSet.push_back(&edge5);
-    edgeSet.push_back(&edge6);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
+    edgeSet.insert(&edge4);
+    edgeSet.insert(&edge5);
+    edgeSet.insert(&edge6);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
     std::vector<CXXGRAPH::Node<int>> res = graph.graph_slicing(node1);
@@ -119,13 +119,13 @@ TEST(GraphSlicingTest, test_4)
     CXXGRAPH::UndirectedWeightedEdge<int> edge5(5, node3, node6, 8);
     CXXGRAPH::UndirectedWeightedEdge<int> edge6(6, node4, node3, 0);
 
-    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
-    edgeSet.push_back(&edge4);
-    edgeSet.push_back(&edge5);
-    edgeSet.push_back(&edge6);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
+    edgeSet.insert(&edge4);
+    edgeSet.insert(&edge5);
+    edgeSet.insert(&edge6);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
     std::vector<CXXGRAPH::Node<int>> res = graph.graph_slicing(node1);
@@ -143,10 +143,10 @@ TEST(GraphSlicingTest, test_5)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node1, node2, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge3(3, node1, node3, 6);
-    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
     std::vector<CXXGRAPH::Node<int>> res = graph.graph_slicing(node4);
     ASSERT_EQ(res.size(), 0);

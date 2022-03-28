@@ -12,10 +12,10 @@ TEST(DijkstraTest, correct_example_1)
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
 
-    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
     CXXGRAPH::DijkstraResult res = graph.dijkstra(node1, node3);
@@ -35,10 +35,10 @@ TEST(DijkstraTest, correct_example_2)
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 4);
     CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
 
-    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
     CXXGRAPH::DijkstraResult res = graph.dijkstra(node1, node3);
@@ -64,14 +64,14 @@ TEST(DijkstraTest, correct_example_3)
 	CXXGRAPH::UndirectedWeightedEdge<int> edge6(6, nodeB, nodeD, 5);
 	CXXGRAPH::UndirectedWeightedEdge<int> edge7(7, nodeD, nodeE, 7);
 
-	std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-	edgeSet.push_back(&edge1);
-	edgeSet.push_back(&edge2);
-	edgeSet.push_back(&edge3);
-	edgeSet.push_back(&edge4);
-	edgeSet.push_back(&edge5);
-	edgeSet.push_back(&edge6);
-	edgeSet.push_back(&edge7);
+	std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+	edgeSet.insert(&edge1);
+	edgeSet.insert(&edge2);
+	edgeSet.insert(&edge3);
+	edgeSet.insert(&edge4);
+	edgeSet.insert(&edge5);
+	edgeSet.insert(&edge6);
+	edgeSet.insert(&edge7);
 
 	CXXGRAPH::Graph<int> graph(edgeSet);
 	CXXGRAPH::DijkstraResult res = graph.dijkstra(nodeC, nodeE);
@@ -113,16 +113,16 @@ TEST(DijkstraTest, correct_example_4)
 	CXXGRAPH::UndirectedWeightedEdge<int> edge8(8, node4, node6, 2);
 	CXXGRAPH::UndirectedWeightedEdge<int> edge9(9, node5, node6, 6);
 
-	std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-	edgeSet.push_back(&edge1);
-	edgeSet.push_back(&edge2);
-	edgeSet.push_back(&edge3);
-	edgeSet.push_back(&edge4);
-	edgeSet.push_back(&edge5);
-	edgeSet.push_back(&edge6);
-	edgeSet.push_back(&edge7);
-	edgeSet.push_back(&edge8);
-	edgeSet.push_back(&edge9);
+	std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+	edgeSet.insert(&edge1);
+	edgeSet.insert(&edge2);
+	edgeSet.insert(&edge3);
+	edgeSet.insert(&edge4);
+	edgeSet.insert(&edge5);
+	edgeSet.insert(&edge6);
+	edgeSet.insert(&edge7);
+	edgeSet.insert(&edge8);
+	edgeSet.insert(&edge9);
 
 	CXXGRAPH::Graph<int> graph(edgeSet);
 	CXXGRAPH::DijkstraResult res = graph.dijkstra(node0, node1);
@@ -172,16 +172,16 @@ TEST(DijkstraTest, correct_example_5)
 	CXXGRAPH::UndirectedWeightedEdge<int> edge8(8, node4, node5, 6);
 	CXXGRAPH::UndirectedWeightedEdge<int> edge9(9, node6, node5, 9);
 
-	std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-	edgeSet.push_back(&edge1);
-	edgeSet.push_back(&edge2);
-	edgeSet.push_back(&edge3);
-	edgeSet.push_back(&edge4);
-	edgeSet.push_back(&edge5);
-	edgeSet.push_back(&edge6);
-	edgeSet.push_back(&edge7);
-	edgeSet.push_back(&edge8);
-	edgeSet.push_back(&edge9);
+	std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+	edgeSet.insert(&edge1);
+	edgeSet.insert(&edge2);
+	edgeSet.insert(&edge3);
+	edgeSet.insert(&edge4);
+	edgeSet.insert(&edge5);
+	edgeSet.insert(&edge6);
+	edgeSet.insert(&edge7);
+	edgeSet.insert(&edge8);
+	edgeSet.insert(&edge9);
 
 	CXXGRAPH::Graph<int> graph(edgeSet);
 	CXXGRAPH::DijkstraResult res = graph.dijkstra(node1, node5);
@@ -202,10 +202,10 @@ TEST(DijkstraTest, non_weigthed_node_test)
     CXXGRAPH::DirectedEdge<int> edge2(2, node2, node3);
     CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
 
-    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
     CXXGRAPH::DijkstraResult res = graph.dijkstra(node1, node3);
@@ -226,10 +226,10 @@ TEST(DijkstraTest, negative_weigthed_node_test)
 	CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 5);
 	CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
 
-	std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-	edgeSet.push_back(&edge1);
-	edgeSet.push_back(&edge2);
-	edgeSet.push_back(&edge3);
+	std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+	edgeSet.insert(&edge1);
+	edgeSet.insert(&edge2);
+	edgeSet.insert(&edge3);
 
 	CXXGRAPH::Graph<int> graph(edgeSet);
 	CXXGRAPH::DijkstraResult res = graph.dijkstra(node1, node3);
@@ -248,9 +248,9 @@ TEST(DijkstraTest, unreachable_node_test)
     CXXGRAPH::DirectedEdge<int> edge2(2, node2, node3);
     CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
 
-    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
     CXXGRAPH::DijkstraResult res = graph.dijkstra(node1, node2);
@@ -270,9 +270,9 @@ TEST(DijkstraTest, source_not_connected_test)
     CXXGRAPH::DirectedEdge<int> edge2(2, node2, node3);
     CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
 
-    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
     CXXGRAPH::DijkstraResult res = graph.dijkstra(node4, node2);
@@ -292,9 +292,9 @@ TEST(DijkstraTest, target_not_connected_test)
     CXXGRAPH::DirectedEdge<int> edge2(2, node2, node3);
     CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
 
-    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
     
     CXXGRAPH::Graph<int> graph(edgeSet);
     CXXGRAPH::DijkstraResult res = graph.dijkstra(node1, node4);

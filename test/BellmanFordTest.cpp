@@ -25,17 +25,17 @@ TEST(BellmanFordTest, test_1)
     CXXGRAPH::DirectedWeightedEdge<int> edge9(1, node3, node0, 2);
 
     CXXGRAPH::DirectedWeightedEdge<int> edge10(1, node4, node1, -2);
-    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
-    edgeSet.push_back(&edge4);
-    edgeSet.push_back(&edge5);
-    edgeSet.push_back(&edge6);
-    edgeSet.push_back(&edge7);
-    edgeSet.push_back(&edge8);
-    edgeSet.push_back(&edge9);
-    edgeSet.push_back(&edge10);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
+    edgeSet.insert(&edge4);
+    edgeSet.insert(&edge5);
+    edgeSet.insert(&edge6);
+    edgeSet.insert(&edge7);
+    edgeSet.insert(&edge8);
+    edgeSet.insert(&edge9);
+    edgeSet.insert(&edge10);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
     CXXGRAPH::BellmanFordResult res = graph.bellmanford(node0, node3);
@@ -54,10 +54,10 @@ TEST(BellmanFordTest, test_2)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node0, node1, 2);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node1, node2, 3);
     CXXGRAPH::DirectedWeightedEdge<int> edge3(3, node2, node0, -7);
-    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
     CXXGRAPH::BellmanFordResult res = graph.bellmanford(node0, node2);
     ASSERT_TRUE(res.success);
@@ -77,10 +77,10 @@ TEST(BellmanFordTest, test_3)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
-    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
     CXXGRAPH::BellmanFordResult res = graph.bellmanford(node1, node3);
     ASSERT_TRUE(res.success);
@@ -100,10 +100,10 @@ TEST(BellmanFordTest, test_4)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::DirectedEdge<int> edge3(3, node1, node3);
-    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
     CXXGRAPH::BellmanFordResult res = graph.bellmanford(node1, node3);
     ASSERT_FALSE(res.success);
@@ -123,8 +123,8 @@ TEST(BellmanFordTest, test_5)
     CXXGRAPH::Node<int> node2("2", 2);
     CXXGRAPH::Node<int> node3("3", 3);
     CXXGRAPH::DirectedWeightedEdge<int> edge1(2, node1, node2, 1);
-    std::deque<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
     CXXGRAPH::Graph<int> graph(edgeSet);
     CXXGRAPH::BellmanFordResult res = graph.bellmanford(node3, node1);
     ASSERT_FALSE(res.success);
@@ -140,7 +140,7 @@ TEST(BellmanFordTest, test_5)
 
 
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node3, node2, 1);
-    edgeSet.push_back(&edge2);
+    edgeSet.insert(&edge2);
 
     CXXGRAPH::Graph<int> graph1(edgeSet);
     res = graph1.bellmanford(node1, node3);
