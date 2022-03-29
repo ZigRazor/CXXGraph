@@ -419,8 +419,8 @@ namespace CXXGRAPH
 		 * @param workingDir The path to the directory in which is placed the Input file
 		 * @param OFileName The Input File Name ( )
 		 * @param compress Indicates if the Input is compressed
-		 * @param writeNodeFeat Indicates if import also Node Features
-		 * @param writeEdgeWeight Indicates if import also Edge Weights
+		 * @param readNodeFeat Indicates if import also Node Features
+		 * @param readEdgeWeight Indicates if import also Edge Weights
 		 * @return 0 if all OK, else return a negative value
 		 */
 		virtual int readFromFile(InputOutputFormat format = InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool readNodeFeat = false, bool readEdgeWeight = false);
@@ -621,6 +621,7 @@ namespace CXXGRAPH
 			if (!ofileEdgeWeight.is_open())
 			{
 				// ERROR File Not Open
+				std::cout << "ERROR File Not Open" << std::endl;
 				return -1;
 			}
 
@@ -676,6 +677,7 @@ namespace CXXGRAPH
 		if (!ifileGraph.is_open())
 		{
 			// ERROR File Not Open
+			//std::cout << "ERROR File Not Open : " << completePathToFileGraph << std::endl;
 			return -1;
 		}
 
@@ -700,6 +702,7 @@ namespace CXXGRAPH
 			if (!ifileNodeFeat.is_open())
 			{
 				// ERROR File Not Open
+				//std::cout << "ERROR File Not Open" << std::endl;
 				return -1;
 			}
 			ifileNodeFeat.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
@@ -721,6 +724,7 @@ namespace CXXGRAPH
 			if (!ifileEdgeWeight.is_open())
 			{
 				// ERROR File Not Open
+				//std::cout << "ERROR File Not Open" << std::endl;
 				return -1;
 			}
 			ifileEdgeWeight.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));

@@ -35,4 +35,12 @@ static std::map<unsigned long, CXXGRAPH::Edge<int> *> generateRandomEdges(unsign
     return edges;
 }
 
+
+static CXXGRAPH::Graph<int> *readGraph(const std::string &filename)
+{
+    CXXGRAPH::Graph<int> *graph_ptr = new CXXGRAPH::Graph<int>();
+    auto result = graph_ptr->readFromFile(CXXGRAPH::InputOutputFormat::STANDARD_CSV, "../benchmark/dataset", filename);
+    return graph_ptr;
+}
+
 #endif // __UTILITIES_H__
