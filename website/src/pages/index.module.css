@@ -4,20 +4,35 @@
  */
 
 .heroBanner {
-  padding: 4rem 0;
-  text-align: center;
+  padding: 10rem 0;
   position: relative;
   overflow: hidden;
 }
 
+.banner__container {
+  background-image: url('/static/img/main.gif');
+  background-repeat: no-repeat;
+  height: 500px;
+  width: auto;
+  background-position: center;
+  align-items: center;
+  background-color: black;
+}
+
+.title,
+.subTitle {
+  color: white;
+}
+
 @media screen and (max-width: 996px) {
   .heroBanner {
-    padding: 2rem;
+    padding: 5rem;
+  }
+  .header__container {
+    display: none;
   }
 }
 
 .buttons {
   display: flex;
-  align-items: center;
-  justify-content: center;
 }
