@@ -54,9 +54,8 @@ const config = {
             type: 'doc',
             docId: 'intro',
             position: 'right',
-            label: 'Tutorial',
+            label: 'Intro',
           },
-          { to: '/blog', label: 'Blog', position: 'right' },
           {
             href: 'https://github.com/ZigRazor/CXXGraph',
             label: 'GitHub',
@@ -71,7 +70,7 @@ const config = {
             title: 'Docs',
             items: [
               {
-                label: 'Tutorial',
+                label: 'Intro',
                 to: '/docs/intro',
               },
             ],
@@ -80,16 +79,8 @@ const config = {
             title: 'Community',
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-              },
-              {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
-              },
-              {
-                label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
+                label: 'Github',
+                href: 'https://github.com/ZigRazor/CXXGraph',
               },
             ],
           },
@@ -107,7 +98,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} CXXGraph. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} CXXGraph.`,
       },
       prism: {
         theme: lightCodeTheme,
