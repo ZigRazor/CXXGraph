@@ -16,12 +16,12 @@ static void BM_FWDirected(benchmark::State &state)
     CXXGRAPH::DirectedWeightedEdge<int> edge4(4, node4, node2, -1);
     CXXGRAPH::DirectedWeightedEdge<int> edge5(3, node2, node3, 3);
 
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
-    edgeSet.push_back(&edge4);
-    edgeSet.push_back(&edge5);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
+    edgeSet.insert(&edge4);
+    edgeSet.insert(&edge5);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
     for (auto _ : state)
@@ -40,10 +40,10 @@ static void BM_FWNegCycle(benchmark::State &state)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node0, node1, 2);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node1, node2, 3);
     CXXGRAPH::DirectedWeightedEdge<int> edge3(3, node2, node0, -7);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
     for (auto _ : state)
     {
@@ -61,10 +61,10 @@ static void BM_FWUndirectedWeighted(benchmark::State &state)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
     for (auto _ : state)
     {
@@ -82,10 +82,10 @@ static void BM_FWNoWeighted(benchmark::State &state)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::DirectedEdge<int> edge3(3, node1, node3);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
     for (auto _ : state)
     {

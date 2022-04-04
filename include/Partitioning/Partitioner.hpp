@@ -42,7 +42,7 @@ namespace CXXGRAPH
         class Partitioner
         {
         private:
-            std::list<const Edge<T> *> dataset = {};
+            std::set<const Edge<T> *> dataset = {};
             PartitionStrategy<T>* algorithm = nullptr;
             Globals GLOBALS;
 
@@ -50,14 +50,14 @@ namespace CXXGRAPH
             
 
         public:
-            Partitioner(const std::list<const Edge<T> *> &dataset, Globals &G);
+            Partitioner(const std::set<const Edge<T> *> &dataset, Globals &G);
             Partitioner(const Partitioner& other);
             ~Partitioner();
 
             CoordinatedPartitionState<T> performCoordinatedPartition();
         };
         template <typename T>
-        Partitioner<T>::Partitioner(const std::list<const Edge<T> *> &dataset, Globals &G) : GLOBALS(G)
+        Partitioner<T>::Partitioner(const std::set<const Edge<T> *> &dataset, Globals &G) : GLOBALS(G)
         {
             //this->GLOBALS = G;
             this->dataset = dataset;

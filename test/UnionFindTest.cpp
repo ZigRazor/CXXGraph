@@ -20,8 +20,8 @@ TEST(UnionFindTest, setFindTest1)
     // currently we are forced to construct a graph since currently setFind and 
     // setUnion are functions belonging to graph class
     // can be removed if Subset becomes a class of its own
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
     CXXGRAPH::Graph<int> graph(edgeSet);
 
     // every element is a subset of itself
@@ -51,8 +51,8 @@ TEST(UnionFindTest, setFindTest2)
     subset = { {0, set1}, {1, set2}, {2, set3}, {3, set4}};
 
     CXXGRAPH::UndirectedWeightedEdge<int> edge1(0, node0, node1, 5);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
     CXXGRAPH::Graph<int> graph(edgeSet);
 
     auto res = graph.setFind(&subset, std::stoi(node0.getUserId()));
@@ -79,8 +79,8 @@ TEST(UnionFindTest, setUnionTest3)
     // setUnion are functions belonging to graph class
     // can be removed if Subset becomes a class of its own
     CXXGRAPH::UndirectedWeightedEdge<int> edge1(0, node0, node1, 5);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
     CXXGRAPH::Graph<int> graph(edgeSet);
 
     graph.setUnion(&subset, std::stoi(node1.getUserId()), std::stoi(node3.getUserId()));
@@ -99,21 +99,21 @@ TEST(UnionFindTest, containsCycle)
     CXXGRAPH::Node<int> node1("1", 1);
     CXXGRAPH::Node<int> node2("2", 2);
     
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
     CXXGRAPH::UndirectedWeightedEdge<int> edge0(0, node0, node1, 5);
-    edgeSet.push_back(&edge0);
+    edgeSet.insert(&edge0);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
     bool containsCycle = graph.containsCycle(&edgeSet);
     ASSERT_EQ(containsCycle, false);
 
     CXXGRAPH::UndirectedWeightedEdge<int> edge1(1, node1, node2, 10);
-    edgeSet.push_back(&edge1);
+    edgeSet.insert(&edge1);
     containsCycle = graph.containsCycle(&edgeSet);
     ASSERT_EQ(containsCycle, false);
 
     CXXGRAPH::UndirectedWeightedEdge<int> edge2(2, node2, node0, 5);
-    edgeSet.push_back(&edge2);
+    edgeSet.insert(&edge2);
     containsCycle = graph.containsCycle(&edgeSet);
     ASSERT_EQ(containsCycle, true);
 }

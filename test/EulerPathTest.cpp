@@ -16,10 +16,10 @@ TEST(EulerPathTest, test_1)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node0, node1, 4);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node1, node2, 8);
     CXXGRAPH::DirectedWeightedEdge<int> edge3(3, node2, node0, 11);
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
     auto res = graph.eulerianPath();
@@ -49,13 +49,13 @@ TEST(EulerPathTest, test_2)
     CXXGRAPH::DirectedWeightedEdge<int> edge5(5, node3, node4, 11);
     CXXGRAPH::DirectedWeightedEdge<int> edge6(6, node4, node1, 11);
 
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
-    edgeSet.push_back(&edge4);
-    edgeSet.push_back(&edge5);
-    edgeSet.push_back(&edge6);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
+    edgeSet.insert(&edge4);
+    edgeSet.insert(&edge5);
+    edgeSet.insert(&edge6);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
     auto res = graph.eulerianPath();
@@ -89,15 +89,15 @@ TEST(EulerPathTest, test_3)
     CXXGRAPH::DirectedEdge<int> edge7(6, node5, node0);
     CXXGRAPH::DirectedEdge<int> edge8(6, node6, node4);
 
-    std::list<const CXXGRAPH::Edge<int> *> edgeSet;
-    edgeSet.push_back(&edge1);
-    edgeSet.push_back(&edge2);
-    edgeSet.push_back(&edge3);
-    edgeSet.push_back(&edge4);
-    edgeSet.push_back(&edge5);
-    edgeSet.push_back(&edge6);
-    edgeSet.push_back(&edge7);
-    edgeSet.push_back(&edge8);
+    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    edgeSet.insert(&edge1);
+    edgeSet.insert(&edge2);
+    edgeSet.insert(&edge3);
+    edgeSet.insert(&edge4);
+    edgeSet.insert(&edge5);
+    edgeSet.insert(&edge6);
+    edgeSet.insert(&edge7);
+    edgeSet.insert(&edge8);
 
     CXXGRAPH::Graph<int> graph(edgeSet);
     auto res = graph.eulerianPath();
