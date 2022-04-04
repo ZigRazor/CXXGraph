@@ -4,7 +4,7 @@
 
 static auto nodes = generateRandomNodes(100000, 2);
 static auto edges = generateRandomEdges(100000, nodes);
-static auto graph_ptr = readGraph("CitHep");
+static auto graph_ptr = readGraph("CitHepPh");
 
 static void DFS_X(benchmark::State &state)
 {

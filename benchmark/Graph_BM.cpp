@@ -53,7 +53,7 @@ static void ReadGraphCitHep(benchmark::State &state)
 {
     for (auto _ : state)
     {
-        auto g = readGraph("CitHep");
+        auto g = readGraph("CitHepPh");
     }
 }
 
@@ -99,7 +99,7 @@ BENCHMARK(getNodeSetX)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned l
 
 static void getEdgeSetCitHep(benchmark::State &state)
 {
-    auto g = readGraph("CitHep");
+    auto g = readGraph("CitHepPh");
     for (auto _ : state)
     {
         auto edgeSet = g->getEdgeSet();
@@ -110,7 +110,7 @@ BENCHMARK(getEdgeSetCitHep);
 
 static void getNodeSetCitHep(benchmark::State &state)
 {
-    auto g = readGraph("CitHep");
+    auto g = readGraph("CitHepPh");
     for (auto _ : state)
     {
         auto nodeSet = g->getNodeSet();
@@ -141,7 +141,7 @@ BENCHMARK(getAdjMatrixX)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned
 
 static void getAdjMatrixCitHep(benchmark::State &state)
 {
-    auto g = readGraph("CitHep");
+    auto g = readGraph("CitHepPh");
     for (auto _ : state)
     {
         auto adjMatrix = g->getAdjMatrix();
