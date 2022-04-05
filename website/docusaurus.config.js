@@ -45,7 +45,7 @@ const config = {
         title: 'CXXGraph',
         logo: {
           alt: 'CXXGraph Logo',
-          src: 'img/logo.svg',
+          src: 'img/logo.png',
         },
         items: [
           {
