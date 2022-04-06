@@ -38,11 +38,48 @@ An alternative to [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_7
 
 If you are interested, please contact us at zigrazor@gmail.com or contribute to this project. We are waiting for you!
 
+## Roadmap
+
+| Completed | Description | Date of Completition |
+| :-------: | :---------- | :-------------------: |
+| [X] | First Optimization | Apr 4, 2022 |
+| [] | Add Benchmark for all algorithms | TBD |
+| [] | Code Optimization | TBD |
+| [] | Release 0.4.0 | TBD |
+| [] | "Const" Code Review [#155](https://github.com/ZigRazor/CXXGraph/issues/155) | TBD |
+| [] | Release 0.5.0 | TBD |
+| [] | Official Site Release | TBD |
+| [] | Reduction of Code Issue of Static Analysis | TBD |
+| [] | First Stable Release 1.0.0 | TBD |
+| [] | Markov Chain Algorithm [#107](https://github.com/ZigRazor/CXXGraph/issues/107) | TBD |
+| [] | Release 1.0.1 | TBD |
+| [] | FP-GraphMiner algorithm [#105](https://github.com/ZigRazor/CXXGraph/issues/105) | TBD |
+| [] | Release 1.0.2 | TBD |
+| [] | Tarjan's algorithm [#103](https://github.com/ZigRazor/CXXGraph/issues/103) | TBD |
+| [] | Release 1.0.3 | TBD |
+| [] | Graph Topological Sort [#104](https://github.com/ZigRazor/CXXGraph/issues/107) | TBD |
+| [] | Release 1.1.0 | TBD |
+| [] | Custom export and import [#19](https://github.com/ZigRazor/CXXGraph/issues/19) | TBD |
+| [] | Input & Output file format [#172](https://github.com/ZigRazor/CXXGraph/issues/172) | TBD |
+| [] | Release 1.2.0 | TBD |
+| [] | Multi-Thread implementation of BFS [#121](https://github.com/ZigRazor/CXXGraph/issues/121) | TBD |
+| [] | Release 1.2.1 | TBD |
+| [] | Thread Safe implementations of Boruvka, Prim & Kruskal algorithm [#128](https://github.com/ZigRazor/CXXGraph/issues/128) | TBD |
+| [] | Release 1.3.0 | TBD |
+| [] | Edge-Cut Partition Algorithm [#183](https://github.com/ZigRazor/CXXGraph/issues/183) | TBD |
+| [] | Release 1.3.1 | TBD |
+| [] | WB-Libra Parttition Algorithm [#178](https://github.com/ZigRazor/CXXGraph/issues/178) | TBD |
+| [] | Release 1.4.0 | TBD |
+| [] | Introduce Hypergraph [#122](https://github.com/ZigRazor/CXXGraph/issues/122) | TBD |
+| [] | Stable Release 2.0.0 | TBD |
+| [] | TBD | TBD |
+
 ## Table of Contents
 
 - [CXXGraph](#cxxgraph)
   - [Introduction](#introduction)
   - [We are Looking for...](#we-are-looking-for)
+  - [Roadmap](#roadmap)
   - [Table of Contents](#table-of-contents)
   - [Install and Uninstall](#install-and-uninstall)
     - [Install Linux Tarballs](#install-linux-tarballs)
