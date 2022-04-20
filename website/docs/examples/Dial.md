@@ -23,7 +23,7 @@ target_link_libraries(dial_example
                         z)
 ```
 
-#### Example
+### Example
 ```C++
 #include <CXXGraph.hpp>
 #include <math.h>

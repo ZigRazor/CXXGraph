@@ -23,7 +23,7 @@ target_link_libraries(dijkstra_example
                         z)
 ```
 
-#### Example
+### Example
 
 ```C++
 #include <CXXGraph.hpp>
