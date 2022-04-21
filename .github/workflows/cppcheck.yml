@@ -18,4 +18,4 @@ jobs:
         uses: mikeal/publish-to-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN  }}
-          BRANCH_NAME: 'main' # your branch name goes here
+          BRANCH_NAME: 'master' # your branch name goes here
