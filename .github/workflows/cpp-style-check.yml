@@ -1,0 +1,11 @@
+on: [ pull_request ]
+
+jobs:
+  cpp_style_check:
+    runs-on: ubuntu-latest
+    name: Check C++ Style
+    steps:
+    - name: Checkout this commit
+      uses: actions/checkout@v2
+    - name: Run style checks
+      uses: dalpapa/actions-uncrustify@v1
