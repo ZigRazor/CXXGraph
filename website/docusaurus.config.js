@@ -50,9 +50,9 @@ const config = {
         items: [
           {
             type: 'doc',
+          gh-pages
             docId: 'Intro',
-            position: 'right',
-            label: 'Intro',
+            docId: 'Intro',
           },
           {
             href: 'https://github.com/ZigRazor/CXXGraph',
