@@ -1004,7 +1004,7 @@ namespace CXXGRAPH
 		// setting all the distances initially to INF_DOUBLE
 		std::unordered_map<const Node<T> *, double> dist;
 
-		for (const auto &elem : adj)
+		for (auto &&elem : adj)
 		{
 			dist[elem.first] = INF_DOUBLE;
 		}
