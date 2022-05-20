@@ -1004,9 +1004,9 @@ namespace CXXGRAPH
 		// setting all the distances initially to INF_DOUBLE
 		std::unordered_map<const Node<T> *, double> dist;
 
-		for (const auto &elem : adj)
+		for (const auto &node : nodeSet )
 		{
-			dist[elem.first] = INF_DOUBLE;
+			dist[node] = INF_DOUBLE;
 		}
 
 		// creating a min heap using priority queue
