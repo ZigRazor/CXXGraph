@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #variables
-MAJOR=$(cat ../include/CXXGraphConfig.h | grep CXXGraph_VERSION_MAJOR | awk '{ print $3 }')
-MINOR=$(cat ../include/CXXGraphConfig.h | grep CXXGraph_VERSION_MINOR | awk '{ print $3 }')
-PATCH=$(cat ../include/CXXGraphConfig.h | grep CXXGraph_VERSION_PATCH | awk '{ print $3 }')
+MAJOR=$(grep CXXGraph_VERSION_MAJOR ../include/CXXGraphConfig.h | awk '{ print $3 }')
+MINOR=$(grep CXXGraph_VERSION_MINOR ../include/CXXGraphConfig.h | awk '{ print $3 }')
+PATCH=$(grep CXXGraph_VERSION_PATCH ../include/CXXGraphConfig.h | awk '{ print $3 }')
 
 echo "Packaging version $MAJOR.$MINOR.$PATCH"
 
