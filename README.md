@@ -571,7 +571,7 @@ We are referenced by:
 
 Thanks to the community of [TheAlgorithms](https://github.com/TheAlgorithms) for some algorithms ispiration.
 
-Thanks to [GeeksForGeeks](https://www.geeksforgeeks.org/) for some algorithms inspiration.
+Thanks to [GeeksForGeeks](https://www.geeksforgeeks.org/) and [Scaler](https://www.scaler.com/topics/) for some algorithms inspiration.
 
 ## Contributors
 
