@@ -139,6 +139,17 @@ static void getAdjMatrixX(benchmark::State &state)
 
 BENCHMARK(getAdjMatrixX)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned long)1 << 16);
 
+static void readCitHep(benchmark::State &state)
+{
+    
+    for (auto _ : state)
+    {
+        auto g = readGraph("CitHepPh");
+    }
+}
+
+BENCHMARK(readCitHep);
+
 static void getAdjMatrixCitHep(benchmark::State &state)
 {
     auto g = readGraph("CitHepPh");
@@ -149,3 +160,6 @@ static void getAdjMatrixCitHep(benchmark::State &state)
 }
 
 BENCHMARK(getAdjMatrixCitHep);
+
+
+

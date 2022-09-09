@@ -4,7 +4,7 @@
 
 static auto nodes = generateRandomNodes(100000, 2);
 static auto edges = generateRandomEdges(100000, nodes);
-static auto graph_ptr = readGraph("CitHepPh");
+static auto cit_graph_ptr = readGraph("CitHepPh");
 
 static void DFS_X(benchmark::State &state)
 {
@@ -28,12 +28,13 @@ BENCHMARK(DFS_X)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned long)1 
 
 static void DFS_FromReadedCitHep(benchmark::State &state)
 {
-    auto edgeSet = graph_ptr->getEdgeSet();
+    auto edgeSet = cit_graph_ptr->getEdgeSet();
     for (auto _ : state)
     {
         
-        auto &result = graph_ptr->depth_first_search(*((*(edgeSet.begin()))->getNodePair().first));
+        auto &result = cit_graph_ptr->depth_first_search(*((*(edgeSet.begin()))->getNodePair().first));
     }
 }
 
 BENCHMARK(DFS_FromReadedCitHep);
+

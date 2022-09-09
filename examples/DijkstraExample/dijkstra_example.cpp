@@ -12,7 +12,7 @@ int main() {
     CXXGRAPH::UndirectedWeightedEdge<int> edge4(4, node0, node3, 1.0);
 
 
-    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    CXXGRAPH::T_EdgeSet<int> edgeSet;
     edgeSet.insert(&edge1);
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);

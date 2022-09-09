@@ -34,7 +34,7 @@ TEST(BoruvkaTest, test_1)
     CXXGRAPH::UndirectedWeightedEdge<int> edge13(13, node3, node5, 14);
     CXXGRAPH::UndirectedWeightedEdge<int> edge14(14, node5, node4, 10);
 
-    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    CXXGRAPH::T_EdgeSet<int> edgeSet;
     edgeSet.insert(&edge1);
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
@@ -84,7 +84,7 @@ TEST(BoruvkaTest, test_2)
     CXXGRAPH::UndirectedWeightedEdge<int> edge8(8, node5, node4, 22);
     CXXGRAPH::UndirectedWeightedEdge<int> edge9(9, node4, node3, 12);
 
-    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    CXXGRAPH::T_EdgeSet<int> edgeSet;
     edgeSet.insert(&edge1);
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
@@ -130,7 +130,7 @@ TEST(BoruvkaTest, test_3)
     CXXGRAPH::UndirectedWeightedEdge<int> edge11(11, node5, node6, 3);
     CXXGRAPH::UndirectedWeightedEdge<int> edge12(12, node6, node7, 12);
 
-    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    CXXGRAPH::T_EdgeSet<int> edgeSet;
     edgeSet.insert(&edge1);
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
@@ -161,7 +161,7 @@ TEST(BoruvkaTest, test_4)
     CXXGRAPH::Node<int> node3("3", 3);
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node1, node2, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
-    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    CXXGRAPH::T_EdgeSet<int> edgeSet;
     edgeSet.insert(&edge1);
     edgeSet.insert(&edge2);
  
@@ -171,7 +171,7 @@ TEST(BoruvkaTest, test_4)
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_DIR_GRAPH);
 
     CXXGRAPH::UndirectedEdge<int> edge3(3, node1, node2);
-    std::set<const CXXGRAPH::Edge<int> *> edgeSet1;
+    CXXGRAPH::T_EdgeSet<int> edgeSet1;
     edgeSet1.insert(&edge3);
  
     CXXGRAPH::Graph<int> graph1(edgeSet1);

@@ -2,11 +2,13 @@
 #include "CXXGraph.hpp"
 #include "Utilities.hpp"
 
+
 static auto nodes = generateRandomNodes(100000, 2);
 static auto edges = generateRandomEdges(100000, nodes);
 static auto cit_graph_ptr = readGraph("CitHepPh");
 
-static void BFS_X(benchmark::State &state)
+
+static void Dijkstra_X(benchmark::State &state)
 {
     CXXGRAPH::Graph<int> g;
     auto range_start = edges.begin();
@@ -19,20 +21,20 @@ static void BFS_X(benchmark::State &state)
         }
     for (auto _ : state)
     {
-        auto &result = g.breadth_first_search(*(range_start->second->getNodePair().first));
+        auto &result = g.dijkstra(*(range_start->second->getNodePair().first), *(range_end->second->getNodePair().second));
     }
 }
-BENCHMARK(BFS_X)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned long)1 << 16);
+BENCHMARK(Dijkstra_X)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned long)1 << 16);
 
-static void BFS_FromReadedCitHep(benchmark::State &state)
+static void Dijkstra_FromReadedCitHep(benchmark::State &state)
 {
     auto edgeSet = cit_graph_ptr->getEdgeSet();
     for (auto _ : state)
     {
         
-        auto &result = cit_graph_ptr->breadth_first_search(*((*(edgeSet.begin()))->getNodePair().first));
+        auto &result = cit_graph_ptr->dijkstra(*((*(edgeSet.begin()))->getNodePair().first),*((*(++edgeSet.begin()))->getNodePair().second));
     }
 }
 
-BENCHMARK(BFS_FromReadedCitHep);
+BENCHMARK(Dijkstra_FromReadedCitHep);
 
