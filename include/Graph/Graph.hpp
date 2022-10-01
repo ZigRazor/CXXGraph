@@ -1982,7 +1982,7 @@ namespace CXXGRAPH
 				visited[node->getId()] = false;
 			}
 
-			std::stack<Node<T> *> st;
+			std::stack<const Node<T> *> st;
 			std::function<void(const Node<T> *)> dfs_helper = [this, &adjMatrix, &visited, &dfs_helper, &st](const Node<T> *source)
 			{
 				// mark the vertex visited
@@ -2025,7 +2025,7 @@ namespace CXXGRAPH
 
 			visited.clear();
 
-			std::function<void(const Node<T> *, std::vector<Node<T>> &)> dfs_helper1 = [this, &rev, &visited, &dfs_helper](const Node<T> *source, std::vector<Node<T>> &comp)
+			std::function<void(const Node<T> *, std::vector<Node<T>> &)> dfs_helper1 = [this, &rev, &visited, &dfs_helper1](const Node<T> *source, std::vector<Node<T>> &comp)
 			{
 				// mark the vertex visited
 				visited[source->getId()] = true;
