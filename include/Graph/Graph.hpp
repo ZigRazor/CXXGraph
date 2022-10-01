@@ -31,6 +31,7 @@
 #include <list>
 #include <deque>
 #include <queue>
+#include <stack>
 #include <string>
 #include <cstring>
 #include <functional>
