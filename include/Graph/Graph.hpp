@@ -355,6 +355,19 @@ namespace CXXGRAPH
 		* @param start Node from where traversing starts
 		* @return a vector of nodes that belong to C but not to M.
 		*/
+
+		virtual const std::vector<vector<Node<T>>> kosaraju() const;
+		/**
+		* \brief
+		* This function performs performs the kosaraju algorthm on the graph to find the strongly connected components.
+		*
+		* Mathematical definition of the problem:
+		* A strongly connected component (SCC) of a directed graph is a maximal strongly connected subgraph.
+
+		* Note: No Thread Safe
+		* @return a vector of vector of strongly connected components.
+		*/
+
 		virtual const std::vector<Node<T>> graph_slicing(const Node<T> &start) const;
 
 		/**
@@ -1945,6 +1958,101 @@ namespace CXXGRAPH
 				}
 			}
 			return true;
+		}
+	}
+
+	template <typename T>
+	std::vector<vector<Node<T>>> Graph<T>::kosaraju() const{
+		std::vector<vector<Node<T>>> connectedComps;
+
+		if (!isDirectedGraph())
+		{
+			return connectedComps;//empty vector since for undirected graph strongly connected components do not exist
+		}
+		else
+		{
+			auto nodeSet = getNodeSet();
+			auto adjMatrix = getAdjMatrix();
+			// created visited map
+			std::unordered_map<unsigned long, bool> visited;
+			for (const auto &node : nodeSet)
+			{
+				visited[node->getId()] = false;
+			}
+
+			std::stack<const Node<T> *> st;
+			std::function<void(const Node<T> *)> dfs_helper = [this, &adjMatrix, &visited, &dfs_helper, &st](const Node<T> *source)
+			{
+				// mark the vertex visited
+				visited[source->getId()] = true;
+
+				// travel the neighbors
+				for (int i = 0; i < adjMatrix[source].size(); i++)
+				{
+					const Node<T> *neighbor = adjMatrix[source].at(i).first;
+					if (visited[neighbor->getId()] == false)
+					{
+						// make recursive call from neighbor
+						dfs_helper(neighbor);
+					}
+				}
+
+				st.push(source);
+			};
+
+			for (const auto &node : nodeSet)
+			{
+				if (visited[node->getId()] == false)
+				{
+					dfs_helper(node);
+				}
+			}
+
+			//construct the transpose of the given graph
+			AdjacencyMatrix<T> rev;
+			auto addElementToAdjMatrix = [&rev](const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge){
+				std::pair<const Node<T> *, const Edge<T> *> elem = {nodeTo, edge};
+				rev[nodeFrom].push_back(std::move(elem));
+			};
+			for (const auto &edgeSetIt : edgeSet)
+			{
+				const DirectedEdge<T> *d_edge = dynamic_cast<const DirectedEdge<T> *>(edgeSetIt);
+				//Add the reverse edge to the reverse adjacency matrix
+				addElementToAdjMatrix(&(d_edge->getTo()), &(d_edge->getFrom()), d_edge);
+			}
+
+			visited.clear();
+
+			std::function<void(const Node<T> *, std::vector<Node<T>> &)> dfs_helper1 = [this, &rev, &visited, &dfs_helper](const Node<T> *source, std::vector<Node<T>> &comp)
+			{
+				// mark the vertex visited
+				visited[source->getId()] = true;
+				//Add the current vertex to the strongly connected component
+				comp.push_back(*source);
+
+				// travel the neighbors
+				for (int i = 0; i < rev[source].size(); i++)
+				{
+					const Node<T> *neighbor = rev[source].at(i).first;
+					if (visited[neighbor->getId()] == false)
+					{
+						// make recursive call from neighbor
+						dfs_helper1(neighbor, comp);
+					}
+				}
+			};
+
+			while(st.size()!=0){
+				auto rem = st.top();
+				st.pop();
+				if(visited[rem->getId()] == false){
+					std::vector<Node<T>> comp;
+					dfs_helper1(rem, comp);
+					connectedComps.push_back(comp);
+				}
+			}
+
+			return connectedComps;
 		}
 	}
 
