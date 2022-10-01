@@ -356,7 +356,7 @@ namespace CXXGRAPH
 		* @return a vector of nodes that belong to C but not to M.
 		*/
 
-		virtual const std::vector<std::vector<Node<T>>> kosaraju() const;
+		virtual std::vector<std::vector<Node<T>>> kosaraju() const;
 		/**
 		* \brief
 		* This function performs performs the kosaraju algorthm on the graph to find the strongly connected components.
@@ -1962,7 +1962,8 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	std::vector<std::vector<Node<T>>> Graph<T>::kosaraju() const{
+	std::vector<std::vector<Node<T>>> Graph<T>::kosaraju() const
+	{
 		std::vector<std::vector<Node<T>>> connectedComps;
 
 		if (!isDirectedGraph())
