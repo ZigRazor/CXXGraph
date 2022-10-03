@@ -342,6 +342,18 @@ namespace CXXGRAPH
 
 		/**
 		* \brief
+		* This function performs performs the kosaraju algorthm on the graph to find the strongly connected components.
+		*
+		* Mathematical definition of the problem:
+		* A strongly connected component (SCC) of a directed graph is a maximal strongly connected subgraph.
+
+		* Note: No Thread Safe
+		* @return a vector of vector of strongly connected components.
+		*/
+		virtual std::vector<std::vector<Node<T>>> kosaraju() const;
+
+		/**
+		* \brief
 		* This function performs Graph Slicing based on connectivity
 		*
 		* Mathematical definition of the problem:
@@ -356,19 +368,6 @@ namespace CXXGRAPH
 		* @param start Node from where traversing starts
 		* @return a vector of nodes that belong to C but not to M.
 		*/
-
-		virtual std::vector<std::vector<Node<T>>> kosaraju() const;
-		/**
-		* \brief
-		* This function performs performs the kosaraju algorthm on the graph to find the strongly connected components.
-		*
-		* Mathematical definition of the problem:
-		* A strongly connected component (SCC) of a directed graph is a maximal strongly connected subgraph.
-
-		* Note: No Thread Safe
-		* @return a vector of vector of strongly connected components.
-		*/
-
 		virtual const std::vector<Node<T>> graph_slicing(const Node<T> &start) const;
 
 		/**
