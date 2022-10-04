@@ -119,7 +119,7 @@ namespace CXXGRAPH
             }
             for (int t = 0; t < processors; ++t)
             {
-                if(myThreads[t].joinable()){
+                if (myThreads[t].joinable()){
                     myThreads[t].join();
                 }
             }

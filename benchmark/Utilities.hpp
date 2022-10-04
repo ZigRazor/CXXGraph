@@ -11,7 +11,7 @@ static std::map<unsigned long, CXXGRAPH::Node<int> *> generateRandomNodes(unsign
     int randomNumber;
     for (auto index = 0; index < numberOfNodes; index++)
     {
-        randomNumber = (rand() % MaxValue) + 1;
+        randomNumber = (rand_r(NULL) % MaxValue) + 1;
         CXXGRAPH::Node<int> *newNode = new CXXGRAPH::Node<int>(std::to_string(index), randomNumber);
         nodes[index] = newNode;
     }
@@ -27,8 +27,8 @@ static std::map<unsigned long, CXXGRAPH::Edge<int> *> generateRandomEdges(unsign
     auto MaxValue = nodes.size();
     for (auto index = 0; index < numberOfEdges; index++)
     {
-        randomNumber1 = (rand() % MaxValue);
-        randomNumber2 = (rand() % MaxValue);
+        randomNumber1 = (rand_r(NULL) % MaxValue);
+        randomNumber2 = (rand_r(NULL) % MaxValue);
         CXXGRAPH::Edge<int> *newEdge = new CXXGRAPH::Edge<int>(index, *(nodes.at(randomNumber1)), *(nodes.at(randomNumber2)));
         edges[index] = newEdge;
     }
@@ -44,8 +44,8 @@ static std::map<unsigned long, CXXGRAPH::UndirectedEdge<int> *> generateRandomUn
     auto MaxValue = nodes.size();
     for (auto index = 0; index < numberOfEdges; index++)
     {
-        randomNumber1 = (rand() % MaxValue);
-        randomNumber2 = (rand() % MaxValue);
+        randomNumber1 = (rand_r(NULL) % MaxValue);
+        randomNumber2 = (rand_r(NULL) % MaxValue);
         CXXGRAPH::UndirectedEdge<int> *newEdge = new CXXGRAPH::UndirectedEdge<int>(index, *(nodes.at(randomNumber1)), *(nodes.at(randomNumber2)));
         edges[index] = newEdge;
     }
