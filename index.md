@@ -29,6 +29,10 @@ Share on [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=
 **CXXGraph** is a small library, header only, that manages the Graph and it's algorithms in **C++**. In other words a "Comprehensive C++ Graph Library".
 An alternative to [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_77_0/libs/graph/doc/index.html).
 
+## Hacktoberfest 2k22
+
+Hi Developers, we partecipate to Hacktoberfest 2022!
+
 ## We are Looking for...
 
 **We are looking for:**
@@ -38,11 +42,48 @@ An alternative to [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_7
 
 If you are interested, please contact us at zigrazor@gmail.com or contribute to this project. We are waiting for you!
 
+## Roadmap
+
+| Completed | Description | Date of Completition |
+| :-------: | :---------- | :-------------------: |
+| :heavy_check_mark: | First Optimization | Apr 4, 2022 |
+| :memo: | Add Benchmark for all algorithms | TBD |
+| :memo: | Code Optimization | TBD |
+| :memo: | Release 0.4.0 | TBD |
+| :memo: | "Const" Code Review [#155](https://github.com/ZigRazor/CXXGraph/issues/155) | TBD |
+| :memo: | Release 0.5.0 | TBD |
+| :memo: | Official Site Release | TBD |
+| :memo: | Reduction of Code Issue of Static Analysis | TBD |
+| :memo: | First Stable Release 1.0.0 | TBD |
+| :memo: | Markov Chain Algorithm [#107](https://github.com/ZigRazor/CXXGraph/issues/107) | TBD |
+| :memo: | Release 1.0.1 | TBD |
+| :memo: | FP-GraphMiner algorithm [#105](https://github.com/ZigRazor/CXXGraph/issues/105) | TBD |
+| :memo: | Release 1.0.2 | TBD |
+| :memo: | Tarjan's algorithm [#103](https://github.com/ZigRazor/CXXGraph/issues/103) | TBD |
+| :memo: | Release 1.0.3 | TBD |
+| :memo: | Graph Topological Sort [#104](https://github.com/ZigRazor/CXXGraph/issues/107) | TBD |
+| :memo: | Release 1.1.0 | TBD |
+| :memo: | Custom export and import [#19](https://github.com/ZigRazor/CXXGraph/issues/19) | TBD |
+| :memo: | Input & Output file format [#172](https://github.com/ZigRazor/CXXGraph/issues/172) | TBD |
+| :memo: | Release 1.2.0 | TBD |
+| :memo: | Multi-Thread implementation of BFS [#121](https://github.com/ZigRazor/CXXGraph/issues/121) | TBD |
+| :memo: | Release 1.2.1 | TBD |
+| :memo: | Thread Safe implementations of Boruvka, Prim & Kruskal algorithm [#128](https://github.com/ZigRazor/CXXGraph/issues/128) | TBD |
+| :memo: | Release 1.3.0 | TBD |
+| :memo: | Edge-Cut Partition Algorithm [#183](https://github.com/ZigRazor/CXXGraph/issues/183) | TBD |
+| :memo: | Release 1.3.1 | TBD |
+| :memo: | WB-Libra Parttition Algorithm [#178](https://github.com/ZigRazor/CXXGraph/issues/178) | TBD |
+| :memo: | Release 1.4.0 | TBD |
+| :memo: | Introduce Hypergraph [#122](https://github.com/ZigRazor/CXXGraph/issues/122) | TBD |
+| :memo: | Stable Release 2.0.0 | TBD |
+| :memo: | TBD | TBD |
+
 ## Table of Contents
 
 - [CXXGraph](#cxxgraph)
   - [Introduction](#introduction)
   - [We are Looking for...](#we-are-looking-for)
+  - [Roadmap](#roadmap)
   - [Table of Contents](#table-of-contents)
   - [Install and Uninstall](#install-and-uninstall)
     - [Install Linux Tarballs](#install-linux-tarballs)
@@ -304,7 +345,7 @@ $ ./make_deb.sh
 ### Dijkstra
 
 [Graph Dijkstras Shortest Path Algorithm(Dijkstra's Shortest Path)](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
-**Dijkstra's Algorithm** is used to find the shortest path from a source node to all other reachable nodes in the graph. The algorithm initially assumes all the nodes are unreachable from the given source node so we mark the distances of all nodes as infinity.
+**[Dijkstra's Algorithm]**(https://www.interviewbit.com/blog/find-shortest-path-dijkstras-algorithm/) is used to find the shortest path from a source node to all other reachable nodes in the graph. The algorithm initially assumes all the nodes are unreachable from the given source node so we mark the distances of all nodes as infinity.
 (infinity) from source node (INF / infinity denotes unable to reach).
 
 ### Dial
