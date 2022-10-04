@@ -3,11 +3,7 @@
 #include "CXXGraph.hpp"
 #include "Utilities.hpp"
 
-static auto nodes = generateRandomNodes(100000, 2);
-static auto edges = generateRandomEdges(100000, nodes);
-static auto undirectedEdges = generateRandomUndirectedEdges(100000, nodes);
-
-static CXXGRAPH::Graph<int> *graph;
+//static CXXGRAPH::Graph<int> *graph;
 
 static void GraphCreation(benchmark::State &state)
 {

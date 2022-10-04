@@ -2299,7 +2299,7 @@ namespace CXXGRAPH
 			}
 			else
 			{
-				// OUTPUT FORMAT NOT RECOGNIZED
+				// INPUT FORMAT NOT RECOGNIZED
 				result = -1;
 			}
 		}

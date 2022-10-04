@@ -3,11 +3,6 @@
 #include "Utilities.hpp"
 
 
-static auto nodes = generateRandomNodes(100000, 2);
-static auto edges = generateRandomEdges(100000, nodes);
-static auto cit_graph_ptr = readGraph("CitHepPh");
-
-
 static void Dijkstra_X(benchmark::State &state)
 {
     CXXGRAPH::Graph<int> g;

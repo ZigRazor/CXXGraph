@@ -110,8 +110,8 @@ namespace CXXGRAPH
             std::map<int, double> eva;
             auto u_partition = u_record->getPartitions();
             auto v_partition = v_record->getPartitions();
-            auto optimalEdgesNumber = edgeCardinality / P;
-            auto optimalVerticesNumber = vertexCardinality / P;
+            auto optimalEdgesNumber = (double)edgeCardinality / (double)P;
+            auto optimalVerticesNumber = (double)vertexCardinality / (double)P;
             for (int i = 0; i < P; i++)
             {
                 eva[i] = 0;
