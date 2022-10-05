@@ -2,9 +2,9 @@
 #define __CXXGRAPH_H__
 
 // the configured options and settings for CXXGraph
-#define CXXGraph_VERSION_MAJOR 0
-#define CXXGraph_VERSION_MINOR 3
-#define CXXGraph_VERSION_PATCH 0
+#define CXXGraph_VERSION_MAJOR @CXXGraph_VERSION_MAJOR@
+#define CXXGraph_VERSION_MINOR @CXXGraph_VERSION_MINOR@
+#define CXXGraph_VERSION_PATCH @CXXGraph_VERSION_PATCH@
 
 #include "Edge/Edge.hpp"
 #include "Edge/DirectedEdge.hpp"
