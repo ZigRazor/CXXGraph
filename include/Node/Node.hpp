@@ -37,15 +37,15 @@ namespace CXXGRAPH
 	class Node
 	{
 	private:
-		unsigned long long id = 0;
+		std::size_t id = 0;
 		std::string userId = "";
 		T data;
-		void setId(const std::string*);
+		void setId(std::string_view);
 
 	public:
-		Node(const std::string, const T &data);
+		Node(std::string_view, const T &data);
 		~Node() = default;
-		const unsigned long long &getId() const;
+		const std::size_t &getId() const;
 		const std::string &getUserId() const;
 		const T &getData() const;
 		//operator
@@ -55,20 +55,22 @@ namespace CXXGRAPH
 	};
 
 	template <typename T>
-	Node<T>::Node(const std::string id, const T &data)
+	Node<T>::Node(std::string_view id, const T &data)
 	{
 		this->userId = id;
 		// the userid is set as sha512 hash of the user provided id
-		setId(&id);
+		setId(id);
 		this->data = data;
 	}
 
 	template <typename T>
-	void Node<T>::setId(const std::string* inpId)
+	void Node<T>::setId(std::string_view inpId)
 	{
-		const unsigned char* userId = reinterpret_cast<const unsigned char *>((*inpId).c_str() );
-		unsigned char obuf[64];
-		SHA512(userId, (*inpId).length(), obuf);
+		//const unsigned char* userId = reinterpret_cast<const unsigned char *>((*inpId).c_str() );
+		//unsigned char obuf[64];
+		//unsigned long long obuf[8];
+		//SHA512(userId, (*inpId).length(), reinterpret_cast<unsigned char*>(obuf));
+		/**
 		// Transform byte-array to string
 		std::stringstream shastr;
 		shastr << std::hex << std::setfill('0');
@@ -84,10 +86,14 @@ namespace CXXGRAPH
 		// convert hex string to unsigned long long
 		std::istringstream iss(idStr);
 		iss >> std::hex >> this->id;
+		
+		**/
+		this->id = std::hash<std::string_view>{}(inpId);
+		
 	}	
 
 	template <typename T>
-	const unsigned long long &Node<T>::getId() const
+	const std::size_t &Node<T>::getId() const
 	{
 		return id;
 	}

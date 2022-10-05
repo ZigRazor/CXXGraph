@@ -23,6 +23,7 @@
 #pragma once
 
 #include <list>
+#include <unordered_set>
 
 #include "Utility/Typedef.hpp"
 #include "PartitioningStats.hpp"
@@ -31,6 +32,9 @@ namespace CXXGRAPH
 {
     template <typename T>
     class Graph;
+
+    template<typename T>
+	using T_EdgeSet = std::unordered_set<const Edge<T> *>;
     namespace PARTITIONING
     {
         template <typename T>
@@ -42,8 +46,8 @@ namespace CXXGRAPH
         public:
             Partition();
             Partition(unsigned int partitionId);
-            Partition(const std::set<const Edge<T> *> &edgeSet);
-            Partition(unsigned int partitionId, const std::set<const Edge<T> *> &edgeSet);
+            Partition(const T_EdgeSet<T> &edgeSet);
+            Partition(unsigned int partitionId, const T_EdgeSet<T> &edgeSet);
             ~Partition() = default;
             /**
 		    * @brief Get the Partition ID
@@ -165,13 +169,13 @@ namespace CXXGRAPH
         }
 
         template <typename T>
-        Partition<T>::Partition(const std::set<const Edge<T> *> &edgeSet) : Graph<T>(edgeSet)
+        Partition<T>::Partition(const T_EdgeSet<T> &edgeSet) : Graph<T>(edgeSet)
         {
             partitionId = 0;
         }
 
         template <typename T>
-        Partition<T>::Partition(unsigned int partitionId, const std::set<const Edge<T> *> &edgeSet) : Graph<T>(edgeSet)
+        Partition<T>::Partition(unsigned int partitionId, const T_EdgeSet<T> &edgeSet) : Graph<T>(edgeSet)
         {
             this->partitionId = partitionId;
         }
@@ -268,11 +272,11 @@ namespace CXXGRAPH
         unsigned int getNumberOfEdges(const PartitionMap<T> &partitionMap)
         {
             unsigned int numberOfEdges = 0;
-            std::set<const Edge<T> *> edgeSet;
+            T_EdgeSet<T> edgeSet;
 
             for (const auto& it : partitionMap)
             {
-                const std::set<const Edge<T> *> partitionEdgeSet = it.second->getEdgeSet();
+                const T_EdgeSet<T> partitionEdgeSet = it.second->getEdgeSet();
                 for (const auto& it2 : partitionEdgeSet)
                 {
                     if (std::find_if(edgeSet.begin(), edgeSet.end(), [it2](const Edge<T> *edge)

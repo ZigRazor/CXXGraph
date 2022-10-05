@@ -20,7 +20,7 @@ TEST(UnionFindTest, setFindTest1)
     // currently we are forced to construct a graph since currently setFind and 
     // setUnion are functions belonging to graph class
     // can be removed if Subset becomes a class of its own
-    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    CXXGRAPH::T_EdgeSet<int> edgeSet;
     edgeSet.insert(&edge1);
     CXXGRAPH::Graph<int> graph(edgeSet);
 
@@ -51,7 +51,7 @@ TEST(UnionFindTest, setFindTest2)
     subset = { {0, set1}, {1, set2}, {2, set3}, {3, set4}};
 
     CXXGRAPH::UndirectedWeightedEdge<int> edge1(0, node0, node1, 5);
-    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    CXXGRAPH::T_EdgeSet<int> edgeSet;
     edgeSet.insert(&edge1);
     CXXGRAPH::Graph<int> graph(edgeSet);
 
@@ -79,7 +79,7 @@ TEST(UnionFindTest, setUnionTest3)
     // setUnion are functions belonging to graph class
     // can be removed if Subset becomes a class of its own
     CXXGRAPH::UndirectedWeightedEdge<int> edge1(0, node0, node1, 5);
-    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    CXXGRAPH::T_EdgeSet<int> edgeSet;
     edgeSet.insert(&edge1);
     CXXGRAPH::Graph<int> graph(edgeSet);
 
@@ -99,7 +99,7 @@ TEST(UnionFindTest, containsCycle)
     CXXGRAPH::Node<int> node1("1", 1);
     CXXGRAPH::Node<int> node2("2", 2);
     
-    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    CXXGRAPH::T_EdgeSet<int> edgeSet;
     CXXGRAPH::UndirectedWeightedEdge<int> edge0(0, node0, node1, 5);
     edgeSet.insert(&edge0);
 

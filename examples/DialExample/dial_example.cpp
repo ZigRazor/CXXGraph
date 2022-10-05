@@ -36,7 +36,7 @@ int main() {
     CXXGRAPH::DirectedWeightedEdge<int> edge4(4, node0, node1, norm(points_vector.at(node0.getData()), points_vector.at(node1.getData())));
     CXXGRAPH::DirectedWeightedEdge<int> edge5(5, node0, node2, norm(points_vector.at(node0.getData()), points_vector.at(node2.getData())));
 
-    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    CXXGRAPH::T_EdgeSet<int> edgeSet;
     edgeSet.insert(&edge1);
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);

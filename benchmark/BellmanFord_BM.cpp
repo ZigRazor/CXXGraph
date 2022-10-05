@@ -3,7 +3,7 @@
 #include "Utilities.hpp"
 
 
-static void BFS_X(benchmark::State &state)
+static void BellmanFord_X(benchmark::State &state)
 {
     CXXGRAPH::Graph<int> g;
     auto range_start = edges.begin();
@@ -16,20 +16,19 @@ static void BFS_X(benchmark::State &state)
         }
     for (auto _ : state)
     {
-        auto &result = g.breadth_first_search(*(range_start->second->getNodePair().first));
+        auto &result = g.bellmanford(*(range_start->second->getNodePair().first), *(range_end->second->getNodePair().second));
     }
 }
-BENCHMARK(BFS_X)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned long)1 << 16);
+BENCHMARK(BellmanFord_X)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned long)1 << 16);
 
-static void BFS_FromReadedCitHep(benchmark::State &state)
+static void BellmanFord_FromReadedCitHep(benchmark::State &state)
 {
     auto edgeSet = cit_graph_ptr->getEdgeSet();
     for (auto _ : state)
     {
         
-        auto &result = cit_graph_ptr->breadth_first_search(*((*(edgeSet.begin()))->getNodePair().first));
+        auto &result = cit_graph_ptr->bellmanford(*((*(edgeSet.begin()))->getNodePair().first), *((*(++edgeSet.begin()))->getNodePair().second));
     }
 }
 
-BENCHMARK(BFS_FromReadedCitHep);
-
+BENCHMARK(BellmanFord_FromReadedCitHep);

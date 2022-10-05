@@ -10,7 +10,7 @@ TEST(BFSTest, test_1)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
-    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    CXXGRAPH::T_EdgeSet<int> edgeSet;
     edgeSet.insert(&edge1);
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
@@ -32,7 +32,7 @@ TEST(BFSTest, test_2)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge3(3, node1, node3, 6);
-    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    CXXGRAPH::T_EdgeSet<int> edgeSet;
     edgeSet.insert(&edge1);
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
@@ -54,7 +54,7 @@ TEST(BFSTest, test_3)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
-    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    CXXGRAPH::T_EdgeSet<int> edgeSet;
     edgeSet.insert(&edge1);
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
@@ -75,7 +75,7 @@ TEST(BFSTest, test_4)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
-    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    CXXGRAPH::T_EdgeSet<int> edgeSet;
     edgeSet.insert(&edge1);
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
@@ -97,7 +97,7 @@ TEST(BFSTest, test_5)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge3(3, node1, node3, 6);
-    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    CXXGRAPH::T_EdgeSet<int> edgeSet;
     edgeSet.insert(&edge1);
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
@@ -120,7 +120,7 @@ TEST(BFSTest, test_6)
     CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
     CXXGRAPH::DirectedWeightedEdge<int> edge3(3, node1, node3, 6);
-    std::set<const CXXGRAPH::Edge<int> *> edgeSet;
+    CXXGRAPH::T_EdgeSet<int> edgeSet;
     edgeSet.insert(&edge1);
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);

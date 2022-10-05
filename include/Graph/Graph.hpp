@@ -24,6 +24,7 @@
 
 #include <utility>
 #include <set>
+#include <unordered_set>
 #include <map>
 #include <optional>
 #include <iostream>
@@ -62,8 +63,17 @@
 #include "Partitioning/Partitioner.hpp"
 #include "Partitioning/Utility/Globals.hpp"
 
+
+
+
 namespace CXXGRAPH
 {
+	//Typedef for Allocator
+	//typedef size_t DataType;
+    //typedef Moya::Allocator<const Edge<T> *,16* 1024> MemoryPoolAllocator;
+	template<typename T>
+	using T_EdgeSet = std::unordered_set<const Edge<T> *>;
+
 	namespace PARTITIONING
 	{
 		template <typename T>
@@ -80,7 +90,7 @@ namespace CXXGRAPH
 	class Graph
 	{
 	private:
-		std::set<const Edge<T> *> edgeSet = {};
+		T_EdgeSet<T> edgeSet = {};
 		std::optional<std::pair<std::string, char>> getExtenstionAndSeparator(InputOutputFormat format) const;
 		int writeToStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight, InputOutputFormat format) const;
 		int readFromStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight, InputOutputFormat format);
@@ -90,7 +100,7 @@ namespace CXXGRAPH
 
 	public:
 		Graph() = default;
-		Graph(const std::set<const Edge<T> *> &edgeSet);
+		Graph(const T_EdgeSet<T> &edgeSet);
 		virtual ~Graph() = default;
 		/**
 		 * \brief
@@ -100,7 +110,7 @@ namespace CXXGRAPH
 		 * @returns a list of Edges of the graph
 		 *
 		 */
-		virtual const std::set<const Edge<T> *> &getEdgeSet() const;
+		virtual const T_EdgeSet<T> &getEdgeSet() const;
 		/**
 		 * \brief
 		 * Function set the Edge Set of the Graph
@@ -109,7 +119,7 @@ namespace CXXGRAPH
 		 * @param edgeSet The Edge Set
 		 *
 		 */
-		virtual void setEdgeSet(std::set<const Edge<T> *> &edgeSet);
+		virtual void setEdgeSet(T_EdgeSet<T> &edgeSet);
 		/**
 		 * \brief
 		 * Function add an Edge to the Graph Edge Set
@@ -294,7 +304,7 @@ namespace CXXGRAPH
 		 *
 		 * @return true if a cycle is detected, else false
 		 */
-		virtual bool containsCycle(const std::set<const Edge<T> *> *) const;
+		virtual bool containsCycle(const T_EdgeSet<T> *) const;
 		/**
 		 * @brief
 		 * This function checks if the given Subset
@@ -302,7 +312,7 @@ namespace CXXGRAPH
 		 *
 		 * @return true if a cycle is detected, else false
 		 */
-		virtual bool containsCycle(const std::set<const Edge<T> *> *edgeSet, std::unordered_map<unsigned long long, Subset> *) const;
+		virtual bool containsCycle(const T_EdgeSet<T> *edgeSet, std::unordered_map<unsigned long long, Subset> *) const;
 
 		/**
 		 * \brief
@@ -454,7 +464,7 @@ namespace CXXGRAPH
 	};
 
 	template <typename T>
-	Graph<T>::Graph(const std::set<const Edge<T> *> &edgeSet)
+	Graph<T>::Graph(const T_EdgeSet<T> &edgeSet)
 	{
 		for (const auto &edgeSetIt : edgeSet)
 		{
@@ -470,13 +480,13 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	const std::set<const Edge<T> *> &Graph<T>::getEdgeSet() const
+	const T_EdgeSet<T> &Graph<T>::getEdgeSet() const
 	{
 		return edgeSet;
 	}
 
 	template <typename T>
-	void Graph<T>::setEdgeSet(std::set<const Edge<T> *> &edgeSet)
+	void Graph<T>::setEdgeSet(T_EdgeSet<T> &edgeSet)
 	{
 		this->edgeSet.clear();
 		for (const auto &edgeSetIt : edgeSet)
@@ -1719,7 +1729,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	bool Graph<T>::containsCycle(const std::set<const Edge<T> *> *edgeSet) const
+	bool Graph<T>::containsCycle(const T_EdgeSet<T> *edgeSet) const
 	{
 		std::unordered_map<unsigned long long, Subset> subset;
 		// initialize the subset parent and rank values
@@ -1747,7 +1757,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	bool Graph<T>::containsCycle(const std::set<const Edge<T> *> *edgeSet, std::unordered_map<unsigned long long, Subset> *subset) const
+	bool Graph<T>::containsCycle(const T_EdgeSet<T> *edgeSet, std::unordered_map<unsigned long long, Subset> *subset) const
 	{
 		for (const auto &edge : *edgeSet)
 		{
@@ -2398,7 +2408,7 @@ namespace CXXGRAPH
 			}
 			else
 			{
-				// OUTPUT FORMAT NOT RECOGNIZED
+				// INPUT FORMAT NOT RECOGNIZED
 				result = -1;
 			}
 		}
