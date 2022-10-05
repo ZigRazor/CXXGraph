@@ -47,8 +47,8 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
 | Completed | Description | Date of Completition |
 | :-------: | :---------- | :-------------------: |
 | :heavy_check_mark: | First Optimization | Apr 4, 2022 |
-| :memo: | Add Benchmark for all algorithms | TBD |
-| :memo: | Code Optimization | TBD |
+| :heavy_check_mark: | Add Benchmark for all algorithms | Oct 5, 2022 |
+| :heavy_check_mark: | Code Optimization | Oct 5, 2022 |
 | :memo: | Release 0.4.0 | TBD |
 | :memo: | "Const" Code Review [#155](https://github.com/ZigRazor/CXXGraph/issues/155) | TBD |
 | :memo: | Release 0.5.0 | TBD |
