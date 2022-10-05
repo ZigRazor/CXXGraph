@@ -84,8 +84,11 @@ namespace CXXGRAPH
 		int writeToStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight, InputOutputFormat format) const;
 		int readFromStandardFile(const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight, InputOutputFormat format);
 		void recreateGraphFromReadFiles(std::unordered_map<unsigned long long, std::pair<std::string, std::string>> &edgeMap, std::unordered_map<unsigned long long, bool> &edgeDirectedMap, std::unordered_map<std::string, T> &nodeFeatMap, std::unordered_map<unsigned long long, double> &edgeWeightMap);
+
+#ifdef WITH_COMPRESSION
 		int compressFile(const std::string &inputFile, const std::string &outputFile) const;
 		int decompressFile(const std::string &inputFile, const std::string &outputFile) const;
+#endif
 
 	public:
 		Graph() = default;
@@ -813,7 +816,7 @@ namespace CXXGRAPH
 			}
 		}
 	}
-
+#ifdef WITH_COMPRESSION
 	template <typename T>
 	int Graph<T>::compressFile(const std::string &inputFile, const std::string &outputFile) const
 	{
@@ -883,6 +886,7 @@ namespace CXXGRAPH
 		gzclose(inFileZ);
 		return 0;
 	}
+#endif
 
 	template <typename T>
 	unsigned long long Graph<T>::setFind(std::unordered_map<unsigned long long, Subset> *subsets, const unsigned long long nodeId) const
@@ -2186,7 +2190,7 @@ namespace CXXGRAPH
 		}
 		return result;
 	}
-
+#ifdef WITH_COMPRESSION
 	template <typename T>
 	int Graph<T>::writeToFile(InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
 	{
@@ -2299,6 +2303,7 @@ namespace CXXGRAPH
 		}
 		return result;
 	}
+#endif
 
 	template <typename T>
 	PartitionMap<T> Graph<T>::partitionGraph(PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions, double param1, double param2, double param3, unsigned int numberOfthreads) const

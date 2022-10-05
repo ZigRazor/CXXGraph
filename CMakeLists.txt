@@ -94,4 +94,8 @@ if(BENCHMARK)
 					   z)
 endif(BENCHMARK)
 
-install(FILES include/Graph.hpp DESTINATION /usr/include)
+if(BENCHMARK OR WITH_GTEST)
+	add_compile_definitions(WITH_COMPRESSION)
+endif()
+
+install(DIRECTORY include/ DESTINATION /usr/include/CXXGraph/)
