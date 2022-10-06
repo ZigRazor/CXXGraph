@@ -31,7 +31,7 @@ An alternative to [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_7
 
 ## Hacktoberfest 2k22
 
-Hi Developers, we partecipate to Hacktoberfest 2022!
+Hi Developers, we are participating in Hacktoberfest 2022!
 
 ## We are Looking for...
 
