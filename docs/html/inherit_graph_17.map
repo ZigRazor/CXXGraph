@@ -1,4 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d5/d2e/classCXXGRAPH_1_1Runnable.html" title=" " alt="" coords="5,13,161,39"/>
-<area shape="rect" id="node2" href="$d7/d1b/classCXXGRAPH_1_1PARTITIONING_1_1PartitionerThread.html" title=" " alt="" coords="209,5,407,47"/>
+<area shape="rect" id="node1" href="$de/deb/classCXXGRAPH_1_1PARTITIONING_1_1PartitionStrategy.html" title=" " alt="" coords="5,104,200,145"/>
+<area shape="rect" id="node2" href="$d2/d6d/classCXXGRAPH_1_1PARTITIONING_1_1EBV.html" title="A Vertex Cut Partioning Algorithm ( as described by this paper https://arxiv.org/abs/2010...." alt="" coords="263,5,457,47"/>
+<area shape="rect" id="node3" href="$d1/d89/classCXXGRAPH_1_1PARTITIONING_1_1EdgeBalancedVertexCut.html" title="A Vertex Cut Partioning Algorithm that assign an edge in the partition with less load." alt="" coords="248,71,472,112"/>
+<area shape="rect" id="node4" href="$d2/d00/classCXXGRAPH_1_1PARTITIONING_1_1GreedyVertexCut.html" title="A Greedy Vertex Cut Partioning Algorithm." alt="" coords="263,136,457,177"/>
+<area shape="rect" id="node5" href="$d1/d63/classCXXGRAPH_1_1PARTITIONING_1_1HDRF.html" title="A Vertex Cut Partioning Algorithm ( as described by this paper https://www.fabiopetroni...." alt="" coords="263,201,457,243"/>
 </map>
