@@ -2424,12 +2424,12 @@ namespace CXXGRAPH
 	{
 		PartitionMap<T> partitionMap;
 		PARTITIONING::Globals globals(numberOfPartitions, algorithm, param1, param2, param3, numberOfthreads);
-		globals.edgeCardinality = this->getEdgeSet().size();
+		const T_EdgeSet<T> & edgeSet = getEdgeSet();
+		globals.edgeCardinality = edgeSet.size();
 		globals.vertexCardinality = this->getNodeSet().size();
-		PARTITIONING::Partitioner<T> partitioner(getEdgeSet(), globals);
+		PARTITIONING::Partitioner<T> partitioner(&edgeSet, globals);
 		PARTITIONING::CoordinatedPartitionState<T> partitionState = partitioner.performCoordinatedPartition();
 		partitionMap = partitionState.getPartitionMap();
-
 		return partitionMap;
 	}
 

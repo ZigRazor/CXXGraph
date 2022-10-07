@@ -19,4 +19,4 @@ static void GraphSlicing_X(benchmark::State &state)
         auto &result = g.graph_slicing(*(range_start->second->getNodePair().first));
     }
 }
-BENCHMARK(GraphSlicing_X)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned long)1 << 12);
+BENCHMARK(GraphSlicing_X)->RangeMultiplier(16)->Range((unsigned long)1, (unsigned long)1 << 8);

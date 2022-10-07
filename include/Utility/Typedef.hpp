@@ -144,7 +144,7 @@ namespace CXXGRAPH
 	using AdjacencyMatrix = std::unordered_map<const Node<T> *, std::vector<std::pair<const Node<T> *, const Edge<T> *>>>;
 
 	template <typename T>
-	using PartitionMap = std::unordered_map<unsigned int, PARTITIONING::Partition<T> *>;
+	using PartitionMap = std::unordered_map<unsigned int, std::shared_ptr<PARTITIONING::Partition<T>>>;
 
 	///////////////////////////////////////////////////////////////////////////////////	
 }

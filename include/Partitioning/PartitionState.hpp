@@ -32,7 +32,7 @@ namespace CXXGRAPH
         class PartitionState
         {
         public:
-            virtual Record<T> *getRecord(int x) = 0;
+            virtual std::shared_ptr<Record<T>> getRecord(int x) = 0;
             virtual int getMachineLoad(int m) = 0;
             virtual int getMachineLoadVertices(int m) = 0;
             virtual void incrementMachineLoad(int m,const Edge<T>* e) = 0;

@@ -40,7 +40,7 @@ namespace CXXGRAPH
         class CoordinatedPartitionState : public PartitionState<T>
         {
         private:
-            std::map<int, CoordinatedRecord<T> *> record_map;
+            std::map<int, std::shared_ptr<CoordinatedRecord<T>>> record_map;
             std::vector<int> machines_load_edges;
             std::vector<int> machines_load_vertices;
             PartitionMap<T> partition_map;
@@ -54,7 +54,7 @@ namespace CXXGRAPH
             CoordinatedPartitionState(Globals &G);
             ~CoordinatedPartitionState();
 
-            Record<T> *getRecord(int x);
+            std::shared_ptr<Record<T>> getRecord(int x);
             int getMachineLoad(int m);
             int getMachineLoadVertices(int m);
             void incrementMachineLoad(int m, const Edge<T> *e);
@@ -76,7 +76,7 @@ namespace CXXGRAPH
             {
                 machines_load_edges.push_back(0);
                 machines_load_vertices.push_back(0);
-                partition_map[i] = new PARTITIONING::Partition<T>(i);
+                partition_map[i] = std::make_shared<PARTITIONING::Partition<T>>(i);
             }
             MAX_LOAD = 0;
         }
@@ -85,12 +85,12 @@ namespace CXXGRAPH
         {
         }
         template <typename T>
-        Record<T> *CoordinatedPartitionState<T>::getRecord(int x)
+        std::shared_ptr<Record<T>> CoordinatedPartitionState<T>::getRecord(int x)
         {
             std::lock_guard<std::mutex> lock(*record_map_mutex);
             if (record_map.find(x) == record_map.end())
             {
-                record_map[x] = new CoordinatedRecord<T>();
+                record_map[x] = std::make_shared<CoordinatedRecord<T>>();
             }
             return record_map.at(x);
         }
