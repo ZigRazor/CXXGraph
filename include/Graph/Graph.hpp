@@ -68,9 +68,6 @@
 
 namespace CXXGRAPH
 {
-	//Typedef for Allocator
-	//typedef size_t DataType;
-    //typedef Moya::Allocator<const Edge<T> *,16* 1024> MemoryPoolAllocator;
 	template<typename T>
 	using T_EdgeSet = std::unordered_set<const Edge<T> *>;
 
@@ -156,13 +153,13 @@ namespace CXXGRAPH
 		 * @returns the Edge if exist
 		 *
 		 */
-		virtual const std::optional<const Edge<T> *> getEdge(unsigned long long edgeId) const;
+		virtual const std::optional<const Edge<T> *> getEdge(const unsigned long long edgeId) const;
 		/**
 		 * @brief This function generate a list of adjacency matrix with every element of the matrix
 		 * contain the node where is directed the link and the Edge corrispondent to the link
 		 * Note: No Thread Safe
 		 */
-		virtual const AdjacencyMatrix<T> getAdjMatrix() const;
+		virtual const std::shared_ptr<AdjacencyMatrix<T>> getAdjMatrix() const;
 		/**
 		 * @brief This function finds the subset of given a nodeId
 		 * Subset is stored in a map where keys are the hash-id of the node & values is the subset.
@@ -558,7 +555,7 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	const std::optional<const Edge<T> *> Graph<T>::getEdge(unsigned long long edgeId) const
+	const std::optional<const Edge<T> *> Graph<T>::getEdge(const unsigned long long edgeId) const
 	{
 		for (const auto &it : edgeSet)
 		{
@@ -951,7 +948,7 @@ namespace CXXGRAPH
 		currentPath.push_back(currentNode);
 		while (currentPath.size() > 0)
 		{
-			auto &edges = adj.at(currentNode);
+			auto &edges = adj->at(currentNode);
 			// we keep removing the edges that
 			// have been traversed from the adjacency list
 			if (edges.size())
@@ -973,13 +970,13 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	const AdjacencyMatrix<T> Graph<T>::getAdjMatrix() const
+	const std::shared_ptr<AdjacencyMatrix<T>> Graph<T>::getAdjMatrix() const
 	{
 		
-		AdjacencyMatrix<T> adj;
+		auto adj = std::make_shared<AdjacencyMatrix<T>>();
 		auto addElementToAdjMatrix = [&adj](const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge){
 			std::pair<const Node<T> *, const Edge<T> *> elem = {nodeTo, edge};
-			adj[nodeFrom].push_back(std::move(elem));
+			(*adj)[nodeFrom].push_back(std::move(elem));
 		};
 		for (const auto &edgeSetIt : edgeSet)
 		{
@@ -1020,9 +1017,9 @@ namespace CXXGRAPH
 			result.errorMessage = ERR_TARGET_NODE_NOT_IN_GRAPH;
 			return result;
 		}
-		const AdjacencyMatrix<T> adj = Graph<T>::getAdjMatrix();
+		const auto adj = getAdjMatrix();
 		// n denotes the number of vertices in graph
-		int n = adj.size();
+		int n = adj->size();
 
 		// setting all the distances initially to INF_DOUBLE
 		std::unordered_map<const Node<T> *, double> dist;
@@ -1057,9 +1054,9 @@ namespace CXXGRAPH
 
 			// for all the reachable vertex from the currently exploring vertex
 			// we will try to minimize the distance
-			if (adj.find(currentNode) != adj.end())
+			if (adj->find(currentNode) != adj->end())
 			{
-				for (const auto &elem : adj.at(currentNode))
+				for (const auto &elem : adj->at(currentNode))
 				{
 					// minimizing distances
 					if (elem.second->isWeighted().has_value() && elem.second->isWeighted().value())
@@ -1326,11 +1323,11 @@ namespace CXXGRAPH
 		}
 		auto nodeSet = Graph<T>::getNodeSet();
 		auto n = nodeSet.size();
-		const AdjacencyMatrix<T> adj = Graph<T>::getAdjMatrix();
+		const auto adj = Graph<T>::getAdjMatrix();
 
 		// setting all the distances initially to INF_DOUBLE
 		std::unordered_map<const Node<T> *, double> dist;
-		for (const auto &elem : adj)
+		for (const auto &elem : (*adj))
 		{
 			dist[elem.first] = INF_DOUBLE;
 		}
@@ -1369,9 +1366,9 @@ namespace CXXGRAPH
 			pq.pop();
 			// for all the reachable vertex from the currently exploring vertex
 			// we will try to minimize the distance
-			if (adj.find(currentNode) != adj.end())
+			if (adj->find(currentNode) != adj->end())
 			{
-				for (const auto &elem : adj.at(currentNode))
+				for (const auto &elem : adj->at(currentNode))
 				{
 					// minimizing distances
 					if (elem.second->isWeighted().has_value() && elem.second->isWeighted().value())
@@ -1577,7 +1574,7 @@ namespace CXXGRAPH
 		{
 			return visited;
 		}
-		const AdjacencyMatrix<T> &adj = Graph<T>::getAdjMatrix();
+		const auto adj = Graph<T>::getAdjMatrix();
 		// queue that stores vertices that need to be further explored
 		std::queue<const Node<T> *> tracker;
 
@@ -1588,9 +1585,9 @@ namespace CXXGRAPH
 		{
 			const Node<T> *node = tracker.front();
 			tracker.pop();
-			if (adj.find(node) != adj.end())
+			if (adj->find(node) != adj->end())
 			{
-				for (const auto &elem : adj.at(node))
+				for (const auto &elem : adj->at(node))
 				{
 					// if the node is not visited then mark it as visited
 					// and push it to the queue
@@ -1617,14 +1614,14 @@ namespace CXXGRAPH
 		{
 			return visited;
 		}
-		const AdjacencyMatrix<T> adj = Graph<T>::getAdjMatrix();
-		std::function<void(const AdjacencyMatrix<T> &, const Node<T> &, std::vector<Node<T>> &)> explore;
-		explore = [&explore](const AdjacencyMatrix<T> &adj, const Node<T> &node, std::vector<Node<T>> &visited) -> void
+		const auto adj = Graph<T>::getAdjMatrix();
+		std::function<void(const std::shared_ptr<AdjacencyMatrix<T>> , const Node<T> &, std::vector<Node<T>> &)> explore;
+		explore = [&explore](const std::shared_ptr<AdjacencyMatrix<T>> adj, const Node<T> &node, std::vector<Node<T>> &visited) -> void
 		{
 			visited.push_back(node);
-			if (adj.find(&node) != adj.end())
+			if (adj->find(&node) != adj->end())
 			{
-				for (const auto &x : adj.at(&node))
+				for (const auto &x : adj->at(&node))
 				{
 					if (std::find(visited.begin(), visited.end(), *(x.first)) == visited.end())
 					{
@@ -1677,16 +1674,16 @@ namespace CXXGRAPH
 			if (state[node->getId()] == not_visited)
 			{
 				// Check for cycle.
-				std::function<bool(AdjacencyMatrix<T> &, std::unordered_map<unsigned long long, nodeStates> &, const Node<T> *)> isCyclicDFSHelper;
-				isCyclicDFSHelper = [this, &isCyclicDFSHelper](AdjacencyMatrix<T> &adjMatrix, std::unordered_map<unsigned long long, nodeStates> &states, const Node<T> *node)
+				std::function<bool(const std::shared_ptr<AdjacencyMatrix<T>>, std::unordered_map<unsigned long long, nodeStates> &, const Node<T> *)> isCyclicDFSHelper;
+				isCyclicDFSHelper = [this, &isCyclicDFSHelper](const std::shared_ptr<AdjacencyMatrix<T>> adjMatrix, std::unordered_map<unsigned long long, nodeStates> &states, const Node<T> *node)
 				{
 					// Add node "in_stack" state.
 					states[node->getId()] = in_stack;
 
 					// If the node has children, then recursively visit all children of the
 					// node.
-					auto const it = adjMatrix.find(node);
-					if (it != adjMatrix.end())
+					auto const it = adjMatrix->find(node);
+					if (it != adjMatrix->end())
 					{
 						for (const auto &child : it->second)
 						{
@@ -1778,7 +1775,7 @@ namespace CXXGRAPH
 		{
 			return false;
 		}
-		auto adjMatrix = Graph<T>::getAdjMatrix();
+		const auto adjMatrix = Graph<T>::getAdjMatrix();
 		auto nodeSet = Graph<T>::getNodeSet();
 
 		std::unordered_map<unsigned long, unsigned int> indegree;
@@ -1787,7 +1784,7 @@ namespace CXXGRAPH
 			indegree[node->getId()] = 0;
 		}
 		// Calculate the indegree i.e. the number of incident edges to the node.
-		for (auto const &list : adjMatrix)
+		for (auto const &list : (*adjMatrix))
 		{
 			auto children = list.second;
 			for (auto const &child : children)
@@ -1819,8 +1816,8 @@ namespace CXXGRAPH
 			remain--;
 
 			// Visit all the children of the visited node.
-			auto it = adjMatrix.find(solved);
-			if (it != adjMatrix.end())
+			auto it = adjMatrix->find(solved);
+			if (it != adjMatrix->end())
 			{
 				for (const auto &child : it->second)
 				{
@@ -1882,7 +1879,7 @@ namespace CXXGRAPH
 		else
 		{
 			auto nodeSet = getNodeSet();
-			auto adjMatrix = getAdjMatrix();
+			const auto adjMatrix = getAdjMatrix();
 			// created visited map
 			std::unordered_map<unsigned long, bool> visited;
 			for (const auto &node : nodeSet)
@@ -1895,9 +1892,9 @@ namespace CXXGRAPH
 				visited[source->getId()] = true;
 
 				// travel the neighbors
-				for (int i = 0; i < adjMatrix[source].size(); i++)
+				for (int i = 0; i < (*adjMatrix)[source].size(); i++)
 				{
-					const Node<T> *neighbor = adjMatrix[source].at(i).first;
+					const Node<T> *neighbor = (*adjMatrix)[source].at(i).first;
 					if (visited[neighbor->getId()] == false)
 					{
 						// make recursive call from neighbor
@@ -1930,7 +1927,7 @@ namespace CXXGRAPH
 		else
 		{
 			auto nodeSet = getNodeSet();
-			auto adjMatrix = getAdjMatrix();
+			const auto adjMatrix = getAdjMatrix();
 			for (const auto &start_node : nodeSet)
 			{
 				// created visited map
@@ -1945,9 +1942,9 @@ namespace CXXGRAPH
 					visited[source->getId()] = true;
 
 					// travel the neighbors
-					for (int i = 0; i < adjMatrix[source].size(); i++)
+					for (int i = 0; i < (*adjMatrix)[source].size(); i++)
 					{
-						const Node<T> *neighbor = adjMatrix[source].at(i).first;
+						const Node<T> *neighbor = (*adjMatrix)[source].at(i).first;
 						if (visited[neighbor->getId()] == false)
 						{
 							// make recursive call from neighbor
@@ -1983,7 +1980,7 @@ namespace CXXGRAPH
 		else
 		{
 			auto nodeSet = getNodeSet();
-			auto adjMatrix = getAdjMatrix();
+			const auto adjMatrix = getAdjMatrix();
 			// created visited map
 			std::unordered_map<unsigned long, bool> visited;
 			for (const auto &node : nodeSet)
@@ -1998,9 +1995,9 @@ namespace CXXGRAPH
 				visited[source->getId()] = true;
 
 				// travel the neighbors
-				for (int i = 0; i < adjMatrix[source].size(); i++)
+				for (int i = 0; i < (*adjMatrix)[source].size(); i++)
 				{
-					const Node<T> *neighbor = adjMatrix[source].at(i).first;
+					const Node<T> *neighbor = (*adjMatrix)[source].at(i).first;
 					if (visited[neighbor->getId()] == false)
 					{
 						// make recursive call from neighbor
@@ -2073,8 +2070,8 @@ namespace CXXGRAPH
 		DialResult result;
 		result.success = false;
 
-		auto adj = Graph<T>::getAdjMatrix();
-		auto nodeSet = Graph<T>::getNodeSet();
+		const auto adj = getAdjMatrix();
+		auto nodeSet = getNodeSet();
 
 		if (std::find(nodeSet.begin(), nodeSet.end(), &source) == nodeSet.end())
 		{
@@ -2125,7 +2122,7 @@ namespace CXXGRAPH
 
 			// Process all adjacents of extracted vertex 'u' and
 			// update their distanced if required.
-			for (const auto &i : adj[u])
+			for (const auto &i : (*adj)[u])
 			{
 				auto v = i.first;
 				int weight = 0;
