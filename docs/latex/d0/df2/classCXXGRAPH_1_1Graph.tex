@@ -1,4 +1,4 @@
-\hypertarget{classCXXGRAPH_1_1Graph}{}\doxysection{CXXGRAPH\+::Graph$<$ T $>$ Class Template Reference}
+\hypertarget{classCXXGRAPH_1_1Graph}{}\doxysection{C\+X\+X\+G\+R\+A\+PH\+::Graph$<$ T $>$ Class Template Reference}
 \label{classCXXGRAPH_1_1Graph}\index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 
 
@@ -9,30 +9,21 @@ Class that implement the \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}. ( Thi
 
 {\ttfamily \#include $<$Graph.\+hpp$>$}
 
-
-
-Inheritance diagram for CXXGRAPH\+::Graph$<$ T $>$\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{dc/d80/classCXXGRAPH_1_1Graph__inherit__graph}
-\end{center}
-\end{figure}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a49433844912894835ea1142fd90abfb1}\label{classCXXGRAPH_1_1Graph_a49433844912894835ea1142fd90abfb1}} 
-{\bfseries Graph} (const std\+::list$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ \&edge\+Set)
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a7b66a2077835e57dbbe0429ca3cbde05}\label{classCXXGRAPH_1_1Graph_a7b66a2077835e57dbbe0429ca3cbde05}} 
+{\bfseries Graph} (const T\+\_\+\+Edge\+Set$<$ T $>$ \&edge\+Set)
 \item 
-virtual const std\+::list$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ \& \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a1d00ee150e0876b4edb10616e052021a}{get\+Edge\+Set}} () const
+virtual const T\+\_\+\+Edge\+Set$<$ T $>$ \& \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a8412ba5fbb3bd12ce9c872bd9bbd9824}{get\+Edge\+Set}} () const
 \begin{DoxyCompactList}\small\item\em Function that return the \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} set of the \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} Note\+: No Thread Safe. \end{DoxyCompactList}\item 
-virtual void \mbox{\hyperlink{classCXXGRAPH_1_1Graph_af2cd256d3638bf15ea926b6da6bc6097}{set\+Edge\+Set}} (std\+::list$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ \&edge\+Set)
+virtual void \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a7f4b22c1c3e93bd51600141d9517e36a}{set\+Edge\+Set}} (T\+\_\+\+Edge\+Set$<$ T $>$ \&edge\+Set)
 \begin{DoxyCompactList}\small\item\em Function set the \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} Set of the \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} Note\+: No Thread Safe. \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a95fc676b51609323126e1d6f2366c4bb}{add\+Edge}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$edge)
 \begin{DoxyCompactList}\small\item\em Function add an \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} to the \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} Set Note\+: No Thread Safe. \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{classCXXGRAPH_1_1Graph_ac1b14104add48bad5524e31b47411d36}{remove\+Edge}} (unsigned long long edge\+Id)
 \begin{DoxyCompactList}\small\item\em Function remove an \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} from the \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} Set Note\+: No Thread Safe. \end{DoxyCompactList}\item 
-virtual const std\+::list$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph_ae68cf3b1eb04907935c032755bd81004}{get\+Node\+Set}} () const
+virtual const std\+::set$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph_af0544d74b956980e05e2a57a5dc2d2d6}{get\+Node\+Set}} () const
 \begin{DoxyCompactList}\small\item\em Function that return the \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}} Set of the \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} Note\+: No Thread Safe. \end{DoxyCompactList}\item 
 virtual const std\+::optional$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a5ebab9011fe6155743eaa989c2bf7860}{get\+Edge}} (unsigned long long edge\+Id) const
 \begin{DoxyCompactList}\small\item\em Function that return an \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} with specific ID if Exist in the \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} Note\+: No Thread Safe. \end{DoxyCompactList}\item 
@@ -49,7 +40,7 @@ virtual const \mbox{\hyperlink{structCXXGRAPH_1_1DijkstraResult__struct}{Dijkstr
 \begin{DoxyCompactList}\small\item\em Function runs the dijkstra algorithm for some source node and target node in the graph and returns the shortest distance of target from the source. Note\+: No Thread Safe. \end{DoxyCompactList}\item 
 virtual const \mbox{\hyperlink{structCXXGRAPH_1_1BellmanFordResult__struct}{Bellman\+Ford\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph_ae88da3d693fb461b53435d94e12e166c}{bellmanford}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&source, const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&target) const
 \begin{DoxyCompactList}\small\item\em Function runs the bellman-\/ford algorithm for some source node and target node in the graph and returns the shortest distance of target from the source. It can also detect if a negative cycle exists in the graph. Note\+: No Thread Safe. \end{DoxyCompactList}\item 
-virtual const \mbox{\hyperlink{structCXXGRAPH_1_1FWResult__struct}{FWResult}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a00b6780a5167547fe05db00e01011223}{floyd\+Warshall}} () const
+virtual const \mbox{\hyperlink{structCXXGRAPH_1_1FWResult__struct}{F\+W\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a00b6780a5167547fe05db00e01011223}{floyd\+Warshall}} () const
 \begin{DoxyCompactList}\small\item\em Function runs the floyd-\/warshall algorithm and returns the shortest distance of all pair of nodes. It can also detect if a negative cycle exists in the graph. Note\+: No Thread Safe. \end{DoxyCompactList}\item 
 virtual const \mbox{\hyperlink{structCXXGRAPH_1_1MstResult__struct}{Mst\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a1dd966cbf26d661a017e36d568fa3223}{prim}} () const
 \begin{DoxyCompactList}\small\item\em Function runs the prim algorithm and returns the minimum spanning tree if the graph is undirected. Note\+: No Thread Safe. \end{DoxyCompactList}\item 
@@ -61,27 +52,35 @@ virtual const std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$
 \begin{DoxyCompactList}\small\item\em Function performs the breadth first search algorithm over the graph Note\+: No Thread Safe. \end{DoxyCompactList}\item 
 virtual const std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a05d230bd6185b99b624227c4c82b7811}{depth\+\_\+first\+\_\+search}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&start) const
 \begin{DoxyCompactList}\small\item\em Function performs the depth first search algorithm over the graph Note\+: No Thread Safe. \end{DoxyCompactList}\item 
-virtual bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a91a818601c0df0e5abfbaf4da5918afa}{is\+Cyclic\+Directed\+Graph\+DFS}} () const
-\begin{DoxyCompactList}\small\item\em This function uses DFS to check for cycle in the graph. Pay Attention, this function work only with directed \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} Note\+: No Thread Safe. \end{DoxyCompactList}\item 
-virtual bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a4f76bb7230c1654dd6b1ec24d0291875}{is\+Cyclic\+Directed\+Graph\+BFS}} () const
-\begin{DoxyCompactList}\small\item\em This function uses BFS to check for cycle in the graph. Pay Attention, this function work only with directed \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} Note\+: No Thread Safe. \end{DoxyCompactList}\item 
-virtual bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_ad1a0e8607ae880df5016f1da09a8dc98}{contains\+Cycle}} (const std\+::list$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ $\ast$) const
+virtual bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a91a818601c0df0e5abfbaf4da5918afa}{is\+Cyclic\+Directed\+Graph\+D\+FS}} () const
+\begin{DoxyCompactList}\small\item\em This function uses D\+FS to check for cycle in the graph. Pay Attention, this function work only with directed \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} Note\+: No Thread Safe. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a4f76bb7230c1654dd6b1ec24d0291875}{is\+Cyclic\+Directed\+Graph\+B\+FS}} () const
+\begin{DoxyCompactList}\small\item\em This function uses B\+FS to check for cycle in the graph. Pay Attention, this function work only with directed \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} Note\+: No Thread Safe. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a54c736ce873d01a0ae290e8a2b448ca2}{contains\+Cycle}} (const T\+\_\+\+Edge\+Set$<$ T $>$ $\ast$) const
 \begin{DoxyCompactList}\small\item\em This function checks if the given set of edges forms a cycle or not using union-\/find method. \end{DoxyCompactList}\item 
-virtual bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_ab473386a59c895ffebddfd0f3250e5d8}{contains\+Cycle}} (const std\+::list$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ $\ast$edge\+Set, std\+::unordered\+\_\+map$<$ unsigned long long, \mbox{\hyperlink{structCXXGRAPH_1_1Subset__struct}{Subset}} $>$ $\ast$) const
+virtual bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_afa6c90c1c0e48c74fd486ef87b9626dd}{contains\+Cycle}} (const T\+\_\+\+Edge\+Set$<$ T $>$ $\ast$edge\+Set, std\+::unordered\+\_\+map$<$ unsigned long long, \mbox{\hyperlink{structCXXGRAPH_1_1Subset__struct}{Subset}} $>$ $\ast$) const
 \begin{DoxyCompactList}\small\item\em This function checks if the given Subset forms a cycle or not using union-\/find method. \end{DoxyCompactList}\item 
 virtual bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a5c7ddb5c91f3ab7456c8203a740f52c9}{is\+Directed\+Graph}} () const
 \begin{DoxyCompactList}\small\item\em This function checks if a graph is directed Note\+: No Thread Safe. \end{DoxyCompactList}\item 
 virtual bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a13abdb1d53937f7349cd72f527125edf}{is\+Undirected\+Graph}} () const
 \begin{DoxyCompactList}\small\item\em This function checks if a graph is undirected Note\+: No Thread Safe. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a1c7fc1183438f6f699179a4b02d39b68}{is\+Connected\+Graph}} () const
+\begin{DoxyCompactList}\small\item\em This function checks if the graph is connected or not Applicable for Undirected \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}, for Directed \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} use the \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a2dd3a83617afbd6a27d9f835f0ac7996}{is\+Strongly\+Connected\+Graph()}} function. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a2dd3a83617afbd6a27d9f835f0ac7996}{is\+Strongly\+Connected\+Graph}} () const
+\begin{DoxyCompactList}\small\item\em This function checks if the graph is strongly connected or not Applicable for Directed \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}, for Undirected \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} use the \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a1c7fc1183438f6f699179a4b02d39b68}{is\+Connected\+Graph()}} function. \end{DoxyCompactList}\item 
+virtual std\+::vector$<$ std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a5905a6243d88a7c347c003b9c8789801}{kosaraju}} () const
+\begin{DoxyCompactList}\small\item\em This function performs performs the kosaraju algorthm on the graph to find the strongly connected components. \end{DoxyCompactList}\item 
 virtual const std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a7c6d8a66538ecec3c33c4ff0574cdb2d}{graph\+\_\+slicing}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&start) const
 \begin{DoxyCompactList}\small\item\em This function performs \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} Slicing based on connectivity. \end{DoxyCompactList}\item 
 virtual const \mbox{\hyperlink{structCXXGRAPH_1_1DialResult__struct}{Dial\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a662a0e15cd997252639e7a257b830190}{dial}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&source, int max\+Weight) const
 \begin{DoxyCompactList}\small\item\em This function write the graph in an output file Note\+: No Thread Safe. \end{DoxyCompactList}\item 
-virtual int \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a5a1ffeb9ef3b62b38c10bd84b44170a0}{write\+To\+File}} (Input\+Output\+Format format=Input\+Output\+Format\+::\+STANDARD\+\_\+\+CSV, const std\+::string \&working\+Dir=\char`\"{}.\char`\"{}, const std\+::string \&OFile\+Name=\char`\"{}graph\char`\"{}, bool compress=false, bool write\+Node\+Feat=false, bool write\+Edge\+Weight=false) const
+virtual double \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a47608dbab5286badf6098a54bb2fa364}{ford\+Fulkerson\+Max\+Flow}} (const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&source, const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&target) const
+\begin{DoxyCompactList}\small\item\em Function runs the Ford-\/\+Fulkerson algorithm for some source node and target node in the graph and returns the maximum flow of the graph. \end{DoxyCompactList}\item 
+virtual int \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a5a1ffeb9ef3b62b38c10bd84b44170a0}{write\+To\+File}} (Input\+Output\+Format format=Input\+Output\+Format\+::\+S\+T\+A\+N\+D\+A\+R\+D\+\_\+\+C\+SV, const std\+::string \&working\+Dir=\char`\"{}.\char`\"{}, const std\+::string \&O\+File\+Name=\char`\"{}graph\char`\"{}, bool compress=false, bool write\+Node\+Feat=false, bool write\+Edge\+Weight=false) const
 \begin{DoxyCompactList}\small\item\em This function write the graph in an output file Note\+: No Thread Safe. \end{DoxyCompactList}\item 
-virtual int \mbox{\hyperlink{classCXXGRAPH_1_1Graph_abd5baeb88c2b588c14383155fff4ec3e}{read\+From\+File}} (Input\+Output\+Format format=Input\+Output\+Format\+::\+STANDARD\+\_\+\+CSV, const std\+::string \&working\+Dir=\char`\"{}.\char`\"{}, const std\+::string \&OFile\+Name=\char`\"{}graph\char`\"{}, bool compress=false, bool read\+Node\+Feat=false, bool read\+Edge\+Weight=false)
+virtual int \mbox{\hyperlink{classCXXGRAPH_1_1Graph_abd5baeb88c2b588c14383155fff4ec3e}{read\+From\+File}} (Input\+Output\+Format format=Input\+Output\+Format\+::\+S\+T\+A\+N\+D\+A\+R\+D\+\_\+\+C\+SV, const std\+::string \&working\+Dir=\char`\"{}.\char`\"{}, const std\+::string \&O\+File\+Name=\char`\"{}graph\char`\"{}, bool compress=false, bool read\+Node\+Feat=false, bool read\+Edge\+Weight=false)
 \begin{DoxyCompactList}\small\item\em This function read the graph from an input file Note\+: No Thread Safe. \end{DoxyCompactList}\item 
-virtual Partition\+Map$<$ T $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a70da23746ecfd20c8b5b226322813af2}{partition\+Graph}} (PARTITIONING\+::\+Partition\+Algorithm algorithm, unsigned int number\+Of\+Partitions, double param1=0.\+0, double param2=0.\+0, double param3=0.\+0, unsigned int number\+Ofthreads=std\+::thread\+::hardware\+\_\+concurrency()) const
+virtual Partition\+Map$<$ T $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a70da23746ecfd20c8b5b226322813af2}{partition\+Graph}} (P\+A\+R\+T\+I\+T\+I\+O\+N\+I\+N\+G\+::\+Partition\+Algorithm algorithm, unsigned int number\+Of\+Partitions, double param1=0.\+0, double param2=0.\+0, double param3=0.\+0, unsigned int number\+Ofthreads=std\+::thread\+::hardware\+\_\+concurrency()) const
 \begin{DoxyCompactList}\small\item\em This function partition a graph in a set of partitions Note\+: No Thread Safe. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Friends}
 \begin{DoxyCompactItemize}
@@ -96,7 +95,7 @@ std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, const Adjacen
 
 \doxysubsection{Detailed Description}
 \subsubsection*{template$<$typename T$>$\newline
-class CXXGRAPH\+::\+Graph$<$ T $>$}
+class C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph$<$ T $>$}
 
 Class that implement the \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}. ( This class is not Thread Safe ) 
 
@@ -106,7 +105,7 @@ Class that implement the \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}. ( Thi
 \index{addEdge@{addEdge}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{addEdge()}{addEdge()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-void \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::add\+Edge (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$}]{edge }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+void \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::add\+Edge (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$}]{edge }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -117,16 +116,12 @@ Function add an \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} to the \mbox{\hyp
 {\em edge} & The \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} to insert \\
 \hline
 \end{DoxyParams}
-
-
-Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a5bdacfe9db0d77fec01c46420d7d7024}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
-
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_ae88da3d693fb461b53435d94e12e166c}\label{classCXXGRAPH_1_1Graph_ae88da3d693fb461b53435d94e12e166c}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!bellmanford@{bellmanford}}
 \index{bellmanford@{bellmanford}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{bellmanford()}{bellmanford()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-const \mbox{\hyperlink{structCXXGRAPH_1_1BellmanFordResult__struct}{Bellman\+Ford\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::bellmanford (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{source,  }\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{target }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+const \mbox{\hyperlink{structCXXGRAPH_1_1BellmanFordResult__struct}{Bellman\+Ford\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::bellmanford (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{source,  }\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{target }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -140,32 +135,28 @@ Function runs the bellman-\/ford algorithm for some source node and target node 
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-shortest distance if target is reachable from source else ERROR in case if target is not reachable from source. If there is no error then also returns if the graph contains a negative cycle. 
+shortest distance if target is reachable from source else E\+R\+R\+OR in case if target is not reachable from source. If there is no error then also returns if the graph contains a negative cycle. 
 \end{DoxyReturn}
-
-
-Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_aa20e497824c23f6c7ed4074ce83e83ec}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
-
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a8ff4c2379cae5b2426788e4bbcd174bc}\label{classCXXGRAPH_1_1Graph_a8ff4c2379cae5b2426788e4bbcd174bc}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!boruvka@{boruvka}}
 \index{boruvka@{boruvka}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{boruvka()}{boruvka()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-const \mbox{\hyperlink{structCXXGRAPH_1_1MstResult__struct}{Mst\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::boruvka\hspace{0.3cm}{\ttfamily [virtual]}}
+const \mbox{\hyperlink{structCXXGRAPH_1_1MstResult__struct}{Mst\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::boruvka\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
 Function runs the boruvka algorithm and returns the minimum spanning tree \& cost if the graph is undirected. Note\+: No Thread Safe. 
 
 \begin{DoxyReturn}{Returns}
-struct of type Mst\+Result with following fields success\+: true if algorithm completed successfully ELSE false mst\+: vector containing id of nodes in minimum spanning tree \& cost of MST mst\+Cost\+: Cost of MST error\+Message\+: \char`\"{}\char`\"{} if no error ELSE report the encountered error 
+struct of type Mst\+Result with following fields success\+: true if algorithm completed successfully E\+L\+SE false mst\+: vector containing id of nodes in minimum spanning tree \& cost of M\+ST mst\+Cost\+: Cost of M\+ST error\+Message\+: \char`\"{}\char`\"{} if no error E\+L\+SE report the encountered error 
 \end{DoxyReturn}
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_ae94a68dc57331c26070c3aec035264ef}\label{classCXXGRAPH_1_1Graph_ae94a68dc57331c26070c3aec035264ef}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!breadth\_first\_search@{breadth\_first\_search}}
 \index{breadth\_first\_search@{breadth\_first\_search}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{breadth\_first\_search()}{breadth\_first\_search()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-const std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::breadth\+\_\+first\+\_\+search (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{start }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+const std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::breadth\+\_\+first\+\_\+search (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{start }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -179,16 +170,12 @@ Function performs the breadth first search algorithm over the graph Note\+: No T
 \begin{DoxyReturn}{Returns}
 a vector of \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}} indicating which \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}} were visited during the search. 
 \end{DoxyReturn}
-
-
-Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a88122ab10e34ecb9aae4c64c907a82b9}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
-
-\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_ad1a0e8607ae880df5016f1da09a8dc98}\label{classCXXGRAPH_1_1Graph_ad1a0e8607ae880df5016f1da09a8dc98}} 
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a54c736ce873d01a0ae290e8a2b448ca2}\label{classCXXGRAPH_1_1Graph_a54c736ce873d01a0ae290e8a2b448ca2}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!containsCycle@{containsCycle}}
 \index{containsCycle@{containsCycle}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{containsCycle()}{containsCycle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::contains\+Cycle (\begin{DoxyParamCaption}\item[{const std\+::list$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ $\ast$}]{edge\+Set }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::contains\+Cycle (\begin{DoxyParamCaption}\item[{const T\+\_\+\+Edge\+Set$<$ T $>$ $\ast$}]{edge\+Set }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -197,12 +184,12 @@ This function checks if the given set of edges forms a cycle or not using union-
 \begin{DoxyReturn}{Returns}
 true if a cycle is detected, else false 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_ab473386a59c895ffebddfd0f3250e5d8}\label{classCXXGRAPH_1_1Graph_ab473386a59c895ffebddfd0f3250e5d8}} 
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_afa6c90c1c0e48c74fd486ef87b9626dd}\label{classCXXGRAPH_1_1Graph_afa6c90c1c0e48c74fd486ef87b9626dd}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!containsCycle@{containsCycle}}
 \index{containsCycle@{containsCycle}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{containsCycle()}{containsCycle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::contains\+Cycle (\begin{DoxyParamCaption}\item[{const std\+::list$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ $\ast$}]{edge\+Set,  }\item[{std\+::unordered\+\_\+map$<$ unsigned long long, \mbox{\hyperlink{structCXXGRAPH_1_1Subset__struct}{Subset}} $>$ $\ast$}]{subset }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::contains\+Cycle (\begin{DoxyParamCaption}\item[{const T\+\_\+\+Edge\+Set$<$ T $>$ $\ast$}]{edge\+Set,  }\item[{std\+::unordered\+\_\+map$<$ unsigned long long, \mbox{\hyperlink{structCXXGRAPH_1_1Subset__struct}{Subset}} $>$ $\ast$}]{subset }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -216,7 +203,7 @@ true if a cycle is detected, else false
 \index{depth\_first\_search@{depth\_first\_search}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{depth\_first\_search()}{depth\_first\_search()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-const std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::depth\+\_\+first\+\_\+search (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{start }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+const std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::depth\+\_\+first\+\_\+search (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{start }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -230,16 +217,12 @@ Function performs the depth first search algorithm over the graph Note\+: No Thr
 \begin{DoxyReturn}{Returns}
 a vector of \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}} indicating which \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}} were visited during the search. 
 \end{DoxyReturn}
-
-
-Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_aa8844339395cc7e6cecd1a4e0ab57804}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
-
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a662a0e15cd997252639e7a257b830190}\label{classCXXGRAPH_1_1Graph_a662a0e15cd997252639e7a257b830190}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!dial@{dial}}
 \index{dial@{dial}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{dial()}{dial()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-const \mbox{\hyperlink{structCXXGRAPH_1_1DialResult__struct}{Dial\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::dial (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{source,  }\item[{int}]{max\+Weight }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+const \mbox{\hyperlink{structCXXGRAPH_1_1DialResult__struct}{Dial\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::dial (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{source,  }\item[{int}]{max\+Weight }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -251,7 +234,7 @@ This function write the graph in an output file Note\+: No Thread Safe.
 \hline
 {\em working\+Dir} & The path to the directory in which will be placed the output file \\
 \hline
-{\em OFile\+Name} & The Output File Name ( ) \\
+{\em O\+File\+Name} & The Output File Name ( ) \\
 \hline
 {\em compress} & Indicates if the output will be compressed \\
 \hline
@@ -273,18 +256,14 @@ Function runs the Dial algorithm (Optimized Dijkstra for small range weights) fo
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-shortest distance for all nodes reachable from source else ERROR in case there is error in the computation. 
+shortest distance for all nodes reachable from source else E\+R\+R\+OR in case there is error in the computation. 
 \end{DoxyReturn}
-
-
-Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_aec71b7cd4b3460b032806c0b870cdbef}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
-
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a8d655cd624cedf47ee366d8c0ab31921}\label{classCXXGRAPH_1_1Graph_a8d655cd624cedf47ee366d8c0ab31921}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!dijkstra@{dijkstra}}
 \index{dijkstra@{dijkstra}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{dijkstra()}{dijkstra()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-const \mbox{\hyperlink{structCXXGRAPH_1_1DijkstraResult__struct}{Dijkstra\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::dijkstra (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{source,  }\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{target }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+const \mbox{\hyperlink{structCXXGRAPH_1_1DijkstraResult__struct}{Dijkstra\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::dijkstra (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{source,  }\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{target }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -298,18 +277,14 @@ Function runs the dijkstra algorithm for some source node and target node in the
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-shortest distance if target is reachable from source else ERROR in case if target is not reachable from source or there is error in the computation. 
+shortest distance if target is reachable from source else E\+R\+R\+OR in case if target is not reachable from source or there is error in the computation. 
 \end{DoxyReturn}
-
-
-Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a423f7d958e9c758682178ad6204b81af}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
-
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a31b482ce494f93dcd7125b3aa4eb8f78}\label{classCXXGRAPH_1_1Graph_a31b482ce494f93dcd7125b3aa4eb8f78}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!eulerianPath@{eulerianPath}}
 \index{eulerianPath@{eulerianPath}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{eulerianPath()}{eulerianPath()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::eulerian\+Path\hspace{0.3cm}{\ttfamily [virtual]}}
+std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::eulerian\+Path\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -323,7 +298,7 @@ a vector containing nodes in eulerian path Note\+: No Thread Safe
 \index{floydWarshall@{floydWarshall}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{floydWarshall()}{floydWarshall()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-const \mbox{\hyperlink{structCXXGRAPH_1_1FWResult__struct}{FWResult}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::floyd\+Warshall\hspace{0.3cm}{\ttfamily [virtual]}}
+const \mbox{\hyperlink{structCXXGRAPH_1_1FWResult__struct}{F\+W\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::floyd\+Warshall\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -332,16 +307,33 @@ Function runs the floyd-\/warshall algorithm and returns the shortest distance o
 \begin{DoxyReturn}{Returns}
 a map whose keys are node ids and values are the shortest distance. If there is no error then also returns if the graph contains a negative cycle. 
 \end{DoxyReturn}
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a47608dbab5286badf6098a54bb2fa364}\label{classCXXGRAPH_1_1Graph_a47608dbab5286badf6098a54bb2fa364}} 
+\index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!fordFulkersonMaxFlow@{fordFulkersonMaxFlow}}
+\index{fordFulkersonMaxFlow@{fordFulkersonMaxFlow}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{fordFulkersonMaxFlow()}{fordFulkersonMaxFlow()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+double \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::ford\+Fulkerson\+Max\+Flow (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{source,  }\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{target }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
-Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_ac8a6fd3000941159525092acc612a34a}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
 
+Function runs the Ford-\/\+Fulkerson algorithm for some source node and target node in the graph and returns the maximum flow of the graph. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em source} & source vertex \\
+\hline
+{\em target} & target vertex \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double Max-\/\+Flow value or -\/1 in case of error 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a5ebab9011fe6155743eaa989c2bf7860}\label{classCXXGRAPH_1_1Graph_a5ebab9011fe6155743eaa989c2bf7860}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!getEdge@{getEdge}}
 \index{getEdge@{getEdge}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{getEdge()}{getEdge()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-const std\+::optional$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::get\+Edge (\begin{DoxyParamCaption}\item[{unsigned long long}]{edge\+Id }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+const std\+::optional$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::get\+Edge (\begin{DoxyParamCaption}\item[{unsigned long long}]{edge\+Id }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -355,16 +347,12 @@ Function that return an \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} with spec
 \begin{DoxyReturn}{Returns}
 the \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} if exist 
 \end{DoxyReturn}
-
-
-Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a8b4c5d50f2095eed68d11b4bef01b35f}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
-
-\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a1d00ee150e0876b4edb10616e052021a}\label{classCXXGRAPH_1_1Graph_a1d00ee150e0876b4edb10616e052021a}} 
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a8412ba5fbb3bd12ce9c872bd9bbd9824}\label{classCXXGRAPH_1_1Graph_a8412ba5fbb3bd12ce9c872bd9bbd9824}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!getEdgeSet@{getEdgeSet}}
 \index{getEdgeSet@{getEdgeSet}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{getEdgeSet()}{getEdgeSet()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-const std\+::list$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ \& \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::get\+Edge\+Set\hspace{0.3cm}{\ttfamily [virtual]}}
+const T\+\_\+\+Edge\+Set$<$ T $>$ \& \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::get\+Edge\+Set\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -373,16 +361,12 @@ Function that return the \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} set of t
 \begin{DoxyReturn}{Returns}
 a list of Edges of the graph 
 \end{DoxyReturn}
-
-
-Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_aa71357e59aabf422cf1578b94336f7e7}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
-
-\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_ae68cf3b1eb04907935c032755bd81004}\label{classCXXGRAPH_1_1Graph_ae68cf3b1eb04907935c032755bd81004}} 
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_af0544d74b956980e05e2a57a5dc2d2d6}\label{classCXXGRAPH_1_1Graph_af0544d74b956980e05e2a57a5dc2d2d6}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!getNodeSet@{getNodeSet}}
 \index{getNodeSet@{getNodeSet}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{getNodeSet()}{getNodeSet()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-const std\+::list$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::get\+Node\+Set\hspace{0.3cm}{\ttfamily [virtual]}}
+const std\+::set$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::get\+Node\+Set\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -391,16 +375,12 @@ Function that return the \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}} Set of t
 \begin{DoxyReturn}{Returns}
 a list of Nodes of the graph 
 \end{DoxyReturn}
-
-
-Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a2c9873692bef042d5f94ab8e7018bf95}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
-
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a7c6d8a66538ecec3c33c4ff0574cdb2d}\label{classCXXGRAPH_1_1Graph_a7c6d8a66538ecec3c33c4ff0574cdb2d}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!graph\_slicing@{graph\_slicing}}
 \index{graph\_slicing@{graph\_slicing}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{graph\_slicing()}{graph\_slicing()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-const std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::graph\+\_\+slicing (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{start }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+const std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::graph\+\_\+slicing (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ \&}]{start }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -418,48 +398,56 @@ Note\+: No Thread Safe
 \begin{DoxyReturn}{Returns}
 a vector of nodes that belong to C but not to M. 
 \end{DoxyReturn}
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a1c7fc1183438f6f699179a4b02d39b68}\label{classCXXGRAPH_1_1Graph_a1c7fc1183438f6f699179a4b02d39b68}} 
+\index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!isConnectedGraph@{isConnectedGraph}}
+\index{isConnectedGraph@{isConnectedGraph}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{isConnectedGraph()}{isConnectedGraph()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::is\+Connected\+Graph\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+This function checks if the graph is connected or not Applicable for Undirected \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}, for Directed \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} use the \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a2dd3a83617afbd6a27d9f835f0ac7996}{is\+Strongly\+Connected\+Graph()}} function. 
+
+\begin{DoxyReturn}{Returns}
+true if the graph is connected 
+
+false otherwise 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a4f76bb7230c1654dd6b1ec24d0291875}\label{classCXXGRAPH_1_1Graph_a4f76bb7230c1654dd6b1ec24d0291875}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!isCyclicDirectedGraphBFS@{isCyclicDirectedGraphBFS}}
 \index{isCyclicDirectedGraphBFS@{isCyclicDirectedGraphBFS}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{isCyclicDirectedGraphBFS()}{isCyclicDirectedGraphBFS()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::is\+Cyclic\+Directed\+Graph\+BFS\hspace{0.3cm}{\ttfamily [virtual]}}
+bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::is\+Cyclic\+Directed\+Graph\+B\+FS\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
-This function uses BFS to check for cycle in the graph. Pay Attention, this function work only with directed \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} Note\+: No Thread Safe. 
+This function uses B\+FS to check for cycle in the graph. Pay Attention, this function work only with directed \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} Note\+: No Thread Safe. 
 
 \begin{DoxyReturn}{Returns}
 true if a cycle is detected, else false. ( false is returned also if the graph in indirected) 
 \end{DoxyReturn}
-
-
-Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a71b397271c5157bab1778e5e9341d793}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
-
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a91a818601c0df0e5abfbaf4da5918afa}\label{classCXXGRAPH_1_1Graph_a91a818601c0df0e5abfbaf4da5918afa}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!isCyclicDirectedGraphDFS@{isCyclicDirectedGraphDFS}}
 \index{isCyclicDirectedGraphDFS@{isCyclicDirectedGraphDFS}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{isCyclicDirectedGraphDFS()}{isCyclicDirectedGraphDFS()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::is\+Cyclic\+Directed\+Graph\+DFS\hspace{0.3cm}{\ttfamily [virtual]}}
+bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::is\+Cyclic\+Directed\+Graph\+D\+FS\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
-This function uses DFS to check for cycle in the graph. Pay Attention, this function work only with directed \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} Note\+: No Thread Safe. 
+This function uses D\+FS to check for cycle in the graph. Pay Attention, this function work only with directed \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} Note\+: No Thread Safe. 
 
 \begin{DoxyReturn}{Returns}
 true if a cycle is detected, else false. ( false is returned also if the graph in indirected) 
 \end{DoxyReturn}
-
-
-Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_af2c7ac7142b3de0d088a8af736b26f33}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
-
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a5c7ddb5c91f3ab7456c8203a740f52c9}\label{classCXXGRAPH_1_1Graph_a5c7ddb5c91f3ab7456c8203a740f52c9}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!isDirectedGraph@{isDirectedGraph}}
 \index{isDirectedGraph@{isDirectedGraph}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{isDirectedGraph()}{isDirectedGraph()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::is\+Directed\+Graph\hspace{0.3cm}{\ttfamily [virtual]}}
+bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::is\+Directed\+Graph\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -468,16 +456,28 @@ This function checks if a graph is directed Note\+: No Thread Safe.
 \begin{DoxyReturn}{Returns}
 true if the graph is directed, else false. 
 \end{DoxyReturn}
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a2dd3a83617afbd6a27d9f835f0ac7996}\label{classCXXGRAPH_1_1Graph_a2dd3a83617afbd6a27d9f835f0ac7996}} 
+\index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!isStronglyConnectedGraph@{isStronglyConnectedGraph}}
+\index{isStronglyConnectedGraph@{isStronglyConnectedGraph}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{isStronglyConnectedGraph()}{isStronglyConnectedGraph()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::is\+Strongly\+Connected\+Graph\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
-Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a39cf608717962cd84e4a3606135ee1f4}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
 
+This function checks if the graph is strongly connected or not Applicable for Directed \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}}, for Undirected \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{Graph}} use the \mbox{\hyperlink{classCXXGRAPH_1_1Graph_a1c7fc1183438f6f699179a4b02d39b68}{is\+Connected\+Graph()}} function. 
+
+\begin{DoxyReturn}{Returns}
+true if the graph is connected 
+
+false otherwise 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a13abdb1d53937f7349cd72f527125edf}\label{classCXXGRAPH_1_1Graph_a13abdb1d53937f7349cd72f527125edf}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!isUndirectedGraph@{isUndirectedGraph}}
 \index{isUndirectedGraph@{isUndirectedGraph}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{isUndirectedGraph()}{isUndirectedGraph()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::is\+Undirected\+Graph\hspace{0.3cm}{\ttfamily [virtual]}}
+bool \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::is\+Undirected\+Graph\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -486,26 +486,42 @@ This function checks if a graph is undirected Note\+: No Thread Safe.
 \begin{DoxyReturn}{Returns}
 true if the graph is undirected, else false. 
 \end{DoxyReturn}
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a5905a6243d88a7c347c003b9c8789801}\label{classCXXGRAPH_1_1Graph_a5905a6243d88a7c347c003b9c8789801}} 
+\index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!kosaraju@{kosaraju}}
+\index{kosaraju@{kosaraju}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{kosaraju()}{kosaraju()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::vector$<$ std\+::vector$<$ \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}}$<$ T $>$ $>$ $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::kosaraju\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+This function performs performs the kosaraju algorthm on the graph to find the strongly connected components. 
+
+Mathematical definition of the problem\+: A strongly connected component (S\+CC) of a directed graph is a maximal strongly connected subgraph.
+
+Note\+: No Thread Safe \begin{DoxyReturn}{Returns}
+a vector of vector of strongly connected components. 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_acd02bf70592b8f706d441e82bbe6ddc9}\label{classCXXGRAPH_1_1Graph_acd02bf70592b8f706d441e82bbe6ddc9}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!kruskal@{kruskal}}
 \index{kruskal@{kruskal}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{kruskal()}{kruskal()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-const \mbox{\hyperlink{structCXXGRAPH_1_1MstResult__struct}{Mst\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::kruskal\hspace{0.3cm}{\ttfamily [virtual]}}
+const \mbox{\hyperlink{structCXXGRAPH_1_1MstResult__struct}{Mst\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::kruskal\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
 Function runs the kruskal algorithm and returns the minimum spanning tree if the graph is undirected. Note\+: No Thread Safe. 
 
 \begin{DoxyReturn}{Returns}
-struct of type Mst\+Result with following fields success\+: true if algorithm completed successfully ELSE false mst\+: vector containing id of nodes in minimum spanning tree \& cost of MST mst\+Cost\+: Cost of MST error\+Message\+: \char`\"{}\char`\"{} if no error ELSE report the encountered error 
+struct of type Mst\+Result with following fields success\+: true if algorithm completed successfully E\+L\+SE false mst\+: vector containing id of nodes in minimum spanning tree \& cost of M\+ST mst\+Cost\+: Cost of M\+ST error\+Message\+: \char`\"{}\char`\"{} if no error E\+L\+SE report the encountered error 
 \end{DoxyReturn}
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a70da23746ecfd20c8b5b226322813af2}\label{classCXXGRAPH_1_1Graph_a70da23746ecfd20c8b5b226322813af2}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!partitionGraph@{partitionGraph}}
 \index{partitionGraph@{partitionGraph}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{partitionGraph()}{partitionGraph()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-Partition\+Map$<$ T $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::partition\+Graph (\begin{DoxyParamCaption}\item[{PARTITIONING\+::\+Partition\+Algorithm}]{algorithm,  }\item[{unsigned int}]{number\+Of\+Partitions,  }\item[{double}]{param1 = {\ttfamily 0.0},  }\item[{double}]{param2 = {\ttfamily 0.0},  }\item[{double}]{param3 = {\ttfamily 0.0},  }\item[{unsigned int}]{number\+Ofthreads = {\ttfamily std\+:\+:thread\+:\+:hardware\+\_\+concurrency()} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+Partition\+Map$<$ T $>$ \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::partition\+Graph (\begin{DoxyParamCaption}\item[{P\+A\+R\+T\+I\+T\+I\+O\+N\+I\+N\+G\+::\+Partition\+Algorithm}]{algorithm,  }\item[{unsigned int}]{number\+Of\+Partitions,  }\item[{double}]{param1 = {\ttfamily 0.0},  }\item[{double}]{param2 = {\ttfamily 0.0},  }\item[{double}]{param3 = {\ttfamily 0.0},  }\item[{unsigned int}]{number\+Ofthreads = {\ttfamily std\+:\+:thread\+:\+:hardware\+\_\+concurrency()} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -521,30 +537,26 @@ This function partition a graph in a set of partitions Note\+: No Thread Safe.
 \begin{DoxyReturn}{Returns}
 The partiton Map of the partitioned graph 
 \end{DoxyReturn}
-
-
-Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a4377de905685f5b82e5326b4708790c0}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
-
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a1dd966cbf26d661a017e36d568fa3223}\label{classCXXGRAPH_1_1Graph_a1dd966cbf26d661a017e36d568fa3223}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!prim@{prim}}
 \index{prim@{prim}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{prim()}{prim()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-const \mbox{\hyperlink{structCXXGRAPH_1_1MstResult__struct}{Mst\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::prim\hspace{0.3cm}{\ttfamily [virtual]}}
+const \mbox{\hyperlink{structCXXGRAPH_1_1MstResult__struct}{Mst\+Result}} \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::prim\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
 Function runs the prim algorithm and returns the minimum spanning tree if the graph is undirected. Note\+: No Thread Safe. 
 
 \begin{DoxyReturn}{Returns}
-a vector containing id of nodes in minimum spanning tree \& cost of MST 
+a vector containing id of nodes in minimum spanning tree \& cost of M\+ST 
 \end{DoxyReturn}
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_abd5baeb88c2b588c14383155fff4ec3e}\label{classCXXGRAPH_1_1Graph_abd5baeb88c2b588c14383155fff4ec3e}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!readFromFile@{readFromFile}}
 \index{readFromFile@{readFromFile}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{readFromFile()}{readFromFile()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-int \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::read\+From\+File (\begin{DoxyParamCaption}\item[{Input\+Output\+Format}]{format = {\ttfamily InputOutputFormat\+:\+:STANDARD\+\_\+CSV},  }\item[{const std\+::string \&}]{working\+Dir = {\ttfamily \char`\"{}.\char`\"{}},  }\item[{const std\+::string \&}]{OFile\+Name = {\ttfamily \char`\"{}graph\char`\"{}},  }\item[{bool}]{compress = {\ttfamily false},  }\item[{bool}]{read\+Node\+Feat = {\ttfamily false},  }\item[{bool}]{read\+Edge\+Weight = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+int \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::read\+From\+File (\begin{DoxyParamCaption}\item[{Input\+Output\+Format}]{format = {\ttfamily InputOutputFormat\+:\+:STANDARD\+\_\+CSV},  }\item[{const std\+::string \&}]{working\+Dir = {\ttfamily \char`\"{}.\char`\"{}},  }\item[{const std\+::string \&}]{O\+File\+Name = {\ttfamily \char`\"{}graph\char`\"{}},  }\item[{bool}]{compress = {\ttfamily false},  }\item[{bool}]{read\+Node\+Feat = {\ttfamily false},  }\item[{bool}]{read\+Edge\+Weight = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -556,28 +568,24 @@ This function read the graph from an input file Note\+: No Thread Safe.
 \hline
 {\em working\+Dir} & The path to the directory in which is placed the Input file \\
 \hline
-{\em OFile\+Name} & The Input File Name ( ) \\
+{\em O\+File\+Name} & The Input File Name ( ) \\
 \hline
 {\em compress} & Indicates if the Input is compressed \\
 \hline
-{\em write\+Node\+Feat} & Indicates if import also \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}} Features \\
+{\em read\+Node\+Feat} & Indicates if import also \mbox{\hyperlink{classCXXGRAPH_1_1Node}{Node}} Features \\
 \hline
-{\em write\+Edge\+Weight} & Indicates if import also \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} Weights \\
+{\em read\+Edge\+Weight} & Indicates if import also \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} Weights \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 0 if all OK, else return a negative value 
 \end{DoxyReturn}
-
-
-Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a7e43a7d1fa001375edce51d801d6a94f}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
-
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_ac1b14104add48bad5524e31b47411d36}\label{classCXXGRAPH_1_1Graph_ac1b14104add48bad5524e31b47411d36}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!removeEdge@{removeEdge}}
 \index{removeEdge@{removeEdge}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{removeEdge()}{removeEdge()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-void \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::remove\+Edge (\begin{DoxyParamCaption}\item[{unsigned long long}]{edge\+Id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+void \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::remove\+Edge (\begin{DoxyParamCaption}\item[{unsigned long long}]{edge\+Id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -588,16 +596,12 @@ Function remove an \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} from the \mbox
 {\em edge\+Id} & The \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} Id to remove \\
 \hline
 \end{DoxyParams}
-
-
-Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a47b042e4911cd39e0bb78f190e7a454d}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
-
-\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_af2cd256d3638bf15ea926b6da6bc6097}\label{classCXXGRAPH_1_1Graph_af2cd256d3638bf15ea926b6da6bc6097}} 
+\mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a7f4b22c1c3e93bd51600141d9517e36a}\label{classCXXGRAPH_1_1Graph_a7f4b22c1c3e93bd51600141d9517e36a}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!setEdgeSet@{setEdgeSet}}
 \index{setEdgeSet@{setEdgeSet}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{setEdgeSet()}{setEdgeSet()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-void \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::set\+Edge\+Set (\begin{DoxyParamCaption}\item[{std\+::list$<$ const \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}}$<$ T $>$ $\ast$ $>$ \&}]{edge\+Set }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+void \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::set\+Edge\+Set (\begin{DoxyParamCaption}\item[{T\+\_\+\+Edge\+Set$<$ T $>$ \&}]{edge\+Set }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -608,16 +612,12 @@ Function set the \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} Set of the \mbox
 {\em edge\+Set} & The \mbox{\hyperlink{classCXXGRAPH_1_1Edge}{Edge}} Set \\
 \hline
 \end{DoxyParams}
-
-
-Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a2fc8067ede63880fd645206ef9a23380}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
-
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a0cc15d4668136f6be44bf18a2e28cc6b}\label{classCXXGRAPH_1_1Graph_a0cc15d4668136f6be44bf18a2e28cc6b}} 
 \index{CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}!setFind@{setFind}}
 \index{setFind@{setFind}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{setFind()}{setFind()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-unsigned long long \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::set\+Find (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ unsigned long long, \mbox{\hyperlink{structCXXGRAPH_1_1Subset__struct}{Subset}} $>$ $\ast$}]{subsets,  }\item[{const unsigned long long}]{elem }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+unsigned long long \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::set\+Find (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ unsigned long long, \mbox{\hyperlink{structCXXGRAPH_1_1Subset__struct}{Subset}} $>$ $\ast$}]{subsets,  }\item[{const unsigned long long}]{elem }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -638,7 +638,7 @@ parent node of elem Note\+: No Thread Safe
 \index{setUnion@{setUnion}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{setUnion()}{setUnion()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-void \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::set\+Union (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ unsigned long long, \mbox{\hyperlink{structCXXGRAPH_1_1Subset__struct}{Subset}} $>$ $\ast$}]{subsets,  }\item[{const unsigned long long}]{set1,  }\item[{const unsigned long long}]{elem2 }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+void \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::set\+Union (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ unsigned long long, \mbox{\hyperlink{structCXXGRAPH_1_1Subset__struct}{Subset}} $>$ $\ast$}]{subsets,  }\item[{const unsigned long long}]{set1,  }\item[{const unsigned long long}]{elem2 }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -650,7 +650,7 @@ This function modifies the original subset array such that it the union of two s
 \hline
 {\em a} & parent id of set1 \\
 \hline
-{\em b} & parent id of set2 NOTE\+: Original subset is no longer available after union. Note\+: No Thread Safe \\
+{\em b} & parent id of set2 N\+O\+TE\+: Original subset is no longer available after union. Note\+: No Thread Safe \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{classCXXGRAPH_1_1Graph_a5a1ffeb9ef3b62b38c10bd84b44170a0}\label{classCXXGRAPH_1_1Graph_a5a1ffeb9ef3b62b38c10bd84b44170a0}} 
@@ -658,7 +658,7 @@ This function modifies the original subset array such that it the union of two s
 \index{writeToFile@{writeToFile}!CXXGRAPH::Graph$<$ T $>$@{CXXGRAPH::Graph$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{writeToFile()}{writeToFile()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-int \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{CXXGRAPH\+::\+Graph}}$<$ T $>$\+::write\+To\+File (\begin{DoxyParamCaption}\item[{Input\+Output\+Format}]{format = {\ttfamily InputOutputFormat\+:\+:STANDARD\+\_\+CSV},  }\item[{const std\+::string \&}]{working\+Dir = {\ttfamily \char`\"{}.\char`\"{}},  }\item[{const std\+::string \&}]{OFile\+Name = {\ttfamily \char`\"{}graph\char`\"{}},  }\item[{bool}]{compress = {\ttfamily false},  }\item[{bool}]{write\+Node\+Feat = {\ttfamily false},  }\item[{bool}]{write\+Edge\+Weight = {\ttfamily false} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+int \mbox{\hyperlink{classCXXGRAPH_1_1Graph}{C\+X\+X\+G\+R\+A\+P\+H\+::\+Graph}}$<$ T $>$\+::write\+To\+File (\begin{DoxyParamCaption}\item[{Input\+Output\+Format}]{format = {\ttfamily InputOutputFormat\+:\+:STANDARD\+\_\+CSV},  }\item[{const std\+::string \&}]{working\+Dir = {\ttfamily \char`\"{}.\char`\"{}},  }\item[{const std\+::string \&}]{O\+File\+Name = {\ttfamily \char`\"{}graph\char`\"{}},  }\item[{bool}]{compress = {\ttfamily false},  }\item[{bool}]{write\+Node\+Feat = {\ttfamily false},  }\item[{bool}]{write\+Edge\+Weight = {\ttfamily false} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -670,7 +670,7 @@ This function write the graph in an output file Note\+: No Thread Safe.
 \hline
 {\em working\+Dir} & The path to the directory in which is placed the Output file \\
 \hline
-{\em OFile\+Name} & The Output File Name ( ) \\
+{\em O\+File\+Name} & The Output File Name ( ) \\
 \hline
 {\em compress} & Indicates if the Output will be compressed ( Pay Attention if compress flag is true, not compressed files will be deleted \mbox{[} \#48 \mbox{]} ) \\
 \hline
@@ -684,10 +684,6 @@ This function write the graph in an output file Note\+: No Thread Safe.
 \end{DoxyReturn}
 
 
-Reimplemented in \mbox{\hyperlink{classCXXGRAPH_1_1Graph__TS_a5a14ae46f7b1476f03439e7910237948}{CXXGRAPH\+::\+Graph\+\_\+\+TS$<$ T $>$}}.
-
-
-
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-/github/workspace/include/\+Graph/Graph.\+hpp\end{DoxyCompactItemize}
+/workspaces/\+C\+X\+X\+Graph/include/\+Graph/Graph.\+hpp\end{DoxyCompactItemize}
