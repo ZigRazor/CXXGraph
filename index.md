@@ -49,7 +49,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
 | :heavy_check_mark: | First Optimization | Apr 4, 2022 |
 | :heavy_check_mark: | Add Benchmark for all algorithms | Oct 5, 2022 |
 | :heavy_check_mark: | Code Optimization | Oct 5, 2022 |
-| :heavy_check_mark: | Release 0.4.0 | Oct 6, 2022 |
+| :heavy_check_mark: | Release 0.4.0 | Oct 7, 2022 |
 | :memo: | "Const" Code Review [#155](https://github.com/ZigRazor/CXXGraph/issues/155) | TBD |
 | :memo: | Release 0.5.0 | TBD |
 | :memo: | Official Site Release | TBD |
@@ -82,6 +82,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
 
 - [CXXGraph](#cxxgraph)
   - [Introduction](#introduction)
+  - [Hacktoberfest 2k22](#hacktoberfest-2k22)
   - [We are Looking for...](#we-are-looking-for)
   - [Roadmap](#roadmap)
   - [Table of Contents](#table-of-contents)
@@ -126,7 +127,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
     - [Borůvka's Algorithm](#borůvkas-algorithm)
     - [Graph Slicing based on connectivity](#graph-slicing-based-on-connectivity)
     - [Ford-Fulkerson Algorithm](#ford-fulkerson-algorithm)
-    - [Kosaraju Algorithm] (#kosaraju's-algo)
+    - [Kosaraju's Algorithm](#kosarajus-algorithm)
   - [Partition Algorithm Explanation](#partition-algorithm-explanation)
     - [Vertex-Cut](#vertex-cut)
     - [Edge Balanced Vertex-Cut](#edge-balanced-vertex-cut)
