@@ -65,8 +65,8 @@ namespace CXXGRAPH
             auto nodePair = e.getNodePair();
             int u = nodePair.first->getId();
             int v = nodePair.second->getId();
-            Record<T> *u_record = state.getRecord(u);
-            Record<T> *v_record = state.getRecord(v);
+            std::shared_ptr<Record<T>> u_record = state.getRecord(u);
+            std::shared_ptr<Record<T>> v_record = state.getRecord(v);
 
             //*** ASK FOR LOCK
             bool locks_taken = false;

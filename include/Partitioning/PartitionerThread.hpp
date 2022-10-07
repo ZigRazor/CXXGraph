@@ -42,20 +42,19 @@ namespace CXXGRAPH
 			PartitionStrategy<T> *algorithm = nullptr;
 
 		public:
-			PartitionerThread(std::vector<const Edge<T> *> &list, PartitionState<T> *state, PartitionStrategy<T> *algorithm, std::list<int> *ids);
+			PartitionerThread(std::vector<const Edge<T> *> &list, PartitionState<T> *state, PartitionStrategy<T> *algorithm);
 			~PartitionerThread();
 
 			void run();
 
-			std::list<int> *id_partitions = nullptr;
+			std::list<int> id_partitions;
 		};
 		template <typename T>
-		PartitionerThread<T>::PartitionerThread(std::vector<const Edge<T> *> &list, PartitionState<T> *state, PartitionStrategy<T> *algorithm, std::list<int> *ids)
+		PartitionerThread<T>::PartitionerThread(std::vector<const Edge<T> *> &list, PartitionState<T> *state, PartitionStrategy<T> *algorithm)
 		{
 			this->list = list;
 			this->state = state;
 			this->algorithm = algorithm;
-			this->id_partitions = ids;
 		}
 		template <typename T>
 		PartitionerThread<T>::~PartitionerThread()

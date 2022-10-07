@@ -65,9 +65,9 @@ namespace CXXGRAPH
         {
             //std::cout << "CoordinatedRecord<T>::~CoordinatedRecord()" << std::endl;
             //TODOOOOOOOO
-            //if(lock){
-            //    delete lock;
-            //}
+            if(lock != nullptr){
+                delete lock;
+            }
         }
         template <typename T>
         std::set<int> &CoordinatedRecord<T>::getPartitions()

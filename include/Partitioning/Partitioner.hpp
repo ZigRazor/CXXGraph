@@ -42,7 +42,7 @@ namespace CXXGRAPH
         class Partitioner
         {
         private:
-            T_EdgeSet<T> dataset = {};
+            const T_EdgeSet<T>* dataset = nullptr;
             PartitionStrategy<T>* algorithm = nullptr;
             Globals GLOBALS;
 
@@ -50,14 +50,14 @@ namespace CXXGRAPH
             
 
         public:
-            Partitioner(const T_EdgeSet<T> &dataset, Globals &G);
+            Partitioner(const T_EdgeSet<T> *dataset, Globals &G);
             Partitioner(const Partitioner& other);
             ~Partitioner();
 
             CoordinatedPartitionState<T> performCoordinatedPartition();
         };
         template <typename T>
-        Partitioner<T>::Partitioner(const T_EdgeSet<T> &dataset, Globals &G) : GLOBALS(G)
+        Partitioner<T>::Partitioner(const T_EdgeSet<T> *dataset, Globals &G) : GLOBALS(G)
         {
             //this->GLOBALS = G;
             this->dataset = dataset;
@@ -103,8 +103,9 @@ namespace CXXGRAPH
             int processors = GLOBALS.threads;
 
             std::thread myThreads[processors];
-
-            int n = dataset.size();
+            std::shared_ptr<Runnable> myRunnable[processors];
+            std::vector<const Edge<T>*> list_vector[processors];
+            int n = dataset->size();
             int subSize = n / processors + 1;
             for (int t = 0; t < processors; ++t)
             {
@@ -112,9 +113,9 @@ namespace CXXGRAPH
                 int iEnd = std::min((t + 1) * subSize, n);
                 if (iEnd >= iStart)
                 {
-                    std::vector<const Edge<T>*> list(std::next(dataset.begin(), iStart), std::next(dataset.begin(), iEnd));
-                    Runnable *x = new PartitionerThread<T>(list, &state, algorithm, new std::list<int>());
-                    myThreads[t] = std::thread(&Runnable::run, x);
+                    list_vector[t] = std::vector<const Edge<T>*>(std::next(dataset->begin(), iStart), std::next(dataset->begin(), iEnd));
+                    myRunnable[t] = std::make_shared<PartitionerThread<T>>(list_vector[t], &state, algorithm);
+                    myThreads[t] = std::thread(&Runnable::run, myRunnable[t].get());
                 }
             }
             for (int t = 0; t < processors; ++t)
@@ -122,7 +123,17 @@ namespace CXXGRAPH
                 if (myThreads[t].joinable()){
                     myThreads[t].join();
                 }
+                //if(myRunnable[t] != nullptr){
+                //    delete myRunnable[t];
+                //}
             }
+            /*
+            for (int t = 0; t < processors; ++t){
+                if (runnableList[t] != nullptr){
+                    delete runnableList[t];
+                } 
+            }
+            */
             return state;
         }
         template <typename T>
