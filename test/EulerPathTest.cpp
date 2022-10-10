@@ -26,9 +26,9 @@ TEST(EulerPathTest, test_1)
     auto nodeSet = graph.getNodeSet();
     for (const auto& node : nodeSet)
     {
-        auto check = std::find_if(res.begin(), res.end(),
+        auto check = std::find_if(res->begin(), res->end(),
                                   [node](auto it)
-                                  { return (node->getUserId() == it.getUserId()); }) == res.end();
+                                  { return (node->getUserId() == it.getUserId()); }) == res->end();
 
         ASSERT_FALSE(check);
     }
@@ -62,9 +62,9 @@ TEST(EulerPathTest, test_2)
     auto nodeSet = graph.getNodeSet();
     for (const auto& node : nodeSet)
     {
-        auto check = std::find_if(res.begin(), res.end(),
+        auto check = std::find_if(res->begin(), res->end(),
                                   [node](auto it)
-                                  { return (node->getUserId() == it.getUserId()); }) == res.end();
+                                  { return (node->getUserId() == it.getUserId()); }) == res->end();
 
         ASSERT_FALSE(check);
     }
@@ -104,9 +104,9 @@ TEST(EulerPathTest, test_3)
     auto nodeSet = graph.getNodeSet();
     for (const auto& node : nodeSet)
     {
-        auto check = std::find_if(res.begin(), res.end(),
+        auto check = std::find_if(res->begin(), res->end(),
                                   [node](auto it)
-                                  { return (node->getUserId() == it.getUserId()); }) == res.end();
+                                  { return (node->getUserId() == it.getUserId()); }) == res->end();
 
         ASSERT_FALSE(check);
     }

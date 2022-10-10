@@ -186,7 +186,7 @@ namespace CXXGRAPH
 		 * @return a vector containing nodes in eulerian path
 		 * Note: No Thread Safe
 		 */
-		virtual std::vector<Node<T>> eulerianPath() const;
+		virtual std::shared_ptr<std::vector<Node<T>>> eulerianPath() const;
 		/**
 		 * @brief Function runs the dijkstra algorithm for some source node and
 		 * target node in the graph and returns the shortest distance of target
@@ -938,11 +938,11 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	std::vector<Node<T>> Graph<T>::eulerianPath() const
+	std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const
 	{
 		const auto nodeSet = Graph<T>::getNodeSet();
-		auto adj = Graph<T>::getAdjMatrix();
-		std::vector<Node<T>> eulerPath;
+		const auto adj = Graph<T>::getAdjMatrix();
+		std::shared_ptr<std::vector<Node<T>>> eulerPath = std::make_shared<std::vector<Node<T>>>();
 		std::vector<const Node<T> *> currentPath;
 		auto currentNode = *(nodeSet.begin());
 		currentPath.push_back(currentNode);
@@ -961,7 +961,7 @@ namespace CXXGRAPH
 			}
 			else
 			{
-				eulerPath.push_back(*currentNode);
+				eulerPath->push_back(*currentNode);
 				currentNode = currentPath.back();
 				currentPath.pop_back();
 			}
