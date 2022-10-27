@@ -350,6 +350,14 @@ namespace CXXGRAPH
 		 */
 		virtual bool isStronglyConnectedGraph() const;
 
+        /**
+		 * @brief This function sort nodes in topological order.
+		 * 	Applicable for Directed Acyclic Graph
+		 *
+		 * @return a vector containing nodes in topological order
+		 */
+		virtual TopoSortResult<T> topologicalSort() const;
+
 		/**
 		* \brief
 		* This function performs performs the kosaraju algorthm on the graph to find the strongly connected components.
@@ -1970,6 +1978,64 @@ namespace CXXGRAPH
 			return true;
 		}
 	}
+
+    template <typename T>
+	TopoSortResult<T> Graph<T>::topologicalSort() const
+    {
+        TopoSortResult<T> result;
+        result.success = false;
+        
+        if (!isDirectedGraph())
+		{
+            result.errorMessage = ERR_UNDIR_GRAPH;
+			return result;
+		}
+        else if (isCyclicDirectedGraphBFS())
+        {
+            result.errorMessage = ERR_CYCLIC_GRAPH;
+            return result;
+        }
+        else 
+        {
+            const auto &adjMatrix = getAdjMatrix();
+            const auto &nodeSet = getNodeSet();
+            std::unordered_map<const Node<T> *, bool> visited;
+
+            std::function<void(const Node<T> *)> postorder_helper = [&postorder_helper, &adjMatrix, &visited, &result] (const Node<T> *curNode)
+            {
+                visited[curNode] = true;
+
+                if (adjMatrix.find(curNode) != adjMatrix.end())
+                {
+                    for (const auto &edge : adjMatrix.at(curNode))
+                    {
+                        const auto &nextNode = edge.first;
+                        if (false == visited[nextNode]) 
+                        {
+                            postorder_helper(nextNode);
+                        }
+                    }
+                }
+
+                result.nodesInTopoOrder.push_back(*curNode);
+            }; 
+
+            int numNodes = adjMatrix.size();
+            result.nodesInTopoOrder.reserve(numNodes);
+
+            for (const auto &node : nodeSet)
+            {
+                if (false == visited[node])
+                {
+                    postorder_helper(node);
+                }
+            }
+
+            result.success = true;
+            std::reverse(result.nodesInTopoOrder.begin(), result.nodesInTopoOrder.end());
+            return result;
+        }
+    }
 
 	template <typename T>
 	std::vector<std::vector<Node<T>>> Graph<T>::kosaraju() const

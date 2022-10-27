@@ -134,6 +134,25 @@ namespace CXXGRAPH
 	};
 	typedef DialResult_struct DialResult;
 
+    /// Struct that contains the information about TopologicalSort's Algorithm results
+    template <typename T>
+	struct TopoSortResult_struct
+	{
+		bool success = false;								// TRUE if the function does not return error, FALSE otherwise
+		std::string errorMessage = "";					    //message of error
+		std::vector<Node<T>> nodesInTopoOrder = {};         //result a vector that contains the nodes in topological order (valid only if success is TRUE)
+        
+        /*
+        TopoSortResult & operator=(TopoSortResult_struct && res) 
+            : success(res.success),
+              errorMessage(move(res.errorMessage))
+              nodesInTopoOrder(move(res.nodesInTopoOrder))
+        {}
+        */
+    };
+    template <typename T>
+    using TopoSortResult = TopoSortResult_struct<T>;
+
 	/// Struct that contains the information about the partitioning statistics
 	
 
