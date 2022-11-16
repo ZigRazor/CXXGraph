@@ -54,13 +54,18 @@ namespace CXXGRAPH {
 		};
 
 		inline Globals::Globals(int numberOfPartiton, PartitionAlgorithm algorithm,double param1, double param2, double param3, unsigned int threads)
-		{
+		{			
 			this->numberOfPartition = numberOfPartiton;
 			this->partitionStategy = algorithm;			
 			this->threads = threads;
 			this->param1 = param1;
 			this->param2 = param2;
 			this->param3 = param3;
+            if (this->numberOfPartition <= 0)
+			{
+				std::cout << "ERROR: numberOfPartition " << numberOfPartition << std::endl;
+				exit(-1);
+			}
 		}
 
 		inline Globals::~Globals()

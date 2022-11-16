@@ -34,10 +34,14 @@ namespace CXXGRAPH
         public:
             virtual std::shared_ptr<Record<T>> getRecord(int x) = 0;
             virtual int getMachineLoad(int m) = 0;
+            virtual int getMachineWeight(int m) = 0;
             virtual int getMachineLoadVertices(int m) = 0;
-            virtual void incrementMachineLoad(int m,const Edge<T>* e) = 0;
+            virtual void incrementMachineLoad(int m, const Edge<T>* e) = 0;
+            virtual void incrementMachineWeight(int m, const Edge<T>* e) = 0;
             virtual int getMinLoad() = 0;
             virtual int getMaxLoad() = 0;
+            virtual int getMachineWithMinWeight() = 0;
+            virtual int getMachineWithMinWeight(const std::set<int> &partitions) = 0;
             virtual std::vector<int> getMachines_load() = 0;
             virtual int getTotalReplicas() = 0;
             virtual int getNumVertices() = 0;

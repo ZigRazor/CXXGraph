@@ -42,12 +42,14 @@ namespace CXXGRAPH
         private:
             std::map<int, std::shared_ptr<CoordinatedRecord<T>>> record_map;
             std::vector<int> machines_load_edges;
+            std::vector<double> machines_weight_edges;
             std::vector<int> machines_load_vertices;
             PartitionMap<T> partition_map;
             Globals GLOBALS;
             int MAX_LOAD;
             std::shared_ptr<std::mutex> machines_load_edges_mutex = nullptr;
             std::shared_ptr<std::mutex> machines_load_vertices_mutex = nullptr;
+            std::shared_ptr<std::mutex> machines_weight_edges_mutex = nullptr;
             std::shared_ptr<std::mutex> record_map_mutex = nullptr;
             //DatWriter out; //to print the final partition of each edge
         public:
@@ -56,10 +58,14 @@ namespace CXXGRAPH
 
             std::shared_ptr<Record<T>> getRecord(int x);
             int getMachineLoad(int m);
+            int getMachineWeight(int m);
             int getMachineLoadVertices(int m);
             void incrementMachineLoad(int m, const Edge<T> *e);
+            void incrementMachineWeight(int m, const Edge<T> *e);
             int getMinLoad();
             int getMaxLoad();
+            int getMachineWithMinWeight();
+            int getMachineWithMinWeight(const std::set<int> &partitions);
             std::vector<int> getMachines_load();
             int getTotalReplicas();
             int getNumVertices();
@@ -70,12 +76,22 @@ namespace CXXGRAPH
             const PartitionMap<T> &getPartitionMap();
         };
         template <typename T>
-        CoordinatedPartitionState<T>::CoordinatedPartitionState(Globals &G) : record_map(), GLOBALS(G), machines_load_edges_mutex(std::make_shared<std::mutex>()), machines_load_vertices_mutex(std::make_shared<std::mutex>()), record_map_mutex(std::make_shared<std::mutex>())
+        CoordinatedPartitionState<T>::CoordinatedPartitionState(Globals &G) 
+            : record_map(), 
+              GLOBALS(G),
+              machines_load_edges_mutex(std::make_shared<std::mutex>()),
+              machines_load_vertices_mutex(std::make_shared<std::mutex>()),
+              machines_weight_edges_mutex(std::make_shared<std::mutex>()), 
+              record_map_mutex(std::make_shared<std::mutex>())
         {
+            machines_load_edges.reserve(GLOBALS.numberOfPartition);
+            machines_load_vertices.reserve(GLOBALS.numberOfPartition);
+            machines_weight_edges.reserve(GLOBALS.numberOfPartition);
             for (int i = 0; i < GLOBALS.numberOfPartition; ++i)
             {
                 machines_load_edges.push_back(0);
                 machines_load_vertices.push_back(0);
+                machines_weight_edges.push_back(0);
                 partition_map[i] = std::make_shared<PARTITIONING::Partition<T>>(i);
             }
             MAX_LOAD = 0;
@@ -103,6 +119,13 @@ namespace CXXGRAPH
         }
 
         template <typename T>
+        int CoordinatedPartitionState<T>::getMachineWeight(int m)
+        {
+            std::lock_guard<std::mutex> lock(*machines_weight_edges_mutex);
+            return machines_weight_edges.at(m);
+        }
+
+        template <typename T>
         int CoordinatedPartitionState<T>::getMachineLoadVertices(int m)
         {
             std::lock_guard<std::mutex> lock(*machines_load_vertices_mutex);
@@ -118,6 +141,23 @@ namespace CXXGRAPH
             {
                 MAX_LOAD = new_value;
             }
+            partition_map[m]->addEdge(e);
+        }
+        template <typename T>
+        void CoordinatedPartitionState<T>::incrementMachineWeight(int m, const Edge<T> *e)
+        {
+            std::lock_guard<std::mutex> lock(*machines_weight_edges_mutex);
+            double edge_weight = CXXGRAPH::NEGLIGIBLE_WEIGHT;
+            if (e->isWeighted().has_value() && e->isWeighted().value())
+            {
+                edge_weight = (dynamic_cast<const Weighted *>(e))->getWeight();               
+            }
+            machines_weight_edges[m] = machines_weight_edges[m] + edge_weight;
+            //double new_value = machines_weight_edges[m];
+            //if (new_value > MAX_LOAD)
+            //{
+            //    MAX_LOAD = new_value;
+            //}
             partition_map[m]->addEdge(e);
         }
         template <typename T>
@@ -139,6 +179,44 @@ namespace CXXGRAPH
         int CoordinatedPartitionState<T>::getMaxLoad()
         {
             return MAX_LOAD;
+        }
+        template <typename T>
+        int CoordinatedPartitionState<T>::getMachineWithMinWeight()
+        {
+            std::lock_guard<std::mutex> lock(*machines_weight_edges_mutex);
+            
+            double MIN_LOAD = std::numeric_limits<double>::max();
+            int machine_id = 0;
+            for (int i = 0; i < machines_weight_edges.size(); ++i)
+            {
+                double loadi = machines_weight_edges[i];
+                if (loadi < MIN_LOAD)
+                {
+                    MIN_LOAD = loadi;
+                    machine_id = i;
+                }
+            }
+
+            return machine_id;
+        }
+        template <typename T>
+        int CoordinatedPartitionState<T>::getMachineWithMinWeight(const std::set<int> &partitions)
+        {
+            std::lock_guard<std::mutex> lock(*machines_weight_edges_mutex);
+            
+            double MIN_LOAD = std::numeric_limits<double>::max();
+            int machine_id = 0;
+            for (const auto &partition_id : partitions)
+            {
+                double loadi = machines_weight_edges.at(partition_id);
+                if (loadi < MIN_LOAD)
+                {
+                    MIN_LOAD = loadi;
+                    machine_id = partition_id;
+                }
+            }
+
+            return machine_id;
         }
         template <typename T>
         std::vector<int> CoordinatedPartitionState<T>::getMachines_load()

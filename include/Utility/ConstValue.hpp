@@ -27,6 +27,7 @@
 namespace CXXGRAPH
 {
     constexpr double INF_DOUBLE = std::numeric_limits<double>::max();
+    constexpr double NEGLIGIBLE_WEIGHT = 1e-7;
 }
 
 #endif // __CXXGRAPH_CONSTVALUE_H__
