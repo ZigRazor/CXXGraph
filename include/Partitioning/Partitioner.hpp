@@ -33,6 +33,7 @@
 #include "EdgeBalancedVertexCut.hpp"
 #include "GreedyVertexCut.hpp"
 #include "EBV.hpp"
+#include "WeightBalancedLibra.hpp"
 
 namespace CXXGRAPH
 {
@@ -73,8 +74,32 @@ namespace CXXGRAPH
             } else if (GLOBALS.partitionStategy == PartitionAlgorithm::EBV_ALG)
             {
                 algorithm = new EBV<T>(GLOBALS);
-            }
+            } else if (GLOBALS.partitionStategy == PartitionAlgorithm::WB_LIBRA)
+            {
+                // precompute weight sum
+                double weight_sum = 0.0;
+                for (const auto &edge_it : *(this->dataset))
+                {
+                    weight_sum += (edge_it->isWeighted().has_value() && edge_it->isWeighted().value()) ? dynamic_cast<const Weighted *>(edge_it)->getWeight() : CXXGRAPH::NEGLIGIBLE_WEIGHT;
+                }
+                double lambda = std::max(1.0, GLOBALS.param1);
+                double P = static_cast<double>(GLOBALS.numberOfPartition);        
+                // avoid divide by zero when some parameters are invalid  
+                double weight_sum_bound = (GLOBALS.numberOfPartition == 0) ? 0.0 : lambda * weight_sum / P;
 
+                // precompute degrees of vertices
+                std::unordered_map<std::size_t, int> vertices_degrees; 
+                for (const auto &edge_it : *(this->dataset))
+                {
+                    auto nodePair = edge_it->getNodePair();
+                    std::size_t u = nodePair.first->getId();
+                    std::size_t v = nodePair.second->getId();
+                    vertices_degrees[u]++;
+                    vertices_degrees[v]++;
+                }
+
+                algorithm = new WeightBalancedLibra<T>(GLOBALS, weight_sum_bound, move(vertices_degrees));
+            }
         }
 
         template <typename T>
@@ -93,6 +118,31 @@ namespace CXXGRAPH
             } else if (GLOBALS.partitionStategy == PartitionAlgorithm::EBV_ALG)
             {
                 algorithm = new EBV<T>(GLOBALS);
+            } else if (GLOBALS.partitionStategy == PartitionAlgorithm::WB_LIBRA)
+            {
+                // precompute weight sum
+                double weight_sum = 0.0;
+                for (const auto &edge_it : *(this->dataset))
+                {
+                    weight_sum += (edge_it->isWeighted().has_value() && edge_it->isWeighted().value()) ? dynamic_cast<const Weighted *>(edge_it)->getWeight() : CXXGRAPH::NEGLIGIBLE_WEIGHT;
+                }
+                double lambda = GLOBALS.param1;
+                double P = static_cast<double>(GLOBALS.numberOfPartition);        
+                // avoid divide by zero when some parameters are invalid  
+                double weight_sum_bound = (GLOBALS.numberOfPartition == 0) ? 0.0 : lambda * weight_sum / P;
+
+                // precompute degrees of vertices
+                std::unordered_map<std::size_t, int> vertices_degrees; 
+                for (const auto &edge_it : *(this->dataset))
+                {
+                    auto nodePair = edge_it->getNodePair();
+                    std::size_t u = nodePair.first->getId();
+                    std::size_t v = nodePair.second->getId();
+                    vertices_degrees[u]++;
+                    vertices_degrees[v]++;
+                }
+
+                algorithm = new WeightBalancedLibra<T>(GLOBALS, weight_sum_bound, move(vertices_degrees));
             }
         }
 

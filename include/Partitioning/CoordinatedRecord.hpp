@@ -52,8 +52,34 @@ namespace CXXGRAPH
             void incrementDegree();
 
             void addAll(std::set<int> &set);
-            std::set<int> intersection(CoordinatedRecord &x, CoordinatedRecord &y);
+            std::set<int> partition_intersection(std::shared_ptr<CoordinatedRecord> other);
+            std::set<int> partition_union(std::shared_ptr<CoordinatedRecord> other);
+            std::set<int> partition_difference(std::shared_ptr<CoordinatedRecord> other);
         };
+        template <typename T>
+        std::set<int> CoordinatedRecord<T>::partition_intersection(std::shared_ptr<CoordinatedRecord> other)
+        {
+            std::set<int> result;
+            set_intersection(this->partitions.begin(), this->partitions.end(), other->partitions.begin(), other->partitions.end(),
+                             std::inserter(result, result.begin()));
+            return result;
+        }
+        template <typename T>
+        std::set<int> CoordinatedRecord<T>::partition_union(std::shared_ptr<CoordinatedRecord> other)
+        {
+            std::set<int> result;
+            set_union(this->partitions.begin(), this->partitions.end(), other->partitions.begin(), other->partitions.end(),
+                             std::inserter(result, result.begin()));
+            return result;
+        }
+        template <typename T>
+        std::set<int> CoordinatedRecord<T>::partition_difference(std::shared_ptr<CoordinatedRecord> other)
+        {
+            std::set<int> result;
+            set_difference(this->partitions.begin(), this->partitions.end(), other->partitions.begin(), other->partitions.end(),
+                             std::inserter(result, result.begin()));
+            return result;
+        }
         template <typename T>
         CoordinatedRecord<T>::CoordinatedRecord() : partitions()
         {
@@ -119,14 +145,6 @@ namespace CXXGRAPH
         void CoordinatedRecord<T>::addAll(std::set<int> &set)
         {
             partitions.insert(set.begin(), set.end());
-        }
-        template <typename T>
-        std::set<int> CoordinatedRecord<T>::intersection(CoordinatedRecord &x, CoordinatedRecord &y)
-        {
-            std::set<int> result;
-            set_intersection(x.partitions.begin(), x.partitions.end(), y.partitions.begin(), y.partitions.end(),
-                             std::inserter(result, result.begin()));
-            return result;
         }
     }
 }

@@ -2486,10 +2486,10 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	PartitionMap<T> Graph<T>::partitionGraph(PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions, double param1, double param2, double param3, unsigned int numberOfthreads) const
+	PartitionMap<T> Graph<T>::partitionGraph(PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions, double param1, double param2, double param3, unsigned int numberOfThreads) const
 	{
 		PartitionMap<T> partitionMap;
-		PARTITIONING::Globals globals(numberOfPartitions, algorithm, param1, param2, param3, numberOfthreads);
+		PARTITIONING::Globals globals(numberOfPartitions, algorithm, param1, param2, param3, numberOfThreads);
 		const T_EdgeSet<T> & edgeSet = getEdgeSet();
 		globals.edgeCardinality = edgeSet.size();
 		globals.vertexCardinality = this->getNodeSet().size();

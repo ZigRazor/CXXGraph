@@ -304,3 +304,25 @@ TEST(PartitionTest, test_8)
         ASSERT_EQ(partitionMap.at(i)->getPartitionId(), i);
     }
 }
+
+TEST(PartitionTest, test_9)
+{
+    CXXGRAPH::Graph<int> graph;
+    for (auto e : edges)
+    {
+        graph.addEdge(&(*e.second));
+    }
+    auto partitionMap = graph.partitionGraph(CXXGRAPH::PARTITIONING::PartitionAlgorithm::WB_LIBRA, 4, 1.0, 0.0, 0.0, 4);
+    unsigned int totalEdgeInPartition = 0;
+    for (const auto &elem : partitionMap)
+    {
+        totalEdgeInPartition += elem.second->getEdgeSet().size();
+        //std::cout << elem.second->getEdgeSet().size() << std::endl;
+    }
+    //std::cout << "Total Edge in Partition: " << totalEdgeInPartition << std::endl;
+    ASSERT_EQ(totalEdgeInPartition, 10000);
+    for (int i = 0; i < 4; ++i)
+    {
+        ASSERT_EQ(partitionMap.at(i)->getPartitionId(), i);
+    }
+}
