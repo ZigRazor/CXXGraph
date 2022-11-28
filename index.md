@@ -72,7 +72,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
 | :memo: | Release 1.3.0 | TBD |
 | :memo: | Edge-Cut Partition Algorithm [#183](https://github.com/ZigRazor/CXXGraph/issues/183) | TBD |
 | :memo: | Release 1.3.1 | TBD |
-| :memo: | WB-Libra Parttition Algorithm [#178](https://github.com/ZigRazor/CXXGraph/issues/178) | TBD |
+| :heavy_check_mark: | WB-Libra Parttition Algorithm [#178](https://github.com/ZigRazor/CXXGraph/issues/178) | Nov 25, 2022 |
 | :memo: | Release 1.4.0 | TBD |
 | :memo: | Introduce Hypergraph [#122](https://github.com/ZigRazor/CXXGraph/issues/122) | TBD |
 | :memo: | Stable Release 2.0.0 | TBD |
