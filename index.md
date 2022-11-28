@@ -61,7 +61,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
 | :memo: | Release 1.0.2 | TBD |
 | :memo: | Tarjan's algorithm [#103](https://github.com/ZigRazor/CXXGraph/issues/103) | TBD |
 | :memo: | Release 1.0.3 | TBD |
-| :memo: | Graph Topological Sort [#104](https://github.com/ZigRazor/CXXGraph/issues/107) | TBD |
+| :heavy_check_mark: | Graph Topological Sort [#104](https://github.com/ZigRazor/CXXGraph/issues/107) | Nov 3, 2022 |
 | :memo: | Release 1.1.0 | TBD |
 | :memo: | Custom export and import [#19](https://github.com/ZigRazor/CXXGraph/issues/19) | TBD |
 | :memo: | Input & Output file format [#172](https://github.com/ZigRazor/CXXGraph/issues/172) | TBD |
