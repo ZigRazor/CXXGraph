@@ -56,7 +56,6 @@ target_link_libraries(test_exe
 					   crypto
 					   z)
 
-
 enable_testing()
 
 add_test(test_node test_exe --gtest_filter=NodeTest*)
