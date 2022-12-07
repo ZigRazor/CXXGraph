@@ -66,7 +66,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
 | :memo: | Custom export and import [#19](https://github.com/ZigRazor/CXXGraph/issues/19) | TBD |
 | :memo: | Input & Output file format [#172](https://github.com/ZigRazor/CXXGraph/issues/172) | TBD |
 | :memo: | Release 1.2.0 | TBD |
-| :memo: | Multi-Thread implementation of BFS [#121](https://github.com/ZigRazor/CXXGraph/issues/121) | TBD |
+| :heavy_check_mark: | Multi-Thread implementation of BFS [#121](https://github.com/ZigRazor/CXXGraph/issues/121) | Dec 6, 2022 |
 | :memo: | Release 1.2.1 | TBD |
 | :memo: | Thread Safe implementations of Boruvka, Prim & Kruskal algorithm [#128](https://github.com/ZigRazor/CXXGraph/issues/128) | TBD |
 | :memo: | Release 1.3.0 | TBD |
