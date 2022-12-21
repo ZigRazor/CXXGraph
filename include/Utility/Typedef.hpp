@@ -153,6 +153,16 @@ namespace CXXGRAPH
     template <typename T>
     using TopoSortResult = TopoSortResult_struct<T>;
 
+	template <typename T>
+	struct BestFirstSearchResult_struct
+	{
+		bool success = false;
+		std::string errorMessage = "";
+		std::vector<Node<T>> nodesInBestSearchOrder = {};
+    };
+    template <typename T>
+    using BestFirstSearchResult = BestFirstSearchResult_struct<T>;
+
 	/// Struct that contains the information about the partitioning statistics
 	
 

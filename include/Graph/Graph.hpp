@@ -265,6 +265,7 @@ namespace CXXGRAPH
 		 * search.
 		 *
 		 */
+		virtual BestFirstSearchResult<T> best_first_search(const Node<T> &source, const Node<T> &target) const;
 		virtual const std::vector<Node<T>> breadth_first_search(const Node<T> &start) const;    
         /**
 		 * \brief
@@ -1583,6 +1584,80 @@ namespace CXXGRAPH
 			}
 			Graph<T>::setUnion(&subset, set1, set2);
 		}
+		result.success = true;
+		return result;
+	}
+
+	template <typename T>
+	BestFirstSearchResult<T> Graph<T>::best_first_search(const Node<T> &source, const Node<T> &target) const
+	{
+		BestFirstSearchResult<T> result;
+		auto &nodeSet = Graph<T>::getNodeSet();
+		using pq_type = std::pair<double, const Node<T> *>;
+
+		if(std::find(nodeSet.begin(), nodeSet.end(), &source) == nodeSet.end())
+		{
+			result.errorMessage = ERR_SOURCE_NODE_NOT_IN_GRAPH;
+			return result;
+		}
+
+		if(std::find(nodeSet.begin(), nodeSet.end(), &target) == nodeSet.end())
+		{
+			result.errorMessage = ERR_TARGET_NODE_NOT_IN_GRAPH;
+			return result;
+		}
+
+		auto adj = Graph<T>::getAdjMatrix();
+		std::priority_queue<pq_type, std::vector<pq_type>, std::greater<pq_type>> pq;
+
+		std::vector<Node<T>> visited;
+		visited.push_back(source);
+		pq.push(std::make_pair(static_cast<T>(0), &source));
+
+		while (!pq.empty())
+		{
+			const Node<T> *currentNode = pq.top().second;
+			pq.pop();
+			result.nodesInBestSearchOrder.push_back(*currentNode);
+
+			if (*currentNode == target)
+			{
+				break;
+			}
+			if (adj.find(currentNode) != adj.end())
+			{
+				for (const auto &elem : adj.at(currentNode))
+				{
+					if (elem.second->isWeighted().has_value())
+					{
+						if (elem.second->isDirected().has_value())
+						{
+							const DirectedWeightedEdge<T> *dw_edge = static_cast<const DirectedWeightedEdge<T> *>(elem.second);
+							if (std::find(visited.begin(), visited.end(), *(elem.first)) == visited.end())
+							{
+								visited.push_back(*(elem.first));
+								pq.push(std::make_pair(dw_edge->getWeight(), elem.first));
+							}
+						}
+						else
+						{
+							const UndirectedWeightedEdge<T> *dw_edge = static_cast<const UndirectedWeightedEdge<T> *>(elem.second);
+							if (std::find(visited.begin(), visited.end(), *(elem.first)) == visited.end())
+							{
+								visited.push_back(*(elem.first));
+								pq.push(std::make_pair(dw_edge->getWeight(), elem.first));
+							}
+						}
+					}
+					else
+					{
+						result.errorMessage = ERR_NO_WEIGHTED_EDGE;
+						return result;
+					}
+				}
+			}
+		}
+
 		result.success = true;
 		return result;
 	}
