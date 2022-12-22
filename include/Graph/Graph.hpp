@@ -1605,7 +1605,6 @@ namespace CXXGRAPH
 	BestFirstSearchResult<T> Graph<T>::best_first_search(const Node<T> &source, const Node<T> &target) const
 	{
 		BestFirstSearchResult<T> result;
-		result.success = false;
 		auto &nodeSet = Graph<T>::getNodeSet();
 		using pq_type = std::pair<double, const Node<T> *>;
 
@@ -1666,6 +1665,7 @@ namespace CXXGRAPH
 					else
 					{
 						result.errorMessage = ERR_NO_WEIGHTED_EDGE;
+						result.nodesInBestSearchOrder.clear();
 						return result;
 					}
 				}
