@@ -153,6 +153,7 @@ namespace CXXGRAPH
     template <typename T>
     using TopoSortResult = TopoSortResult_struct<T>;
 
+	/// Struct that contains the information about Best First Search Algorithm results
 	template <typename T>
 	struct BestFirstSearchResult_struct
 	{

@@ -17,7 +17,7 @@ TEST(BestFirstSearchTest, source_node_missing)
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
-    CXXGRAPH::BestFirstSearchResult<int> && res = graph.best_first_search(node4, node1);
+    CXXGRAPH::BestFirstSearchResult<int> res = graph.best_first_search(node4, node1);
     ASSERT_EQ(res.success, false);
     ASSERT_EQ(res.nodesInBestSearchOrder.size(), 0);
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_SOURCE_NODE_NOT_IN_GRAPH);
@@ -38,7 +38,7 @@ TEST(BestFirstSearchTest, target_node_missing)
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
-    CXXGRAPH::BestFirstSearchResult<int> && res = graph.best_first_search(node1, node4);
+    CXXGRAPH::BestFirstSearchResult<int> res = graph.best_first_search(node1, node4);
     ASSERT_EQ(res.success, false);
     ASSERT_EQ(res.nodesInBestSearchOrder.size(), 0);
     ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_TARGET_NODE_NOT_IN_GRAPH);
@@ -58,7 +58,7 @@ TEST(BestFirstSearchTest, correct_example_small)
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
-    CXXGRAPH::BestFirstSearchResult<int> && res = graph.best_first_search(node1, node2);
+    CXXGRAPH::BestFirstSearchResult<int> res = graph.best_first_search(node1, node2);
     ASSERT_EQ(res.success, true);
     ASSERT_EQ(res.nodesInBestSearchOrder.size(), 2);
     ASSERT_EQ(res.errorMessage, "");
@@ -78,7 +78,7 @@ TEST(BestFirstSearchTest, source_target_same)
     edgeSet.insert(&edge2);
     edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
-    CXXGRAPH::BestFirstSearchResult<int> && res = graph.best_first_search(node1, node1);
+    CXXGRAPH::BestFirstSearchResult<int> res = graph.best_first_search(node1, node1);
     ASSERT_EQ(res.success, true);
     ASSERT_EQ(res.nodesInBestSearchOrder.size(), 1);
     ASSERT_EQ(res.errorMessage, "");
@@ -129,7 +129,7 @@ TEST(BestFirstSearchTest, correct_example_big)
     edgeSet.insert(&edge12);
     edgeSet.insert(&edge13);
     CXXGRAPH::Graph<int> graph(edgeSet);
-    CXXGRAPH::BestFirstSearchResult<int> && res = graph.best_first_search(node1, node10);
+    CXXGRAPH::BestFirstSearchResult<int> res = graph.best_first_search(node1, node10);
     ASSERT_EQ(res.success, true);
     ASSERT_EQ(res.nodesInBestSearchOrder.size(), 6);
     ASSERT_EQ(res.errorMessage, "");

@@ -257,6 +257,20 @@ namespace CXXGRAPH
 		virtual const MstResult kruskal() const;
 		/**
 		 * \brief
+		 * Function runs the best first search algorithm over the graph
+		 * using an evaluation function to decide which adjacent node is
+		 * most promising to explore
+		 * Note: No Thread Safe
+		 *
+		 * @param source source node
+		 * @param target target node
+		 * @returns a struct with a vector of Nodes if target is reachable else ERROR in case
+		 * if target is not reachable or there is an error in the computation.
+		 *
+		 */
+		virtual BestFirstSearchResult<T> best_first_search(const Node<T> &source, const Node<T> &target) const;
+		/**
+		 * \brief
 		 * Function performs the breadth first search algorithm over the graph
 		 * Note: No Thread Safe
 		 *
@@ -265,7 +279,6 @@ namespace CXXGRAPH
 		 * search.
 		 *
 		 */
-		virtual BestFirstSearchResult<T> best_first_search(const Node<T> &source, const Node<T> &target) const;
 		virtual const std::vector<Node<T>> breadth_first_search(const Node<T> &start) const;    
         /**
 		 * \brief
