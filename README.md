@@ -118,6 +118,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
     - [Dijkstra](#dijkstra)
     - [Dial](#dial)
     - [Prim's Algorithm](#prims-algorithm)
+    - [Best First Search Algorithm](#bestfirst-algorithm)
     - [BFS](#bfs)
     - [DFS](#dfs)
     - [Cycle Detection](#cycle-detection)
