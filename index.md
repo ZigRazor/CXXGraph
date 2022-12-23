@@ -68,7 +68,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
 | :memo: | Release 1.2.0 | TBD |
 | :heavy_check_mark: | Multi-Thread implementation of BFS [#121](https://github.com/ZigRazor/CXXGraph/issues/121) | Dec 6, 2022 |
 | :memo: | Release 1.2.1 | TBD |
-| :memo: | Thread Safe implementations of Boruvka, Prim & Kruskal algorithm [#128](https://github.com/ZigRazor/CXXGraph/issues/128) | TBD |
+| :grey_exclamation: | Thread Safe implementations of Boruvka, Prim & Kruskal algorithm [#128](https://github.com/ZigRazor/CXXGraph/issues/128) | TBD |
 | :memo: | Release 1.3.0 | TBD |
 | :memo: | Edge-Cut Partition Algorithm [#183](https://github.com/ZigRazor/CXXGraph/issues/183) | TBD |
 | :memo: | Release 1.3.1 | TBD |
