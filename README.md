@@ -547,7 +547,7 @@ The lowest value is taken as partition Id.
 ### Best First Search
 
 [Best First Search](https://en.wikipedia.org/wiki/Best-first_search)
-Best First Search is a class of search algorithms which explore the graph by exploring the most promising node chosen according to an evaluation function. The worst-case time complexity is O(n * log n) where n is the number of nodes in the graph.
+Best First Search is a class of search algorithms which traverses the graph by exploring the most promising node chosen according to an evaluation function. The worst-case time complexity is O(n * log n) where n is the number of nodes in the graph.
 
 ## How to contribute
 
