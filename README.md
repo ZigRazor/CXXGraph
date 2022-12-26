@@ -120,6 +120,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
     - [Prim's Algorithm](#prims-algorithm)
     - [BFS](#bfs)
     - [DFS](#dfs)
+    - [Best First Srach](#best-first-search)
     - [Cycle Detection](#cycle-detection)
     - [Bellman-Ford](#bellman-ford)
     - [Floyd Warshall](#floyd-warshall)
@@ -414,6 +415,11 @@ Application of Depth First Search are:
 
   And there are many more...
 
+### Best First Search
+
+[Best First Search](https://en.wikipedia.org/wiki/Best-first_search)
+Best First Search is a class of search algorithms which traverses the graph by exploring the most promising node chosen according to an evaluation function. The worst-case time complexity is O(n * log n) where n is the number of nodes in the graph.
+
 ### Cycle Detection
 
 [Cycle (graph theory)](https://en.wikipedia.org/wiki/Cycle_(graph_theory))
@@ -543,11 +549,6 @@ Eva(u,v)(i) =I(u ∈ keep[i]) + I(v ∈ keep[i]) +α * \frac{ecount[i]}{(|E|/p)}
 ```
 
 The lowest value is taken as partition Id.
-
-### Best First Search
-
-[Best First Search](https://en.wikipedia.org/wiki/Best-first_search)
-Best First Search is a class of search algorithms which traverses the graph by exploring the most promising node chosen according to an evaluation function. The worst-case time complexity is O(n * log n) where n is the number of nodes in the graph.
 
 ## How to contribute
 
