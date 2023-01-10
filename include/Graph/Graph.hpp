@@ -279,10 +279,10 @@ namespace CXXGRAPH
 		 * search.
 		 *
 		 */
-		virtual const std::vector<Node<T>> breadth_first_search(const Node<T> &start) const;    
+		virtual const std::vector<Node<T>> breadth_first_search(const Node<T> &start) const;
         /**
 		 * \brief
-		 * The multithreaded version of breadth_first_search 
+		 * The multithreaded version of breadth_first_search
          * It turns out to be two indepentent functions because of implemntation differences
 		 *
 		 * @param start Node from where traversing starts
@@ -381,9 +381,19 @@ namespace CXXGRAPH
 		 * @brief This function sort nodes in topological order.
 		 * 	Applicable for Directed Acyclic Graph
 		 *
-		 * @return a vector containing nodes in topological order
+		 * @return a struct with a vector of Nodes ordered topologically else ERROR in case
+		 * of undirected or cyclic graph
 		 */
 		virtual TopoSortResult<T> topologicalSort() const;
+
+		/**
+		 * @brief This function sort nodes in topological order using kahn's algorithm
+		 * 	Applicable for Directed Acyclic Graph
+		 *
+		 * @return a struct with a vector of Nodes ordered topologically else ERROR in case
+		 * of undirected or cyclic graph
+		 */
+		virtual TopoSortResult<T> kahn() const;
 
 		/**
 		* \brief
@@ -1010,7 +1020,7 @@ namespace CXXGRAPH
 	template <typename T>
 	const AdjacencyMatrix<T> Graph<T>::getAdjMatrix() const
 	{
-		
+
 		AdjacencyMatrix<T> adj;
 		auto addElementToAdjMatrix = [&adj](const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge){
 			std::pair<const Node<T> *, const Edge<T> *> elem = {nodeTo, edge};
@@ -1726,7 +1736,7 @@ namespace CXXGRAPH
 			return bfs_result;
 		}
 
-        std::unordered_map<const Node<T> *, int> node_to_index; 
+        std::unordered_map<const Node<T> *, int> node_to_index;
         for (const auto &node : nodeSet)
         {
             node_to_index[node] = node_to_index.size();
@@ -1751,14 +1761,14 @@ namespace CXXGRAPH
 		level_tracker.push_back(&start);
 
         // a worker is assigned a small part of tasks for each time
-        // assignments of tasks in current level and updates of tasks in next level are inclusive 
+        // assignments of tasks in current level and updates of tasks in next level are inclusive
         std::mutex tracker_mutex;
-        std::mutex next_tracker_mutex; 
+        std::mutex next_tracker_mutex;
         std::atomic<int> assigned_tasks = 0;
         int num_tasks = 1;
         // unit of task assignment, which mean assign block_size tasks to a worker each time
         int block_size = 1;
-        int level = 1; 
+        int level = 1;
 
         auto extract_tasks = [&level_tracker, &tracker_mutex, &assigned_tasks, &num_tasks, &block_size] () -> std::pair<int,int>
         {
@@ -1802,7 +1812,7 @@ namespace CXXGRAPH
 
                     for (int i = start_index; i < end_index; ++i)
                     {
-                        if (adj.count(level_tracker[i])) 
+                        if (adj.count(level_tracker[i]))
                         {
                             for (const auto &elem : adj.at(level_tracker[i]))
                             {
@@ -1815,7 +1825,7 @@ namespace CXXGRAPH
                             }
                         }
                     }
-                } 
+                }
 
                 // submit local result to global result
                 if (!local_tracker.empty())
@@ -1823,7 +1833,7 @@ namespace CXXGRAPH
                     submit_result(local_tracker);
                 }
 
-                // last worker need to do preparation for the next iteration 
+                // last worker need to do preparation for the next iteration
                 int cur_level = level;
                 if (num_threads == 1 + waiting_workers.fetch_add(1))
                 {
@@ -1851,9 +1861,9 @@ namespace CXXGRAPH
                 {
                     // not to wait if last worker reachs last statement before notify all or even further
                     std::unique_lock<std::mutex> next_level_lock(next_level_mutex);
-                    next_level_cond.wait(next_level_lock, 
+                    next_level_cond.wait(next_level_lock,
                                         [&level, cur_level] () { return level != cur_level;});
-                } 
+                }
             }
         };
 
@@ -2252,7 +2262,7 @@ namespace CXXGRAPH
     {
         TopoSortResult<T> result;
         result.success = false;
-        
+
         if (!isDirectedGraph())
 		{
             result.errorMessage = ERR_UNDIR_GRAPH;
@@ -2263,7 +2273,7 @@ namespace CXXGRAPH
             result.errorMessage = ERR_CYCLIC_GRAPH;
             return result;
         }
-        else 
+        else
         {
             const auto &adjMatrix = getAdjMatrix();
             const auto &nodeSet = getNodeSet();
@@ -2278,7 +2288,7 @@ namespace CXXGRAPH
                     for (const auto &edge : adjMatrix.at(curNode))
                     {
                         const auto &nextNode = edge.first;
-                        if (false == visited[nextNode]) 
+                        if (false == visited[nextNode])
                         {
                             postorder_helper(nextNode);
                         }
@@ -2286,7 +2296,7 @@ namespace CXXGRAPH
                 }
 
                 result.nodesInTopoOrder.push_back(*curNode);
-            }; 
+            };
 
             int numNodes = adjMatrix.size();
             result.nodesInTopoOrder.reserve(numNodes);
@@ -2304,6 +2314,79 @@ namespace CXXGRAPH
             return result;
         }
     }
+
+	template <typename T>
+	TopoSortResult<T> Graph<T>::kahn() const
+	{
+		TopoSortResult<T> result;
+
+		if (!isDirectedGraph())
+		{
+			result.errorMessage = ERR_UNDIR_GRAPH;
+			return result;
+		}
+		else
+		{
+			const auto adjMatrix = Graph<T>::getAdjMatrix();
+			const auto nodeSet = Graph<T>::getNodeSet();
+			result.nodesInTopoOrder.reserve(adjMatrix.size());
+
+			std::unordered_map<size_t, unsigned int> indegree;
+			for (const auto &node : nodeSet)
+			{
+				indegree[node->getId()] = 0;
+			}
+			for (const auto &list : adjMatrix)
+			{
+				auto children = list.second;
+				for (const auto &child : children)
+				{
+					indegree[std::get<0>(child)->getId()]++;
+				}
+			}
+
+			std::queue<const Node<T>*> topologicalOrder;
+
+			for (const auto &node : nodeSet)
+			{
+				if (!indegree[node->getId()])
+				{
+					topologicalOrder.emplace(node);
+				}
+			}
+
+			size_t visited = 0;
+			while(!topologicalOrder.empty())
+			{
+				const Node<T> *currentNode = topologicalOrder.front();
+				topologicalOrder.pop();
+				result.nodesInTopoOrder.push_back(*currentNode);
+
+				if (adjMatrix.find(currentNode) != adjMatrix.end())
+				{
+					for (const auto &child : adjMatrix.at(currentNode))
+					{
+						if (--indegree[std::get<0>(child)->getId()] == 0)
+						{
+							topologicalOrder.emplace(std::get<0>(child));
+						}
+					}
+				}
+				visited++;
+
+			}
+
+			if (visited != nodeSet.size())
+			{
+				result.errorMessage = ERR_CYCLIC_GRAPH;
+				result.nodesInTopoOrder.clear();
+				return result;
+			}
+
+			result.success = true;
+			return result;
+		}
+	}
 
 	template <typename T>
 	std::vector<std::vector<Node<T>>> Graph<T>::kosaraju() const

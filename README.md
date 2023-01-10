@@ -129,6 +129,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
     - [Graph Slicing based on connectivity](#graph-slicing-based-on-connectivity)
     - [Ford-Fulkerson Algorithm](#ford-fulkerson-algorithm)
     - [Kosaraju's Algorithm](#kosarajus-algorithm)
+    - [Kahn's Algorithm](#kahn-algorithm)
   - [Partition Algorithm Explanation](#partition-algorithm-explanation)
     - [Vertex-Cut](#vertex-cut)
     - [Edge Balanced Vertex-Cut](#edge-balanced-vertex-cut)
@@ -505,6 +506,10 @@ The idea behind the algorithm is as follows: as long as there is a path from the
 1). Create an empty stack ‘S’ and do DFS traversal of a graph. In DFS traversal, after calling recursive DFS for adjacent vertices of a vertex, push the vertex to stack. 
 2). Reverse directions of all arcs to obtain the transpose graph. 
 3). One by one pop a vertex from S while S is not empty. Let the popped vertex be ‘v’. Take v as source and do DFS (call DFSUtil(v)). The DFS starting from v prints strongly connected component of v.
+
+### Kahn's Algorithm
+[Kahn's Algorithm](https://en.wikipedia.org/wiki/Topological_sorting#Kahn's_algorithm) finds topological
+ordering by iteratively removing nodes in the graph which have no incoming edges. When a node is removed from the graph, it is added to the topological ordering and all its edges are removed allowing for the next set of nodes with no incoming edges to be selected.
 
 ## Partition Algorithm Explanation
 
