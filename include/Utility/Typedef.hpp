@@ -101,7 +101,7 @@ namespace CXXGRAPH
     std::size_t operator () (const std::pair<T1,T2> &p) const {
         std::size_t h1 = std::hash<T1>{}(p.first);
         std::size_t h2 = std::hash<T2>{}(p.second);
-				return hash_combine(h1, h2);
+        return hash_combine(h1, h2);
     }
 	};
 
@@ -152,6 +152,21 @@ namespace CXXGRAPH
     };
     template <typename T>
     using TopoSortResult = TopoSortResult_struct<T>;
+    
+        // typedef for a collection of sets of vertices (useful for connected components algorithms) 
+        template <typename T>
+        using Components = std::vector<std::vector<Node<T>>>;
+
+    /// Struct that contains the information about strongly connected components (SCC) algorithms results
+        template<typename T>
+        struct SCCResult_struct
+        {
+            bool success = false;               // TRUE if the function does not return error, FALSE otherwise
+            std::string errorMessage = "";      // message of error
+            Components<T> stronglyConnectedComps;
+        };
+        template <typename T>
+        using SCCResult = SCCResult_struct<T>;
 
 	/// Struct that contains the information about Best First Search Algorithm results
 	template <typename T>
