@@ -2316,9 +2316,7 @@ namespace CXXGRAPH
     }
 
 	template <typename T>
-<<<<<<< HEAD
         SCCResult<T> Graph<T>::kosaraju() const
-=======
 	TopoSortResult<T> Graph<T>::kahn() const
 	{
 		TopoSortResult<T> result;
@@ -2393,7 +2391,6 @@ namespace CXXGRAPH
 
 	template <typename T>
 	std::vector<std::vector<Node<T>>> Graph<T>::kosaraju() const
->>>>>>> 9c05b354549f97b5c29431dbae605d4664348fd0
 	{
                 SCCResult<T> result;
                 result.success = false;
