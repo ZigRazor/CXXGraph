@@ -405,7 +405,7 @@ namespace CXXGRAPH
 		* Note: No Thread Safe
 		* @return a vector of vector of strongly connected components.
 		*/
-		virtual std::vector<std::vector<Node<T>>> kosaraju() const;
+		virtual SCCResult<T> kosaraju() const;
 
 		/**
 		* \brief
@@ -2389,13 +2389,15 @@ namespace CXXGRAPH
 	}
 
 	template <typename T>
-	std::vector<std::vector<Node<T>>> Graph<T>::kosaraju() const
+        SCCResult<T> Graph<T>::kosaraju() const
 	{
-		std::vector<std::vector<Node<T>>> connectedComps;
+                SCCResult<T> result;
+                result.success = false;
 
 		if (!isDirectedGraph())
 		{
-			return connectedComps;//empty vector since for undirected graph strongly connected components do not exist
+                    result.errorMessage = ERR_UNDIR_GRAPH;
+                    return result;
 		}
 		else
 		{
@@ -2476,11 +2478,12 @@ namespace CXXGRAPH
 				if(visited[rem->getId()] == false){
 					std::vector<Node<T>> comp;
 					dfs_helper1(rem, comp);
-					connectedComps.push_back(comp);
+					result.stronglyConnectedComps.push_back(comp);
 				}
 			}
-
-			return connectedComps;
+                        
+                        result.success = true;
+			return result;
 		}
 	}
 

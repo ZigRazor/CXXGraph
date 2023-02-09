@@ -72,6 +72,7 @@ add_test(test_cycle_check test_exe --gtest_filter=CycleCheckTest*)
 add_test(test_rw_output test_exe --gtest_filter=RWOutputTest*)
 add_test(test_partition test_exe --gtest_filter=PartitionTest*)
 add_test(test_dial test_exe --gtest_filter=DialTest*)
+add_test(test_kosaraju test_exe --gtest_filter=TestKosaraju*)
 add_test(test_bestfirstsearch test_exe --gtest_filter=BestFirstSearch*)
 add_test(test_kahn test_exe --gtest_filter=Kahn*)
 
