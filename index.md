@@ -52,7 +52,9 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
 | :heavy_check_mark: | Release 0.4.0 | Oct 7, 2022 |
 | :memo: | "Const" Code Review [#155](https://github.com/ZigRazor/CXXGraph/issues/155) | TBD |
 | :memo: | Release 0.5.0 | TBD |
-| :memo: | Official Site Release | TBD |
+| :memo: | Test on Partition Algorithm [#264](https://github.com/ZigRazor/CXXGraph/issues/264) | TBD |
+| :memo: | Bug Resolution [#263](https://github.com/ZigRazor/CXXGraph/issues/263) | TBD |
+| :memo: | General Performance Optimization [#262](https://github.com/ZigRazor/CXXGraph/issues/262) [#265](https://github.com/ZigRazor/CXXGraph/issues/265) | TBD |
 | :memo: | Reduction of Code Issue of Static Analysis | TBD |
 | :memo: | First Stable Release 1.0.0 | TBD |
 | :memo: | Markov Chain Algorithm [#107](https://github.com/ZigRazor/CXXGraph/issues/107) | TBD |
@@ -62,6 +64,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
 | :memo: | Tarjan's algorithm [#103](https://github.com/ZigRazor/CXXGraph/issues/103) | TBD |
 | :memo: | Release 1.0.3 | TBD |
 | :heavy_check_mark: | Graph Topological Sort [#104](https://github.com/ZigRazor/CXXGraph/issues/107) | Nov 3, 2022 |
+| :memo: | Official Site Release | TBD |
 | :memo: | Release 1.1.0 | TBD |
 | :memo: | Custom export and import [#19](https://github.com/ZigRazor/CXXGraph/issues/19) | TBD |
 | :memo: | Input & Output file format [#172](https://github.com/ZigRazor/CXXGraph/issues/172) | TBD |
