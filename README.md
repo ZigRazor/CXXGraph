@@ -57,6 +57,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
 | :memo: | General Performance Optimization [#262](https://github.com/ZigRazor/CXXGraph/issues/262) [#265](https://github.com/ZigRazor/CXXGraph/issues/265) | TBD |
 | :memo: | Reduction of Code Issue of Static Analysis | TBD |
 | :memo: | First Stable Release 1.0.0 | TBD |
+| :memo: |Switch to C++ 20 standard [#266](https://github.com/ZigRazor/CXXGraph/issues/266) | TBD |
 | :memo: | Markov Chain Algorithm [#107](https://github.com/ZigRazor/CXXGraph/issues/107) | TBD |
 | :memo: | Release 1.0.1 | TBD |
 | :memo: | FP-GraphMiner algorithm [#105](https://github.com/ZigRazor/CXXGraph/issues/105) | TBD |
