@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES /usr/local/lib ${CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES})
 
 add_executable(dijkstra_example dijkstra_example.cpp)
-target_include_directories(dijkstra_example PUBLIC "${CMAKE_SOURCE_DIR}/../../include")
+target_include_directories(dijkstra_example PUBLIC "${CMAKE_SOURCE_DIR}/include")
 
 target_link_libraries(dijkstra_example
                         pthread
