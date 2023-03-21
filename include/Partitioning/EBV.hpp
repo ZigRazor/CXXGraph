@@ -9,12 +9,12 @@
 /***     Header-Only C++ Library for Graph			     ***/
 /***	 Representation and Algorithms				     ***/
 /***********************************************************/
-/***     Author: ZigRazor			     			     ***/
+/***     Author: ZigRazor ***/
 /***	 E-Mail: zigrazor@gmail.com 				     ***/
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0							     ***/
+/***	 License: AGPL v3.0 ***/
 /***********************************************************/
 
 #ifndef __CXXGRAPH_PARTITIONING_EBV_H__
@@ -22,162 +22,145 @@
 
 #pragma once
 
-#include "Partitioning/Utility/Globals.hpp"
+#include <chrono>
+#include <unordered_map>
+
 #include "Edge/Edge.hpp"
 #include "PartitionStrategy.hpp"
-#include <unordered_map>
-#include <chrono>
+#include "Partitioning/Utility/Globals.hpp"
 
-namespace CXXGRAPH
-{
-    namespace PARTITIONING
-    {
-        /**
-         * @brief A Vertex Cut Partioning Algorithm ( as described by this paper https://arxiv.org/abs/2010.09007 )
-         * @details This algorithm is an offline algorithm that partitions the graph into n sets of vertices ( as described by this paper https://arxiv.org/abs/2010.09007 ).
-         */
-        template <typename T>
-        class EBV : public PartitionStrategy<T>
-        {
-        private:
-            Globals GLOBALS;
+namespace CXXGRAPH {
+namespace PARTITIONING {
+/**
+ * @brief A Vertex Cut Partioning Algorithm ( as described by this paper
+ * https://arxiv.org/abs/2010.09007 )
+ * @details This algorithm is an offline algorithm that partitions the graph
+ * into n sets of vertices ( as described by this paper
+ * https://arxiv.org/abs/2010.09007 ).
+ */
+template <typename T>
+class EBV : public PartitionStrategy<T> {
+ private:
+  Globals GLOBALS;
 
-        public:
-            explicit EBV(Globals &G);
-            ~EBV();
+ public:
+  explicit EBV(Globals &G);
+  ~EBV();
 
-            void performStep(const Edge<T> &e, PartitionState<T> &Sstate);
-        };
-        template <typename T>
-        EBV<T>::EBV(Globals &G) : GLOBALS(G)
-        {
-            //this->GLOBALS = G;
-        }
-        template <typename T>
-        EBV<T>::~EBV()
-        {
-        }
-        template <typename T>
-        void EBV<T>::performStep(const Edge<T> &e, PartitionState<T> &state)
-        {
-            GLOBALS.edgeAnalyzed++;
-
-            int P = GLOBALS.numberOfPartition;
-            double alpha = GLOBALS.param1;
-            double beta = GLOBALS.param2;
-            unsigned long long edgeCardinality = GLOBALS.edgeCardinality;
-            unsigned long long vertexCardinality = GLOBALS.vertexCardinality;
-            auto nodePair = e.getNodePair();
-            int u = nodePair.first->getId();
-            int v = nodePair.second->getId();
-
-            std::shared_ptr<Record<T>> u_record = state.getRecord(u);
-            std::shared_ptr<Record<T>> v_record = state.getRecord(v);
-
-            //*** ASK FOR LOCK
-            bool locks_taken = false;
-            while (!locks_taken)
-            {
-                srand((unsigned)time(NULL));
-                int usleep_time = 2;
-                while (!u_record->getLock())
-                {
-                    std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
-                    usleep_time = (int)pow(usleep_time, 2);
-                }
-                usleep_time = 2;
-                if (u != v)
-                {
-                    while (!v_record->getLock())
-                    {
-                        std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
-                        usleep_time = (int)pow(usleep_time, 2);
-
-                        if (usleep_time > GLOBALS.SLEEP_LIMIT)
-                        {
-                            u_record->releaseLock();
-                            performStep(e, state);
-                            return;
-                        } //TO AVOID DEADLOCK
-                    }
-                }
-                locks_taken = true;
-            }
-            //*** LOCK TAKEN
-            int machine_id = -1;
-
-            //*** COMPUTE SCORES, FIND MIN SCORE, AND COMPUTE CANDIDATES PARTITIONS
-            std::map<int, double> eva;
-            auto u_partition = u_record->getPartitions();
-            auto v_partition = v_record->getPartitions();
-            auto optimalEdgesNumber = (double)edgeCardinality / (double)P;
-            auto optimalVerticesNumber = (double)vertexCardinality / (double)P;
-            for (int i = 0; i < P; i++)
-            {
-                eva[i] = 0;
-                if (u_partition.empty() || u_partition.find(i) == u_partition.end())
-                {
-                    eva[i] += 1;
-                }
-                if (v_partition.empty() || v_partition.find(i) == v_partition.end())
-                {
-                    eva[i] += 1;
-                }
-                eva[i] += alpha * (state.getMachineLoad(i) / optimalEdgesNumber) + beta * (state.getMachineLoadVertices(i) / optimalVerticesNumber);
-            }
-            //find min between eva
-            double min = eva.at(0);
-            machine_id = 0;
-            for (auto &it : eva)
-            {
-                if (it.second < min)
-                {
-                    min = it.second;
-                    machine_id = it.first;
-                }
-            }
-            try
-            {
-                CoordinatedPartitionState<T> &cord_state = dynamic_cast<CoordinatedPartitionState<T> &>(state);
-                //NEW UPDATE RECORDS RULE TO UPFDATE THE SIZE OF THE PARTITIONS EXPRESSED AS THE NUMBER OF VERTICES THEY CONTAINS
-                if (!u_record->hasReplicaInPartition(machine_id))
-                {
-                    u_record->addPartition(machine_id);
-                    cord_state.incrementMachineLoadVertices(machine_id);
-                }
-                if (!v_record->hasReplicaInPartition(machine_id))
-                {
-                    v_record->addPartition(machine_id);
-                    cord_state.incrementMachineLoadVertices(machine_id);
-                }
-            }
-            catch (const std::bad_cast &e)
-            {
-                // use employee's member functions
-                //1-UPDATE RECORDS
-                if (!u_record->hasReplicaInPartition(machine_id))
-                {
-                    u_record->addPartition(machine_id);
-                }
-                if (!v_record->hasReplicaInPartition(machine_id))
-                {
-                    v_record->addPartition(machine_id);
-                }
-            }
-
-            //2-UPDATE EDGES
-            state.incrementMachineLoad(machine_id, &e);
-
-            //3-UPDATE DEGREES
-            u_record->incrementDegree();
-            v_record->incrementDegree();
-
-            //*** RELEASE LOCK
-            u_record->releaseLock();
-            v_record->releaseLock();
-            return;
-        }
-    }
+  void performStep(const Edge<T> &e, PartitionState<T> &Sstate);
+};
+template <typename T>
+EBV<T>::EBV(Globals &G) : GLOBALS(G) {
+  // this->GLOBALS = G;
 }
+template <typename T>
+EBV<T>::~EBV() {}
+template <typename T>
+void EBV<T>::performStep(const Edge<T> &e, PartitionState<T> &state) {
+  GLOBALS.edgeAnalyzed++;
 
-#endif // __CXXGRAPH_PARTITIONING_EBV_H__
+  int P = GLOBALS.numberOfPartition;
+  double alpha = GLOBALS.param1;
+  double beta = GLOBALS.param2;
+  unsigned long long edgeCardinality = GLOBALS.edgeCardinality;
+  unsigned long long vertexCardinality = GLOBALS.vertexCardinality;
+  auto nodePair = e.getNodePair();
+  int u = nodePair.first->getId();
+  int v = nodePair.second->getId();
+
+  std::shared_ptr<Record<T>> u_record = state.getRecord(u);
+  std::shared_ptr<Record<T>> v_record = state.getRecord(v);
+
+  //*** ASK FOR LOCK
+  bool locks_taken = false;
+  while (!locks_taken) {
+    srand((unsigned)time(NULL));
+    int usleep_time = 2;
+    while (!u_record->getLock()) {
+      std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
+      usleep_time = (int)pow(usleep_time, 2);
+    }
+    usleep_time = 2;
+    if (u != v) {
+      while (!v_record->getLock()) {
+        std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
+        usleep_time = (int)pow(usleep_time, 2);
+
+        if (usleep_time > GLOBALS.SLEEP_LIMIT) {
+          u_record->releaseLock();
+          performStep(e, state);
+          return;
+        }  // TO AVOID DEADLOCK
+      }
+    }
+    locks_taken = true;
+  }
+  //*** LOCK TAKEN
+  int machine_id = -1;
+
+  //*** COMPUTE SCORES, FIND MIN SCORE, AND COMPUTE CANDIDATES PARTITIONS
+  std::map<int, double> eva;
+  auto u_partition = u_record->getPartitions();
+  auto v_partition = v_record->getPartitions();
+  auto optimalEdgesNumber = (double)edgeCardinality / (double)P;
+  auto optimalVerticesNumber = (double)vertexCardinality / (double)P;
+  for (int i = 0; i < P; i++) {
+    eva[i] = 0;
+    if (u_partition.empty() || u_partition.find(i) == u_partition.end()) {
+      eva[i] += 1;
+    }
+    if (v_partition.empty() || v_partition.find(i) == v_partition.end()) {
+      eva[i] += 1;
+    }
+    eva[i] += alpha * (state.getMachineLoad(i) / optimalEdgesNumber) +
+              beta * (state.getMachineLoadVertices(i) / optimalVerticesNumber);
+  }
+  // find min between eva
+  double min = eva.at(0);
+  machine_id = 0;
+  for (auto &it : eva) {
+    if (it.second < min) {
+      min = it.second;
+      machine_id = it.first;
+    }
+  }
+  try {
+    CoordinatedPartitionState<T> &cord_state =
+        dynamic_cast<CoordinatedPartitionState<T> &>(state);
+    // NEW UPDATE RECORDS RULE TO UPFDATE THE SIZE OF THE PARTITIONS EXPRESSED
+    // AS THE NUMBER OF VERTICES THEY CONTAINS
+    if (!u_record->hasReplicaInPartition(machine_id)) {
+      u_record->addPartition(machine_id);
+      cord_state.incrementMachineLoadVertices(machine_id);
+    }
+    if (!v_record->hasReplicaInPartition(machine_id)) {
+      v_record->addPartition(machine_id);
+      cord_state.incrementMachineLoadVertices(machine_id);
+    }
+  } catch (const std::bad_cast &e) {
+    // use employee's member functions
+    // 1-UPDATE RECORDS
+    if (!u_record->hasReplicaInPartition(machine_id)) {
+      u_record->addPartition(machine_id);
+    }
+    if (!v_record->hasReplicaInPartition(machine_id)) {
+      v_record->addPartition(machine_id);
+    }
+  }
+
+  // 2-UPDATE EDGES
+  state.incrementMachineLoad(machine_id, &e);
+
+  // 3-UPDATE DEGREES
+  u_record->incrementDegree();
+  v_record->incrementDegree();
+
+  //*** RELEASE LOCK
+  u_record->releaseLock();
+  v_record->releaseLock();
+  return;
+}
+}  // namespace PARTITIONING
+}  // namespace CXXGRAPH
+
+#endif  // __CXXGRAPH_PARTITIONING_EBV_H__

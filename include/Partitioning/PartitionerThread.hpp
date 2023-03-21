@@ -9,12 +9,12 @@
 /***     Header-Only C++ Library for Graph			     ***/
 /***	 Representation and Algorithms				     ***/
 /***********************************************************/
-/***     Author: ZigRazor			     			     ***/
+/***     Author: ZigRazor ***/
 /***	 E-Mail: zigrazor@gmail.com 				     ***/
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0							     ***/
+/***	 License: AGPL v3.0 ***/
 /***********************************************************/
 
 #ifndef __CXXGRAPH_PARTITIONING_PARTITIONERTHREAD_H__
@@ -22,53 +22,49 @@
 
 #pragma once
 
-#include <vector>
 #include <list>
+#include <vector>
+
 #include "Edge/Edge.hpp"
 #include "PartitionState.hpp"
 #include "PartitionStrategy.hpp"
 #include "Utility/Runnable.hpp"
 
-namespace CXXGRAPH
-{
-	namespace PARTITIONING
-	{
-		template <typename T>
-		class PartitionerThread : public Runnable
-		{
-		private:
-			std::vector<const Edge<T> *> list = {};
-			PartitionState<T> *state = nullptr;
-			PartitionStrategy<T> *algorithm = nullptr;
+namespace CXXGRAPH {
+namespace PARTITIONING {
+template <typename T>
+class PartitionerThread : public Runnable {
+ private:
+  std::vector<const Edge<T> *> list = {};
+  PartitionState<T> *state = nullptr;
+  PartitionStrategy<T> *algorithm = nullptr;
 
-		public:
-			PartitionerThread(std::vector<const Edge<T> *> &list, PartitionState<T> *state, PartitionStrategy<T> *algorithm);
-			~PartitionerThread();
+ public:
+  PartitionerThread(std::vector<const Edge<T> *> &list,
+                    PartitionState<T> *state, PartitionStrategy<T> *algorithm);
+  ~PartitionerThread();
 
-			void run();
+  void run();
 
-			std::list<int> id_partitions;
-		};
-		template <typename T>
-		PartitionerThread<T>::PartitionerThread(std::vector<const Edge<T> *> &list, PartitionState<T> *state, PartitionStrategy<T> *algorithm)
-		{
-			this->list = list;
-			this->state = state;
-			this->algorithm = algorithm;
-		}
-		template <typename T>
-		PartitionerThread<T>::~PartitionerThread()
-		{
-		}
-		template <typename T>
-		void PartitionerThread<T>::run()
-		{
-			for (const auto &edge_it : list)
-			{
-				algorithm->performStep(*edge_it, *state);
-			}
-		}
-	}
+  std::list<int> id_partitions;
+};
+template <typename T>
+PartitionerThread<T>::PartitionerThread(std::vector<const Edge<T> *> &list,
+                                        PartitionState<T> *state,
+                                        PartitionStrategy<T> *algorithm) {
+  this->list = list;
+  this->state = state;
+  this->algorithm = algorithm;
 }
+template <typename T>
+PartitionerThread<T>::~PartitionerThread() {}
+template <typename T>
+void PartitionerThread<T>::run() {
+  for (const auto &edge_it : list) {
+    algorithm->performStep(*edge_it, *state);
+  }
+}
+}  // namespace PARTITIONING
+}  // namespace CXXGRAPH
 
-#endif // __CXXGRAPH_PARTITIONING_PARTITIONERTHREAD_H__
+#endif  // __CXXGRAPH_PARTITIONING_PARTITIONERTHREAD_H__

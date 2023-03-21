@@ -9,38 +9,37 @@
 /***     Header-Only C++ Library for Graph			     ***/
 /***	 Representation and Algorithms				     ***/
 /***********************************************************/
-/***     Author: ZigRazor			     			     ***/
+/***     Author: ZigRazor ***/
 /***	 E-Mail: zigrazor@gmail.com 				     ***/
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0							     ***/
+/***	 License: AGPL v3.0 ***/
 /***********************************************************/
 
 #ifndef __CXXGRAPH_READER_H__
 #define __CXXGRAPH_READER_H__
 
-#pragma once   // This is to make sure that this header is only included once
+#pragma once  // This is to make sure that this header is only included once
 
-namespace CXXGRAPH
-{
-    /*!
-  	Interface to implement for a custom reader.
-	*/
-	template <typename T>
-	class Reader
-	{
-		/**
- 		* \brief
- 		* Function performs the writing of the Graph to the file.
- 		*
- 		* @param graph The graph to be filled.
-		* @param file The input file to be read.
- 		* @returns a negative value if is impossible to read the graph from the file, else 0 if the graph is read successfully.
- 		*
- 		*/
-		virtual int ReadGraph(Graph<T> &graph, std::ifstream &file) = 0;
-	};
-}
+namespace CXXGRAPH {
+/*!
+    Interface to implement for a custom reader.
+    */
+template <typename T>
+class Reader {
+  /**
+   * \brief
+   * Function performs the writing of the Graph to the file.
+   *
+   * @param graph The graph to be filled.
+   * @param file The input file to be read.
+   * @returns a negative value if is impossible to read the graph from the file,
+   * else 0 if the graph is read successfully.
+   *
+   */
+  virtual int ReadGraph(Graph<T> &graph, std::ifstream &file) = 0;
+};
+}  // namespace CXXGRAPH
 
-#endif // __CXXGRAPH_READER_H__
+#endif  // __CXXGRAPH_READER_H__

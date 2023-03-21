@@ -9,12 +9,12 @@
 /***     Header-Only C++ Library for Graph			     ***/
 /***	 Representation and Algorithms				     ***/
 /***********************************************************/
-/***     Author: ZigRazor			     			     ***/
+/***     Author: ZigRazor ***/
 /***	 E-Mail: zigrazor@gmail.com 				     ***/
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0							     ***/
+/***	 License: AGPL v3.0 ***/
 /***********************************************************/
 
 #ifndef __CXXGRAPH_THREADSAFE_H__
@@ -24,27 +24,19 @@
 
 #include <mutex>
 
-namespace CXXGRAPH
-{
-    class ThreadSafe
-	{
-	public:
-		void getLock() const;
-		void releaseLock() const;
+namespace CXXGRAPH {
+class ThreadSafe {
+ public:
+  void getLock() const;
+  void releaseLock() const;
 
-	protected:
-		mutable std::mutex mutex;
-	};
-	//inline because the implementation of non-template function in header file
-	inline void ThreadSafe::getLock() const
-	{
-		mutex.lock();
-	}
-	//inline because the implementation of non-template function in header file
-	inline void ThreadSafe::releaseLock() const
-	{
-		mutex.unlock();
-	}
-}
+ protected:
+  mutable std::mutex mutex;
+};
+// inline because the implementation of non-template function in header file
+inline void ThreadSafe::getLock() const { mutex.lock(); }
+// inline because the implementation of non-template function in header file
+inline void ThreadSafe::releaseLock() const { mutex.unlock(); }
+}  // namespace CXXGRAPH
 
-#endif // __CXXGRAPH_THREADSAFE_H__
+#endif  // __CXXGRAPH_THREADSAFE_H__

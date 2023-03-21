@@ -9,12 +9,12 @@
 /***     Header-Only C++ Library for Graph			     ***/
 /***	 Representation and Algorithms				     ***/
 /***********************************************************/
-/***     Author: ZigRazor			     			     ***/
+/***     Author: ZigRazor ***/
 /***	 E-Mail: zigrazor@gmail.com 				     ***/
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0							     ***/
+/***	 License: AGPL v3.0 ***/
 /***********************************************************/
 
 #ifndef __CXXGRAPH_WEIGHTED_H__
@@ -22,46 +22,31 @@
 
 #pragma once
 
-namespace CXXGRAPH
-{
-    class Weighted
-	{
-	private:
-		double weight = 0.0;
+namespace CXXGRAPH {
+class Weighted {
+ private:
+  double weight = 0.0;
 
-	public:
-		Weighted();
-		Weighted(const double weight);
-		virtual ~Weighted() = default;
-		double getWeight() const;
-		void setWeight(const double weight);
-	};
+ public:
+  Weighted();
+  Weighted(const double weight);
+  virtual ~Weighted() = default;
+  double getWeight() const;
+  void setWeight(const double weight);
+};
 
-	//inline because the implementation of non-template function in header file
-	inline Weighted::Weighted()
-	{
-		weight = 0.0;
-	}
+// inline because the implementation of non-template function in header file
+inline Weighted::Weighted() { weight = 0.0; }
 
-	//inline because the implementation of non-template function in header file
-	inline Weighted::Weighted(const double weight)
-	{
-		this->weight = weight;
-	}
+// inline because the implementation of non-template function in header file
+inline Weighted::Weighted(const double weight) { this->weight = weight; }
 
-	//inline because the implementation of non-template function in header file
-	inline double Weighted::getWeight() const
-	{
-		return weight;
-	}
+// inline because the implementation of non-template function in header file
+inline double Weighted::getWeight() const { return weight; }
 
-	//inline because the implementation of non-template function in header file
-	inline void Weighted::setWeight(const double weight)
-	{
-		this->weight = weight;
-	}
+// inline because the implementation of non-template function in header file
+inline void Weighted::setWeight(const double weight) { this->weight = weight; }
 
-}
+}  // namespace CXXGRAPH
 
-
-#endif // __CXXGRAPH_WEIGHTED_H__
+#endif  // __CXXGRAPH_WEIGHTED_H__

@@ -9,12 +9,12 @@
 /***     Header-Only C++ Library for Graph			     ***/
 /***	 Representation and Algorithms				     ***/
 /***********************************************************/
-/***     Author: ZigRazor			     			     ***/
+/***     Author: ZigRazor ***/
 /***	 E-Mail: zigrazor@gmail.com 				     ***/
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0							     ***/
+/***	 License: AGPL v3.0 ***/
 /***********************************************************/
 
 #ifndef __CXXGRAPH_CONSTVALUE_H__
@@ -24,10 +24,9 @@
 
 #include <limits>
 
-namespace CXXGRAPH
-{
-    constexpr double INF_DOUBLE = std::numeric_limits<double>::max();
-    constexpr double NEGLIGIBLE_WEIGHT = 1e-7;
-}
+namespace CXXGRAPH {
+constexpr double INF_DOUBLE = std::numeric_limits<double>::max();
+constexpr double NEGLIGIBLE_WEIGHT = 1e-7;
+}  // namespace CXXGRAPH
 
-#endif // __CXXGRAPH_CONSTVALUE_H__
+#endif  // __CXXGRAPH_CONSTVALUE_H__

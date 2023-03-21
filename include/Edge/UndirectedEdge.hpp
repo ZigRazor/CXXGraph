@@ -9,12 +9,12 @@
 /***     Header-Only C++ Library for Graph			     ***/
 /***	 Representation and Algorithms				     ***/
 /***********************************************************/
-/***     Author: ZigRazor			     			     ***/
+/***     Author: ZigRazor ***/
 /***	 E-Mail: zigrazor@gmail.com 				     ***/
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0							     ***/
+/***	 License: AGPL v3.0 ***/
 /***********************************************************/
 
 #ifndef __CXXGRAPH_UNDIRECTEDEDGE_H__
@@ -24,80 +24,79 @@
 
 #include "Edge.hpp"
 
-namespace CXXGRAPH
-{
+namespace CXXGRAPH {
 
-	template <typename T>
-	class UndirectedEdge;
+template <typename T>
+class UndirectedEdge;
 
-	// ostream operator
-	template <typename T>
-	std::ostream &operator<<(std::ostream &o, const UndirectedEdge<T> &edge);
+// ostream operator
+template <typename T>
+std::ostream &operator<<(std::ostream &o, const UndirectedEdge<T> &edge);
 
-    template <typename T>
-	class UndirectedEdge : public Edge<T>
-	{
-	public:
-		UndirectedEdge(const unsigned long id, const Node<T> &node1, const Node<T> &node2);
-		UndirectedEdge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair);
-		UndirectedEdge(const Edge<T> &edge);
-		virtual ~UndirectedEdge() = default;
-		const Node<T> &getNode1() const;
-		const Node<T> &getNode2() const;
-		const std::optional<bool> isDirected() const override;
-		const std::optional<bool> isWeighted() const override;
-		//operator
-		explicit operator DirectedEdge<T>() const { return DirectedEdge<T>(Edge<T>::getId(), Edge<T>::getNodePair()); }
+template <typename T>
+class UndirectedEdge : public Edge<T> {
+ public:
+  UndirectedEdge(const unsigned long id, const Node<T> &node1,
+                 const Node<T> &node2);
+  UndirectedEdge(const unsigned long id,
+                 const std::pair<const Node<T> *, const Node<T> *> &nodepair);
+  UndirectedEdge(const Edge<T> &edge);
+  virtual ~UndirectedEdge() = default;
+  const Node<T> &getNode1() const;
+  const Node<T> &getNode2() const;
+  const std::optional<bool> isDirected() const override;
+  const std::optional<bool> isWeighted() const override;
+  // operator
+  explicit operator DirectedEdge<T>() const {
+    return DirectedEdge<T>(Edge<T>::getId(), Edge<T>::getNodePair());
+  }
 
-		friend std::ostream &operator<<<>(std::ostream &os, const UndirectedEdge<T> &edge);
-	};
+  friend std::ostream &operator<<<>(std::ostream &os,
+                                    const UndirectedEdge<T> &edge);
+};
 
-	template <typename T>
-	UndirectedEdge<T>::UndirectedEdge(const unsigned long id, const Node<T> &node1, const Node<T> &node2) : Edge<T>(id, node1, node2)
-	{
-	}
+template <typename T>
+UndirectedEdge<T>::UndirectedEdge(const unsigned long id, const Node<T> &node1,
+                                  const Node<T> &node2)
+    : Edge<T>(id, node1, node2) {}
 
-	template <typename T>
-	UndirectedEdge<T>::UndirectedEdge(const unsigned long id, const std::pair<const Node<T> *, const Node<T> *> &nodepair) : Edge<T>(id, nodepair)
-	{
-	}
+template <typename T>
+UndirectedEdge<T>::UndirectedEdge(
+    const unsigned long id,
+    const std::pair<const Node<T> *, const Node<T> *> &nodepair)
+    : Edge<T>(id, nodepair) {}
 
-	template <typename T>
-	UndirectedEdge<T>::UndirectedEdge(const Edge<T> &edge) : UndirectedEdge(edge.getId(), *(edge.getNodePair().first), *(edge.getNodePair().second))
-	{
-	}
+template <typename T>
+UndirectedEdge<T>::UndirectedEdge(const Edge<T> &edge)
+    : UndirectedEdge(edge.getId(), *(edge.getNodePair().first),
+                     *(edge.getNodePair().second)) {}
 
-	template <typename T>
-	const Node<T> &UndirectedEdge<T>::getNode1() const
-	{
-		return *(Edge<T>::getNodePair().first);
-	}
-
-	template <typename T>
-	const Node<T> &UndirectedEdge<T>::getNode2() const
-	{
-		return *(Edge<T>::getNodePair().second);
-	}
-
-	template <typename T>
-	const std::optional<bool> UndirectedEdge<T>::isDirected() const
-	{
-		return false;
-	}
-
-	template <typename T>
-	const std::optional<bool> UndirectedEdge<T>::isWeighted() const
-	{
-		return false;
-	}	
-
-	template <typename T>
-	std::ostream &operator<<(std::ostream &os, const UndirectedEdge<T> &edge)
-	{
-		os << "((Node: " << edge.getNode1().getId() << ")) <----- |Edge: #" << edge.getId() << "|-----> ((Node: " << edge.getNode2().getId() << "))";
-		return os;
-	}
+template <typename T>
+const Node<T> &UndirectedEdge<T>::getNode1() const {
+  return *(Edge<T>::getNodePair().first);
 }
 
+template <typename T>
+const Node<T> &UndirectedEdge<T>::getNode2() const {
+  return *(Edge<T>::getNodePair().second);
+}
 
-#endif // __CXXGRAPH_UNDIRECTEDEDGE_H__
+template <typename T>
+const std::optional<bool> UndirectedEdge<T>::isDirected() const {
+  return false;
+}
+
+template <typename T>
+const std::optional<bool> UndirectedEdge<T>::isWeighted() const {
+  return false;
+}
+
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const UndirectedEdge<T> &edge) {
+  os << "((Node: " << edge.getNode1().getId() << ")) <----- |Edge: #"
+     << edge.getId() << "|-----> ((Node: " << edge.getNode2().getId() << "))";
+  return os;
+}
+}  // namespace CXXGRAPH
+
+#endif  // __CXXGRAPH_UNDIRECTEDEDGE_H__

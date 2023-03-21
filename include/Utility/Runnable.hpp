@@ -9,12 +9,12 @@
 /***     Header-Only C++ Library for Graph			     ***/
 /***	 Representation and Algorithms				     ***/
 /***********************************************************/
-/***     Author: ZigRazor			     			     ***/
+/***     Author: ZigRazor ***/
 /***	 E-Mail: zigrazor@gmail.com 				     ***/
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0							     ***/
+/***	 License: AGPL v3.0 ***/
 /***********************************************************/
 
 #ifndef __CXXGRAPH_RUNNABLE_H__
@@ -22,13 +22,11 @@
 
 #pragma once
 
-namespace CXXGRAPH
-{
-    class Runnable
-    {
-    public:
-        virtual void run() = 0;
-    };
-}
+namespace CXXGRAPH {
+class Runnable {
+ public:
+  virtual void run() = 0;
+};
+}  // namespace CXXGRAPH
 
-#endif // __CXXGRAPH_RUNNABLE_H__
+#endif  // __CXXGRAPH_RUNNABLE_H__
