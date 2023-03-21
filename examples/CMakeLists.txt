@@ -1,0 +1,3 @@
+add_subdirectory(DialExample)
+add_subdirectory(DijkstraExample)
+add_subdirectory(PartitionExample)
