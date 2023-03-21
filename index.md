@@ -53,7 +53,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
 | :memo: | "Const" Code Review [#155](https://github.com/ZigRazor/CXXGraph/issues/155) | TBD |
 | :memo: | Release 0.5.0 | TBD |
 | :memo: | Test on Partition Algorithm [#264](https://github.com/ZigRazor/CXXGraph/issues/264) | TBD |
-| :memo: | Bug Resolution [#263](https://github.com/ZigRazor/CXXGraph/issues/263) | TBD |
+| :heavy_check_mark: | Bug Resolution [#263](https://github.com/ZigRazor/CXXGraph/issues/263) | Mar 21, 2023 |
 | :memo: | General Performance Optimization [#262](https://github.com/ZigRazor/CXXGraph/issues/262) [#265](https://github.com/ZigRazor/CXXGraph/issues/265) | TBD |
 | :memo: | Reduction of Code Issue of Static Analysis | TBD |
 | :memo: | First Stable Release 1.0.0 | TBD |
@@ -124,7 +124,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
     - [Prim's Algorithm](#prims-algorithm)
     - [BFS](#bfs)
     - [DFS](#dfs)
-    - [Best First Srach](#best-first-search)
+    - [Best First Search](#best-first-search)
     - [Cycle Detection](#cycle-detection)
     - [Bellman-Ford](#bellman-ford)
     - [Floyd Warshall](#floyd-warshall)
@@ -133,7 +133,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
     - [Graph Slicing based on connectivity](#graph-slicing-based-on-connectivity)
     - [Ford-Fulkerson Algorithm](#ford-fulkerson-algorithm)
     - [Kosaraju's Algorithm](#kosarajus-algorithm)
-    - [Kahn's Algorithm](#kahn-algorithm)
+    - [Kahn's Algorithm](#kahns-algorithm)
   - [Partition Algorithm Explanation](#partition-algorithm-explanation)
     - [Vertex-Cut](#vertex-cut)
     - [Edge Balanced Vertex-Cut](#edge-balanced-vertex-cut)
