@@ -1017,7 +1017,7 @@ namespace CXXGRAPH
 	template <typename T>
 	const std::shared_ptr<AdjacencyMatrix<T>> Graph<T>::getAdjMatrix() const
 	{
-		AdjacencyMatrix<T> adj;
+		auto adj = std::make_shared<AdjacencyMatrix<T>>();
 		auto addElementToAdjMatrix = [&adj](const Node<T> *nodeFrom, const Node<T> *nodeTo, const Edge<T> *edge){
 			std::pair<const Node<T> *, const Edge<T> *> elem = {nodeTo, edge};
 			(*adj)[nodeFrom].push_back(std::move(elem));
@@ -1643,9 +1643,9 @@ namespace CXXGRAPH
 			{
 				break;
 			}
-			if (adj.find(currentNode) != adj.end())
+			if (adj->find(currentNode) != adj->end())
 			{
-				for (const auto &elem : adj.at(currentNode))
+				for (const auto &elem : adj->at(currentNode))
 				{
 					if (elem.second->isWeighted().has_value())
 					{
@@ -1746,7 +1746,7 @@ namespace CXXGRAPH
             num_threads = 2;
         }
 
-		const AdjacencyMatrix<T> &adj = Graph<T>::getAdjMatrix();
+		const auto &adj = Graph<T>::getAdjMatrix();
 		// vector that stores vertices to be visit
 		std::vector<const Node<T> *> level_tracker, next_level_tracker;
         level_tracker.reserve(static_cast<int>(1.0 *nodeSet.size()));
@@ -1808,9 +1808,9 @@ namespace CXXGRAPH
 
                     for (int i = start_index; i < end_index; ++i)
                     {
-                        if (adj.count(level_tracker[i]))
+                        if (adj->count(level_tracker[i]))
                         {
-                            for (const auto &elem : adj.at(level_tracker[i]))
+                            for (const auto &elem : adj->at(level_tracker[i]))
                             {
                                 int index = node_to_index[elem.first];
                                 if (visited[index] == 0)
@@ -2279,9 +2279,9 @@ namespace CXXGRAPH
             {
                 visited[curNode] = true;
 
-                if (adjMatrix.find(curNode) != adjMatrix.end())
+                if (adjMatrix->find(curNode) != adjMatrix->end())
                 {
-                    for (const auto &edge : adjMatrix.at(curNode))
+                    for (const auto &edge : adjMatrix->at(curNode))
                     {
                         const auto &nextNode = edge.first;
                         if (false == visited[nextNode])
@@ -2294,7 +2294,7 @@ namespace CXXGRAPH
                 result.nodesInTopoOrder.push_back(*curNode);
             };
 
-            int numNodes = adjMatrix.size();
+            int numNodes = adjMatrix->size();
             result.nodesInTopoOrder.reserve(numNodes);
 
             for (const auto &node : nodeSet)
@@ -2325,14 +2325,14 @@ namespace CXXGRAPH
 		{
 			const auto adjMatrix = Graph<T>::getAdjMatrix();
 			const auto nodeSet = Graph<T>::getNodeSet();
-			result.nodesInTopoOrder.reserve(adjMatrix.size());
+			result.nodesInTopoOrder.reserve(adjMatrix->size());
 
 			std::unordered_map<size_t, unsigned int> indegree;
 			for (const auto &node : nodeSet)
 			{
 				indegree[node->getId()] = 0;
 			}
-			for (const auto &list : adjMatrix)
+			for (const auto &list : *adjMatrix)
 			{
 				auto children = list.second;
 				for (const auto &child : children)
@@ -2358,9 +2358,9 @@ namespace CXXGRAPH
 				topologicalOrder.pop();
 				result.nodesInTopoOrder.push_back(*currentNode);
 
-				if (adjMatrix.find(currentNode) != adjMatrix.end())
+				if (adjMatrix->find(currentNode) != adjMatrix->end())
 				{
-					for (const auto &child : adjMatrix.at(currentNode))
+					for (const auto &child : adjMatrix->at(currentNode))
 					{
 						if (--indegree[std::get<0>(child)->getId()] == 0)
 						{
