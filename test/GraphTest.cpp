@@ -93,7 +93,7 @@ TEST(GraphTest, adj_print_1)
     edgeSet.insert(&edge);
     CXXGRAPH::Graph<int> graph(edgeSet);
     std::cout << "Test Print Adjacency Matrix" << std::endl;
-    std::cout << graph.getAdjMatrix() << std::endl;
+    std::cout << *graph.getAdjMatrix() << std::endl;
 }
 
 TEST(GraphTest, adj_print_2)
@@ -106,7 +106,7 @@ TEST(GraphTest, adj_print_2)
     edgeSet.insert(&edge);
     CXXGRAPH::Graph<int> graph(edgeSet);
     std::cout << "Test Print Adjacency Matrix" << std::endl;
-    std::cout << graph.getAdjMatrix() << std::endl;
+    std::cout << *graph.getAdjMatrix() << std::endl;
 }
 
 TEST(GraphTest, adj_print_3)
@@ -119,7 +119,7 @@ TEST(GraphTest, adj_print_3)
     edgeSet.insert(&edge);
     CXXGRAPH::Graph<int> graph(edgeSet);
     std::cout << "Test Print Adjacency Matrix" << std::endl;
-    std::cout << graph.getAdjMatrix() << std::endl;
+    std::cout << *graph.getAdjMatrix() << std::endl;
 }
 
 TEST(GraphTest, adj_print_4)
@@ -137,7 +137,7 @@ TEST(GraphTest, adj_print_4)
     edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
     std::cout << "Test Print Adjacency Matrix" << std::endl;
-    std::cout << graph.getAdjMatrix() << std::endl;
+    std::cout << *graph.getAdjMatrix() << std::endl;
 }
 
 TEST(GraphTest, adj_print_5)
@@ -155,7 +155,7 @@ TEST(GraphTest, adj_print_5)
     edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
     std::cout << "Test Print Adjacency Matrix" << std::endl;
-    std::cout << graph.getAdjMatrix() << std::endl;
+    std::cout << *graph.getAdjMatrix() << std::endl;
 }
 
 TEST(GraphTest, adj_print_6)
@@ -173,5 +173,5 @@ TEST(GraphTest, adj_print_6)
     edgeSet.insert(&edge3);
     CXXGRAPH::Graph<int> graph(edgeSet);
     std::cout << "Test Print Adjacency Matrix" << std::endl;
-    std::cout << graph.getAdjMatrix() << std::endl;
+    std::cout << *graph.getAdjMatrix() << std::endl;
 }
