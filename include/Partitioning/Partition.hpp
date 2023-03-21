@@ -205,10 +205,10 @@ namespace CXXGRAPH
             result.minEdgesLoad = getMinEdgesLoad(partitionMap);
             result.maxNodesLoad = getMaxNodesLoad(partitionMap);
             result.minNodesLoad = getMinNodesLoad(partitionMap);
-            result.edgesReplicationFactor = static_cast<double>(result.replicatedEdgesCount / result.numberOfEdges);
-            result.nodesReplicationFactor = static_cast<double>(result.replicatedNodesCount / result.numberOfNodes);
-            result.balanceEdgesFactor = static_cast<double>((result.maxEdgesLoad - result.minEdgesLoad) / (result.maxEdgesLoad));
-            result.balanceNodesFactor = static_cast<double>((result.maxNodesLoad - result.minNodesLoad) / (result.maxNodesLoad));
+            result.edgesReplicationFactor = static_cast<double>(result.replicatedEdgesCount) / result.numberOfEdges;
+            result.nodesReplicationFactor = static_cast<double>(result.replicatedNodesCount) / result.numberOfNodes;
+            result.balanceEdgesFactor = static_cast<double>((result.maxEdgesLoad - result.minEdgesLoad)) / (result.maxEdgesLoad);
+            result.balanceNodesFactor = static_cast<double>((result.maxNodesLoad - result.minNodesLoad)) / (result.maxNodesLoad);
             return result;
         }
 
@@ -279,11 +279,7 @@ namespace CXXGRAPH
                 const T_EdgeSet<T> partitionEdgeSet = it.second->getEdgeSet();
                 for (const auto& it2 : partitionEdgeSet)
                 {
-                    if (std::find_if(edgeSet.begin(), edgeSet.end(), [it2](const Edge<T> *edge)
-                                     { return (*it2 == *edge); }) == edgeSet.end())
-                    {
                         edgeSet.insert(it2);
-                    }
                 }
             }
 
@@ -294,18 +290,18 @@ namespace CXXGRAPH
         unsigned int getNumberOfNodes(const PartitionMap<T> &partitionMap)
         {
             unsigned int numberOfNodes = 0;
-            std::deque<const Node<T> *> nodeSet;
+            std::set<const Node<T> *> nodeSet;
 
             for (const auto& it : partitionMap)
             {
-                const std::deque<const Node<T> *> partitionNodeSet = it->second->getNodeSet();
+                const std::set<const Node<T> *> partitionNodeSet = it.second->getNodeSet();
                 for (const auto& it2 : partitionNodeSet)
                 {
-                    if (std::find_if(nodeSet.begin(), nodeSet.end(), [it2](const Node<T> *node)
-                                     { return (*it2 == *node); }) == nodeSet.end())
-                    {
-                        nodeSet.push_back(*it2);
-                    }
+                    // if (std::find_if(nodeSet.begin(), nodeSet.end(), [it2](const Node<T> *node)
+                    //                  { return (*it2 == *node); }) == nodeSet.end())
+                    // {
+                        nodeSet.insert(it2);
+                    // }
                 }
             }
 
