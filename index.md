@@ -26,10 +26,6 @@ Share on [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=
 **CXXGraph** is a small library, header only, that manages the Graph and it's algorithms in **C++**. In other words a "Comprehensive C++ Graph Library".
 An alternative to [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_77_0/libs/graph/doc/index.html).
 
-## Hacktoberfest 2k22
-
-Hi Developers, we are participating in Hacktoberfest 2022!
-
 ## We are Looking for...
 
 **We are looking for:**
@@ -612,6 +608,10 @@ Thank you!
 ## Hacktoberfest 2k21
 
 We have been participated at Hacktoberfest 2021, thank you to all the contributors!
+
+## Hacktoberfest 2k22
+
+We have been participated at Hacktoberfest 2022, thank you to all the contributors!
 
 ## Other Details
 
