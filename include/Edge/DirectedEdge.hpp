@@ -51,8 +51,8 @@ class DirectedEdge : public Edge<T> {
     return UndirectedEdge<T>(Edge<T>::getId(), Edge<T>::getNodePair());
   }
 
-  friend std::ostream &operator<<<>(std::ostream &os,
-                                    const DirectedEdge<T> &edge);
+  friend std::ostream &operator<< <>(std::ostream &os,
+                                     const DirectedEdge<T> &edge);
 };
 
 template <typename T>

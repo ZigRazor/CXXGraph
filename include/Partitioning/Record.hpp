@@ -29,13 +29,13 @@ namespace PARTITIONING {
 template <typename T>
 class Record {
  public:
-  virtual std::set<int> &getPartitions() = 0;
-  virtual void addPartition(int m) = 0;
-  virtual bool hasReplicaInPartition(int m) = 0;
+  virtual const std::set<int> &getPartitions() const = 0;
+  virtual void addPartition(const int m) = 0;
+  virtual bool hasReplicaInPartition(const int m) const = 0;
   virtual bool getLock() = 0;
   virtual bool releaseLock() = 0;
   virtual int getReplicas() const = 0;
-  virtual int getDegree() = 0;
+  virtual int getDegree() const = 0;
   virtual void incrementDegree() = 0;
 };
 }  // namespace PARTITIONING

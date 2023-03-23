@@ -43,13 +43,13 @@ class HDRF : public PartitionStrategy<T> {
   Globals GLOBALS;
 
  public:
-  explicit HDRF(Globals &G);
+  explicit HDRF(const Globals &G);
   ~HDRF();
 
-  void performStep(const Edge<T> &e, PartitionState<T> &Sstate);
+  void performStep(const Edge<T> &e, PartitionState<T> &Sstate) override;
 };
 template <typename T>
-HDRF<T>::HDRF(Globals &G) : GLOBALS(G) {
+HDRF<T>::HDRF(const Globals &G) : GLOBALS(G) {
   // this->GLOBALS = G;
 }
 template <typename T>

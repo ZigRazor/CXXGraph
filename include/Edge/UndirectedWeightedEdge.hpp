@@ -60,8 +60,8 @@ class UndirectedWeightedEdge : public UndirectedEdge<T>, public Weighted {
                                    Weighted::getWeight());
   }
 
-  friend std::ostream &operator<<<>(std::ostream &os,
-                                    const UndirectedWeightedEdge<T> &edge);
+  friend std::ostream &operator<< <>(std::ostream &os,
+                                     const UndirectedWeightedEdge<T> &edge);
 };
 
 template <typename T>

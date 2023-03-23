@@ -31,13 +31,14 @@ namespace PARTITIONING {
 class Globals {
  private:
  public:
-  Globals(int numberOfPartiton,
-          PartitionAlgorithm algorithm = PartitionAlgorithm::HDRF_ALG,
-          double param1 = 1, double param2 = 1, double param3 = 1,
-          unsigned int threads = std::thread::hardware_concurrency());
+  Globals(const int numberOfPartiton,
+          const PartitionAlgorithm algorithm = PartitionAlgorithm::HDRF_ALG,
+          const double param1 = 1, const double param2 = 1,
+          const double param3 = 1,
+          const unsigned int threads = std::thread::hardware_concurrency());
   ~Globals();
 
-  void print();
+  const std::string print() const;
 
   // CONSTANT
   const int SLEEP_LIMIT = 16;  // In microseconds
@@ -55,9 +56,10 @@ class Globals {
   unsigned long long edgeAnalyzed = 0;
 };
 
-inline Globals::Globals(int numberOfPartiton, PartitionAlgorithm algorithm,
-                        double param1, double param2, double param3,
-                        unsigned int threads) {
+inline Globals::Globals(const int numberOfPartiton,
+                        const PartitionAlgorithm algorithm, const double param1,
+                        const double param2, const double param3,
+                        const unsigned int threads) {
   this->numberOfPartition = numberOfPartiton;
   this->partitionStategy = algorithm;
   this->threads = threads;
@@ -71,6 +73,11 @@ inline Globals::Globals(int numberOfPartiton, PartitionAlgorithm algorithm,
 }
 
 inline Globals::~Globals() {}
+
+inline const std::string Globals::print() const {
+  std::string prt_str;
+  return prt_str;
+}
 
 }  // namespace PARTITIONING
 }  // namespace CXXGRAPH

@@ -29,20 +29,21 @@ namespace PARTITIONING {
 template <typename T>
 class PartitionState {
  public:
-  virtual std::shared_ptr<Record<T>> getRecord(int x) = 0;
-  virtual int getMachineLoad(int m) = 0;
-  virtual int getMachineWeight(int m) = 0;
-  virtual int getMachineLoadVertices(int m) = 0;
-  virtual void incrementMachineLoad(int m, const Edge<T>* e) = 0;
-  virtual void incrementMachineWeight(int m, const Edge<T>* e) = 0;
-  virtual int getMinLoad() = 0;
-  virtual int getMaxLoad() = 0;
-  virtual int getMachineWithMinWeight() = 0;
-  virtual int getMachineWithMinWeight(const std::set<int>& partitions) = 0;
-  virtual std::vector<int> getMachines_load() = 0;
-  virtual int getTotalReplicas() = 0;
-  virtual int getNumVertices() = 0;
-  virtual std::set<int> getVertexIds() = 0;
+  virtual std::shared_ptr<Record<T>> getRecord(const int x) = 0;
+  virtual int getMachineLoad(const int m) const = 0;
+  virtual int getMachineWeight(const int m) const = 0;
+  virtual int getMachineLoadVertices(const int m) const = 0;
+  virtual void incrementMachineLoad(const int m, const Edge<T>* e) = 0;
+  virtual void incrementMachineWeight(const int m, const Edge<T>* e) = 0;
+  virtual int getMinLoad() const = 0;
+  virtual int getMaxLoad() const = 0;
+  virtual int getMachineWithMinWeight() const = 0;
+  virtual int getMachineWithMinWeight(
+      const std::set<int>& partitions) const = 0;
+  virtual std::vector<int> getMachines_load() const = 0;
+  virtual int getTotalReplicas() const = 0;
+  virtual int getNumVertices() const = 0;
+  virtual std::set<int> getVertexIds() const = 0;
 };
 }  // namespace PARTITIONING
 }  // namespace CXXGRAPH

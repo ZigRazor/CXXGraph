@@ -44,19 +44,19 @@ class EBV : public PartitionStrategy<T> {
   Globals GLOBALS;
 
  public:
-  explicit EBV(Globals &G);
+  explicit EBV(const Globals &G);
   ~EBV();
 
-  void performStep(const Edge<T> &e, PartitionState<T> &Sstate);
+  void performStep(const Edge<T> &e, PartitionState<T> &Sstate) override;
 };
 template <typename T>
-EBV<T>::EBV(Globals &G) : GLOBALS(G) {
+EBV<T>::EBV(const Globals &G) : GLOBALS(G) {
   // this->GLOBALS = G;
 }
 template <typename T>
 EBV<T>::~EBV() {}
 template <typename T>
-void EBV<T>::performStep(const Edge<T> &e, PartitionState<T> &state) {
+void EBV<T>::performStep(const Edge<T> &e, PartitionState<T> &state){
   GLOBALS.edgeAnalyzed++;
 
   int P = GLOBALS.numberOfPartition;

@@ -125,7 +125,7 @@ class Graph {
    * @param edgeSet The Edge Set
    *
    */
-  virtual void setEdgeSet(T_EdgeSet<T> &edgeSet);
+  virtual void setEdgeSet(const T_EdgeSet<T> &edgeSet);
   /**
    * \brief
    * Function add an Edge to the Graph Edge Set
@@ -143,7 +143,7 @@ class Graph {
    * @param edgeId The Edge Id to remove
    *
    */
-  virtual void removeEdge(unsigned long long edgeId);
+  virtual void removeEdge(const unsigned long long edgeId);
   /**
    * \brief
    * Function that return the Node Set of the Graph
@@ -545,14 +545,15 @@ class Graph {
    * @return The partiton Map of the partitioned graph
    */
   virtual PartitionMap<T> partitionGraph(
-      PARTITIONING::PartitionAlgorithm algorithm,
-      unsigned int numberOfPartitions, double param1 = 0.0, double param2 = 0.0,
-      double param3 = 0.0,
-      unsigned int numberOfthreads = std::thread::hardware_concurrency()) const;
+      const PARTITIONING::PartitionAlgorithm algorithm,
+      const unsigned int numberOfPartitions, const double param1 = 0.0,
+      const double param2 = 0.0, const double param3 = 0.0,
+      const unsigned int numberOfthreads =
+          std::thread::hardware_concurrency()) const;
 
-  friend std::ostream &operator<<<>(std::ostream &os, const Graph<T> &graph);
-  friend std::ostream &operator<<<>(std::ostream &os,
-                                    const AdjacencyMatrix<T> &adj);
+  friend std::ostream &operator<< <>(std::ostream &os, const Graph<T> &graph);
+  friend std::ostream &operator<< <>(std::ostream &os,
+                                     const AdjacencyMatrix<T> &adj);
 };
 
 template <typename T>
@@ -576,7 +577,7 @@ const T_EdgeSet<T> &Graph<T>::getEdgeSet() const {
 }
 
 template <typename T>
-void Graph<T>::setEdgeSet(T_EdgeSet<T> &edgeSet) {
+void Graph<T>::setEdgeSet(const T_EdgeSet<T> &edgeSet) {
   this->edgeSet.clear();
   for (const auto &edgeSetIt : edgeSet) {
     /*
@@ -605,7 +606,7 @@ void Graph<T>::addEdge(const Edge<T> *edge) {
 }
 
 template <typename T>
-void Graph<T>::removeEdge(unsigned long long edgeId) {
+void Graph<T>::removeEdge(const unsigned long long edgeId) {
   auto edgeOpt = Graph<T>::getEdge(edgeId);
   if (edgeOpt.has_value()) {
     /*
@@ -2657,9 +2658,10 @@ int Graph<T>::readFromFile(InputOutputFormat format,
 
 template <typename T>
 PartitionMap<T> Graph<T>::partitionGraph(
-    PARTITIONING::PartitionAlgorithm algorithm, unsigned int numberOfPartitions,
-    double param1, double param2, double param3,
-    unsigned int numberOfThreads) const {
+    const PARTITIONING::PartitionAlgorithm algorithm,
+    const unsigned int numberOfPartitions, const double param1,
+    const double param2, const double param3,
+    const unsigned int numberOfThreads) const {
   PartitionMap<T> partitionMap;
   PARTITIONING::Globals globals(numberOfPartitions, algorithm, param1, param2,
                                 param3, numberOfThreads);

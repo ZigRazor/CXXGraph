@@ -47,9 +47,9 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
 | :heavy_check_mark: | Add Benchmark for all algorithms | Oct 5, 2022 |
 | :heavy_check_mark: | Code Optimization | Oct 5, 2022 |
 | :heavy_check_mark: | Release 0.4.0 | Oct 7, 2022 |
-| :memo: | "Const" Code Review [#155](https://github.com/ZigRazor/CXXGraph/issues/155) | TBD |
+| :heavy_check_mark: | "Const" Code Review [#155](https://github.com/ZigRazor/CXXGraph/issues/155) | Mar 23, 2023 |
 | :memo: | Release 0.5.0 | TBD |
-| :memo: | Test on Partition Algorithm [#264](https://github.com/ZigRazor/CXXGraph/issues/264) | TBD |
+| :grey_exclamation: | Test on Partition Algorithm [#264](https://github.com/ZigRazor/CXXGraph/issues/264) | Mar 21, 2023 |
 | :heavy_check_mark: | Bug Resolution [#263](https://github.com/ZigRazor/CXXGraph/issues/263) | Mar 21, 2023 |
 | :memo: | General Performance Optimization [#262](https://github.com/ZigRazor/CXXGraph/issues/262) [#265](https://github.com/ZigRazor/CXXGraph/issues/265) | TBD |
 | :memo: | Reduction of Code Issue of Static Analysis | TBD |
