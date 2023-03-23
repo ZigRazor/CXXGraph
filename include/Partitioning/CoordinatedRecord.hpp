@@ -41,24 +41,26 @@ class CoordinatedRecord : public Record<T> {
   CoordinatedRecord();
   ~CoordinatedRecord();
 
-  std::set<int> &getPartitions();
-  void addPartition(int m);
-  bool hasReplicaInPartition(int m);
-  bool getLock();
-  bool releaseLock();
-  int getReplicas() const;
-  int getDegree();
-  void incrementDegree();
+  const std::set<int> &getPartitions() const override;
+  void addPartition(const int m) override;
+  bool hasReplicaInPartition(const int m) const override;
+  bool getLock() override;
+  bool releaseLock() override;
+  int getReplicas() const override;
+  int getDegree() const override;
+  void incrementDegree() override;
 
-  void addAll(std::set<int> &set);
+  void addAll(const std::set<int> &set);
   std::set<int> partition_intersection(
-      std::shared_ptr<CoordinatedRecord> other);
-  std::set<int> partition_union(std::shared_ptr<CoordinatedRecord> other);
-  std::set<int> partition_difference(std::shared_ptr<CoordinatedRecord> other);
+      const std::shared_ptr<CoordinatedRecord> other) const;
+  std::set<int> partition_union(
+      const std::shared_ptr<CoordinatedRecord> other) const;
+  std::set<int> partition_difference(
+      const std::shared_ptr<CoordinatedRecord> other) const;
 };
 template <typename T>
 std::set<int> CoordinatedRecord<T>::partition_intersection(
-    std::shared_ptr<CoordinatedRecord> other) {
+    std::shared_ptr<CoordinatedRecord> other) const {
   std::set<int> result;
   set_intersection(this->partitions.begin(), this->partitions.end(),
                    other->partitions.begin(), other->partitions.end(),
@@ -67,7 +69,7 @@ std::set<int> CoordinatedRecord<T>::partition_intersection(
 }
 template <typename T>
 std::set<int> CoordinatedRecord<T>::partition_union(
-    std::shared_ptr<CoordinatedRecord> other) {
+    std::shared_ptr<CoordinatedRecord> other) const {
   std::set<int> result;
   set_union(this->partitions.begin(), this->partitions.end(),
             other->partitions.begin(), other->partitions.end(),
@@ -76,7 +78,7 @@ std::set<int> CoordinatedRecord<T>::partition_union(
 }
 template <typename T>
 std::set<int> CoordinatedRecord<T>::partition_difference(
-    std::shared_ptr<CoordinatedRecord> other) {
+    std::shared_ptr<CoordinatedRecord> other) const {
   std::set<int> result;
   set_difference(this->partitions.begin(), this->partitions.end(),
                  other->partitions.begin(), other->partitions.end(),
@@ -97,7 +99,7 @@ CoordinatedRecord<T>::~CoordinatedRecord() {
   }
 }
 template <typename T>
-std::set<int> &CoordinatedRecord<T>::getPartitions() {
+const std::set<int> &CoordinatedRecord<T>::getPartitions() const {
   return partitions;
 }
 template <typename T>
@@ -109,7 +111,7 @@ void CoordinatedRecord<T>::addPartition(int m) {
   partitions.insert(m);
 }
 template <typename T>
-bool CoordinatedRecord<T>::hasReplicaInPartition(int m) {
+bool CoordinatedRecord<T>::hasReplicaInPartition(const int m) const {
   return partitions.find(m) != partitions.end();
 }
 template <typename T>
@@ -126,7 +128,7 @@ int CoordinatedRecord<T>::getReplicas() const {
   return partitions.size();
 }
 template <typename T>
-int CoordinatedRecord<T>::getDegree() {
+int CoordinatedRecord<T>::getDegree() const {
   return degree;
 }
 template <typename T>
@@ -134,7 +136,7 @@ void CoordinatedRecord<T>::incrementDegree() {
   degree++;
 }
 template <typename T>
-void CoordinatedRecord<T>::addAll(std::set<int> &set) {
+void CoordinatedRecord<T>::addAll(const std::set<int> &set) {
   partitions.insert(set.begin(), set.end());
 }
 }  // namespace PARTITIONING

@@ -41,13 +41,13 @@ class GreedyVertexCut : public PartitionStrategy<T> {
   Globals GLOBALS;
 
  public:
-  explicit GreedyVertexCut(Globals &G);
+  explicit GreedyVertexCut(const Globals &G);
   ~GreedyVertexCut();
 
-  void performStep(const Edge<T> &e, PartitionState<T> &Sstate);
+  void performStep(const Edge<T> &e, PartitionState<T> &Sstate) override;
 };
 template <typename T>
-GreedyVertexCut<T>::GreedyVertexCut(Globals &G) : GLOBALS(G) {
+GreedyVertexCut<T>::GreedyVertexCut(const Globals &G) : GLOBALS(G) {
   // this->GLOBALS = G;
 }
 template <typename T>

@@ -42,13 +42,13 @@ class EdgeBalancedVertexCut : public PartitionStrategy<T> {
   Globals GLOBALS;
 
  public:
-  explicit EdgeBalancedVertexCut(Globals &G);
+  explicit EdgeBalancedVertexCut(const Globals &G);
   ~EdgeBalancedVertexCut();
 
-  void performStep(const Edge<T> &e, PartitionState<T> &Sstate);
+  void performStep(const Edge<T> &e, PartitionState<T> &Sstate) override;
 };
 template <typename T>
-EdgeBalancedVertexCut<T>::EdgeBalancedVertexCut(Globals &G) : GLOBALS(G) {
+EdgeBalancedVertexCut<T>::EdgeBalancedVertexCut(const Globals &G) : GLOBALS(G) {
   // this->GLOBALS = G;
 }
 template <typename T>

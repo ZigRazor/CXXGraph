@@ -29,7 +29,7 @@ class Weighted {
 
  public:
   Weighted();
-  Weighted(const double weight);
+  explicit Weighted(const double weight);
   virtual ~Weighted() = default;
   double getWeight() const;
   void setWeight(const double weight);

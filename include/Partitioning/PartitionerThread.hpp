@@ -44,7 +44,7 @@ class PartitionerThread : public Runnable {
                     PartitionState<T> *state, PartitionStrategy<T> *algorithm);
   ~PartitionerThread();
 
-  void run();
+  void run() override;
 
   std::list<int> id_partitions;
 };

@@ -46,15 +46,15 @@ class WeightBalancedLibra : public PartitionStrategy<T> {
 
  public:
   explicit WeightBalancedLibra(
-      Globals &G, double _weight_sum_bound,
+      const Globals &G, double _weight_sum_bound,
       std::unordered_map<std::size_t, int> &&_vertices_degrees);
   ~WeightBalancedLibra();
 
-  void performStep(const Edge<T> &e, PartitionState<T> &Sstate);
+  void performStep(const Edge<T> &e, PartitionState<T> &Sstate) override;
 };
 template <typename T>
 WeightBalancedLibra<T>::WeightBalancedLibra(
-    Globals &G, double _weight_sum_bound,
+    const Globals &G, double _weight_sum_bound,
     std::unordered_map<std::size_t, int> &&_vertices_degrees)
     : GLOBALS(G),
       weight_sum_bound(_weight_sum_bound),
@@ -98,8 +98,8 @@ void WeightBalancedLibra<T>::performStep(const Edge<T> &e,
   }
   //*** LOCK TAKEN
   int machine_id = -1;
-  std::set<int> &u_partition = u_record->getPartitions();
-  std::set<int> &v_partition = v_record->getPartitions();
+  const std::set<int> &u_partition = u_record->getPartitions();
+  const std::set<int> &v_partition = v_record->getPartitions();
 
   // Case 1: no edges of two nodes have been assigned
   if (u_partition.empty() && v_partition.empty()) {
@@ -139,9 +139,9 @@ void WeightBalancedLibra<T>::performStep(const Edge<T> &e,
       // {s}
       size_t s_node = (u_degree > v_degree) ? v : u;
       size_t t_node = (u_degree > v_degree) ? u : v;
-      std::set<int> &s_partition =
+      const std::set<int> &s_partition =
           (u_degree > v_degree) ? v_partition : u_partition;
-      std::set<int> &t_partition =
+      const std::set<int> &t_partition =
           (u_degree > v_degree) ? u_partition : v_partition;
 
       machine_id = state.getMachineWithMinWeight(s_partition);
