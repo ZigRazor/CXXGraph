@@ -560,6 +560,10 @@ If you want to change the code, or fix issue, or implement a new feature please 
 
 If you want to disscuss new feature or you have any question or suggestion about library please open a [Discussion](https://github.com/ZigRazor/CXXGraph/discussions) or simply chat on [![Join the chat at https://gitter.im/CXXGraph-Community/community](https://badges.gitter.im/CXXGraph-Community/community.svg)](https://gitter.im/CXXGraph-Community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+## Stars History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=ZigRazor/CXXGraph&type=Date)](https://star-history.com/#ZigRazor/CXXGraph&Date)
+
 ## Site
 
 [CXXGraph Site](https://zigrazor.github.io/CXXGraph/)
