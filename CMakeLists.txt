@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.9)
 
 # set the project name and version
-project(CXXGraph VERSION 0.5.0)
+project(CXXGraph VERSION 1.0.0)
 
 configure_file(CXXGraphConfig.h.in ${PROJECT_SOURCE_DIR}/include/CXXGraphConfig.h)
 
