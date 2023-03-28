@@ -47,9 +47,9 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
 | :heavy_check_mark: | Release 0.5.0 | Mar 23, 2023 |
 | :grey_exclamation: | Test on Partition Algorithm [#264](https://github.com/ZigRazor/CXXGraph/issues/264) | Mar 21, 2023 |
 | :heavy_check_mark: | Bug Resolution [#263](https://github.com/ZigRazor/CXXGraph/issues/263) | Mar 21, 2023 |
-| :memo: | General Performance Optimization [#262](https://github.com/ZigRazor/CXXGraph/issues/262) [#265](https://github.com/ZigRazor/CXXGraph/issues/265) | TBD |
-| :memo: | Reduction of Code Issue of Static Analysis | TBD |
-| :memo: | First Stable Release 1.0.0 | TBD |
+| :heavy_check_mark: | General Performance Optimization [#262](https://github.com/ZigRazor/CXXGraph/issues/262) [#265](https://github.com/ZigRazor/CXXGraph/issues/265) | Mar 28, 2023 |
+| :heavy_check_mark: | Reduction of Code Issue of Static Analysis | Mar 28, 2023 |
+| :heavy_check_mark: | First Stable Release 1.0.0 | Mar 28, 2023 |
 | :memo: |Switch to C++ 20 standard [#266](https://github.com/ZigRazor/CXXGraph/issues/266) | TBD |
 | :memo: | Markov Chain Algorithm [#107](https://github.com/ZigRazor/CXXGraph/issues/107) | TBD |
 | :memo: | Release 1.0.1 | TBD |
