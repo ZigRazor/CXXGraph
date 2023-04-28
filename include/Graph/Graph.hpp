@@ -89,10 +89,15 @@ class Graph {
                           const std::string &OFileName, bool compress,
                           bool writeNodeFeat, bool writeEdgeWeight,
                           InputOutputFormat format) const;
+  int writeToDotFile(const std::string &workingDir,
+                     const std::string &OFileName,
+                     const std::string &graphName);
   int readFromStandardFile(const std::string &workingDir,
                            const std::string &OFileName, bool compress,
                            bool readNodeFeat, bool readEdgeWeight,
                            InputOutputFormat format);
+  int readFromDotFile(const std::string &workingDir,
+                      const std::string &fileName);
   void recreateGraphFromReadFiles(
       std::unordered_map<unsigned long long,
                          std::pair<std::string, std::string>> &edgeMap,
@@ -742,14 +747,53 @@ int Graph<T>::writeToStandardFile(const std::string &workingDir,
   return 0;
 }
 
+template <typename T>
+int Graph<T>::writeToDotFile(const std::string &workingDir,
+                             const std::string &OFileName,
+                             const std::string &graphName) {
+    const std::string linkSymbol = "--";
+    const std::string directedLinkSymbol = "->";
+
+    const std::string completePathToFileGraph = workingDir + '/' + OFileName + ".dot";
+    std::ofstream ofileGraph;
+    ofileGraph.open(completePathToFileGraph);
+    if (!ofileGraph.is_open()) {
+        // ERROR File Not Open
+        return -1;
+    }
+
+    for(auto const& edgeIt : edgeSet) {
+        std::string edgeLine = "";
+        if (edgeIt->isDirected()) {
+            edgeLine += "digraph " + graphName + " {";
+            edgeLine += '\t' + std::to_string(edgeIt->getFrom().getUserId()) + ' ';
+            edgeLine += directedLinkSymbol + ' ';
+            edgeLine += std::to_string(edgeIt->getTo().getUserId());
+        } else {
+            edgeLine += '\t' + std::to_string(edgeIt->getNode1().getUserId()) + ' ';
+            edgeLine += linkSymbol + ' ';
+            edgeLine += std::to_string(edgeIt->getNode2().getUserId());
+        }
+        if (edgeIt->isWeighted()) {
+            // Weights in dot files must be integers
+            edgeLine += " [weight" + std::to_string(static_cast<int>(edgeIt->getWeight())) + ']';
+        }
+        edgeLine += ";\n";
+        ofileGraph << edgeLine;
+    }
+    ofileGraph << '}';
+    ofileGraph.close();
+
+    return 0;
+}
+
 // This ctype facet classifies ',' and '\t' as whitespace
 struct csv_whitespace : std::ctype<char> {
   static const mask *make_table() {
     // make a copy of the "C" locale table
     static std::vector<mask> v(classic_table(), classic_table() + table_size);
     v[','] |= space;  // comma will be classified as whitespace
-    v['\t'] |= space;
-    v[' '] &= ~space;  // space will not be classified as whitespace
+    v['\t'] |= space; v[' '] &= ~space;  // space will not be classified as whitespace
     return &v[0];
   }
   csv_whitespace(std::size_t refs = 0) : ctype(make_table(), false, refs) {}
@@ -844,6 +888,19 @@ int Graph<T>::readFromStandardFile(const std::string &workingDir,
   recreateGraphFromReadFiles(edgeMap, edgeDirectedMap, nodeFeatMap,
                              edgeWeightMap);
   return 0;
+}
+
+template <typename T>
+int Graph<T>::readFromDotFile(const std::string &workingDir, const std::string &fileName) {
+	std::string node1;
+	std::string node2;
+	std::string link;
+
+	std::ifstream iFile(workingDir + fileName);
+	while (getline(iFile, node1, ' ')) {
+		getline(iFile, link, ' ');
+		getline(iFile, node2, ';');
+	}
 }
 
 template <typename T>
