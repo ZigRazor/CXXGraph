@@ -62,7 +62,10 @@
 #include "Utility/ThreadSafe.hpp"
 #include "Utility/Typedef.hpp"
 #include "Utility/Writer.hpp"
+
+#ifdef WITH_COMPRESSION
 #include "zlib.h"
+#endif
 
 namespace CXXGRAPH {
 template <typename T>
@@ -83,26 +86,18 @@ template <typename T>
 class Graph {
  private:
   T_EdgeSet<T> edgeSet = {};
-  std::optional<std::pair<std::string, char>> getExtenstionAndSeparator(
-      InputOutputFormat format) const;
-  int writeToStandardFile(const std::string &workingDir,
-                          const std::string &OFileName, bool compress,
-                          bool writeNodeFeat, bool writeEdgeWeight,
-                          InputOutputFormat format) const;
-  int readFromStandardFile(const std::string &workingDir,
-                           const std::string &OFileName, bool compress,
-                           bool readNodeFeat, bool readEdgeWeight,
-                           InputOutputFormat format);
-  void recreateGraphFromReadFiles(
-      std::unordered_map<unsigned long long,
-                         std::pair<std::string, std::string>> &edgeMap,
-      std::unordered_map<unsigned long long, bool> &edgeDirectedMap,
-      std::unordered_map<std::string, T> &nodeFeatMap,
-      std::unordered_map<unsigned long long, double> &edgeWeightMap);
-  int compressFile(const std::string &inputFile,
-                   const std::string &outputFile) const;
-  int decompressFile(const std::string &inputFile,
-                     const std::string &outputFile) const;
+		std::optional<std::pair<std::string, char>> getExtenstionAndSeparator(InputOutputFormat format) const;
+		void writeGraphToStream(const std::ostream& oGraph, const std::ostream& oNodeFeat, const std::ostream& oEdgeWeight, const char& sep, bool writeNodeFeat, bool writeEdgeWeight) const;
+		void readGraphFromStream(const std::istream& iGraph, const std::istream& iNodeFeat, const std::istream& iEdgeWeight, bool readNodeFeat, bool readEdgeWeight);
+		void recreateGraph(std::unordered_map<unsigned long long, std::pair<std::string, std::string>> &edgeMap, std::unordered_map<unsigned long long, bool> &edgeDirectedMap, std::unordered_map<std::string, T> &nodeFeatMap, std::unordered_map<unsigned long long, double> &edgeWeightMap);
+
+		virtual int writeToFile(InputOutputFormat format = InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool writeNodeFeat = false, bool writeEdgeWeight = false) const;
+		virtual int readFromFile(InputOutputFormat format = InputOutputFormat::STANDARD_CSV, const std::string &workingDir = ".", const std::string &OFileName = "graph", bool compress = false, bool readNodeFeat = false, bool readEdgeWeight = false);
+
+#ifdef WITH_COMPRESSION
+		int compressFile(const std::string &inputFile, const std::string &outputFile) const;
+		int decompressFile(const std::string &inputFile, const std::string &outputFile) const;
+#endif
 
  public:
   Graph() = default;
@@ -503,8 +498,6 @@ class Graph {
    * @param workingDir The path to the directory in which is placed the Output
    * file
    * @param OFileName The Output File Name ( )
-   * @param compress Indicates if the Output will be compressed ( Pay Attention
-   * if compress flag is true, not compressed files will be deleted [ #48 ] )
    * @param writeNodeFeat Indicates if export also Node Features
    * @param writeEdgeWeight Indicates if export also Edge Weights
    * @return 0 if all OK, else return a negative value
@@ -512,7 +505,7 @@ class Graph {
   virtual int writeToFile(
       InputOutputFormat format = InputOutputFormat::STANDARD_CSV,
       const std::string &workingDir = ".",
-      const std::string &OFileName = "graph", bool compress = false,
+      const std::string &OFileName = "graph",
       bool writeNodeFeat = false, bool writeEdgeWeight = false) const;
 
   /**
@@ -524,7 +517,6 @@ class Graph {
    * @param workingDir The path to the directory in which is placed the Input
    * file
    * @param OFileName The Input File Name ( )
-   * @param compress Indicates if the Input is compressed
    * @param readNodeFeat Indicates if import also Node Features
    * @param readEdgeWeight Indicates if import also Edge Weights
    * @return 0 if all OK, else return a negative value
@@ -532,7 +524,7 @@ class Graph {
   virtual int readFromFile(
       InputOutputFormat format = InputOutputFormat::STANDARD_CSV,
       const std::string &workingDir = ".",
-      const std::string &OFileName = "graph", bool compress = false,
+      const std::string &OFileName = "graph",
       bool readNodeFeat = false, bool readEdgeWeight = false);
 
   /**
@@ -667,81 +659,6 @@ std::optional<std::pair<std::string, char>> Graph<T>::getExtenstionAndSeparator(
   }
 }
 
-template <typename T>
-int Graph<T>::writeToStandardFile(const std::string &workingDir,
-                                  const std::string &OFileName, bool compress,
-                                  bool writeNodeFeat, bool writeEdgeWeight,
-                                  InputOutputFormat format) const {
-  auto result = getExtenstionAndSeparator(format);
-  if (!result) {
-    std::cerr << "Unknown format\n";
-    return -1;
-  }
-  auto &[extension, separator] = *result;
-
-  std::ofstream ofileGraph;
-  std::string completePathToFileGraph =
-      workingDir + "/" + OFileName + extension;
-  ofileGraph.open(completePathToFileGraph);
-  if (!ofileGraph.is_open()) {
-    // ERROR File Not Open
-    return -1;
-  }
-
-  for (const auto &edge : edgeSet) {
-    ofileGraph
-        << edge->getId() << separator << edge->getNodePair().first->getUserId()
-        << separator << edge->getNodePair().second->getUserId() << separator
-        << ((edge->isDirected().has_value() && edge->isDirected().value()) ? 1
-                                                                           : 0)
-        << std::endl;
-  }
-  ofileGraph.close();
-
-  if (writeNodeFeat) {
-    std::ofstream ofileNodeFeat;
-    std::string completePathToFileNodeFeat =
-        workingDir + "/" + OFileName + "_NodeFeat" + extension;
-    ofileNodeFeat.open(completePathToFileNodeFeat);
-    if (!ofileNodeFeat.is_open()) {
-      // ERROR File Not Open
-      return -1;
-    }
-    auto nodeSet = getNodeSet();
-    for (const auto &node : nodeSet) {
-      ofileNodeFeat << node->getUserId() << separator << node->getData()
-                    << std::endl;
-    }
-    ofileNodeFeat.close();
-  }
-
-  if (writeEdgeWeight) {
-    std::ofstream ofileEdgeWeight;
-    std::string completePathToFileEdgeWeight =
-        workingDir + "/" + OFileName + "_EdgeWeight" + extension;
-    ofileEdgeWeight.open(completePathToFileEdgeWeight);
-    if (!ofileEdgeWeight.is_open()) {
-      // ERROR File Not Open
-      std::cout << "ERROR File Not Open" << std::endl;
-      return -1;
-    }
-
-    for (const auto &edge : edgeSet) {
-      ofileEdgeWeight
-          << edge->getId() << separator
-          << (edge->isWeighted().has_value() && edge->isWeighted().value()
-                  ? (dynamic_cast<const Weighted *>(edge))->getWeight()
-                  : 0.0)
-          << separator
-          << (edge->isWeighted().has_value() && edge->isWeighted().value() ? 1
-                                                                           : 0)
-          << std::endl;
-    }
-    ofileEdgeWeight.close();
-  }
-  return 0;
-}
-
 // This ctype facet classifies ',' and '\t' as whitespace
 struct csv_whitespace : std::ctype<char> {
   static const mask *make_table() {
@@ -755,216 +672,231 @@ struct csv_whitespace : std::ctype<char> {
   csv_whitespace(std::size_t refs = 0) : ctype(make_table(), false, refs) {}
 };
 
-template <typename T>
-int Graph<T>::readFromStandardFile(const std::string &workingDir,
-                                   const std::string &OFileName, bool compress,
-                                   bool readNodeFeat, bool readEdgeWeight,
-                                   InputOutputFormat format) {
-  auto result = getExtenstionAndSeparator(format);
-  if (!result) {
-    std::cerr << "Unknown format\n";
-    return -1;
-  }
-  auto &[extension, separator] = *result;
+	template <typename T>
+	void Graph<T>::writeGraphToStream(
+		const std::ostream& oGraph,
+		const std::ostream& oNodeFeat,
+		const std::ostream& oEdgeWeight,
+		const char& sep, bool writeNodeFeat, bool writeEdgeWeight) const
+	{
+		for (const auto &edge : edgeSet)
+		{
+			oGraph << edge->getId() << sep
+					   << edge->getNodePair().first->getUserId() << sep
+					   << edge->getNodePair().second->getUserId() << sep
+					   << ((edge->isDirected().has_value() && edge->isDirected().value()) ? 1 : 0)
+					   << std::endl;
+		}
 
-  std::ifstream ifileGraph;
-  std::ifstream ifileNodeFeat;
-  std::ifstream ifileEdgeWeight;
+		if (writeNodeFeat)
+		{
+			auto nodeSet = getNodeSet();
+			for (const auto &node : nodeSet)
+			{
+				oNodeFeat << node->getUserId() << sep << node->getData() << std::endl;
+			}
+		}
 
-  std::unordered_map<unsigned long long, std::pair<std::string, std::string>>
-      edgeMap;
-  std::unordered_map<unsigned long long, bool> edgeDirectedMap;
-  std::unordered_map<std::string, T> nodeFeatMap;
-  std::unordered_map<unsigned long long, double> edgeWeightMap;
-  std::string completePathToFileGraph =
-      workingDir + "/" + OFileName + extension;
+		if (writeEdgeWeight)
+		{
+			for (const auto &edge : edgeSet)
+			{
+				oEdgeWeight << edge->getId() << sep
+								<< (edge->isWeighted().has_value() && edge->isWeighted().value() ? (dynamic_cast<const Weighted *>(edge))->getWeight() : 0.0) << sep
+								<< (edge->isWeighted().has_value() && edge->isWeighted().value() ? 1 : 0)
+								<< std::endl;
+			}
+		}
+	}
 
-  ifileGraph.open(completePathToFileGraph);
-  if (!ifileGraph.is_open()) {
-    // ERROR File Not Open
-    // std::cout << "ERROR File Not Open : " << completePathToFileGraph <<
-    // std::endl;
-    return -1;
-  }
+	template <typename T>
+	void Graph<T>::readGraphFromStream(
+		const std::istream& iGraph,
+		const std::istream& iNodeFeat,
+		const std::istream& iEdgeWeight,
+		bool readNodeFeat, bool readEdgeWeight)
+	{
+		std::unordered_map<unsigned long long, std::pair<std::string, std::string>> edgeMap;
+		std::unordered_map<unsigned long long, bool> edgeDirectedMap;
+		std::unordered_map<std::string, T> nodeFeatMap;
+		std::unordered_map<unsigned long long, double> edgeWeightMap;
 
-  ifileGraph.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
-  unsigned long long edgeId;
-  std::string nodeId1;
-  std::string nodeId2;
-  bool directed;
-  while (ifileGraph >> edgeId >> nodeId1 >> nodeId2 >>
-         directed) { /* loop continually */
-    edgeMap[edgeId] = std::pair<std::string, std::string>(nodeId1, nodeId2);
-    edgeDirectedMap[edgeId] = directed;
-  }
-  ifileGraph.close();
-  if (compress) remove(completePathToFileGraph.c_str());
+		unsigned long long edgeId;
+		std::string nodeId1;
+		std::string nodeId2;
+		bool directed;
+		while (iGraph >> edgeId >> nodeId1 >> nodeId2 >> directed)
+		{ /* loop continually */
+			edgeMap[edgeId] = std::pair<std::string, std::string>(nodeId1, nodeId2);
+			edgeDirectedMap[edgeId] = directed;
+		}
 
-  if (readNodeFeat) {
-    std::string completePathToFileNodeFeat =
-        workingDir + "/" + OFileName + "_NodeFeat" + extension;
-    ifileNodeFeat.open(completePathToFileNodeFeat);
-    if (!ifileNodeFeat.is_open()) {
-      // ERROR File Not Open
-      // std::cout << "ERROR File Not Open" << std::endl;
-      return -1;
-    }
-    ifileNodeFeat.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
-    std::string nodeId;
-    T nodeFeat;
-    while (ifileNodeFeat >> nodeId >> nodeFeat) {
-      nodeFeatMap[nodeId] = nodeFeat;
-    }
-    ifileNodeFeat.close();
-    if (compress) remove(completePathToFileNodeFeat.c_str());
-  }
+		if (readNodeFeat)
+		{
+			std::string nodeId;
+			T nodeFeat;
+			while (iNodeFeat >> nodeId >> nodeFeat)
+			{
+				nodeFeatMap[nodeId] = nodeFeat;
+			}
+		}
 
-  if (readEdgeWeight) {
-    std::string completePathToFileEdgeWeight =
-        workingDir + "/" + OFileName + "_EdgeWeight" + extension;
-    ifileEdgeWeight.open(completePathToFileEdgeWeight);
-    if (!ifileEdgeWeight.is_open()) {
-      // ERROR File Not Open
-      // std::cout << "ERROR File Not Open" << std::endl;
-      return -1;
-    }
-    ifileEdgeWeight.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
-    unsigned long long edgeId;
-    double weight;
-    bool weighted;
-    while (ifileEdgeWeight >> edgeId >> weight >>
-           weighted) { /* loop continually */
-      if (weighted) {
-        edgeWeightMap[edgeId] = weight;
-      }
-    }
-    ifileEdgeWeight.close();
-    if (compress) remove(completePathToFileEdgeWeight.c_str());
-  }
-  recreateGraphFromReadFiles(edgeMap, edgeDirectedMap, nodeFeatMap,
-                             edgeWeightMap);
-  return 0;
-}
+		if (readEdgeWeight)
+		{
+			unsigned long long edgeId;
+			double weight;
+			bool weighted;
+			while (iEdgeWeight >> edgeId >> weight >> weighted)
+			{ /* loop continually */
+				if (weighted)
+				{
+					edgeWeightMap[edgeId] = weight;
+				}
+			}
+		}
 
-template <typename T>
-void Graph<T>::recreateGraphFromReadFiles(
-    std::unordered_map<unsigned long long, std::pair<std::string, std::string>>
-        &edgeMap,
-    std::unordered_map<unsigned long long, bool> &edgeDirectedMap,
-    std::unordered_map<std::string, T> &nodeFeatMap,
-    std::unordered_map<unsigned long long, double> &edgeWeightMap) {
-  std::unordered_map<std::string, Node<T> *> nodeMap;
-  for (const auto &edgeIt : edgeMap) {
-    Node<T> *node1 = nullptr;
-    Node<T> *node2 = nullptr;
-    if (nodeMap.find(edgeIt.second.first) == nodeMap.end()) {
-      // Create new Node
-      T feat;
-      if (nodeFeatMap.find(edgeIt.second.first) != nodeFeatMap.end()) {
-        feat = nodeFeatMap.at(edgeIt.second.first);
-      }
-      node1 = new Node<T>(edgeIt.second.first, feat);
-      nodeMap[edgeIt.second.first] = node1;
-    } else {
-      node1 = nodeMap.at(edgeIt.second.first);
-    }
-    if (nodeMap.find(edgeIt.second.second) == nodeMap.end()) {
-      // Create new Node
-      T feat;
-      if (nodeFeatMap.find(edgeIt.second.second) != nodeFeatMap.end()) {
-        feat = nodeFeatMap.at(edgeIt.second.second);
-      }
-      node2 = new Node<T>(edgeIt.second.second, feat);
-      nodeMap[edgeIt.second.second] = node2;
-    } else {
-      node2 = nodeMap.at(edgeIt.second.second);
-    }
+		recreateGraph(edgeMap, edgeDirectedMap, nodeFeatMap, edgeWeightMap);
+	}
 
-    if (edgeWeightMap.find(edgeIt.first) != edgeWeightMap.end()) {
-      if (edgeDirectedMap.find(edgeIt.first) != edgeDirectedMap.end() &&
-          edgeDirectedMap.at(edgeIt.first)) {
-        auto edge = new DirectedWeightedEdge<T>(edgeIt.first, *node1, *node2,
-                                                edgeWeightMap.at(edgeIt.first));
-        addEdge(edge);
-      } else {
-        auto edge = new UndirectedWeightedEdge<T>(
-            edgeIt.first, *node1, *node2, edgeWeightMap.at(edgeIt.first));
-        addEdge(edge);
-      }
-    } else {
-      if (edgeDirectedMap.find(edgeIt.first) != edgeDirectedMap.end() &&
-          edgeDirectedMap.at(edgeIt.first)) {
-        auto edge = new DirectedEdge<T>(edgeIt.first, *node1, *node2);
-        addEdge(edge);
-      } else {
-        auto edge = new UndirectedEdge<T>(edgeIt.first, *node1, *node2);
-        addEdge(edge);
-      }
-    }
-  }
-}
+	template <typename T>
+	void Graph<T>::recreateGraph(std::unordered_map<unsigned long long, std::pair<std::string, std::string>> &edgeMap, std::unordered_map<unsigned long long, bool> &edgeDirectedMap, std::unordered_map<std::string, T> &nodeFeatMap, std::unordered_map<unsigned long long, double> &edgeWeightMap)
+	{
+		std::unordered_map<std::string, Node<T> *> nodeMap;
+		for (const auto &edgeIt : edgeMap)
+		{
+			Node<T> *node1 = nullptr;
+			Node<T> *node2 = nullptr;
+			if (nodeMap.find(edgeIt.second.first) == nodeMap.end())
+			{
+				// Create new Node
+				T feat;
+				if (nodeFeatMap.find(edgeIt.second.first) != nodeFeatMap.end())
+				{
+					feat = nodeFeatMap.at(edgeIt.second.first);
+				}
+				node1 = new Node<T>(edgeIt.second.first, feat);
+				nodeMap[edgeIt.second.first] = node1;
+			}
+			else
+			{
+				node1 = nodeMap.at(edgeIt.second.first);
+			}
+			if (nodeMap.find(edgeIt.second.second) == nodeMap.end())
+			{
+				// Create new Node
+				T feat;
+				if (nodeFeatMap.find(edgeIt.second.second) != nodeFeatMap.end())
+				{
+					feat = nodeFeatMap.at(edgeIt.second.second);
+				}
+				node2 = new Node<T>(edgeIt.second.second, feat);
+				nodeMap[edgeIt.second.second] = node2;
+			}
+			else
+			{
+				node2 = nodeMap.at(edgeIt.second.second);
+			}
 
-template <typename T>
-int Graph<T>::compressFile(const std::string &inputFile,
-                           const std::string &outputFile) const {
-  std::ifstream ifs;
-  ifs.open(inputFile);
-  if (!ifs.is_open()) {
-    // ERROR File Not Open
-    return -1;
-  }
-  std::string content((std::istreambuf_iterator<char>(ifs)),
-                      (std::istreambuf_iterator<char>()));
+			if (edgeWeightMap.find(edgeIt.first) != edgeWeightMap.end())
+			{
+				if (edgeDirectedMap.find(edgeIt.first) != edgeDirectedMap.end() && edgeDirectedMap.at(edgeIt.first))
+				{
+					auto edge = new DirectedWeightedEdge<T>(edgeIt.first, *node1, *node2, edgeWeightMap.at(edgeIt.first));
+					addEdge(edge);
+				}
+				else
+				{
+					auto edge = new UndirectedWeightedEdge<T>(edgeIt.first, *node1, *node2, edgeWeightMap.at(edgeIt.first));
+					addEdge(edge);
+				}
+			}
+			else
+			{
+				if (edgeDirectedMap.find(edgeIt.first) != edgeDirectedMap.end() && edgeDirectedMap.at(edgeIt.first))
+				{
+					auto edge = new DirectedEdge<T>(edgeIt.first, *node1, *node2);
+					addEdge(edge);
+				}
+				else
+				{
+					auto edge = new UndirectedEdge<T>(edgeIt.first, *node1, *node2);
+					addEdge(edge);
+				}
+			}
+		}
+	}
 
-  const char *content_ptr = content.c_str();
-  gzFile outFileZ = gzopen(outputFile.c_str(), "wb");
-  if (outFileZ == NULL) {
-    // printf("Error: Failed to gzopen %s\n", outputFile.c_str());
-    return -1;
-  }
+#ifdef WITH_COMPRESSION
+	template <typename T>
+	int Graph<T>::compressFile(const std::string &inputFile, const std::string &outputFile) const
+	{
+		std::ifstream ifs;
+		ifs.open(inputFile);
+		if (!ifs.is_open())
+		{
+			// ERROR File Not Open
+			return -1;
+		}
+		std::string content((std::istreambuf_iterator<char>(ifs)),
+							(std::istreambuf_iterator<char>()));
 
-  unsigned int zippedBytes;
-  zippedBytes = gzwrite(outFileZ, content_ptr, strlen(content_ptr));
+		const char *content_ptr = content.c_str();
+		gzFile outFileZ = gzopen(outputFile.c_str(), "wb");
+		if (outFileZ == NULL)
+		{
+			// printf("Error: Failed to gzopen %s\n", outputFile.c_str());
+			return -1;
+		}
 
-  ifs.close();
-  gzclose(outFileZ);
-  return 0;
-}
+		unsigned int zippedBytes;
+		zippedBytes = gzwrite(outFileZ, content_ptr, strlen(content_ptr));
 
-template <typename T>
-int Graph<T>::decompressFile(const std::string &inputFile,
-                             const std::string &outputFile) const {
-  gzFile inFileZ = gzopen(inputFile.c_str(), "rb");
-  if (inFileZ == NULL) {
-    // printf("Error: Failed to gzopen %s\n", inputFile.c_str());
-    return -1;
-  }
-  unsigned char unzipBuffer[8192];
-  unsigned int unzippedBytes;
-  std::vector<unsigned char> unzippedData;
-  std::ofstream ofs;
-  ofs.open(outputFile);
-  if (!ofs.is_open()) {
-    // ERROR File Not Open
-    return -1;
-  }
-  while (true) {
-    unzippedBytes = gzread(inFileZ, unzipBuffer, 8192);
-    if (unzippedBytes > 0) {
-      unzippedData.insert(unzippedData.end(), unzipBuffer,
-                          unzipBuffer + unzippedBytes);
-    } else {
-      break;
-    }
-  }
-  for (const auto &c : unzippedData) {
-    ofs << c;
-  }
-  ofs << std::endl;
-  ofs.close();
-  gzclose(inFileZ);
-  return 0;
-}
+		ifs.close();
+		gzclose(outFileZ);
+		return 0;
+	}
+
+	template <typename T>
+	int Graph<T>::decompressFile(const std::string &inputFile, const std::string &outputFile) const
+	{
+		gzFile inFileZ = gzopen(inputFile.c_str(), "rb");
+		if (inFileZ == NULL)
+		{
+			// printf("Error: Failed to gzopen %s\n", inputFile.c_str());
+			return -1;
+		}
+		unsigned char unzipBuffer[8192];
+		unsigned int unzippedBytes;
+		std::vector<unsigned char> unzippedData;
+		std::ofstream ofs;
+		ofs.open(outputFile);
+		if (!ofs.is_open())
+		{
+			// ERROR File Not Open
+			return -1;
+		}
+		while (true)
+		{
+			unzippedBytes = gzread(inFileZ, unzipBuffer, 8192);
+			if (unzippedBytes > 0)
+			{
+				unzippedData.insert(unzippedData.end(), unzipBuffer, unzipBuffer + unzippedBytes);
+			}
+			else
+			{
+				break;
+			}
+		}
+		for (const auto &c : unzippedData)
+		{
+			ofs << c;
+		}
+		ofs << std::endl;
+		ofs.close();
+		gzclose(inFileZ);
+		return 0;
+	}
+#endif
 
 template <typename T>
 unsigned long long Graph<T>::setFind(

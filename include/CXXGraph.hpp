@@ -29,4 +29,4 @@
 #include "Partitioning/PartitioningStats.hpp"
 #include "Partitioning/Record.hpp"
 
-#endif  // __CXXGRAPH_H__
+#endif // __CXXGRAPH_H__
