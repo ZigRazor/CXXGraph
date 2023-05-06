@@ -1,5 +1,3 @@
-#include <zlib.h>
-
 #include "CXXGraph.hpp"
 #include "Edge/DirectedEdge.hpp"
 #include "Edge/UndirectedEdge.hpp"

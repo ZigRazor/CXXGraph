@@ -27,8 +27,28 @@ if(TEST)
     #GIT_TAG        v1.13.0 # release-1.13.0
     )
 
+    FetchContent_Declare(
+    openssl
+    GIT_REPOSITORY https://github.com/janbar/openssl-cmake.git
+    GIT_TAG origin/master
+    )
+
+    FetchContent_Declare(
+    zlib
+    GIT_REPOSITORY https://github.com/madler/zlib.git
+    GIT_TAG v1.2.13
+    )
+
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     FetchContent_MakeAvailable(googletest)
+
+    set(WITH_APPS OFF CACHE BOOL "" FORCE)
+    FetchContent_MakeAvailable(openssl)
+
+    set(SAVE_CMAKE_POSITION_INDEPENDENT_CODE ${CMAKE_POSITION_INDEPENDENT_CODE})
+    set(CMAKE_POSITION_INDEPENDENT_CODE True)
+    FetchContent_MakeAvailable(zlib)
+    set(CMAKE_POSITION_INDEPENDENT_CODE ${SAVE_CMAKE_POSITION_INDEPENDENT_CODE})
 
     file (GLOB TEST_FILES "*.cpp" "*.hpp")
 
@@ -37,15 +57,18 @@ if(TEST)
     target_compile_definitions(test_exe
         PUBLIC WITH_COMPRESSION
     )
-    target_include_directories(test_exe PUBLIC
-                            "${PROJECT_SOURCE_DIR}/include"
-                            )
+    target_include_directories(test_exe
+        PUBLIC "${PROJECT_SOURCE_DIR}/include"
+        PUBLIC ${zlib_BINARY_DIR}
+        PUBLIC ${zlib_SOURCE_DIR}
+        PUBLIC ${openssl_SOURCE_DIR}/include
+    )
     target_link_libraries(test_exe
-                        GTest::gtest_main
-                        pthread
-                        ssl
-                        crypto
-                        z)
+        PUBLIC GTest::gtest_main
+        PUBLIC pthread
+        PUBLIC ssl
+        PUBLIC crypto
+        PUBLIC zlibstatic)
 
     enable_testing()
 

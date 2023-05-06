@@ -64,7 +64,7 @@
 #include "Utility/Writer.hpp"
 
 #ifdef WITH_COMPRESSION
-#include "zlib.h"
+#include <zlib.h>
 #endif
 
 namespace CXXGRAPH {
@@ -2476,7 +2476,7 @@ const std::vector<Node<T>> Graph<T>::graph_slicing(const Node<T> &start) const {
 template <typename T>
 int Graph<T>::writeToFile(InputOutputFormat format,
                           const std::string &workingDir,
-                          const std::string &OFileName, bool compress,
+                          const std::string &OFileName,
                           bool writeNodeFeat, bool writeEdgeWeight) const {
   return this->writeToFile(format, workingDir, OFileName, false, writeNodeFeat,
                            writeEdgeWeight);
@@ -2490,12 +2490,12 @@ int Graph<T>::writeToFile(InputOutputFormat format,
   int result = 0;
 
   // Open streams and write
-  result = getExtenstionAndSeparator(format);
-  if (!result) {
+  auto extSep = getExtenstionAndSeparator(format);
+  if (!extSep) {
     std::cerr << "Unknown format\n";
     return -1;
   }
-  auto &[extension, separator] = *result;
+  auto &[extension, separator] = *extSep;
 
   std::ofstream ofileGraph;
   std::ofstream ofileNodeFeat;
@@ -2530,8 +2530,7 @@ int Graph<T>::writeToFile(InputOutputFormat format,
     }
   }
 
-  writeGraphToStream(ofileGraph, ofileNodeFeat, ofileEdgeWeight, writeNodeFeat,
-                     writeEdgeWeight);
+  writeGraphToStream(ofileGraph, ofileNodeFeat, ofileEdgeWeight, separator, writeNodeFeat, writeEdgeWeight);
 
   // Cleanup from writing
   ofileGraph.close();
@@ -2596,7 +2595,7 @@ int Graph<T>::writeToFile(InputOutputFormat format,
 template <typename T>
 int Graph<T>::readFromFile(InputOutputFormat format,
                            const std::string &workingDir,
-                           const std::string &OFileName, bool compress,
+                           const std::string &OFileName,
                            bool readNodeFeat, bool readEdgeWeight) {
   return this->readFromFile(format, workingDir, OFileName, false, readNodeFeat,
                             readEdgeWeight);
@@ -2656,14 +2655,16 @@ int Graph<T>::readFromFile(InputOutputFormat format,
   }
 #endif
   // Open streams and read
-  result = getExtenstionAndSeparator(format);
-  if (!result) {
+  auto extSep = getExtenstionAndSeparator(format);
+  if (!extSep) {
     std::cerr << "Unknown format\n";
     return -1;
   }
-  auto &[extension, separator] = *result;
-  std::string completePathToFileGraph =
-      workingDir + "/" + OFileName + extension;
+  auto &[extension, separator] = *extSep;
+
+  std::string completePathToFileGraph = workingDir + "/" + OFileName + extension;
+  std::string completePathToFileNodeFeat;
+  std::string completePathToFileEdgeWeight;
 
   std::ifstream ifileGraph;
   std::ifstream ifileNodeFeat;
@@ -2679,8 +2680,7 @@ int Graph<T>::readFromFile(InputOutputFormat format,
   ifileGraph.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
 
   if (readNodeFeat) {
-    std::string completePathToFileNodeFeat =
-        workingDir + "/" + OFileName + "_NodeFeat" + extension;
+    completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat" + extension;
     ifileNodeFeat.open(completePathToFileNodeFeat);
     if (!ifileNodeFeat.is_open()) {
       // ERROR File Not Open
@@ -2691,8 +2691,7 @@ int Graph<T>::readFromFile(InputOutputFormat format,
   }
 
   if (readEdgeWeight) {
-    std::string completePathToFileEdgeWeight =
-        workingDir + "/" + OFileName + "_EdgeWeight" + extension;
+    completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight" + extension;
     ifileEdgeWeight.open(completePathToFileEdgeWeight);
     if (!ifileEdgeWeight.is_open()) {
       // ERROR File Not Open
@@ -2702,7 +2701,7 @@ int Graph<T>::readFromFile(InputOutputFormat format,
     ifileEdgeWeight.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
   }
 
-  result = readGraphFromStream(ifileGraph, ifileNodeFeat, ifileEdgeWeight,
+  readGraphFromStream(ifileGraph, ifileNodeFeat, ifileEdgeWeight,
                                readNodeFeat, readEdgeWeight);
 
   // Cleanup
