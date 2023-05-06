@@ -2646,7 +2646,7 @@ int Graph<T>::readFromFile(InputOutputFormat format,
     } else if (format == InputOutputFormat::STANDARD_TSV) {
       result = decompress(".tsv");
     } else {
-      // OUTPUT FORMAT NOT RECOGNIZED
+      // INPUT FORMAT NOT RECOGNIZED
       result = -1;
     }
 

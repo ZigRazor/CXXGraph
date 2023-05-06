@@ -34,6 +34,9 @@ if(TEST)
 
     add_executable(test_exe ${TEST_FILES})
 
+    target_compile_definitions(test_exe
+        PUBLIC WITH_COMPRESSION
+    )
     target_include_directories(test_exe PUBLIC
                             "${PROJECT_SOURCE_DIR}/include"
                             )

@@ -13,6 +13,10 @@ if(BENCHMARK)
 
 	file (GLOB BENCHMARK_FILES "*.cpp" "*.hpp")
 	add_executable(benchmark_exe ${BENCHMARK_FILES})
+
+	target_compile_definitions(benchmark_exe 
+		PUBLIC WITH_COMPRESSION
+	)
 	target_include_directories(benchmark_exe PUBLIC
 						  "${PROJECT_SOURCE_DIR}/include"
 						  )
