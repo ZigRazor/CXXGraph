@@ -460,21 +460,6 @@ class Graph {
   virtual const std::vector<Node<T>> graph_slicing(const Node<T> &start) const;
 
   /**
-   * \brief
-   * This function write the graph in an output file
-   * Note: No Thread Safe
-   *
-   * @param format The Output format of the file
-   * @param workingDir The path to the directory in which will be placed the
-   * output file
-   * @param OFileName The Output File Name ( )
-   * @param compress Indicates if the output will be compressed
-   * @param writeNodeFeat Indicates if export also Node Features
-   * @param writeEdgeWeight Indicates if export also Edge Weights
-   * @return 0 if all OK, else return a negative value
-   */
-
-  /**
    * @brief Function runs the Dial algorithm  (Optimized Dijkstra for small
    * range weights) for some source node and target node in the graph and
    * returns the shortest distance of target from the source. Note: No Thread
@@ -501,17 +486,16 @@ class Graph {
 
   /**
    * \brief
-   * This function write the graph in an output file
-   * Note: No Thread Safe
+   * This function writes the graph to an output file
+   * Note: Not threadsafe
    *
-   * @param format The Output format of the file
-   * @param workingDir The path to the directory in which is placed the Output
-   * file
-   * @param OFileName The Output File Name ( )
+   * @param format The output format of the file
+   * @param workingDir The parent directory of the output file
+   * @param OFileName The output filename
    * @param compress Enables compression (requires zlib)
    * @param writeNodeFeat Indicates if export also Node Features
    * @param writeEdgeWeight Indicates if export also Edge Weights
-   * @return 0 if all OK, else return a negative value
+   * @return 0 if OK, else return a negative value
    */
   virtual int writeToFile(
       InputOutputFormat format = InputOutputFormat::STANDARD_CSV,
@@ -521,17 +505,17 @@ class Graph {
 
   /**
    * \brief
-   * This function read the graph from an input file
-   * Note: No Thread Safe
+   * This function reads the graph from an input file
+   * Note: Not threadsafe
    *
-   * @param format The Input format of the file
-   * @param workingDir The path to the directory in which is placed the Input
+   * @param format The input format of the file
+   * @param workingDir The parent directory of the input
    * file
-   * @param OFileName The Input File Name ( )
+   * @param OFileName The input filename
    * @param compress Enables compression (requires zlib)
    * @param readNodeFeat Indicates if import also Node Features
    * @param readEdgeWeight Indicates if import also Edge Weights
-   * @return 0 if all OK, else return a negative value
+   * @return 0 if OK, else return a negative value
    */
   virtual int readFromFile(
       InputOutputFormat format = InputOutputFormat::STANDARD_CSV,
