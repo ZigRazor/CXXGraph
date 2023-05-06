@@ -2475,118 +2475,261 @@ const std::vector<Node<T>> Graph<T>::graph_slicing(const Node<T> &start) const {
   return result;
 }
 
-template <typename T>
-int Graph<T>::writeToFile(InputOutputFormat format,
-                          const std::string &workingDir,
-                          const std::string &OFileName, bool compress,
-                          bool writeNodeFeat, bool writeEdgeWeight) const {
-  int result = 0;
-  result = writeToStandardFile(workingDir, OFileName, compress, writeNodeFeat,
-                               writeEdgeWeight, format);
-  if (result == 0 && compress) {
-    auto _compress = [this, &workingDir, &OFileName, &writeNodeFeat,
-                      &writeEdgeWeight](const std::string &extension) {
-      std::string completePathToFileGraph =
-          workingDir + "/" + OFileName + extension;
-      std::string completePathToFileGraphCompressed =
-          workingDir + "/" + OFileName + extension + ".gz";
-      int _result = compressFile(completePathToFileGraph,
-                                 completePathToFileGraphCompressed);
-      if (_result == 0) {
-        _result = remove(completePathToFileGraph.c_str());
-      }
-      if (_result == 0) {
-        if (writeNodeFeat) {
-          std::string completePathToFileNodeFeat =
-              workingDir + "/" + OFileName + "_NodeFeat" + extension;
-          std::string completePathToFileNodeFeatCompressed =
-              workingDir + "/" + OFileName + "_NodeFeat" + extension + ".gz";
-          _result = compressFile(completePathToFileNodeFeat,
-                                 completePathToFileNodeFeatCompressed);
-          if (_result == 0) {
-            _result = remove(completePathToFileNodeFeat.c_str());
-          }
-        }
-      }
-      if (_result == 0) {
-        if (writeEdgeWeight) {
-          std::string completePathToFileEdgeWeight =
-              workingDir + "/" + OFileName + "_EdgeWeight" + extension;
-          std::string completePathToFileEdgeWeightCompressed =
-              workingDir + "/" + OFileName + "_EdgeWeight" + extension + ".gz";
-          _result = compressFile(completePathToFileEdgeWeight,
-                                 completePathToFileEdgeWeightCompressed);
-          if (_result == 0) {
-            _result = remove(completePathToFileEdgeWeight.c_str());
-          }
-        }
-      }
-      return _result;
-    };
-    if (format == InputOutputFormat::STANDARD_CSV) {
-      auto result = _compress(".csv");
-    } else if (format == InputOutputFormat::STANDARD_TSV) {
-      auto result = _compress(".tsv");
-    } else {
-      // OUTPUT FORMAT NOT RECOGNIZED
-      result = -1;
-    }
+  template <typename T>
+	int Graph<T>::writeToFile(InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
+  {
+    return this->writeToFile(format, workingDir, OFileName, false, writeNodeFeat, writeEdgeWeight);
   }
-  return result;
-}
 
-template <typename T>
-int Graph<T>::readFromFile(InputOutputFormat format,
-                           const std::string &workingDir,
-                           const std::string &OFileName, bool compress,
-                           bool readNodeFeat, bool readEdgeWeight) {
-  int result = 0;
-  if (compress) {
-    auto decompress = [this, &workingDir, &OFileName, &readNodeFeat,
-                       &readEdgeWeight](const std::string &extension) {
-      std::string completePathToFileGraph =
-          workingDir + "/" + OFileName + extension;
-      std::string completePathToFileGraphCompressed =
-          workingDir + "/" + OFileName + extension + ".gz";
-      int _result = decompressFile(completePathToFileGraphCompressed,
-                                   completePathToFileGraph);
-      if (_result == 0) {
-        if (readNodeFeat) {
-          std::string completePathToFileNodeFeat =
-              workingDir + "/" + OFileName + "_NodeFeat" + extension;
-          std::string completePathToFileNodeFeatCompressed =
-              workingDir + "/" + OFileName + "_NodeFeat" + extension + ".gz";
-          _result = decompressFile(completePathToFileNodeFeatCompressed,
-                                   completePathToFileNodeFeat);
-        }
-      }
-      if (_result == 0) {
-        if (readEdgeWeight) {
-          std::string completePathToFileEdgeWeight =
-              workingDir + "/" + OFileName + "_EdgeWeight" + extension;
-          std::string completePathToFileEdgeWeightCompressed =
-              workingDir + "/" + OFileName + "_EdgeWeight" + extension + ".gz";
-          _result = decompressFile(completePathToFileEdgeWeightCompressed,
-                                   completePathToFileEdgeWeight);
-        }
-      }
-      return _result;
-    };
-    if (format == InputOutputFormat::STANDARD_CSV) {
-      result = decompress(".csv");
-    } else if (format == InputOutputFormat::STANDARD_TSV) {
-      result = decompress(".tsv");
-    } else {
-      // INPUT FORMAT NOT RECOGNIZED
-      result = -1;
-    }
+	template <typename T>
+	int Graph<T>::writeToFile(InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool writeNodeFeat, bool writeEdgeWeight) const
+	{
+		int result = 0;
+
+		// Open streams and write
+		result = getExtenstionAndSeparator(format);
+		if (!result)
+		{
+			std::cerr << "Unknown format\n";
+			return -1;
+		}
+		auto &[extension, separator] = *result;
+
+		std::ofstream ofileGraph;
+		std::ofstream ofileNodeFeat;
+		std::ofstream ofileEdgeWeight;
+
+		std::string completePathToFileGraph = workingDir + "/" + OFileName + extension;
+		ofileGraph.open(completePathToFileGraph);
+		if (!ofileGraph.is_open())
+		{
+			// ERROR File Not Open
+			return -1;
+		}
+
+		if (writeNodeFeat)
+		{
+			std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat" + extension;
+			ofileNodeFeat.open(completePathToFileNodeFeat);
+			if (!ofileNodeFeat.is_open())
+			{
+				// ERROR File Not Open
+				return -1;
+			}
+		}
+
+		if (writeEdgeWeight)
+		{
+			std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight" + extension;
+			ofileEdgeWeight.open(completePathToFileEdgeWeight);
+			if (!ofileEdgeWeight.is_open())
+			{
+				// ERROR File Not Open
+				std::cout << "ERROR File Not Open" << std::endl;
+				return -1;
+			}
+		}
+
+		writeGraphToStream(ofileGraph, ofileNodeFeat, ofileEdgeWeight, writeNodeFeat, writeEdgeWeight);
+
+		// Cleanup from writing
+		ofileGraph.close();
+		if (writeNodeFeat) ofileNodeFeat.close();
+		if (writeEdgeWeight) ofileEdgeWeight.close();
+
+#ifdef WITH_COMPRESSION
+		if (result == 0 && compress)
+		{
+			auto _compress = [this, &workingDir, &OFileName, &writeNodeFeat, &writeEdgeWeight](const std::string &extension)
+			{
+				std::string completePathToFileGraph = workingDir + "/" + OFileName + extension;
+				std::string completePathToFileGraphCompressed = workingDir + "/" + OFileName + extension + ".gz";
+				int _result = compressFile(completePathToFileGraph, completePathToFileGraphCompressed);
+				if (_result == 0)
+				{
+					_result = remove(completePathToFileGraph.c_str());
+				}
+				if (_result == 0)
+				{
+					if (writeNodeFeat)
+					{
+						std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat" + extension;
+						std::string completePathToFileNodeFeatCompressed = workingDir + "/" + OFileName + "_NodeFeat" + extension + ".gz";
+						_result = compressFile(completePathToFileNodeFeat, completePathToFileNodeFeatCompressed);
+						if (_result == 0)
+						{
+							_result = remove(completePathToFileNodeFeat.c_str());
+						}
+					}
+				}
+				if (_result == 0)
+				{
+					if (writeEdgeWeight)
+					{
+						std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight" + extension;
+						std::string completePathToFileEdgeWeightCompressed = workingDir + "/" + OFileName + "_EdgeWeight" + extension + ".gz";
+						_result = compressFile(completePathToFileEdgeWeight, completePathToFileEdgeWeightCompressed);
+						if (_result == 0)
+						{
+							_result = remove(completePathToFileEdgeWeight.c_str());
+						}
+					}
+				}
+				return _result;
+			};
+			if (format == InputOutputFormat::STANDARD_CSV)
+			{
+				auto result = _compress(".csv");
+			}
+			else if (format == InputOutputFormat::STANDARD_TSV)
+			{
+				auto result = _compress(".tsv");
+			}
+			else
+			{
+				// OUTPUT FORMAT NOT RECOGNIZED
+				result = -1;
+			}
+		}
+#endif
+	
+		return result;
+	}
+
+  template <typename T>
+	int Graph<T>::readFromFile(InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight)
+	{
+		return this->readFromFile(format, workingDir, OFileName, false, readNodeFeat, readEdgeWeight);
   }
-  if (result == 0) {
-    result = readFromStandardFile(workingDir, OFileName, compress, readNodeFeat,
-                                  readEdgeWeight, format);
-  }
-  return result;
-}
+
+	template <typename T>
+	int Graph<T>::readFromFile(InputOutputFormat format, const std::string &workingDir, const std::string &OFileName, bool compress, bool readNodeFeat, bool readEdgeWeight)
+	{
+		int result = 0;
+
+#ifdef WITH_COMPRESSION
+		if (compress)
+		{
+			auto decompress = [this, &workingDir, &OFileName, &readNodeFeat, &readEdgeWeight](const std::string &extension)
+			{
+				std::string completePathToFileGraph = workingDir + "/" + OFileName + extension;
+				std::string completePathToFileGraphCompressed = workingDir + "/" + OFileName + extension + ".gz";
+				int _result = decompressFile(completePathToFileGraphCompressed, completePathToFileGraph);
+				if (_result == 0)
+				{
+					if (readNodeFeat)
+					{
+						std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat" + extension;
+						std::string completePathToFileNodeFeatCompressed = workingDir + "/" + OFileName + "_NodeFeat" + extension + ".gz";
+						_result = decompressFile(completePathToFileNodeFeatCompressed, completePathToFileNodeFeat);
+					}
+				}
+				if (_result == 0)
+				{
+					if (readEdgeWeight)
+					{
+						std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight" + extension;
+						std::string completePathToFileEdgeWeightCompressed = workingDir + "/" + OFileName + "_EdgeWeight" + extension + ".gz";
+						_result = decompressFile(completePathToFileEdgeWeightCompressed, completePathToFileEdgeWeight);
+					}
+				}
+				return _result;
+			};
+			if (format == InputOutputFormat::STANDARD_CSV)
+			{
+				result = decompress(".csv");
+			}
+			else if (format == InputOutputFormat::STANDARD_TSV)
+			{
+				result = decompress(".tsv");
+			}
+			else
+			{
+				// OUTPUT FORMAT NOT RECOGNIZED
+				result = -1;
+			}
+
+			if (result != 0)
+			{
+				return result;
+			}
+		}
+#endif
+		// Open streams and read
+		result = getExtenstionAndSeparator(format);
+		if (!result)
+		{
+			std::cerr << "Unknown format\n";
+			return -1;
+		}
+		auto &[extension, separator] = *result;
+		std::string completePathToFileGraph = workingDir + "/" + OFileName + extension;
+
+		std::ifstream ifileGraph;
+		std::ifstream ifileNodeFeat;
+		std::ifstream ifileEdgeWeight;
+
+		ifileGraph.open(completePathToFileGraph);
+		if (!ifileGraph.is_open())
+		{
+			// ERROR File Not Open
+			//std::cout << "ERROR File Not Open : " << completePathToFileGraph << std::endl;
+			return -1;
+		}
+		ifileGraph.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
+
+		if (readNodeFeat)
+		{
+			std::string completePathToFileNodeFeat = workingDir + "/" + OFileName + "_NodeFeat" + extension;
+			ifileNodeFeat.open(completePathToFileNodeFeat);
+			if (!ifileNodeFeat.is_open())
+			{
+				// ERROR File Not Open
+				//std::cout << "ERROR File Not Open" << std::endl;
+				return -1;
+			}
+			ifileNodeFeat.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
+		}
+
+		if (readEdgeWeight)
+		{
+			std::string completePathToFileEdgeWeight = workingDir + "/" + OFileName + "_EdgeWeight" + extension;
+			ifileEdgeWeight.open(completePathToFileEdgeWeight);
+			if (!ifileEdgeWeight.is_open())
+			{
+				// ERROR File Not Open
+				//std::cout << "ERROR File Not Open" << std::endl;
+				return -1;
+			}
+			ifileEdgeWeight.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
+		}
+
+		result = readGraphFromStream(ifileGraph, ifileNodeFeat, ifileEdgeWeight, readNodeFeat, readEdgeWeight);
+
+		// Cleanup
+		ifileGraph.close();
+#ifdef WITH_COMPRESSION
+		if (compress) remove(completePathToFileGraph.c_str());
+#endif
+
+		if (readNodeFeat)
+		{
+			ifileNodeFeat.close();
+#ifdef WITH_COMPRESSION
+			if (compress) remove(completePathToFileNodeFeat.c_str());
+#endif
+		}
+		
+		if (readEdgeWeight)
+		{
+			ifileEdgeWeight.close();
+#ifdef WITH_COMPRESSION
+			if (compress) remove(completePathToFileEdgeWeight.c_str());
+#endif
+		}
+
+		return result;
+	}
 
 template <typename T>
 PartitionMap<T> Graph<T>::partitionGraph(
