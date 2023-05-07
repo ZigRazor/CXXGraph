@@ -23,23 +23,24 @@ endif(CODE_COVERAGE)
 option(TEST "Enable Test" OFF)
 if(TEST)
     include(FetchContent)
+
     FetchContent_Declare(
-    googletest
-    GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG origin/main
-    #GIT_TAG        v1.13.0 # release-1.13.0
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG origin/main
+        #GIT_TAG        v1.13.0 # release-1.13.0
     )
 
     FetchContent_Declare(
-    openssl
-    GIT_REPOSITORY https://github.com/janbar/openssl-cmake.git
-    GIT_TAG origin/master
+        openssl
+        GIT_REPOSITORY https://github.com/janbar/openssl-cmake.git
+        GIT_TAG origin/master
     )
 
     FetchContent_Declare(
-    zlib
-    GIT_REPOSITORY https://github.com/madler/zlib.git
-    GIT_TAG v1.2.13
+        zlib
+        GIT_REPOSITORY https://github.com/madler/zlib.git
+        GIT_TAG v1.2.13
     )
 
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)

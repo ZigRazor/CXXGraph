@@ -1,7 +1,16 @@
 option(BENCHMARK "Enable Benchmark" OFF)
+option(CMAKE_USE_WIN32_THREADS_INIT "using WIN32 threads" ON)
+
 if(BENCHMARK)
 
 	include(FetchContent)
+
+	FetchContent_Declare(
+		googletest
+		GIT_REPOSITORY https://github.com/google/googletest.git
+		GIT_TAG origin/main
+		#GIT_TAG        v1.13.0 # release-1.13.0
+    )
 
 	FetchContent_Declare(
     	googlebenchmark
@@ -10,21 +19,20 @@ if(BENCHMARK)
 	)
 
 	FetchContent_Declare(
-    openssl
-    GIT_REPOSITORY https://github.com/janbar/openssl-cmake.git
-    GIT_TAG origin/master
-    OPTIONS "WITH_APPS OFF"
+		openssl
+		GIT_REPOSITORY https://github.com/janbar/openssl-cmake.git
+		GIT_TAG origin/master
     )
 
     FetchContent_Declare(
-    zlib
-    GIT_REPOSITORY https://github.com/madler/zlib.git
-    GIT_TAG v1.2.13
-    OPTIONS "CMAKE_POSITION_INDEPENDENT_CODE True"
+		zlib
+		GIT_REPOSITORY https://github.com/madler/zlib.git
+		GIT_TAG v1.2.13
     )
 
 	set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-    FetchContent_MakeAvailable(googletest)
+	FetchContent_MakeAvailable(googletest)
+    FetchContent_MakeAvailable(googlebenchmark)
 
     set(WITH_APPS OFF CACHE BOOL "" FORCE)
     FetchContent_MakeAvailable(openssl)
@@ -41,14 +49,14 @@ if(BENCHMARK)
 		PUBLIC WITH_COMPRESSION
 	)
 	target_include_directories(benchmark_exe PUBLIC
-		PUBLIC "${PROJECT_SOURCE_DIR}/include"
+		PUBLIC ${PROJECT_SOURCE_DIR}/include
 		PUBLIC ${zlib_BINARY_DIR}
 		PUBLIC ${zlib_SOURCE_DIR}
 		PUBLIC ${openssl_SOURCE_DIR}/include
 	)
 	target_link_libraries(benchmark_exe
+		PUBLIC GTest::gtest
 		PUBLIC benchmark::benchmark
-		PUBLIC pthread
 		PUBLIC ssl
 		PUBLIC crypto
 		PUBLIC zlibstatic)
