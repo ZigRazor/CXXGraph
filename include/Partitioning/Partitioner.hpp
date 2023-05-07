@@ -158,8 +158,8 @@ CoordinatedPartitionState<T> Partitioner<T>::startCoordinated() {
       list_vector[t] =
           std::vector<const Edge<T> *>(std::next(dataset->begin(), iStart),
                                        std::next(dataset->begin(), iEnd));
-      myRunnable[t].reset(new PartitionerThread<T>(list_vector[t],
-                                                             &state, algorithm));
+      myRunnable[t].reset(
+          new PartitionerThread<T>(list_vector[t], &state, algorithm));
       myThreads[t] = std::thread(&Runnable::run, myRunnable[t].get());
     }
   }

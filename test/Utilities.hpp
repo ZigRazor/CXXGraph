@@ -1,6 +1,7 @@
 #ifndef __UTILITIES_H__
 #define __UTILITIES_H__
 #include <time.h>
+
 #include <random>
 
 #include "CXXGraph.hpp"
@@ -11,10 +12,10 @@ static std::map<unsigned long, CXXGRAPH::Node<int> *> generateRandomNodes(
   thread_local static std::uniform_int_distribution distribution(0, RAND_MAX);
 
   std::map<unsigned long, CXXGRAPH::Node<int> *> nodes;
-  
+
   unsigned int randSeed = (unsigned int)time(NULL);
   rand.seed(randSeed);
-  
+
   for (auto index = 0; index < numberOfNodes; index++) {
     int randomNumber = (distribution(rand) % MaxValue) + 1;
     CXXGRAPH::Node<int> *newNode =

@@ -49,10 +49,10 @@ class GreedyVertexCut : public PartitionStrategy<T> {
 };
 
 template <typename T>
-GreedyVertexCut<T>::GreedyVertexCut(const Globals &G) : GLOBALS(G) { }
+GreedyVertexCut<T>::GreedyVertexCut(const Globals &G) : GLOBALS(G) {}
 
 template <typename T>
-GreedyVertexCut<T>::~GreedyVertexCut() { }
+GreedyVertexCut<T>::~GreedyVertexCut() {}
 
 template <typename T>
 void GreedyVertexCut<T>::performStep(const Edge<T> &e,
@@ -179,7 +179,7 @@ void GreedyVertexCut<T>::performStep(const Edge<T> &e,
   // Use TLS statics to pay init cost once per-thread
   thread_local static std::default_random_engine rand;
   thread_local static std::uniform_int_distribution distribution(0, RAND_MAX);
-  
+
   unsigned int seed = (unsigned int)time(NULL);
   rand.seed(seed);
 

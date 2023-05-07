@@ -1,5 +1,5 @@
-#include <vector>
 #include <random>
+#include <vector>
 
 #include "CXXGraph.hpp"
 #include "gtest/gtest.h"
@@ -281,7 +281,7 @@ TEST(BFSTest, test_12) {
 TEST(BFSTest, test_13) {
   thread_local static std::default_random_engine rand;
   thread_local static std::uniform_int_distribution distribution(0, RAND_MAX);
-  
+
   unsigned int randSeed = (unsigned int)time(NULL);
   rand.seed(randSeed);
 
