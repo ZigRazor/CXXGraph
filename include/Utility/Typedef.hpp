@@ -28,7 +28,7 @@
 
 #include "ConstValue.hpp"
 
-namespace CXXGRAPH {
+namespace CXXGraph {
 
 template <typename T>
 class Node;
@@ -36,7 +36,7 @@ class Node;
 template <typename T>
 class Edge;
 
-namespace PARTITIONING {
+namespace Partitioning {
 template <typename T>
 class Partition;
 }
@@ -207,6 +207,6 @@ using PartitionMap =
                        std::shared_ptr<PARTITIONING::Partition<T>>>;
 
 ///////////////////////////////////////////////////////////////////////////////////
-}  // namespace CXXGRAPH
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_TYPEDEF_H__

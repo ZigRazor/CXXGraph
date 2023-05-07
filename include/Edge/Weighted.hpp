@@ -22,7 +22,7 @@
 
 #pragma once
 
-namespace CXXGRAPH {
+namespace CXXGraph {
 class Weighted {
  private:
   double weight = 0.0;
@@ -47,6 +47,6 @@ inline double Weighted::getWeight() const { return weight; }
 // inline because the implementation of non-template function in header file
 inline void Weighted::setWeight(const double weight) { this->weight = weight; }
 
-}  // namespace CXXGRAPH
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_WEIGHTED_H__

@@ -24,8 +24,8 @@
 
 #include "Record.hpp"
 
-namespace CXXGRAPH {
-namespace PARTITIONING {
+namespace CXXGraph {
+namespace Partitioning {
 template <typename T>
 class PartitionState {
  public:
@@ -45,7 +45,7 @@ class PartitionState {
   virtual int getNumVertices() const = 0;
   virtual std::set<int> getVertexIds() const = 0;
 };
-}  // namespace PARTITIONING
-}  // namespace CXXGRAPH
+}  // namespace Partitioning
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_PARTITIONING_PARTITIONSTATE_H__

@@ -29,8 +29,8 @@
 #include "PartitionStrategy.hpp"
 #include "Partitioning/Utility/Globals.hpp"
 
-namespace CXXGRAPH {
-namespace PARTITIONING {
+namespace CXXGraph {
+namespace Partitioning {
 /**
  * @brief A Vertex Cut Partioning Algorithm ( as described by this paper
  * https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf )
@@ -193,7 +193,7 @@ void HDRF<T>::performStep(const Edge<T> &e, PartitionState<T> &state) {
   v_record->releaseLock();
   return;
 }
-}  // namespace PARTITIONING
-}  // namespace CXXGRAPH
+}  // namespace Partitioning
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_PARTITIONING_HDRF_H__

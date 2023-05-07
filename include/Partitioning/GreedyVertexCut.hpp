@@ -29,8 +29,8 @@
 #include "PartitionStrategy.hpp"
 #include "Partitioning/Utility/Globals.hpp"
 
-namespace CXXGRAPH {
-namespace PARTITIONING {
+namespace CXXGraph {
+namespace Partitioning {
 /**
  * @brief A Greedy Vertex Cut Partioning Algorithm
  * @details This algorithm is a greedy algorithm that partitions the graph into
@@ -221,7 +221,7 @@ void GreedyVertexCut<T>::performStep(const Edge<T> &e,
   v_record->releaseLock();
   return;
 }
-}  // namespace PARTITIONING
-}  // namespace CXXGRAPH
+}  // namespace Partitioning
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_PARTITIONING_GREEDYVERTEXCUT_H__

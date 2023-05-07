@@ -30,8 +30,8 @@
 #include "PartitionStrategy.hpp"
 #include "Utility/Runnable.hpp"
 
-namespace CXXGRAPH {
-namespace PARTITIONING {
+namespace CXXGraph {
+namespace Partitioning {
 template <typename T>
 class PartitionerThread : public Runnable {
  private:
@@ -64,7 +64,7 @@ void PartitionerThread<T>::run() {
     algorithm->performStep(*edge_it, *state);
   }
 }
-}  // namespace PARTITIONING
-}  // namespace CXXGRAPH
+}  // namespace Partitioning
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_PARTITIONING_PARTITIONERTHREAD_H__

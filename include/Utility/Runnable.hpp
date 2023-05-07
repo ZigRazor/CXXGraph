@@ -22,11 +22,11 @@
 
 #pragma once
 
-namespace CXXGRAPH {
+namespace CXXGraph {
 class Runnable {
  public:
   virtual void run() = 0;
 };
-}  // namespace CXXGRAPH
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_RUNNABLE_H__

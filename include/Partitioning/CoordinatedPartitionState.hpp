@@ -33,8 +33,8 @@
 #include "Partitioning/Utility/Globals.hpp"
 #include "Record.hpp"
 
-namespace CXXGRAPH {
-namespace PARTITIONING {
+namespace CXXGraph {
+namespace Partitioning {
 template <typename T>
 class CoordinatedPartitionState : public PartitionState<T> {
  private:
@@ -259,7 +259,7 @@ template <typename T>
 const PartitionMap<T> &CoordinatedPartitionState<T>::getPartitionMap() const {
   return partition_map;
 }
-}  // namespace PARTITIONING
-}  // namespace CXXGRAPH
+}  // namespace Partitioning
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_PARTITIONING_COORDINATEDPARTITIONSTATE_H__

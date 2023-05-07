@@ -68,11 +68,11 @@
 #include <zlib.h>
 #endif
 
-namespace CXXGRAPH {
+namespace CXXGraph {
 template <typename T>
 using T_EdgeSet = std::unordered_set<const Edge<T> *>;
 
-namespace PARTITIONING {
+namespace Partitioning {
 template <typename T>
 class Partition;
 }
@@ -2770,5 +2770,5 @@ std::ostream &operator<<(std::ostream &os, const AdjacencyMatrix<T> &adj) {
   return os;
 }
 
-}  // namespace CXXGRAPH
+}  // namespace CXXGraph
 #endif  // __CXXGRAPH_GRAPH_H__

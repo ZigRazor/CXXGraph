@@ -36,8 +36,8 @@
 #include "Utility/Runnable.hpp"
 #include "WeightBalancedLibra.hpp"
 
-namespace CXXGRAPH {
-namespace PARTITIONING {
+namespace CXXGraph {
+namespace Partitioning {
 template <typename T>
 class Partitioner {
  private:
@@ -191,7 +191,7 @@ CoordinatedPartitionState<T> Partitioner<T>::performCoordinatedPartition() {
   return startCoordinated();
 }
 
-}  // namespace PARTITIONING
-}  // namespace CXXGRAPH
+}  // namespace Partitioning
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_PARTITIONING_PARTITIONER_H__

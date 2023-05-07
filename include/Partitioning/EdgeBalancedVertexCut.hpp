@@ -28,8 +28,8 @@
 #include "PartitionStrategy.hpp"
 #include "Partitioning/Utility/Globals.hpp"
 
-namespace CXXGRAPH {
-namespace PARTITIONING {
+namespace CXXGraph {
+namespace Partitioning {
 /**
  * @brief A Vertex Cut Partioning Algorithm that assign an edge in the partition
  * with less load
@@ -138,7 +138,7 @@ void EdgeBalancedVertexCut<T>::performStep(const Edge<T> &e,
   v_record->releaseLock();
   return;
 }
-}  // namespace PARTITIONING
-}  // namespace CXXGRAPH
+}  // namespace Partitioning
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_PARTITIONING_EDGEBALANCEDVERTEXCUT_H__
