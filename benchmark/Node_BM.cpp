@@ -1,5 +1,4 @@
 #include <benchmark/benchmark.h>
-#include <openssl/sha.h>
 
 #include "CXXGraph.hpp"
 #include "Utilities.hpp"

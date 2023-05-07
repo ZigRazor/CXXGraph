@@ -26,7 +26,7 @@ std::ostream &operator<<(std::ostream &os, const testStruct &TestStruct) {
 TEST(StringNodeTest, StringConstructor) {
   // Testing constructor and getters with different types of data
   int intTest = 42;
-  float floatTest = 3.14;
+  float floatTest = 3.14f;
   double doubleTest = 3.1416;
   bool boolTest = true;
   char charTest = 'w';
