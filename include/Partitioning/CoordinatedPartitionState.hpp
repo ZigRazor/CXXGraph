@@ -89,7 +89,7 @@ CoordinatedPartitionState<T>::CoordinatedPartitionState(const Globals &G)
     machines_load_edges.push_back(0);
     machines_load_vertices.push_back(0);
     machines_weight_edges.push_back(0);
-    partition_map[i] = std::make_shared<PARTITIONING::Partition<T>>(i);
+    partition_map[i] = std::make_shared<Partitioning::Partition<T>>(i);
   }
   MAX_LOAD = 0;
 }
@@ -139,7 +139,7 @@ template <typename T>
 void CoordinatedPartitionState<T>::incrementMachineWeight(const int m,
                                                           const Edge<T> *e) {
   std::lock_guard<std::mutex> lock(*machines_weight_edges_mutex);
-  double edge_weight = CXXGRAPH::NEGLIGIBLE_WEIGHT;
+  double edge_weight = CXXGraph::NEGLIGIBLE_WEIGHT;
   if (e->isWeighted().has_value() && e->isWeighted().value()) {
     edge_weight = (dynamic_cast<const Weighted *>(e))->getWeight();
   }

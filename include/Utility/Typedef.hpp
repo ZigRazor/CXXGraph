@@ -204,7 +204,7 @@ using AdjacencyMatrix = std::unordered_map<
 template <typename T>
 using PartitionMap =
     std::unordered_map<unsigned int,
-                       std::shared_ptr<PARTITIONING::Partition<T>>>;
+                       std::shared_ptr<Partitioning::Partition<T>>>;
 
 ///////////////////////////////////////////////////////////////////////////////////
 }  // namespace CXXGraph

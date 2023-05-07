@@ -5,29 +5,29 @@
 
 // https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm#Example
 TEST(FWTest, test_1) {
-  CXXGRAPH::Node<int> node1("1", 1);
-  CXXGRAPH::Node<int> node2("2", 2);
-  CXXGRAPH::Node<int> node3("3", 3);
-  CXXGRAPH::Node<int> node4("4", 4);
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
+  CXXGraph::Node<int> node4("4", 4);
 
-  CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node2, node1, 4);
-  CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node1, node3, -2);
-  CXXGRAPH::DirectedWeightedEdge<int> edge3(3, node3, node4, 2);
-  CXXGRAPH::DirectedWeightedEdge<int> edge4(4, node4, node2, -1);
-  CXXGRAPH::DirectedWeightedEdge<int> edge5(3, node2, node3, 3);
+  CXXGraph::DirectedWeightedEdge<int> edge1(1, node2, node1, 4);
+  CXXGraph::DirectedWeightedEdge<int> edge2(2, node1, node3, -2);
+  CXXGraph::DirectedWeightedEdge<int> edge3(3, node3, node4, 2);
+  CXXGraph::DirectedWeightedEdge<int> edge4(4, node4, node2, -1);
+  CXXGraph::DirectedWeightedEdge<int> edge5(3, node2, node3, 3);
 
-  CXXGRAPH::T_EdgeSet<int> edgeSet;
+  CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(&edge1);
   edgeSet.insert(&edge2);
   edgeSet.insert(&edge3);
   edgeSet.insert(&edge4);
   edgeSet.insert(&edge5);
 
-  CXXGRAPH::Graph<int> graph(edgeSet);
-  CXXGRAPH::FWResult res = graph.floydWarshall();
+  CXXGraph::Graph<int> graph(edgeSet);
+  CXXGraph::FWResult res = graph.floydWarshall();
 
   std::unordered_map<std::pair<std::string, std::string>, double,
-                     CXXGRAPH::pair_hash>
+                     CXXGraph::pair_hash>
       pairwise_dist;
   auto key = std::make_pair(node1.getUserId(), node1.getUserId());
   auto nodeSet = graph.getNodeSet();
@@ -56,18 +56,18 @@ TEST(FWTest, test_1) {
 
 // a graph with negative cycle
 TEST(FWTest, test_2) {
-  CXXGRAPH::Node<int> node0("0", 0);
-  CXXGRAPH::Node<int> node1("1", 1);
-  CXXGRAPH::Node<int> node2("2", 2);
-  CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node0, node1, 2);
-  CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node1, node2, 3);
-  CXXGRAPH::DirectedWeightedEdge<int> edge3(3, node2, node0, -7);
-  CXXGRAPH::T_EdgeSet<int> edgeSet;
+  CXXGraph::Node<int> node0("0", 0);
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::DirectedWeightedEdge<int> edge1(1, node0, node1, 2);
+  CXXGraph::DirectedWeightedEdge<int> edge2(2, node1, node2, 3);
+  CXXGraph::DirectedWeightedEdge<int> edge3(3, node2, node0, -7);
+  CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(&edge1);
   edgeSet.insert(&edge2);
   edgeSet.insert(&edge3);
-  CXXGRAPH::Graph<int> graph(edgeSet);
-  CXXGRAPH::FWResult res = graph.floydWarshall();
+  CXXGraph::Graph<int> graph(edgeSet);
+  CXXGraph::FWResult res = graph.floydWarshall();
   ASSERT_TRUE(res.success);
   ASSERT_TRUE(res.negativeCycle);
   ASSERT_EQ(res.errorMessage, "");
@@ -75,20 +75,20 @@ TEST(FWTest, test_2) {
 
 // UndirectedWeightedEdge
 TEST(FWTest, test_3) {
-  CXXGRAPH::Node<int> node1("1", 1);
-  CXXGRAPH::Node<int> node2("2", 2);
-  CXXGRAPH::Node<int> node3("3", 3);
-  std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
+  std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
-  CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
-  CXXGRAPH::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
-  CXXGRAPH::T_EdgeSet<int> edgeSet;
+  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
+  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(&edge1);
   edgeSet.insert(&edge2);
   edgeSet.insert(&edge3);
-  CXXGRAPH::Graph<int> graph(edgeSet);
-  CXXGRAPH::FWResult res = graph.floydWarshall();
+  CXXGraph::Graph<int> graph(edgeSet);
+  CXXGraph::FWResult res = graph.floydWarshall();
   ASSERT_TRUE(res.success);
   ASSERT_FALSE(res.negativeCycle);
   ASSERT_EQ(res.errorMessage, "");
@@ -96,20 +96,20 @@ TEST(FWTest, test_3) {
 
 // No weighted edge
 TEST(FWTest, test_4) {
-  CXXGRAPH::Node<int> node1("1", 1);
-  CXXGRAPH::Node<int> node2("2", 2);
-  CXXGRAPH::Node<int> node3("3", 3);
-  std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
+  std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
-  CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
-  CXXGRAPH::DirectedEdge<int> edge3(3, node1, node3);
-  CXXGRAPH::T_EdgeSet<int> edgeSet;
+  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
+  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
+  CXXGraph::DirectedEdge<int> edge3(3, node1, node3);
+  CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(&edge1);
   edgeSet.insert(&edge2);
   edgeSet.insert(&edge3);
-  CXXGRAPH::Graph<int> graph(edgeSet);
-  CXXGRAPH::FWResult res = graph.floydWarshall();
+  CXXGraph::Graph<int> graph(edgeSet);
+  CXXGraph::FWResult res = graph.floydWarshall();
   ASSERT_FALSE(res.success);
-  ASSERT_EQ(res.errorMessage, CXXGRAPH::ERR_NO_WEIGHTED_EDGE);
+  ASSERT_EQ(res.errorMessage, CXXGraph::ERR_NO_WEIGHTED_EDGE);
 }

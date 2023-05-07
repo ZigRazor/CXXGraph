@@ -5,10 +5,10 @@
 
 #include "CXXGraph.hpp"
 
-static CXXGRAPH::Graph<int> *readGraph(const std::string &filename) {
-  CXXGRAPH::Graph<int> *graph_ptr = new CXXGRAPH::Graph<int>();
+static CXXGraph::Graph<int> *readGraph(const std::string &filename) {
+  CXXGraph::Graph<int> *graph_ptr = new CXXGraph::Graph<int>();
   auto result =
-      graph_ptr->readFromFile(CXXGRAPH::InputOutputFormat::STANDARD_CSV,
+      graph_ptr->readFromFile(CXXGraph::InputOutputFormat::STANDARD_CSV,
                               "../../../benchmark/dataset", filename);
   return graph_ptr;
 }
@@ -20,17 +20,17 @@ int main() {
   std::cout << cit_graph_ptr->getEdgeSet().size() << std::endl;
   std::cout << cit_graph_ptr->getNodeSet().size() << std::endl;
   auto partitionedTwo = cit_graph_ptr->partitionGraph(
-      CXXGRAPH::PARTITIONING::HDRF_ALG, 2, 1, 1, 1, 4);
+      CXXGraph::Partitioning::HDRF_ALG, 2, 1, 1, 1, 4);
   std::cout << "end partition two" << std::endl;
   auto partitionedFour = cit_graph_ptr->partitionGraph(
-      CXXGRAPH::PARTITIONING::HDRF_ALG, 4, 1, 1, 1, 4);
+      CXXGraph::Partitioning::HDRF_ALG, 4, 1, 1, 1, 4);
   std::cout << "end partition four" << std::endl;
   auto partitionedEight = cit_graph_ptr->partitionGraph(
-      CXXGRAPH::PARTITIONING::HDRF_ALG, 8, 1, 1, 1, 4);
+      CXXGraph::Partitioning::HDRF_ALG, 8, 1, 1, 1, 4);
   std::cout << "end partition eight" << std::endl;
-  auto statsTwo = CXXGRAPH::PARTITIONING::getPartitionStats(partitionedTwo);
-  auto statsFour = CXXGRAPH::PARTITIONING::getPartitionStats(partitionedFour);
-  auto statsEight = CXXGRAPH::PARTITIONING::getPartitionStats(partitionedEight);
+  auto statsTwo = CXXGraph::Partitioning::getPartitionStats(partitionedTwo);
+  auto statsFour = CXXGraph::Partitioning::getPartitionStats(partitionedFour);
+  auto statsEight = CXXGraph::Partitioning::getPartitionStats(partitionedEight);
   std::cout << "TWO: " << statsTwo << std::endl;
   std::cout << "FOUR: " << statsFour << std::endl;
   std::cout << "EIGHT: " << statsEight << std::endl;

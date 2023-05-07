@@ -22,33 +22,33 @@ int main() {
   std::vector<euclid_point> points_vector = {point_a, point_b, point_c,
                                              point_d};
 
-  CXXGRAPH::Node<int> node0("0", 0);
-  CXXGRAPH::Node<int> node1("1", 1);
-  CXXGRAPH::Node<int> node2("2", 2);
-  CXXGRAPH::Node<int> node3("3", 3);
+  CXXGraph::Node<int> node0("0", 0);
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
 
-  CXXGRAPH::DirectedWeightedEdge<int> edge1(
+  CXXGraph::DirectedWeightedEdge<int> edge1(
       1, node1, node2,
       norm(points_vector.at(node1.getData()),
            points_vector.at(node2.getData())));
-  CXXGRAPH::DirectedWeightedEdge<int> edge2(
+  CXXGraph::DirectedWeightedEdge<int> edge2(
       2, node2, node3,
       norm(points_vector.at(node2.getData()),
            points_vector.at(node3.getData())));
-  CXXGRAPH::DirectedWeightedEdge<int> edge3(
+  CXXGraph::DirectedWeightedEdge<int> edge3(
       3, node1, node3,
       norm(points_vector.at(node1.getData()),
            points_vector.at(node3.getData())));
-  CXXGRAPH::DirectedWeightedEdge<int> edge4(
+  CXXGraph::DirectedWeightedEdge<int> edge4(
       4, node0, node1,
       norm(points_vector.at(node0.getData()),
            points_vector.at(node1.getData())));
-  CXXGRAPH::DirectedWeightedEdge<int> edge5(
+  CXXGraph::DirectedWeightedEdge<int> edge5(
       5, node0, node2,
       norm(points_vector.at(node0.getData()),
            points_vector.at(node2.getData())));
 
-  CXXGRAPH::T_EdgeSet<int> edgeSet;
+  CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(&edge1);
   edgeSet.insert(&edge2);
   edgeSet.insert(&edge3);
@@ -62,8 +62,8 @@ int main() {
   std::cout << edge4 << "\n";
   std::cout << edge5 << "\n";
 
-  CXXGRAPH::Graph<int> graph(edgeSet);
-  CXXGRAPH::DialResult res = graph.dial(node0, 100);
+  CXXGraph::Graph<int> graph(edgeSet);
+  CXXGraph::DialResult res = graph.dial(node0, 100);
 
   std::cout << "Dial Result: " << res.minDistanceMap.at(node3.getId()) << ", "
             << res.success << "\n";
