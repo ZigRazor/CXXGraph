@@ -17,13 +17,10 @@ if(DEBUG)
 		-O0  #no optimization
 		-g   #generate debug info
 	)
-
 endif(DEBUG)
 
 add_subdirectory(test)
-
 add_subdirectory(benchmark)
-
 add_subdirectory(examples)
 
 #install(FILES include/Graph.hpp DESTINATION /usr/include)

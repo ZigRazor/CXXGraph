@@ -1,4 +1,7 @@
 option(CODE_COVERAGE "Enable coverage reporting" OFF)
+option(CMAKE_USE_WIN32_THREADS_INIT "using WIN32 threads" ON)
+option(gtest_disable_pthreads "Disable uses of pthreads in gtest." ON)
+
 if(CODE_COVERAGE)
 	message( "Code Coverage Enabled" )
 	add_compile_options(
@@ -65,7 +68,6 @@ if(TEST)
     )
     target_link_libraries(test_exe
         PUBLIC GTest::gtest_main
-        PUBLIC pthread
         PUBLIC ssl
         PUBLIC crypto
         PUBLIC zlibstatic)

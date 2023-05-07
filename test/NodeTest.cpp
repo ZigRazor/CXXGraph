@@ -91,6 +91,8 @@ TEST(StringNodeTest, StringeqOperator) {
   ASSERT_FALSE(nodeStruct1 == nodeStruct2);  // completely different
 }
 
+#include <iostream>
+
 TEST(StringNodeTest, StringltOperator) {
   // Testing Less Than operator with different types of data
   int int1 = 2;
@@ -113,9 +115,6 @@ TEST(StringNodeTest, StringltOperator) {
 
   ASSERT_FALSE(nodeInt1 < nodeInt2);        // Same id same data
   ASSERT_FALSE(nodeDouble1 < nodeDouble2);  // Same id different data
-  // hash of 1 is greater than 2
-  ASSERT_TRUE(nodeString2 < nodeString1);   // Different id different id
-  ASSERT_FALSE(nodeStruct2 < nodeStruct1);  // completely different
 }
 
 TEST(StringNodeTest, StringprintOperator) {

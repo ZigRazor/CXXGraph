@@ -73,6 +73,7 @@ class CoordinatedPartitionState : public PartitionState<T> {
   std::vector<int> getMachines_loadVertices() const;
   const PartitionMap<T> &getPartitionMap() const;
 };
+
 template <typename T>
 CoordinatedPartitionState<T>::CoordinatedPartitionState(const Globals &G)
     : record_map(),
@@ -92,8 +93,10 @@ CoordinatedPartitionState<T>::CoordinatedPartitionState(const Globals &G)
   }
   MAX_LOAD = 0;
 }
+
 template <typename T>
 CoordinatedPartitionState<T>::~CoordinatedPartitionState() {}
+
 template <typename T>
 std::shared_ptr<Record<T>> CoordinatedPartitionState<T>::getRecord(
     const int x) {
