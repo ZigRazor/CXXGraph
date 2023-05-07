@@ -146,9 +146,9 @@ CoordinatedPartitionState<T> Partitioner<T>::startCoordinated() {
   CoordinatedPartitionState<T> state(GLOBALS);
   int processors = GLOBALS.threads;
 
-  std::thread myThreads[processors];
-  std::shared_ptr<Runnable> myRunnable[processors];
-  std::vector<const Edge<T> *> list_vector[processors];
+  std::vector<std::thread> myThreads(processors);
+  std::vector<std::shared_ptr<Runnable>> myRunnable(processors);
+  std::vector<std::vector<const Edge<T> *>> list_vector(processors);
   int n = dataset->size();
   int subSize = n / processors + 1;
   for (int t = 0; t < processors; ++t) {
@@ -158,8 +158,8 @@ CoordinatedPartitionState<T> Partitioner<T>::startCoordinated() {
       list_vector[t] =
           std::vector<const Edge<T> *>(std::next(dataset->begin(), iStart),
                                        std::next(dataset->begin(), iEnd));
-      myRunnable[t] = std::make_shared<PartitionerThread<T>>(list_vector[t],
-                                                             &state, algorithm);
+      myRunnable[t].reset(new PartitionerThread<T>(list_vector[t],
+                                                             &state, algorithm));
       myThreads[t] = std::thread(&Runnable::run, myRunnable[t].get());
     }
   }

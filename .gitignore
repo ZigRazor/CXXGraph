@@ -35,7 +35,5 @@
 build/
 # ignore the packaging folder contents from git
 packaging/
-# graph config is automatically setup, so we can ignore this
-include/CXXGraphConfig.h
 # ignore vscode files
 .vscode
