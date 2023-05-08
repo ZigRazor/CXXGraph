@@ -93,10 +93,6 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
   - [How to use](#how-to-use)
   - [Example](#example)
   - [Unit-Test Execution](#unit-test-execution)
-    - [OpenSSL installation](#openssl-installation)
-      - [Ubuntu/Debian](#ubuntudebian)
-      - [RedHat/CentOS/RockyLinux/Fedora](#redhatcentosrockylinuxfedora)
-      - [Other System](#other-system)
     - [Google Test Installation](#google-test-installation)
     - [How to Compile Test](#how-to-compile-test)
     - [How to Run Test](#how-to-run-test)
@@ -192,8 +188,9 @@ The Classes Explanation can be found in the [Doxygen Documentation](https://rawc
 
 ## Requirements
 
-The minimun C++ standard required is **C++17** and a G++ compiler version greater than 7.3.0.
-Are also required [OpenSSL library](https://www.openssl.org/)
+- The minimum C++ standard required is **C++17**
+- A GCC compiler version greater than 7.3.0 *OR*
+- A MSVC compiler that supports C++17
 
 ## How to use
 
@@ -206,26 +203,6 @@ Work in Progess
 ## Unit-Test Execution
 
 The Unit-Test required the CMake version greater than 3.9 and the **google test**  library.
-
-### OpenSSL installation
-
-[OpenSSL](https://www.openssl.org/)
-
-#### Ubuntu/Debian
-
-``` bash
-sudo apt-get install openssl libssl-dev
-```
-
-#### RedHat/CentOS/RockyLinux/Fedora
-
-``` bash
-yum install openssl-devel
-```
-
-#### Other System
-
-You can find more information on how to install OpenSSL at this [link](https://github.com/openssl/openssl)
 
 ### Google Test Installation
 
