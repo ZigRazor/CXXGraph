@@ -2288,12 +2288,12 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
             i.second->isDirected().value()) {
           const DirectedWeightedEdge<T> *dw_edge =
               dynamic_cast<const DirectedWeightedEdge<T> *>(i.second);
-          weight = dw_edge->getWeight();
+          weight = (int)dw_edge->getWeight();
         } else if (i.second->isDirected().has_value() &&
                    !i.second->isDirected().value()) {
           const UndirectedWeightedEdge<T> *udw_edge =
               dynamic_cast<const UndirectedWeightedEdge<T> *>(i.second);
-          weight = udw_edge->getWeight();
+          weight = (int)udw_edge->getWeight();
         } else {
           // ERROR it shouldn't never returned ( does not exist a Node Weighted
           // and not Directed/Undirected)

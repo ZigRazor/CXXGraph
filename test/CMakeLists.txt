@@ -1,4 +1,7 @@
 option(CODE_COVERAGE "Enable coverage reporting" OFF)
+option(CMAKE_USE_WIN32_THREADS_INIT "using WIN32 threads" ON)
+option(gtest_disable_pthreads "Disable uses of pthreads in gtest." ON)
+
 if(CODE_COVERAGE)
 	message( "Code Coverage Enabled" )
 	add_compile_options(
@@ -20,30 +23,22 @@ endif(CODE_COVERAGE)
 option(TEST "Enable Test" OFF)
 if(TEST)
     include(FetchContent)
+
     FetchContent_Declare(
-    googletest
-    GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG origin/main
-    #GIT_TAG        v1.13.0 # release-1.13.0
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG origin/main
+        #GIT_TAG        v1.13.0 # release-1.13.0
     )
 
     FetchContent_Declare(
-    openssl
-    GIT_REPOSITORY https://github.com/janbar/openssl-cmake.git
-    GIT_TAG origin/master
-    )
-
-    FetchContent_Declare(
-    zlib
-    GIT_REPOSITORY https://github.com/madler/zlib.git
-    GIT_TAG v1.2.13
+        zlib
+        GIT_REPOSITORY https://github.com/madler/zlib.git
+        GIT_TAG v1.2.13
     )
 
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     FetchContent_MakeAvailable(googletest)
-
-    set(WITH_APPS OFF CACHE BOOL "" FORCE)
-    FetchContent_MakeAvailable(openssl)
 
     set(SAVE_CMAKE_POSITION_INDEPENDENT_CODE ${CMAKE_POSITION_INDEPENDENT_CODE})
     set(CMAKE_POSITION_INDEPENDENT_CODE True)
@@ -61,14 +56,11 @@ if(TEST)
         PUBLIC "${PROJECT_SOURCE_DIR}/include"
         PUBLIC ${zlib_BINARY_DIR}
         PUBLIC ${zlib_SOURCE_DIR}
-        PUBLIC ${openssl_SOURCE_DIR}/include
     )
     target_link_libraries(test_exe
         PUBLIC GTest::gtest_main
-        PUBLIC pthread
-        PUBLIC ssl
-        PUBLIC crypto
-        PUBLIC zlibstatic)
+        PUBLIC zlibstatic
+    )
 
     enable_testing()
 

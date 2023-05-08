@@ -1,3 +1,4 @@
+#include <random>
 #include <vector>
 
 #include "CXXGraph.hpp"
@@ -278,13 +279,16 @@ TEST(BFSTest, test_12) {
 
 // this case is to verify result correction when number of threads more than 1
 TEST(BFSTest, test_13) {
+  thread_local static std::default_random_engine rand;
+  thread_local static std::uniform_int_distribution distribution(0, RAND_MAX);
+
   unsigned int randSeed = (unsigned int)time(NULL);
-  srand(randSeed);
+  rand.seed(randSeed);
 
   int nodes_size = 60, edges_size = 2000;
   std::vector<CXXGRAPH::Node<int> *> nodes;
   for (auto index = 0; index < nodes_size; index++) {
-    int randomNumber = (rand_r(&randSeed) % nodes_size) + 1;
+    int randomNumber = (distribution(rand) % nodes_size) + 1;
     CXXGRAPH::Node<int> *newNode =
         new CXXGRAPH::Node<int>(std::to_string(index), randomNumber);
     nodes.push_back(newNode);
@@ -293,8 +297,8 @@ TEST(BFSTest, test_13) {
   CXXGRAPH::T_EdgeSet<int> edgeSet;
   auto MaxValue = nodes.size();
   for (auto index = 0; index < edges_size; index++) {
-    int randomNumber1 = (rand_r(&randSeed) % MaxValue);
-    int randomNumber2 = (rand_r(&randSeed) % MaxValue);
+    int randomNumber1 = (distribution(rand) % MaxValue);
+    int randomNumber2 = (distribution(rand) % MaxValue);
     if (randomNumber1 != randomNumber2) {
       CXXGRAPH::UndirectedEdge<int> *newEdge =
           new CXXGRAPH::UndirectedEdge<int>(index, *(nodes.at(randomNumber1)),

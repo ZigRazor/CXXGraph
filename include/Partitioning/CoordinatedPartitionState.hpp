@@ -73,6 +73,7 @@ class CoordinatedPartitionState : public PartitionState<T> {
   std::vector<int> getMachines_loadVertices() const;
   const PartitionMap<T> &getPartitionMap() const;
 };
+
 template <typename T>
 CoordinatedPartitionState<T>::CoordinatedPartitionState(const Globals &G)
     : record_map(),
@@ -92,8 +93,10 @@ CoordinatedPartitionState<T>::CoordinatedPartitionState(const Globals &G)
   }
   MAX_LOAD = 0;
 }
+
 template <typename T>
 CoordinatedPartitionState<T>::~CoordinatedPartitionState() {}
+
 template <typename T>
 std::shared_ptr<Record<T>> CoordinatedPartitionState<T>::getRecord(
     const int x) {
@@ -107,19 +110,19 @@ std::shared_ptr<Record<T>> CoordinatedPartitionState<T>::getRecord(
 template <typename T>
 int CoordinatedPartitionState<T>::getMachineLoad(const int m) const {
   std::lock_guard<std::mutex> lock(*machines_load_edges_mutex);
-  return machines_load_edges.at(m);
+  return (int)machines_load_edges.at(m);
 }
 
 template <typename T>
 int CoordinatedPartitionState<T>::getMachineWeight(const int m) const {
   std::lock_guard<std::mutex> lock(*machines_weight_edges_mutex);
-  return machines_weight_edges.at(m);
+  return (int)machines_weight_edges.at(m);
 }
 
 template <typename T>
 int CoordinatedPartitionState<T>::getMachineLoadVertices(const int m) const {
   std::lock_guard<std::mutex> lock(*machines_load_vertices_mutex);
-  return machines_load_vertices.at(m);
+  return (int)machines_load_vertices.at(m);
 }
 template <typename T>
 void CoordinatedPartitionState<T>::incrementMachineLoad(const int m,

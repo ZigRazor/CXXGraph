@@ -23,6 +23,7 @@
 #pragma once
 
 #include <chrono>
+#include <random>
 
 #include "Edge/Edge.hpp"
 #include "PartitionStrategy.hpp"
@@ -46,12 +47,13 @@ class GreedyVertexCut : public PartitionStrategy<T> {
 
   void performStep(const Edge<T> &e, PartitionState<T> &Sstate) override;
 };
+
 template <typename T>
-GreedyVertexCut<T>::GreedyVertexCut(const Globals &G) : GLOBALS(G) {
-  // this->GLOBALS = G;
-}
+GreedyVertexCut<T>::GreedyVertexCut(const Globals &G) : GLOBALS(G) {}
+
 template <typename T>
 GreedyVertexCut<T>::~GreedyVertexCut() {}
+
 template <typename T>
 void GreedyVertexCut<T>::performStep(const Edge<T> &e,
                                      PartitionState<T> &state) {
@@ -66,7 +68,6 @@ void GreedyVertexCut<T>::performStep(const Edge<T> &e,
   //*** ASK FOR LOCK
   bool locks_taken = false;
   while (!locks_taken) {
-    srand((unsigned)time(NULL));
     int usleep_time = 2;
     while (!u_record->getLock()) {
       std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
@@ -175,10 +176,14 @@ void GreedyVertexCut<T>::performStep(const Edge<T> &e,
   }
 
   //*** PICK A RANDOM ELEMENT FROM CANDIDATES
-  /* initialize random seed: */
+  // Use TLS statics to pay init cost once per-thread
+  thread_local static std::default_random_engine rand;
+  thread_local static std::uniform_int_distribution distribution(0, RAND_MAX);
+
   unsigned int seed = (unsigned int)time(NULL);
-  srand(seed);
-  int choice = rand_r(&seed) % candidates.size();
+  rand.seed(seed);
+
+  int choice = distribution(rand) % candidates.size();
   machine_id = candidates.at(choice);
   try {
     CoordinatedPartitionState<T> &cord_state =
