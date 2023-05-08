@@ -53,8 +53,8 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
 | :heavy_check_mark: | Remove External Dependency [#209](https://github.com/ZigRazor/CXXGraph/issues/209) [#274](https://github.com/ZigRazor/CXXGraph/issues/274) [#275](https://github.com/ZigRazor/CXXGraph/issues/275) | May 7, 2023 |
 | :heavy_check_mark: | Release 1.0.1 | May 7, 2023 |
 | :heavy_check_mark: | Make CXXGraph MSVC-Compatible [#277](https://github.com/ZigRazor/CXXGraph/issues/277) | May 8, 2023 |
-| :memo: | All namespaces should be titlecase [#278](https://github.com/ZigRazor/CXXGraph/issues/278)  | TBD |
-| :memo: | Release 1.1.0 | TBD |
+| :heavy_check_mark: | All namespaces should be titlecase [#278](https://github.com/ZigRazor/CXXGraph/issues/278)  | May 8, 2023 |
+| :heavy_check_mark: | Release 1.1.0 | May 8, 2023 |
 | :memo: |Switch to C++ 20 standard [#266](https://github.com/ZigRazor/CXXGraph/issues/266) | TBD |
 | :memo: | Markov Chain Algorithm [#107](https://github.com/ZigRazor/CXXGraph/issues/107) | TBD |
 | :memo: | Release 1.2.1 | TBD |
