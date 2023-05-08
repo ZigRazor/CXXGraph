@@ -27,7 +27,7 @@
 
 #include "Node/Node.hpp"
 
-namespace CXXGRAPH {
+namespace CXXGraph {
 template <typename T>
 class Edge;
 // ostream operator
@@ -110,6 +110,6 @@ std::ostream &operator<<(std::ostream &os, const Edge<T> &edge) {
      << "|-----? ((Node: " << edge.nodePair.second->getId() << "))";
   return os;
 }
-}  // namespace CXXGRAPH
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_EDGE_H__

@@ -26,8 +26,8 @@
 
 #include "Partitioning/PartitionAlgorithm.hpp"
 
-namespace CXXGRAPH {
-namespace PARTITIONING {
+namespace CXXGraph {
+namespace Partitioning {
 class Globals {
  private:
  public:
@@ -79,7 +79,7 @@ inline const std::string Globals::print() const {
   return prt_str;
 }
 
-}  // namespace PARTITIONING
-}  // namespace CXXGRAPH
+}  // namespace Partitioning
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_PARTITIONING_GLOBALS_H__

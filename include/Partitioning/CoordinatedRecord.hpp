@@ -27,8 +27,8 @@
 #include "Record.hpp"
 #include "Utility/Typedef.hpp"
 
-namespace CXXGRAPH {
-namespace PARTITIONING {
+namespace CXXGraph {
+namespace Partitioning {
 
 template <typename T>
 class CoordinatedRecord : public Record<T> {
@@ -139,7 +139,7 @@ template <typename T>
 void CoordinatedRecord<T>::addAll(const std::set<int> &set) {
   partitions.insert(set.begin(), set.end());
 }
-}  // namespace PARTITIONING
-}  // namespace CXXGRAPH
+}  // namespace Partitioning
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_PARTITIONING_COORDINATEDRECORD_H__

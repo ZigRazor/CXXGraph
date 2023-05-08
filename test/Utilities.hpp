@@ -6,32 +6,32 @@
 
 #include "CXXGraph.hpp"
 
-static std::map<unsigned long, CXXGRAPH::Node<int> *> generateRandomNodes(
+static std::map<unsigned long, CXXGraph::Node<int> *> generateRandomNodes(
     unsigned long numberOfNodes, int MaxValue) {
   thread_local static std::default_random_engine rand;
   thread_local static std::uniform_int_distribution distribution(0, RAND_MAX);
 
-  std::map<unsigned long, CXXGRAPH::Node<int> *> nodes;
+  std::map<unsigned long, CXXGraph::Node<int> *> nodes;
 
   unsigned int randSeed = (unsigned int)time(NULL);
   rand.seed(randSeed);
 
   for (auto index = 0; index < numberOfNodes; index++) {
     int randomNumber = (distribution(rand) % MaxValue) + 1;
-    CXXGRAPH::Node<int> *newNode =
-        new CXXGRAPH::Node<int>(std::to_string(index), randomNumber);
+    CXXGraph::Node<int> *newNode =
+        new CXXGraph::Node<int>(std::to_string(index), randomNumber);
     nodes[index] = newNode;
   }
   return nodes;
 }
 
-static std::map<unsigned long, CXXGRAPH::Edge<int> *> generateRandomEdges(
+static std::map<unsigned long, CXXGraph::Edge<int> *> generateRandomEdges(
     unsigned long numberOfEdges,
-    std::map<unsigned long, CXXGRAPH::Node<int> *> nodes) {
+    std::map<unsigned long, CXXGraph::Node<int> *> nodes) {
   thread_local static std::default_random_engine rand;
   thread_local static std::uniform_int_distribution distribution(0, RAND_MAX);
 
-  std::map<unsigned long, CXXGRAPH::Edge<int> *> edges;
+  std::map<unsigned long, CXXGraph::Edge<int> *> edges;
 
   unsigned int randSeed = (unsigned int)time(NULL);
   rand.seed(randSeed);
@@ -40,7 +40,7 @@ static std::map<unsigned long, CXXGRAPH::Edge<int> *> generateRandomEdges(
   for (auto index = 0; index < numberOfEdges; index++) {
     int randomNumber1 = (distribution(rand) % MaxValue);
     int randomNumber2 = (distribution(rand) % MaxValue);
-    CXXGRAPH::Edge<int> *newEdge = new CXXGRAPH::Edge<int>(
+    CXXGraph::Edge<int> *newEdge = new CXXGraph::Edge<int>(
         index, *(nodes.at(randomNumber1)), *(nodes.at(randomNumber2)));
     edges[index] = newEdge;
   }

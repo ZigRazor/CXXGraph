@@ -23,8 +23,8 @@
 #include <iostream>
 
 #include "Utility/Typedef.hpp"
-namespace CXXGRAPH {
-namespace PARTITIONING {
+namespace CXXGraph {
+namespace Partitioning {
 class PartitioningStats {
  public:
   unsigned int numberOfPartitions = 0;  // The number of Partitions
@@ -77,8 +77,8 @@ class PartitioningStats {
     return os;
   }
 };
-}  // namespace PARTITIONING
+}  // namespace Partitioning
 
-}  // namespace CXXGRAPH
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_PARTITIONINGSTATS_H__

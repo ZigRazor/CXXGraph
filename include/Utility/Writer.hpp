@@ -22,7 +22,7 @@
 
 #pragma once  // This is to make sure that this header is only included once
 
-namespace CXXGRAPH {
+namespace CXXGraph {
 
 template <typename T>
 class Graph;
@@ -46,6 +46,6 @@ class Writer {
    */
   virtual int writeGraph(const Graph<T> &graph, std::ofstream &file) = 0;
 };
-}  // namespace CXXGRAPH
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_WRITER_H__

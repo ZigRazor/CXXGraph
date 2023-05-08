@@ -35,15 +35,15 @@ TEST(StringNodeTest, StringConstructor) {
   std::unordered_map<int, int> mapTest = {{1, 2}, {3, 4}, {5, 6}, {7, 8}};
   testStruct structTest(42, true, "abc");
 
-  CXXGRAPH::Node<int> intNode("1", intTest);
-  CXXGRAPH::Node<float> floatNode("2", floatTest);
-  CXXGRAPH::Node<double> doubleNode("3", doubleTest);
-  CXXGRAPH::Node<bool> boolNode("4", boolTest);
-  CXXGRAPH::Node<char> charNode("5", charTest);
-  CXXGRAPH::Node<std::string> stringNode("6", stringTest);
-  CXXGRAPH::Node<std::vector<int>> vectorNode("7", vectorTest);
-  CXXGRAPH::Node<std::unordered_map<int, int>> mapNode("8", mapTest);
-  CXXGRAPH::Node<testStruct> structNode("9", structTest);
+  CXXGraph::Node<int> intNode("1", intTest);
+  CXXGraph::Node<float> floatNode("2", floatTest);
+  CXXGraph::Node<double> doubleNode("3", doubleTest);
+  CXXGraph::Node<bool> boolNode("4", boolTest);
+  CXXGraph::Node<char> charNode("5", charTest);
+  CXXGraph::Node<std::string> stringNode("6", stringTest);
+  CXXGraph::Node<std::vector<int>> vectorNode("7", vectorTest);
+  CXXGraph::Node<std::unordered_map<int, int>> mapNode("8", mapTest);
+  CXXGraph::Node<testStruct> structNode("9", structTest);
 
   ASSERT_EQ(intNode.getUserId(), "1");
   ASSERT_EQ(intNode.getData(), intTest);
@@ -76,14 +76,14 @@ TEST(StringNodeTest, StringeqOperator) {
   testStruct struct1(42, true, "abc");
   testStruct struct2(41, true, "cba");
 
-  CXXGRAPH::Node<int> nodeInt1("1", int1);
-  CXXGRAPH::Node<int> nodeInt2("1", int2);
-  CXXGRAPH::Node<double> nodeDouble1("2", double1);
-  CXXGRAPH::Node<double> nodeDouble2("2", double2);
-  CXXGRAPH::Node<std::string> nodeString1("1", string1);
-  CXXGRAPH::Node<std::string> nodeString2("2", string2);
-  CXXGRAPH::Node<testStruct> nodeStruct1("1", struct1);
-  CXXGRAPH::Node<testStruct> nodeStruct2("2", struct2);
+  CXXGraph::Node<int> nodeInt1("1", int1);
+  CXXGraph::Node<int> nodeInt2("1", int2);
+  CXXGraph::Node<double> nodeDouble1("2", double1);
+  CXXGraph::Node<double> nodeDouble2("2", double2);
+  CXXGraph::Node<std::string> nodeString1("1", string1);
+  CXXGraph::Node<std::string> nodeString2("2", string2);
+  CXXGraph::Node<testStruct> nodeStruct1("1", struct1);
+  CXXGraph::Node<testStruct> nodeStruct2("2", struct2);
 
   ASSERT_TRUE(nodeInt1 == nodeInt2);         // Equal nodes
   ASSERT_FALSE(nodeDouble1 == nodeDouble2);  // different data
@@ -104,14 +104,14 @@ TEST(StringNodeTest, StringltOperator) {
   testStruct struct1(42, true, "abc");
   testStruct struct2(41, true, "cba");
 
-  CXXGRAPH::Node<int> nodeInt1("1", int1);
-  CXXGRAPH::Node<int> nodeInt2("1", int2);
-  CXXGRAPH::Node<double> nodeDouble1("2", double1);
-  CXXGRAPH::Node<double> nodeDouble2("2", double2);
-  CXXGRAPH::Node<std::string> nodeString1("1", string1);
-  CXXGRAPH::Node<std::string> nodeString2("2", string2);
-  CXXGRAPH::Node<testStruct> nodeStruct1("2", struct1);
-  CXXGRAPH::Node<testStruct> nodeStruct2("1", struct2);
+  CXXGraph::Node<int> nodeInt1("1", int1);
+  CXXGraph::Node<int> nodeInt2("1", int2);
+  CXXGraph::Node<double> nodeDouble1("2", double1);
+  CXXGraph::Node<double> nodeDouble2("2", double2);
+  CXXGraph::Node<std::string> nodeString1("1", string1);
+  CXXGraph::Node<std::string> nodeString2("2", string2);
+  CXXGraph::Node<testStruct> nodeStruct1("2", struct1);
+  CXXGraph::Node<testStruct> nodeStruct2("1", struct2);
 
   ASSERT_FALSE(nodeInt1 < nodeInt2);        // Same id same data
   ASSERT_FALSE(nodeDouble1 < nodeDouble2);  // Same id different data
@@ -131,10 +131,10 @@ TEST(StringNodeTest, StringprintOperator) {
   expectedString << "Node: {\n  Id:\t1\n  Data:\tabc\n}";
   expectedStruct << "Node: {\n  Id:\t1\n  Data:\t42 1 abc\n}";
 
-  CXXGRAPH::Node<int> intNode(nodesId, testInt);
-  CXXGRAPH::Node<double> doubleNode(nodesId, testDouble);
-  CXXGRAPH::Node<std::string> stringNode(nodesId, testString);
-  CXXGRAPH::Node<testStruct> structNode(nodesId, TestStruct);
+  CXXGraph::Node<int> intNode(nodesId, testInt);
+  CXXGraph::Node<double> doubleNode(nodesId, testDouble);
+  CXXGraph::Node<std::string> stringNode(nodesId, testString);
+  CXXGraph::Node<testStruct> structNode(nodesId, TestStruct);
 
   std::ostringstream resultInt, resultDouble, resultString, resultStruct;
   resultInt << intNode;

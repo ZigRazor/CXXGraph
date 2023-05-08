@@ -24,7 +24,7 @@
 #include "DirectedEdge.hpp"
 #include "Weighted.hpp"
 
-namespace CXXGRAPH {
+namespace CXXGraph {
 // Foward Declaration
 template <typename T>
 class UndirectedWeightedEdge;
@@ -113,6 +113,6 @@ std::ostream &operator<<(std::ostream &os,
   return os;
 }
 
-}  // namespace CXXGRAPH
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_DIRECTEDWEIGHTEDEDGE_H__

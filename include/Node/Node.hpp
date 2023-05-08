@@ -25,7 +25,7 @@
 #include <iomanip>
 #include <iostream>
 
-namespace CXXGRAPH {
+namespace CXXGraph {
 template <typename T>
 class Node;
 template <typename T>
@@ -116,6 +116,6 @@ std::ostream &operator<<(std::ostream &os, const Node<T> &node) {
      << "  Id:\t" << node.userId << "\n  Data:\t" << node.data << "\n}";
   return os;
 }
-}  // namespace CXXGRAPH
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_NODE_H__
