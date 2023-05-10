@@ -28,13 +28,13 @@
 #include "PartitioningStats.hpp"
 #include "Utility/Typedef.hpp"
 
-namespace CXXGRAPH {
+namespace CXXGraph {
 template <typename T>
 class Graph;
 
 template <typename T>
 using T_EdgeSet = std::unordered_set<const Edge<T> *>;
-namespace PARTITIONING {
+namespace Partitioning {
 template <typename T>
 std::ostream &operator<<(std::ostream &o, const Partition<T> &partition);
 
@@ -345,8 +345,8 @@ std::ostream &operator<<(std::ostream &os, const Partition<T> &partition) {
   }
   return os;
 }
-}  // namespace PARTITIONING
+}  // namespace Partitioning
 
-}  // namespace CXXGRAPH
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_PARTITION_H__

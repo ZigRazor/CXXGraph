@@ -4,10 +4,10 @@
 #include "Utilities.hpp"
 
 static void TopologicalSort_X(benchmark::State &state) {
-  CXXGRAPH::Graph<int> g;
+  CXXGraph::Graph<int> g;
   auto range_start = edges.begin();
   auto range_end = edges.find(state.range(0));
-  std::unordered_map<unsigned long, CXXGRAPH::Edge<int> *> edgesX;
+  std::unordered_map<unsigned long, CXXGraph::Edge<int> *> edgesX;
   edgesX.insert(range_start, range_end);
   for (auto e : edgesX) {
     g.addEdge(&(*e.second));

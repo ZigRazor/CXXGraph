@@ -50,27 +50,32 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
 | :heavy_check_mark: | General Performance Optimization [#262](https://github.com/ZigRazor/CXXGraph/issues/262) [#265](https://github.com/ZigRazor/CXXGraph/issues/265) | Mar 28, 2023 |
 | :heavy_check_mark: | Reduction of Code Issue of Static Analysis | Mar 28, 2023 |
 | :heavy_check_mark: | First Stable Release 1.0.0 | Mar 28, 2023 |
+| :heavy_check_mark: | Remove External Dependency [#209](https://github.com/ZigRazor/CXXGraph/issues/209) [#274](https://github.com/ZigRazor/CXXGraph/issues/274) [#275](https://github.com/ZigRazor/CXXGraph/issues/275) | May 7, 2023 |
+| :heavy_check_mark: | Release 1.0.1 | May 7, 2023 |
+| :heavy_check_mark: | Make CXXGraph MSVC-Compatible [#277](https://github.com/ZigRazor/CXXGraph/issues/277) | May 8, 2023 |
+| :heavy_check_mark: | All namespaces should be titlecase [#278](https://github.com/ZigRazor/CXXGraph/issues/278)  | May 8, 2023 |
+| :heavy_check_mark: | Release 1.1.0 | May 8, 2023 |
 | :memo: |Switch to C++ 20 standard [#266](https://github.com/ZigRazor/CXXGraph/issues/266) | TBD |
 | :memo: | Markov Chain Algorithm [#107](https://github.com/ZigRazor/CXXGraph/issues/107) | TBD |
-| :memo: | Release 1.0.1 | TBD |
+| :memo: | Release 1.2.1 | TBD |
 | :memo: | FP-GraphMiner algorithm [#105](https://github.com/ZigRazor/CXXGraph/issues/105) | TBD |
-| :memo: | Release 1.0.2 | TBD |
+| :memo: | Release 1.2.2 | TBD |
 | :memo: | Tarjan's algorithm [#103](https://github.com/ZigRazor/CXXGraph/issues/103) | TBD |
-| :memo: | Release 1.0.3 | TBD |
+| :memo: | Release 1.2.3 | TBD |
 | :heavy_check_mark: | Graph Topological Sort [#104](https://github.com/ZigRazor/CXXGraph/issues/107) | Nov 3, 2022 |
 | :memo: | Official Site Release | TBD |
-| :memo: | Release 1.1.0 | TBD |
+| :memo: | Release 1.3.0 | TBD |
 | :memo: | Custom export and import [#19](https://github.com/ZigRazor/CXXGraph/issues/19) | TBD |
 | :memo: | Input & Output file format [#172](https://github.com/ZigRazor/CXXGraph/issues/172) | TBD |
-| :memo: | Release 1.2.0 | TBD |
-| :heavy_check_mark: | Multi-Thread implementation of BFS [#121](https://github.com/ZigRazor/CXXGraph/issues/121) | Dec 6, 2022 |
-| :memo: | Release 1.2.1 | TBD |
-| :grey_exclamation: | Thread Safe implementations of Boruvka, Prim & Kruskal algorithm [#128](https://github.com/ZigRazor/CXXGraph/issues/128) | Oct 5, 2022 |
-| :memo: | Release 1.3.0 | TBD |
-| :memo: | Edge-Cut Partition Algorithm [#183](https://github.com/ZigRazor/CXXGraph/issues/183) | TBD |
-| :memo: | Release 1.3.1 | TBD |
-| :heavy_check_mark: | WB-Libra Parttition Algorithm [#178](https://github.com/ZigRazor/CXXGraph/issues/178) | Nov 25, 2022 |
 | :memo: | Release 1.4.0 | TBD |
+| :heavy_check_mark: | Multi-Thread implementation of BFS [#121](https://github.com/ZigRazor/CXXGraph/issues/121) | Dec 6, 2022 |
+| :memo: | Release 1.5.1 | TBD |
+| :grey_exclamation: | Thread Safe implementations of Boruvka, Prim & Kruskal algorithm [#128](https://github.com/ZigRazor/CXXGraph/issues/128) | Oct 5, 2022 |
+| :memo: | Release 1.6.0 | TBD |
+| :memo: | Edge-Cut Partition Algorithm [#183](https://github.com/ZigRazor/CXXGraph/issues/183) | TBD |
+| :memo: | Release 1.6.1 | TBD |
+| :heavy_check_mark: | WB-Libra Parttition Algorithm [#178](https://github.com/ZigRazor/CXXGraph/issues/178) | Nov 25, 2022 |
+| :memo: | Release 1.7.0 | TBD |
 | :memo: | Introduce Hypergraph [#122](https://github.com/ZigRazor/CXXGraph/issues/122) | TBD |
 | :memo: | Stable Release 2.0.0 | TBD |
 | :memo: | TBD | TBD |
@@ -93,10 +98,6 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
   - [How to use](#how-to-use)
   - [Example](#example)
   - [Unit-Test Execution](#unit-test-execution)
-    - [OpenSSL installation](#openssl-installation)
-      - [Ubuntu/Debian](#ubuntudebian)
-      - [RedHat/CentOS/RockyLinux/Fedora](#redhatcentosrockylinuxfedora)
-      - [Other System](#other-system)
     - [Google Test Installation](#google-test-installation)
     - [How to Compile Test](#how-to-compile-test)
     - [How to Run Test](#how-to-run-test)
@@ -192,8 +193,9 @@ The Classes Explanation can be found in the [Doxygen Documentation](https://rawc
 
 ## Requirements
 
-The minimun C++ standard required is **C++17** and a G++ compiler version greater than 7.3.0.
-Are also required [OpenSSL library](https://www.openssl.org/)
+- The minimum C++ standard required is **C++17**
+- A GCC compiler version greater than 7.3.0 *OR*
+- A MSVC compiler that supports C++17
 
 ## How to use
 
@@ -206,26 +208,6 @@ Work in Progess
 ## Unit-Test Execution
 
 The Unit-Test required the CMake version greater than 3.9 and the **google test**  library.
-
-### OpenSSL installation
-
-[OpenSSL](https://www.openssl.org/)
-
-#### Ubuntu/Debian
-
-``` bash
-sudo apt-get install openssl libssl-dev
-```
-
-#### RedHat/CentOS/RockyLinux/Fedora
-
-``` bash
-yum install openssl-devel
-```
-
-#### Other System
-
-You can find more information on how to install OpenSSL at this [link](https://github.com/openssl/openssl)
 
 ### Google Test Installation
 

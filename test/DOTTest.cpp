@@ -6,19 +6,19 @@
 
 TEST(DOTTest, WriteToDotDirectedWeighted) {
   // Generate a simple test graph with few nodes and edges
-  CXXGRAPH::Node<int> node1("1", 1);
-  CXXGRAPH::Node<int> node2("2", 2);
-  CXXGRAPH::Node<int> node3("3", 3);
-  std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
+  std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGRAPH::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
-  CXXGRAPH::DirectedWeightedEdge<int> edge2(2, node2, node3, 3);
-  CXXGRAPH::DirectedWeightedEdge<int> edge3(3, node3, node1, 7);
-  CXXGRAPH::T_EdgeSet<int> edgeSet;
+  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
+  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 3);
+  CXXGraph::DirectedWeightedEdge<int> edge3(3, node3, node1, 7);
+  CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(&edge1);
   edgeSet.insert(&edge2);
   edgeSet.insert(&edge3);
-  CXXGRAPH::Graph<int> graph(edgeSet);
+  CXXGraph::Graph<int> graph(edgeSet);
 
   // Write the graph to a DOT file
   graph.writeToDotFile("./", "example_graph_directed_weighted",
@@ -27,44 +27,44 @@ TEST(DOTTest, WriteToDotDirectedWeighted) {
 
 TEST(DOTTest, WriteToDotUndirected) {
   // Generate a simple test graph with few nodes and edges
-  CXXGRAPH::Node<int> node1("1", 1);
-  CXXGRAPH::Node<int> node2("2", 2);
-  CXXGRAPH::Node<int> node3("3", 3);
-  std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
+  std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGRAPH::UndirectedEdge<int> edge1(1, pairNode);
-  CXXGRAPH::UndirectedEdge<int> edge2(2, node2, node3);
-  CXXGRAPH::UndirectedEdge<int> edge3(3, node3, node1);
-  CXXGRAPH::T_EdgeSet<int> edgeSet;
+  CXXGraph::UndirectedEdge<int> edge1(1, pairNode);
+  CXXGraph::UndirectedEdge<int> edge2(2, node2, node3);
+  CXXGraph::UndirectedEdge<int> edge3(3, node3, node1);
+  CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(&edge1);
   edgeSet.insert(&edge2);
   edgeSet.insert(&edge3);
-  CXXGRAPH::Graph<int> graph(edgeSet);
+  CXXGraph::Graph<int> graph(edgeSet);
 
   // Write the graph to a DOT file
   graph.writeToDotFile("./", "example_graph_undirected", "example_graph");
 }
 
 TEST(DOTTest, WriteToDotMixed) {
-  CXXGRAPH::Node<int> node1("1", 1);
-  CXXGRAPH::Node<int> node2("2", 2);
-  CXXGRAPH::Node<int> node3("3", 3);
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
 
-  CXXGRAPH::DirectedWeightedEdge<int> edge1(1, node1, node2, 1);
-  CXXGRAPH::UndirectedWeightedEdge<int> edge2(2, node2, node3, 1);
-  CXXGRAPH::DirectedEdge<int> edge3(3, node1, node3);
+  CXXGraph::DirectedWeightedEdge<int> edge1(1, node1, node2, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge2(2, node2, node3, 1);
+  CXXGraph::DirectedEdge<int> edge3(3, node1, node3);
 
-  CXXGRAPH::T_EdgeSet<int> edgeSet;
+  CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(&edge1);
   edgeSet.insert(&edge2);
   edgeSet.insert(&edge3);
 
-  CXXGRAPH::Graph<int> graph(edgeSet);
+  CXXGraph::Graph<int> graph(edgeSet);
   graph.writeToDotFile("./", "mixed", "example_graph");
 }
 
 TEST(DOTTest, ReadFromDotUndirected) {
-  CXXGRAPH::Graph<int> graph;
+  CXXGraph::Graph<int> graph;
   graph.readFromDotFile("..", "test_dot_undirected");
 
   // Check that the graph is undirected
@@ -86,7 +86,7 @@ TEST(DOTTest, ReadFromDotUndirected) {
 }
 
 TEST(DOTTest, ReadFromDotUndirectedWeighted) {
-  CXXGRAPH::Graph<int> graph;
+  CXXGraph::Graph<int> graph;
   graph.readFromDotFile("..", "test_dot_weighted");
 
   // Check that the graph is undirected
@@ -97,7 +97,7 @@ TEST(DOTTest, ReadFromDotUndirectedWeighted) {
   // Check that the first edge is correct
   ASSERT_EQ(graph.getEdge(0).value()->getNodePair().first->getUserId(), "0");
   ASSERT_EQ(graph.getEdge(0).value()->getNodePair().second->getUserId(), "1");
-  ASSERT_EQ(dynamic_cast<const CXXGRAPH::UndirectedWeightedEdge<int> *>(
+  ASSERT_EQ(dynamic_cast<const CXXGraph::UndirectedWeightedEdge<int> *>(
                 graph.getEdge(0).value())
                 ->getWeight(),
             6);
@@ -107,7 +107,7 @@ TEST(DOTTest, ReadFromDotUndirectedWeighted) {
   ASSERT_EQ(graph.getEdge(210).value()->getNodePair().first->getUserId(), "27");
   ASSERT_EQ(graph.getEdge(210).value()->getNodePair().second->getUserId(),
             "28");
-  ASSERT_EQ(dynamic_cast<const CXXGRAPH::UndirectedWeightedEdge<int> *>(
+  ASSERT_EQ(dynamic_cast<const CXXGraph::UndirectedWeightedEdge<int> *>(
                 graph.getEdge(210).value())
                 ->getWeight(),
             2);
@@ -116,7 +116,7 @@ TEST(DOTTest, ReadFromDotUndirectedWeighted) {
 }
 
 TEST(DOTTest, ReadFromDotDirected) {
-  CXXGRAPH::Graph<int> graph;
+  CXXGraph::Graph<int> graph;
   graph.readFromDotFile("..", "test_dot_directed");
 
   // Check that the graph is undirected
@@ -127,12 +127,12 @@ TEST(DOTTest, ReadFromDotDirected) {
   // Check that the first edge is correct
   ASSERT_EQ(graph.getEdge(0).value()->getNodePair().first->getUserId(), "0");
   ASSERT_EQ(graph.getEdge(0).value()->getNodePair().second->getUserId(), "1");
-  ASSERT_EQ(dynamic_cast<const CXXGRAPH::DirectedEdge<int> *>(
+  ASSERT_EQ(dynamic_cast<const CXXGraph::DirectedEdge<int> *>(
                 graph.getEdge(0).value())
                 ->getFrom()
                 .getUserId(),
             "0");
-  ASSERT_EQ(dynamic_cast<const CXXGRAPH::DirectedEdge<int> *>(
+  ASSERT_EQ(dynamic_cast<const CXXGraph::DirectedEdge<int> *>(
                 graph.getEdge(0).value())
                 ->getTo()
                 .getUserId(),
@@ -143,12 +143,12 @@ TEST(DOTTest, ReadFromDotDirected) {
   ASSERT_EQ(graph.getEdge(409).value()->getNodePair().first->getUserId(), "29");
   ASSERT_EQ(graph.getEdge(409).value()->getNodePair().second->getUserId(),
             "27");
-  ASSERT_EQ(dynamic_cast<const CXXGRAPH::DirectedEdge<int> *>(
+  ASSERT_EQ(dynamic_cast<const CXXGraph::DirectedEdge<int> *>(
                 graph.getEdge(409).value())
                 ->getFrom()
                 .getUserId(),
             "29");
-  ASSERT_EQ(dynamic_cast<const CXXGRAPH::DirectedEdge<int> *>(
+  ASSERT_EQ(dynamic_cast<const CXXGraph::DirectedEdge<int> *>(
                 graph.getEdge(409).value())
                 ->getTo()
                 .getUserId(),

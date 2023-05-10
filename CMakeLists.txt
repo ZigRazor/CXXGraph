@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.9)
 
 # set the project name and version
-project(CXXGraph VERSION 1.0.0)
+project(CXXGraph VERSION 1.1.0)
 
 configure_file(CXXGraphConfig.h.in ${PROJECT_SOURCE_DIR}/include/CXXGraphConfig.h)
 
@@ -17,13 +17,10 @@ if(DEBUG)
 		-O0  #no optimization
 		-g   #generate debug info
 	)
-
 endif(DEBUG)
 
 add_subdirectory(test)
-
 add_subdirectory(benchmark)
-
 add_subdirectory(examples)
 
 #install(FILES include/Graph.hpp DESTINATION /usr/include)

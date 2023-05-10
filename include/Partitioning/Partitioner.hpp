@@ -36,8 +36,8 @@
 #include "Utility/Runnable.hpp"
 #include "WeightBalancedLibra.hpp"
 
-namespace CXXGRAPH {
-namespace PARTITIONING {
+namespace CXXGraph {
+namespace Partitioning {
 template <typename T>
 class Partitioner {
  private:
@@ -75,7 +75,7 @@ Partitioner<T>::Partitioner(const T_EdgeSet<T> *dataset, Globals &G)
       weight_sum +=
           (edge_it->isWeighted().has_value() && edge_it->isWeighted().value())
               ? dynamic_cast<const Weighted *>(edge_it)->getWeight()
-              : CXXGRAPH::NEGLIGIBLE_WEIGHT;
+              : CXXGraph::NEGLIGIBLE_WEIGHT;
     }
     double lambda = std::max(1.0, GLOBALS.param1);
     double P = static_cast<double>(GLOBALS.numberOfPartition);
@@ -118,7 +118,7 @@ Partitioner<T>::Partitioner(const Partitioner &other) {
       weight_sum +=
           (edge_it->isWeighted().has_value() && edge_it->isWeighted().value())
               ? dynamic_cast<const Weighted *>(edge_it)->getWeight()
-              : CXXGRAPH::NEGLIGIBLE_WEIGHT;
+              : CXXGraph::NEGLIGIBLE_WEIGHT;
     }
     double lambda = GLOBALS.param1;
     double P = static_cast<double>(GLOBALS.numberOfPartition);
@@ -146,9 +146,9 @@ CoordinatedPartitionState<T> Partitioner<T>::startCoordinated() {
   CoordinatedPartitionState<T> state(GLOBALS);
   int processors = GLOBALS.threads;
 
-  std::thread myThreads[processors];
-  std::shared_ptr<Runnable> myRunnable[processors];
-  std::vector<const Edge<T> *> list_vector[processors];
+  std::vector<std::thread> myThreads(processors);
+  std::vector<std::shared_ptr<Runnable>> myRunnable(processors);
+  std::vector<std::vector<const Edge<T> *>> list_vector(processors);
   int n = dataset->size();
   int subSize = n / processors + 1;
   for (int t = 0; t < processors; ++t) {
@@ -158,8 +158,8 @@ CoordinatedPartitionState<T> Partitioner<T>::startCoordinated() {
       list_vector[t] =
           std::vector<const Edge<T> *>(std::next(dataset->begin(), iStart),
                                        std::next(dataset->begin(), iEnd));
-      myRunnable[t] = std::make_shared<PartitionerThread<T>>(list_vector[t],
-                                                             &state, algorithm);
+      myRunnable[t].reset(
+          new PartitionerThread<T>(list_vector[t], &state, algorithm));
       myThreads[t] = std::thread(&Runnable::run, myRunnable[t].get());
     }
   }
@@ -191,7 +191,7 @@ CoordinatedPartitionState<T> Partitioner<T>::performCoordinatedPartition() {
   return startCoordinated();
 }
 
-}  // namespace PARTITIONING
-}  // namespace CXXGRAPH
+}  // namespace Partitioning
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_PARTITIONING_PARTITIONER_H__

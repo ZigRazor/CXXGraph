@@ -24,7 +24,7 @@
 
 #include <mutex>
 
-namespace CXXGRAPH {
+namespace CXXGraph {
 class ThreadSafe {
  public:
   void getLock() const;
@@ -37,6 +37,6 @@ class ThreadSafe {
 inline void ThreadSafe::getLock() const { mutex.lock(); }
 // inline because the implementation of non-template function in header file
 inline void ThreadSafe::releaseLock() const { mutex.unlock(); }
-}  // namespace CXXGRAPH
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_THREADSAFE_H__

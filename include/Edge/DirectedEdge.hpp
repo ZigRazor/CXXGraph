@@ -24,7 +24,7 @@
 
 #include "Edge.hpp"
 
-namespace CXXGRAPH {
+namespace CXXGraph {
 template <typename T>
 class UndirectedEdge;
 
@@ -97,6 +97,6 @@ std::ostream &operator<<(std::ostream &os, const DirectedEdge<T> &edge) {
      << edge.getId() << "|-----> ((Node: " << edge.getTo().getId() << "))";
   return os;
 }
-}  // namespace CXXGRAPH
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_DIRECTEDEDGE_H__

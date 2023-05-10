@@ -42,6 +42,7 @@
 #include <stack>
 #include <string>
 #include <thread>
+#include <unordered_map>
 #include <unordered_set>
 #include <utility>
 
@@ -62,13 +63,16 @@
 #include "Utility/ThreadSafe.hpp"
 #include "Utility/Typedef.hpp"
 #include "Utility/Writer.hpp"
-#include "zlib.h"
 
-namespace CXXGRAPH {
+#ifdef WITH_COMPRESSION
+#include <zlib.h>
+#endif
+
+namespace CXXGraph {
 template <typename T>
 using T_EdgeSet = std::unordered_set<const Edge<T> *>;
 
-namespace PARTITIONING {
+namespace Partitioning {
 template <typename T>
 class Partition;
 }
@@ -85,27 +89,28 @@ class Graph {
   T_EdgeSet<T> edgeSet = {};
   std::optional<std::pair<std::string, char>> getExtenstionAndSeparator(
       InputOutputFormat format) const;
-  int writeToStandardFile(const std::string &workingDir,
-                          const std::string &OFileName, bool compress,
-                          bool writeNodeFeat, bool writeEdgeWeight,
-                          InputOutputFormat format) const;
+  void writeGraphToStream(std::ostream &oGraph, std::ostream &oNodeFeat,
+                          std::ostream &oEdgeWeight, const char &sep,
+                          bool writeNodeFeat, bool writeEdgeWeight) const;
+  void readGraphFromStream(std::istream &iGraph, std::istream &iNodeFeat,
+                           std::istream &iEdgeWeight, bool readNodeFeat,
+                           bool readEdgeWeight);
   int writeToDot(const std::string &workingDir, const std::string &OFileName,
                  const std::string &graphName) const;
-  int readFromStandardFile(const std::string &workingDir,
-                           const std::string &OFileName, bool compress,
-                           bool readNodeFeat, bool readEdgeWeight,
-                           InputOutputFormat format);
   int readFromDot(const std::string &workingDir, const std::string &fileName);
-  void recreateGraphFromReadFiles(
+  void recreateGraph(
       std::unordered_map<unsigned long long,
                          std::pair<std::string, std::string>> &edgeMap,
       std::unordered_map<unsigned long long, bool> &edgeDirectedMap,
       std::unordered_map<std::string, T> &nodeFeatMap,
       std::unordered_map<unsigned long long, double> &edgeWeightMap);
+
+#ifdef WITH_COMPRESSION
   int compressFile(const std::string &inputFile,
                    const std::string &outputFile) const;
   int decompressFile(const std::string &inputFile,
                      const std::string &outputFile) const;
+#endif
 
  public:
   Graph() = default;
@@ -458,21 +463,6 @@ class Graph {
   virtual const std::vector<Node<T>> graph_slicing(const Node<T> &start) const;
 
   /**
-   * \brief
-   * This function write the graph in an output file
-   * Note: No Thread Safe
-   *
-   * @param format The Output format of the file
-   * @param workingDir The path to the directory in which will be placed the
-   * output file
-   * @param OFileName The Output File Name ( )
-   * @param compress Indicates if the output will be compressed
-   * @param writeNodeFeat Indicates if export also Node Features
-   * @param writeEdgeWeight Indicates if export also Edge Weights
-   * @return 0 if all OK, else return a negative value
-   */
-
-  /**
    * @brief Function runs the Dial algorithm  (Optimized Dijkstra for small
    * range weights) for some source node and target node in the graph and
    * returns the shortest distance of target from the source. Note: No Thread
@@ -499,18 +489,16 @@ class Graph {
 
   /**
    * \brief
-   * This function write the graph in an output file
-   * Note: No Thread Safe
+   * This function writes the graph to an output file
+   * Note: Not threadsafe
    *
-   * @param format The Output format of the file
-   * @param workingDir The path to the directory in which is placed the Output
-   * file
-   * @param OFileName The Output File Name ( )
-   * @param compress Indicates if the Output will be compressed ( Pay Attention
-   * if compress flag is true, not compressed files will be deleted [ #48 ] )
+   * @param format The output format of the file
+   * @param workingDir The parent directory of the output file
+   * @param OFileName The output filename
+   * @param compress Enables compression (requires zlib)
    * @param writeNodeFeat Indicates if export also Node Features
    * @param writeEdgeWeight Indicates if export also Edge Weights
-   * @return 0 if all OK, else return a negative value
+   * @return 0 if OK, else return a negative value
    */
   virtual int writeToFile(
       InputOutputFormat format = InputOutputFormat::STANDARD_CSV,
@@ -524,17 +512,17 @@ class Graph {
 
   /**
    * \brief
-   * This function read the graph from an input file
-   * Note: No Thread Safe
+   * This function reads the graph from an input file
+   * Note: Not threadsafe
    *
-   * @param format The Input format of the file
-   * @param workingDir The path to the directory in which is placed the Input
+   * @param format The input format of the file
+   * @param workingDir The parent directory of the input
    * file
-   * @param OFileName The Input File Name ( )
-   * @param compress Indicates if the Input is compressed
+   * @param OFileName The input filename
+   * @param compress Enables compression (requires zlib)
    * @param readNodeFeat Indicates if import also Node Features
    * @param readEdgeWeight Indicates if import also Edge Weights
-   * @return 0 if all OK, else return a negative value
+   * @return 0 if OK, else return a negative value
    */
   virtual int readFromFile(
       InputOutputFormat format = InputOutputFormat::STANDARD_CSV,
@@ -555,7 +543,7 @@ class Graph {
    * @return The partiton Map of the partitioned graph
    */
   virtual PartitionMap<T> partitionGraph(
-      const PARTITIONING::PartitionAlgorithm algorithm,
+      const Partitioning::PartitionAlgorithm algorithm,
       const unsigned int numberOfPartitions, const double param1 = 0.0,
       const double param2 = 0.0, const double param3 = 0.0,
       const unsigned int numberOfthreads =
@@ -678,81 +666,6 @@ std::optional<std::pair<std::string, char>> Graph<T>::getExtenstionAndSeparator(
 }
 
 template <typename T>
-int Graph<T>::writeToStandardFile(const std::string &workingDir,
-                                  const std::string &OFileName, bool compress,
-                                  bool writeNodeFeat, bool writeEdgeWeight,
-                                  InputOutputFormat format) const {
-  auto result = getExtenstionAndSeparator(format);
-  if (!result) {
-    std::cerr << "Unknown format\n";
-    return -1;
-  }
-  auto &[extension, separator] = *result;
-
-  std::ofstream ofileGraph;
-  std::string completePathToFileGraph =
-      workingDir + "/" + OFileName + extension;
-  ofileGraph.open(completePathToFileGraph);
-  if (!ofileGraph.is_open()) {
-    // ERROR File Not Open
-    return -1;
-  }
-
-  for (const auto &edge : edgeSet) {
-    ofileGraph
-        << edge->getId() << separator << edge->getNodePair().first->getUserId()
-        << separator << edge->getNodePair().second->getUserId() << separator
-        << ((edge->isDirected().has_value() && edge->isDirected().value()) ? 1
-                                                                           : 0)
-        << std::endl;
-  }
-  ofileGraph.close();
-
-  if (writeNodeFeat) {
-    std::ofstream ofileNodeFeat;
-    std::string completePathToFileNodeFeat =
-        workingDir + "/" + OFileName + "_NodeFeat" + extension;
-    ofileNodeFeat.open(completePathToFileNodeFeat);
-    if (!ofileNodeFeat.is_open()) {
-      // ERROR File Not Open
-      return -1;
-    }
-    auto nodeSet = getNodeSet();
-    for (const auto &node : nodeSet) {
-      ofileNodeFeat << node->getUserId() << separator << node->getData()
-                    << std::endl;
-    }
-    ofileNodeFeat.close();
-  }
-
-  if (writeEdgeWeight) {
-    std::ofstream ofileEdgeWeight;
-    std::string completePathToFileEdgeWeight =
-        workingDir + "/" + OFileName + "_EdgeWeight" + extension;
-    ofileEdgeWeight.open(completePathToFileEdgeWeight);
-    if (!ofileEdgeWeight.is_open()) {
-      // ERROR File Not Open
-      std::cout << "ERROR File Not Open" << std::endl;
-      return -1;
-    }
-
-    for (const auto &edge : edgeSet) {
-      ofileEdgeWeight
-          << edge->getId() << separator
-          << (edge->isWeighted().has_value() && edge->isWeighted().value()
-                  ? (dynamic_cast<const Weighted *>(edge))->getWeight()
-                  : 0.0)
-          << separator
-          << (edge->isWeighted().has_value() && edge->isWeighted().value() ? 1
-                                                                           : 0)
-          << std::endl;
-    }
-    ofileEdgeWeight.close();
-  }
-  return 0;
-}
-
-template <typename T>
 int Graph<T>::writeToDot(const std::string &workingDir,
                          const std::string &OFileName,
                          const std::string &graphName) const {
@@ -819,94 +732,82 @@ struct csv_whitespace : std::ctype<char> {
 };
 
 template <typename T>
-int Graph<T>::readFromStandardFile(const std::string &workingDir,
-                                   const std::string &OFileName, bool compress,
-                                   bool readNodeFeat, bool readEdgeWeight,
-                                   InputOutputFormat format) {
-  auto result = getExtenstionAndSeparator(format);
-  if (!result) {
-    std::cerr << "Unknown format\n";
-    return -1;
+void Graph<T>::writeGraphToStream(std::ostream &oGraph, std::ostream &oNodeFeat,
+                                  std::ostream &oEdgeWeight, const char &sep,
+                                  bool writeNodeFeat,
+                                  bool writeEdgeWeight) const {
+  for (const auto &edge : edgeSet) {
+    oGraph << edge->getId() << sep << edge->getNodePair().first->getUserId()
+           << sep << edge->getNodePair().second->getUserId() << sep
+           << ((edge->isDirected().has_value() && edge->isDirected().value())
+                   ? 1
+                   : 0)
+           << std::endl;
   }
-  auto &[extension, separator] = *result;
 
-  std::ifstream ifileGraph;
-  std::ifstream ifileNodeFeat;
-  std::ifstream ifileEdgeWeight;
+  if (writeNodeFeat) {
+    auto nodeSet = getNodeSet();
+    for (const auto &node : nodeSet) {
+      oNodeFeat << node->getUserId() << sep << node->getData() << std::endl;
+    }
+  }
 
+  if (writeEdgeWeight) {
+    for (const auto &edge : edgeSet) {
+      oEdgeWeight
+          << edge->getId() << sep
+          << (edge->isWeighted().has_value() && edge->isWeighted().value()
+                  ? (dynamic_cast<const Weighted *>(edge))->getWeight()
+                  : 0.0)
+          << sep
+          << (edge->isWeighted().has_value() && edge->isWeighted().value() ? 1
+                                                                           : 0)
+          << std::endl;
+    }
+  }
+}
+
+template <typename T>
+void Graph<T>::readGraphFromStream(std::istream &iGraph,
+                                   std::istream &iNodeFeat,
+                                   std::istream &iEdgeWeight, bool readNodeFeat,
+                                   bool readEdgeWeight) {
   std::unordered_map<unsigned long long, std::pair<std::string, std::string>>
       edgeMap;
   std::unordered_map<unsigned long long, bool> edgeDirectedMap;
   std::unordered_map<std::string, T> nodeFeatMap;
   std::unordered_map<unsigned long long, double> edgeWeightMap;
-  std::string completePathToFileGraph =
-      workingDir + "/" + OFileName + extension;
 
-  ifileGraph.open(completePathToFileGraph);
-  if (!ifileGraph.is_open()) {
-    // ERROR File Not Open
-    // std::cout << "ERROR File Not Open : " << completePathToFileGraph <<
-    // std::endl;
-    return -1;
-  }
-
-  ifileGraph.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
   unsigned long long edgeId;
   std::string nodeId1;
   std::string nodeId2;
   bool directed;
-  while (ifileGraph >> edgeId >> nodeId1 >> nodeId2 >>
+  while (iGraph >> edgeId >> nodeId1 >> nodeId2 >>
          directed) { /* loop continually */
     edgeMap[edgeId] = std::pair<std::string, std::string>(nodeId1, nodeId2);
     edgeDirectedMap[edgeId] = directed;
   }
-  ifileGraph.close();
-  if (compress) remove(completePathToFileGraph.c_str());
 
   if (readNodeFeat) {
-    std::string completePathToFileNodeFeat =
-        workingDir + "/" + OFileName + "_NodeFeat" + extension;
-    ifileNodeFeat.open(completePathToFileNodeFeat);
-    if (!ifileNodeFeat.is_open()) {
-      // ERROR File Not Open
-      // std::cout << "ERROR File Not Open" << std::endl;
-      return -1;
-    }
-    ifileNodeFeat.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
     std::string nodeId;
     T nodeFeat;
-    while (ifileNodeFeat >> nodeId >> nodeFeat) {
+    while (iNodeFeat >> nodeId >> nodeFeat) {
       nodeFeatMap[nodeId] = nodeFeat;
     }
-    ifileNodeFeat.close();
-    if (compress) remove(completePathToFileNodeFeat.c_str());
   }
 
   if (readEdgeWeight) {
-    std::string completePathToFileEdgeWeight =
-        workingDir + "/" + OFileName + "_EdgeWeight" + extension;
-    ifileEdgeWeight.open(completePathToFileEdgeWeight);
-    if (!ifileEdgeWeight.is_open()) {
-      // ERROR File Not Open
-      // std::cout << "ERROR File Not Open" << std::endl;
-      return -1;
-    }
-    ifileEdgeWeight.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
     unsigned long long edgeId;
     double weight;
     bool weighted;
-    while (ifileEdgeWeight >> edgeId >> weight >>
-           weighted) { /* loop continually */
+    while (iEdgeWeight >> edgeId >> weight >> weighted) { /* loop continually */
       if (weighted) {
         edgeWeightMap[edgeId] = weight;
       }
     }
-    ifileEdgeWeight.close();
-    if (compress) remove(completePathToFileEdgeWeight.c_str());
   }
-  recreateGraphFromReadFiles(edgeMap, edgeDirectedMap, nodeFeatMap,
-                             edgeWeightMap);
-  return 0;
+
+  recreateGraph(edgeMap, edgeDirectedMap, nodeFeatMap, edgeWeightMap);
 }
 
 template <typename T>
@@ -988,13 +889,13 @@ int Graph<T>::readFromDot(const std::string &workingDir,
   }
   iFile.close();
 
-  recreateGraphFromReadFiles(edgeMap, edgeDirectedMap, nodeFeatMap,
+  recreateGraph(edgeMap, edgeDirectedMap, nodeFeatMap,
                              edgeWeightMap);
   return 0;
 }
 
 template <typename T>
-void Graph<T>::recreateGraphFromReadFiles(
+void Graph<T>::recreateGraph(
     std::unordered_map<unsigned long long, std::pair<std::string, std::string>>
         &edgeMap,
     std::unordered_map<unsigned long long, bool> &edgeDirectedMap,
@@ -1051,6 +952,7 @@ void Graph<T>::recreateGraphFromReadFiles(
   }
 }
 
+#ifdef WITH_COMPRESSION
 template <typename T>
 int Graph<T>::compressFile(const std::string &inputFile,
                            const std::string &outputFile) const {
@@ -1112,6 +1014,7 @@ int Graph<T>::decompressFile(const std::string &inputFile,
   gzclose(inFileZ);
   return 0;
 }
+#endif
 
 template <typename T>
 unsigned long long Graph<T>::setFind(
@@ -1405,7 +1308,7 @@ const FWResult Graph<T>::floydWarshall() const {
   result.success = false;
   result.errorMessage = "";
   std::unordered_map<std::pair<std::string, std::string>, double,
-                     CXXGRAPH::pair_hash>
+                     CXXGraph::pair_hash>
       pairwise_dist;
   const auto &nodeSet = Graph<T>::getNodeSet();
   // create a pairwise distance matrix with distance node distances
@@ -2501,7 +2404,7 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
 
   // Create buckets B[].
   // B[i] keep vertex of distance label i
-  std::deque<const Node<T> *> B[maxWeight * V + 1];
+  std::vector<std::deque<const Node<T> *>> B((maxWeight * V + 1));
 
   B[0].push_back(&source);
   dist[&source].first = 0;
@@ -2534,12 +2437,12 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
             i.second->isDirected().value()) {
           const DirectedWeightedEdge<T> *dw_edge =
               dynamic_cast<const DirectedWeightedEdge<T> *>(i.second);
-          weight = dw_edge->getWeight();
+          weight = (int)dw_edge->getWeight();
         } else if (i.second->isDirected().has_value() &&
                    !i.second->isDirected().value()) {
           const UndirectedWeightedEdge<T> *udw_edge =
               dynamic_cast<const UndirectedWeightedEdge<T> *>(i.second);
-          weight = udw_edge->getWeight();
+          weight = (int)udw_edge->getWeight();
         } else {
           // ERROR it shouldn't never returned ( does not exist a Node
           // Weighted and not Directed/Undirected)
@@ -2699,8 +2602,57 @@ int Graph<T>::writeToFile(InputOutputFormat format,
                           const std::string &OFileName, bool compress,
                           bool writeNodeFeat, bool writeEdgeWeight) const {
   int result = 0;
-  result = writeToStandardFile(workingDir, OFileName, compress, writeNodeFeat,
-                               writeEdgeWeight, format);
+
+  // Open streams and write
+  auto extSep = getExtenstionAndSeparator(format);
+  if (!extSep) {
+    std::cerr << "Unknown format\n";
+    return -1;
+  }
+  auto &[extension, separator] = *extSep;
+
+  std::ofstream ofileGraph;
+  std::ofstream ofileNodeFeat;
+  std::ofstream ofileEdgeWeight;
+
+  std::string completePathToFileGraph =
+      workingDir + "/" + OFileName + extension;
+  ofileGraph.open(completePathToFileGraph);
+  if (!ofileGraph.is_open()) {
+    // ERROR File Not Open
+    return -1;
+  }
+
+  if (writeNodeFeat) {
+    std::string completePathToFileNodeFeat =
+        workingDir + "/" + OFileName + "_NodeFeat" + extension;
+    ofileNodeFeat.open(completePathToFileNodeFeat);
+    if (!ofileNodeFeat.is_open()) {
+      // ERROR File Not Open
+      return -1;
+    }
+  }
+
+  if (writeEdgeWeight) {
+    std::string completePathToFileEdgeWeight =
+        workingDir + "/" + OFileName + "_EdgeWeight" + extension;
+    ofileEdgeWeight.open(completePathToFileEdgeWeight);
+    if (!ofileEdgeWeight.is_open()) {
+      // ERROR File Not Open
+      std::cout << "ERROR File Not Open" << std::endl;
+      return -1;
+    }
+  }
+
+  writeGraphToStream(ofileGraph, ofileNodeFeat, ofileEdgeWeight, separator,
+                     writeNodeFeat, writeEdgeWeight);
+
+  // Cleanup from writing
+  ofileGraph.close();
+  if (writeNodeFeat) ofileNodeFeat.close();
+  if (writeEdgeWeight) ofileEdgeWeight.close();
+
+#ifdef WITH_COMPRESSION
   if (result == 0 && compress) {
     auto _compress = [this, &workingDir, &OFileName, &writeNodeFeat,
                       &writeEdgeWeight](const std::string &extension) {
@@ -2750,6 +2702,8 @@ int Graph<T>::writeToFile(InputOutputFormat format,
       result = -1;
     }
   }
+#endif
+
   return result;
 }
 
@@ -2759,6 +2713,8 @@ int Graph<T>::readFromFile(InputOutputFormat format,
                            const std::string &OFileName, bool compress,
                            bool readNodeFeat, bool readEdgeWeight) {
   int result = 0;
+
+#ifdef WITH_COMPRESSION
   if (compress) {
     auto decompress = [this, &workingDir, &OFileName, &readNodeFeat,
                        &readEdgeWeight](const std::string &extension) {
@@ -2798,11 +2754,85 @@ int Graph<T>::readFromFile(InputOutputFormat format,
       // INPUT FORMAT NOT RECOGNIZED
       result = -1;
     }
+
+    if (result != 0) {
+      return result;
+    }
   }
-  if (result == 0) {
-    result = readFromStandardFile(workingDir, OFileName, compress, readNodeFeat,
-                                  readEdgeWeight, format);
+#endif
+  // Open streams and read
+  auto extSep = getExtenstionAndSeparator(format);
+  if (!extSep) {
+    std::cerr << "Unknown format\n";
+    return -1;
   }
+  auto &[extension, separator] = *extSep;
+
+  std::string completePathToFileGraph =
+      workingDir + "/" + OFileName + extension;
+  std::string completePathToFileNodeFeat;
+  std::string completePathToFileEdgeWeight;
+
+  std::ifstream ifileGraph;
+  std::ifstream ifileNodeFeat;
+  std::ifstream ifileEdgeWeight;
+
+  ifileGraph.open(completePathToFileGraph);
+  if (!ifileGraph.is_open()) {
+    // ERROR File Not Open
+    // std::cout << "ERROR File Not Open : " << completePathToFileGraph <<
+    // std::endl;
+    return -1;
+  }
+  ifileGraph.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
+
+  if (readNodeFeat) {
+    completePathToFileNodeFeat =
+        workingDir + "/" + OFileName + "_NodeFeat" + extension;
+    ifileNodeFeat.open(completePathToFileNodeFeat);
+    if (!ifileNodeFeat.is_open()) {
+      // ERROR File Not Open
+      // std::cout << "ERROR File Not Open" << std::endl;
+      return -1;
+    }
+    ifileNodeFeat.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
+  }
+
+  if (readEdgeWeight) {
+    completePathToFileEdgeWeight =
+        workingDir + "/" + OFileName + "_EdgeWeight" + extension;
+    ifileEdgeWeight.open(completePathToFileEdgeWeight);
+    if (!ifileEdgeWeight.is_open()) {
+      // ERROR File Not Open
+      // std::cout << "ERROR File Not Open" << std::endl;
+      return -1;
+    }
+    ifileEdgeWeight.imbue(std::locale(ifileGraph.getloc(), new csv_whitespace));
+  }
+
+  readGraphFromStream(ifileGraph, ifileNodeFeat, ifileEdgeWeight, readNodeFeat,
+                      readEdgeWeight);
+
+  // Cleanup
+  ifileGraph.close();
+#ifdef WITH_COMPRESSION
+  if (compress) remove(completePathToFileGraph.c_str());
+#endif
+
+  if (readNodeFeat) {
+    ifileNodeFeat.close();
+#ifdef WITH_COMPRESSION
+    if (compress) remove(completePathToFileNodeFeat.c_str());
+#endif
+  }
+
+  if (readEdgeWeight) {
+    ifileEdgeWeight.close();
+#ifdef WITH_COMPRESSION
+    if (compress) remove(completePathToFileEdgeWeight.c_str());
+#endif
+  }
+
   return result;
 }
 
@@ -2821,18 +2851,18 @@ int Graph<T>::readFromDotFile(const std::string &workingDir,
 
 template <typename T>
 PartitionMap<T> Graph<T>::partitionGraph(
-    const PARTITIONING::PartitionAlgorithm algorithm,
+    const Partitioning::PartitionAlgorithm algorithm,
     const unsigned int numberOfPartitions, const double param1,
     const double param2, const double param3,
     const unsigned int numberOfThreads) const {
   PartitionMap<T> partitionMap;
-  PARTITIONING::Globals globals(numberOfPartitions, algorithm, param1, param2,
+  Partitioning::Globals globals(numberOfPartitions, algorithm, param1, param2,
                                 param3, numberOfThreads);
   const T_EdgeSet<T> &edgeSet = getEdgeSet();
   globals.edgeCardinality = edgeSet.size();
   globals.vertexCardinality = this->getNodeSet().size();
-  PARTITIONING::Partitioner<T> partitioner(&edgeSet, globals);
-  PARTITIONING::CoordinatedPartitionState<T> partitionState =
+  Partitioning::Partitioner<T> partitioner(&edgeSet, globals);
+  Partitioning::CoordinatedPartitionState<T> partitionState =
       partitioner.performCoordinatedPartition();
   partitionMap = partitionState.getPartitionMap();
   return partitionMap;
@@ -2903,5 +2933,5 @@ std::ostream &operator<<(std::ostream &os, const AdjacencyMatrix<T> &adj) {
   return os;
 }
 
-}  // namespace CXXGRAPH
+}  // namespace CXXGraph
 #endif  // __CXXGRAPH_GRAPH_H__

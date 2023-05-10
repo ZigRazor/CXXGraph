@@ -28,8 +28,8 @@
 #include "PartitionStrategy.hpp"
 #include "Partitioning/Utility/Globals.hpp"
 
-namespace CXXGRAPH {
-namespace PARTITIONING {
+namespace CXXGraph {
+namespace Partitioning {
 /**
  * @brief A Vertex Cut Partioning Algorithm ( as described by this paper
  * https://arxiv.org/pdf/2010.04414.pdf )
@@ -186,7 +186,7 @@ void WeightBalancedLibra<T>::performStep(const Edge<T> &e,
   v_record->releaseLock();
   return;
 }
-}  // namespace PARTITIONING
-}  // namespace CXXGRAPH
+}  // namespace Partitioning
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_PARTITIONING_WEIGHTBALANCEDLIBRA_H__

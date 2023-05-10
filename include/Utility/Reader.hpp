@@ -22,7 +22,7 @@
 
 #pragma once  // This is to make sure that this header is only included once
 
-namespace CXXGRAPH {
+namespace CXXGraph {
 /*!
     Interface to implement for a custom reader.
     */
@@ -40,6 +40,6 @@ class Reader {
    */
   virtual int ReadGraph(Graph<T> &graph, std::ifstream &file) = 0;
 };
-}  // namespace CXXGRAPH
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_READER_H__
