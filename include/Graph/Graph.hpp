@@ -796,7 +796,6 @@ int Graph<T>::writeToDot(const std::string &workingDir,
                       dynamic_cast<const Weighted *>(edgeIt)->getWeight())) +
                   ']';
     }
-    std::cout << __LINE__ << std::endl;
     edgeLine += ";\n";
     ofileGraph << edgeLine;
   }
@@ -916,6 +915,7 @@ int Graph<T>::readFromDot(const std::string &workingDir,
   // Define the edge maps
   std::unordered_map<unsigned long long, std::pair<std::string, std::string>>
       edgeMap;
+  std::unordered_map<std::string, T> nodeFeatMap;
   std::unordered_map<unsigned long long, bool> edgeDirectedMap;
   std::unordered_map<unsigned long long, double> edgeWeightMap;
 
@@ -927,7 +927,6 @@ int Graph<T>::readFromDot(const std::string &workingDir,
   // Get full path to the file and open it
   const std::string completePathToFileGraph =
       workingDir + '/' + fileName + ".dot";
-  std::ifstream iFile(completePathToFileGraph);
 
   // Check if the graph is directed
   bool directed = false;
@@ -935,15 +934,17 @@ int Graph<T>::readFromDot(const std::string &workingDir,
   std::string fileContent(std::istreambuf_iterator<char>{fileContentStream},
                           {});
   const std::string directedSeparator = "->";
-  if (fileContent.find(directedSeparator)) {
+  if (fileContent.find("->") != std::string::npos) {
     directed = true;
   }
   // Check if the graph is weighted
   bool weighted = false;
-  if (fileContent.find("weight")) {
+  if (fileContent.find("weight") != std::string::npos) {
     weighted = true;
   }
+  fileContentStream.close();
 
+  std::ifstream iFile(completePathToFileGraph);
   // Write the header of the DOT file in the temp string
   getline(iFile, temp);
 
@@ -956,7 +957,7 @@ int Graph<T>::readFromDot(const std::string &workingDir,
     }
 
     // Remove the whitespaces before the definition of the edge
-    while (*fileRow.begin() == ' ') {
+    while (*fileRow.begin() == ' ' || *fileRow.begin() == '\t') {
       fileRow.erase(fileRow.begin());
     }
 
@@ -965,7 +966,10 @@ int Graph<T>::readFromDot(const std::string &workingDir,
     // Store the symbol representing the edge inside temp
     getline(row_stream, temp, ' ');
     if (weighted) {
-      getline(row_stream, node2, ' ');
+      getline(row_stream, node2, '[');
+      // Remove any whitespaces or tabs from the node string
+      node2.erase(std::remove(node2.begin(), node2.end(), ' '), node2.end());
+      node2.erase(std::remove(node2.begin(), node2.end(), '\t'), node2.end());
 
       getline(row_stream, temp, '=');
       std::string weight;
@@ -983,6 +987,11 @@ int Graph<T>::readFromDot(const std::string &workingDir,
     edgeDirectedMap[edgeId] = directed;
     ++edgeId;
   }
+  iFile.close();
+
+  recreateGraphFromReadFiles(edgeMap, edgeDirectedMap, nodeFeatMap,
+                             edgeWeightMap);
+  return 0;
 }
 
 template <typename T>
