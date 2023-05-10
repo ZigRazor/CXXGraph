@@ -933,7 +933,6 @@ int Graph<T>::readFromDot(const std::string &workingDir,
   std::ifstream fileContentStream(completePathToFileGraph);
   std::string fileContent(std::istreambuf_iterator<char>{fileContentStream},
                           {});
-  const std::string directedSeparator = "->";
   if (fileContent.find("->") != std::string::npos) {
     directed = true;
   }
