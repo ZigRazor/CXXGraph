@@ -24,8 +24,8 @@
 
 #include <set>
 
-namespace CXXGRAPH {
-namespace PARTITIONING {
+namespace CXXGraph {
+namespace Partitioning {
 template <typename T>
 class Record {
  public:
@@ -38,7 +38,7 @@ class Record {
   virtual int getDegree() const = 0;
   virtual void incrementDegree() = 0;
 };
-}  // namespace PARTITIONING
-}  // namespace CXXGRAPH
+}  // namespace Partitioning
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_PARTITIONING_RECORD_H__

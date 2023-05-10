@@ -25,14 +25,14 @@
 #include "Edge/Edge.hpp"
 #include "PartitionState.hpp"
 
-namespace CXXGRAPH {
-namespace PARTITIONING {
+namespace CXXGraph {
+namespace Partitioning {
 template <typename T>
 class PartitionStrategy {
  public:
   virtual void performStep(const Edge<T> &t, PartitionState<T> &Sstate) = 0;
 };
-}  // namespace PARTITIONING
-}  // namespace CXXGRAPH
+}  // namespace Partitioning
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_PARTITIONING_PARTITIONSTRATEGY_H__

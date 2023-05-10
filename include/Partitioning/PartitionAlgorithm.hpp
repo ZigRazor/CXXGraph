@@ -22,8 +22,8 @@
 
 #pragma once
 
-namespace CXXGRAPH {
-namespace PARTITIONING {
+namespace CXXGraph {
+namespace Partitioning {
 /// Specify the Partition Algorithm
 enum E_PartitionAlgorithm {
   EDGEBALANCED_VC_ALG,  ///< A Edge Balanced Vertex-Cut Algorithm
@@ -35,7 +35,7 @@ enum E_PartitionAlgorithm {
   WB_LIBRA,  ///< Weighted Balanced Libra
 };
 typedef E_PartitionAlgorithm PartitionAlgorithm;
-}  // namespace PARTITIONING
-}  // namespace CXXGRAPH
+}  // namespace Partitioning
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_PARTITIONING_PARTITIONALGORITHM_H__

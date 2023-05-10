@@ -23,13 +23,14 @@
 #pragma once
 
 #include <chrono>
+#include <random>
 
 #include "Edge/Edge.hpp"
 #include "PartitionStrategy.hpp"
 #include "Partitioning/Utility/Globals.hpp"
 
-namespace CXXGRAPH {
-namespace PARTITIONING {
+namespace CXXGraph {
+namespace Partitioning {
 /**
  * @brief A Vertex Cut Partioning Algorithm ( as described by this paper
  * https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf )
@@ -148,10 +149,13 @@ void HDRF<T>::performStep(const Edge<T> &e, PartitionState<T> &state) {
   }
 
   //*** PICK A RANDOM ELEMENT FROM CANDIDATES
-  /* initialize random seed: */
+  thread_local static std::default_random_engine rand;
+  thread_local static std::uniform_int_distribution distribution(0, RAND_MAX);
+
   unsigned int seed = (unsigned int)time(NULL);
-  srand(seed);
-  int choice = rand_r(&seed) % candidates.size();
+  rand.seed(seed);
+
+  int choice = distribution(rand) % candidates.size();
   machine_id = candidates.at(choice);
   try {
     CoordinatedPartitionState<T> &cord_state =
@@ -189,7 +193,7 @@ void HDRF<T>::performStep(const Edge<T> &e, PartitionState<T> &state) {
   v_record->releaseLock();
   return;
 }
-}  // namespace PARTITIONING
-}  // namespace CXXGRAPH
+}  // namespace Partitioning
+}  // namespace CXXGraph
 
 #endif  // __CXXGRAPH_PARTITIONING_HDRF_H__
