@@ -95,6 +95,9 @@ class Graph {
   void readGraphFromStream(std::istream &iGraph, std::istream &iNodeFeat,
                            std::istream &iEdgeWeight, bool readNodeFeat,
                            bool readEdgeWeight);
+  int writeToDot(const std::string &workingDir, const std::string &OFileName,
+                 const std::string &graphName) const;
+  int readFromDot(const std::string &workingDir, const std::string &fileName);
   void recreateGraph(
       std::unordered_map<unsigned long long,
                          std::pair<std::string, std::string>> &edgeMap,
@@ -503,6 +506,10 @@ class Graph {
       const std::string &OFileName = "graph", bool compress = false,
       bool writeNodeFeat = false, bool writeEdgeWeight = false) const;
 
+  virtual int writeToDotFile(const std::string &workingDir,
+                             const std::string &OFileName,
+                             const std::string &graphName) const;
+
   /**
    * \brief
    * This function reads the graph from an input file
@@ -522,6 +529,9 @@ class Graph {
       const std::string &workingDir = ".",
       const std::string &OFileName = "graph", bool compress = false,
       bool readNodeFeat = false, bool readEdgeWeight = false);
+
+  virtual int readFromDotFile(const std::string &workingDir,
+                              const std::string &fileName);
 
   /**
    * \brief
@@ -655,6 +665,59 @@ std::optional<std::pair<std::string, char>> Graph<T>::getExtenstionAndSeparator(
   }
 }
 
+template <typename T>
+int Graph<T>::writeToDot(const std::string &workingDir,
+                         const std::string &OFileName,
+                         const std::string &graphName) const {
+  const std::string linkSymbol = "--";
+  const std::string directedLinkSymbol = "->";
+
+  const std::string completePathToFileGraph =
+      workingDir + '/' + OFileName + ".dot";
+  std::ofstream ofileGraph;
+  ofileGraph.open(completePathToFileGraph);
+  if (!ofileGraph.is_open()) {
+    // ERROR File Not Open
+    return -1;
+  }
+
+  // Write the header of the DOT file
+  std::string headerLine;
+  if (this->isDirectedGraph()) {
+    headerLine = "digraph " + graphName + " {\n";
+  } else {
+    headerLine = "graph " + graphName + " {\n";
+  }
+  ofileGraph << headerLine;
+
+  for (auto const &edgeIt : edgeSet) {
+    std::string edgeLine = "";
+    if (edgeIt->isDirected().has_value() && edgeIt->isDirected().value()) {
+      auto directedIt = dynamic_cast<const DirectedEdge<T> *>(edgeIt);
+      edgeLine += '\t' + directedIt->getFrom().getUserId() + ' ';
+      edgeLine += directedLinkSymbol + ' ';
+      edgeLine += directedIt->getTo().getUserId();
+    } else {
+      edgeLine += '\t' + edgeIt->getNodePair().first->getUserId() + ' ';
+      edgeLine += linkSymbol + ' ';
+      edgeLine += edgeIt->getNodePair().second->getUserId();
+    }
+    if (edgeIt->isWeighted().has_value() && edgeIt->isWeighted().value()) {
+      // Weights in dot files must be integers
+      edgeLine += " [weight=" +
+                  std::to_string(static_cast<int>(
+                      dynamic_cast<const Weighted *>(edgeIt)->getWeight())) +
+                  ']';
+    }
+    edgeLine += ";\n";
+    ofileGraph << edgeLine;
+  }
+  ofileGraph << '}';
+  ofileGraph.close();
+
+  return 0;
+}
+
 // This ctype facet classifies ',' and '\t' as whitespace
 struct csv_whitespace : std::ctype<char> {
   static const mask *make_table() {
@@ -745,6 +808,90 @@ void Graph<T>::readGraphFromStream(std::istream &iGraph,
   }
 
   recreateGraph(edgeMap, edgeDirectedMap, nodeFeatMap, edgeWeightMap);
+}
+
+template <typename T>
+int Graph<T>::readFromDot(const std::string &workingDir,
+                          const std::string &fileName) {
+  // Define the edge maps
+  std::unordered_map<unsigned long long, std::pair<std::string, std::string>>
+      edgeMap;
+  std::unordered_map<std::string, T> nodeFeatMap;
+  std::unordered_map<unsigned long long, bool> edgeDirectedMap;
+  std::unordered_map<unsigned long long, double> edgeWeightMap;
+
+  // Define the node strings and the "garbage collector" temp string
+  std::string node1;
+  std::string node2;
+  std::string temp;
+
+  // Get full path to the file and open it
+  const std::string completePathToFileGraph =
+      workingDir + '/' + fileName + ".dot";
+
+  // Check if the graph is directed
+  bool directed = false;
+  std::ifstream fileContentStream(completePathToFileGraph);
+  std::string fileContent(std::istreambuf_iterator<char>{fileContentStream},
+                          {});
+  if (fileContent.find("->") != std::string::npos) {
+    directed = true;
+  }
+  // Check if the graph is weighted
+  bool weighted = false;
+  if (fileContent.find("weight") != std::string::npos) {
+    weighted = true;
+  }
+  fileContentStream.close();
+
+  std::ifstream iFile(completePathToFileGraph);
+  // Write the header of the DOT file in the temp string
+  getline(iFile, temp);
+
+  unsigned long long edgeId = 0;
+  std::string fileRow;
+  while (getline(iFile, fileRow)) {
+    // If you've reached the end of the file, stop
+    if (fileRow == "}") {
+      break;
+    }
+
+    // Remove the whitespaces before the definition of the edge
+    while (*fileRow.begin() == ' ' || *fileRow.begin() == '\t') {
+      fileRow.erase(fileRow.begin());
+    }
+
+    std::stringstream row_stream(fileRow);
+    getline(row_stream, node1, ' ');
+    // Store the symbol representing the edge inside temp
+    getline(row_stream, temp, ' ');
+    if (weighted) {
+      getline(row_stream, node2, '[');
+      // Remove any whitespaces or tabs from the node string
+      node2.erase(std::remove(node2.begin(), node2.end(), ' '), node2.end());
+      node2.erase(std::remove(node2.begin(), node2.end(), '\t'), node2.end());
+
+      getline(row_stream, temp, '=');
+      std::string weight;
+      getline(row_stream, weight, ']');
+      // Erase any whitespaces
+      weight.erase(std::remove(weight.begin(), weight.end(), ' '),
+                   weight.end());
+      edgeWeightMap[edgeId] = std::stod(weight);
+    } else {
+      getline(row_stream, node2, ';');
+    }
+
+    // Save the edge and increment the edge counter
+    edgeMap[edgeId] = std::pair<std::string, std::string>(node1, node2);
+    edgeDirectedMap[edgeId] = directed;
+    ++edgeId;
+  }
+  iFile.close();
+
+  recreateGraph(edgeMap, edgeDirectedMap, nodeFeatMap,
+                             edgeWeightMap);
+  return 0;
 }
 
 template <typename T>
@@ -1596,14 +1743,14 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
   level_tracker.push_back(&start);
 
   // a worker is assigned a small part of tasks for each time
-  // assignments of tasks in current level and updates of tasks in next level
-  // are inclusive
+  // assignments of tasks in current level and updates of tasks in next
+  // level are inclusive
   std::mutex tracker_mutex;
   std::mutex next_tracker_mutex;
   std::atomic<int> assigned_tasks = 0;
   int num_tasks = 1;
-  // unit of task assignment, which mean assign block_size tasks to a worker
-  // each time
+  // unit of task assignment, which mean assign block_size tasks to a
+  // worker each time
   int block_size = 1;
   int level = 1;
 
@@ -1611,9 +1758,10 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
                         &num_tasks, &block_size]() -> std::pair<int, int> {
     /*
     std::lock_guard<std::mutex> tracker_guard(tracker_mutex);
-    int task_block_size = std::min(num_tasks - assigned_tasks, block_size);
-    std::pair<int,int> task_block{assigned_tasks, assigned_tasks +
-    task_block_size}; assigned_tasks += task_block_size; return task_block;
+    int task_block_size = std::min(num_tasks - assigned_tasks,
+    block_size); std::pair<int,int> task_block{assigned_tasks,
+    assigned_tasks + task_block_size}; assigned_tasks += task_block_size;
+    return task_block;
     */
     int start = assigned_tasks.fetch_add(block_size);
     int end = std::min(num_tasks, start + block_size);
@@ -1683,8 +1831,8 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
         level = level + 1;
         next_level_cond.notify_all();
       } else {
-        // not to wait if last worker reachs last statement before notify all or
-        // even further
+        // not to wait if last worker reachs last statement before notify
+        // all or even further
         std::unique_lock<std::mutex> next_level_lock(next_level_mutex);
         next_level_cond.wait(next_level_lock, [&level, cur_level]() {
           return level != cur_level;
@@ -1786,13 +1934,13 @@ bool Graph<T>::isCyclicDirectedGraphDFS() const {
             // Add node "in_stack" state.
             states[node->getId()] = in_stack;
 
-            // If the node has children, then recursively visit all children of
-            // the node.
+            // If the node has children, then recursively visit all
+            // children of the node.
             auto const it = adjMatrix->find(node);
             if (it != adjMatrix->end()) {
               for (const auto &child : it->second) {
-                // If state of child node is "not_visited", evaluate that child
-                // for presence of cycle.
+                // If state of child node is "not_visited", evaluate that
+                // child for presence of cycle.
                 auto state_of_child = states.at((std::get<0>(child))->getId());
                 if (state_of_child == not_visited) {
                   if (isCyclicDFSHelper(adjMatrix, states,
@@ -1800,16 +1948,16 @@ bool Graph<T>::isCyclicDirectedGraphDFS() const {
                     return true;
                   }
                 } else if (state_of_child == in_stack) {
-                  // If child node was "in_stack", then that means that there
-                  // is a cycle in the graph. Return true for presence of the
-                  // cycle.
+                  // If child node was "in_stack", then that means that
+                  // there is a cycle in the graph. Return true for
+                  // presence of the cycle.
                   return true;
                 }
               }
             }
 
-            // Current node has been evaluated for the presence of cycle and had
-            // no cycle. Mark current node as "visited".
+            // Current node has been evaluated for the presence of cycle
+            // and had no cycle. Mark current node as "visited".
             states[node->getId()] = visited;
             // Return that current node didn't result in any cycles.
             return false;
@@ -2199,7 +2347,8 @@ SCCResult<T> Graph<T>::kosaraju() const {
                                              std::vector<Node<T>> &comp) {
           // mark the vertex visited
           visited[source->getId()] = true;
-          // Add the current vertex to the strongly connected component
+          // Add the current vertex to the strongly connected
+          // component
           comp.push_back(*source);
 
           // travel the neighbors
@@ -2295,8 +2444,8 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
               dynamic_cast<const UndirectedWeightedEdge<T> *>(i.second);
           weight = (int)udw_edge->getWeight();
         } else {
-          // ERROR it shouldn't never returned ( does not exist a Node Weighted
-          // and not Directed/Undirected)
+          // ERROR it shouldn't never returned ( does not exist a Node
+          // Weighted and not Directed/Undirected)
           result.errorMessage = ERR_NO_DIR_OR_UNDIR_EDGE;
           return result;
         }
@@ -2359,7 +2508,8 @@ double Graph<T>::fordFulkersonMaxFlow(const Node<T> &source,
   // build weight map
   auto edgeSet = this->getEdgeSet();
   for (const auto &edge : edgeSet) {
-    // The Edge are all Directed at this point because is checked at the start
+    // The Edge are all Directed at this point because is checked at the
+    // start
     if (edge->isWeighted().value_or(false)) {
       const DirectedWeightedEdge<T> *dw_edge =
           dynamic_cast<const DirectedWeightedEdge<T> *>(edge);
@@ -2684,6 +2834,19 @@ int Graph<T>::readFromFile(InputOutputFormat format,
   }
 
   return result;
+}
+
+template <typename T>
+int Graph<T>::writeToDotFile(const std::string &workingDir,
+                             const std::string &OFileName,
+                             const std::string &graphName) const {
+  return writeToDot(workingDir, OFileName, graphName);
+}
+
+template <typename T>
+int Graph<T>::readFromDotFile(const std::string &workingDir,
+                              const std::string &fileName) {
+  return readFromDot(workingDir, fileName);
 }
 
 template <typename T>
