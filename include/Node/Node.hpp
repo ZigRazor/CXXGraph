@@ -39,11 +39,12 @@ class Node {
   void setId(const std::string &);
 
  public:
-  Node(const std::string &, const T &data);
+  Node(const std::string &, T data);
   ~Node() = default;
   const std::size_t &getId() const;
   const std::string &getUserId() const;
   const T &getData() const;
+  void setData(T new_data);
   // operator
   bool operator==(const Node<T> &b) const;
   bool operator<(const Node<T> &b) const;
@@ -51,11 +52,11 @@ class Node {
 };
 
 template <typename T>
-Node<T>::Node(const std::string &id, const T &data) {
+Node<T>::Node(const std::string& id, T data) {
   this->userId = id;
   // the userid is set as sha512 hash of the user provided id
   setId(id);
-  this->data = data;
+  this->data = std::move(data);
 }
 
 template <typename T>
@@ -100,6 +101,12 @@ const T &Node<T>::getData() const {
 }
 
 template <typename T>
+void Node<T>::setData(T new_data) {
+  data = std::move(new_data);
+}
+
+// The data type T must have an overload of the equality operator
+template <typename T>
 bool Node<T>::operator==(const Node<T> &b) const {
   return (this->id == b.id && this->data == b.data);
 }
@@ -110,6 +117,7 @@ bool Node<T>::operator<(const Node<T> &b) const {
 }
 
 // ostream overload
+// The data type T must have an overload of the ostream operator
 template <typename T>
 std::ostream &operator<<(std::ostream &os, const Node<T> &node) {
   os << "Node: {\n"
