@@ -1631,7 +1631,7 @@ BestFirstSearchResult<T> Graph<T>::best_first_search(
 
   std::vector<Node<T>> visited;
   visited.push_back(source);
-  pq.push(std::make_pair(static_cast<T>(0), &source));
+  pq.push(std::make_pair(0.0, &source));
 
   while (!pq.empty()) {
     const Node<T> *currentNode = pq.top().second;
