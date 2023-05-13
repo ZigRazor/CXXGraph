@@ -52,6 +52,52 @@ TEST(DirectedEdgeTest, Constructor_5) {
   ASSERT_FALSE(edge.isWeighted().value());
 }
 
+TEST(DirectedEdgeTest, Bool_data) {
+  // First constructor
+  CXXGraph::Node<bool> node1("1", true);
+  CXXGraph::Node<bool> node2("2", false);
+  CXXGraph::DirectedEdge<bool> edge1(1, node1, node2);
+  ASSERT_EQ(*(edge1.getNodePair().first), node1);
+  ASSERT_EQ(*(edge1.getNodePair().second), node2);
+  ASSERT_TRUE(edge1.isDirected().value());
+  ASSERT_FALSE(edge1.isWeighted().value());
+
+  // Second constructor
+  CXXGraph::Node<bool> node3("3", true);
+  CXXGraph::Node<bool> node4("4", false);
+  std::pair<const CXXGraph::Node<bool> *, const CXXGraph::Node<bool> *> pairNode(
+      &node3, &node4);
+  CXXGraph::DirectedEdge<bool> edge2(2, pairNode);
+  ASSERT_EQ(edge2.getNodePair(), pairNode);
+  ASSERT_EQ(*(edge2.getNodePair().first), node3);
+  ASSERT_EQ(*(edge2.getNodePair().second), node4);
+  ASSERT_TRUE(edge2.isDirected().value());
+  ASSERT_FALSE(edge2.isWeighted().value());
+}
+
+TEST(DirectedEdgeTest, String_data) {
+  // First constructor
+  CXXGraph::Node<bool> node1("1", "On");
+  CXXGraph::Node<bool> node2("2", "Off");
+  CXXGraph::DirectedEdge<bool> edge1(1, node1, node2);
+  ASSERT_EQ(*(edge1.getNodePair().first), node1);
+  ASSERT_EQ(*(edge1.getNodePair().second), node2);
+  ASSERT_TRUE(edge1.isDirected().value());
+  ASSERT_FALSE(edge1.isWeighted().value());
+
+  // Second constructor
+  CXXGraph::Node<bool> node3("3", "On");
+  CXXGraph::Node<bool> node4("4", "Off");
+  std::pair<const CXXGraph::Node<bool> *, const CXXGraph::Node<bool> *> pairNode(
+      &node3, &node4);
+  CXXGraph::DirectedEdge<bool> edge2(2, pairNode);
+  ASSERT_EQ(edge2.getNodePair(), pairNode);
+  ASSERT_EQ(*(edge2.getNodePair().first), node3);
+  ASSERT_EQ(*(edge2.getNodePair().second), node4);
+  ASSERT_TRUE(edge2.isDirected().value());
+  ASSERT_FALSE(edge2.isWeighted().value());
+}
+
 TEST(DirectedEdgeTest, Cast_1) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);

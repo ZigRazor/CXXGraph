@@ -85,6 +85,52 @@ TEST(DirectedWeightedEdgeTest, Constructor_7) {
   ASSERT_EQ(edge.getWeight(), 0.0);
 }
 
+TEST(DirectedWeightedEdgeTest, Bool_data) {
+  // First constructor
+  CXXGraph::Node<bool> node1("1", true);
+  CXXGraph::Node<bool> node2("2", false);
+  CXXGraph::DirectedWeightedEdge<bool> edge1(1, node1, node2, 8);
+  ASSERT_EQ(*(edge1.getNodePair().first), node1);
+  ASSERT_EQ(*(edge1.getNodePair().second), node2);
+  ASSERT_TRUE(edge1.isDirected().value());
+  ASSERT_TRUE(edge1.isWeighted().value());
+
+  // Second constructor
+  CXXGraph::Node<bool> node3("3", true);
+  CXXGraph::Node<bool> node4("4", false);
+  std::pair<const CXXGraph::Node<bool> *, const CXXGraph::Node<bool> *> pairNode(
+      &node3, &node4);
+  CXXGraph::DirectedWeightedEdge<bool> edge2(2, pairNode, 2);
+  ASSERT_EQ(edge2.getNodePair(), pairNode);
+  ASSERT_EQ(*(edge2.getNodePair().first), node3);
+  ASSERT_EQ(*(edge2.getNodePair().second), node4);
+  ASSERT_TRUE(edge2.isDirected().value());
+  ASSERT_TRUE(edge2.isWeighted().value());
+}
+
+TEST(DirectedWeightedEdgeTest, String_data) {
+  // First constructor
+  CXXGraph::Node<bool> node1("1", "On");
+  CXXGraph::Node<bool> node2("2", "Off");
+  CXXGraph::DirectedWeightedEdge<bool> edge1(1, node1, node2, 4);
+  ASSERT_EQ(*(edge1.getNodePair().first), node1);
+  ASSERT_EQ(*(edge1.getNodePair().second), node2);
+  ASSERT_TRUE(edge1.isDirected().value());
+  ASSERT_TRUE(edge1.isWeighted().value());
+
+  // Second constructor
+  CXXGraph::Node<bool> node3("3", "On");
+  CXXGraph::Node<bool> node4("4", "Off");
+  std::pair<const CXXGraph::Node<bool> *, const CXXGraph::Node<bool> *> pairNode(
+      &node3, &node4);
+  CXXGraph::DirectedWeightedEdge<bool> edge2(2, pairNode, 6);
+  ASSERT_EQ(edge2.getNodePair(), pairNode);
+  ASSERT_EQ(*(edge2.getNodePair().first), node3);
+  ASSERT_EQ(*(edge2.getNodePair().second), node4);
+  ASSERT_TRUE(edge2.isDirected().value());
+  ASSERT_TRUE(edge2.isWeighted().value());
+}
+
 TEST(DirectedWeightedEdgeTest, Cast_1) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
