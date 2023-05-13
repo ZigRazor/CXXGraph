@@ -909,7 +909,7 @@ void Graph<T>::recreateGraph(
       // Create new Node
       T feat;
       if (nodeFeatMap.find(edgeIt.second.first) != nodeFeatMap.end()) {
-        feat = nodeFeatMap.at(edgeIt.second.first);
+        feat = std::move(nodeFeatMap.at(edgeIt.second.first));
       }
       node1 = new Node<T>(edgeIt.second.first, feat);
       nodeMap[edgeIt.second.first] = node1;
@@ -920,7 +920,7 @@ void Graph<T>::recreateGraph(
       // Create new Node
       T feat;
       if (nodeFeatMap.find(edgeIt.second.second) != nodeFeatMap.end()) {
-        feat = nodeFeatMap.at(edgeIt.second.second);
+        feat = std::move(nodeFeatMap.at(edgeIt.second.second));
       }
       node2 = new Node<T>(edgeIt.second.second, feat);
       nodeMap[edgeIt.second.second] = node2;
