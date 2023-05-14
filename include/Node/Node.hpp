@@ -44,7 +44,7 @@ class Node {
   const std::size_t &getId() const;
   const std::string &getUserId() const;
   const T &getData() const;
-  void setData(T new_data);
+  void setData(T&& new_data);
   // operator
   bool operator==(const Node<T> &b) const;
   bool operator<(const Node<T> &b) const;
@@ -101,7 +101,7 @@ const T &Node<T>::getData() const {
 }
 
 template <typename T>
-void Node<T>::setData(T new_data) {
+void Node<T>::setData(T&& new_data) {
   data = std::move(new_data);
 }
 

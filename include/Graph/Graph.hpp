@@ -87,6 +87,10 @@ template <typename T>
 class Graph {
  private:
   T_EdgeSet<T> edgeSet = {};
+
+  // Private non-const getter for the set of nodes
+  std::set<Node<T> *> nodeSet();
+
   std::optional<std::pair<std::string, char>> getExtenstionAndSeparator(
       InputOutputFormat format) const;
   void writeGraphToStream(std::ostream &oGraph, std::ostream &oNodeFeat,
@@ -161,6 +165,23 @@ class Graph {
    *
    */
   virtual const std::set<const Node<T> *> getNodeSet() const;
+  /**
+   * \brief
+   * Function that sets the data contained in a node
+   *
+   * @param nodeUserId The userId string of the node whose data is to be changes
+   * @param data The new value for the node data
+   *
+   */
+  virtual void setNodeData(const std::string &nodeUserId, T data);
+  /**
+   * \brief
+   * Function that sets the data contained in every node of the graph
+   *
+   * @param dataMap Map of the userId of every node with its new data value
+   *
+   */
+  virtual void setNodeData(std::map<std::string, T> &dataMap);
   /**
    * \brief
    * Function that return an Edge with specific ID if Exist in the Graph
@@ -642,6 +663,25 @@ const std::set<const Node<T> *> Graph<T>::getNodeSet() const {
 }
 
 template <typename T>
+void Graph<T>::setNodeData(const std::string &nodeUserId, T data) {
+  for(auto &nodeSetIt : this->getNodeSet()) {
+	nodeIt = const_cast<Node<T> *>(nodeSetIt);
+	if (nodeIt->getUserId() == nodeUserId) {
+	  nodeIt->setData(std::move(data));
+	  break;
+	}
+  }
+}
+
+template <typename T>
+void Graph<T>::setNodeData(std::map<std::string, T> &dataMap) {
+  // Construct the set of all the nodes in the graph
+  for(auto &nodeSetIt : this->nodeSet()) {
+	nodeSetIt->setData(std::move(dataMap[nodeSetIt->getUserId()]));
+  }
+}
+
+template <typename T>
 const std::optional<const Edge<T> *> Graph<T>::getEdge(
     const unsigned long long edgeId) const {
   for (const auto &it : edgeSet) {
@@ -651,6 +691,17 @@ const std::optional<const Edge<T> *> Graph<T>::getEdge(
   }
 
   return std::nullopt;
+}
+
+template <typename T>
+std::set<Node<T> *> Graph<T>::nodeSet() {
+  std::set<Node<T> *> nodeSet;
+  for (auto &edgeSetIt : edgeSet) {
+    nodeSet.insert(const_cast<Node<T> *>(edgeSetIt->getNodePair().first));
+    nodeSet.insert(const_cast<Node<T> *>(edgeSetIt->getNodePair().second));
+  }
+
+  return nodeSet;
 }
 
 template <typename T>
