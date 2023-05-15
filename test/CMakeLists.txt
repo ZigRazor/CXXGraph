@@ -31,11 +31,11 @@ if(TEST)
         #GIT_TAG        v1.13.0 # release-1.13.0
     )
 
-    #FetchContent_Declare(
-    #    zlib
-    #    GIT_REPOSITORY https://github.com/madler/zlib.git
-    #    GIT_TAG v1.2.13
-    #)
+    FetchContent_Declare(
+        zlib
+        GIT_REPOSITORY https://github.com/madler/zlib.git
+        GIT_TAG v1.2.13
+    )
 
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     FetchContent_MakeAvailable(googletest)
@@ -50,16 +50,16 @@ if(TEST)
     add_executable(test_exe ${TEST_FILES})
 
     target_compile_definitions(test_exe
-        #PUBLIC WITH_COMPRESSION
+        PUBLIC WITH_COMPRESSION
     )
     target_include_directories(test_exe
         PUBLIC "${PROJECT_SOURCE_DIR}/include"
-        #PUBLIC ${zlib_BINARY_DIR}
-        #PUBLIC ${zlib_SOURCE_DIR}
+        PUBLIC ${zlib_BINARY_DIR}
+        PUBLIC ${zlib_SOURCE_DIR}
     )
     target_link_libraries(test_exe
         PUBLIC GTest::gtest_main
-        #PUBLIC zlibstatic
+        PUBLIC zlibstatic
     )
 
     enable_testing()
