@@ -35,7 +35,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/build sudo apt-get install lcov gcovr
+        run: cmake -DTEST=ON -DCODE_COVERAGE=ON -B ${{github.workspace}}/build; sudo apt-get install lcov gcovr
 
       - name: Build
         # Build your program with the given configuration
