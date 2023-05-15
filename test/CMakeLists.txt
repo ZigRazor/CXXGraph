@@ -50,16 +50,16 @@ if(TEST)
     add_executable(test_exe ${TEST_FILES})
 
     target_compile_definitions(test_exe
-        PUBLIC WITH_COMPRESSION
+        #PUBLIC WITH_COMPRESSION
     )
     target_include_directories(test_exe
         PUBLIC "${PROJECT_SOURCE_DIR}/include"
-        PUBLIC ${zlib_BINARY_DIR}
-        PUBLIC ${zlib_SOURCE_DIR}
+        #PUBLIC ${zlib_BINARY_DIR}
+        #PUBLIC ${zlib_SOURCE_DIR}
     )
     target_link_libraries(test_exe
         PUBLIC GTest::gtest_main
-        PUBLIC zlibstatic
+        #PUBLIC zlibstatic
     )
 
     enable_testing()
