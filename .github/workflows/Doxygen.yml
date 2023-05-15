@@ -38,7 +38,7 @@ jobs:
           git push origin documentation-update-${{ steps.buildnumber.outputs.build_number }}
 
       - name: Doxygen Action
-        uses: mattnotmitt/doxygen-action@v1.3.1
+        uses: mattnotmitt/doxygen-action@v1.9.5
         with:
           # Working directory
           working-directory: 'docs/'
