@@ -41,7 +41,7 @@ class Node {
  public:
   Node(const std::string &, const T& data);
   // Move constructor
-  Node(const std::string &, T&& data);
+  Node(const std::string &, T&& data) noexcept;
   ~Node() = default;
   const std::size_t &getId() const;
   const std::string &getUserId() const;
@@ -62,11 +62,11 @@ Node<T>::Node(const std::string& id, const T& data) {
 }
 
 template <typename T>
-Node<T>::Node(const std::string& id, T&& data) {
+Node<T>::Node(const std::string& id, T&& data) noexcept {
   this->userId = id;
   // the userid is set as sha512 hash of the user provided id
   setId(id);
-  this->data = std::move(data);
+  std::swap(this->data, data);
 }
 
 template <typename T>
@@ -112,7 +112,7 @@ const T &Node<T>::getData() const {
 
 template <typename T>
 void Node<T>::setData(T&& new_data) {
-  data = std::move(new_data);
+  this->data = std::move(new_data);
 }
 
 // The data type T must have an overload of the equality operator
