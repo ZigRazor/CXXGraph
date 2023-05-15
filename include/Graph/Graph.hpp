@@ -664,10 +664,9 @@ const std::set<const Node<T> *> Graph<T>::getNodeSet() const {
 
 template <typename T>
 void Graph<T>::setNodeData(const std::string &nodeUserId, T data) {
-  for(auto &nodeSetIt : this->getNodeSet()) {
-	nodeIt = const_cast<Node<T> *>(nodeSetIt);
-	if (nodeIt->getUserId() == nodeUserId) {
-	  nodeIt->setData(std::move(data));
+  for(auto &nodeSetIt : this->nodeSet()) {
+	if (nodeSetIt->getUserId() == nodeUserId) {
+	  nodeSetIt->setData(std::move(data));
 	  break;
 	}
   }
