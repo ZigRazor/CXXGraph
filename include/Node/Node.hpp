@@ -39,7 +39,9 @@ class Node {
   void setId(const std::string &);
 
  public:
-  Node(const std::string &, T data);
+  Node(const std::string &, const T& data);
+  // Move constructor
+  Node(const std::string &, T&& data);
   ~Node() = default;
   const std::size_t &getId() const;
   const std::string &getUserId() const;
@@ -52,7 +54,15 @@ class Node {
 };
 
 template <typename T>
-Node<T>::Node(const std::string& id, T data) {
+Node<T>::Node(const std::string& id, const T& data) {
+  this->userId = id;
+  // the userid is set as sha512 hash of the user provided id
+  setId(id);
+  this->data = data;
+}
+
+template <typename T>
+Node<T>::Node(const std::string& id, T&& data) {
   this->userId = id;
   // the userid is set as sha512 hash of the user provided id
   setId(id);
