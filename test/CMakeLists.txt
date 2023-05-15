@@ -31,18 +31,18 @@ if(TEST)
         #GIT_TAG        v1.13.0 # release-1.13.0
     )
 
-    FetchContent_Declare(
-        zlib
-        GIT_REPOSITORY https://github.com/madler/zlib.git
-        GIT_TAG v1.2.13
-    )
+    #FetchContent_Declare(
+    #    zlib
+    #    GIT_REPOSITORY https://github.com/madler/zlib.git
+    #    GIT_TAG v1.2.13
+    #)
 
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     FetchContent_MakeAvailable(googletest)
 
     set(SAVE_CMAKE_POSITION_INDEPENDENT_CODE ${CMAKE_POSITION_INDEPENDENT_CODE})
     set(CMAKE_POSITION_INDEPENDENT_CODE True)
-    FetchContent_MakeAvailable(zlib)
+    #FetchContent_MakeAvailable(zlib)
     set(CMAKE_POSITION_INDEPENDENT_CODE ${SAVE_CMAKE_POSITION_INDEPENDENT_CODE})
 
     file (GLOB TEST_FILES "*.cpp" "*.hpp")
