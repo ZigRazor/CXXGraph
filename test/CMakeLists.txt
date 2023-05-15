@@ -42,7 +42,7 @@ if(TEST)
 
     set(SAVE_CMAKE_POSITION_INDEPENDENT_CODE ${CMAKE_POSITION_INDEPENDENT_CODE})
     set(CMAKE_POSITION_INDEPENDENT_CODE True)
-    #FetchContent_MakeAvailable(zlib)
+    FetchContent_MakeAvailable(zlib)
     set(CMAKE_POSITION_INDEPENDENT_CODE ${SAVE_CMAKE_POSITION_INDEPENDENT_CODE})
 
     file (GLOB TEST_FILES "*.cpp" "*.hpp")
@@ -58,6 +58,7 @@ if(TEST)
         PUBLIC ${zlib_SOURCE_DIR}
     )
     target_link_libraries(test_exe
+        PUBLIC pthread
         PUBLIC GTest::gtest_main
         PUBLIC zlibstatic
     )
@@ -81,4 +82,5 @@ if(TEST)
     add_test(test_kosaraju test_exe --gtest_filter=TestKosaraju*)
     add_test(test_bestfirstsearch test_exe --gtest_filter=BestFirstSearch*)
     add_test(test_kahn test_exe --gtest_filter=Kahn*)
+    add_test(test_DOT test_exe --gtest_filter=DOTTest*)
 endif(TEST)

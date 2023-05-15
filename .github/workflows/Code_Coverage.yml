@@ -39,20 +39,20 @@ jobs:
 
       - name: Build
         # Build your program with the given configuration
-        run: cmake --build ${{github.workspace}}/build -j
+        run: cmake --build ${{github.workspace}}/build
 
       - name: run
-        working-directory: ${{github.workspace}}/build
-        run: ${{github.workspace}}/build/test/test_exe
+        working-directory: ${{github.workspace}}/build/test
+        run: ./test_exe
 
       - name: create Report
-        working-directory: ${{github.workspace}}/build
-        run: cd ${{github.workspace}}/build; lcov --capture --directory .. --output-file coverage.info
+        working-directory: ${{github.workspace}}/build/test
+        run: lcov --capture --directory .. --output-file coverage.info
 
       - uses: codecov/codecov-action@v3.1.3
         with:
           #token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-          file: ${{github.workspace}}/build/build/coverage.info # optional
+          file: ${{github.workspace}}/build/coverage.info # optional
           flags: unittests # optional
           name: codecov-umbrella # optional
           fail_ci_if_error: true # optional (default = false)
