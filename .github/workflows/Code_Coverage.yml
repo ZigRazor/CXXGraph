@@ -52,7 +52,7 @@ jobs:
       - uses: codecov/codecov-action@v3.1.3
         with:
           #token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-          file: ${{github.workspace}}/build/coverage.info # optional
+          file: ${{github.workspace}}/build/test/coverage.info # optional
           flags: unittests # optional
           name: codecov-umbrella # optional
           fail_ci_if_error: true # optional (default = false)
