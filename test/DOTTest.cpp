@@ -65,7 +65,7 @@ TEST(DOTTest, WriteToDotMixed) {
 
 TEST(DOTTest, ReadFromDotUndirected) {
   CXXGraph::Graph<int> graph;
-  graph.readFromDotFile("..", "test_dot_undirected");
+  graph.readFromDotFile("../../test", "test_dot_undirected");
 
   // Check that the graph is undirected
   ASSERT_EQ(graph.isDirectedGraph(), false);
@@ -87,7 +87,7 @@ TEST(DOTTest, ReadFromDotUndirected) {
 
 TEST(DOTTest, ReadFromDotUndirectedWeighted) {
   CXXGraph::Graph<int> graph;
-  graph.readFromDotFile("..", "test_dot_weighted");
+  graph.readFromDotFile("../../test", "test_dot_weighted");
 
   // Check that the graph is undirected
   ASSERT_EQ(graph.isDirectedGraph(), false);
@@ -117,7 +117,7 @@ TEST(DOTTest, ReadFromDotUndirectedWeighted) {
 
 TEST(DOTTest, ReadFromDotDirected) {
   CXXGraph::Graph<int> graph;
-  graph.readFromDotFile("..", "test_dot_directed");
+  graph.readFromDotFile("../../test", "test_dot_directed");
 
   // Check that the graph is undirected
   ASSERT_EQ(graph.isDirectedGraph(), true);

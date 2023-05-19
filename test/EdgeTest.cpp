@@ -28,6 +28,44 @@ TEST(EdgeTest, print_1) {
   std::cout << edge << std::endl;
 }
 
+TEST(EdgeTest, Bool_data) {
+  // First constructor
+  CXXGraph::Node<bool> node1("1", true);
+  CXXGraph::Node<bool> node2("2", false);
+  CXXGraph::Edge<bool> edge1(1, node1, node2);
+  ASSERT_EQ(*(edge1.getNodePair().first), node1);
+  ASSERT_EQ(*(edge1.getNodePair().second), node2);
+
+  // Second constructor
+  CXXGraph::Node<bool> node3("3", true);
+  CXXGraph::Node<bool> node4("4", false);
+  std::pair<const CXXGraph::Node<bool> *, const CXXGraph::Node<bool> *> pairNode(
+      &node3, &node4);
+  CXXGraph::Edge<bool> edge2(2, pairNode);
+  ASSERT_EQ(edge2.getNodePair(), pairNode);
+  ASSERT_EQ(*(edge2.getNodePair().first), node3);
+  ASSERT_EQ(*(edge2.getNodePair().second), node4);
+}
+
+TEST(EdgeTest, String_data) {
+  // First constructor
+  CXXGraph::Node<bool> node1("1", "On");
+  CXXGraph::Node<bool> node2("2", "Off");
+  CXXGraph::Edge<bool> edge1(1, node1, node2);
+  ASSERT_EQ(*(edge1.getNodePair().first), node1);
+  ASSERT_EQ(*(edge1.getNodePair().second), node2);
+
+  // Second constructor
+  CXXGraph::Node<bool> node3("3", "On");
+  CXXGraph::Node<bool> node4("4", "Off");
+  std::pair<const CXXGraph::Node<bool> *, const CXXGraph::Node<bool> *> pairNode(
+      &node3, &node4);
+  CXXGraph::Edge<bool> edge2(2, pairNode);
+  ASSERT_EQ(edge2.getNodePair(), pairNode);
+  ASSERT_EQ(*(edge2.getNodePair().first), node3);
+  ASSERT_EQ(*(edge2.getNodePair().second), node4);
+}
+
 TEST(EdgeTest, test) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
