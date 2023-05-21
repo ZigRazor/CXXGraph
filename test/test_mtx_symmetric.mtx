@@ -1,4 +1,7 @@
-%%MatrixMarket graph
+%%MatrixMarket graph symmetric
+%
+%
+%
 5 5 8
 1 1 1.000e+00
 2 2 1.050e+01
