@@ -70,7 +70,7 @@ TEST(MTXTest, ReadFromMtxDirectedWeighted) {
   // Check the number of edges and nodes
   ASSERT_EQ(graph.getEdgeSet().size(), 8);
   ASSERT_EQ(graph.getNodeSet().size(), 5);
-  
+
   // Check the first edge
   ASSERT_EQ(graph.getEdge(0).value()->getNodePair().first->getUserId(), "1");
   ASSERT_EQ(graph.getEdge(0).value()->getNodePair().second->getUserId(), "1");
@@ -78,16 +78,20 @@ TEST(MTXTest, ReadFromMtxDirectedWeighted) {
   ASSERT_EQ(graph.getEdge(0).value()->isDirected(), false);
   // Check that it's weighted and the value of the weight
   ASSERT_EQ(graph.getEdge(0).value()->isWeighted(), true);
-  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(0).value())->getWeight(), 1.);
+  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(0).value())
+                ->getWeight(),
+            1.);
 
-  // Check the last edge 
+  // Check the last edge
   ASSERT_EQ(graph.getEdge(7).value()->getNodePair().first->getUserId(), "5");
   ASSERT_EQ(graph.getEdge(7).value()->getNodePair().second->getUserId(), "5");
   // Check that it is directed
   ASSERT_EQ(graph.getEdge(7).value()->isDirected(), false);
   // Check that it's weighted and the value of the weight
   ASSERT_EQ(graph.getEdge(7).value()->isWeighted(), true);
-  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(7).value())->getWeight(), 12.);
+  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(7).value())
+                ->getWeight(),
+            12.);
 
   // Check an edge in the middle
   ASSERT_EQ(graph.getEdge(3).value()->getNodePair().first->getUserId(), "1");
@@ -96,7 +100,9 @@ TEST(MTXTest, ReadFromMtxDirectedWeighted) {
   ASSERT_EQ(graph.getEdge(3).value()->isDirected(), true);
   // Check that it's weighted and the value of the weight
   ASSERT_EQ(graph.getEdge(3).value()->isWeighted(), true);
-  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(3).value())->getWeight(), 6.);
+  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(3).value())
+                ->getWeight(),
+            6.);
 }
 
 TEST(MTXTest, ReadFromMtxUndirectedWeighted) {
@@ -106,7 +112,7 @@ TEST(MTXTest, ReadFromMtxUndirectedWeighted) {
   // Check the number of edges and nodes
   ASSERT_EQ(graph.getEdgeSet().size(), 8);
   ASSERT_EQ(graph.getNodeSet().size(), 5);
-  
+
   // Check the first edge
   ASSERT_EQ(graph.getEdge(0).value()->getNodePair().first->getUserId(), "1");
   ASSERT_EQ(graph.getEdge(0).value()->getNodePair().second->getUserId(), "1");
@@ -114,16 +120,20 @@ TEST(MTXTest, ReadFromMtxUndirectedWeighted) {
   ASSERT_EQ(graph.getEdge(0).value()->isDirected(), false);
   // Check that it's weighted and the value of the weight
   ASSERT_EQ(graph.getEdge(0).value()->isWeighted(), true);
-  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(0).value())->getWeight(), 1.);
+  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(0).value())
+                ->getWeight(),
+            1.);
 
-  // Check the last edge 
+  // Check the last edge
   ASSERT_EQ(graph.getEdge(7).value()->getNodePair().first->getUserId(), "5");
   ASSERT_EQ(graph.getEdge(7).value()->getNodePair().second->getUserId(), "5");
   // Check that it is directed
   ASSERT_EQ(graph.getEdge(7).value()->isDirected(), false);
   // Check that it's weighted and the value of the weight
   ASSERT_EQ(graph.getEdge(7).value()->isWeighted(), true);
-  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(7).value())->getWeight(), 12.);
+  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(7).value())
+                ->getWeight(),
+            12.);
 
   // Check an edge in the middle
   ASSERT_EQ(graph.getEdge(3).value()->getNodePair().first->getUserId(), "1");
@@ -132,5 +142,7 @@ TEST(MTXTest, ReadFromMtxUndirectedWeighted) {
   ASSERT_EQ(graph.getEdge(3).value()->isDirected(), false);
   // Check that it's weighted and the value of the weight
   ASSERT_EQ(graph.getEdge(3).value()->isWeighted(), true);
-  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(3).value())->getWeight(), 6.);
+  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(3).value())
+                ->getWeight(),
+            6.);
 }

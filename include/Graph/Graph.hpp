@@ -533,8 +533,7 @@ class Graph {
                              const std::string &graphName) const;
 
   virtual int writeToMTXFile(const std::string &workingDir,
-						 const std::string &OFileName,
-						 char delimier) const;
+                             const std::string &OFileName, char delimier) const;
 
   /**
    * \brief
@@ -560,7 +559,7 @@ class Graph {
                               const std::string &fileName);
 
   virtual int readFromMTXFile(const std::string &workingDir,
-						  const std::string &fileName);
+                              const std::string &fileName);
 
   /**
    * \brief
@@ -672,19 +671,19 @@ const std::set<const Node<T> *> Graph<T>::getNodeSet() const {
 
 template <typename T>
 void Graph<T>::setNodeData(const std::string &nodeUserId, T data) {
-  for(auto &nodeSetIt : this->nodeSet()) {
-	if (nodeSetIt->getUserId() == nodeUserId) {
-	  nodeSetIt->setData(std::move(data));
-	  break;
-	}
+  for (auto &nodeSetIt : this->nodeSet()) {
+    if (nodeSetIt->getUserId() == nodeUserId) {
+      nodeSetIt->setData(std::move(data));
+      break;
+    }
   }
 }
 
 template <typename T>
 void Graph<T>::setNodeData(std::map<std::string, T> &dataMap) {
   // Construct the set of all the nodes in the graph
-  for(auto &nodeSetIt : this->nodeSet()) {
-	nodeSetIt->setData(std::move(dataMap[nodeSetIt->getUserId()]));
+  for (auto &nodeSetIt : this->nodeSet()) {
+    nodeSetIt->setData(std::move(dataMap[nodeSetIt->getUserId()]));
   }
 }
 
@@ -947,8 +946,7 @@ int Graph<T>::readFromDot(const std::string &workingDir,
   }
   iFile.close();
 
-  recreateGraph(edgeMap, edgeDirectedMap, nodeFeatMap,
-                             edgeWeightMap);
+  recreateGraph(edgeMap, edgeDirectedMap, nodeFeatMap, edgeWeightMap);
   return 0;
 }
 
@@ -2903,8 +2901,8 @@ int Graph<T>::writeToDotFile(const std::string &workingDir,
 
 template <typename T>
 int Graph<T>::writeToMTXFile(const std::string &workingDir,
-						 const std::string &OFileName,
-						 char delimitier) const {
+                             const std::string &OFileName,
+                             char delimitier) const {
   // Get the full path and open the file
   const std::string completePathToFileGraph =
       workingDir + '/' + OFileName + ".mtx";
@@ -2915,37 +2913,38 @@ int Graph<T>::writeToMTXFile(const std::string &workingDir,
   // Check if the adjacency matrix is symmetric, i.e., if all the edges are
   // undirected
   bool symmetric = true;
-  for (const auto& edgeIt : edgeSet) {
-	if (edgeIt->isDirected().has_value() && edgeIt->isDirected().value()) {
-	  symmetric = false;
-	  break;
-	}
+  for (const auto &edgeIt : edgeSet) {
+    if (edgeIt->isDirected().has_value() && edgeIt->isDirected().value()) {
+      symmetric = false;
+      break;
+    }
   }
   // Write in the header whether the adj matrix is symmetric or not
   if (symmetric) {
-	header += " symmetric\n";
+    header += " symmetric\n";
   } else {
-	header += '\n';
+    header += '\n';
   }
   iFile << header;
 
   // Write the line containing the number of nodes and edges
-  const std::string firstLine = std::to_string(getNodeSet().size()) + delimitier
-							  + std::to_string(getNodeSet().size()) + delimitier
-							  + std::to_string(getEdgeSet().size()) + '\n';
+  const std::string firstLine =
+      std::to_string(getNodeSet().size()) + delimitier +
+      std::to_string(getNodeSet().size()) + delimitier +
+      std::to_string(getEdgeSet().size()) + '\n';
   iFile << firstLine;
 
   // Construct the edges
-  for (const auto& edgeIt : edgeSet) {
-	std::string line;
-	line += edgeIt->getNodePair().first->getUserId() + delimitier;
-	line += edgeIt->getNodePair().second->getUserId() + delimitier;
-	if (edgeIt->isWeighted().has_value() && edgeIt->isWeighted().value()) {
-	  line += std::to_string(edgeIt->isWeighted().value()) + '\n';
-	} else {
-	  line += std::to_string(1.) + '\n';
-	}
-	iFile << line;
+  for (const auto &edgeIt : edgeSet) {
+    std::string line;
+    line += edgeIt->getNodePair().first->getUserId() + delimitier;
+    line += edgeIt->getNodePair().second->getUserId() + delimitier;
+    if (edgeIt->isWeighted().has_value() && edgeIt->isWeighted().value()) {
+      line += std::to_string(edgeIt->isWeighted().value()) + '\n';
+    } else {
+      line += std::to_string(1.) + '\n';
+    }
+    iFile << line;
   }
 
   iFile.close();
@@ -2960,7 +2959,7 @@ int Graph<T>::readFromDotFile(const std::string &workingDir,
 
 template <typename T>
 int Graph<T>::readFromMTXFile(const std::string &workingDir,
-							  const std::string &fileName) {
+                              const std::string &fileName) {
   // Define the edge maps
   std::unordered_map<unsigned long long, std::pair<std::string, std::string>>
       edgeMap;
@@ -2974,7 +2973,7 @@ int Graph<T>::readFromMTXFile(const std::string &workingDir,
   std::ifstream iFile(completePathToFileGraph);
   // Check that the file is open
   if (!iFile.is_open()) {
-	return -1;
+    return -1;
   }
 
   // Define the number of columns and rows in the matrix
@@ -2991,7 +2990,7 @@ int Graph<T>::readFromMTXFile(const std::string &workingDir,
 
   // Get rid of any commented lines between the header and the size line
   while (row_content.find('%') != std::string::npos) {
-	getline(iFile, row_content);
+    getline(iFile, row_content);
   }
 
   // From the size line of the file read the number of rows, columns and edges
@@ -3013,29 +3012,28 @@ int Graph<T>::readFromMTXFile(const std::string &workingDir,
   std::string edge_weight;
   unsigned long long edge_id = 0;
   while (getline(iFile, row_content)) {
-	std::stringstream row_stream(row_content);
-	
-	// Read the content of the node ids and the weight into strings
-	getline(row_stream, node1, ' ');
-	getline(row_stream, node2, ' ');
-	getline(row_stream, edge_weight);
+    std::stringstream row_stream(row_content);
 
-	edgeMap[edge_id] = std::pair<std::string, std::string>(node1, node2);
-	edgeWeightMap[edge_id] = std::stod(edge_weight);
-	edgeDirectedMap[edge_id] = !undirected;
+    // Read the content of the node ids and the weight into strings
+    getline(row_stream, node1, ' ');
+    getline(row_stream, node2, ' ');
+    getline(row_stream, edge_weight);
 
-	// If the edge is a self-link, it must be undirected
-	if (node1 == node2) {
-	  edgeDirectedMap[edge_id] = false;
-	}
+    edgeMap[edge_id] = std::pair<std::string, std::string>(node1, node2);
+    edgeWeightMap[edge_id] = std::stod(edge_weight);
+    edgeDirectedMap[edge_id] = !undirected;
 
-	// Increase the edge id
-	++edge_id;
-  }  
+    // If the edge is a self-link, it must be undirected
+    if (node1 == node2) {
+      edgeDirectedMap[edge_id] = false;
+    }
+
+    // Increase the edge id
+    ++edge_id;
+  }
 
   iFile.close();
-  recreateGraph(edgeMap, edgeDirectedMap, nodeFeatMap, 
-	  edgeWeightMap);
+  recreateGraph(edgeMap, edgeDirectedMap, nodeFeatMap, edgeWeightMap);
   return 0;
 }
 
