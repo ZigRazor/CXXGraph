@@ -2933,7 +2933,7 @@ int Graph<T>::writeToMTXFile(const std::string &workingDir,
 	if (edgeIt->isWeighted().has_value() && edgeIt->isWeighted().value()) {
 	  line += std::to_string(edgeIt->isWeighted().value()) + '\n';
 	} else {
-	  line += std::to_string(0.) + '\n';
+	  line += std::to_string(1.) + '\n';
 	}
 	iFile << line;
   }
@@ -2950,7 +2950,7 @@ int Graph<T>::readFromDotFile(const std::string &workingDir,
 
 template <typename T>
 int Graph<T>::readFromMTXFile(const std::string &workingDir,
-						  const std::string &fileName) {
+							  const std::string &fileName) {
   // Define the edge maps
   std::unordered_map<unsigned long long, std::pair<std::string, std::string>>
       edgeMap;
@@ -2961,17 +2961,30 @@ int Graph<T>::readFromMTXFile(const std::string &workingDir,
   // Get full path to the file and open it
   const std::string completePathToFileGraph =
       workingDir + '/' + fileName + ".mtx";
-  std::cout << completePathToFileGraph << std::endl;
   std::ifstream iFile(completePathToFileGraph);
+  // Check that the file is open
+  if (!iFile.is_open()) {
+	return -1;
+  }
 
   // Define the number of columns and rows in the matrix
   int n_cols, n_rows;
   int n_edges;
+  bool undirected = false;
 
   // From the first line of the file read the number of rows, columns and edges
   std::string row_content;
   getline(iFile, row_content);
+  if (row_content.find("symmetric") != std::string::npos) {
+    undirected = true;
+  }
 
+  // Get rid of any commented lines between the header and the size line
+  while (row_content.find('%') != std::string::npos) {
+	getline(iFile, row_content);
+  }
+
+  // From the size line of the file read the number of rows, columns and edges
   std::stringstream row_stream(row_content);
   std::string value;
   getline(row_stream, value, ' ');
@@ -2997,20 +3010,12 @@ int Graph<T>::readFromMTXFile(const std::string &workingDir,
 	getline(row_stream, node2, ' ');
 	getline(row_stream, edge_weight);
 
-	unsigned long long id;
-	bool found;
-	std::for_each(edgeMap.begin(), edgeMap.end(), [&node1, &node2, &id, &found](auto edge){
-		  if (edge.second == std::pair<std::string, std::string>(node2, node1)) {
-			found = true;	
-			id = edge.first;
-		  }
-		});
-	// Save the data inside the maps
-	if (found) {
-	  edgeDirectedMap[id] = true;
-	} else {
-	  edgeMap[edge_id] = std::pair<std::string, std::string>(node1, node2);
-	  edgeWeightMap[edge_id] = std::stod(edge_weight);
+	edgeMap[edge_id] = std::pair<std::string, std::string>(node1, node2);
+	edgeWeightMap[edge_id] = std::stod(edge_weight);
+	edgeDirectedMap[edge_id] = !undirected;
+
+	// If the edge is a self-link, it must be undirected
+	if (node1 == node2) {
 	  edgeDirectedMap[edge_id] = false;
 	}
 
