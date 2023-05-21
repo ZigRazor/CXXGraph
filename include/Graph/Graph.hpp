@@ -2912,10 +2912,20 @@ int Graph<T>::writeToMTXFile(const std::string &workingDir,
 
   // Write the header of the file
   std::string header = "%%MatrixMarket graph";
-  if (isDirectedGraph()) {
-	header += '\n';
-  } else {
+  // Check if the adjacency matrix is symmetric, i.e., if all the edges are
+  // undirected
+  bool symmetric = true;
+  for (const auto& edgeIt : edgeSet) {
+	if (edgeIt->isDirected().has_value() && edgeIt->isDirected().value()) {
+	  symmetric = false;
+	  break;
+	}
+  }
+  // Write in the header whether the adj matrix is symmetric or not
+  if (symmetric) {
 	header += " symmetric\n";
+  } else {
+	header += '\n';
   }
   iFile << header;
 
