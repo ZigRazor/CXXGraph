@@ -25,7 +25,6 @@
 #include <limits.h>
 
 #include <atomic>
-#include <cassert>
 #include <cmath>
 #include <condition_variable>
 #include <cstring>
@@ -3004,7 +3003,9 @@ int Graph<T>::readFromMTXFile(const std::string &workingDir,
   n_edges = std::stoi(value);
 
   // Since the matrix represents the adjacency matrix, it must be square
-  assert(n_rows == n_cols);
+  if (n_rows != n_cols) {
+	return -1;
+  }
 
   // Read the content of each line
   std::string node1;
