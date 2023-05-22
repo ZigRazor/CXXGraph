@@ -2993,13 +2993,13 @@ int Graph<T>::readFromMTXFile(const std::string &workingDir,
   }
 
   // From the size line of the file read the number of rows, columns and edges
-  std::stringstream row_stream(row_content);
+  std::stringstream header_stream(row_content);
   std::string value;
-  getline(row_stream, value, ' ');
+  getline(header_stream, value, ' ');
   n_rows = std::stoi(value);
-  getline(row_stream, value, ' ');
+  getline(header_stream, value, ' ');
   n_cols = std::stoi(value);
-  getline(row_stream, value, ' ');
+  getline(header_stream, value, ' ');
   n_edges = std::stoi(value);
 
   // Since the matrix represents the adjacency matrix, it must be square
@@ -3031,6 +3031,11 @@ int Graph<T>::readFromMTXFile(const std::string &workingDir,
 
     // Increase the edge id
     ++edge_id;
+  }
+
+  if (n_edges != edgeMap.size()) {
+	std::cout << "Error: The number of edges does not match the value provided in the size line.\n";
+	return -1;
   }
 
   iFile.close();
