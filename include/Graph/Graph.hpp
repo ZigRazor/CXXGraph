@@ -670,12 +670,11 @@ const std::set<const Node<T> *> Graph<T>::getNodeSet() const {
 
 template <typename T>
 void Graph<T>::setNodeData(const std::string &nodeUserId, T data) {
-  for (auto &nodeSetIt : this->nodeSet()) {
-    if (nodeSetIt->getUserId() == nodeUserId) {
-      nodeSetIt->setData(std::move(data));
-      break;
-    }
-  }
+  auto nodeSet = this->nodeSet();
+  auto nodeIt = std::find_if(nodeSet.begin(), nodeSet.end(), [&nodeUserId](auto node){
+		return node->getUserId() == nodeUserId;
+	  });
+  (*nodeIt)->setData(std::move(data));
 }
 
 template <typename T>
@@ -2911,13 +2910,9 @@ int Graph<T>::writeToMTXFile(const std::string &workingDir,
   std::string header = "%%MatrixMarket graph";
   // Check if the adjacency matrix is symmetric, i.e., if all the edges are
   // undirected
-  bool symmetric = true;
-  for (const auto &edgeIt : edgeSet) {
-    if (edgeIt->isDirected().has_value() && edgeIt->isDirected().value()) {
-      symmetric = false;
-      break;
-    }
-  }
+  bool symmetric = !std::any_of(edgeSet.begin(), edgeSet.end(), [](auto edge){
+		return (edge->isDirected().has_value() && edge->isDirected().value());
+	  });
   // Write in the header whether the adj matrix is symmetric or not
   if (symmetric) {
     header += " symmetric\n";
