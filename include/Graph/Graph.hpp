@@ -531,6 +531,9 @@ class Graph {
                              const std::string &OFileName,
                              const std::string &graphName) const;
 
+  virtual int writeToMTXFile(const std::string &workingDir,
+                             const std::string &OFileName, char delimier) const;
+
   /**
    * \brief
    * This function reads the graph from an input file
@@ -552,6 +555,9 @@ class Graph {
       bool readNodeFeat = false, bool readEdgeWeight = false);
 
   virtual int readFromDotFile(const std::string &workingDir,
+                              const std::string &fileName);
+
+  virtual int readFromMTXFile(const std::string &workingDir,
                               const std::string &fileName);
 
   /**
@@ -664,19 +670,18 @@ const std::set<const Node<T> *> Graph<T>::getNodeSet() const {
 
 template <typename T>
 void Graph<T>::setNodeData(const std::string &nodeUserId, T data) {
-  for(auto &nodeSetIt : this->nodeSet()) {
-	if (nodeSetIt->getUserId() == nodeUserId) {
-	  nodeSetIt->setData(std::move(data));
-	  break;
-	}
-  }
+  auto nodeset = this->nodeSet();
+  auto nodeIt = std::find_if(nodeset.begin(), nodeset.end(), [&nodeUserId](auto node){
+		return node->getUserId() == nodeUserId;
+	  });
+  (*nodeIt)->setData(std::move(data));
 }
 
 template <typename T>
 void Graph<T>::setNodeData(std::map<std::string, T> &dataMap) {
   // Construct the set of all the nodes in the graph
-  for(auto &nodeSetIt : this->nodeSet()) {
-	nodeSetIt->setData(std::move(dataMap[nodeSetIt->getUserId()]));
+  for (auto &nodeSetIt : this->nodeSet()) {
+    nodeSetIt->setData(std::move(dataMap[nodeSetIt->getUserId()]));
   }
 }
 
@@ -939,8 +944,7 @@ int Graph<T>::readFromDot(const std::string &workingDir,
   }
   iFile.close();
 
-  recreateGraph(edgeMap, edgeDirectedMap, nodeFeatMap,
-                             edgeWeightMap);
+  recreateGraph(edgeMap, edgeDirectedMap, nodeFeatMap, edgeWeightMap);
   return 0;
 }
 
@@ -2894,9 +2898,144 @@ int Graph<T>::writeToDotFile(const std::string &workingDir,
 }
 
 template <typename T>
+int Graph<T>::writeToMTXFile(const std::string &workingDir,
+                             const std::string &OFileName,
+                             char delimitier) const {
+  // Get the full path and open the file
+  const std::string completePathToFileGraph =
+      workingDir + '/' + OFileName + ".mtx";
+  std::ofstream iFile(completePathToFileGraph);
+
+  // Write the header of the file
+  std::string header = "%%MatrixMarket graph";
+  // Check if the adjacency matrix is symmetric, i.e., if all the edges are
+  // undirected
+  bool symmetric = !std::any_of(edgeSet.begin(), edgeSet.end(), [](auto edge){
+		return (edge->isDirected().has_value() && edge->isDirected().value());
+	  });
+  // Write in the header whether the adj matrix is symmetric or not
+  if (symmetric) {
+    header += " symmetric\n";
+  } else {
+    header += '\n';
+  }
+  iFile << header;
+
+  // Write the line containing the number of nodes and edges
+  const std::string firstLine =
+      std::to_string(getNodeSet().size()) + delimitier +
+      std::to_string(getNodeSet().size()) + delimitier +
+      std::to_string(getEdgeSet().size()) + '\n';
+  iFile << firstLine;
+
+  // Construct the edges
+  for (const auto &edgeIt : edgeSet) {
+    std::string line;
+    line += edgeIt->getNodePair().first->getUserId() + delimitier;
+    line += edgeIt->getNodePair().second->getUserId() + delimitier;
+    if (edgeIt->isWeighted().has_value() && edgeIt->isWeighted().value()) {
+      line += std::to_string(edgeIt->isWeighted().value()) + '\n';
+    } else {
+      line += std::to_string(1.) + '\n';
+    }
+    iFile << line;
+  }
+
+  iFile.close();
+  return 0;
+}
+
+template <typename T>
 int Graph<T>::readFromDotFile(const std::string &workingDir,
                               const std::string &fileName) {
   return readFromDot(workingDir, fileName);
+}
+
+template <typename T>
+int Graph<T>::readFromMTXFile(const std::string &workingDir,
+                              const std::string &fileName) {
+  // Define the edge maps
+  std::unordered_map<unsigned long long, std::pair<std::string, std::string>>
+      edgeMap;
+  std::unordered_map<std::string, T> nodeFeatMap;
+  std::unordered_map<unsigned long long, bool> edgeDirectedMap;
+  std::unordered_map<unsigned long long, double> edgeWeightMap;
+
+  // Get full path to the file and open it
+  const std::string completePathToFileGraph =
+      workingDir + '/' + fileName + ".mtx";
+  std::ifstream iFile(completePathToFileGraph);
+  // Check that the file is open
+  if (!iFile.is_open()) {
+    return -1;
+  }
+
+  // Define the number of columns and rows in the matrix
+  int n_cols, n_rows;
+  int n_edges;
+  bool undirected = false;
+
+  // From the first line of the file read the number of rows, columns and edges
+  std::string row_content;
+  getline(iFile, row_content);
+  if (row_content.find("symmetric") != std::string::npos) {
+    undirected = true;
+  }
+
+  // Get rid of any commented lines between the header and the size line
+  while (row_content.find('%') != std::string::npos) {
+    getline(iFile, row_content);
+  }
+
+  // From the size line of the file read the number of rows, columns and edges
+  std::stringstream header_stream(row_content);
+  std::string value;
+  getline(header_stream, value, ' ');
+  n_rows = std::stoi(value);
+  getline(header_stream, value, ' ');
+  n_cols = std::stoi(value);
+  getline(header_stream, value, ' ');
+  n_edges = std::stoi(value);
+
+  // Since the matrix represents the adjacency matrix, it must be square
+  if (n_rows != n_cols) {
+	return -1;
+  }
+
+  // Read the content of each line
+  std::string node1;
+  std::string node2;
+  std::string edge_weight;
+  unsigned long long edge_id = 0;
+  while (getline(iFile, row_content)) {
+    std::stringstream row_stream(row_content);
+
+    // Read the content of the node ids and the weight into strings
+    getline(row_stream, node1, ' ');
+    getline(row_stream, node2, ' ');
+    getline(row_stream, edge_weight);
+
+    edgeMap[edge_id] = std::pair<std::string, std::string>(node1, node2);
+    edgeWeightMap[edge_id] = std::stod(edge_weight);
+    edgeDirectedMap[edge_id] = !undirected;
+
+    // If the edge is a self-link, it must be undirected
+    if (node1 == node2) {
+      edgeDirectedMap[edge_id] = false;
+    }
+
+    // Increase the edge id
+    ++edge_id;
+  }
+
+  if (n_edges != edgeMap.size()) {
+	std::cout << "Error: The number of edges does not match the value provided in the size line.\n";
+	return -1;
+  }
+
+  iFile.close();
+  recreateGraph(edgeMap, edgeDirectedMap, nodeFeatMap, edgeWeightMap);
+  return 0;
 }
 
 template <typename T>
