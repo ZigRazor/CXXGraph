@@ -32,7 +32,7 @@ jobs:
       - name: Install tools manually
         run: sudo apt-get install lcov gcovr
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Configure CMake
         run: cmake -DTEST=ON -DCODE_COVERAGE=ON -B ${{github.workspace}}/build; sudo apt-get install lcov gcovr
@@ -49,7 +49,7 @@ jobs:
         working-directory: ${{github.workspace}}/build/test
         run: lcov --capture --directory .. --output-file coverage.info
 
-      - uses: codecov/codecov-action@v3.1.3
+      - uses: codecov/codecov-action@v3.1.4
         with:
           #token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           file: ${{github.workspace}}/build/test/coverage.info # optional
