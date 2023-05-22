@@ -26,7 +26,7 @@ jobs:
       #    cmake -E chdir "build" cmake -DCMAKE_BUILD_TYPE=Release ../
       #    cmake --build "build" --config Release
       #    sudo cmake --build "build" --config Release --target install
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
