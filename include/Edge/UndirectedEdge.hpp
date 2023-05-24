@@ -25,6 +25,14 @@
 #include "Edge.hpp"
 
 namespace CXXGraph {
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
 
 template <typename T>
 class UndirectedEdge;
@@ -38,8 +46,12 @@ class UndirectedEdge : public Edge<T> {
  public:
   UndirectedEdge(const unsigned long id, const Node<T> &node1,
                  const Node<T> &node2);
+  UndirectedEdge(const unsigned long id, shared<const Node<T>> node1,
+                 shared<const Node<T>> node2);
   UndirectedEdge(const unsigned long id,
                  const std::pair<const Node<T> *, const Node<T> *> &nodepair);
+  UndirectedEdge(const unsigned long id,
+                 const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair);
   UndirectedEdge(const Edge<T> &edge);
   virtual ~UndirectedEdge() = default;
   const Node<T> &getNode1() const;
@@ -61,9 +73,20 @@ UndirectedEdge<T>::UndirectedEdge(const unsigned long id, const Node<T> &node1,
     : Edge<T>(id, node1, node2) {}
 
 template <typename T>
+UndirectedEdge<T>::UndirectedEdge(const unsigned long id, shared<const Node<T>> node1,
+                                  shared<const Node<T>> node2)
+    : Edge<T>(id, node1, node2) {}
+
+template <typename T>
 UndirectedEdge<T>::UndirectedEdge(
     const unsigned long id,
     const std::pair<const Node<T> *, const Node<T> *> &nodepair)
+    : Edge<T>(id, nodepair) {}
+
+template <typename T>
+UndirectedEdge<T>::UndirectedEdge(
+    const unsigned long id,
+    const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair)
     : Edge<T>(id, nodepair) {}
 
 template <typename T>

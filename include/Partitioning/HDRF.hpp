@@ -20,6 +20,7 @@
 #ifndef __CXXGRAPH_PARTITIONING_HDRF_H__
 #define __CXXGRAPH_PARTITIONING_HDRF_H__
 
+#include <memory>
 #pragma once
 
 #include <chrono>
@@ -30,6 +31,15 @@
 #include "Partitioning/Utility/Globals.hpp"
 
 namespace CXXGraph {
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared = std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
+
 namespace Partitioning {
 /**
  * @brief A Vertex Cut Partioning Algorithm ( as described by this paper
@@ -47,7 +57,7 @@ class HDRF : public PartitionStrategy<T> {
   explicit HDRF(const Globals &G);
   ~HDRF();
 
-  void performStep(const Edge<T> &e, PartitionState<T> &Sstate) override;
+  void performStep(shared<const Edge<T>> e, shared<PartitionState<T>> Sstate) override;
 };
 template <typename T>
 HDRF<T>::HDRF(const Globals &G) : GLOBALS(G) {
@@ -56,15 +66,15 @@ HDRF<T>::HDRF(const Globals &G) : GLOBALS(G) {
 template <typename T>
 HDRF<T>::~HDRF() {}
 template <typename T>
-void HDRF<T>::performStep(const Edge<T> &e, PartitionState<T> &state) {
+void HDRF<T>::performStep(shared<const Edge<T>> e, shared<PartitionState<T>> state) {
   int P = GLOBALS.numberOfPartition;
   double lambda = GLOBALS.param1;
   double epsilon = GLOBALS.param2;
-  auto nodePair = e.getNodePair();
+  auto nodePair = e->getNodePair();
   int u = nodePair.first->getId();
   int v = nodePair.second->getId();
-  std::shared_ptr<Record<T>> u_record = state.getRecord(u);
-  std::shared_ptr<Record<T>> v_record = state.getRecord(v);
+  std::shared_ptr<Record<T>> u_record = state->getRecord(u);
+  std::shared_ptr<Record<T>> v_record = state->getRecord(v);
 
   //*** ASK FOR LOCK
   bool locks_taken = false;
@@ -94,8 +104,8 @@ void HDRF<T>::performStep(const Edge<T> &e, PartitionState<T> &state) {
   int machine_id = -1;
 
   //*** COMPUTE MAX AND MIN LOAD
-  int MIN_LOAD = state.getMinLoad();
-  int MAX_LOAD = state.getMaxLoad();
+  int MIN_LOAD = state->getMinLoad();
+  int MAX_LOAD = state->getMaxLoad();
 
   //*** COMPUTE SCORES, FIND MIN SCORE, AND COMPUTE CANDIDATES PARITIONS
   std::vector<int> candidates;
@@ -116,7 +126,7 @@ void HDRF<T>::performStep(const Edge<T> &e, PartitionState<T> &state) {
       fv /= SUM;
       fv = 1 + (1 - fv);
     }
-    int load = state.getMachineLoad(m);
+    int load = state->getMachineLoad(m);
     double bal = (MAX_LOAD - load);
     bal /= (epsilon + MAX_LOAD - MIN_LOAD);
     if (bal < 0) {
@@ -158,17 +168,17 @@ void HDRF<T>::performStep(const Edge<T> &e, PartitionState<T> &state) {
   int choice = distribution(rand) % candidates.size();
   machine_id = candidates.at(choice);
   try {
-    CoordinatedPartitionState<T> &cord_state =
-        dynamic_cast<CoordinatedPartitionState<T> &>(state);
+    shared<CoordinatedPartitionState<T>> cord_state =
+        std::static_pointer_cast<CoordinatedPartitionState<T>>(state);
     // NEW UPDATE RECORDS RULE TO UPFDATE THE SIZE OF THE PARTITIONS EXPRESSED
     // AS THE NUMBER OF VERTICES THEY CONTAINS
     if (!u_record->hasReplicaInPartition(machine_id)) {
       u_record->addPartition(machine_id);
-      cord_state.incrementMachineLoadVertices(machine_id);
+      cord_state->incrementMachineLoadVertices(machine_id);
     }
     if (!v_record->hasReplicaInPartition(machine_id)) {
       v_record->addPartition(machine_id);
-      cord_state.incrementMachineLoadVertices(machine_id);
+      cord_state->incrementMachineLoadVertices(machine_id);
     }
   } catch (const std::bad_cast &e) {
     // use employee's member functions
@@ -182,7 +192,7 @@ void HDRF<T>::performStep(const Edge<T> &e, PartitionState<T> &state) {
   }
 
   // 2-UPDATE EDGES
-  state.incrementMachineLoad(machine_id, &e);
+  state->incrementMachineLoad(machine_id, e);
 
   // 3-UPDATE DEGREES
   u_record->incrementDegree();

@@ -22,19 +22,29 @@
 
 #pragma once
 
+#include <memory>
 #include "Record.hpp"
 
 namespace CXXGraph {
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared = std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
+
 namespace Partitioning {
 template <typename T>
 class PartitionState {
  public:
-  virtual std::shared_ptr<Record<T>> getRecord(const int x) = 0;
+  virtual shared<Record<T>> getRecord(const int x) = 0;
   virtual int getMachineLoad(const int m) const = 0;
   virtual int getMachineWeight(const int m) const = 0;
   virtual int getMachineLoadVertices(const int m) const = 0;
-  virtual void incrementMachineLoad(const int m, const Edge<T>* e) = 0;
-  virtual void incrementMachineWeight(const int m, const Edge<T>* e) = 0;
+  virtual void incrementMachineLoad(const int m, shared<const Edge<T>> e) = 0;
+  virtual void incrementMachineWeight(const int m, shared<const Edge<T>> e) = 0;
   virtual int getMinLoad() const = 0;
   virtual int getMaxLoad() const = 0;
   virtual int getMachineWithMinWeight() const = 0;

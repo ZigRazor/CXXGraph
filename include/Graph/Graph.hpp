@@ -35,6 +35,7 @@
 #include <limits>
 #include <list>
 #include <map>
+#include <memory>
 #include <mutex>
 #include <optional>
 #include <queue>
@@ -69,8 +70,17 @@
 #endif
 
 namespace CXXGraph {
+// Smart pointers alias
 template <typename T>
-using T_EdgeSet = std::unordered_set<const Edge<T> *>;
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
+
+template <typename T>
+using T_EdgeSet = std::unordered_set<shared<const Edge<T>>>;
 
 namespace Partitioning {
 template <typename T>
@@ -89,7 +99,7 @@ class Graph {
   T_EdgeSet<T> edgeSet = {};
 
   // Private non-const getter for the set of nodes
-  std::set<Node<T> *> nodeSet();
+  std::set<shared<Node<T>>> nodeSet();
 
   std::optional<std::pair<std::string, char>> getExtenstionAndSeparator(
       InputOutputFormat format) const;
@@ -141,12 +151,14 @@ class Graph {
   /**
    * \brief
    * Function add an Edge to the Graph Edge Set
+   * First check if a pointer to a node with the same userId has
+   * already been added, and if not add it
    * Note: No Thread Safe
    *
    * @param edge The Edge to insert
    *
    */
-  virtual void addEdge(const Edge<T> *edge);
+  virtual void addEdge(shared<const Edge<T>> edge);
   /**
    * \brief
    * Function remove an Edge from the Graph Edge Set
@@ -164,7 +176,7 @@ class Graph {
    * @returns a list of Nodes of the graph
    *
    */
-  virtual const std::set<const Node<T> *> getNodeSet() const;
+  virtual const std::set<shared<const Node<T>>> getNodeSet() const;
   /**
    * \brief
    * Function that sets the data contained in a node
@@ -191,7 +203,7 @@ class Graph {
    * @returns the Edge if exist
    *
    */
-  virtual const std::optional<const Edge<T> *> getEdge(
+  virtual const std::optional<shared<const Edge<T>>> getEdge(
       const unsigned long long edgeId) const;
   /**
    * @brief This function generate a list of adjacency matrix with every element
@@ -210,7 +222,7 @@ class Graph {
    * Note: No Thread Safe
    */
   virtual unsigned long long setFind(
-      std::unordered_map<unsigned long long, Subset> *,
+      shared<std::unordered_map<unsigned long long, Subset>>,
       const unsigned long long elem) const;
   /**
    * @brief This function modifies the original subset array
@@ -221,7 +233,7 @@ class Graph {
    * NOTE: Original subset is no longer available after union.
    * Note: No Thread Safe
    */
-  virtual void setUnion(std::unordered_map<unsigned long long, Subset> *,
+  virtual void setUnion(shared<std::unordered_map<unsigned long long, Subset>>,
                         const unsigned long long set1,
                         const unsigned long long elem2) const;
   /**
@@ -381,7 +393,7 @@ class Graph {
    *
    * @return true if a cycle is detected, else false
    */
-  virtual bool containsCycle(const T_EdgeSet<T> *) const;
+  virtual bool containsCycle(shared<const T_EdgeSet<T>>) const;
   /**
    * @brief
    * This function checks if the given Subset
@@ -390,8 +402,8 @@ class Graph {
    * @return true if a cycle is detected, else false
    */
   virtual bool containsCycle(
-      const T_EdgeSet<T> *edgeSet,
-      std::unordered_map<unsigned long long, Subset> *) const;
+      shared<const T_EdgeSet<T>> edgeSet,
+      shared<std::unordered_map<unsigned long long, Subset>>) const;
 
   /**
    * \brief
@@ -618,16 +630,40 @@ void Graph<T>::setEdgeSet(const T_EdgeSet<T> &edgeSet) {
 }
 
 template <typename T>
-void Graph<T>::addEdge(const Edge<T> *edge) {
-  /*
-  if (std::find_if(edgeSet.begin(), edgeSet.end(), [edge](const Edge<T> *edge_a)
-                                   { return (*edge == *edge_a); }) ==
-  edgeSet.end())
-  {
-          edgeSet.insert(edge);
+void Graph<T>::addEdge(shared<const Edge<T>> edge) {
+  // If the edge was already in the set, I don't add it again
+  if (std::find_if(edgeSet.begin(), edgeSet.end(), [edge](auto edge_inSet){
+		  return (edge_inSet->getNodePair().first->getUserId() == edge->getNodePair().first->getUserId() &&
+			  edge_inSet->getNodePair().second->getUserId() == edge->getNodePair().second->getUserId());
+		}) != edgeSet.end()) {
+	return;
   }
-  */
-  edgeSet.insert(edge);
+
+  // Check that the nodes pointed by the pointers in 'edge' have not already been
+  // added in other edges
+  //
+  // We don't pointers pointing to different memory regions which represent the 
+  // same nodes
+  shared<const Node<T>> node1;
+  auto edgeIt1 = std::find_if(edgeSet.begin(), edgeSet.end(), [edge](auto edge_inSet){
+		  return edge_inSet->getNodePair().first->getUserId() == edge->getNodePair().first->getUserId();
+		});
+  if (edgeIt1 == edgeSet.end()) {
+	node1 = edge->getNodePair().first;
+  } else {
+	node1 = (*edgeIt1)->getNodePair().first;
+  }
+  shared<const Node<T>> node2;
+  auto edgeIt2 = std::find_if(edgeSet.begin(), edgeSet.end(), [edge](auto edge_inSet){
+		  return edge_inSet->getNodePair().second->getUserId() == edge->getNodePair().second->getUserId();
+		});
+  if (edgeIt2 == edgeSet.end()) {
+	node2 = edge->getNodePair().second;
+  } else {
+	node2 = (*edgeIt2)->getNodePair().second;
+  }
+  shared<const Edge<T>> newEdge = make_shared<const Edge<T>>(edge->getId(), node1, node2);
+  edgeSet.insert(newEdge);
 }
 
 template <typename T>
@@ -643,8 +679,8 @@ void Graph<T>::removeEdge(const unsigned long long edgeId) {
 }
 
 template <typename T>
-const std::set<const Node<T> *> Graph<T>::getNodeSet() const {
-  std::set<const Node<T> *> nodeSet;
+const std::set<shared<const Node<T>>> Graph<T>::getNodeSet() const {
+  std::set<shared<const Node<T>>> nodeSet;
   for (const auto &edgeSetIt : edgeSet) {
     nodeSet.insert(edgeSetIt->getNodePair().first);
     nodeSet.insert(edgeSetIt->getNodePair().second);
@@ -686,7 +722,7 @@ void Graph<T>::setNodeData(std::map<std::string, T> &dataMap) {
 }
 
 template <typename T>
-const std::optional<const Edge<T> *> Graph<T>::getEdge(
+const std::optional<shared<const Edge<T>>> Graph<T>::getEdge(
     const unsigned long long edgeId) const {
   for (const auto &it : edgeSet) {
     if (it->getId() == edgeId) {
@@ -698,11 +734,11 @@ const std::optional<const Edge<T> *> Graph<T>::getEdge(
 }
 
 template <typename T>
-std::set<Node<T> *> Graph<T>::nodeSet() {
-  std::set<Node<T> *> nodeSet;
+std::set<shared<Node<T>>> Graph<T>::nodeSet() {
+  std::set<shared<Node<T>>> nodeSet;
   for (auto &edgeSetIt : edgeSet) {
-    nodeSet.insert(const_cast<Node<T> *>(edgeSetIt->getNodePair().first));
-    nodeSet.insert(const_cast<Node<T> *>(edgeSetIt->getNodePair().second));
+    nodeSet.insert(std::const_pointer_cast<Node<T>>(edgeSetIt->getNodePair().first));
+    nodeSet.insert(std::const_pointer_cast<Node<T>>(edgeSetIt->getNodePair().second));
   }
 
   return nodeSet;
@@ -745,23 +781,23 @@ int Graph<T>::writeToDot(const std::string &workingDir,
   }
   ofileGraph << headerLine;
 
-  for (auto const &edgeIt : edgeSet) {
+  for (auto const &edgePtr : edgeSet) {
     std::string edgeLine = "";
-    if (edgeIt->isDirected().has_value() && edgeIt->isDirected().value()) {
-      auto directedIt = dynamic_cast<const DirectedEdge<T> *>(edgeIt);
-      edgeLine += '\t' + directedIt->getFrom().getUserId() + ' ';
+    if (edgePtr->isDirected().has_value() && edgePtr->isDirected().value()) {
+      auto directedPtr = std::static_pointer_cast<const DirectedEdge<T>>(edgePtr);
+      edgeLine += '\t' + directedPtr->getFrom().getUserId() + ' ';
       edgeLine += directedLinkSymbol + ' ';
-      edgeLine += directedIt->getTo().getUserId();
+      edgeLine += directedPtr->getTo().getUserId();
     } else {
-      edgeLine += '\t' + edgeIt->getNodePair().first->getUserId() + ' ';
+      edgeLine += '\t' + edgePtr->getNodePair().first->getUserId() + ' ';
       edgeLine += linkSymbol + ' ';
-      edgeLine += edgeIt->getNodePair().second->getUserId();
+      edgeLine += edgePtr->getNodePair().second->getUserId();
     }
-    if (edgeIt->isWeighted().has_value() && edgeIt->isWeighted().value()) {
+    if (edgePtr->isWeighted().has_value() && edgePtr->isWeighted().value()) {
       // Weights in dot files must be integers
       edgeLine += " [weight=" +
                   std::to_string(static_cast<int>(
-                      dynamic_cast<const Weighted *>(edgeIt)->getWeight())) +
+                      dynamic_cast<const Weighted *>(edgePtr.get())->getWeight())) +
                   ']';
     }
     edgeLine += ";\n";
@@ -812,7 +848,7 @@ void Graph<T>::writeGraphToStream(std::ostream &oGraph, std::ostream &oNodeFeat,
       oEdgeWeight
           << edge->getId() << sep
           << (edge->isWeighted().has_value() && edge->isWeighted().value()
-                  ? (dynamic_cast<const Weighted *>(edge))->getWeight()
+                  ? (dynamic_cast<const Weighted *>(edge.get()))->getWeight()
                   : 0.0)
           << sep
           << (edge->isWeighted().has_value() && edge->isWeighted().value() ? 1
@@ -955,17 +991,17 @@ void Graph<T>::recreateGraph(
     std::unordered_map<unsigned long long, bool> &edgeDirectedMap,
     std::unordered_map<std::string, T> &nodeFeatMap,
     std::unordered_map<unsigned long long, double> &edgeWeightMap) {
-  std::unordered_map<std::string, Node<T> *> nodeMap;
+  std::unordered_map<std::string, shared<Node<T>>> nodeMap;
   for (const auto &edgeIt : edgeMap) {
-    Node<T> *node1 = nullptr;
-    Node<T> *node2 = nullptr;
+    shared<Node<T>> node1(nullptr);
+    shared<Node<T>> node2(nullptr);
     if (nodeMap.find(edgeIt.second.first) == nodeMap.end()) {
       // Create new Node
       T feat;
       if (nodeFeatMap.find(edgeIt.second.first) != nodeFeatMap.end()) {
         feat = std::move(nodeFeatMap.at(edgeIt.second.first));
       }
-      node1 = new Node<T>(edgeIt.second.first, feat);
+      node1 = make_shared<Node<T>>(edgeIt.second.first, feat);
       nodeMap[edgeIt.second.first] = node1;
     } else {
       node1 = nodeMap.at(edgeIt.second.first);
@@ -976,7 +1012,7 @@ void Graph<T>::recreateGraph(
       if (nodeFeatMap.find(edgeIt.second.second) != nodeFeatMap.end()) {
         feat = std::move(nodeFeatMap.at(edgeIt.second.second));
       }
-      node2 = new Node<T>(edgeIt.second.second, feat);
+      node2 = make_shared<Node<T>>(edgeIt.second.second, feat);
       nodeMap[edgeIt.second.second] = node2;
     } else {
       node2 = nodeMap.at(edgeIt.second.second);
@@ -985,21 +1021,21 @@ void Graph<T>::recreateGraph(
     if (edgeWeightMap.find(edgeIt.first) != edgeWeightMap.end()) {
       if (edgeDirectedMap.find(edgeIt.first) != edgeDirectedMap.end() &&
           edgeDirectedMap.at(edgeIt.first)) {
-        auto edge = new DirectedWeightedEdge<T>(edgeIt.first, *node1, *node2,
+        auto edge = make_shared<DirectedWeightedEdge<T>>(edgeIt.first, node1, node2,
                                                 edgeWeightMap.at(edgeIt.first));
         addEdge(edge);
       } else {
-        auto edge = new UndirectedWeightedEdge<T>(
-            edgeIt.first, *node1, *node2, edgeWeightMap.at(edgeIt.first));
+        auto edge = make_shared<UndirectedWeightedEdge<T>>(
+            edgeIt.first, node1, node2, edgeWeightMap.at(edgeIt.first));
         addEdge(edge);
       }
     } else {
       if (edgeDirectedMap.find(edgeIt.first) != edgeDirectedMap.end() &&
           edgeDirectedMap.at(edgeIt.first)) {
-        auto edge = new DirectedEdge<T>(edgeIt.first, *node1, *node2);
+        auto edge = make_shared<DirectedEdge<T>>(edgeIt.first, node1, node2);
         addEdge(edge);
       } else {
-        auto edge = new UndirectedEdge<T>(edgeIt.first, *node1, *node2);
+        auto edge = make_shared<UndirectedEdge<T>>(edgeIt.first, node1, node2);
         addEdge(edge);
       }
     }
@@ -1072,7 +1108,7 @@ int Graph<T>::decompressFile(const std::string &inputFile,
 
 template <typename T>
 unsigned long long Graph<T>::setFind(
-    std::unordered_map<unsigned long long, Subset> *subsets,
+    shared<std::unordered_map<unsigned long long, Subset>> subsets,
     const unsigned long long nodeId) const {
   // find root and make root as parent of i
   // (path compression)
@@ -1085,7 +1121,7 @@ unsigned long long Graph<T>::setFind(
 }
 
 template <typename T>
-void Graph<T>::setUnion(std::unordered_map<unsigned long long, Subset> *subsets,
+void Graph<T>::setUnion(shared<std::unordered_map<unsigned long long, Subset>> subsets,
                         const unsigned long long elem1,
                         const unsigned long long elem2) const {
   // if both sets have same parent
@@ -1109,7 +1145,7 @@ std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const {
   const auto adj = Graph<T>::getAdjMatrix();
   std::shared_ptr<std::vector<Node<T>>> eulerPath =
       std::make_shared<std::vector<Node<T>>>();
-  std::vector<const Node<T> *> currentPath;
+  std::vector<shared<const Node<T>>> currentPath;
   auto currentNode = *(nodeSet.begin());
   currentPath.push_back(currentNode);
   while (currentPath.size() > 0) {
@@ -1134,26 +1170,30 @@ std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const {
 template <typename T>
 const std::shared_ptr<AdjacencyMatrix<T>> Graph<T>::getAdjMatrix() const {
   auto adj = std::make_shared<AdjacencyMatrix<T>>();
-  auto addElementToAdjMatrix = [&adj](const Node<T> *nodeFrom,
-                                      const Node<T> *nodeTo,
-                                      const Edge<T> *edge) {
-    std::pair<const Node<T> *, const Edge<T> *> elem = {nodeTo, edge};
+  auto addElementToAdjMatrix = [&adj](shared<const Node<T>> nodeFrom,
+                                      shared<const Node<T>> nodeTo,
+                                      shared<const Edge<T>> edge) {
+    std::pair<shared<const Node<T>>, shared<const Edge<T>>> elem = {nodeTo, edge};
     (*adj)[nodeFrom].push_back(std::move(elem));
   };
   for (const auto &edgeSetIt : edgeSet) {
     if (edgeSetIt->isDirected().has_value() &&
         edgeSetIt->isDirected().value()) {
-      const DirectedEdge<T> *d_edge =
-          dynamic_cast<const DirectedEdge<T> *>(edgeSetIt);
-      addElementToAdjMatrix(&(d_edge->getFrom()), &(d_edge->getTo()), d_edge);
+      shared<const DirectedEdge<T>> d_edge =
+          std::static_pointer_cast<const DirectedEdge<T>>(edgeSetIt);
+      addElementToAdjMatrix(d_edge->getNodePair().first,
+							d_edge->getNodePair().second,
+							d_edge);
     } else if (edgeSetIt->isDirected().has_value() &&
                !edgeSetIt->isDirected().value()) {
-      const UndirectedEdge<T> *ud_edge =
-          dynamic_cast<const UndirectedEdge<T> *>(edgeSetIt);
+      shared<const UndirectedEdge<T>> ud_edge =
+          std::static_pointer_cast<const UndirectedEdge<T>>(edgeSetIt);
       ;
-      addElementToAdjMatrix(&(ud_edge->getNode1()), &(ud_edge->getNode2()),
+      addElementToAdjMatrix(ud_edge->getNodePair().first,
+							ud_edge->getNodePair().second,
                             ud_edge);
-      addElementToAdjMatrix(&(ud_edge->getNode2()), &(ud_edge->getNode1()),
+      addElementToAdjMatrix(ud_edge->getNodePair().first,
+							ud_edge->getNodePair().second,
                             ud_edge);
     } else {  // is a simple edge we cannot create adj matrix
       return adj;
@@ -1167,12 +1207,18 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T> &source,
                                         const Node<T> &target) const {
   DijkstraResult result;
   auto nodeSet = Graph<T>::getNodeSet();
-  if (std::find(nodeSet.begin(), nodeSet.end(), &source) == nodeSet.end()) {
+  auto source_node_it = std::find_if(nodeSet.begin(), nodeSet.end(), [&source](auto node){
+		  return node->getUserId() == source.getUserId();
+		});
+  if (source_node_it == nodeSet.end()) {
     // check if source node exist in the graph
     result.errorMessage = ERR_SOURCE_NODE_NOT_IN_GRAPH;
     return result;
   }
-  if (std::find(nodeSet.begin(), nodeSet.end(), &target) == nodeSet.end()) {
+  auto target_node_it = std::find_if(nodeSet.begin(), nodeSet.end(), [&target](auto node){
+		  return node->getUserId() == target.getUserId();
+		});
+  if (target_node_it == nodeSet.end()) {
     // check if target node exist in the graph
     result.errorMessage = ERR_TARGET_NODE_NOT_IN_GRAPH;
     return result;
@@ -1182,7 +1228,7 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T> &source,
   int n = adj->size();
 
   // setting all the distances initially to INF_DOUBLE
-  std::unordered_map<const Node<T> *, double> dist;
+  std::unordered_map<shared<const Node<T>>, double> dist;
 
   for (const auto &node : nodeSet) {
     dist[node] = INF_DOUBLE;
@@ -1191,20 +1237,20 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T> &source,
   // creating a min heap using priority queue
   // first element of pair contains the distance
   // second element of pair contains the vertex
-  std::priority_queue<std::pair<double, const Node<T> *>,
-                      std::vector<std::pair<double, const Node<T> *>>,
-                      std::greater<std::pair<double, const Node<T> *>>>
+  std::priority_queue<std::pair<double, shared<const Node<T>>>,
+                      std::vector<std::pair<double, shared<const Node<T>>>>,
+                      std::greater<std::pair<double, shared<const Node<T>>>>>
       pq;
 
   // pushing the source vertex 's' with 0 distance in min heap
-  pq.push(std::make_pair(0.0, &source));
+  pq.push(std::make_pair(0.0, *source_node_it));
 
   // marking the distance of source as 0
-  dist[&source] = 0;
+  dist[*source_node_it] = 0;
 
   while (!pq.empty()) {
     // second element of pair denotes the node / vertex
-    const Node<T> *currentNode = pq.top().second;
+    shared<const Node<T>> currentNode = pq.top().second;
 
     // first element of pair denotes the distance
     double currentDist = pq.top().first;
@@ -1220,8 +1266,8 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T> &source,
             elem.second->isWeighted().value()) {
           if (elem.second->isDirected().has_value() &&
               elem.second->isDirected().value()) {
-            const DirectedWeightedEdge<T> *dw_edge =
-                dynamic_cast<const DirectedWeightedEdge<T> *>(elem.second);
+            shared<const DirectedWeightedEdge<T>> dw_edge =
+                std::static_pointer_cast<const DirectedWeightedEdge<T>>(elem.second);
             if (dw_edge->getWeight() < 0) {
               result.errorMessage = ERR_NEGATIVE_WEIGHTED_EDGE;
               return result;
@@ -1231,8 +1277,8 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T> &source,
             }
           } else if (elem.second->isDirected().has_value() &&
                      !elem.second->isDirected().value()) {
-            const UndirectedWeightedEdge<T> *udw_edge =
-                dynamic_cast<const UndirectedWeightedEdge<T> *>(elem.second);
+            shared<const UndirectedWeightedEdge<T>> udw_edge =
+                std::static_pointer_cast<const UndirectedWeightedEdge<T>>(elem.second);
             if (udw_edge->getWeight() < 0) {
               result.errorMessage = ERR_NEGATIVE_WEIGHTED_EDGE;
               return result;
@@ -1254,10 +1300,10 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T> &source,
       }
     }
   }
-  if (dist[&target] != INF_DOUBLE) {
+  if (dist[*target_node_it] != INF_DOUBLE) {
     result.success = true;
     result.errorMessage = "";
-    result.result = dist[&target];
+    result.result = dist[*target_node_it];
     return result;
   }
   result.errorMessage = ERR_TARGET_NODE_NOT_REACHABLE;
@@ -1272,18 +1318,24 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
   result.errorMessage = "";
   result.result = INF_DOUBLE;
   auto nodeSet = Graph<T>::getNodeSet();
-  if (std::find(nodeSet.begin(), nodeSet.end(), &source) == nodeSet.end()) {
+  auto source_node_it = std::find_if(nodeSet.begin(), nodeSet.end(), [&source](auto node){
+		  return node->getUserId() == source.getUserId();
+		});
+  if (source_node_it == nodeSet.end()) {
     // check if source node exist in the graph
     result.errorMessage = ERR_SOURCE_NODE_NOT_IN_GRAPH;
     return result;
   }
-  if (std::find(nodeSet.begin(), nodeSet.end(), &target) == nodeSet.end()) {
+  auto target_node_it = std::find_if(nodeSet.begin(), nodeSet.end(), [&target](auto node){
+		  return node->getUserId() == target.getUserId();
+		});
+  if (target_node_it == nodeSet.end()) {
     // check if target node exist in the graph
     result.errorMessage = ERR_TARGET_NODE_NOT_IN_GRAPH;
     return result;
   }
   // setting all the distances initially to INF_DOUBLE
-  std::unordered_map<const Node<T> *, double> dist, currentDist;
+  std::unordered_map<shared<const Node<T>>, double> dist, currentDist;
   // n denotes the number of vertices in graph
   auto n = nodeSet.size();
   for (const auto &elem : nodeSet) {
@@ -1292,7 +1344,7 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
   }
 
   // marking the distance of source as 0
-  dist[&source] = 0;
+  dist[*source_node_it] = 0;
   // set if node distances in two consecutive
   // iterations remain the same.
   auto earlyStopping = false;
@@ -1304,7 +1356,7 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
     for (const auto &edge : edgeSet) {
       auto elem = edge->getNodePair();
       if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
-        auto edge_weight = (dynamic_cast<const Weighted *>(edge))->getWeight();
+        auto edge_weight = (dynamic_cast<const Weighted *>(edge.get()))->getWeight();
         if (dist[elem.first] + edge_weight < dist[elem.second])
           dist[elem.second] = dist[elem.first] + edge_weight;
       } else {
@@ -1334,7 +1386,7 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
     auto edgeSet = Graph<T>::getEdgeSet();
     for (const auto &edge : edgeSet) {
       auto elem = edge->getNodePair();
-      auto edge_weight = (dynamic_cast<const Weighted *>(edge))->getWeight();
+      auto edge_weight = (dynamic_cast<const Weighted *>(edge.get()))->getWeight();
       if (dist[elem.first] + edge_weight < dist[elem.second]) {
         result.success = true;
         result.negativeCycle = true;
@@ -1344,11 +1396,11 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
     }
   }
 
-  if (dist[&target] != INF_DOUBLE) {
+  if (dist[*target_node_it] != INF_DOUBLE) {
     result.success = true;
     result.errorMessage = "";
     result.negativeCycle = false;
-    result.result = dist[&target];
+    result.result = dist[*target_node_it];
     return result;
   }
   result.errorMessage = ERR_TARGET_NODE_NOT_REACHABLE;
@@ -1383,7 +1435,7 @@ const FWResult Graph<T>::floydWarshall() const {
   for (const auto &edge : edgeSet) {
     const auto &elem = edge->getNodePair();
     if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
-      auto edgeWeight = (dynamic_cast<const Weighted *>(edge))->getWeight();
+      auto edgeWeight = (dynamic_cast<const Weighted *>(edge.get()))->getWeight();
       auto key =
           std::make_pair(elem.first->getUserId(), elem.second->getUserId());
       pairwise_dist[key] = edgeWeight;
@@ -1449,7 +1501,7 @@ const MstResult Graph<T>::prim() const {
   const auto adj = Graph<T>::getAdjMatrix();
 
   // setting all the distances initially to INF_DOUBLE
-  std::unordered_map<const Node<T> *, double> dist;
+  std::unordered_map<shared<const Node<T>>, double> dist;
   for (const auto &elem : (*adj)) {
     dist[elem.first] = INF_DOUBLE;
   }
@@ -1457,9 +1509,9 @@ const MstResult Graph<T>::prim() const {
   // creating a min heap using priority queue
   // first element of pair contains the distance
   // second element of pair contains the vertex
-  std::priority_queue<std::pair<double, const Node<T> *>,
-                      std::vector<std::pair<double, const Node<T> *>>,
-                      std::greater<std::pair<double, const Node<T> *>>>
+  std::priority_queue<std::pair<double, shared<const Node<T>>>,
+                      std::vector<std::pair<double, shared<const Node<T>>>>,
+                      std::greater<std::pair<double, shared<const Node<T>>>>>
       pq;
 
   // pushing the source vertex 's' with 0 distance in min heap
@@ -1475,7 +1527,7 @@ const MstResult Graph<T>::prim() const {
   std::unordered_map<unsigned long long, std::string> parentNode;
   while (!pq.empty()) {
     // second element of pair denotes the node / vertex
-    const Node<T> *currentNode = pq.top().second;
+    shared<const Node<T>> currentNode = pq.top().second;
     auto nodeId = currentNode->getId();
     if (std::find(doneNode.begin(), doneNode.end(), nodeId) == doneNode.end()) {
       auto pair = std::make_pair(parentNode[nodeId], currentNode->getUserId());
@@ -1492,8 +1544,8 @@ const MstResult Graph<T>::prim() const {
         // minimizing distances
         if (elem.second->isWeighted().has_value() &&
             elem.second->isWeighted().value()) {
-          const UndirectedWeightedEdge<T> *udw_edge =
-              dynamic_cast<const UndirectedWeightedEdge<T> *>(elem.second);
+          shared<const UndirectedWeightedEdge<T>> udw_edge =
+              std::static_pointer_cast<const UndirectedWeightedEdge<T>>(elem.second);
           if ((udw_edge->getWeight() < dist[elem.first]) &&
               (std::find(doneNode.begin(), doneNode.end(),
                          elem.first->getId()) == doneNode.end())) {
@@ -1527,7 +1579,7 @@ const MstResult Graph<T>::boruvka() const {
   const auto n = nodeSet.size();
 
   // Use std map for storing n subsets.
-  std::unordered_map<unsigned long long, Subset> subsets;
+  shared<std::unordered_map<unsigned long long, Subset>> subsets;
 
   // Initially there are n different trees.
   // Finally there will be one tree that will be MST
@@ -1540,7 +1592,7 @@ const MstResult Graph<T>::boruvka() const {
   for (const auto &edge : edgeSet) {
     if (edge->isWeighted().has_value() && edge->isWeighted().value())
       edgeWeight[edge->getId()] =
-          (dynamic_cast<const Weighted *>(edge))->getWeight();
+          (dynamic_cast<const Weighted *>(edge.get()))->getWeight();
     else {
       // No Weighted Edge
       result.errorMessage = ERR_NO_WEIGHTED_EDGE;
@@ -1550,7 +1602,7 @@ const MstResult Graph<T>::boruvka() const {
 
   for (const auto &node : nodeSet) {
     Subset set{node->getId(), 0};
-    subsets[node->getId()] = set;
+    (*subsets)[node->getId()] = set;
   }
 
   result.mstCost = 0;  // we will store the cost here
@@ -1567,8 +1619,8 @@ const MstResult Graph<T>::boruvka() const {
       auto elem = edge->getNodePair();
       auto edgeId = edge->getId();
       // Find sets of two corners of current edge
-      auto set1 = Graph<T>::setFind(&subsets, elem.first->getId());
-      auto set2 = Graph<T>::setFind(&subsets, elem.second->getId());
+      auto set1 = Graph<T>::setFind(subsets, elem.first->getId());
+      auto set2 = Graph<T>::setFind(subsets, elem.second->getId());
 
       // If two corners of current edge belong to
       // same set, ignore current edge
@@ -1591,15 +1643,15 @@ const MstResult Graph<T>::boruvka() const {
       // Check if cheapest for current set exists
       if (edgeId != INT_MAX) {
         auto cheapestNode = Graph<T>::getEdge(edgeId).value()->getNodePair();
-        auto set1 = Graph<T>::setFind(&subsets, cheapestNode.first->getId());
-        auto set2 = Graph<T>::setFind(&subsets, cheapestNode.second->getId());
+        auto set1 = Graph<T>::setFind(subsets, cheapestNode.first->getId());
+        auto set2 = Graph<T>::setFind(subsets, cheapestNode.second->getId());
         if (set1 == set2) continue;
         result.mstCost += edgeWeight[edgeId];
         auto newEdgeMST = std::make_pair(cheapestNode.first->getUserId(),
                                          cheapestNode.second->getUserId());
         result.mst.push_back(newEdgeMST);
         // take union of set1 and set2 and decrease number of trees
-        Graph<T>::setUnion(&subsets, set1, set2);
+        Graph<T>::setUnion(subsets, set1, set2);
         numTrees--;
       }
     }
@@ -1624,13 +1676,13 @@ const MstResult Graph<T>::kruskal() const {
   // check if all edges are weighted and store the weights
   // in a map whose keys are the edge ids and values are the edge weights
   auto edgeSet = Graph<T>::getEdgeSet();
-  std::priority_queue<std::pair<double, const Edge<T> *>,
-                      std::vector<std::pair<double, const Edge<T> *>>,
-                      std::greater<std::pair<double, const Edge<T> *>>>
+  std::priority_queue<std::pair<double, shared<const Edge<T>>>,
+                      std::vector<std::pair<double, shared<const Edge<T>>>>,
+                      std::greater<std::pair<double, shared<const Edge<T>>>>>
       sortedEdges;
   for (const auto &edge : edgeSet) {
     if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
-      auto weight = (dynamic_cast<const Weighted *>(edge))->getWeight();
+      auto weight = (dynamic_cast<const Weighted *>(edge.get()))->getWeight();
       sortedEdges.push(std::make_pair(weight, edge));
     } else {
       // No Weighted Edge
@@ -1639,25 +1691,25 @@ const MstResult Graph<T>::kruskal() const {
     }
   }
 
-  std::unordered_map<unsigned long long, Subset> subset;
+  shared<std::unordered_map<unsigned long long, Subset>> subset;
 
   for (const auto &node : nodeSet) {
     Subset set{node->getId(), 0};
-    subset[node->getId()] = set;
+    (*subset)[node->getId()] = set;
   }
   result.mstCost = 0;
   while ((!sortedEdges.empty()) && (result.mst.size() < n)) {
     auto [edgeWeight, cheapestEdge] = sortedEdges.top();
     sortedEdges.pop();
     auto &[first, second] = cheapestEdge->getNodePair();
-    auto set1 = Graph<T>::setFind(&subset, first->getId());
-    auto set2 = Graph<T>::setFind(&subset, second->getId());
+    auto set1 = Graph<T>::setFind(subset, first->getId());
+    auto set2 = Graph<T>::setFind(subset, second->getId());
     if (set1 != set2) {
       result.mst.push_back(
           std::make_pair(first->getUserId(), second->getUserId()));
       result.mstCost += edgeWeight;
     }
-    Graph<T>::setUnion(&subset, set1, set2);
+    Graph<T>::setUnion(subset, set1, set2);
   }
   result.success = true;
   return result;
@@ -1668,14 +1720,20 @@ BestFirstSearchResult<T> Graph<T>::best_first_search(
     const Node<T> &source, const Node<T> &target) const {
   BestFirstSearchResult<T> result;
   auto &nodeSet = Graph<T>::getNodeSet();
-  using pq_type = std::pair<double, const Node<T> *>;
+  using pq_type = std::pair<double, shared<const Node<T>>>;
 
-  if (std::find(nodeSet.begin(), nodeSet.end(), &source) == nodeSet.end()) {
+  auto source_node_it = std::find_if(nodeSet.begin(), nodeSet.end(), [&source](auto node){
+		return node->getUserId() == source.getUserId();
+	  });
+  if (source_node_it == nodeSet.end()) {
     result.errorMessage = ERR_SOURCE_NODE_NOT_IN_GRAPH;
     return result;
   }
 
-  if (std::find(nodeSet.begin(), nodeSet.end(), &target) == nodeSet.end()) {
+  auto target_node_it = std::find_if(nodeSet.begin(), nodeSet.end(), [&target](auto node){
+		return node->getUserId() == target.getUserId();
+	  });
+  if (target_node_it == nodeSet.end()) {
     result.errorMessage = ERR_TARGET_NODE_NOT_IN_GRAPH;
     return result;
   }
@@ -1685,10 +1743,10 @@ BestFirstSearchResult<T> Graph<T>::best_first_search(
 
   std::vector<Node<T>> visited;
   visited.push_back(source);
-  pq.push(std::make_pair(0.0, &source));
+  pq.push(std::make_pair(0.0, *source_node_it));
 
   while (!pq.empty()) {
-    const Node<T> *currentNode = pq.top().second;
+    shared<const Node<T>> currentNode = pq.top().second;
     pq.pop();
     result.nodesInBestSearchOrder.push_back(*currentNode);
 
@@ -1699,16 +1757,16 @@ BestFirstSearchResult<T> Graph<T>::best_first_search(
       for (const auto &elem : adj->at(currentNode)) {
         if (elem.second->isWeighted().has_value()) {
           if (elem.second->isDirected().has_value()) {
-            const DirectedWeightedEdge<T> *dw_edge =
-                static_cast<const DirectedWeightedEdge<T> *>(elem.second);
+            shared<const DirectedWeightedEdge<T>> dw_edge =
+                std::static_pointer_cast<const DirectedWeightedEdge<T>>(elem.second);
             if (std::find(visited.begin(), visited.end(), *(elem.first)) ==
                 visited.end()) {
               visited.push_back(*(elem.first));
               pq.push(std::make_pair(dw_edge->getWeight(), elem.first));
             }
           } else {
-            const UndirectedWeightedEdge<T> *dw_edge =
-                static_cast<const UndirectedWeightedEdge<T> *>(elem.second);
+            shared<const UndirectedWeightedEdge<T>> dw_edge =
+                std::static_pointer_cast<const UndirectedWeightedEdge<T>>(elem.second);
             if (std::find(visited.begin(), visited.end(), *(elem.first)) ==
                 visited.end()) {
               visited.push_back(*(elem.first));
@@ -1735,18 +1793,21 @@ const std::vector<Node<T>> Graph<T>::breadth_first_search(
   std::vector<Node<T>> visited;
   auto &nodeSet = Graph<T>::getNodeSet();
   // check is exist node in the graph
-  if (std::find(nodeSet.begin(), nodeSet.end(), &start) == nodeSet.end()) {
+  auto start_node_it = std::find_if(nodeSet.begin(), nodeSet.end(), [&start](auto node){
+		return node->getUserId() == start.getUserId();
+	  });
+  if (start_node_it == nodeSet.end()) {
     return visited;
   }
   const auto adj = Graph<T>::getAdjMatrix();
   // queue that stores vertices that need to be further explored
-  std::queue<const Node<T> *> tracker;
+  std::queue<shared<const Node<T>>> tracker;
 
   // mark the starting node as visited
   visited.push_back(start);
-  tracker.push(&start);
+  tracker.push(*start_node_it);
   while (!tracker.empty()) {
-    const Node<T> *node = tracker.front();
+    shared<const Node<T>> node = tracker.front();
     tracker.pop();
     if (adj->find(node) != adj->end()) {
       for (const auto &elem : adj->at(node)) {
@@ -1769,11 +1830,14 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
   std::vector<Node<T>> bfs_result;
   // check is exist node in the graph
   auto &nodeSet = Graph<T>::getNodeSet();
-  if (std::find(nodeSet.begin(), nodeSet.end(), &start) == nodeSet.end()) {
+  auto start_node_it = std::find_if(nodeSet.begin(), nodeSet.end(), [&start](auto node){
+		return node->getUserId() == start.getUserId();
+	  });
+  if (start_node_it == nodeSet.end()) {
     return bfs_result;
   }
 
-  std::unordered_map<const Node<T> *, int> node_to_index;
+  std::unordered_map<shared<const Node<T>>, int> node_to_index;
   for (const auto &node : nodeSet) {
     node_to_index[node] = node_to_index.size();
   }
@@ -1788,13 +1852,13 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
 
   const auto &adj = Graph<T>::getAdjMatrix();
   // vector that stores vertices to be visit
-  std::vector<const Node<T> *> level_tracker, next_level_tracker;
+  std::vector<shared<const Node<T>>> level_tracker, next_level_tracker;
   level_tracker.reserve(static_cast<int>(1.0 * nodeSet.size()));
   next_level_tracker.reserve(static_cast<int>(1.0 * nodeSet.size()));
 
   // mark the starting node as visited
-  visited[node_to_index[&start]] = 1;
-  level_tracker.push_back(&start);
+  visited[node_to_index[*start_node_it]] = 1;
+  level_tracker.push_back(*start_node_it);
 
   // a worker is assigned a small part of tasks for each time
   // assignments of tasks in current level and updates of tasks in next
@@ -1823,7 +1887,7 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
   };
 
   auto submit_result = [&next_level_tracker, &next_tracker_mutex](
-                           std::vector<const Node<T> *> &submission) -> void {
+                           std::vector<shared<const Node<T>>> &submission) -> void {
     std::lock_guard<std::mutex> tracker_guard(next_tracker_mutex);
     next_level_tracker.insert(std::end(next_level_tracker),
                               std::begin(submission), std::end(submission));
@@ -1838,8 +1902,8 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
     // algorithm is not done
     while (!level_tracker.empty()) {
       // search for nodes in a level is not done
-      std::vector<const Node<T> *> local_tracker;
-      while (1) {
+      std::vector<shared<const Node<T>>> local_tracker;
+      while (true) {
         auto [start_index, end_index] = extract_tasks();
         if (start_index >= end_index) {
           break;
@@ -1922,27 +1986,30 @@ const std::vector<Node<T>> Graph<T>::depth_first_search(
   std::vector<Node<T>> visited;
   auto nodeSet = Graph<T>::getNodeSet();
   // check is exist node in the graph
-  if (std::find(nodeSet.begin(), nodeSet.end(), &start) == nodeSet.end()) {
+  auto start_node_it = std::find_if(nodeSet.begin(), nodeSet.end(), [&start](auto node){
+		return node->getUserId() == start.getUserId();
+	  });
+  if (start_node_it == nodeSet.end()) {
     return visited;
   }
   const auto adj = Graph<T>::getAdjMatrix();
-  std::function<void(const std::shared_ptr<AdjacencyMatrix<T>>, const Node<T> &,
+  std::function<void(const std::shared_ptr<AdjacencyMatrix<T>>, shared<const Node<T>>,
                      std::vector<Node<T>> &)>
       explore;
   explore = [&explore](const std::shared_ptr<AdjacencyMatrix<T>> adj,
-                       const Node<T> &node,
+                       shared<const Node<T>> node,
                        std::vector<Node<T>> &visited) -> void {
-    visited.push_back(node);
-    if (adj->find(&node) != adj->end()) {
-      for (const auto &x : adj->at(&node)) {
+    visited.push_back(*node);
+    if (adj->find(node) != adj->end()) {
+      for (const auto &x : adj->at(node)) {
         if (std::find(visited.begin(), visited.end(), *(x.first)) ==
             visited.end()) {
-          explore(adj, *(x.first), visited);
+          explore(adj, x.first, visited);
         }
       }
     }
   };
-  explore(adj, start, visited);
+  explore(adj, *start_node_it, visited);
 
   return visited;
 }
@@ -1978,13 +2045,13 @@ bool Graph<T>::isCyclicDirectedGraphDFS() const {
       // Check for cycle.
       std::function<bool(const std::shared_ptr<AdjacencyMatrix<T>>,
                          std::unordered_map<unsigned long long, nodeStates> &,
-                         const Node<T> *)>
+                         shared<const Node<T>>)>
           isCyclicDFSHelper;
       isCyclicDFSHelper =
           [this, &isCyclicDFSHelper](
               const std::shared_ptr<AdjacencyMatrix<T>> adjMatrix,
               std::unordered_map<unsigned long long, nodeStates> &states,
-              const Node<T> *node) {
+              shared<const Node<T>> node) {
             // Add node "in_stack" state.
             states[node->getId()] = in_stack;
 
@@ -2028,8 +2095,8 @@ bool Graph<T>::isCyclicDirectedGraphDFS() const {
 }
 
 template <typename T>
-bool Graph<T>::containsCycle(const T_EdgeSet<T> *edgeSet) const {
-  std::unordered_map<unsigned long long, Subset> subset;
+bool Graph<T>::containsCycle(shared<const T_EdgeSet<T>> edgeSet) const {
+  shared<std::unordered_map<unsigned long long, Subset>> subset;
   // initialize the subset parent and rank values
   for (const auto &edge : *edgeSet) {
     auto &[first, second] = edge->getNodePair();
@@ -2041,22 +2108,22 @@ bool Graph<T>::containsCycle(const T_EdgeSet<T> *edgeSet) const {
         return (id == (it.second).parent);
       };
 
-      if (std::find_if(subset.begin(), subset.end(), nodeExists) ==
-          subset.end()) {
+      if (std::find_if((*subset).begin(), (*subset).end(), nodeExists) ==
+          (*subset).end()) {
         Subset set;
         set.parent = id;
         set.rank = 0;
-        subset[id] = set;
+        (*subset)[id] = set;
       }
     }
   }
-  return Graph<T>::containsCycle(edgeSet, &subset);
+  return Graph<T>::containsCycle(edgeSet, subset);
 }
 
 template <typename T>
 bool Graph<T>::containsCycle(
-    const T_EdgeSet<T> *edgeSet,
-    std::unordered_map<unsigned long long, Subset> *subset) const {
+    shared<const T_EdgeSet<T>> edgeSet,
+    shared<std::unordered_map<unsigned long long, Subset>> subset) const {
   for (const auto &edge : *edgeSet) {
     auto &[first, second] = edge->getNodePair();
     auto set1 = Graph<T>::setFind(subset, first->getId());
@@ -2087,12 +2154,12 @@ bool Graph<T>::isCyclicDirectedGraphBFS() const {
     }
   }
 
-  std::queue<const Node<T> *> can_be_solved;
+  std::queue<shared<const Node<T>>> can_be_solved;
   for (const auto &node : nodeSet) {
     // If a node doesn't have any input edges, then that node will
     // definately not result in a cycle and can be visited safely.
     if (!indegree[node->getId()]) {
-      can_be_solved.emplace(&(*node));
+      can_be_solved.emplace(node);
     }
   }
 
@@ -2163,14 +2230,14 @@ bool Graph<T>::isConnectedGraph() const {
     for (const auto &node : nodeSet) {
       visited[node->getId()] = false;
     }
-    std::function<void(const Node<T> *)> dfs_helper =
-        [this, &adjMatrix, &visited, &dfs_helper](const Node<T> *source) {
+    std::function<void(shared<const Node<T>>)> dfs_helper =
+        [this, &adjMatrix, &visited, &dfs_helper](shared<const Node<T>> source) {
           // mark the vertex visited
           visited[source->getId()] = true;
 
           // travel the neighbors
           for (int i = 0; i < (*adjMatrix)[source].size(); i++) {
-            const Node<T> *neighbor = (*adjMatrix)[source].at(i).first;
+            shared<const Node<T>> neighbor = (*adjMatrix)[source].at(i).first;
             if (visited[neighbor->getId()] == false) {
               // make recursive call from neighbor
               dfs_helper(neighbor);
@@ -2203,14 +2270,14 @@ bool Graph<T>::isStronglyConnectedGraph() const {
       for (const auto &node : nodeSet) {
         visited[node->getId()] = false;
       }
-      std::function<void(const Node<T> *)> dfs_helper =
-          [this, &adjMatrix, &visited, &dfs_helper](const Node<T> *source) {
+      std::function<void(shared<const Node<T>>)> dfs_helper =
+          [this, &adjMatrix, &visited, &dfs_helper](shared<const Node<T>> source) {
             // mark the vertex visited
             visited[source->getId()] = true;
 
             // travel the neighbors
             for (int i = 0; i < (*adjMatrix)[source].size(); i++) {
-              const Node<T> *neighbor = (*adjMatrix)[source].at(i).first;
+              shared<const Node<T>> neighbor = (*adjMatrix)[source].at(i).first;
               if (visited[neighbor->getId()] == false) {
                 // make recursive call from neighbor
                 dfs_helper(neighbor);
@@ -2245,11 +2312,11 @@ TopoSortResult<T> Graph<T>::topologicalSort() const {
   } else {
     const auto &adjMatrix = getAdjMatrix();
     const auto &nodeSet = getNodeSet();
-    std::unordered_map<const Node<T> *, bool> visited;
+    std::unordered_map<shared<const Node<T>>, bool> visited;
 
-    std::function<void(const Node<T> *)> postorder_helper =
+    std::function<void(shared<const Node<T>>)> postorder_helper =
         [&postorder_helper, &adjMatrix, &visited,
-         &result](const Node<T> *curNode) {
+         &result](shared<const Node<T>> curNode) {
           visited[curNode] = true;
 
           if (adjMatrix->find(curNode) != adjMatrix->end()) {
@@ -2303,7 +2370,7 @@ TopoSortResult<T> Graph<T>::kahn() const {
       }
     }
 
-    std::queue<const Node<T> *> topologicalOrder;
+    std::queue<shared<const Node<T>>> topologicalOrder;
 
     for (const auto &node : nodeSet) {
       if (!indegree[node->getId()]) {
@@ -2313,7 +2380,7 @@ TopoSortResult<T> Graph<T>::kahn() const {
 
     size_t visited = 0;
     while (!topologicalOrder.empty()) {
-      const Node<T> *currentNode = topologicalOrder.front();
+      shared<const Node<T>> currentNode = topologicalOrder.front();
       topologicalOrder.pop();
       result.nodesInTopoOrder.push_back(*currentNode);
 
@@ -2355,15 +2422,15 @@ SCCResult<T> Graph<T>::kosaraju() const {
       visited[node->getId()] = false;
     }
 
-    std::stack<const Node<T> *> st;
-    std::function<void(const Node<T> *)> dfs_helper =
-        [this, &adjMatrix, &visited, &dfs_helper, &st](const Node<T> *source) {
+    std::stack<shared<const Node<T>>> st;
+    std::function<void(shared<const Node<T>>)> dfs_helper =
+        [this, &adjMatrix, &visited, &dfs_helper, &st](shared<const Node<T>> source) {
           // mark the vertex visited
           visited[source->getId()] = true;
 
           // travel the neighbors
           for (int i = 0; i < (*adjMatrix)[source].size(); i++) {
-            const Node<T> *neighbor = (*adjMatrix)[source].at(i).first;
+            shared<const Node<T>> neighbor = (*adjMatrix)[source].at(i).first;
             if (visited[neighbor->getId()] == false) {
               // make recursive call from neighbor
               dfs_helper(neighbor);
@@ -2381,23 +2448,25 @@ SCCResult<T> Graph<T>::kosaraju() const {
 
     // construct the transpose of the given graph
     AdjacencyMatrix<T> rev;
-    auto addElementToAdjMatrix = [&rev](const Node<T> *nodeFrom,
-                                        const Node<T> *nodeTo,
-                                        const Edge<T> *edge) {
-      std::pair<const Node<T> *, const Edge<T> *> elem = {nodeTo, edge};
+    auto addElementToAdjMatrix = [&rev](shared<const Node<T>> nodeFrom,
+                                        shared<const Node<T>> nodeTo,
+                                        shared<const Edge<T>> edge) {
+      std::pair<shared<const Node<T>> , shared<const Edge<T>>> elem = {nodeTo, edge};
       rev[nodeFrom].push_back(std::move(elem));
     };
     for (const auto &edgeSetIt : edgeSet) {
-      const DirectedEdge<T> *d_edge =
-          dynamic_cast<const DirectedEdge<T> *>(edgeSetIt);
+      shared<const DirectedEdge<T>> d_edge =
+          std::static_pointer_cast<const DirectedEdge<T>>(edgeSetIt);
       // Add the reverse edge to the reverse adjacency matrix
-      addElementToAdjMatrix(&(d_edge->getTo()), &(d_edge->getFrom()), d_edge);
+      addElementToAdjMatrix(d_edge->getNodePair().first,
+							d_edge->getNodePair().second,
+							d_edge);
     }
 
     visited.clear();
 
-    std::function<void(const Node<T> *, std::vector<Node<T>> &)> dfs_helper1 =
-        [this, &rev, &visited, &dfs_helper1](const Node<T> *source,
+    std::function<void(shared<const Node<T>>, std::vector<Node<T>> &)> dfs_helper1 =
+        [this, &rev, &visited, &dfs_helper1](shared<const Node<T>> source,
                                              std::vector<Node<T>> &comp) {
           // mark the vertex visited
           visited[source->getId()] = true;
@@ -2407,7 +2476,7 @@ SCCResult<T> Graph<T>::kosaraju() const {
 
           // travel the neighbors
           for (int i = 0; i < rev[source].size(); i++) {
-            const Node<T> *neighbor = rev[source].at(i).first;
+            shared<const Node<T>> neighbor = rev[source].at(i).first;
             if (visited[neighbor->getId()] == false) {
               // make recursive call from neighbor
               dfs_helper1(neighbor, comp);
@@ -2438,7 +2507,10 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
   const auto adj = getAdjMatrix();
   auto nodeSet = getNodeSet();
 
-  if (std::find(nodeSet.begin(), nodeSet.end(), &source) == nodeSet.end()) {
+  auto source_node_it = std::find_if(nodeSet.begin(), nodeSet.end(), [&source](auto node){
+		return node->getUserId() == source.getUserId(); 
+	  });
+  if (source_node_it == nodeSet.end()) {
     // check if source node exist in the graph
     result.errorMessage = ERR_SOURCE_NODE_NOT_IN_GRAPH;
     return result;
@@ -2449,22 +2521,22 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
           dist[i].first = distance of ith vertex from src vertex
           dits[i].second = vertex i in bucket number */
   unsigned int V = nodeSet.size();
-  std::unordered_map<const Node<T> *, std::pair<long, const Node<T> *>> dist;
+  std::unordered_map<shared<const Node<T>>, std::pair<long, shared<const Node<T>>>> dist;
 
   // Initialize all distances as infinite (INF)
   for (const auto &node : nodeSet) {
-    dist[&(*node)].first = std::numeric_limits<long>::max();
+    dist[node].first = std::numeric_limits<long>::max();
   }
 
   // Create buckets B[].
   // B[i] keep vertex of distance label i
-  std::vector<std::deque<const Node<T> *>> B((maxWeight * V + 1));
+  std::vector<std::deque<shared<const Node<T>>>> B((maxWeight * V + 1));
 
-  B[0].push_back(&source);
-  dist[&source].first = 0;
+  B[0].push_back(*source_node_it);
+  dist[*source_node_it].first = 0;
 
   int idx = 0;
-  while (1) {
+  while (true) {
     // Go sequentially through buckets till one non-empty
     // bucket is found
     while (B[idx].size() == 0 && idx < maxWeight * V) {
@@ -2489,13 +2561,13 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
           i.second->isWeighted().value()) {
         if (i.second->isDirected().has_value() &&
             i.second->isDirected().value()) {
-          const DirectedWeightedEdge<T> *dw_edge =
-              dynamic_cast<const DirectedWeightedEdge<T> *>(i.second);
+          shared<const DirectedWeightedEdge<T>> dw_edge =
+              std::static_pointer_cast<const DirectedWeightedEdge<T>>(i.second);
           weight = (int)dw_edge->getWeight();
         } else if (i.second->isDirected().has_value() &&
                    !i.second->isDirected().value()) {
-          const UndirectedWeightedEdge<T> *udw_edge =
-              dynamic_cast<const UndirectedWeightedEdge<T> *>(i.second);
+          shared<const UndirectedWeightedEdge<T>> udw_edge =
+              std::static_pointer_cast<const UndirectedWeightedEdge<T>>(i.second);
           weight = (int)udw_edge->getWeight();
         } else {
           // ERROR it shouldn't never returned ( does not exist a Node
@@ -2510,12 +2582,12 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
       }
       auto u_i = std::find_if(
           dist.begin(), dist.end(),
-          [u](std::pair<const Node<T> *, std::pair<long, const Node<T> *>> const
+          [u](std::pair<shared<const Node<T>>, std::pair<long, shared<const Node<T>>>> const
                   &it) { return (*u == *(it.first)); });
 
       auto v_i = std::find_if(
           dist.begin(), dist.end(),
-          [v](std::pair<const Node<T> *, std::pair<long, const Node<T> *>> const
+          [v](std::pair<shared<const Node<T>>, std::pair<long, shared<const Node<T>>>> const
                   &it) { return (*v == *(it.first)); });
       long du = u_i->second.first;
       long dv = v_i->second.first;
@@ -2557,16 +2629,16 @@ double Graph<T>::fordFulkersonMaxFlow(const Node<T> &source,
     return -1;
   }
   double maxFlow = 0;
-  std::unordered_map<const Node<T> *, const Node<T> *> parent;
-  std::map<const Node<T> *, std::map<const Node<T> *, double>> weightMap;
+  std::unordered_map<shared<const Node<T>>, shared<const Node<T>>> parent;
+  std::map<shared<const Node<T>>, std::map<shared<const Node<T>>, double>> weightMap;
   // build weight map
   auto edgeSet = this->getEdgeSet();
   for (const auto &edge : edgeSet) {
     // The Edge are all Directed at this point because is checked at the
     // start
     if (edge->isWeighted().value_or(false)) {
-      const DirectedWeightedEdge<T> *dw_edge =
-          dynamic_cast<const DirectedWeightedEdge<T> *>(edge);
+      shared<const DirectedWeightedEdge<T>> dw_edge =
+          std::static_pointer_cast<const DirectedWeightedEdge<T>>(edge);
       weightMap[edge->getNodePair().first][edge->getNodePair().second] =
           dw_edge->getWeight();
     } else {
@@ -2575,12 +2647,21 @@ double Graph<T>::fordFulkersonMaxFlow(const Node<T> &source,
     }
   }
 
-  auto bfs_helper = [this, &source, &target, &parent, &weightMap]() -> bool {
-    std::unordered_map<const Node<T> *, bool> visited;
-    std::queue<const Node<T> *> queue;
-    queue.push(&source);
-    visited[&source] = true;
-    parent[&source] = nullptr;
+  // Constuct iterators for source and target nodes in nodeSet
+  auto nodeSet = getNodeSet();
+  auto source_node_ptr = *std::find_if(nodeSet.begin(), nodeSet.end(), [&source](auto node){
+	  return node->getUserId() == source.getUserId();
+	  });
+  auto target_node_ptr = *std::find_if(nodeSet.begin(), nodeSet.end(), [&target](auto node){
+	  return node->getUserId() == target.getUserId();
+	  });
+
+  auto bfs_helper = [this, &source_node_ptr, &target_node_ptr, &parent, &weightMap]() -> bool {
+    std::unordered_map<shared<const Node<T>>, bool> visited;
+    std::queue<shared<const Node<T>>> queue;
+    queue.push(source_node_ptr);
+    visited[source_node_ptr] = true;
+    parent[source_node_ptr] = nullptr;
     while (!queue.empty()) {
       auto u = queue.front();
       queue.pop();
@@ -2593,16 +2674,16 @@ double Graph<T>::fordFulkersonMaxFlow(const Node<T> &source,
       }
     }
 
-    return (visited[&target]);
+    return (visited[target_node_ptr]);
   };
   // Updating the residual values of edges
   while (bfs_helper()) {
     double pathFlow = std::numeric_limits<double>::max();
-    for (auto v = &target; v != &source; v = parent[v]) {
+    for (auto v = target_node_ptr; v != source_node_ptr; v = parent[v]) {
       auto u = parent[v];
       pathFlow = std::min(pathFlow, weightMap[u][v]);
     }
-    for (auto v = &target; v != &source; v = parent[v]) {
+    for (auto v = target_node_ptr; v != source_node_ptr; v = parent[v]) {
       auto u = parent[v];
       weightMap[u][v] -= pathFlow;
       weightMap[v][u] += pathFlow;
@@ -2620,11 +2701,14 @@ const std::vector<Node<T>> Graph<T>::graph_slicing(const Node<T> &start) const {
 
   auto nodeSet = Graph<T>::getNodeSet();
   // check if start node in the graph
-  if (std::find(nodeSet.begin(), nodeSet.end(), &start) == nodeSet.end()) {
+  auto start_node_it = std::find_if(nodeSet.begin(), nodeSet.end(), [&start](auto node){
+		return node->getUserId() == start.getUserId();
+	  });
+  if (start_node_it == nodeSet.end()) {
     return result;
   }
   std::vector<Node<T>> C = Graph<T>::depth_first_search(start);
-  std::deque<const Node<T> *> C1;  // complement of C i.e. nodeSet - C
+  std::deque<shared<const Node<T>>> C1;  // complement of C i.e. nodeSet - C
   for (auto const &node : nodeSet) {
     // from the set of all nodes, remove nodes that exist in C
     if (std::find_if(C.begin(), C.end(), [node](const Node<T> nodeC) {
@@ -3047,10 +3131,10 @@ PartitionMap<T> Graph<T>::partitionGraph(
   PartitionMap<T> partitionMap;
   Partitioning::Globals globals(numberOfPartitions, algorithm, param1, param2,
                                 param3, numberOfThreads);
-  const T_EdgeSet<T> &edgeSet = getEdgeSet();
-  globals.edgeCardinality = edgeSet.size();
+  auto edgeSet_ptr = make_shared<const T_EdgeSet<T>>(getEdgeSet());
+  globals.edgeCardinality = edgeSet_ptr->size();
   globals.vertexCardinality = this->getNodeSet().size();
-  Partitioning::Partitioner<T> partitioner(&edgeSet, globals);
+  Partitioning::Partitioner<T> partitioner(edgeSet_ptr, globals);
   Partitioning::CoordinatedPartitionState<T> partitionState =
       partitioner.performCoordinatedPartition();
   partitionMap = partitionState.getPartitionMap();
@@ -3070,18 +3154,18 @@ std::ostream &operator<<(std::ostream &os, const Graph<T> &graph) {
                 (*it)->isDirected().value()) &&
                ((*it)->isWeighted().has_value() &&
                 (*it)->isWeighted().value())) {
-      os << dynamic_cast<const DirectedWeightedEdge<T> &>(*it) << "\n";
+      os << std::static_pointer_cast<const DirectedWeightedEdge<T>>(*it) << "\n";
     } else if (((*it)->isDirected().has_value() &&
                 (*it)->isDirected().value()) &&
                !((*it)->isWeighted().has_value() &&
                  (*it)->isWeighted().value())) {
-      os << dynamic_cast<const DirectedEdge<T> &>(*it) << "\n";
+      os << std::static_pointer_cast<const DirectedEdge<T>>(*it) << "\n";
     } else if (!(it->isDirected().has_value() && it->isDirected().value()) &&
                (it->isWeighted().has_value() && it->isWeighted().value())) {
-      os << dynamic_cast<const UndirectedWeightedEdge<T> &>(*it) << "\n";
+      os << std::static_pointer_cast<const UndirectedWeightedEdge<T>>(*it) << "\n";
     } else if (!(it->isDirected().has_value() && it->isDirected().value()) &&
                !(it->isWeighted().has_value() && it->isWeighted().value())) {
-      os << dynamic_cast<const UndirectedEdge<T> &>(*it) << "\n";
+      os << std::static_pointer_cast<const UndirectedEdge<T>>(*it) << "\n";
     } else {
       os << *it << "\n";
     }

@@ -37,44 +37,52 @@
 #include "WeightBalancedLibra.hpp"
 
 namespace CXXGraph {
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
+
 namespace Partitioning {
 template <typename T>
 class Partitioner {
  private:
-  const T_EdgeSet<T> *dataset = nullptr;
-  PartitionStrategy<T> *algorithm = nullptr;
+  shared<const T_EdgeSet<T>> dataset = nullptr;
+  shared<PartitionStrategy<T>> algorithm = nullptr;
   Globals GLOBALS;
 
   CoordinatedPartitionState<T> startCoordinated();
 
  public:
-  Partitioner(const T_EdgeSet<T> *dataset, Globals &G);
+  Partitioner(shared<const T_EdgeSet<T>> dataset, Globals &G);
   Partitioner(const Partitioner &other);
-  ~Partitioner();
 
   CoordinatedPartitionState<T> performCoordinatedPartition();
 };
 template <typename T>
-Partitioner<T>::Partitioner(const T_EdgeSet<T> *dataset, Globals &G)
+Partitioner<T>::Partitioner(shared<const T_EdgeSet<T>> dataset, Globals &G)
     : GLOBALS(G) {
   // this->GLOBALS = G;
   this->dataset = dataset;
   if (GLOBALS.partitionStategy == PartitionAlgorithm::HDRF_ALG) {
-    algorithm = new HDRF<T>(GLOBALS);
+    algorithm = make_shared<HDRF<T>>(GLOBALS);
   } else if (GLOBALS.partitionStategy ==
              PartitionAlgorithm::EDGEBALANCED_VC_ALG) {
-    algorithm = new EdgeBalancedVertexCut<T>(GLOBALS);
+    algorithm = make_shared<EdgeBalancedVertexCut<T>>(GLOBALS);
   } else if (GLOBALS.partitionStategy == PartitionAlgorithm::GREEDY_VC_ALG) {
-    algorithm = new GreedyVertexCut<T>(GLOBALS);
+    algorithm = make_shared<GreedyVertexCut<T>>(GLOBALS);
   } else if (GLOBALS.partitionStategy == PartitionAlgorithm::EBV_ALG) {
-    algorithm = new EBV<T>(GLOBALS);
+    algorithm = make_shared<EBV<T>>(GLOBALS);
   } else if (GLOBALS.partitionStategy == PartitionAlgorithm::WB_LIBRA) {
     // precompute weight sum
     double weight_sum = 0.0;
     for (const auto &edge_it : *(this->dataset)) {
       weight_sum +=
           (edge_it->isWeighted().has_value() && edge_it->isWeighted().value())
-              ? dynamic_cast<const Weighted *>(edge_it)->getWeight()
+              ? dynamic_cast<const Weighted *>(edge_it.get())->getWeight()
               : CXXGraph::NEGLIGIBLE_WEIGHT;
     }
     double lambda = std::max(1.0, GLOBALS.param1);
@@ -93,8 +101,8 @@ Partitioner<T>::Partitioner(const T_EdgeSet<T> *dataset, Globals &G)
       vertices_degrees[v]++;
     }
 
-    algorithm = new WeightBalancedLibra<T>(GLOBALS, weight_sum_bound,
-                                           move(vertices_degrees));
+    algorithm = make_shared<WeightBalancedLibra<T>>(GLOBALS, weight_sum_bound,
+                                           std::move(vertices_degrees));
   }
 }
 
@@ -103,21 +111,21 @@ Partitioner<T>::Partitioner(const Partitioner &other) {
   this->dataset = other.dataset;
   this->GLOBALS = other.GLOBALS;
   if (GLOBALS.partitionStategy == PartitionAlgorithm::HDRF_ALG) {
-    algorithm = new HDRF<T>(GLOBALS);
+    algorithm = make_shared<HDRF<T>>(GLOBALS);
   } else if (GLOBALS.partitionStategy ==
              PartitionAlgorithm::EDGEBALANCED_VC_ALG) {
-    algorithm = new EdgeBalancedVertexCut<T>(GLOBALS);
+    algorithm = make_shared<EdgeBalancedVertexCut<T>>(GLOBALS);
   } else if (GLOBALS.partitionStategy == PartitionAlgorithm::GREEDY_VC_ALG) {
-    algorithm = new GreedyVertexCut<T>(GLOBALS);
+    algorithm = make_shared<GreedyVertexCut<T>>(GLOBALS);
   } else if (GLOBALS.partitionStategy == PartitionAlgorithm::EBV_ALG) {
-    algorithm = new EBV<T>(GLOBALS);
+    algorithm = make_shared<EBV<T>>(GLOBALS);
   } else if (GLOBALS.partitionStategy == PartitionAlgorithm::WB_LIBRA) {
     // precompute weight sum
     double weight_sum = 0.0;
     for (const auto &edge_it : *(this->dataset)) {
       weight_sum +=
           (edge_it->isWeighted().has_value() && edge_it->isWeighted().value())
-              ? dynamic_cast<const Weighted *>(edge_it)->getWeight()
+              ? dynamic_cast<const Weighted *>(edge_it.get())->getWeight()
               : CXXGraph::NEGLIGIBLE_WEIGHT;
     }
     double lambda = GLOBALS.param1;
@@ -136,8 +144,8 @@ Partitioner<T>::Partitioner(const Partitioner &other) {
       vertices_degrees[v]++;
     }
 
-    algorithm = new WeightBalancedLibra<T>(GLOBALS, weight_sum_bound,
-                                           move(vertices_degrees));
+    algorithm = make_shared<WeightBalancedLibra<T>>(GLOBALS, weight_sum_bound,
+                                           std::move(vertices_degrees));
   }
 }
 
@@ -148,7 +156,7 @@ CoordinatedPartitionState<T> Partitioner<T>::startCoordinated() {
 
   std::vector<std::thread> myThreads(processors);
   std::vector<std::shared_ptr<Runnable>> myRunnable(processors);
-  std::vector<std::vector<const Edge<T> *>> list_vector(processors);
+  std::vector<std::vector<shared<const Edge<T>>>> list_vector(processors);
   int n = dataset->size();
   int subSize = n / processors + 1;
   for (int t = 0; t < processors; ++t) {
@@ -156,10 +164,12 @@ CoordinatedPartitionState<T> Partitioner<T>::startCoordinated() {
     int iEnd = std::min((t + 1) * subSize, n);
     if (iEnd >= iStart) {
       list_vector[t] =
-          std::vector<const Edge<T> *>(std::next(dataset->begin(), iStart),
+          std::vector<shared<const Edge<T>>>(std::next(dataset->begin(), iStart),
                                        std::next(dataset->begin(), iEnd));
       myRunnable[t].reset(
-          new PartitionerThread<T>(list_vector[t], &state, algorithm));
+          new PartitionerThread<T>(list_vector[t],
+								   make_shared<CoordinatedPartitionState<T>>(state),
+								   algorithm));
       myThreads[t] = std::thread(&Runnable::run, myRunnable[t].get());
     }
   }
@@ -180,12 +190,7 @@ CoordinatedPartitionState<T> Partitioner<T>::startCoordinated() {
   */
   return state;
 }
-template <typename T>
-Partitioner<T>::~Partitioner() {
-  if (algorithm != nullptr) {
-    delete algorithm;
-  }
-}
+
 template <typename T>
 CoordinatedPartitionState<T> Partitioner<T>::performCoordinatedPartition() {
   return startCoordinated();
