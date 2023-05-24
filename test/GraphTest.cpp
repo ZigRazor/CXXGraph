@@ -1,5 +1,15 @@
+#include <memory>
 #include "CXXGraph.hpp"
 #include "gtest/gtest.h"
+
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
 
 TEST(GraphTest, Constructor_1) {
   CXXGraph::Node<int> node1("1", 1);
@@ -8,7 +18,7 @@ TEST(GraphTest, Constructor_1) {
       &node1, &node2);
   CXXGraph::Edge<int> edge(1, pairNode);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge);
+  edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge));
   CXXGraph::Graph<int> graph(edgeSet);
   ASSERT_EQ(graph.getEdgeSet(), edgeSet);
 }
@@ -20,7 +30,7 @@ TEST(GraphTest, GetEdge_1) {
       &node1, &node2);
   CXXGraph::Edge<int> edge(1, pairNode);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge);
+  edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge));
   CXXGraph::Graph<int> graph(edgeSet);
   ASSERT_FALSE(graph.getEdge(2).has_value());
 }
@@ -32,7 +42,7 @@ TEST(GraphTest, GetEdge_2) {
       &node1, &node2);
   CXXGraph::Edge<int> edge(1, pairNode);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge);
+  edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge));
   CXXGraph::Graph<int> graph(edgeSet);
   ASSERT_TRUE(graph.getEdge(1).has_value());
 }
@@ -56,7 +66,7 @@ TEST(GraphTest, GetNodeSet_1) {
       &node1, &node2);
   CXXGraph::Edge<int> edge(1, pairNode);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge);
+  edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge));
   CXXGraph::Graph<int> graph(edgeSet);
   auto nodeSet = graph.getNodeSet();
   ASSERT_EQ(nodeSet.size(), 2);
@@ -75,8 +85,8 @@ TEST(GraphTest, GetNodeSet_2) {
   CXXGraph::Edge<int> edge(1, pairNode);
   CXXGraph::UndirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge);
-  edgeSet.insert(&edge2);
+  edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge2));
   CXXGraph::Graph<int> graph(edgeSet);
   auto nodeSet = graph.getNodeSet();
   ASSERT_EQ(nodeSet.size(), 3);
@@ -95,7 +105,7 @@ TEST(GraphTest, adj_print_1) {
       &node1, &node2);
   CXXGraph::Edge<int> edge(1, pairNode);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge);
+  edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge));
   CXXGraph::Graph<int> graph(edgeSet);
   std::cout << "Test Print Adjacency Matrix" << std::endl;
   std::cout << *graph.getAdjMatrix() << std::endl;
@@ -108,7 +118,7 @@ TEST(GraphTest, adj_print_2) {
       &node1, &node2);
   CXXGraph::DirectedEdge<int> edge(1, pairNode);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge);
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge));
   CXXGraph::Graph<int> graph(edgeSet);
   std::cout << "Test Print Adjacency Matrix" << std::endl;
   std::cout << *graph.getAdjMatrix() << std::endl;
@@ -121,7 +131,7 @@ TEST(GraphTest, adj_print_3) {
       &node1, &node2);
   CXXGraph::UndirectedEdge<int> edge(1, pairNode);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge);
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge));
   CXXGraph::Graph<int> graph(edgeSet);
   std::cout << "Test Print Adjacency Matrix" << std::endl;
   std::cout << *graph.getAdjMatrix() << std::endl;
@@ -137,9 +147,9 @@ TEST(GraphTest, adj_print_4) {
   CXXGraph::UndirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::UndirectedEdge<int> edge3(3, node1, node3);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   std::cout << "Test Print Adjacency Matrix" << std::endl;
   std::cout << *graph.getAdjMatrix() << std::endl;
@@ -155,9 +165,9 @@ TEST(GraphTest, adj_print_5) {
   CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::DirectedEdge<int> edge3(3, node1, node3);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   std::cout << "Test Print Adjacency Matrix" << std::endl;
   std::cout << *graph.getAdjMatrix() << std::endl;
@@ -173,9 +183,9 @@ TEST(GraphTest, adj_print_6) {
   CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::UndirectedEdge<int> edge3(3, node1, node3);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   std::cout << "Test Print Adjacency Matrix" << std::endl;
   std::cout << *graph.getAdjMatrix() << std::endl;
@@ -192,11 +202,10 @@ TEST(GraphTest, set_data) {
   CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::UndirectedEdge<int> edge3(3, node1, node3);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
-
 
   std::map<std::string, int> initial_values;
   // Construct map with the initial values of the nodes data

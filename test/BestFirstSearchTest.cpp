@@ -1,7 +1,17 @@
+#include <memory>
 #include <vector>
 
 #include "CXXGraph.hpp"
 #include "gtest/gtest.h"
+
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
 
 TEST(BestFirstSearchTest, source_node_missing) {
   CXXGraph::Node<int> node1("1", 1);
@@ -14,9 +24,9 @@ TEST(BestFirstSearchTest, source_node_missing) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 3);
   CXXGraph::DirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   CXXGraph::BestFirstSearchResult<int> res =
       graph.best_first_search(node4, node1);
@@ -36,9 +46,9 @@ TEST(BestFirstSearchTest, target_node_missing) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 3);
   CXXGraph::DirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   CXXGraph::BestFirstSearchResult<int> res =
       graph.best_first_search(node1, node4);
@@ -57,9 +67,9 @@ TEST(BestFirstSearchTest, correct_example_small) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 3);
   CXXGraph::DirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   CXXGraph::BestFirstSearchResult<int> res =
       graph.best_first_search(node1, node2);
@@ -78,9 +88,9 @@ TEST(BestFirstSearchTest, source_target_same) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 3);
   CXXGraph::DirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   CXXGraph::BestFirstSearchResult<int> res =
       graph.best_first_search(node1, node1);
@@ -120,19 +130,19 @@ TEST(BestFirstSearchTest, correct_example_big) {
   CXXGraph::DirectedWeightedEdge<int> edge12(10, node10, node13, 10);
   CXXGraph::DirectedWeightedEdge<int> edge13(10, node10, node14, 2);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
-  edgeSet.insert(&edge6);
-  edgeSet.insert(&edge7);
-  edgeSet.insert(&edge8);
-  edgeSet.insert(&edge9);
-  edgeSet.insert(&edge10);
-  edgeSet.insert(&edge11);
-  edgeSet.insert(&edge12);
-  edgeSet.insert(&edge13);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge6));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge7));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge8));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge9));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge10));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge11));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge12));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge13));
   CXXGraph::Graph<int> graph(edgeSet);
   CXXGraph::BestFirstSearchResult<int> res =
       graph.best_first_search(node1, node10);

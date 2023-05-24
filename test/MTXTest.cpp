@@ -1,9 +1,19 @@
 #include <Edge/Edge.hpp>
 #include <Edge/Weighted.hpp>
 #include <Node/Node.hpp>
+#include <memory>
 
 #include "CXXGraph.hpp"
 #include "gtest/gtest.h"
+
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
 
 TEST(MTXTest, WriteToMtxDirectedWeighted) {
   // Generate a simple test graph with few nodes and edges
@@ -16,9 +26,9 @@ TEST(MTXTest, WriteToMtxDirectedWeighted) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 3);
   CXXGraph::DirectedWeightedEdge<int> edge3(3, node3, node1, 7);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
 
   // Write the graph to a DOT file
@@ -39,6 +49,9 @@ TEST(MTXTest, WriteToMtxUndirected) {
   edgeSet.insert(&edge1);
   edgeSet.insert(&edge2);
   edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
 
   // Write the graph to a DOT file
@@ -55,9 +68,9 @@ TEST(MTXTest, WriteToMtxMixed) {
   CXXGraph::DirectedEdge<int> edge3(3, node1, node3);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge3));
 
   CXXGraph::Graph<int> graph(edgeSet);
   graph.writeToMTXFile(".", "example_graph_mixed", ' ');
@@ -78,7 +91,7 @@ TEST(MTXTest, ReadFromMtxDirectedWeighted) {
   ASSERT_EQ(graph.getEdge(0).value()->isDirected(), false);
   // Check that it's weighted and the value of the weight
   ASSERT_EQ(graph.getEdge(0).value()->isWeighted(), true);
-  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(0).value())
+  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(0).value().get())
                 ->getWeight(),
             1.);
 
@@ -89,7 +102,7 @@ TEST(MTXTest, ReadFromMtxDirectedWeighted) {
   ASSERT_EQ(graph.getEdge(7).value()->isDirected(), false);
   // Check that it's weighted and the value of the weight
   ASSERT_EQ(graph.getEdge(7).value()->isWeighted(), true);
-  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(7).value())
+  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(7).value().get())
                 ->getWeight(),
             12.);
 
@@ -100,7 +113,7 @@ TEST(MTXTest, ReadFromMtxDirectedWeighted) {
   ASSERT_EQ(graph.getEdge(3).value()->isDirected(), true);
   // Check that it's weighted and the value of the weight
   ASSERT_EQ(graph.getEdge(3).value()->isWeighted(), true);
-  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(3).value())
+  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(3).value().get())
                 ->getWeight(),
             6.);
 }
@@ -120,7 +133,7 @@ TEST(MTXTest, ReadFromMtxUndirectedWeighted) {
   ASSERT_EQ(graph.getEdge(0).value()->isDirected(), false);
   // Check that it's weighted and the value of the weight
   ASSERT_EQ(graph.getEdge(0).value()->isWeighted(), true);
-  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(0).value())
+  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(0).value().get())
                 ->getWeight(),
             1.);
 
@@ -131,7 +144,7 @@ TEST(MTXTest, ReadFromMtxUndirectedWeighted) {
   ASSERT_EQ(graph.getEdge(7).value()->isDirected(), false);
   // Check that it's weighted and the value of the weight
   ASSERT_EQ(graph.getEdge(7).value()->isWeighted(), true);
-  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(7).value())
+  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(7).value().get())
                 ->getWeight(),
             12.);
 
@@ -142,7 +155,7 @@ TEST(MTXTest, ReadFromMtxUndirectedWeighted) {
   ASSERT_EQ(graph.getEdge(3).value()->isDirected(), false);
   // Check that it's weighted and the value of the weight
   ASSERT_EQ(graph.getEdge(3).value()->isWeighted(), true);
-  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(3).value())
+  ASSERT_EQ(dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(3).value().get())
                 ->getWeight(),
             6.);
 }

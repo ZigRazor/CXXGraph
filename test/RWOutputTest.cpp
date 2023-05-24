@@ -3,6 +3,15 @@
 #include "CXXGraph.hpp"
 #include "gtest/gtest.h"
 
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
+
 inline bool exists_test(const std::string &name) {
   struct stat buffer;
   return (stat(name.c_str(), &buffer) == 0);

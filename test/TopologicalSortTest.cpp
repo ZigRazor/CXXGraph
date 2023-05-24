@@ -3,6 +3,15 @@
 #include "Utility/Typedef.hpp"
 #include "gtest/gtest.h"
 
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
+
 // topological sort test in a cyclic graph
 TEST(TopologicalSortTest, test_1) {
   CXXGraph::Node<int> node1("1", 1);

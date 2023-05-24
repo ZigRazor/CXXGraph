@@ -1,6 +1,15 @@
 #include "CXXGraph.hpp"
 #include "gtest/gtest.h"
 
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
+
 TEST(UnionFindTest, setFindTest1) {
   CXXGraph::Node<int> node0("0", 0);
   CXXGraph::Node<int> node1("1", 1);
@@ -20,7 +29,7 @@ TEST(UnionFindTest, setFindTest1) {
   // setUnion are functions belonging to graph class
   // can be removed if Subset becomes a class of its own
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
   CXXGraph::Graph<int> graph(edgeSet);
 
   // every element is a subset of itself
