@@ -158,6 +158,16 @@ class Graph {
   virtual void removeEdge(const unsigned long long edgeId);
   /**
    * \brief
+   * Finds the given edge defined by v1 and v2 within the graph.
+   * 
+   * @param v1 The first vertex.
+   * @param v2 The second vertex.
+   * @param id The edge id if the edge is found. Otherwise set to 0.
+   * @return True if the edge exists in the graph.
+  */
+  virtual bool findEdge(const Node<T>* v1, const Node<T>* v2, unsigned long long &id) const;
+  /**
+   * \brief
    * Function that return the Node Set of the Graph
    * Note: No Thread Safe
    *
@@ -262,6 +272,15 @@ class Graph {
    */
   virtual const BellmanFordResult bellmanford(const Node<T> &source,
                                               const Node<T> &target) const;
+  /**
+   * @brief This function computes the transitive reduction of the graph, returning a graph
+   * with the property of transitive closure satisfied. It removes the "short-circuit"
+   * paths from a graph, leaving only the longest paths. Commonly used to remove duplicate edges
+   * among nodes that do not pass through the entire graph.
+   * @return A copy of the current graph with the transitive closure property satisfied.
+   * 
+  */
+ virtual const Graph<T> transitiveReduction() const;
   /**
    * @brief Function runs the floyd-warshall algorithm and returns the shortest
    * distance of all pair of nodes. It can also detect if a negative cycle
@@ -640,6 +659,29 @@ void Graph<T>::removeEdge(const unsigned long long edgeId) {
     */
     edgeSet.erase(edgeSet.find(edgeOpt.value()));
   }
+}
+
+template <typename T>
+bool Graph<T>::findEdge(const Node<T>* v1, const Node<T>* v2, unsigned long long &id) const {
+
+  // This could be made faster by looking for the edge hash, assuming we hash based on
+  // node data, instead of a unique integer
+  for(const Edge<T>* e : this->edgeSet)
+  {
+    if (e->getNodePair().first == v1 && e->getNodePair().second == v2)
+    {
+      id = e->getId();
+      return true;
+    }
+    if (!e->isDirected() && (e->getNodePair().second == v1 && e->getNodePair().first == v2))
+    {
+      id = e->getId();
+      return true;
+    }
+  }
+
+  id = 0;
+  return false;
 }
 
 template <typename T>
@@ -1353,6 +1395,45 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
   }
   result.errorMessage = ERR_TARGET_NODE_NOT_REACHABLE;
   result.result = -1;
+  return result;
+}
+
+/*
+ * See Harry Hsu. "An algorithm for finding a minimal equivalent graph of a digraph.",
+ * Journal of the ACM, 22(1):11-16, January 1975
+ * 
+ * foreach x in graph.vertices
+ *   foreach y in graph.vertices
+ *     foreach z in graph.vertices
+ *       delete edge xz if edges xy and yz exist
+*/
+template <typename T>
+const Graph<T> Graph<T>::transitiveReduction() const
+{
+  Graph<T> result(this->edgeSet);
+
+  unsigned long long edgeId = 0;
+  std::set<const Node<T> *> nodes = this->getNodeSet();
+  for(const Node<T>* x : nodes)
+  {
+    for(const Node<T>* y : nodes)
+    {
+      if (this->findEdge(x, y, edgeId))
+      {
+        for(const Node<T>* z : nodes)
+        {
+          if (this->findEdge(y, z, edgeId))
+          {
+            if (this->findEdge(x, z, edgeId))
+            {
+              result.removeEdge(edgeId);
+            }
+          }
+        }
+      }
+    }
+  }
+  
   return result;
 }
 
