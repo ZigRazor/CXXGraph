@@ -1,4 +1,6 @@
+#include <Edge/Edge.hpp>
 #include <fstream>
+#include <memory>
 
 #include "CXXGraph.hpp"
 #include "gtest/gtest.h"
@@ -66,9 +68,9 @@ TEST(RWOutputTest, test_1) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile();
   ASSERT_EQ(res, 0);
@@ -90,9 +92,9 @@ TEST(RWOutputTest, test_2) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 4);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_CSV);
   ASSERT_EQ(res, 0);
@@ -114,9 +116,9 @@ TEST(RWOutputTest, test_3) {
   CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_CSV, ".",
                               "test_3");
@@ -136,8 +138,8 @@ TEST(RWOutputTest, test_4) {
   CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::OUT_1, "test_4");
   ASSERT_EQ(res, -1);
@@ -153,8 +155,8 @@ TEST(RWOutputTest, test_5) {
   CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_CSV, ".",
                               "test_5", false, true, true);
@@ -178,8 +180,8 @@ TEST(RWOutputTest, test_6) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_CSV, ".",
                               "test_6", false, false, true);
@@ -201,8 +203,8 @@ TEST(RWOutputTest, test_7) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_CSV, ".",
                               "test_7", false, true, false);
@@ -227,9 +229,9 @@ TEST(RWOutputTest, test_8) {
   CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_CSV, ".",
                               "test_8");
@@ -296,9 +298,9 @@ TEST(RWOutputTest, test_9) {
   CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_CSV, ".",
                               "test_9", false, true);
@@ -364,9 +366,9 @@ TEST(RWOutputTest, test_10) {
   CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_CSV, ".",
                               "test_10", false, true, true);
@@ -390,7 +392,7 @@ TEST(RWOutputTest, test_10) {
       ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
                   readEdgeIt->isWeighted().value());
       ASSERT_EQ(
-          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt))->getWeight(),
+          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))->getWeight(),
           5);
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
@@ -415,7 +417,7 @@ TEST(RWOutputTest, test_10) {
       ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
                   readEdgeIt->isWeighted().value());
       ASSERT_EQ(
-          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt))->getWeight(),
+          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))->getWeight(),
           6);
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
@@ -448,9 +450,9 @@ TEST(RWOutputTest, test_11) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile();
   ASSERT_EQ(res, 0);
@@ -473,9 +475,9 @@ TEST(RWOutputTest, test_12) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 4);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_TSV);
   ASSERT_EQ(res, 0);
@@ -497,9 +499,9 @@ TEST(RWOutputTest, test_13) {
   CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_TSV, ".",
                               "test_13");
@@ -519,8 +521,8 @@ TEST(RWOutputTest, test_14) {
   CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::OUT_1, "test_14");
   ASSERT_EQ(res, -1);
@@ -536,8 +538,8 @@ TEST(RWOutputTest, test_15) {
   CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_TSV, ".",
                               "test_15", false, true, true);
@@ -561,8 +563,8 @@ TEST(RWOutputTest, test_16) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_TSV, ".",
                               "test_16", false, false, true);
@@ -584,8 +586,8 @@ TEST(RWOutputTest, test_17) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_TSV, ".",
                               "test_17", false, true, false);
@@ -610,9 +612,9 @@ TEST(RWOutputTest, test_18) {
   CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_TSV, ".",
                               "test_18");
@@ -679,9 +681,9 @@ TEST(RWOutputTest, test_19) {
   CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_TSV, ".",
                               "test_19", false, true);
@@ -747,9 +749,9 @@ TEST(RWOutputTest, test_20) {
   CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_TSV, ".",
                               "test_20", false, true, true);
@@ -773,7 +775,7 @@ TEST(RWOutputTest, test_20) {
       ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
                   readEdgeIt->isWeighted().value());
       ASSERT_EQ(
-          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt))->getWeight(),
+          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))->getWeight(),
           5);
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
@@ -798,7 +800,7 @@ TEST(RWOutputTest, test_20) {
       ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
                   readEdgeIt->isWeighted().value());
       ASSERT_EQ(
-          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt))->getWeight(),
+          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))->getWeight(),
           6);
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
@@ -826,8 +828,8 @@ TEST(RWOutputTest, test_21) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_CSV, ".",
                               "test_21", true, true, false);
@@ -855,9 +857,9 @@ TEST(RWOutputTest, test_22) {
   CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_CSV, ".",
                               "test_22", true, true, true);
@@ -886,7 +888,7 @@ TEST(RWOutputTest, test_22) {
       ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
                   readEdgeIt->isWeighted().value());
       ASSERT_EQ(
-          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt))->getWeight(),
+          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))->getWeight(),
           5);
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
@@ -911,7 +913,7 @@ TEST(RWOutputTest, test_22) {
       ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
                   readEdgeIt->isWeighted().value());
       ASSERT_EQ(
-          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt))->getWeight(),
+          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))->getWeight(),
           6);
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
@@ -942,8 +944,8 @@ TEST(RWOutputTest, test_23) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_CSV, ".",
                               "test_23", true, false, false);
@@ -966,8 +968,8 @@ TEST(RWOutputTest, test_24) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_TSV, ".",
                               "test_24", true, true, false);
@@ -995,9 +997,9 @@ TEST(RWOutputTest, test_25) {
   CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_TSV, ".",
                               "test_25", true, true, true);
@@ -1026,7 +1028,7 @@ TEST(RWOutputTest, test_25) {
       ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
                   readEdgeIt->isWeighted().value());
       ASSERT_EQ(
-          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt))->getWeight(),
+          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))->getWeight(),
           5);
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
@@ -1051,7 +1053,7 @@ TEST(RWOutputTest, test_25) {
       ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
                   readEdgeIt->isWeighted().value());
       ASSERT_EQ(
-          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt))->getWeight(),
+          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))->getWeight(),
           6);
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
@@ -1082,8 +1084,8 @@ TEST(RWOutputTest, test_26) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_TSV, ".",
                               "test_26", true, false, false);
@@ -1102,7 +1104,7 @@ TEST(RWOutputTest, test_26) {
 TEST(RWOutputTest, test_27) {
   CXXGraph::T_EdgeSet<int> edgeSet;
   for (const auto &edge : edges) {
-    edgeSet.insert(edge.second);
+    edgeSet.insert(make_shared<CXXGraph::Edge<int>>(*(edge.second)));
   }
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_TSV, ".",
@@ -1131,7 +1133,7 @@ TEST(RWOutputTest, test_28) {
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::DirectedWeightedEdge<int> edge1(2, node1, node2, 1);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   CXXGraph::Graph<int> graph(edgeSet);
   // force error by writing to a non-existent directory
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_TSV,
@@ -1162,9 +1164,9 @@ TEST(RWOutputTest, test_29) {
   CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   int res = graph.writeToFile(CXXGraph::InputOutputFormat::STANDARD_TSV, ".",
                               "test_29", true, true, true);
@@ -1193,7 +1195,7 @@ TEST(RWOutputTest, test_29) {
       ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
                   readEdgeIt->isWeighted().value());
       ASSERT_EQ(
-          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt))->getWeight(),
+          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))->getWeight(),
           5);
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
@@ -1218,7 +1220,7 @@ TEST(RWOutputTest, test_29) {
       ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
                   readEdgeIt->isWeighted().value());
       ASSERT_EQ(
-          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt))->getWeight(),
+          (dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))->getWeight(),
           6);
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());

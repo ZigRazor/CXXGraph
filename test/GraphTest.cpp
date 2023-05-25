@@ -54,7 +54,7 @@ TEST(GraphTest, GetEdge_3) {
       &node1, &node2);
   CXXGraph::Edge<int> edge(1, pairNode);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge);
+  edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge));
   CXXGraph::Graph<int> graph(edgeSet);
   ASSERT_EQ(*(graph.getEdge(1).value()), edge);
 }
@@ -70,9 +70,13 @@ TEST(GraphTest, GetNodeSet_1) {
   CXXGraph::Graph<int> graph(edgeSet);
   auto nodeSet = graph.getNodeSet();
   ASSERT_EQ(nodeSet.size(), 2);
-  ASSERT_TRUE(std::find(nodeSet.begin(), nodeSet.end(), &node1) !=
+  ASSERT_TRUE(std::find_if(nodeSet.begin(), nodeSet.end(), [&node1](auto node){
+		  return node->getUserId() == node1.getUserId();
+		}) !=
               nodeSet.end());
-  ASSERT_TRUE(std::find(nodeSet.begin(), nodeSet.end(), &node2) !=
+  ASSERT_TRUE(std::find_if(nodeSet.begin(), nodeSet.end(), [&node2](auto node){
+		  return node->getUserId() == node2.getUserId();
+		}) !=
               nodeSet.end());
 }
 
@@ -90,11 +94,17 @@ TEST(GraphTest, GetNodeSet_2) {
   CXXGraph::Graph<int> graph(edgeSet);
   auto nodeSet = graph.getNodeSet();
   ASSERT_EQ(nodeSet.size(), 3);
-  ASSERT_TRUE(std::find(nodeSet.begin(), nodeSet.end(), &node1) !=
+  ASSERT_TRUE(std::find_if(nodeSet.begin(), nodeSet.end(), [&node1](auto node){
+		  return node->getUserId() == node1.getUserId();
+		}) !=
               nodeSet.end());
-  ASSERT_TRUE(std::find(nodeSet.begin(), nodeSet.end(), &node2) !=
+  ASSERT_TRUE(std::find_if(nodeSet.begin(), nodeSet.end(), [&node2](auto node){
+		  return node->getUserId() == node2.getUserId();
+		}) !=
               nodeSet.end());
-  ASSERT_TRUE(std::find(nodeSet.begin(), nodeSet.end(), &node3) !=
+  ASSERT_TRUE(std::find_if(nodeSet.begin(), nodeSet.end(), [&node3](auto node){
+		  return node->getUserId() == node3.getUserId();
+		}) !=
               nodeSet.end());
 }
 

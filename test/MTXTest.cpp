@@ -46,9 +46,6 @@ TEST(MTXTest, WriteToMtxUndirected) {
   CXXGraph::UndirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::UndirectedEdge<int> edge3(3, node3, node1);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge2));
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge3));

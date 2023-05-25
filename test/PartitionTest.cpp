@@ -1,3 +1,5 @@
+#include <Edge/Edge.hpp>
+#include <memory>
 #include "CXXGraph.hpp"
 #include "Utilities.hpp"
 #include "gtest/gtest.h"
@@ -38,18 +40,18 @@ TEST(PartitionTest, test_1) {
   CXXGraph::UndirectedWeightedEdge<int> edge11(11, node3, node6, 1);
   CXXGraph::UndirectedWeightedEdge<int> edge12(12, node4, node8, 1);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
-  edgeSet.insert(&edge6);
-  edgeSet.insert(&edge7);
-  edgeSet.insert(&edge8);
-  edgeSet.insert(&edge9);
-  edgeSet.insert(&edge10);
-  edgeSet.insert(&edge11);
-  edgeSet.insert(&edge12);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge6));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge7));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge8));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge9));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge10));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge11));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge12));
   CXXGraph::Graph<int> graph(edgeSet);
   ASSERT_EQ(graph.getEdgeSet().size(), 12);
   auto partitionMap = graph.partitionGraph(
@@ -70,7 +72,7 @@ TEST(PartitionTest, test_1) {
 TEST(PartitionTest, test_2) {
   CXXGraph::Graph<int> graph;
   for (auto e : edges) {
-    graph.addEdge(&(*e.second));
+    graph.addEdge(make_shared<CXXGraph::Edge<int>>(*e.second));
   }
   auto partitionMap = graph.partitionGraph(
       CXXGraph::Partitioning::PartitionAlgorithm::HDRF_ALG, 4, 1, 0.001);
@@ -111,18 +113,18 @@ TEST(PartitionTest, test_3) {
   CXXGraph::UndirectedWeightedEdge<int> edge11(11, node3, node6, 1);
   CXXGraph::UndirectedWeightedEdge<int> edge12(12, node4, node8, 1);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
-  edgeSet.insert(&edge6);
-  edgeSet.insert(&edge7);
-  edgeSet.insert(&edge8);
-  edgeSet.insert(&edge9);
-  edgeSet.insert(&edge10);
-  edgeSet.insert(&edge11);
-  edgeSet.insert(&edge12);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge6));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge7));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge8));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge9));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge10));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge11));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge12));
   CXXGraph::Graph<int> graph(edgeSet);
   ASSERT_EQ(graph.getEdgeSet().size(), 12);
   auto partitionMap = graph.partitionGraph(
@@ -143,7 +145,7 @@ TEST(PartitionTest, test_3) {
 TEST(PartitionTest, test_4) {
   CXXGraph::Graph<int> graph;
   for (auto e : edges) {
-    graph.addEdge(&(*e.second));
+    graph.addEdge(make_shared<CXXGraph::Edge<int>>(*e.second));
   }
   auto partitionMap = graph.partitionGraph(
       CXXGraph::Partitioning::PartitionAlgorithm::EDGEBALANCED_VC_ALG, 4);
@@ -184,18 +186,18 @@ TEST(PartitionTest, test_5) {
   CXXGraph::UndirectedWeightedEdge<int> edge11(11, node3, node6, 1);
   CXXGraph::UndirectedWeightedEdge<int> edge12(12, node4, node8, 1);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
-  edgeSet.insert(&edge6);
-  edgeSet.insert(&edge7);
-  edgeSet.insert(&edge8);
-  edgeSet.insert(&edge9);
-  edgeSet.insert(&edge10);
-  edgeSet.insert(&edge11);
-  edgeSet.insert(&edge12);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge6));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge7));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge8));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge9));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge10));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge11));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge12));
   CXXGraph::Graph<int> graph(edgeSet);
   ASSERT_EQ(graph.getEdgeSet().size(), 12);
   auto partitionMap = graph.partitionGraph(
@@ -216,7 +218,7 @@ TEST(PartitionTest, test_5) {
 TEST(PartitionTest, test_6) {
   CXXGraph::Graph<int> graph;
   for (auto e : edges) {
-    graph.addEdge(&(*e.second));
+    graph.addEdge(make_shared<CXXGraph::Edge<int>>(*e.second));
   }
   auto partitionMap = graph.partitionGraph(
       CXXGraph::Partitioning::PartitionAlgorithm::GREEDY_VC_ALG, 4);
@@ -257,18 +259,18 @@ TEST(PartitionTest, test_7) {
   CXXGraph::UndirectedWeightedEdge<int> edge11(11, node3, node6, 1);
   CXXGraph::UndirectedWeightedEdge<int> edge12(12, node4, node8, 1);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
-  edgeSet.insert(&edge6);
-  edgeSet.insert(&edge7);
-  edgeSet.insert(&edge8);
-  edgeSet.insert(&edge9);
-  edgeSet.insert(&edge10);
-  edgeSet.insert(&edge11);
-  edgeSet.insert(&edge12);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge6));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge7));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge8));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge9));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge10));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge11));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge12));
   CXXGraph::Graph<int> graph(edgeSet);
   ASSERT_EQ(graph.getEdgeSet().size(), 12);
   auto partitionMap = graph.partitionGraph(
@@ -289,7 +291,7 @@ TEST(PartitionTest, test_7) {
 TEST(PartitionTest, test_8) {
   CXXGraph::Graph<int> graph;
   for (auto e : edges) {
-    graph.addEdge(&(*e.second));
+    graph.addEdge(make_shared<CXXGraph::Edge<int>>(*e.second));
   }
   auto partitionMap = graph.partitionGraph(
       CXXGraph::Partitioning::PartitionAlgorithm::EBV_ALG, 4, 1, 1);
@@ -309,7 +311,7 @@ TEST(PartitionTest, test_8) {
 TEST(PartitionTest, test_9) {
   CXXGraph::Graph<int> graph;
   for (auto e : edges) {
-    graph.addEdge(&(*e.second));
+    graph.addEdge(make_shared<CXXGraph::Edge<int>>(*e.second));
   }
   auto partitionMap =
       graph.partitionGraph(CXXGraph::Partitioning::PartitionAlgorithm::WB_LIBRA,
