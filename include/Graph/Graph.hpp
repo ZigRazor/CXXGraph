@@ -670,12 +670,12 @@ bool Graph<T>::findEdge(const Node<T> *v1, const Node<T> *v2,
   // This could be made faster by looking for the edge hash, assuming we hash
   // based on node data, instead of a unique integer
   for (const Edge<T> *e : this->edgeSet) {
-    if (e->getNodePair().first == v1 && e->getNodePair().second == v2) {
+    if ((e->getNodePair().first == v1) && (e->getNodePair().second == v2)) {
       id = e->getId();
       return true;
     }
     if (!e->isDirected() &&
-        (e->getNodePair().second == v1 && e->getNodePair().first == v2)) {
+        ((e->getNodePair().second == v1) && (e->getNodePair().first == v2))) {
       id = e->getId();
       return true;
     }
