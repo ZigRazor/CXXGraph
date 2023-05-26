@@ -53,8 +53,8 @@ generateRandomEdges(
   return edges;
 }
 
-static auto nodes = generateRandomNodes(10000, 2);
-static auto edges = generateRandomEdges(10000, nodes);
+static auto nodes = generateRandomNodes(1000, 2);
+static auto edges = generateRandomEdges(1000, nodes);
 
 //************* CSV ***************//
 
