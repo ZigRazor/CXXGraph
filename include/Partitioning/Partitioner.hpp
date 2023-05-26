@@ -20,6 +20,7 @@
 #ifndef __CXXGRAPH_PARTITIONING_PARTITIONER_H__
 #define __CXXGRAPH_PARTITIONING_PARTITIONER_H__
 
+#include <memory>
 #pragma once
 #include <vector>
 
@@ -82,7 +83,7 @@ Partitioner<T>::Partitioner(shared<const T_EdgeSet<T>> dataset, Globals &G)
     for (const auto &edge_it : *(this->dataset)) {
       weight_sum +=
           (edge_it->isWeighted().has_value() && edge_it->isWeighted().value())
-              ? dynamic_cast<const Weighted *>(edge_it.get())->getWeight()
+              ? std::dynamic_pointer_cast<const Weighted>(edge_it)->getWeight()
               : CXXGraph::NEGLIGIBLE_WEIGHT;
     }
     double lambda = std::max(1.0, GLOBALS.param1);
@@ -125,7 +126,7 @@ Partitioner<T>::Partitioner(const Partitioner &other) {
     for (const auto &edge_it : *(this->dataset)) {
       weight_sum +=
           (edge_it->isWeighted().has_value() && edge_it->isWeighted().value())
-              ? dynamic_cast<const Weighted *>(edge_it.get())->getWeight()
+              ? std::dynamic_pointer_cast<const Weighted>(edge_it)->getWeight()
               : CXXGraph::NEGLIGIBLE_WEIGHT;
     }
     double lambda = GLOBALS.param1;

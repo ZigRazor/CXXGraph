@@ -897,7 +897,7 @@ int Graph<T>::writeToDot(const std::string &workingDir,
       edgeLine +=
           " [weight=" +
           std::to_string(static_cast<int>(
-              dynamic_cast<const Weighted *>(edgePtr.get())->getWeight())) +
+              std::dynamic_pointer_cast<const Weighted>(edgePtr)->getWeight())) +
           ']';
     }
     edgeLine += ";\n";
@@ -948,7 +948,7 @@ void Graph<T>::writeGraphToStream(std::ostream &oGraph, std::ostream &oNodeFeat,
       oEdgeWeight
           << edge->getId() << sep
           << (edge->isWeighted().has_value() && edge->isWeighted().value()
-                  ? (dynamic_cast<const Weighted *>(edge.get()))->getWeight()
+                  ? (std::dynamic_pointer_cast<const Weighted>(edge))->getWeight()
                   : 0.0)
           << sep
           << (edge->isWeighted().has_value() && edge->isWeighted().value() ? 1
@@ -1294,7 +1294,11 @@ std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const {
       std::make_shared<std::vector<Node<T>>>();
 
   std::vector<shared<const Node<T>>> currentPath;
-  auto currentNode = *(nodeSet.begin());
+  // The starting node is the only node which has more outgoing than ingoing links 
+  auto firstNodeIt = std::max_element(nodeSet.begin(), nodeSet.end(), [adj](auto n1, auto n2){
+		return adj->at(n1).size() < adj->at(n2).size();
+	  });
+  auto currentNode = *(firstNodeIt);
   currentPath.push_back(currentNode);
 
   while (currentPath.size() > 0) {
@@ -1508,7 +1512,7 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
       auto elem = edge->getNodePair();
       if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
         auto edge_weight =
-            (dynamic_cast<const Weighted *>(edge.get()))->getWeight();
+            (std::dynamic_pointer_cast<const Weighted>(edge))->getWeight();
         if (dist[elem.first] + edge_weight < dist[elem.second])
           dist[elem.second] = dist[elem.first] + edge_weight;
       } else {
@@ -1539,7 +1543,7 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
     for (const auto &edge : edgeSet) {
       auto elem = edge->getNodePair();
       auto edge_weight =
-          (dynamic_cast<const Weighted *>(edge.get()))->getWeight();
+          (std::dynamic_pointer_cast<const Weighted>(edge))->getWeight();
       if (dist[elem.first] + edge_weight < dist[elem.second]) {
         result.success = true;
         result.negativeCycle = true;
@@ -1589,7 +1593,7 @@ const FWResult Graph<T>::floydWarshall() const {
     const auto &elem = edge->getNodePair();
     if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
       auto edgeWeight =
-          (dynamic_cast<const Weighted *>(edge.get()))->getWeight();
+          (std::dynamic_pointer_cast<const Weighted>(edge))->getWeight();
       auto key =
           std::make_pair(elem.first->getUserId(), elem.second->getUserId());
       pairwise_dist[key] = edgeWeight;
@@ -1747,7 +1751,7 @@ const MstResult Graph<T>::boruvka() const {
   for (const auto &edge : edgeSet) {
     if (edge->isWeighted().has_value() && edge->isWeighted().value())
       edgeWeight[edge->getId()] =
-          (dynamic_cast<const Weighted *>(edge.get()))->getWeight();
+          (std::dynamic_pointer_cast<const Weighted>(edge))->getWeight();
     else {
       // No Weighted Edge
       result.errorMessage = ERR_NO_WEIGHTED_EDGE;
@@ -1837,7 +1841,7 @@ const MstResult Graph<T>::kruskal() const {
       sortedEdges;
   for (const auto &edge : edgeSet) {
     if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
-      auto weight = (dynamic_cast<const Weighted *>(edge.get()))->getWeight();
+      auto weight = (std::dynamic_pointer_cast<const Weighted>(edge))->getWeight();
       sortedEdges.push(std::make_pair(weight, edge));
     } else {
       // No Weighted Edge
