@@ -24,8 +24,8 @@ TEST(DijkstraTest, correct_example_1) {
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
-  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
 
   CXXGraph::Graph<int> graph(edgeSet);
   CXXGraph::DijkstraResult res = graph.dijkstra(node1, node3);
@@ -47,8 +47,8 @@ TEST(DijkstraTest, correct_example_2) {
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
-  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
 
   CXXGraph::Graph<int> graph(edgeSet);
   CXXGraph::DijkstraResult res = graph.dijkstra(node1, node3);

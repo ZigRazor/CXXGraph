@@ -59,7 +59,7 @@ TEST(FordFulkersonTest, test_2) {
   CXXGraph::DirectedWeightedEdge<int> edge7(7, node4, node5, 4);
   CXXGraph::DirectedWeightedEdge<int> edge8(8, node3, node5, 19);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge3));
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge4));

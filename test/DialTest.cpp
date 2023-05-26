@@ -67,7 +67,7 @@ TEST(DialTest, test_3) {
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   auto res = graph.dial(node1, 6);

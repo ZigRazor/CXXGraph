@@ -172,7 +172,7 @@ TEST(BoruvkaTest, test_4) {
 
   CXXGraph::UndirectedEdge<int> edge3(3, node1, node2);
   CXXGraph::T_EdgeSet<int> edgeSet1;
-  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge3));
+  edgeSet1.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge3));
 
   CXXGraph::Graph<int> graph1(edgeSet1);
   res = graph1.boruvka();
