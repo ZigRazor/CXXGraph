@@ -222,8 +222,33 @@ class Graph {
    * Note: No Thread Safe
    */
   virtual unsigned long long setFind(
+      std::unordered_map<unsigned long long, Subset> *,
+      const unsigned long long elem) const;
+  /**
+   * @brief This function finds the subset of given a nodeId
+   * Subset is stored in a map where keys are the hash-id of the node & values
+   * is the subset.
+   * @param shared pointer to subset query subset, we want to find target in this subset
+   * @param elem elem that we wish to find in the subset
+   *
+   * @return parent node of elem
+   * Note: No Thread Safe
+   */
+  virtual unsigned long long setFind(
       shared<std::unordered_map<unsigned long long, Subset>>,
       const unsigned long long elem) const;
+  /**
+   * @brief This function modifies the original subset array
+   * such that it the union of two sets a and b
+   * @param subset original subset is modified to obtain union of a & b
+   * @param a parent id of set1
+   * @param b parent id of set2
+   * NOTE: Original subset is no longer available after union.
+   * Note: No Thread Safe
+   */
+  virtual void setUnion(std::unordered_map<unsigned long long, Subset> *,
+                        const unsigned long long set1,
+                        const unsigned long long elem2) const;
   /**
    * @brief This function modifies the original subset array
    * such that it the union of two sets a and b
@@ -386,6 +411,14 @@ class Graph {
    */
   virtual bool isCyclicDirectedGraphBFS() const;
 
+  /**
+   * @brief
+   * This function checks if the given set of edges
+   * forms a cycle or not using union-find method.
+   *
+   * @return true if a cycle is detected, else false
+   */
+  virtual bool containsCycle(const T_EdgeSet<T> *) const;
   /**
    * @brief
    * This function checks if the given set of edges
@@ -1175,6 +1208,21 @@ int Graph<T>::decompressFile(const std::string &inputFile,
 
 template <typename T>
 unsigned long long Graph<T>::setFind(
+    std::unordered_map<unsigned long long, Subset> *subsets,
+    const unsigned long long nodeId) const {
+  auto subsets_ptr = make_shared<std::unordered_map<unsigned long long, Subset>>(*subsets);
+  // find root and make root as parent of i
+  // (path compression)
+  if ((*subsets)[nodeId].parent != nodeId) {
+    (*subsets)[nodeId].parent =
+        Graph<T>::setFind(subsets_ptr, (*subsets)[nodeId].parent);
+  }
+
+  return (*subsets)[nodeId].parent;
+}
+
+template <typename T>
+unsigned long long Graph<T>::setFind(
     shared<std::unordered_map<unsigned long long, Subset>> subsets,
     const unsigned long long nodeId) const {
   // find root and make root as parent of i
@@ -1185,6 +1233,37 @@ unsigned long long Graph<T>::setFind(
   }
 
   return (*subsets)[nodeId].parent;
+}
+
+template <typename T>
+void Graph<T>::setUnion(
+    std::unordered_map<unsigned long long, Subset> *subsets,
+    const unsigned long long elem1, const unsigned long long elem2) const {
+  /* auto subsets_ptr = make_shared<std::unordered_map<unsigned long long, Subset>>(*subsets); */
+  // if both sets have same parent
+  // then there's nothing to be done
+  /* if ((*subsets_ptr)[elem1].parent == (*subsets_ptr)[elem2].parent) return; */
+  /* auto elem1Parent = Graph<T>::setFind(subsets_ptr, elem1); */
+  /* auto elem2Parent = Graph<T>::setFind(subsets_ptr, elem2); */
+  /* if ((*subsets_ptr)[elem1Parent].rank < (*subsets_ptr)[elem2Parent].rank) */
+  /*   (*subsets_ptr)[elem1].parent = elem2Parent; */
+  /* else if ((*subsets_ptr)[elem1Parent].rank > (*subsets_ptr)[elem2Parent].rank) */
+  /*   (*subsets_ptr)[elem2].parent = elem1Parent; */
+  /* else { */
+  /*   (*subsets_ptr)[elem2].parent = elem1Parent; */
+  /*   (*subsets_ptr)[elem1Parent].rank++; */
+  /* } */
+  if ((*subsets)[elem1].parent == (*subsets)[elem2].parent) return;
+  auto elem1Parent = Graph<T>::setFind(subsets, elem1);
+  auto elem2Parent = Graph<T>::setFind(subsets, elem2);
+  if ((*subsets)[elem1Parent].rank < (*subsets)[elem2Parent].rank)
+    (*subsets)[elem1].parent = elem2Parent;
+  else if ((*subsets)[elem1Parent].rank > (*subsets)[elem2Parent].rank)
+    (*subsets)[elem2].parent = elem1Parent;
+  else {
+    (*subsets)[elem2].parent = elem1Parent;
+    (*subsets)[elem1Parent].rank++;
+  }
 }
 
 template <typename T>
@@ -1210,11 +1289,14 @@ template <typename T>
 std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const {
   const auto nodeSet = Graph<T>::getNodeSet();
   const auto adj = Graph<T>::getAdjMatrix();
+
   std::shared_ptr<std::vector<Node<T>>> eulerPath =
       std::make_shared<std::vector<Node<T>>>();
+
   std::vector<shared<const Node<T>>> currentPath;
   auto currentNode = *(nodeSet.begin());
   currentPath.push_back(currentNode);
+
   while (currentPath.size() > 0) {
     auto &edges = adj->at(currentNode);
     // we keep removing the edges that
@@ -1272,6 +1354,7 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T> &source,
                                         const Node<T> &target) const {
   DijkstraResult result;
   auto nodeSet = Graph<T>::getNodeSet();
+
   auto source_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),
       [&source](auto node) { return node->getUserId() == source.getUserId(); });
@@ -1280,6 +1363,7 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T> &source,
     result.errorMessage = ERR_SOURCE_NODE_NOT_IN_GRAPH;
     return result;
   }
+
   auto target_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),
       [&target](auto node) { return node->getUserId() == target.getUserId(); });
@@ -2169,6 +2253,33 @@ bool Graph<T>::isCyclicDirectedGraphDFS() const {
 }
 
 template <typename T>
+bool Graph<T>::containsCycle(const T_EdgeSet<T> *edgeSet) const {
+  auto edgeSet_ptr = make_shared<const T_EdgeSet<T>>(*edgeSet);
+  auto subset = make_shared<std::unordered_map<unsigned long long, Subset>>();
+  // initialize the subset parent and rank values
+  for (const auto &edge : *edgeSet_ptr) {
+    auto &[first, second] = edge->getNodePair();
+    std::vector<unsigned long long> nodeId(2);
+    nodeId.push_back(first->getId());
+    nodeId.push_back(second->getId());
+    for (const auto &id : nodeId) {
+      auto nodeExists = [id](const auto &it) {
+        return (id == (it.second).parent);
+      };
+
+      if (std::find_if((*subset).begin(), (*subset).end(), nodeExists) ==
+          (*subset).end()) {
+        Subset set;
+        set.parent = id;
+        set.rank = 0;
+        (*subset)[id] = set;
+      }
+    }
+  }
+  return Graph<T>::containsCycle(edgeSet_ptr, subset);
+}
+
+template <typename T>
 bool Graph<T>::containsCycle(shared<const T_EdgeSet<T>> edgeSet) const {
   auto subset = make_shared<std::unordered_map<unsigned long long, Subset>>();
   // initialize the subset parent and rank values
@@ -2536,8 +2647,8 @@ SCCResult<T> Graph<T>::kosaraju() const {
       shared<const DirectedEdge<T>> d_edge =
           std::static_pointer_cast<const DirectedEdge<T>>(edgeSetIt);
       // Add the reverse edge to the reverse adjacency matrix
-      addElementToAdjMatrix(d_edge->getNodePair().first,
-                            d_edge->getNodePair().second, d_edge);
+      addElementToAdjMatrix(d_edge->getNodePair().second,
+                            d_edge->getNodePair().first, d_edge);
     }
 
     visited.clear();
