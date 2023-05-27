@@ -122,6 +122,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
     - [Cycle Detection](#cycle-detection)
     - [Bellman-Ford](#bellman-ford)
     - [Floyd Warshall](#floyd-warshall)
+    - [Transitive Reduction](#transitive-reduction)
     - [Kruskal Algorithm](#kruskal-algorithm)
     - [Borůvka's Algorithm](#borůvkas-algorithm)
     - [Graph Slicing based on connectivity](#graph-slicing-based-on-connectivity)
