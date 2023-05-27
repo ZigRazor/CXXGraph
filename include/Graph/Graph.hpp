@@ -1150,11 +1150,18 @@ template <typename T>
 std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const {
   const auto nodeSet = Graph<T>::getNodeSet();
   const auto adj = Graph<T>::getAdjMatrix();
+
   std::shared_ptr<std::vector<Node<T>>> eulerPath =
       std::make_shared<std::vector<Node<T>>>();
+
   std::vector<const Node<T> *> currentPath;
-  auto currentNode = *(nodeSet.begin());
+  // The starting node is the only node which has more outgoing than ingoing links 
+  auto firstNodeIt = std::max_element(nodeSet.begin(), nodeSet.end(), [adj](auto n1, auto n2){
+		return adj->at(n1).size() < adj->at(n2).size();
+	  });
+  auto currentNode = *(firstNodeIt);
   currentPath.push_back(currentNode);
+
   while (currentPath.size() > 0) {
     auto &edges = adj->at(currentNode);
     // we keep removing the edges that
