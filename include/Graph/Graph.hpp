@@ -1154,11 +1154,15 @@ std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const {
   std::shared_ptr<std::vector<Node<T>>> eulerPath =
       std::make_shared<std::vector<Node<T>>>();
 
+  bool undirected = this->isUndirectedGraph();
+
   std::vector<const Node<T> *> currentPath;
-  // The starting node is the only node which has more outgoing than ingoing links 
-  auto firstNodeIt = std::max_element(nodeSet.begin(), nodeSet.end(), [adj](auto n1, auto n2){
-		return adj->at(n1).size() < adj->at(n2).size();
-	  });
+  // The starting node is the only node which has more outgoing than ingoing
+  // links
+  auto firstNodeIt =
+      std::max_element(nodeSet.begin(), nodeSet.end(), [adj](auto n1, auto n2) {
+        return adj->at(n1).size() < adj->at(n2).size();
+      });
   auto currentNode = *(firstNodeIt);
   currentPath.push_back(currentNode);
 
@@ -1168,7 +1172,10 @@ std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const {
     // have been traversed from the adjacency list
     if (edges.size()) {
       auto firstEdge = edges.back().second;
-      auto nextNodeId = firstEdge->getNodePair().second;
+
+      const Node<T> *nextNodeId;
+      nextNodeId = firstEdge->getOtherNode(currentNode);
+
       currentPath.push_back(nextNodeId);
       currentNode = nextNodeId;
       edges.pop_back();
