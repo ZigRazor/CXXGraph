@@ -200,6 +200,22 @@ class Graph {
    */
   virtual const std::shared_ptr<AdjacencyMatrix<T>> getAdjMatrix() const;
   /**
+   * \brief
+   * Note: No Thread Safe
+   *
+   * @param Pointer to the node
+   *
+   */
+  virtual const std::set<const Node<T> *> outEdges(const Node<T> *node) const;
+  /**
+   * \brief
+   * Note: No Thread Safe
+   *
+   * @param Pointer to the node
+   *
+   */
+  virtual const std::set<const Node<T> *> inOutEdges(const Node<T> *node) const;
+  /**
    * @brief This function finds the subset of given a nodeId
    * Subset is stored in a map where keys are the hash-id of the node & values
    * is the subset.
@@ -1160,6 +1176,40 @@ const std::shared_ptr<AdjacencyMatrix<T>> Graph<T>::getAdjMatrix() const {
     }
   }
   return adj;
+}
+
+template <typename T>
+const std::set<const Node<T> *> Graph<T>::outEdges(const Node<T> *node) const {
+  auto adj = getAdjMatrix();
+  if (adj->find(node) == adj->end()) {
+	return std::set<const Node<T> *>();
+  }
+  auto nodeEdgePairs = adj->at(node);
+
+  std::set<const Node<T> *> outEdges;
+  for (auto pair : nodeEdgePairs) {
+	if (pair.second->isDirected().has_value() && pair.second->isDirected().value()) {
+	  outEdges.insert(pair.first);
+	}
+  }
+
+  return outEdges;
+}
+
+template <typename T>
+const std::set<const Node<T> *> Graph<T>::inOutEdges(const Node<T> *node) const {
+  auto adj = Graph<T>::getAdjMatrix();
+  if (adj->find(node) == adj->end()) {
+	return std::set<const Node<T> *>();
+  }
+  auto nodeEdgePairs = adj->at(node);
+  
+  std::set<const Node<T> *> inOutEdges;
+  for (auto pair : nodeEdgePairs) {
+	inOutEdges.insert(pair.first);
+  }
+  
+  return inOutEdges;
 }
 
 template <typename T>
