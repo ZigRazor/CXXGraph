@@ -46,6 +46,7 @@ class Edge {
   virtual ~Edge() = default;
   const unsigned long long &getId() const;
   const std::pair<const Node<T> *, const Node<T> *> &getNodePair() const;
+  const Node<T> *getOtherNode(const Node<T> *node) const;
   virtual const std::optional<bool> isDirected() const;
   virtual const std::optional<bool> isWeighted() const;
   // operator
@@ -81,6 +82,15 @@ template <typename T>
 const std::pair<const Node<T> *, const Node<T> *> &Edge<T>::getNodePair()
     const {
   return nodePair;
+}
+
+template <typename T>
+const Node<T> *Edge<T>::getOtherNode(const Node<T> *node) const {
+  if (this->getNodePair().first == node) {
+    return this->getNodePair().second;
+  } else {
+    return this->getNodePair().first;
+  }
 }
 
 template <typename T>

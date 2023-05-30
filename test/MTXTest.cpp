@@ -65,7 +65,7 @@ TEST(MTXTest, WriteToMtxMixed) {
 
 TEST(MTXTest, ReadFromMtxDirectedWeighted) {
   CXXGraph::Graph<int> graph;
-  graph.readFromMTXFile("..", "test_mtx");
+  graph.readFromMTXFile("../../test", "test_mtx");
 
   // Check the number of edges and nodes
   ASSERT_EQ(graph.getEdgeSet().size(), 8);
@@ -107,7 +107,7 @@ TEST(MTXTest, ReadFromMtxDirectedWeighted) {
 
 TEST(MTXTest, ReadFromMtxUndirectedWeighted) {
   CXXGraph::Graph<int> graph;
-  graph.readFromMTXFile("..", "test_mtx_symmetric");
+  graph.readFromMTXFile("../../test", "test_mtx_symmetric");
 
   // Check the number of edges and nodes
   ASSERT_EQ(graph.getEdgeSet().size(), 8);

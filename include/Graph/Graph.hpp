@@ -158,6 +158,17 @@ class Graph {
   virtual void removeEdge(const unsigned long long edgeId);
   /**
    * \brief
+   * Finds the given edge defined by v1 and v2 within the graph.
+   *
+   * @param v1 The first vertex.
+   * @param v2 The second vertex.
+   * @param id The edge id if the edge is found. Otherwise set to 0.
+   * @return True if the edge exists in the graph.
+   */
+  virtual bool findEdge(const Node<T> *v1, const Node<T> *v2,
+                        unsigned long long &id) const;
+  /**
+   * \brief
    * Function that return the Node Set of the Graph
    * Note: No Thread Safe
    *
@@ -278,6 +289,17 @@ class Graph {
    */
   virtual const BellmanFordResult bellmanford(const Node<T> &source,
                                               const Node<T> &target) const;
+  /**
+   * @brief This function computes the transitive reduction of the graph,
+   * returning a graph with the property of transitive closure satisfied. It
+   * removes the "short-circuit" paths from a graph, leaving only the longest
+   * paths. Commonly used to remove duplicate edges among nodes that do not pass
+   * through the entire graph.
+   * @return A copy of the current graph with the transitive closure property
+   * satisfied.
+   *
+   */
+  virtual const Graph<T> transitiveReduction() const;
   /**
    * @brief Function runs the floyd-warshall algorithm and returns the shortest
    * distance of all pair of nodes. It can also detect if a negative cycle
@@ -659,6 +681,27 @@ void Graph<T>::removeEdge(const unsigned long long edgeId) {
 }
 
 template <typename T>
+bool Graph<T>::findEdge(const Node<T> *v1, const Node<T> *v2,
+                        unsigned long long &id) const {
+  // This could be made faster by looking for the edge hash, assuming we hash
+  // based on node data, instead of a unique integer
+  for (const Edge<T> *e : this->edgeSet) {
+    if ((e->getNodePair().first == v1) && (e->getNodePair().second == v2)) {
+      id = e->getId();
+      return true;
+    }
+    if (!e->isDirected() &&
+        ((e->getNodePair().second == v1) && (e->getNodePair().first == v2))) {
+      id = e->getId();
+      return true;
+    }
+  }
+
+  id = 0;
+  return false;
+}
+
+template <typename T>
 const std::set<const Node<T> *> Graph<T>::getNodeSet() const {
   std::set<const Node<T> *> nodeSet;
   for (const auto &edgeSetIt : edgeSet) {
@@ -687,9 +730,9 @@ const std::set<const Node<T> *> Graph<T>::getNodeSet() const {
 template <typename T>
 void Graph<T>::setNodeData(const std::string &nodeUserId, T data) {
   auto nodeset = this->nodeSet();
-  auto nodeIt = std::find_if(nodeset.begin(), nodeset.end(), [&nodeUserId](auto node){
-		return node->getUserId() == nodeUserId;
-	  });
+  auto nodeIt = std::find_if(
+      nodeset.begin(), nodeset.end(),
+      [&nodeUserId](auto node) { return node->getUserId() == nodeUserId; });
   (*nodeIt)->setData(std::move(data));
 }
 
@@ -1123,18 +1166,32 @@ template <typename T>
 std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const {
   const auto nodeSet = Graph<T>::getNodeSet();
   const auto adj = Graph<T>::getAdjMatrix();
+
   std::shared_ptr<std::vector<Node<T>>> eulerPath =
       std::make_shared<std::vector<Node<T>>>();
+
+  bool undirected = this->isUndirectedGraph();
+
   std::vector<const Node<T> *> currentPath;
-  auto currentNode = *(nodeSet.begin());
+  // The starting node is the only node which has more outgoing than ingoing
+  // links
+  auto firstNodeIt =
+      std::max_element(nodeSet.begin(), nodeSet.end(), [adj](auto n1, auto n2) {
+        return adj->at(n1).size() < adj->at(n2).size();
+      });
+  auto currentNode = *(firstNodeIt);
   currentPath.push_back(currentNode);
+
   while (currentPath.size() > 0) {
     auto &edges = adj->at(currentNode);
     // we keep removing the edges that
     // have been traversed from the adjacency list
     if (edges.size()) {
       auto firstEdge = edges.back().second;
-      auto nextNodeId = firstEdge->getNodePair().second;
+
+      const Node<T> *nextNodeId;
+      nextNodeId = firstEdge->getOtherNode(currentNode);
+
       currentPath.push_back(nextNodeId);
       currentNode = nextNodeId;
       edges.pop_back();
@@ -1403,6 +1460,38 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
   }
   result.errorMessage = ERR_TARGET_NODE_NOT_REACHABLE;
   result.result = -1;
+  return result;
+}
+
+/*
+ * See Harry Hsu. "An algorithm for finding a minimal equivalent graph of a
+ * digraph.", Journal of the ACM, 22(1):11-16, January 1975
+ *
+ * foreach x in graph.vertices
+ *   foreach y in graph.vertices
+ *     foreach z in graph.vertices
+ *       delete edge xz if edges xy and yz exist
+ */
+template <typename T>
+const Graph<T> Graph<T>::transitiveReduction() const {
+  Graph<T> result(this->edgeSet);
+
+  unsigned long long edgeId = 0;
+  std::set<const Node<T> *> nodes = this->getNodeSet();
+  for (const Node<T> *x : nodes) {
+    for (const Node<T> *y : nodes) {
+      if (this->findEdge(x, y, edgeId)) {
+        for (const Node<T> *z : nodes) {
+          if (this->findEdge(y, z, edgeId)) {
+            if (this->findEdge(x, z, edgeId)) {
+              result.removeEdge(edgeId);
+            }
+          }
+        }
+      }
+    }
+  }
+
   return result;
 }
 
@@ -2960,9 +3049,9 @@ int Graph<T>::writeToMTXFile(const std::string &workingDir,
   std::string header = "%%MatrixMarket graph";
   // Check if the adjacency matrix is symmetric, i.e., if all the edges are
   // undirected
-  bool symmetric = !std::any_of(edgeSet.begin(), edgeSet.end(), [](auto edge){
-		return (edge->isDirected().has_value() && edge->isDirected().value());
-	  });
+  bool symmetric = !std::any_of(edgeSet.begin(), edgeSet.end(), [](auto edge) {
+    return (edge->isDirected().has_value() && edge->isDirected().value());
+  });
   // Write in the header whether the adj matrix is symmetric or not
   if (symmetric) {
     header += " symmetric\n";
@@ -3049,7 +3138,7 @@ int Graph<T>::readFromMTXFile(const std::string &workingDir,
 
   // Since the matrix represents the adjacency matrix, it must be square
   if (n_rows != n_cols) {
-	return -1;
+    return -1;
   }
 
   // Read the content of each line
@@ -3079,8 +3168,9 @@ int Graph<T>::readFromMTXFile(const std::string &workingDir,
   }
 
   if (n_edges != edgeMap.size()) {
-	std::cout << "Error: The number of edges does not match the value provided in the size line.\n";
-	return -1;
+    std::cout << "Error: The number of edges does not match the value provided "
+                 "in the size line.\n";
+    return -1;
   }
 
   iFile.close();

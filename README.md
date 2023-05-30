@@ -122,6 +122,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
     - [Cycle Detection](#cycle-detection)
     - [Bellman-Ford](#bellman-ford)
     - [Floyd Warshall](#floyd-warshall)
+    - [Transitive Reduction](#transitive-reduction)
     - [Kruskal Algorithm](#kruskal-algorithm)
     - [Borůvka's Algorithm](#borůvkas-algorithm)
     - [Graph Slicing based on connectivity](#graph-slicing-based-on-connectivity)
@@ -431,6 +432,22 @@ We initialize the solution matrix same as the input graph matrix as a first step
 
 1) k is not an intermediate vertex in shortest path from i to j. We keep the value of dist[i][j] as it is.
 2) k is an intermediate vertex in shortest path from i to j. We update the value of dist[i][j] as dist[i][k] + dist[k][j] if dist[i][j] > dist[i][k] + dist[k][j]
+
+### Transitive Reduction
+
+[Transitive Reduction](https://en.wikipedia.org/wiki/Transitive_reduction)
+
+This algorithm is used to construct a directed graph with the same reachability and satisfies transitive closure, with as few edges as possible. More concretely, it creates a minimum equivalent graph with as few edges as possible, removing "short-circuit" paths through the graph.
+
+This is done by iterating through each node-pair, checking to see if two edges exist that leads out of the first node OR out of the last node, removing the node-pair edge if it exists.
+
+In pseudocode:
+foreach x in graph.vertices
+   foreach y in graph.vertices
+      foreach z in graph.vertices
+         delete edge xz if edges xy and yz exist
+
+Our implementation has if gates that do early checking for edges in multiple places, which gives it a slightly faster runtime than the cubic pseudocode here.
 
 ### Kruskal Algorithm
 
