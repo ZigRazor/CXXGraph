@@ -80,7 +80,7 @@ using std::make_shared;
 using std::make_unique;
 
 template <typename T>
-using T_EdgeSet = std::unordered_set<shared<const Edge<T>>>;
+using T_EdgeSet = std::unordered_set<shared<const Edge<T>>, edgeHash<T>>;
 
 namespace Partitioning {
 template <typename T>
@@ -99,7 +99,7 @@ class Graph {
   T_EdgeSet<T> edgeSet = {};
 
   // Private non-const getter for the set of nodes
-  std::set<shared<Node<T>>> nodeSet();
+  std::unordered_set<shared<Node<T>>, nodeHash<T>> nodeSet();
 
   std::optional<std::pair<std::string, char>> getExtenstionAndSeparator(
       InputOutputFormat format) const;
@@ -176,7 +176,7 @@ class Graph {
    * @returns a list of Nodes of the graph
    *
    */
-  virtual const std::set<shared<const Node<T>>> getNodeSet() const;
+  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>> getNodeSet() const;
   /**
    * \brief
    * Function that sets the data contained in a node
@@ -628,44 +628,7 @@ class Graph {
 
 template <typename T>
 Graph<T>::Graph(const T_EdgeSet<T> &edgeSet) {
-  for (auto edgeSetIt : edgeSet) {
-    auto edgeIt = std::const_pointer_cast<Edge<T>>(edgeSetIt);
-    auto nodeset = this->getNodeSet();
-    // If the edge was already in the set, I don't add it again
-    if (std::find_if(this->edgeSet.begin(), this->edgeSet.end(),
-                     [edgeIt](auto edge_inSet) {
-                       return (edge_inSet->getNodePair().first->getUserId() ==
-                                   edgeIt->getNodePair().first->getUserId() &&
-                               edge_inSet->getNodePair().second->getUserId() ==
-                                   edgeIt->getNodePair().second->getUserId());
-                     }) != this->edgeSet.end()) {
-      continue;
-    }
-
-    // Check that the nodes pointed by the pointers in 'edge' have not already
-    // been added in other edges
-    //
-    // We don't pointers pointing to different memory regions which represent
-    // the same nodes
-    shared<const Node<T>> node1;
-    auto node1It =
-        std::find_if(nodeset.begin(), nodeset.end(), [edgeIt](auto node_inSet) {
-          return node_inSet->getUserId() ==
-                 edgeIt->getNodePair().first->getUserId();
-        });
-    if (node1It != nodeset.end()) {
-      edgeIt->setFirstNode(*node1It);
-    }
-    shared<const Node<T>> node2;
-    auto node2It =
-        std::find_if(nodeset.begin(), nodeset.end(), [edgeIt](auto node_inSet) {
-          return node_inSet->getUserId() ==
-                 edgeIt->getNodePair().second->getUserId();
-        });
-    if (node2It != nodeset.end()) {
-      edgeIt->setSecondNode(*node2It);
-    }
-
+  for (auto edgeIt : edgeSet) {
     this->edgeSet.insert(edgeIt);
   }
 }
@@ -678,88 +641,14 @@ const T_EdgeSet<T> &Graph<T>::getEdgeSet() const {
 template <typename T>
 void Graph<T>::setEdgeSet(const T_EdgeSet<T> &edgeSet) {
   this->edgeSet.clear();
-  for (auto edgeSetIt : edgeSet) {
-    auto edgeIt = std::const_pointer_cast<Edge<T>>(edgeSetIt);
-    auto nodeset = this->getNodeSet();
-    // If the edge was already in the set, I don't add it again
-    if (std::find_if(this->edgeSet.begin(), this->edgeSet.end(),
-                     [edgeIt](auto edge_inSet) {
-                       return (edge_inSet->getNodePair().first->getUserId() ==
-                                   edgeIt->getNodePair().first->getUserId() &&
-                               edge_inSet->getNodePair().second->getUserId() ==
-                                   edgeIt->getNodePair().second->getUserId());
-                     }) != this->edgeSet.end()) {
-      continue;
-    }
-
-    // Check that the nodes pointed by the pointers in 'edge' have not already
-    // been added in other edges
-    //
-    // We don't pointers pointing to different memory regions which represent
-    // the same nodes
-    shared<const Node<T>> node1;
-    auto node1It =
-        std::find_if(nodeset.begin(), nodeset.end(), [edgeIt](auto node_inSet) {
-          return node_inSet->getUserId() ==
-                 edgeIt->getNodePair().first->getUserId();
-        });
-    if (node1It != nodeset.end()) {
-      edgeIt->setFirstNode(*node1It);
-    }
-    shared<const Node<T>> node2;
-    auto node2It =
-        std::find_if(nodeset.begin(), nodeset.end(), [edgeIt](auto node_inSet) {
-          return node_inSet->getUserId() ==
-                 edgeIt->getNodePair().second->getUserId();
-        });
-    if (node2It != nodeset.end()) {
-      edgeIt->setSecondNode(*node2It);
-    }
-
+  for (auto edgeIt : edgeSet) {
     this->edgeSet.insert(edgeIt);
   }
 }
 
 template <typename T>
 void Graph<T>::addEdge(shared<const Edge<T>> edge) {
-  auto edgeIt = std::const_pointer_cast<Edge<T>>(edge);
-  auto nodeset = this->getNodeSet();
-  // If the edge was already in the set, I don't add it again
-  if (std::find_if(this->edgeSet.begin(), this->edgeSet.end(),
-				   [edgeIt](auto edge_inSet) {
-					 return (edge_inSet->getNodePair().first->getUserId() ==
-								 edgeIt->getNodePair().first->getUserId() &&
-							 edge_inSet->getNodePair().second->getUserId() ==
-								 edgeIt->getNodePair().second->getUserId());
-				   }) != this->edgeSet.end()) {
-	return;
-  }
-
-  // Check that the nodes pointed by the pointers in 'edge' have not already
-  // been added in other edges
-  //
-  // We don't pointers pointing to different memory regions which represent
-  // the same nodes
-  shared<const Node<T>> node1;
-  auto node1It =
-	  std::find_if(nodeset.begin(), nodeset.end(), [edgeIt](auto node_inSet) {
-		return node_inSet->getUserId() ==
-			   edgeIt->getNodePair().first->getUserId();
-	  });
-  if (node1It != nodeset.end()) {
-	edgeIt->setFirstNode(*node1It);
-  }
-  shared<const Node<T>> node2;
-  auto node2It =
-	  std::find_if(nodeset.begin(), nodeset.end(), [edgeIt](auto node_inSet) {
-		return node_inSet->getUserId() ==
-			   edgeIt->getNodePair().second->getUserId();
-	  });
-  if (node2It != nodeset.end()) {
-	edgeIt->setSecondNode(*node2It);
-  }
-
-  this->edgeSet.insert(edgeIt);
+  this->edgeSet.insert(edge);
 }
 
 template <typename T>
@@ -775,8 +664,8 @@ void Graph<T>::removeEdge(const unsigned long long edgeId) {
 }
 
 template <typename T>
-const std::set<shared<const Node<T>>> Graph<T>::getNodeSet() const {
-  std::set<shared<const Node<T>>> nodeSet;
+const std::unordered_set<shared<const Node<T>>, nodeHash<T>> Graph<T>::getNodeSet() const {
+  std::unordered_set<shared<const Node<T>>, nodeHash<T>> nodeSet;
   for (const auto &edgeSetIt : edgeSet) {
     nodeSet.insert(edgeSetIt->getNodePair().first);
     nodeSet.insert(edgeSetIt->getNodePair().second);
@@ -830,8 +719,8 @@ const std::optional<shared<const Edge<T>>> Graph<T>::getEdge(
 }
 
 template <typename T>
-std::set<shared<Node<T>>> Graph<T>::nodeSet() {
-  std::set<shared<Node<T>>> nodeSet;
+std::unordered_set<shared<Node<T>>, nodeHash<T>> Graph<T>::nodeSet() {
+  std::unordered_set<shared<Node<T>>, nodeHash<T>> nodeSet;
   for (auto &edgeSetIt : edgeSet) {
     nodeSet.insert(
         std::const_pointer_cast<Node<T>>(edgeSetIt->getNodePair().first));
@@ -1381,7 +1270,7 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T> &source,
   int n = adj->size();
 
   // setting all the distances initially to INF_DOUBLE
-  std::unordered_map<shared<const Node<T>>, double> dist;
+  std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist;
 
   for (const auto &node : nodeSet) {
     dist[node] = INF_DOUBLE;
@@ -1490,7 +1379,7 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
     return result;
   }
   // setting all the distances initially to INF_DOUBLE
-  std::unordered_map<shared<const Node<T>>, double> dist, currentDist;
+  std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist, currentDist;
   // n denotes the number of vertices in graph
   auto n = nodeSet.size();
   for (const auto &elem : nodeSet) {
@@ -1659,7 +1548,7 @@ const MstResult Graph<T>::prim() const {
   const auto adj = Graph<T>::getAdjMatrix();
 
   // setting all the distances initially to INF_DOUBLE
-  std::unordered_map<shared<const Node<T>>, double> dist;
+  std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist;
   for (const auto &elem : (*adj)) {
     dist[elem.first] = INF_DOUBLE;
   }
@@ -1998,7 +1887,7 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
     return bfs_result;
   }
 
-  std::unordered_map<shared<const Node<T>>, int> node_to_index;
+  std::unordered_map<shared<const Node<T>>, int, nodeHash<T>> node_to_index;
   for (const auto &node : nodeSet) {
     node_to_index[node] = node_to_index.size();
   }
@@ -2503,7 +2392,7 @@ TopoSortResult<T> Graph<T>::topologicalSort() const {
   } else {
     const auto &adjMatrix = getAdjMatrix();
     const auto &nodeSet = getNodeSet();
-    std::unordered_map<shared<const Node<T>>, bool> visited;
+    std::unordered_map<shared<const Node<T>>, bool, nodeHash<T>> visited;
 
     std::function<void(shared<const Node<T>>)> postorder_helper =
         [&postorder_helper, &adjMatrix, &visited,
@@ -2715,7 +2604,7 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
           dits[i].second = vertex i in bucket number */
   unsigned int V = nodeSet.size();
   std::unordered_map<shared<const Node<T>>,
-                     std::pair<long, shared<const Node<T>>>>
+                     std::pair<long, shared<const Node<T>>>, nodeHash<T>>
       dist;
 
   // Initialize all distances as infinite (INF)
@@ -2829,8 +2718,8 @@ double Graph<T>::fordFulkersonMaxFlow(const Node<T> &source,
     return -1;
   }
   double maxFlow = 0;
-  std::unordered_map<shared<const Node<T>>, shared<const Node<T>>> parent;
-  std::map<shared<const Node<T>>, std::map<shared<const Node<T>>, double>>
+  std::unordered_map<shared<const Node<T>>, shared<const Node<T>>, nodeHash<T>> parent;
+  std::unordered_map<shared<const Node<T>>, std::unordered_map<shared<const Node<T>>, double, nodeHash<T>>, nodeHash<T>>
       weightMap;
   // build weight map
   auto edgeSet = this->getEdgeSet();
@@ -2859,7 +2748,7 @@ double Graph<T>::fordFulkersonMaxFlow(const Node<T> &source,
 
   auto bfs_helper = [this, &source_node_ptr, &target_node_ptr, &parent,
                      &weightMap]() -> bool {
-    std::unordered_map<shared<const Node<T>>, bool> visited;
+    std::unordered_map<shared<const Node<T>>, bool, nodeHash<T>> visited;
     std::queue<shared<const Node<T>>> queue;
     queue.push(source_node_ptr);
     visited[source_node_ptr] = true;
