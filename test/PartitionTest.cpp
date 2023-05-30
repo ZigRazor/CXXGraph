@@ -13,8 +13,8 @@ using shared= std::shared_ptr<T>;
 using std::make_unique;
 using std::make_shared;
 
-static auto nodes = generateRandomNodes(1000, 2);
-static auto edges = generateRandomEdges(1000, nodes);
+static auto nodes = generateRandomNodes(10000, 2);
+static auto edges = generateRandomEdges(10000, nodes);
 
 TEST(PartitionTest, test_1) {
   CXXGraph::Node<int> node1("1", 1);
@@ -82,7 +82,7 @@ TEST(PartitionTest, test_2) {
   }
   // std::cout << "Total Edge in Partition: " << totalEdgeInPartition <<
   // std::endl;
-  ASSERT_EQ(totalEdgeInPartition, 1000);
+  ASSERT_EQ(totalEdgeInPartition, 10000);
   for (int i = 0; i < 4; ++i) {
     // std::cout << *partitionMap.at(i) << std::endl;
     ASSERT_EQ(partitionMap.at(i)->getPartitionId(), i);
@@ -155,7 +155,7 @@ TEST(PartitionTest, test_4) {
   }
   // std::cout << "Total Edge in Partition: " << totalEdgeInPartition <<
   // std::endl;
-  ASSERT_EQ(totalEdgeInPartition, 1000);
+  ASSERT_EQ(totalEdgeInPartition, 10000);
   for (int i = 0; i < 4; ++i) {
     // std::cout << *partitionMap.at(i) << std::endl;
     ASSERT_EQ(partitionMap.at(i)->getPartitionId(), i);
@@ -228,7 +228,7 @@ TEST(PartitionTest, test_6) {
   }
   // std::cout << "Total Edge in Partition: " << totalEdgeInPartition <<
   // std::endl;
-  ASSERT_EQ(totalEdgeInPartition, 1000);
+  ASSERT_EQ(totalEdgeInPartition, 10000);
   for (int i = 0; i < 4; ++i) {
     // std::cout << *partitionMap.at(i) << std::endl;
     ASSERT_EQ(partitionMap.at(i)->getPartitionId(), i);
@@ -301,7 +301,7 @@ TEST(PartitionTest, test_8) {
   }
   // std::cout << "Total Edge in Partition: " << totalEdgeInPartition <<
   // std::endl;
-  ASSERT_EQ(totalEdgeInPartition, 1000);
+  ASSERT_EQ(totalEdgeInPartition, 10000);
   for (int i = 0; i < 4; ++i) {
     // std::cout << *partitionMap.at(i) << std::endl;
     ASSERT_EQ(partitionMap.at(i)->getPartitionId(), i);
@@ -323,7 +323,7 @@ TEST(PartitionTest, test_9) {
   }
   // std::cout << "Total Edge in Partition: " << totalEdgeInPartition <<
   // std::endl;
-  ASSERT_EQ(totalEdgeInPartition, 1000);
+  ASSERT_EQ(totalEdgeInPartition, 10000);
   for (int i = 0; i < 4; ++i) {
     ASSERT_EQ(partitionMap.at(i)->getPartitionId(), i);
   }
