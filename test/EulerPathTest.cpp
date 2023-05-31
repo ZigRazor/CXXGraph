@@ -115,3 +115,40 @@ TEST(EulerPathTest, test_3) {
     ASSERT_FALSE(check);
   }
 }
+
+TEST(EulerPathTest, test_4) {
+  CXXGraph::Node<int> node_a("a", 0);
+  CXXGraph::Node<int> node_b("b", 1);
+  CXXGraph::Node<int> node_c("c", 2);
+  CXXGraph::Node<int> node_d("d", 3);
+  CXXGraph::Node<int> node_e("e", 4);
+  CXXGraph::Node<int> node_f("f", 5);
+
+  CXXGraph::UndirectedEdge<int> edge1(1, node_a, node_b);
+  CXXGraph::UndirectedEdge<int> edge2(2, node_b, node_e);
+  CXXGraph::UndirectedEdge<int> edge3(3, node_e, node_f);
+  CXXGraph::UndirectedEdge<int> edge4(4, node_f, node_a);
+  CXXGraph::UndirectedEdge<int> edge5(5, node_b, node_c);
+  CXXGraph::UndirectedEdge<int> edge6(6, node_b, node_d);
+  CXXGraph::UndirectedEdge<int> edge7(7, node_c, node_d);
+
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge6));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge6));
+
+  CXXGraph::Graph<int> graph(edgeSet);
+  auto res = graph.eulerianPath();
+  auto nodeSet = graph.getNodeSet();
+  for (const auto& node : nodeSet) {
+    auto check = std::find_if(res->begin(), res->end(), [node](auto it) {
+                   return (node->getUserId() == it.getUserId());
+                 }) == res->end();
+
+    ASSERT_FALSE(check);
+  }
+}

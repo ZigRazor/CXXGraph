@@ -61,6 +61,7 @@ class Edge {
   void setSecondNode(shared<const Node<T>> node);
   const unsigned long long &getId() const;
   const std::pair<shared<const Node<T>>, shared<const Node<T>>> &getNodePair() const;
+  shared<const Node<T>> getOtherNode(shared<const Node<T>> node) const;
   virtual const std::optional<bool> isDirected() const;
   virtual const std::optional<bool> isWeighted() const;
   // operator
@@ -124,6 +125,15 @@ template <typename T>
 const std::pair<shared<const Node<T>>, shared<const Node<T>>> &Edge<T>::getNodePair()
     const {
   return nodePair;
+}
+
+template <typename T>
+shared<const Node<T>> Edge<T>::getOtherNode(shared<const Node<T>> node) const {
+  if (this->getNodePair().first == node) {
+    return this->getNodePair().second;
+  } else {
+    return this->getNodePair().first;
+  }
 }
 
 template <typename T>

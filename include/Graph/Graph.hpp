@@ -170,6 +170,28 @@ class Graph {
   virtual void removeEdge(const unsigned long long edgeId);
   /**
    * \brief
+   * Finds the given edge defined by v1 and v2 within the graph.
+   *
+   * @param v1 The first vertex.
+   * @param v2 The second vertex.
+   * @param id The edge id if the edge is found. Otherwise set to 0.
+   * @return True if the edge exists in the graph.
+   */
+  virtual bool findEdge(const Node<T> *v1, const Node<T> *v2,
+                        unsigned long long &id) const;
+  /**
+   * \brief
+   * Overload of findEdge which takes shared pointers as parameters
+   *
+   * @param v1 The first vertex.
+   * @param v2 The second vertex.
+   * @param id The edge id if the edge is found. Otherwise set to 0.
+   * @return True if the edge exists in the graph.
+   */
+  virtual bool findEdge(shared<const Node<T>> v1, shared<const Node<T>> v2,
+                        unsigned long long &id) const {
+  /**
+   * \brief
    * Function that return the Node Set of the Graph
    * Note: No Thread Safe
    *
@@ -299,6 +321,17 @@ class Graph {
    */
   virtual const BellmanFordResult bellmanford(const Node<T> &source,
                                               const Node<T> &target) const;
+  /**
+   * @brief This function computes the transitive reduction of the graph,
+   * returning a graph with the property of transitive closure satisfied. It
+   * removes the "short-circuit" paths from a graph, leaving only the longest
+   * paths. Commonly used to remove duplicate edges among nodes that do not pass
+   * through the entire graph.
+   * @return A copy of the current graph with the transitive closure property
+   * satisfied.
+   *
+   */
+  virtual const Graph<T> transitiveReduction() const;
   /**
    * @brief Function runs the floyd-warshall algorithm and returns the shortest
    * distance of all pair of nodes. It can also detect if a negative cycle
@@ -661,6 +694,36 @@ void Graph<T>::removeEdge(const unsigned long long edgeId) {
     */
     edgeSet.erase(edgeSet.find(edgeOpt.value()));
   }
+}
+
+template <typename T>
+bool Graph<T>::findEdge(const Node<T> *v1, const Node<T> *v2,
+                        unsigned long long &id) const {
+  auto v1_shared = make_shared<const Node<T>>(*v1);
+  auto v2_shared = make_shared<const Node<T>>(*v2);
+
+  return findEdge(v1_shared, v2_shared, id);
+}
+
+template <typename T>
+bool Graph<T>::findEdge(shared<const Node<T>> v1, shared<const Node<T>> v2,
+                        unsigned long long &id) const {
+  // This could be made faster by looking for the edge hash, assuming we hash
+  // based on node data, instead of a unique integer
+  for (auto e : this->edgeSet) {
+    if ((e->getNodePair().first == v1) && (e->getNodePair().second == v2)) {
+      id = e->getId();
+      return true;
+    }
+    if (!e->isDirected() &&
+        ((e->getNodePair().second == v1) && (e->getNodePair().first == v2))) {
+      id = e->getId();
+      return true;
+    }
+  }
+
+  id = 0;
+  return false;
 }
 
 template <typename T>
@@ -1182,11 +1245,15 @@ std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const {
   std::shared_ptr<std::vector<Node<T>>> eulerPath =
       std::make_shared<std::vector<Node<T>>>();
 
+  bool undirected = this->isUndirectedGraph();
+
   std::vector<shared<const Node<T>>> currentPath;
-  // The starting node is the only node which has more outgoing than ingoing links 
-  auto firstNodeIt = std::max_element(nodeSet.begin(), nodeSet.end(), [adj](auto n1, auto n2){
-		return adj->at(n1).size() < adj->at(n2).size();
-	  });
+  // The starting node is the only node which has more outgoing than ingoing
+  // links
+  auto firstNodeIt =
+      std::max_element(nodeSet.begin(), nodeSet.end(), [adj](auto n1, auto n2) {
+        return adj->at(n1).size() < adj->at(n2).size();
+      });
   auto currentNode = *(firstNodeIt);
   currentPath.push_back(currentNode);
 
@@ -1196,7 +1263,10 @@ std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const {
     // have been traversed from the adjacency list
     if (edges.size()) {
       auto firstEdge = edges.back().second;
-      auto nextNodeId = firstEdge->getNodePair().second;
+
+      shared<const Node<T>> nextNodeId;
+      nextNodeId = firstEdge->getOtherNode(currentNode);
+
       currentPath.push_back(nextNodeId);
       currentNode = nextNodeId;
       edges.pop_back();
@@ -1451,6 +1521,38 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
   }
   result.errorMessage = ERR_TARGET_NODE_NOT_REACHABLE;
   result.result = -1;
+  return result;
+}
+
+/*
+ * See Harry Hsu. "An algorithm for finding a minimal equivalent graph of a
+ * digraph.", Journal of the ACM, 22(1):11-16, January 1975
+ *
+ * foreach x in graph.vertices
+ *   foreach y in graph.vertices
+ *     foreach z in graph.vertices
+ *       delete edge xz if edges xy and yz exist
+ */
+template <typename T>
+const Graph<T> Graph<T>::transitiveReduction() const {
+  Graph<T> result(this->edgeSet);
+
+  unsigned long long edgeId = 0;
+  std::unordered_set<shared<const Node<T>>, nodeHash<T>> nodes = this->getNodeSet();
+  for (auto x : nodes) {
+    for (auto y : nodes) {
+      if (this->findEdge(x, y, edgeId)) {
+        for (auto z : nodes) {
+          if (this->findEdge(y, z, edgeId)) {
+            if (this->findEdge(x, z, edgeId)) {
+              result.removeEdge(edgeId);
+            }
+          }
+        }
+      }
+    }
+  }
+
   return result;
 }
 
