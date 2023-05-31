@@ -1,8 +1,11 @@
 #include <benchmark/benchmark.h>
 #include <Edge/DirectedWeightedEdge.hpp>
+#include <memory>
 
 #include "CXXGraph.hpp"
 #include "Utilities.hpp"
+
+using std::make_shared;
 
 // https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm#Example
 static void BM_FWDirected(benchmark::State &state) {
