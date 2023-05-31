@@ -692,7 +692,7 @@ void Graph<T>::setEdgeSet(const T_EdgeSet<T> &edgeSet) {
 
 template <typename T>
 void Graph<T>::addEdge(const Edge<T> *edge) {
-  auto edge_shared = make_shared<const Edge<T>>(edge);
+  auto edge_shared = make_shared<const Edge<T>>(*edge);
   this->edgeSet.insert(edge_shared);
 }
 
