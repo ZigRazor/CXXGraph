@@ -295,11 +295,11 @@ TEST(BFSTest, test_13) {
   rand.seed(randSeed);
 
   int nodes_size = 60, edges_size = 2000;
-  std::vector<CXXGraph::Node<int> *> nodes;
+  std::vector<shared<CXXGraph::Node<int>>> nodes;
   for (auto index = 0; index < nodes_size; index++) {
     int randomNumber = (distribution(rand) % nodes_size) + 1;
-    CXXGraph::Node<int> *newNode =
-        new CXXGraph::Node<int>(std::to_string(index), randomNumber);
+    auto newNode =
+        make_shared<CXXGraph::Node<int>>(std::to_string(index), randomNumber);
     nodes.push_back(newNode);
   }
 
