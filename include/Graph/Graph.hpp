@@ -189,7 +189,7 @@ class Graph {
    * @return True if the edge exists in the graph.
    */
   virtual bool findEdge(shared<const Node<T>> v1, shared<const Node<T>> v2,
-                        unsigned long long &id) const {
+                        unsigned long long &id) const;
   /**
    * \brief
    * Function that return the Node Set of the Graph
