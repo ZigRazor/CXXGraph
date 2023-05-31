@@ -21,11 +21,11 @@ static void BM_FWDirected(benchmark::State &state) {
   CXXGraph::DirectedWeightedEdge<int> edge5(3, node2, node3, 3);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<T>>(edge1));
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<T>>(edge2));
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<T>>(edge3));
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<T>>(edge4));
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<T>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge5));
 
   CXXGraph::Graph<int> graph(edgeSet);
   for (auto _ : state) {
@@ -43,9 +43,9 @@ static void BM_FWNegCycle(benchmark::State &state) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node1, node2, 3);
   CXXGraph::DirectedWeightedEdge<int> edge3(3, node2, node0, -7);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<T>>(edge1));
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<T>>(edge2));
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<T>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   for (auto _ : state) {
     CXXGraph::FWResult res = graph.floydWarshall();
@@ -63,9 +63,9 @@ static void BM_FWUndirectedWeighted(benchmark::State &state) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<T>>(edge1));
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<T>>(edge2));
-  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<T>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   for (auto _ : state) {
     CXXGraph::FWResult res = graph.floydWarshall();
@@ -83,9 +83,9 @@ static void BM_FWNoWeighted(benchmark::State &state) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
   CXXGraph::DirectedEdge<int> edge3(3, node1, node3);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<T>>(edge1));
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<T>>(edge2));
-  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<T>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   for (auto _ : state) {
     CXXGraph::FWResult res = graph.floydWarshall();

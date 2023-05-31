@@ -1993,6 +1993,7 @@ const std::vector<Node<T>> Graph<T>::breadth_first_search(
 
   return visited;
 }
+
 template <typename T>
 const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
     const Node<T> &start, size_t num_threads) const {
