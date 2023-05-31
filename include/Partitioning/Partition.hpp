@@ -23,17 +23,27 @@
 #pragma once
 
 #include <list>
+#include <memory>
 #include <unordered_set>
 
 #include "PartitioningStats.hpp"
 #include "Utility/Typedef.hpp"
 
 namespace CXXGraph {
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
+
 template <typename T>
 class Graph;
 
 template <typename T>
-using T_EdgeSet = std::unordered_set<const Edge<T> *>;
+using T_EdgeSet = std::unordered_set<shared<const Edge<T>>, edgeHash<T>>;
 namespace Partitioning {
 template <typename T>
 std::ostream &operator<<(std::ostream &o, const Partition<T> &partition);
@@ -280,10 +290,10 @@ unsigned int getNumberOfEdges(const PartitionMap<T> &partitionMap) {
 template <typename T>
 unsigned int getNumberOfNodes(const PartitionMap<T> &partitionMap) {
   unsigned int numberOfNodes = 0;
-  std::set<const Node<T> *> nodeSet;
+  std::unordered_set<shared<const Node<T>>, nodeHash<T>> nodeSet;
 
   for (const auto &it : partitionMap) {
-    const std::set<const Node<T> *> partitionNodeSet = it.second->getNodeSet();
+    const std::unordered_set<shared<const Node<T>>, nodeHash<T>> partitionNodeSet = it.second->getNodeSet();
     for (const auto &it2 : partitionNodeSet) {
       // if (std::find_if(nodeSet.begin(), nodeSet.end(), [it2](const Node<T>
       // *node)
@@ -327,16 +337,16 @@ std::ostream &operator<<(std::ostream &os, const Partition<T> &partition) {
                 (*it)->isDirected().value()) &&
                ((*it)->isWeighted().has_value() &&
                 (*it)->isWeighted().value())) {
-      os << dynamic_cast<const DirectedWeightedEdge<T> &>(*it) << "\n";
+      os << std::static_pointer_cast<const DirectedWeightedEdge<T>>(*it) << "\n";
     } else if ((it->isDirected().has_value() && it->isDirected().value()) &&
                !(it->isWeighted().has_value() && it->isWeighted().value())) {
-      os << dynamic_cast<const DirectedEdge<T> &>(*it) << "\n";
+      os << std::static_pointer_cast<const DirectedEdge<T>>(*it) << "\n";
     } else if (!(it->isDirected().has_value() && it->isDirected().value()) &&
                (it->isWeighted().has_value() && it->isWeighted().value())) {
-      os << dynamic_cast<const UndirectedWeightedEdge<T> &>(*it) << "\n";
+      os << std::static_pointer_cast<const UndirectedWeightedEdge<T>>(*it) << "\n";
     } else if (!(it->isDirected().has_value() && it->isDirected().value()) &&
                !(it->isWeighted().has_value() && it->isWeighted().value())) {
-      os << dynamic_cast<const UndirectedEdge<T> &>(*it) << "\n";
+      os << std::static_pointer_cast<const UndirectedEdge<T>>(*it) << "\n";
     } else {
       // Should never happens
       os << "Wrong Edge Class"

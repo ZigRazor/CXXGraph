@@ -35,13 +35,14 @@ namespace Partitioning {
 template <typename T>
 class PartitionerThread : public Runnable {
  private:
-  std::vector<const Edge<T> *> list = {};
-  PartitionState<T> *state = nullptr;
-  PartitionStrategy<T> *algorithm = nullptr;
+  std::vector<shared<const Edge<T>>> list = {};
+  shared<PartitionState<T>> state = nullptr;
+  shared<PartitionStrategy<T>> algorithm = nullptr;
 
  public:
-  PartitionerThread(std::vector<const Edge<T> *> &list,
-                    PartitionState<T> *state, PartitionStrategy<T> *algorithm);
+  PartitionerThread(std::vector<shared<const Edge<T>>> &list,
+                    shared<PartitionState<T>> state,
+					shared<PartitionStrategy<T>> algorithm);
   ~PartitionerThread();
 
   void run() override;
@@ -49,9 +50,9 @@ class PartitionerThread : public Runnable {
   std::list<int> id_partitions;
 };
 template <typename T>
-PartitionerThread<T>::PartitionerThread(std::vector<const Edge<T> *> &list,
-                                        PartitionState<T> *state,
-                                        PartitionStrategy<T> *algorithm) {
+PartitionerThread<T>::PartitionerThread(std::vector<shared<const Edge<T>>> &list,
+                                        shared<PartitionState<T>> state,
+                                        shared<PartitionStrategy<T>> algorithm) {
   this->list = list;
   this->state = state;
   this->algorithm = algorithm;
@@ -61,7 +62,7 @@ PartitionerThread<T>::~PartitionerThread() {}
 template <typename T>
 void PartitionerThread<T>::run() {
   for (const auto &edge_it : list) {
-    algorithm->performStep(*edge_it, *state);
+    algorithm->performStep(edge_it, state);
   }
 }
 }  // namespace Partitioning
