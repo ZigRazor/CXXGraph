@@ -158,6 +158,17 @@ class Graph {
    * @param edge The Edge to insert
    *
    */
+  virtual void addEdge(const Edge<T> *edge);
+  /**
+   * \brief
+   * Function add an Edge to the Graph Edge Set
+   * First check if a pointer to a node with the same userId has
+   * already been added, and if not add it
+   * Note: No Thread Safe
+   *
+   * @param edge The Edge to insert
+   *
+   */
   virtual void addEdge(shared<const Edge<T>> edge);
   /**
    * \brief
@@ -677,6 +688,12 @@ void Graph<T>::setEdgeSet(const T_EdgeSet<T> &edgeSet) {
   for (auto edgeIt : edgeSet) {
     this->edgeSet.insert(edgeIt);
   }
+}
+
+template <typename T>
+void Graph<T>::addEdge(const Edge<T> *edge) {
+  auto edge_shared = make_shared<const Edge<T>>(edge);
+  this->edgeSet.insert(edge_shared);
 }
 
 template <typename T>
