@@ -1,6 +1,9 @@
 #include <math.h>
+#include <memory>
 
 #include <CXXGraph.hpp>
+
+using std::make_shared;
 
 typedef struct euclid_point {
   double x;
@@ -49,11 +52,11 @@ int main() {
            points_vector.at(node2.getData())));
 
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge5));
 
   // Can print out the edges for debugging
   std::cout << edge1 << "\n";
