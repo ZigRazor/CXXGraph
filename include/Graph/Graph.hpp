@@ -210,7 +210,8 @@ class Graph {
    * @returns a list of Nodes of the graph
    *
    */
-  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>> getNodeSet() const;
+  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+  getNodeSet() const;
   /**
    * \brief
    * Function that sets the data contained in a node
@@ -252,7 +253,8 @@ class Graph {
    * @param Pointer to the node
    *
    */
-  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>> outEdges(const Node<T> *node) const;
+  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>> outEdges(
+      const Node<T> *node) const;
   /**
    * \brief
    * Note: No Thread Safe
@@ -260,7 +262,8 @@ class Graph {
    * @param Pointer to the node
    *
    */
-  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>> outEdges(shared<const Node<T>> node) const;
+  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>> outEdges(
+      shared<const Node<T>> node) const;
   /**
    * \brief
    * Note: No Thread Safe
@@ -268,7 +271,8 @@ class Graph {
    * @param Pointer to the node
    *
    */
-  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>> inOutEdges(const Node<T> *node) const;
+  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+  inOutEdges(const Node<T> *node) const;
   /**
    * \brief
    * Note: No Thread Safe
@@ -276,7 +280,8 @@ class Graph {
    * @param Pointer to the node
    *
    */
-  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>> inOutEdges(shared<const Node<T>> node) const;
+  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+  inOutEdges(shared<const Node<T>> node) const;
   /**
    * @brief This function finds the subset of given a nodeId
    * Subset is stored in a map where keys are the hash-id of the node & values
@@ -294,7 +299,8 @@ class Graph {
    * @brief This function finds the subset of given a nodeId
    * Subset is stored in a map where keys are the hash-id of the node & values
    * is the subset.
-   * @param shared pointer to subset query subset, we want to find target in this subset
+   * @param shared pointer to subset query subset, we want to find target in
+   * this subset
    * @param elem elem that we wish to find in the subset
    *
    * @return parent node of elem
@@ -777,7 +783,8 @@ bool Graph<T>::findEdge(shared<const Node<T>> v1, shared<const Node<T>> v2,
 }
 
 template <typename T>
-const std::unordered_set<shared<const Node<T>>, nodeHash<T>> Graph<T>::getNodeSet() const {
+const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+Graph<T>::getNodeSet() const {
   std::unordered_set<shared<const Node<T>>, nodeHash<T>> nodeSet;
   for (const auto &edgeSetIt : edgeSet) {
     nodeSet.insert(edgeSetIt->getNodePair().first);
@@ -896,11 +903,11 @@ int Graph<T>::writeToDot(const std::string &workingDir,
     }
     if (edgePtr->isWeighted().has_value() && edgePtr->isWeighted().value()) {
       // Weights in dot files must be integers
-      edgeLine +=
-          " [weight=" +
-          std::to_string(static_cast<int>(
-              std::dynamic_pointer_cast<const Weighted>(edgePtr)->getWeight())) +
-          ']';
+      edgeLine += " [weight=" +
+                  std::to_string(static_cast<int>(
+                      std::dynamic_pointer_cast<const Weighted>(edgePtr)
+                          ->getWeight())) +
+                  ']';
     }
     edgeLine += ";\n";
     ofileGraph << edgeLine;
@@ -950,7 +957,8 @@ void Graph<T>::writeGraphToStream(std::ostream &oGraph, std::ostream &oNodeFeat,
       oEdgeWeight
           << edge->getId() << sep
           << (edge->isWeighted().has_value() && edge->isWeighted().value()
-                  ? (std::dynamic_pointer_cast<const Weighted>(edge))->getWeight()
+                  ? (std::dynamic_pointer_cast<const Weighted>(edge))
+                        ->getWeight()
                   : 0.0)
           << sep
           << (edge->isWeighted().has_value() && edge->isWeighted().value() ? 1
@@ -1212,7 +1220,8 @@ template <typename T>
 unsigned long long Graph<T>::setFind(
     std::unordered_map<unsigned long long, Subset> *subsets,
     const unsigned long long nodeId) const {
-  auto subsets_ptr = make_shared<std::unordered_map<unsigned long long, Subset>>(*subsets);
+  auto subsets_ptr =
+      make_shared<std::unordered_map<unsigned long long, Subset>>(*subsets);
   // find root and make root as parent of i
   // (path compression)
   if ((*subsets)[nodeId].parent != nodeId) {
@@ -1238,18 +1247,21 @@ unsigned long long Graph<T>::setFind(
 }
 
 template <typename T>
-void Graph<T>::setUnion(
-    std::unordered_map<unsigned long long, Subset> *subsets,
-    const unsigned long long elem1, const unsigned long long elem2) const {
-  /* auto subsets_ptr = make_shared<std::unordered_map<unsigned long long, Subset>>(*subsets); */
+void Graph<T>::setUnion(std::unordered_map<unsigned long long, Subset> *subsets,
+                        const unsigned long long elem1,
+                        const unsigned long long elem2) const {
+  /* auto subsets_ptr = make_shared<std::unordered_map<unsigned long long,
+   * Subset>>(*subsets); */
   // if both sets have same parent
   // then there's nothing to be done
-  /* if ((*subsets_ptr)[elem1].parent == (*subsets_ptr)[elem2].parent) return; */
+  /* if ((*subsets_ptr)[elem1].parent == (*subsets_ptr)[elem2].parent) return;
+   */
   /* auto elem1Parent = Graph<T>::setFind(subsets_ptr, elem1); */
   /* auto elem2Parent = Graph<T>::setFind(subsets_ptr, elem2); */
   /* if ((*subsets_ptr)[elem1Parent].rank < (*subsets_ptr)[elem2Parent].rank) */
   /*   (*subsets_ptr)[elem1].parent = elem2Parent; */
-  /* else if ((*subsets_ptr)[elem1Parent].rank > (*subsets_ptr)[elem2Parent].rank) */
+  /* else if ((*subsets_ptr)[elem1Parent].rank >
+   * (*subsets_ptr)[elem2Parent].rank) */
   /*   (*subsets_ptr)[elem2].parent = elem1Parent; */
   /* else { */
   /*   (*subsets_ptr)[elem2].parent = elem1Parent; */
@@ -1363,50 +1375,55 @@ const std::shared_ptr<AdjacencyMatrix<T>> Graph<T>::getAdjMatrix() const {
 }
 
 template <typename T>
-const std::unordered_set<shared<const Node<T>>, nodeHash<T>> Graph<T>::outEdges(const Node<T> *node) const {
+const std::unordered_set<shared<const Node<T>>, nodeHash<T>> Graph<T>::outEdges(
+    const Node<T> *node) const {
   auto node_shared = make_shared<const Node<T>>(*node);
 
   return outEdges(node_shared);
 }
 
 template <typename T>
-const std::unordered_set<shared<const Node<T>>, nodeHash<T>> Graph<T>::outEdges(shared<const Node<T>> node) const {
+const std::unordered_set<shared<const Node<T>>, nodeHash<T>> Graph<T>::outEdges(
+    shared<const Node<T>> node) const {
   auto adj = getAdjMatrix();
   if (adj->find(node) == adj->end()) {
-	return std::unordered_set<shared<const Node<T>>, nodeHash<T>>();
+    return std::unordered_set<shared<const Node<T>>, nodeHash<T>>();
   }
   auto nodeEdgePairs = adj->at(node);
 
   std::unordered_set<shared<const Node<T>>, nodeHash<T>> outEdges;
   for (auto pair : nodeEdgePairs) {
-	if (pair.second->isDirected().has_value() && pair.second->isDirected().value()) {
-	  outEdges.insert(pair.first);
-	}
+    if (pair.second->isDirected().has_value() &&
+        pair.second->isDirected().value()) {
+      outEdges.insert(pair.first);
+    }
   }
 
   return outEdges;
 }
 
 template <typename T>
-const std::unordered_set<shared<const Node<T>>, nodeHash<T>> Graph<T>::inOutEdges(const Node<T> *node) const {
+const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+Graph<T>::inOutEdges(const Node<T> *node) const {
   auto node_shared = make_shared<const Node<T>>(*node);
-  
+
   return inOutEdges(node_shared);
 }
 
 template <typename T>
-const std::unordered_set<shared<const Node<T>>, nodeHash<T>> Graph<T>::inOutEdges(shared<const Node<T>> node) const {
+const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+Graph<T>::inOutEdges(shared<const Node<T>> node) const {
   auto adj = Graph<T>::getAdjMatrix();
   if (adj->find(node) == adj->end()) {
-	return std::unordered_set<shared<const Node<T>>, nodeHash<T>>();
+    return std::unordered_set<shared<const Node<T>>, nodeHash<T>>();
   }
   auto nodeEdgePairs = adj->at(node);
-  
+
   std::unordered_set<shared<const Node<T>>, nodeHash<T>> inOutEdges;
   for (auto pair : nodeEdgePairs) {
-	inOutEdges.insert(pair.first);
+    inOutEdges.insert(pair.first);
   }
-  
+
   return inOutEdges;
 }
 
@@ -1547,7 +1564,8 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
     return result;
   }
   // setting all the distances initially to INF_DOUBLE
-  std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist, currentDist;
+  std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist,
+      currentDist;
   // n denotes the number of vertices in graph
   auto n = nodeSet.size();
   for (const auto &elem : nodeSet) {
@@ -1636,7 +1654,8 @@ const Graph<T> Graph<T>::transitiveReduction() const {
   Graph<T> result(this->edgeSet);
 
   unsigned long long edgeId = 0;
-  std::unordered_set<shared<const Node<T>>, nodeHash<T>> nodes = this->getNodeSet();
+  std::unordered_set<shared<const Node<T>>, nodeHash<T>> nodes =
+      this->getNodeSet();
   for (auto x : nodes) {
     for (auto y : nodes) {
       if (this->findEdge(x, y, edgeId)) {
@@ -1930,7 +1949,8 @@ const MstResult Graph<T>::kruskal() const {
       sortedEdges;
   for (const auto &edge : edgeSet) {
     if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
-      auto weight = (std::dynamic_pointer_cast<const Weighted>(edge))->getWeight();
+      auto weight =
+          (std::dynamic_pointer_cast<const Weighted>(edge))->getWeight();
       sortedEdges.push(std::make_pair(weight, edge));
     } else {
       // No Weighted Edge
@@ -2919,8 +2939,12 @@ double Graph<T>::fordFulkersonMaxFlow(const Node<T> &source,
     return -1;
   }
   double maxFlow = 0;
-  std::unordered_map<shared<const Node<T>>, shared<const Node<T>>, nodeHash<T>> parent;
-  std::unordered_map<shared<const Node<T>>, std::unordered_map<shared<const Node<T>>, double, nodeHash<T>>, nodeHash<T>>
+  std::unordered_map<shared<const Node<T>>, shared<const Node<T>>, nodeHash<T>>
+      parent;
+  std::unordered_map<
+      shared<const Node<T>>,
+      std::unordered_map<shared<const Node<T>>, double, nodeHash<T>>,
+      nodeHash<T>>
       weightMap;
   // build weight map
   auto edgeSet = this->getEdgeSet();
