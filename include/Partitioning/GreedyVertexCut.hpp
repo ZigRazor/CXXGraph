@@ -20,6 +20,7 @@
 #ifndef __CXXGRAPH_PARTITIONING_GREEDYVERTEXCUT_H__
 #define __CXXGRAPH_PARTITIONING_GREEDYVERTEXCUT_H__
 
+#include <memory>
 #pragma once
 
 #include <chrono>
@@ -30,6 +31,15 @@
 #include "Partitioning/Utility/Globals.hpp"
 
 namespace CXXGraph {
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
+
 namespace Partitioning {
 /**
  * @brief A Greedy Vertex Cut Partioning Algorithm
@@ -45,7 +55,7 @@ class GreedyVertexCut : public PartitionStrategy<T> {
   explicit GreedyVertexCut(const Globals &G);
   ~GreedyVertexCut();
 
-  void performStep(const Edge<T> &e, PartitionState<T> &Sstate) override;
+  void performStep(shared<const Edge<T>> e, shared<PartitionState<T>> Sstate) override;
 };
 
 template <typename T>
@@ -55,15 +65,15 @@ template <typename T>
 GreedyVertexCut<T>::~GreedyVertexCut() {}
 
 template <typename T>
-void GreedyVertexCut<T>::performStep(const Edge<T> &e,
-                                     PartitionState<T> &state) {
+void GreedyVertexCut<T>::performStep(shared<const Edge<T>> e,
+                                     shared<PartitionState<T>> state) {
   int P = GLOBALS.numberOfPartition;
-  auto nodePair = e.getNodePair();
+  auto nodePair = e->getNodePair();
   int u = nodePair.first->getId();
   int v = nodePair.second->getId();
 
-  std::shared_ptr<Record<T>> u_record = state.getRecord(u);
-  std::shared_ptr<Record<T>> v_record = state.getRecord(v);
+  std::shared_ptr<Record<T>> u_record = state->getRecord(u);
+  std::shared_ptr<Record<T>> v_record = state->getRecord(v);
 
   //*** ASK FOR LOCK
   bool locks_taken = false;
@@ -99,8 +109,8 @@ void GreedyVertexCut<T>::performStep(const Edge<T> &e,
     int min_load = INT_MAX;
     int machine_id = 0;
     for (int i = 0; i < P; i++) {
-      if (state.getMachineLoad(i) < min_load) {
-        min_load = state.getMachineLoad(i);
+      if (state->getMachineLoad(i) < min_load) {
+        min_load = state->getMachineLoad(i);
         machine_id = i;
       }
     }
@@ -111,8 +121,8 @@ void GreedyVertexCut<T>::performStep(const Edge<T> &e,
     int min_load = INT_MAX;
     int machine_id = 0;
     for (auto &partition : u_record->getPartitions()) {
-      if (state.getMachineLoad(partition) < min_load) {
-        min_load = state.getMachineLoad(partition);
+      if (state->getMachineLoad(partition) < min_load) {
+        min_load = state->getMachineLoad(partition);
         machine_id = partition;
       }
     }
@@ -123,8 +133,8 @@ void GreedyVertexCut<T>::performStep(const Edge<T> &e,
     int min_load = INT_MAX;
     int machine_id = 0;
     for (auto &partition : v_record->getPartitions()) {
-      if (state.getMachineLoad(partition) < min_load) {
-        min_load = state.getMachineLoad(partition);
+      if (state->getMachineLoad(partition) < min_load) {
+        min_load = state->getMachineLoad(partition);
         machine_id = partition;
       }
     }
@@ -142,8 +152,8 @@ void GreedyVertexCut<T>::performStep(const Edge<T> &e,
       int min_load = INT_MAX;
       int machine_id = 0;
       for (auto &partition : intersection) {
-        if (state.getMachineLoad(partition) < min_load) {
-          min_load = state.getMachineLoad(partition);
+        if (state->getMachineLoad(partition) < min_load) {
+          min_load = state->getMachineLoad(partition);
           machine_id = partition;
         }
       }
@@ -158,8 +168,8 @@ void GreedyVertexCut<T>::performStep(const Edge<T> &e,
       int min_load = INT_MAX;
       int machine_id = 0;
       for (auto &partition : part_union) {
-        if (state.getMachineLoad(partition) < min_load) {
-          min_load = state.getMachineLoad(partition);
+        if (state->getMachineLoad(partition) < min_load) {
+          min_load = state->getMachineLoad(partition);
           machine_id = partition;
         }
       }
@@ -186,17 +196,17 @@ void GreedyVertexCut<T>::performStep(const Edge<T> &e,
   int choice = distribution(rand) % candidates.size();
   machine_id = candidates.at(choice);
   try {
-    CoordinatedPartitionState<T> &cord_state =
-        dynamic_cast<CoordinatedPartitionState<T> &>(state);
+    shared<CoordinatedPartitionState<T>> cord_state =
+        std::static_pointer_cast<CoordinatedPartitionState<T>>(state);
     // NEW UPDATE RECORDS RULE TO UPFDATE THE SIZE OF THE PARTITIONS EXPRESSED
     // AS THE NUMBER OF VERTICES THEY CONTAINS
     if (!u_record->hasReplicaInPartition(machine_id)) {
       u_record->addPartition(machine_id);
-      cord_state.incrementMachineLoadVertices(machine_id);
+      cord_state->incrementMachineLoadVertices(machine_id);
     }
     if (!v_record->hasReplicaInPartition(machine_id)) {
       v_record->addPartition(machine_id);
-      cord_state.incrementMachineLoadVertices(machine_id);
+      cord_state->incrementMachineLoadVertices(machine_id);
     }
   } catch (const std::bad_cast &e) {
     // use employee's member functions
@@ -210,7 +220,7 @@ void GreedyVertexCut<T>::performStep(const Edge<T> &e,
   }
 
   // 2-UPDATE EDGES
-  state.incrementMachineLoad(machine_id, &e);
+  state->incrementMachineLoad(machine_id, e);
 
   // 3-UPDATE DEGREES
   u_record->incrementDegree();

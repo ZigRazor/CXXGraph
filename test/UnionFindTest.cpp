@@ -1,6 +1,15 @@
 #include "CXXGraph.hpp"
 #include "gtest/gtest.h"
 
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
+
 TEST(UnionFindTest, setFindTest1) {
   CXXGraph::Node<int> node0("0", 0);
   CXXGraph::Node<int> node1("1", 1);
@@ -20,7 +29,7 @@ TEST(UnionFindTest, setFindTest1) {
   // setUnion are functions belonging to graph class
   // can be removed if Subset becomes a class of its own
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
   CXXGraph::Graph<int> graph(edgeSet);
 
   // every element is a subset of itself
@@ -45,12 +54,13 @@ TEST(UnionFindTest, setFindTest2) {
   // element 2 & 4 are subset of 0
   // element 4 is subset of 1
   std::unordered_map<unsigned long long, CXXGraph::Subset> subset;
+
   CXXGraph::Subset set1{0, 0}, set2{0, 0}, set3{0, 0}, set4{1, 0};
   subset = {{0, set1}, {1, set2}, {2, set3}, {3, set4}};
 
   CXXGraph::UndirectedWeightedEdge<int> edge1(0, node0, node1, 5);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
   CXXGraph::Graph<int> graph(edgeSet);
 
   auto res = graph.setFind(&subset, std::stoi(node0.getUserId()));
@@ -68,6 +78,7 @@ TEST(UnionFindTest, setUnionTest3) {
   CXXGraph::Node<int> node3("3", 3);
   // union of (node 1 & node3)  should increase node0 rank by 1
   std::unordered_map<unsigned long long, CXXGraph::Subset> subset;
+
   CXXGraph::Subset set1{0, 0}, set2{0, 0}, set3{0, 0}, set4{1, 0};
   subset = {{0, set1}, {1, set2}, {2, set3}, {3, set4}};
 
@@ -76,7 +87,7 @@ TEST(UnionFindTest, setUnionTest3) {
   // can be removed if Subset becomes a class of its own
   CXXGraph::UndirectedWeightedEdge<int> edge1(0, node0, node1, 5);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
   CXXGraph::Graph<int> graph(edgeSet);
 
   graph.setUnion(&subset, std::stoi(node1.getUserId()),
@@ -98,19 +109,19 @@ TEST(UnionFindTest, containsCycle) {
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   CXXGraph::UndirectedWeightedEdge<int> edge0(0, node0, node1, 5);
-  edgeSet.insert(&edge0);
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge0));
 
   CXXGraph::Graph<int> graph(edgeSet);
   bool containsCycle = graph.containsCycle(&edgeSet);
   ASSERT_EQ(containsCycle, false);
 
   CXXGraph::UndirectedWeightedEdge<int> edge1(1, node1, node2, 10);
-  edgeSet.insert(&edge1);
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
   containsCycle = graph.containsCycle(&edgeSet);
   ASSERT_EQ(containsCycle, false);
 
   CXXGraph::UndirectedWeightedEdge<int> edge2(2, node2, node0, 5);
-  edgeSet.insert(&edge2);
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge2));
   containsCycle = graph.containsCycle(&edgeSet);
   ASSERT_EQ(containsCycle, true);
 }

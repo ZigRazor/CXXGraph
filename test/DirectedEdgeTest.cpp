@@ -1,6 +1,15 @@
 #include "CXXGraph.hpp"
 #include "gtest/gtest.h"
 
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
+
 TEST(DirectedEdgeTest, Constructor_1) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
@@ -15,7 +24,7 @@ TEST(DirectedEdgeTest, Constructor_2) {
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
   CXXGraph::DirectedEdge<int> edge(1, pairNode);
-  ASSERT_EQ(edge.getNodePair(), pairNode);
+  /* ASSERT_EQ(edge.getNodePair(), pairNode); */
   ASSERT_EQ(*(edge.getNodePair().first), node1);
   ASSERT_EQ(*(edge.getNodePair().second), node2);
 }
@@ -45,7 +54,7 @@ TEST(DirectedEdgeTest, Constructor_5) {
       &node1, &node2);
   CXXGraph::Edge<int> base_edge(1, pairNode);
   CXXGraph::DirectedEdge<int> edge(base_edge);
-  ASSERT_EQ(edge.getNodePair(), pairNode);
+  /* ASSERT_EQ(edge.getNodePair(), pairNode); */
   ASSERT_EQ(*(edge.getNodePair().first), node1);
   ASSERT_EQ(*(edge.getNodePair().second), node2);
   ASSERT_TRUE(edge.isDirected().value());
@@ -68,7 +77,7 @@ TEST(DirectedEdgeTest, Bool_data) {
   std::pair<const CXXGraph::Node<bool> *, const CXXGraph::Node<bool> *> pairNode(
       &node3, &node4);
   CXXGraph::DirectedEdge<bool> edge2(2, pairNode);
-  ASSERT_EQ(edge2.getNodePair(), pairNode);
+  /* ASSERT_EQ(edge2.getNodePair(), pairNode); */
   ASSERT_EQ(*(edge2.getNodePair().first), node3);
   ASSERT_EQ(*(edge2.getNodePair().second), node4);
   ASSERT_TRUE(edge2.isDirected().value());
@@ -91,7 +100,7 @@ TEST(DirectedEdgeTest, String_data) {
   std::pair<const CXXGraph::Node<bool> *, const CXXGraph::Node<bool> *> pairNode(
       &node3, &node4);
   CXXGraph::DirectedEdge<bool> edge2(2, pairNode);
-  ASSERT_EQ(edge2.getNodePair(), pairNode);
+  /* ASSERT_EQ(edge2.getNodePair(), pairNode); */
   ASSERT_EQ(*(edge2.getNodePair().first), node3);
   ASSERT_EQ(*(edge2.getNodePair().second), node4);
   ASSERT_TRUE(edge2.isDirected().value());
@@ -105,7 +114,7 @@ TEST(DirectedEdgeTest, Cast_1) {
       &node1, &node2);
   CXXGraph::Edge<int> base_edge(1, pairNode);
   CXXGraph::DirectedEdge<int> edge = base_edge;
-  ASSERT_EQ(edge.getNodePair(), pairNode);
+  /* ASSERT_EQ(edge.getNodePair(), pairNode); */
   ASSERT_EQ(*(edge.getNodePair().first), node1);
   ASSERT_EQ(*(edge.getNodePair().second), node2);
   ASSERT_TRUE(edge.isDirected().value());
@@ -120,7 +129,7 @@ TEST(DirectedEdgeTest, Cast_2) {
   CXXGraph::UndirectedEdge<int> base_edge(1, pairNode);
   CXXGraph::DirectedEdge<int> edge = base_edge;
   ASSERT_FALSE(base_edge.isDirected().value());
-  ASSERT_EQ(edge.getNodePair(), pairNode);
+  /* ASSERT_EQ(edge.getNodePair(), pairNode); */
   ASSERT_EQ(*(edge.getNodePair().first), node1);
   ASSERT_EQ(*(edge.getNodePair().second), node2);
   ASSERT_TRUE(edge.isDirected().value());

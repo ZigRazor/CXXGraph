@@ -50,7 +50,7 @@ class WeightBalancedLibra : public PartitionStrategy<T> {
       std::unordered_map<std::size_t, int> &&_vertices_degrees);
   ~WeightBalancedLibra();
 
-  void performStep(const Edge<T> &e, PartitionState<T> &Sstate) override;
+  void performStep(shared<const Edge<T>> e, shared<PartitionState<T>> Sstate) override;
 };
 template <typename T>
 WeightBalancedLibra<T>::WeightBalancedLibra(
@@ -62,14 +62,14 @@ WeightBalancedLibra<T>::WeightBalancedLibra(
 template <typename T>
 WeightBalancedLibra<T>::~WeightBalancedLibra() {}
 template <typename T>
-void WeightBalancedLibra<T>::performStep(const Edge<T> &e,
-                                         PartitionState<T> &state) {
+void WeightBalancedLibra<T>::performStep(shared<const Edge<T>> e,
+                                         shared<PartitionState<T>> state) {
   int P = GLOBALS.numberOfPartition;
-  auto nodePair = e.getNodePair();
+  auto nodePair = e->getNodePair();
   size_t u = nodePair.first->getId();
   size_t v = nodePair.second->getId();
-  std::shared_ptr<Record<T>> u_record = state.getRecord(u);
-  std::shared_ptr<Record<T>> v_record = state.getRecord(v);
+  std::shared_ptr<Record<T>> u_record = state->getRecord(u);
+  std::shared_ptr<Record<T>> v_record = state->getRecord(v);
 
   //*** ASK FOR LOCK
   bool locks_taken = false;
@@ -103,22 +103,22 @@ void WeightBalancedLibra<T>::performStep(const Edge<T> &e,
 
   // Case 1: no edges of two nodes have been assigned
   if (u_partition.empty() && v_partition.empty()) {
-    machine_id = state.getMachineWithMinWeight();
+    machine_id = state->getMachineWithMinWeight();
   }
   // Case 2: one or more edges of node v have been assigned but that of node u
   // haven't
   else if (u_partition.empty() && !v_partition.empty()) {
-    machine_id = state.getMachineWithMinWeight(v_partition);
-    if (state.getMachineWeight(machine_id) >= weight_sum_bound) {
-      machine_id = state.getMachineWithMinWeight();
+    machine_id = state->getMachineWithMinWeight(v_partition);
+    if (state->getMachineWeight(machine_id) >= weight_sum_bound) {
+      machine_id = state->getMachineWithMinWeight();
     }
   }
   // Case 3: one or more edges of node u have been assigned but that of node v
   // haven't
   else if (!u_partition.empty() && v_partition.empty()) {
-    machine_id = state.getMachineWithMinWeight(u_partition);
-    if (state.getMachineWeight(machine_id) >= weight_sum_bound) {
-      machine_id = state.getMachineWithMinWeight();
+    machine_id = state->getMachineWithMinWeight(u_partition);
+    if (state->getMachineWeight(machine_id) >= weight_sum_bound) {
+      machine_id = state->getMachineWithMinWeight();
     }
   }
   // Case 4: one or more edges of both nodes have been assigned
@@ -144,22 +144,22 @@ void WeightBalancedLibra<T>::performStep(const Edge<T> &e,
       const std::set<int> &t_partition =
           (u_degree > v_degree) ? u_partition : v_partition;
 
-      machine_id = state.getMachineWithMinWeight(s_partition);
-      if (state.getMachineWeight(machine_id) >= weight_sum_bound) {
-        machine_id = state.getMachineWithMinWeight(t_partition);
-        if (state.getMachineWeight(machine_id) >= weight_sum_bound) {
-          machine_id = state.getMachineWithMinWeight();
+      machine_id = state->getMachineWithMinWeight(s_partition);
+      if (state->getMachineWeight(machine_id) >= weight_sum_bound) {
+        machine_id = state->getMachineWithMinWeight(t_partition);
+        if (state->getMachineWeight(machine_id) >= weight_sum_bound) {
+          machine_id = state->getMachineWithMinWeight();
         }
       }
     }
     // Case 4.2: there are some common partitions for both nodes
     else {
-      machine_id = state.getMachineWithMinWeight(uv_intersection);
-      if (state.getMachineWeight(machine_id) >= weight_sum_bound) {
+      machine_id = state->getMachineWithMinWeight(uv_intersection);
+      if (state->getMachineWeight(machine_id) >= weight_sum_bound) {
         const auto &uv_union = u_coord_record->partition_union(v_coord_record);
-        machine_id = state.getMachineWithMinWeight(uv_union);
+        machine_id = state->getMachineWithMinWeight(uv_union);
         if (machine_id >= weight_sum_bound) {
-          machine_id = state.getMachineWithMinWeight();
+          machine_id = state->getMachineWithMinWeight();
         }
       }
     }
@@ -179,7 +179,7 @@ void WeightBalancedLibra<T>::performStep(const Edge<T> &e,
   }
 
   // 2-UPDATE EDGES
-  state.incrementMachineWeight(machine_id, &e);
+  state->incrementMachineWeight(machine_id, e);
 
   //*** RELEASE LOCK
   u_record->releaseLock();

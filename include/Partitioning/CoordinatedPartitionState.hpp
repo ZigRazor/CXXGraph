@@ -34,6 +34,15 @@
 #include "Record.hpp"
 
 namespace CXXGraph {
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
+
 namespace Partitioning {
 template <typename T>
 class CoordinatedPartitionState : public PartitionState<T> {
@@ -58,8 +67,8 @@ class CoordinatedPartitionState : public PartitionState<T> {
   int getMachineLoad(const int m) const override;
   int getMachineWeight(const int m) const override;
   int getMachineLoadVertices(const int m) const override;
-  void incrementMachineLoad(const int m, const Edge<T> *e) override;
-  void incrementMachineWeight(const int m, const Edge<T> *e) override;
+  void incrementMachineLoad(const int m, shared<const Edge<T>> e) override;
+  void incrementMachineWeight(const int m, shared<const Edge<T>> e) override;
   int getMinLoad() const override;
   int getMaxLoad() const override;
   int getMachineWithMinWeight() const override;
@@ -126,7 +135,7 @@ int CoordinatedPartitionState<T>::getMachineLoadVertices(const int m) const {
 }
 template <typename T>
 void CoordinatedPartitionState<T>::incrementMachineLoad(const int m,
-                                                        const Edge<T> *e) {
+                                                        shared<const Edge<T>> e) {
   std::lock_guard<std::mutex> lock(*machines_load_edges_mutex);
   machines_load_edges[m] = machines_load_edges[m] + 1;
   int new_value = machines_load_edges.at(m);
@@ -137,11 +146,11 @@ void CoordinatedPartitionState<T>::incrementMachineLoad(const int m,
 }
 template <typename T>
 void CoordinatedPartitionState<T>::incrementMachineWeight(const int m,
-                                                          const Edge<T> *e) {
+                                                          shared<const Edge<T>> e) {
   std::lock_guard<std::mutex> lock(*machines_weight_edges_mutex);
   double edge_weight = CXXGraph::NEGLIGIBLE_WEIGHT;
   if (e->isWeighted().has_value() && e->isWeighted().value()) {
-    edge_weight = (dynamic_cast<const Weighted *>(e))->getWeight();
+    edge_weight = (std::dynamic_pointer_cast<const Weighted>(e))->getWeight();
   }
   machines_weight_edges[m] = machines_weight_edges[m] + edge_weight;
   // double new_value = machines_weight_edges[m];

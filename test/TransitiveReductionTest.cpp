@@ -1,6 +1,12 @@
 #include "CXXGraph.hpp"
 #include "gtest/gtest.h"
 
+#include <memory>
+
+template <typename T>
+using shared = std::shared_ptr<T>;
+using std::make_shared;
+
 TEST(TransitiveReductionTest, reduceEmpty) {
   CXXGraph::T_EdgeSet<int> edgeSet;
   CXXGraph::Graph<int> graph(edgeSet);
@@ -27,13 +33,13 @@ TEST(TransitiveReductionTest, reduceReducedDAG) {
   CXXGraph::DirectedEdge<int> edge7(7, node4, node7);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
-  edgeSet.insert(&edge6);
-  edgeSet.insert(&edge7);
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge6));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge7));
 
   CXXGraph::Graph<int> graph(edgeSet);
   CXXGraph::Graph<int> result = graph.transitiveReduction();
@@ -59,13 +65,13 @@ TEST(TransitiveReductionTest, reduceDAG) {
   CXXGraph::DirectedEdge<int> edge7(7, node4, node7);
 
   CXXGraph::T_EdgeSet<int> reducedEdgeSet;
-  reducedEdgeSet.insert(&edge1);
-  reducedEdgeSet.insert(&edge2);
-  reducedEdgeSet.insert(&edge3);
-  reducedEdgeSet.insert(&edge4);
-  reducedEdgeSet.insert(&edge5);
-  reducedEdgeSet.insert(&edge6);
-  reducedEdgeSet.insert(&edge7);
+  reducedEdgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));
+  reducedEdgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  reducedEdgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge3));
+  reducedEdgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge4));
+  reducedEdgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge5));
+  reducedEdgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge6));
+  reducedEdgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge7));
   CXXGraph::Graph<int> reducedGraph(reducedEdgeSet);
 
   // Add some more edges that can be reduced
@@ -74,10 +80,10 @@ TEST(TransitiveReductionTest, reduceDAG) {
   CXXGraph::DirectedEdge<int> edge9(9, node1, node4);
   CXXGraph::DirectedEdge<int> edge10(10, node1, node7);
   CXXGraph::DirectedEdge<int> edge11(11, node3, node6);
-  edgeSet.insert(&edge8);
-  edgeSet.insert(&edge9);
-  edgeSet.insert(&edge10);
-  edgeSet.insert(&edge11);
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge8));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge9));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge10));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge11));
   CXXGraph::Graph<int> graph(edgeSet);
 
   // Perform reduction
