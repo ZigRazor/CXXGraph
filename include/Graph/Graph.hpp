@@ -20,7 +20,6 @@
 #ifndef __CXXGRAPH_GRAPH_H__
 #define __CXXGRAPH_GRAPH_H__
 
-#include <Utility/PointerHash.hpp>
 #pragma once
 
 #include <limits.h>
@@ -61,6 +60,7 @@
 #include "Partitioning/Utility/Globals.hpp"
 #include "Utility/ConstString.hpp"
 #include "Utility/ConstValue.hpp"
+#include "Utility/PointerHash.hpp"
 #include "Utility/Reader.hpp"
 #include "Utility/ThreadSafe.hpp"
 #include "Utility/Typedef.hpp"
@@ -247,41 +247,46 @@ class Graph {
    */
   virtual const std::shared_ptr<AdjacencyMatrix<T>> getAdjMatrix() const;
   /**
-   * \brief
+   * \brief This function generates a set of nodes linked to the provided node in a
+   * directed graph
    * Note: No Thread Safe
    *
    * @param Pointer to the node
    *
    */
-  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>> outEdges(
+  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>> outNeighbors(
       const Node<T> *node) const;
   /**
-   * \brief
+   * \brief This function generates a set of nodes linked to the provided node in a
+   * directed graph
    * Note: No Thread Safe
    *
    * @param Pointer to the node
    *
    */
-  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>> outEdges(
+  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>> outNeighbors(
       shared<const Node<T>> node) const;
   /**
-   * \brief
+   * \brief This function generates a set of nodes linked to the provided node in
+   * any graph
    * Note: No Thread Safe
    *
    * @param Pointer to the node
    *
    */
   virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
-  inOutEdges(const Node<T> *node) const;
+  inOutNeighbors(const Node<T> *node) const;
   /**
    * \brief
+   * \brief This function generates a set of nodes linked to the provided node in
+   * any graph
    * Note: No Thread Safe
    *
    * @param Pointer to the node
    *
    */
   virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
-  inOutEdges(shared<const Node<T>> node) const;
+  inOutNeighbors(shared<const Node<T>> node) const;
   /**
    * @brief This function finds the subset of given a nodeId
    * Subset is stored in a map where keys are the hash-id of the node & values
@@ -1375,15 +1380,15 @@ const std::shared_ptr<AdjacencyMatrix<T>> Graph<T>::getAdjMatrix() const {
 }
 
 template <typename T>
-const std::unordered_set<shared<const Node<T>>, nodeHash<T>> Graph<T>::outEdges(
+const std::unordered_set<shared<const Node<T>>, nodeHash<T>> Graph<T>::outNeighbors(
     const Node<T> *node) const {
   auto node_shared = make_shared<const Node<T>>(*node);
 
-  return outEdges(node_shared);
+  return outNeighbors(node_shared);
 }
 
 template <typename T>
-const std::unordered_set<shared<const Node<T>>, nodeHash<T>> Graph<T>::outEdges(
+const std::unordered_set<shared<const Node<T>>, nodeHash<T>> Graph<T>::outNeighbors(
     shared<const Node<T>> node) const {
   auto adj = getAdjMatrix();
   if (adj->find(node) == adj->end()) {
@@ -1391,40 +1396,40 @@ const std::unordered_set<shared<const Node<T>>, nodeHash<T>> Graph<T>::outEdges(
   }
   auto nodeEdgePairs = adj->at(node);
 
-  std::unordered_set<shared<const Node<T>>, nodeHash<T>> outEdges;
+  std::unordered_set<shared<const Node<T>>, nodeHash<T>> outNeighbors;
   for (auto pair : nodeEdgePairs) {
     if (pair.second->isDirected().has_value() &&
         pair.second->isDirected().value()) {
-      outEdges.insert(pair.first);
+      outNeighbors.insert(pair.first);
     }
   }
 
-  return outEdges;
+  return outNeighbors;
 }
 
 template <typename T>
 const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
-Graph<T>::inOutEdges(const Node<T> *node) const {
+Graph<T>::inOutNeighbors(const Node<T> *node) const {
   auto node_shared = make_shared<const Node<T>>(*node);
 
-  return inOutEdges(node_shared);
+  return inOutNeighbors(node_shared);
 }
 
 template <typename T>
 const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
-Graph<T>::inOutEdges(shared<const Node<T>> node) const {
+Graph<T>::inOutNeighbors(shared<const Node<T>> node) const {
   auto adj = Graph<T>::getAdjMatrix();
   if (adj->find(node) == adj->end()) {
     return std::unordered_set<shared<const Node<T>>, nodeHash<T>>();
   }
   auto nodeEdgePairs = adj->at(node);
 
-  std::unordered_set<shared<const Node<T>>, nodeHash<T>> inOutEdges;
+  std::unordered_set<shared<const Node<T>>, nodeHash<T>> inOutNeighbors;
   for (auto pair : nodeEdgePairs) {
-    inOutEdges.insert(pair.first);
+    inOutNeighbors.insert(pair.first);
   }
 
-  return inOutEdges;
+  return inOutNeighbors;
 }
 
 template <typename T>
