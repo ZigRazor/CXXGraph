@@ -55,29 +55,31 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
 | :heavy_check_mark: | Make CXXGraph MSVC-Compatible [#277](https://github.com/ZigRazor/CXXGraph/issues/277) | May 8, 2023 |
 | :heavy_check_mark: | All namespaces should be titlecase [#278](https://github.com/ZigRazor/CXXGraph/issues/278)  | May 8, 2023 |
 | :heavy_check_mark: | Release 1.1.0 | May 8, 2023 |
+| :heavy_check_mark: | Smart Pointers use [#234](https://github.com/ZigRazor/CXXGraph/issues/234) | Jun 1, 2023 |
+| :heavy_check_mark: | Release 2.0.0 | Jun 1, 2023 |
 | :memo: |Switch to C++ 20 standard [#266](https://github.com/ZigRazor/CXXGraph/issues/266) | TBD |
 | :memo: | Markov Chain Algorithm [#107](https://github.com/ZigRazor/CXXGraph/issues/107) | TBD |
-| :memo: | Release 1.2.1 | TBD |
+| :memo: | Release 2.1.0 | TBD |
 | :memo: | FP-GraphMiner algorithm [#105](https://github.com/ZigRazor/CXXGraph/issues/105) | TBD |
-| :memo: | Release 1.2.2 | TBD |
+| :memo: | Release 2.1.1 | TBD |
 | :memo: | Tarjan's algorithm [#103](https://github.com/ZigRazor/CXXGraph/issues/103) | TBD |
-| :memo: | Release 1.2.3 | TBD |
+| :memo: | Release 2.1.2 | TBD |
 | :heavy_check_mark: | Graph Topological Sort [#104](https://github.com/ZigRazor/CXXGraph/issues/107) | Nov 3, 2022 |
 | :memo: | Official Site Release | TBD |
-| :memo: | Release 1.3.0 | TBD |
+| :memo: | Release 2.2.0 | TBD |
 | :memo: | Custom export and import [#19](https://github.com/ZigRazor/CXXGraph/issues/19) | TBD |
 | :memo: | Input & Output file format [#172](https://github.com/ZigRazor/CXXGraph/issues/172) | TBD |
-| :memo: | Release 1.4.0 | TBD |
+| :memo: | Release 2.3.0 | TBD |
 | :heavy_check_mark: | Multi-Thread implementation of BFS [#121](https://github.com/ZigRazor/CXXGraph/issues/121) | Dec 6, 2022 |
-| :memo: | Release 1.5.1 | TBD |
+| :memo: | Release 2.4. | TBD |
 | :grey_exclamation: | Thread Safe implementations of Boruvka, Prim & Kruskal algorithm [#128](https://github.com/ZigRazor/CXXGraph/issues/128) | Oct 5, 2022 |
-| :memo: | Release 1.6.0 | TBD |
+| :memo: | Release 2.5.0 | TBD |
 | :memo: | Edge-Cut Partition Algorithm [#183](https://github.com/ZigRazor/CXXGraph/issues/183) | TBD |
-| :memo: | Release 1.6.1 | TBD |
+| :memo: | Release 2.5.1 | TBD |
 | :heavy_check_mark: | WB-Libra Parttition Algorithm [#178](https://github.com/ZigRazor/CXXGraph/issues/178) | Nov 25, 2022 |
-| :memo: | Release 1.7.0 | TBD |
+| :memo: | Release 2.6.0 | TBD |
 | :memo: | Introduce Hypergraph [#122](https://github.com/ZigRazor/CXXGraph/issues/122) | TBD |
-| :memo: | Stable Release 2.0.0 | TBD |
+| :memo: | Stable Release 3.0.0 | TBD |
 | :memo: | TBD | TBD |
 
 ## Table of Contents
@@ -122,6 +124,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
     - [Cycle Detection](#cycle-detection)
     - [Bellman-Ford](#bellman-ford)
     - [Floyd Warshall](#floyd-warshall)
+    - [Transitive Reduction](#transitive-reduction)
     - [Kruskal Algorithm](#kruskal-algorithm)
     - [Borůvka's Algorithm](#borůvkas-algorithm)
     - [Graph Slicing based on connectivity](#graph-slicing-based-on-connectivity)
@@ -431,6 +434,22 @@ We initialize the solution matrix same as the input graph matrix as a first step
 
 1) k is not an intermediate vertex in shortest path from i to j. We keep the value of dist[i][j] as it is.
 2) k is an intermediate vertex in shortest path from i to j. We update the value of dist[i][j] as dist[i][k] + dist[k][j] if dist[i][j] > dist[i][k] + dist[k][j]
+
+### Transitive Reduction
+
+[Transitive Reduction](https://en.wikipedia.org/wiki/Transitive_reduction)
+
+This algorithm is used to construct a directed graph with the same reachability and satisfies transitive closure, with as few edges as possible. More concretely, it creates a minimum equivalent graph with as few edges as possible, removing "short-circuit" paths through the graph.
+
+This is done by iterating through each node-pair, checking to see if two edges exist that leads out of the first node OR out of the last node, removing the node-pair edge if it exists.
+
+In pseudocode:
+foreach x in graph.vertices
+   foreach y in graph.vertices
+      foreach z in graph.vertices
+         delete edge xz if edges xy and yz exist
+
+Our implementation has if gates that do early checking for edges in multiple places, which gives it a slightly faster runtime than the cubic pseudocode here.
 
 ### Kruskal Algorithm
 

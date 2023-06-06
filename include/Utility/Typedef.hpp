@@ -24,11 +24,21 @@
 
 #include <fstream>
 #include <map>
+#include <memory>
 #include <string>
 
 #include "ConstValue.hpp"
+#include "PointerHash.hpp"
 
 namespace CXXGraph {
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
 
 template <typename T>
 class Node;
@@ -199,7 +209,7 @@ using BestFirstSearchResult = BestFirstSearchResult_struct<T>;
 
 template <typename T>
 using AdjacencyMatrix = std::unordered_map<
-    const Node<T> *, std::vector<std::pair<const Node<T> *, const Edge<T> *>>>;
+    shared<const Node<T>>, std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>, nodeHash<T>>;
 
 template <typename T>
 using PartitionMap =

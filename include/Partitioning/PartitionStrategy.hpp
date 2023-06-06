@@ -26,11 +26,20 @@
 #include "PartitionState.hpp"
 
 namespace CXXGraph {
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
+
 namespace Partitioning {
 template <typename T>
 class PartitionStrategy {
  public:
-  virtual void performStep(const Edge<T> &t, PartitionState<T> &Sstate) = 0;
+  virtual void performStep(shared<const Edge<T>> t, shared<PartitionState<T>> Sstate) = 0;
 };
 }  // namespace Partitioning
 }  // namespace CXXGraph

@@ -1,5 +1,15 @@
+#include <memory>
 #include "CXXGraph.hpp"
 #include "gtest/gtest.h"
+
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
 
 TEST(ConnectivityTest, test_1) {
   CXXGraph::Node<int> node0("0", 0);
@@ -28,20 +38,20 @@ TEST(ConnectivityTest, test_1) {
   CXXGraph::UndirectedWeightedEdge<int> edge14(3, node5, node4, 10);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
-  edgeSet.insert(&edge6);
-  edgeSet.insert(&edge7);
-  edgeSet.insert(&edge8);
-  edgeSet.insert(&edge9);
-  edgeSet.insert(&edge10);
-  edgeSet.insert(&edge11);
-  edgeSet.insert(&edge12);
-  edgeSet.insert(&edge13);
-  edgeSet.insert(&edge14);
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge6));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge7));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge8));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge9));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge10));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge11));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge12));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge13));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge14));
 
   CXXGraph::Graph<int> graph(edgeSet);
 
@@ -75,20 +85,20 @@ TEST(ConnectivityTest, test_2) {
   CXXGraph::UndirectedWeightedEdge<int> edge14(3, node5, node4, 10);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
-  edgeSet.insert(&edge6);
-  edgeSet.insert(&edge7);
-  edgeSet.insert(&edge8);
-  edgeSet.insert(&edge9);
-  edgeSet.insert(&edge10);
-  edgeSet.insert(&edge11);
-  edgeSet.insert(&edge12);
-  edgeSet.insert(&edge13);
-  edgeSet.insert(&edge14);
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge6));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge7));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge8));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge9));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge10));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge11));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge12));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge13));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge14));
 
   CXXGraph::Graph<int> graph(edgeSet);
 
@@ -130,28 +140,28 @@ TEST(ConnectivityTest, test_3) {
   CXXGraph::DirectedWeightedEdge<int> edge22(3, node8, node0, 10);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
-  edgeSet.insert(&edge6);
-  edgeSet.insert(&edge7);
-  edgeSet.insert(&edge8);
-  edgeSet.insert(&edge9);
-  edgeSet.insert(&edge10);
-  edgeSet.insert(&edge11);
-  edgeSet.insert(&edge12);
-  edgeSet.insert(&edge13);
-  edgeSet.insert(&edge14);
-  edgeSet.insert(&edge15);
-  edgeSet.insert(&edge16);
-  edgeSet.insert(&edge17);
-  edgeSet.insert(&edge18);
-  edgeSet.insert(&edge19);
-  edgeSet.insert(&edge20);
-  edgeSet.insert(&edge21);
-  edgeSet.insert(&edge22);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge6));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge7));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge8));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge9));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge10));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge11));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge12));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge13));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge14));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge15));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge16));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge17));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge18));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge19));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge20));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge21));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge22));
 
   CXXGraph::Graph<int> graph(edgeSet);
 
@@ -185,20 +195,20 @@ TEST(ConnectivityTest, test_4) {
   CXXGraph::DirectedWeightedEdge<int> edge14(3, node5, node4, 10);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
-  edgeSet.insert(&edge6);
-  edgeSet.insert(&edge7);
-  edgeSet.insert(&edge8);
-  edgeSet.insert(&edge9);
-  edgeSet.insert(&edge10);
-  edgeSet.insert(&edge11);
-  edgeSet.insert(&edge12);
-  edgeSet.insert(&edge13);
-  edgeSet.insert(&edge14);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge6));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge7));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge8));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge9));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge10));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge11));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge12));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge13));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge14));
 
   CXXGraph::Graph<int> graph(edgeSet);
 
@@ -291,25 +301,25 @@ TEST(ConnectivityTest, test_6) {
   CXXGraph::DirectedWeightedEdge<int> edge21(3, node7, node0, 10);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
-  edgeSet.insert(&edge6);
-  edgeSet.insert(&edge9);
-  edgeSet.insert(&edge10);
-  edgeSet.insert(&edge11);
-  edgeSet.insert(&edge12);
-  edgeSet.insert(&edge13);
-  edgeSet.insert(&edge14);
-  edgeSet.insert(&edge15);
-  edgeSet.insert(&edge16);
-  edgeSet.insert(&edge17);
-  edgeSet.insert(&edge18);
-  edgeSet.insert(&edge19);
-  edgeSet.insert(&edge20);
-  edgeSet.insert(&edge21);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge6));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge9));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge10));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge11));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge12));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge13));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge14));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge15));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge16));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge17));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge18));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge19));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge20));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge21));
 
   CXXGraph::Graph<int> graph(edgeSet);
 
@@ -343,20 +353,20 @@ TEST(ConnectivityTest, test_7) {
   CXXGraph::UndirectedWeightedEdge<int> edge14(3, node5, node4, 10);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
-  edgeSet.insert(&edge6);
-  edgeSet.insert(&edge7);
-  edgeSet.insert(&edge8);
-  edgeSet.insert(&edge9);
-  edgeSet.insert(&edge10);
-  edgeSet.insert(&edge11);
-  edgeSet.insert(&edge12);
-  edgeSet.insert(&edge13);
-  edgeSet.insert(&edge14);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge6));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge7));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge8));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge9));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge10));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge11));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge12));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge13));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge14));
 
   CXXGraph::Graph<int> graph(edgeSet);
 
@@ -398,28 +408,28 @@ TEST(ConnectivityTest, test_8) {
   CXXGraph::DirectedWeightedEdge<int> edge22(3, node8, node0, 10);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
-  edgeSet.insert(&edge6);
-  edgeSet.insert(&edge7);
-  edgeSet.insert(&edge8);
-  edgeSet.insert(&edge9);
-  edgeSet.insert(&edge10);
-  edgeSet.insert(&edge11);
-  edgeSet.insert(&edge12);
-  edgeSet.insert(&edge13);
-  edgeSet.insert(&edge14);
-  edgeSet.insert(&edge15);
-  edgeSet.insert(&edge16);
-  edgeSet.insert(&edge17);
-  edgeSet.insert(&edge18);
-  edgeSet.insert(&edge19);
-  edgeSet.insert(&edge20);
-  edgeSet.insert(&edge21);
-  edgeSet.insert(&edge22);
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge6));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge7));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge8));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge9));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge10));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge11));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge12));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge13));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge14));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge15));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge16));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge17));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge18));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge19));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge20));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge21));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge22));
 
   CXXGraph::Graph<int> graph(edgeSet);
 

@@ -20,6 +20,7 @@
 #ifndef __CXXGRAPH_PARTITIONING_EBV_H__
 #define __CXXGRAPH_PARTITIONING_EBV_H__
 
+#include <memory>
 #pragma once
 
 #include <chrono>
@@ -30,6 +31,15 @@
 #include "Partitioning/Utility/Globals.hpp"
 
 namespace CXXGraph {
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
+
 namespace Partitioning {
 /**
  * @brief A Vertex Cut Partioning Algorithm ( as described by this paper
@@ -47,7 +57,7 @@ class EBV : public PartitionStrategy<T> {
   explicit EBV(const Globals &G);
   ~EBV();
 
-  void performStep(const Edge<T> &e, PartitionState<T> &Sstate) override;
+  void performStep(shared<const Edge<T>> e, shared<PartitionState<T>> Sstate) override;
 };
 template <typename T>
 EBV<T>::EBV(const Globals &G) : GLOBALS(G) {
@@ -56,7 +66,7 @@ EBV<T>::EBV(const Globals &G) : GLOBALS(G) {
 template <typename T>
 EBV<T>::~EBV() {}
 template <typename T>
-void EBV<T>::performStep(const Edge<T> &e, PartitionState<T> &state){
+void EBV<T>::performStep(shared<const Edge<T>> e, shared<PartitionState<T>> state){
   GLOBALS.edgeAnalyzed++;
 
   int P = GLOBALS.numberOfPartition;
@@ -64,12 +74,12 @@ void EBV<T>::performStep(const Edge<T> &e, PartitionState<T> &state){
   double beta = GLOBALS.param2;
   unsigned long long edgeCardinality = GLOBALS.edgeCardinality;
   unsigned long long vertexCardinality = GLOBALS.vertexCardinality;
-  auto nodePair = e.getNodePair();
+  auto nodePair = e->getNodePair();
   int u = nodePair.first->getId();
   int v = nodePair.second->getId();
 
-  std::shared_ptr<Record<T>> u_record = state.getRecord(u);
-  std::shared_ptr<Record<T>> v_record = state.getRecord(v);
+  std::shared_ptr<Record<T>> u_record = state->getRecord(u);
+  std::shared_ptr<Record<T>> v_record = state->getRecord(v);
 
   //*** ASK FOR LOCK
   bool locks_taken = false;
@@ -112,8 +122,8 @@ void EBV<T>::performStep(const Edge<T> &e, PartitionState<T> &state){
     if (v_partition.empty() || v_partition.find(i) == v_partition.end()) {
       eva[i] += 1;
     }
-    eva[i] += alpha * (state.getMachineLoad(i) / optimalEdgesNumber) +
-              beta * (state.getMachineLoadVertices(i) / optimalVerticesNumber);
+    eva[i] += alpha * (state->getMachineLoad(i) / optimalEdgesNumber) +
+              beta * (state->getMachineLoadVertices(i) / optimalVerticesNumber);
   }
   // find min between eva
   double min = eva.at(0);
@@ -125,17 +135,17 @@ void EBV<T>::performStep(const Edge<T> &e, PartitionState<T> &state){
     }
   }
   try {
-    CoordinatedPartitionState<T> &cord_state =
-        dynamic_cast<CoordinatedPartitionState<T> &>(state);
+    shared<CoordinatedPartitionState<T>> cord_state =
+        std::static_pointer_cast<CoordinatedPartitionState<T>>(state);
     // NEW UPDATE RECORDS RULE TO UPFDATE THE SIZE OF THE PARTITIONS EXPRESSED
     // AS THE NUMBER OF VERTICES THEY CONTAINS
     if (!u_record->hasReplicaInPartition(machine_id)) {
       u_record->addPartition(machine_id);
-      cord_state.incrementMachineLoadVertices(machine_id);
+      cord_state->incrementMachineLoadVertices(machine_id);
     }
     if (!v_record->hasReplicaInPartition(machine_id)) {
       v_record->addPartition(machine_id);
-      cord_state.incrementMachineLoadVertices(machine_id);
+      cord_state->incrementMachineLoadVertices(machine_id);
     }
   } catch (const std::bad_cast &e) {
     // use employee's member functions
@@ -149,7 +159,7 @@ void EBV<T>::performStep(const Edge<T> &e, PartitionState<T> &state){
   }
 
   // 2-UPDATE EDGES
-  state.incrementMachineLoad(machine_id, &e);
+  state->incrementMachineLoad(machine_id, e);
 
   // 3-UPDATE DEGREES
   u_record->incrementDegree();

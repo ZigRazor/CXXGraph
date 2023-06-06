@@ -1,8 +1,18 @@
+#include <memory>
 #include "CXXGraph.hpp"
 #include "Edge/DirectedEdge.hpp"
 #include "Edge/UndirectedEdge.hpp"
 #include "Graph/Graph.hpp"
 #include "gtest/gtest.h"
+
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
 
 // helper function to compare strongly connected components (SCC) as computed
 // by the algorithm with expected (correct) SCC
@@ -30,7 +40,7 @@ TEST(KosarajuTest, test_1) {
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::UndirectedEdge<int> edge(1, node1, node2);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge);
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge));
   CXXGraph::Graph<int> graph(edgeSet);
   auto res = graph.kosaraju();
   ASSERT_EQ(res.stronglyConnectedComps.size(), 0);
@@ -45,8 +55,8 @@ TEST(KosarajuTest, test_2) {
   CXXGraph::DirectedEdge<int> edge1(1, node1, node2);
   CXXGraph::DirectedEdge<int> edge2(2, node2, node1);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
   CXXGraph::Graph<int> graph(edgeSet);
   auto res = graph.kosaraju();
   ASSERT_TRUE(res.success);
@@ -64,9 +74,9 @@ TEST(KosarajuTest, test_3) {
   CXXGraph::DirectedEdge<int> edge2(2, node2, node1);
   CXXGraph::DirectedEdge<int> edge3(3, node3, node1);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   auto res = graph.kosaraju();
   ASSERT_TRUE(res.success);
@@ -87,10 +97,10 @@ TEST(KosarajuTest, test_4) {
   CXXGraph::DirectedEdge<int> edge3(3, node3, node4);
   CXXGraph::DirectedEdge<int> edge4(4, node4, node3);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge4));
   CXXGraph::Graph<int> graph(edgeSet);
   auto res = graph.kosaraju();
   ASSERT_TRUE(res.success);
@@ -138,27 +148,27 @@ TEST(KosarajuTest, test_5) {
   CXXGraph::DirectedEdge<int> edge21(21, node13, node10);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
-  edgeSet.insert(&edge6);
-  edgeSet.insert(&edge7);
-  edgeSet.insert(&edge8);
-  edgeSet.insert(&edge9);
-  edgeSet.insert(&edge10);
-  edgeSet.insert(&edge11);
-  edgeSet.insert(&edge12);
-  edgeSet.insert(&edge13);
-  edgeSet.insert(&edge14);
-  edgeSet.insert(&edge15);
-  edgeSet.insert(&edge16);
-  edgeSet.insert(&edge17);
-  edgeSet.insert(&edge18);
-  edgeSet.insert(&edge19);
-  edgeSet.insert(&edge20);
-  edgeSet.insert(&edge21);
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge6));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge7));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge8));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge9));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge10));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge11));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge12));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge13));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge14));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge15));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge16));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge17));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge18));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge19));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge20));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge21));
 
   CXXGraph::Graph graph(edgeSet);
   auto res = graph.kosaraju();

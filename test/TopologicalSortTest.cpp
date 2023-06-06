@@ -1,7 +1,17 @@
+#include <memory>
 #include "CXXGraph.hpp"
 #include "Utility/ConstString.hpp"
 #include "Utility/Typedef.hpp"
 #include "gtest/gtest.h"
+
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
 
 // topological sort test in a cyclic graph
 TEST(TopologicalSortTest, test_1) {
@@ -14,9 +24,9 @@ TEST(TopologicalSortTest, test_1) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 2);
   CXXGraph::DirectedWeightedEdge<int> edge3(3, node3, node1, 3);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
 
   CXXGraph::TopoSortResult<int> &&res = graph.topologicalSort();
@@ -38,10 +48,10 @@ TEST(TopologicalSortTest, test_2) {
   CXXGraph::UndirectedWeightedEdge<int> edge3(3, node3, node4, 1);
   CXXGraph::UndirectedWeightedEdge<int> edge4(3, node3, node5, 1);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
   CXXGraph::Graph<int> graph(edgeSet);
 
   CXXGraph::TopoSortResult<int> &&res = graph.topologicalSort();
@@ -70,14 +80,14 @@ TEST(TopologicalSortTest, test_3) {
   CXXGraph::DirectedWeightedEdge<int> edge7(3, node8, node6, 6);
   CXXGraph::DirectedWeightedEdge<int> edge8(3, node8, node7, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
-  edgeSet.insert(&edge6);
-  edgeSet.insert(&edge7);
-  edgeSet.insert(&edge8);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge6));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge7));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge8));
   CXXGraph::Graph<int> graph(edgeSet);
 
   CXXGraph::TopoSortResult<int> &&res = graph.topologicalSort();

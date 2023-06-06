@@ -1,5 +1,15 @@
+#include <memory>
 #include "CXXGraph.hpp"
 #include "gtest/gtest.h"
+
+// Smart pointers alias
+template <typename T>
+using unique = std::unique_ptr<T>;
+template <typename T>
+using shared= std::shared_ptr<T>;
+
+using std::make_unique;
+using std::make_shared;
 
 // DirectedEdge
 TEST(GraphSlicingTest, test_1) {
@@ -18,12 +28,12 @@ TEST(GraphSlicingTest, test_1) {
   CXXGraph::DirectedEdge<int> edge6(6, node4, node3);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
-  edgeSet.insert(&edge6);
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge6));
 
   CXXGraph::Graph<int> graph(edgeSet);
   std::vector<CXXGraph::Node<int>> res = graph.graph_slicing(node1);
@@ -51,12 +61,12 @@ TEST(GraphSlicingTest, test_2) {
   CXXGraph::DirectedWeightedEdge<int> edge6(6, node4, node3, 0);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
-  edgeSet.insert(&edge6);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge6));
 
   CXXGraph::Graph<int> graph(edgeSet);
   std::vector<CXXGraph::Node<int>> res = graph.graph_slicing(node1);
@@ -83,12 +93,12 @@ TEST(GraphSlicingTest, test_3) {
   CXXGraph::UndirectedEdge<int> edge6(6, node4, node3);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
-  edgeSet.insert(&edge6);
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge6));
 
   CXXGraph::Graph<int> graph(edgeSet);
   std::vector<CXXGraph::Node<int>> res = graph.graph_slicing(node1);
@@ -113,12 +123,12 @@ TEST(GraphSlicingTest, test_4) {
   CXXGraph::UndirectedWeightedEdge<int> edge6(6, node4, node3, 0);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
-  edgeSet.insert(&edge5);
-  edgeSet.insert(&edge6);
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge6));
 
   CXXGraph::Graph<int> graph(edgeSet);
   std::vector<CXXGraph::Node<int>> res = graph.graph_slicing(node1);
@@ -135,9 +145,9 @@ TEST(GraphSlicingTest, test_5) {
   CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
   CXXGraph::DirectedWeightedEdge<int> edge3(3, node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   std::vector<CXXGraph::Node<int>> res = graph.graph_slicing(node4);
   ASSERT_EQ(res.size(), 0);

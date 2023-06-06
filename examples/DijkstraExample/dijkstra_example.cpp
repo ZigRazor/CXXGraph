@@ -1,5 +1,9 @@
 #include <CXXGraph.hpp>
 
+#include <memory>
+
+using std::make_shared;
+
 int main() {
   CXXGraph::Node<int> node0("0", 0);
   CXXGraph::Node<int> node1("1", 1);
@@ -12,10 +16,10 @@ int main() {
   CXXGraph::UndirectedWeightedEdge<int> edge4(4, node0, node3, 1.0);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(&edge1);
-  edgeSet.insert(&edge2);
-  edgeSet.insert(&edge3);
-  edgeSet.insert(&edge4);
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge4));
 
   // Can print out the edges for debugging
   std::cout << edge1 << "\n";
