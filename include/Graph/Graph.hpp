@@ -545,6 +545,13 @@ class Graph {
   virtual bool isUndirectedGraph() const;
 
   /**
+   * \brief
+   * This function reverse the direction of the edges in a directed graph
+   * 
+   */
+  virtual void reverseDirectedGraph();
+
+  /**
    * @brief This function checks if the graph is connected or not
    * 	Applicable for Undirected Graph, for Directed Graph use the
    * isStronglyConnectedGraph() function
@@ -2520,6 +2527,21 @@ bool Graph<T>::isUndirectedGraph() const {
   }
   // No Directed Edge
   return true;
+}
+
+template <typename T>
+void Graph<T>::reverseDirectedGraph(){
+  if (!isDirectedGraph()) {
+    throw std::runtime_error(ERR_UNDIR_GRAPH);
+  }
+  auto edgeSet = Graph<T>::getEdgeSet();
+  for (const auto &edge : edgeSet) {
+    auto &[first, second] = edge->getNodePair();
+    auto id = edge->getId();
+    this->removeEdge(id);
+    auto newEdge = std::make_shared<DirectedEdge<T>>(id, second, first);
+    this->addEdge(newEdge);
+  }
 }
 
 template <typename T>

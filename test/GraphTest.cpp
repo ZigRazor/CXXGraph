@@ -436,3 +436,41 @@ TEST(GraphTest, test_inOutEdges_shared) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Node<int>>(node6));
   }
 }
+
+TEST(ReverseDirectedGraphTest, test_function) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
+  CXXGraph::DirectedEdge<int> edge1(1, node1, node2);
+  CXXGraph::DirectedEdge<int> edge2(2, node1, node3);
+  CXXGraph::DirectedEdge<int> edge3(3, node2, node3);
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge3));
+  CXXGraph::Graph<int> graph(edgeSet);
+  CXXGraph::Graph<int> reverseGraph(edgeSet);
+  reverseGraph.reverseDirectedGraph();
+  // Check that the reverse graph has the same nodes as the original one
+  ASSERT_EQ(graph.getNodeSet(), reverseGraph.getNodeSet());
+  // Check that the reverse graph has the same edges as the original one
+  auto originalSet = graph.getEdgeSet();
+  auto reverseSet = reverseGraph.getEdgeSet();
+  for (auto originalEdge: originalSet) {
+    for (auto reverseEdge : reverseSet) {
+      if (originalEdge->getId() == reverseEdge->getId()) {
+        ASSERT_TRUE(originalEdge->getNodePair().first->getUserId() == reverseEdge->getNodePair().second->getUserId() &&
+                    originalEdge->getNodePair().second->getUserId() == reverseEdge->getNodePair().first->getUserId());
+      }
+    }
+  }
+}
+
+TEST(ReverseDirectedGraphTest, test_exception) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::DirectedEdge<int> edge1(1, node1, node1);
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));
+  CXXGraph::Graph<int> graph(edgeSet);
+  ASSERT_THROW(graph.reverseDirectedGraph(), std::runtime_error);
+}
