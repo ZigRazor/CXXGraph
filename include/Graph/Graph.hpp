@@ -545,9 +545,7 @@ class Graph {
   virtual bool isUndirectedGraph() const;
 
   /**
-   * \brief
-   * This function reverse the direction of the edges in a directed graph
-   * 
+   * @brief This function reverse the direction of the edges in a directed graph
    */
   virtual void reverseDirectedGraph();
 
@@ -2534,8 +2532,8 @@ void Graph<T>::reverseDirectedGraph(){
   if (!isDirectedGraph()) {
     throw std::runtime_error(ERR_UNDIR_GRAPH);
   }
-  auto edgeSet = Graph<T>::getEdgeSet();
-  for (const auto &edge : edgeSet) {
+  auto oldEdgeSet = Graph<T>::getEdgeSet();
+  for (const auto &edge : oldEdgeSet) {
     auto &[first, second] = edge->getNodePair();
     auto id = edge->getId();
     this->removeEdge(id);
