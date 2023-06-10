@@ -468,9 +468,22 @@ TEST(ReverseDirectedGraphTest, test_function) {
 
 TEST(ReverseDirectedGraphTest, test_exception) {
   CXXGraph::Node<int> node1("1", 1);
-  CXXGraph::Edge<int> edge1(1, node1, node1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
+  CXXGraph::Edge<int> edge1(1, node1, node2);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge1));
   CXXGraph::Graph<int> graph(edgeSet);
   ASSERT_THROW(graph.reverseDirectedGraph(), std::runtime_error);
+  CXXGraph::UndirectedEdge<int> edge2(2, node2, node3);
+  CXXGraph::T_EdgeSet<int> undirEdgeSet;
+  undirEdgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge2));
+  CXXGraph::Graph<int> undirGraph(undirEdgeSet);
+  ASSERT_THROW(undirGraph.reverseDirectedGraph(), std::runtime_error);
+  CXXGraph::DirectedEdge<int> edge3(3, node3, node1);
+  CXXGraph::T_EdgeSet<int> mixedEdgeSet;
+  mixedEdgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge3));
+  mixedEdgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge2));
+  CXXGraph::Graph<int> mixedGraph(mixedEdgeSet);
+  ASSERT_THROW(mixedGraph.reverseDirectedGraph(), std::runtime_error);
 }
