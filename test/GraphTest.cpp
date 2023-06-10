@@ -453,7 +453,7 @@ TEST(ReverseDirectedGraphTest, test_function) {
   reverseGraph.reverseDirectedGraph();
   // Check that the reverse graph has the same nodes as the original one
   ASSERT_EQ(graph.getNodeSet(), reverseGraph.getNodeSet());
-  // Check that the reverse graph has the same edges as the original one
+  // Check edges
   auto originalSet = graph.getEdgeSet();
   auto reverseSet = reverseGraph.getEdgeSet();
   for (auto originalEdge: originalSet) {
@@ -468,9 +468,9 @@ TEST(ReverseDirectedGraphTest, test_function) {
 
 TEST(ReverseDirectedGraphTest, test_exception) {
   CXXGraph::Node<int> node1("1", 1);
-  CXXGraph::DirectedEdge<int> edge1(1, node1, node1);
+  CXXGraph::Edge<int> edge1(1, node1, node1);
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge1));
   CXXGraph::Graph<int> graph(edgeSet);
   ASSERT_THROW(graph.reverseDirectedGraph(), std::runtime_error);
 }
