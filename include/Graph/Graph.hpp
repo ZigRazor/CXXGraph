@@ -736,8 +736,23 @@ void Graph<T>::setEdgeSet(const T_EdgeSet<T> &edgeSet) {
 
 template <typename T>
 void Graph<T>::addEdge(const Edge<T> *edge) {
-  auto edge_shared = make_shared<const Edge<T>>(*edge);
-  this->edgeSet.insert(edge_shared);
+  if (edge->isDirected().has_value() && edge->isDirected().value()) {
+	if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
+	  auto edge_shared = make_shared<DirectedWeightedEdge<T>>(*edge);
+	  this->edgeSet.insert(std::static_pointer_cast<const Edge<T>>(edge_shared));
+	} else {
+	  auto edge_shared = make_shared<DirectedEdge<T>>(*edge);
+	  this->edgeSet.insert(std::static_pointer_cast<const Edge<T>>(edge_shared));
+	}
+  } else {
+	if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
+	  auto edge_shared = make_shared<UndirectedWeightedEdge<T>>(*edge);
+	  this->edgeSet.insert(std::static_pointer_cast<const Edge<T>>(edge_shared));
+	} else {
+	  auto edge_shared = make_shared<UndirectedEdge<T>>(*edge);
+	  this->edgeSet.insert(std::static_pointer_cast<const Edge<T>>(edge_shared));
+	}
+  }
 }
 
 template <typename T>
