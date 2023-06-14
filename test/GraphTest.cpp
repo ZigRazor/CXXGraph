@@ -105,6 +105,60 @@ TEST(GraphTest, GetNodeSet_2) {
               }) != nodeSet.end());
 }
 
+TEST(GraphTest, RawAddEdge_1) {
+	CXXGraph::Node<int> n1("a", 1);
+	CXXGraph::Node<int> n2("b", 1);
+	CXXGraph::Node<int> n3("c", 1);
+
+	CXXGraph::DirectedEdge<int> e1(0, n1, n2);
+	CXXGraph::DirectedEdge<int> e2(1, n2, n3);
+	CXXGraph::DirectedEdge<int> e3(2, n3, n1);
+
+	CXXGraph::Graph<int> graph;
+    graph.addEdge(&e1);
+    graph.addEdge(&e2);
+    graph.addEdge(&e3);
+
+	ASSERT_TRUE(graph.isDirectedGraph());
+	ASSERT_FALSE(graph.isUndirectedGraph());
+}
+
+TEST(GraphTest, RawAddEdge_2) {
+	CXXGraph::Node<int> n1("a", 1);
+	CXXGraph::Node<int> n2("b", 1);
+	CXXGraph::Node<int> n3("c", 1);
+
+	CXXGraph::UndirectedEdge<int> e1(0, n1, n2);
+	CXXGraph::UndirectedEdge<int> e2(1, n2, n3);
+	CXXGraph::UndirectedEdge<int> e3(2, n3, n1);
+
+	CXXGraph::Graph<int> graph;
+    graph.addEdge(&e1);
+    graph.addEdge(&e2);
+    graph.addEdge(&e3);
+
+	ASSERT_FALSE(graph.isDirectedGraph());
+	ASSERT_TRUE(graph.isUndirectedGraph());
+}
+
+TEST(GraphTest, RawAddEdge_3) {
+	CXXGraph::Node<int> n1("a", 1);
+	CXXGraph::Node<int> n2("b", 1);
+	CXXGraph::Node<int> n3("c", 1);
+
+	CXXGraph::UndirectedEdge<int> e1(0, n1, n2);
+	CXXGraph::DirectedEdge<int> e2(1, n2, n3);
+	CXXGraph::UndirectedEdge<int> e3(2, n3, n1);
+
+	CXXGraph::Graph<int> graph;
+    graph.addEdge(&e1);
+    graph.addEdge(&e2);
+    graph.addEdge(&e3);
+
+	ASSERT_FALSE(graph.isDirectedGraph());
+	ASSERT_FALSE(graph.isUndirectedGraph());
+}
+
 TEST(GraphTest, adj_print_1) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
