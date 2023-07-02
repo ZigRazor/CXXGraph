@@ -26,6 +26,8 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <unordered_map>
+#include <vector>
 
 #include "ConstValue.hpp"
 #include "PointerHash.hpp"
@@ -35,10 +37,10 @@ namespace CXXGraph {
 template <typename T>
 using unique = std::unique_ptr<T>;
 template <typename T>
-using shared= std::shared_ptr<T>;
+using shared = std::shared_ptr<T>;
 
-using std::make_unique;
 using std::make_shared;
+using std::make_unique;
 
 template <typename T>
 class Node;
@@ -62,6 +64,14 @@ enum E_InputOutputFormat {
 
 typedef E_InputOutputFormat InputOutputFormat;
 
+/// specify the type of results returnde by tarjan's algorithm
+enum TarjanAlgorithmTypes {
+  TARJAN_FIND_SCC = (1 << 0),
+  TARJAN_FIND_CUTV = (1 << 1),
+  TARJAN_FIND_BRIDGE = (1 << 2),
+  TARJAN_FIND_VBCC = (1 << 3),
+  TARJAN_FIND_EBCC = (1 << 4)
+};
 /////////////////////////////////////////////////////
 // Structures ///////////////////////////////////////
 
@@ -190,6 +200,35 @@ struct SCCResult_struct {
 template <typename T>
 using SCCResult = SCCResult_struct<T>;
 
+/// Struct that contains the information about TopologicalSort's Algorithm
+/// results
+template <typename T>
+struct TarjanResult_struct {
+  bool success =
+      false;  // TRUE if the function does not return error, FALSE otherwise
+  std::string errorMessage = "";  // message of error
+  Components<T>
+      stronglyConnectedComps;  // vectors that store nodes belong to same SCC
+                               // (valid only if a graph is directed and flag
+                               // TARJAN_FIND_SCC is set)
+  Components<T>
+      verticeBiconnectedComps;  // vectors that store nodes belong to same v-bcc
+                                // (valid only if a graph is undirected and flag
+                                // TARJAN_FIND_VBCC is set)
+  Components<T>
+      edgeBiconnectedComps;  // vectors that store nodes belong to same e-bcc
+                             // (valid only if a graph is undirected and flag
+                             // TARJAN_FIND_EBCC is set)
+  std::vector<Node<T>> cutVertices;  // a vector that stores cut vertices
+                                     // (valid only is a graph is undirected and
+                                     // flag TARJAN_FIND_CUTV is set)
+  std::vector<Edge<T>> bridges;  // a vector that stores bridges
+                                 // (valid only is a graph is undirected and
+                                 // flag TRAJAN_FIND_BRIDGES is set)
+};
+template <typename T>
+using TarjanResult = TarjanResult_struct<T>;
+
 /// Struct that contains the information about Best First Search Algorithm
 /// results
 template <typename T>
@@ -209,7 +248,9 @@ using BestFirstSearchResult = BestFirstSearchResult_struct<T>;
 
 template <typename T>
 using AdjacencyMatrix = std::unordered_map<
-    shared<const Node<T>>, std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>, nodeHash<T>>;
+    shared<const Node<T>>,
+    std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>,
+    nodeHash<T>>;
 
 template <typename T>
 using PartitionMap =
