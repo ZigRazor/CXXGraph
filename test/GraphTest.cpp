@@ -159,6 +159,44 @@ TEST(GraphTest, RawAddEdge_3) {
   ASSERT_FALSE(graph.isUndirectedGraph());
 }
 
+TEST(GraphTest, DirectedEdgeCycle_1) {
+  CXXGraph::Node<int> node1("a", 1);
+  CXXGraph::Node<int> node2("b", 1);
+  CXXGraph::Node<int> node3("c", 1);
+
+  CXXGraph::DirectedEdge<int> edge1(0, node1, node2);
+  CXXGraph::DirectedEdge<int> edge2(1, node2, node1);
+  CXXGraph::DirectedEdge<int> edge3(2, node3, node1);
+
+  CXXGraph::Graph<int> graph;
+  graph.addEdge(&edge1);
+  graph.addEdge(&edge2);
+  graph.addEdge(&edge3);
+
+  // Check that all of the edges have been added to the graph
+  ASSERT_EQ(graph.getEdgeSet().size(), 3);
+}
+
+TEST(GraphTest, DirectedEdgeCycle_2) {
+  CXXGraph::Node<int> node1("a", 1);
+  CXXGraph::Node<int> node2("b", 1);
+  CXXGraph::Node<int> node3("c", 1);
+
+  CXXGraph::DirectedEdge<int> edge1(0, node1, node2);
+  CXXGraph::DirectedEdge<int> edge2(1, node2, node1);
+  CXXGraph::DirectedEdge<int> edge3(2, node3, node1);
+
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge3));
+
+  CXXGraph::Graph<int> graph(edgeSet);
+
+  // Check that all of the edges have been added to the graph
+  ASSERT_EQ(graph.getEdgeSet().size(), 3);
+}
+
 TEST(GraphTest, adj_print_1) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
