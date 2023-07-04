@@ -219,14 +219,33 @@ TEST(GraphTest, DirectedEdge_hashequality) {
 
   CXXGraph::Graph<int> graph;
 
-  graph.addEdge(&edge4);
-  graph.addEdge(&edge5);
-  graph.addEdge(&edge6);
-  graph.addEdge(&edge7);
-  graph.addEdge(&edge8);
-  graph.addEdge(&edge9);
-  graph.addEdge(&edge10);
-  graph.addEdge(&edge11);
+  CXXGraph::T_EdgeSet<int> edges;
+  auto addEdge = [&](CXXGraph::DirectedEdge<int>& edge)
+  {
+    size_t currSize = edges.size();
+    auto sharedEdge = CXXGraph::make_shared<CXXGraph::DirectedEdge<int>>(edge.getId(), edge.getFrom(), edge.getTo());
+    edges.insert(sharedEdge);
+    if ((currSize + 1) != edges.size())
+    {
+      std::cout << "Skipped " << edge.getNodePair().first->getUserId() << " --> " << edge.getNodePair().second->getUserId() << " (hash: " << CXXGraph::edgeHash<int>{}(sharedEdge) << ")" << std::endl;
+    } else {
+      std::cout << "Added " << edge.getNodePair().first->getUserId() << " --> " << edge.getNodePair().second->getUserId() << " (hash: " << CXXGraph::edgeHash<int>{}(sharedEdge) << ")" << std::endl;
+    }
+  };
+
+  addEdge(&edge1);
+  addEdge(&edge2);
+  addEdge(&edge3);
+  addEdge(&edge4);
+  addEdge(&edge5);
+  addEdge(&edge6);
+  addEdge(&edge7);
+  addEdge(&edge8);
+  addEdge(&edge9);
+  addEdge(&edge10);
+  addEdge(&edge11);
+
+  graph.setEdgeSet(edges);
 
   // Check that all of the edges have been added to the graph
   ASSERT_EQ(graph.getEdgeSet().size(), 11);
