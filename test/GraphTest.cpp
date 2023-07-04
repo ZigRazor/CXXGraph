@@ -230,6 +230,7 @@ TEST(GraphTest, DirectedEdge_hashequality) {
 
   // Check that all of the edges have been added to the graph
   ASSERT_EQ(graph.getEdgeSet().size(), 11);
+}
 
 TEST(GraphTest, adj_print_1) {
   CXXGraph::Node<int> node1("1", 1);
