@@ -243,33 +243,31 @@ class Graph {
   /**
    * @brief This function generate a list of adjacency matrix with every element
    * of the matrix contain the node where is directed the link and the Edge
-   * corrispondent to the link Note: No Thread Safe
+   * corrispondent to the link
+   * Note: No Thread Safe
    */
   virtual const std::shared_ptr<AdjacencyMatrix<T>> getAdjMatrix() const;
   /**
-   * \brief This function generates a set of nodes linked to the provided node in a
-   * directed graph
-   * Note: No Thread Safe
+   * \brief This function generates a set of nodes linked to the provided node
+   * in a directed graph
    *
    * @param Pointer to the node
    *
    */
-  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>> outNeighbors(
-      const Node<T> *node) const;
+  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+  outNeighbors(const Node<T> *node) const;
   /**
-   * \brief This function generates a set of nodes linked to the provided node in a
-   * directed graph
-   * Note: No Thread Safe
+   * \brief This function generates a set of nodes linked to the provided node
+   * in a directed graph
    *
    * @param Pointer to the node
    *
    */
-  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>> outNeighbors(
-      shared<const Node<T>> node) const;
+  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+  outNeighbors(shared<const Node<T>> node) const;
   /**
-   * \brief This function generates a set of nodes linked to the provided node in
-   * any graph
-   * Note: No Thread Safe
+   * \brief This function generates a set of nodes linked to the provided node
+   * in any graph
    *
    * @param Pointer to the node
    *
@@ -278,9 +276,8 @@ class Graph {
   inOutNeighbors(const Node<T> *node) const;
   /**
    * \brief
-   * \brief This function generates a set of nodes linked to the provided node in
-   * any graph
-   * Note: No Thread Safe
+   * \brief This function generates a set of nodes linked to the provided node
+   * in any graph
    *
    * @param Pointer to the node
    *
@@ -545,6 +542,11 @@ class Graph {
   virtual bool isUndirectedGraph() const;
 
   /**
+   * @brief This function reverse the direction of the edges in a directed graph
+   */
+  virtual void reverseDirectedGraph();
+
+  /**
    * @brief This function checks if the graph is connected or not
    * 	Applicable for Undirected Graph, for Directed Graph use the
    * isStronglyConnectedGraph() function
@@ -736,8 +738,23 @@ void Graph<T>::setEdgeSet(const T_EdgeSet<T> &edgeSet) {
 
 template <typename T>
 void Graph<T>::addEdge(const Edge<T> *edge) {
-  auto edge_shared = make_shared<const Edge<T>>(*edge);
-  this->edgeSet.insert(edge_shared);
+  if (edge->isDirected().has_value() && edge->isDirected().value()) {
+    if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
+      auto edge_shared = make_shared<DirectedWeightedEdge<T>>(*edge);
+      this->edgeSet.insert(edge_shared);
+    } else {
+      auto edge_shared = make_shared<DirectedEdge<T>>(*edge);
+      this->edgeSet.insert(edge_shared);
+    }
+  } else {
+    if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
+      auto edge_shared = make_shared<UndirectedWeightedEdge<T>>(*edge);
+      this->edgeSet.insert(edge_shared);
+    } else {
+      auto edge_shared = make_shared<UndirectedEdge<T>>(*edge);
+      this->edgeSet.insert(edge_shared);
+    }
+  }
 }
 
 template <typename T>
@@ -1380,16 +1397,16 @@ const std::shared_ptr<AdjacencyMatrix<T>> Graph<T>::getAdjMatrix() const {
 }
 
 template <typename T>
-const std::unordered_set<shared<const Node<T>>, nodeHash<T>> Graph<T>::outNeighbors(
-    const Node<T> *node) const {
+const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+Graph<T>::outNeighbors(const Node<T> *node) const {
   auto node_shared = make_shared<const Node<T>>(*node);
 
   return outNeighbors(node_shared);
 }
 
 template <typename T>
-const std::unordered_set<shared<const Node<T>>, nodeHash<T>> Graph<T>::outNeighbors(
-    shared<const Node<T>> node) const {
+const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+Graph<T>::outNeighbors(shared<const Node<T>> node) const {
   auto adj = getAdjMatrix();
   if (adj->find(node) == adj->end()) {
     return std::unordered_set<shared<const Node<T>>, nodeHash<T>>();
@@ -2520,6 +2537,21 @@ bool Graph<T>::isUndirectedGraph() const {
   }
   // No Directed Edge
   return true;
+}
+
+template <typename T>
+void Graph<T>::reverseDirectedGraph(){
+  if (!isDirectedGraph()) {
+    throw std::runtime_error(ERR_UNDIR_GRAPH);
+  }
+  auto oldEdgeSet = Graph<T>::getEdgeSet();
+  for (const auto &edge : oldEdgeSet) {
+    auto &[first, second] = edge->getNodePair();
+    auto id = edge->getId();
+    this->removeEdge(id);
+    auto newEdge = std::make_shared<DirectedEdge<T>>(id, second, first);
+    this->addEdge(newEdge);
+  }
 }
 
 template <typename T>

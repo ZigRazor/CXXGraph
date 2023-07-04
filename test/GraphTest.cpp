@@ -105,6 +105,60 @@ TEST(GraphTest, GetNodeSet_2) {
               }) != nodeSet.end());
 }
 
+TEST(GraphTest, RawAddEdge_1) {
+  CXXGraph::Node<int> n1("a", 1);
+  CXXGraph::Node<int> n2("b", 1);
+  CXXGraph::Node<int> n3("c", 1);
+
+  CXXGraph::DirectedEdge<int> e1(0, n1, n2);
+  CXXGraph::DirectedEdge<int> e2(1, n2, n3);
+  CXXGraph::DirectedEdge<int> e3(2, n3, n1);
+
+  CXXGraph::Graph<int> graph;
+  graph.addEdge(&e1);
+  graph.addEdge(&e2);
+  graph.addEdge(&e3);
+
+  ASSERT_TRUE(graph.isDirectedGraph());
+  ASSERT_FALSE(graph.isUndirectedGraph());
+}
+
+TEST(GraphTest, RawAddEdge_2) {
+  CXXGraph::Node<int> n1("a", 1);
+  CXXGraph::Node<int> n2("b", 1);
+  CXXGraph::Node<int> n3("c", 1);
+
+  CXXGraph::UndirectedEdge<int> e1(0, n1, n2);
+  CXXGraph::UndirectedEdge<int> e2(1, n2, n3);
+  CXXGraph::UndirectedEdge<int> e3(2, n3, n1);
+
+  CXXGraph::Graph<int> graph;
+  graph.addEdge(&e1);
+  graph.addEdge(&e2);
+  graph.addEdge(&e3);
+
+  ASSERT_FALSE(graph.isDirectedGraph());
+  ASSERT_TRUE(graph.isUndirectedGraph());
+}
+
+TEST(GraphTest, RawAddEdge_3) {
+  CXXGraph::Node<int> n1("a", 1);
+  CXXGraph::Node<int> n2("b", 1);
+  CXXGraph::Node<int> n3("c", 1);
+
+  CXXGraph::UndirectedEdge<int> e1(0, n1, n2);
+  CXXGraph::DirectedEdge<int> e2(1, n2, n3);
+  CXXGraph::UndirectedEdge<int> e3(2, n3, n1);
+
+  CXXGraph::Graph<int> graph;
+  graph.addEdge(&e1);
+  graph.addEdge(&e2);
+  graph.addEdge(&e3);
+
+  ASSERT_FALSE(graph.isDirectedGraph());
+  ASSERT_FALSE(graph.isUndirectedGraph());
+}
+
 TEST(GraphTest, adj_print_1) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
@@ -338,7 +392,8 @@ TEST(GraphTest, test_outEdges_shared) {
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge12));
   CXXGraph::Graph<int> graph(edgeSet);
 
-  for (auto x : graph.outNeighbors(make_shared<const CXXGraph::Node<int>>(node1))) {
+  for (auto x :
+       graph.outNeighbors(make_shared<const CXXGraph::Node<int>>(node1))) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Node<int>>(node2) ||
                 x == make_shared<const CXXGraph::Node<int>>(node3));
   }
@@ -426,7 +481,8 @@ TEST(GraphTest, test_inOutEdges_shared) {
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge8));
   CXXGraph::Graph<int> graph(edgeSet);
 
-  for (auto x : graph.inOutNeighbors(make_shared<const CXXGraph::Node<int>>(node1))) {
+  for (auto x :
+       graph.inOutNeighbors(make_shared<const CXXGraph::Node<int>>(node1))) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Node<int>>(node2) ||
                 x == make_shared<const CXXGraph::Node<int>>(node3));
   }
@@ -435,4 +491,55 @@ TEST(GraphTest, test_inOutEdges_shared) {
   for (auto x : graph.inOutNeighbors(node7_shared)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Node<int>>(node6));
   }
+}
+
+TEST(ReverseDirectedGraphTest, test_function) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
+  CXXGraph::DirectedEdge<int> edge1(1, node1, node2);
+  CXXGraph::DirectedEdge<int> edge2(2, node1, node3);
+  CXXGraph::DirectedEdge<int> edge3(3, node2, node3);
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge3));
+  CXXGraph::Graph<int> graph(edgeSet);
+  CXXGraph::Graph<int> reverseGraph(edgeSet);
+  reverseGraph.reverseDirectedGraph();
+  // Check that the reverse graph has the same nodes as the original one
+  ASSERT_EQ(graph.getNodeSet(), reverseGraph.getNodeSet());
+  // Check edges
+  auto originalSet = graph.getEdgeSet();
+  auto reverseSet = reverseGraph.getEdgeSet();
+  for (auto originalEdge: originalSet) {
+    for (auto reverseEdge : reverseSet) {
+      if (originalEdge->getId() == reverseEdge->getId()) {
+        ASSERT_TRUE(originalEdge->getNodePair().first->getUserId() == reverseEdge->getNodePair().second->getUserId() &&
+                    originalEdge->getNodePair().second->getUserId() == reverseEdge->getNodePair().first->getUserId());
+      }
+    }
+  }
+}
+
+TEST(ReverseDirectedGraphTest, test_exception) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
+  CXXGraph::Edge<int> edge1(1, node1, node2);
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge1));
+  CXXGraph::Graph<int> graph(edgeSet);
+  ASSERT_THROW(graph.reverseDirectedGraph(), std::runtime_error);
+  CXXGraph::UndirectedEdge<int> edge2(2, node2, node3);
+  CXXGraph::T_EdgeSet<int> undirEdgeSet;
+  undirEdgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge2));
+  CXXGraph::Graph<int> undirGraph(undirEdgeSet);
+  ASSERT_THROW(undirGraph.reverseDirectedGraph(), std::runtime_error);
+  CXXGraph::DirectedEdge<int> edge3(3, node3, node1);
+  CXXGraph::T_EdgeSet<int> mixedEdgeSet;
+  mixedEdgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge3));
+  mixedEdgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge2));
+  CXXGraph::Graph<int> mixedGraph(mixedEdgeSet);
+  ASSERT_THROW(mixedGraph.reverseDirectedGraph(), std::runtime_error);
 }
