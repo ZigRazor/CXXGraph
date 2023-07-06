@@ -58,10 +58,13 @@ if(TEST)
         PUBLIC ${zlib_SOURCE_DIR}
     )
     target_link_libraries(test_exe
-        PUBLIC pthread
         PUBLIC GTest::gtest_main
         PUBLIC zlibstatic
     )
+
+    if(NOT gtest_disable_pthreads)
+        target_link_libraries(test_exe PUBLIC pthread)
+    endif(NOT gtest_disable_pthreads)
 
     enable_testing()
 
