@@ -20,6 +20,7 @@
 #ifndef __CXXGRAPH_GRAPH_H__
 #define __CXXGRAPH_GRAPH_H__
 
+#include <cstdio>
 #pragma once
 
 #include <limits.h>
@@ -2678,7 +2679,7 @@ const TarjanResult<T> Graph<T>::tarjan(const unsigned int typeMask) const {
   std::unordered_map<size_t, int>
       discoveryTime;  // the timestamp when a node is visited
   std::unordered_map<size_t, int>
-      lowestDisc;  // the lowest discory time of all
+      lowestDisc;  // the lowest discovery time of all
                    // reachable nodes from current node
   int timestamp = 0;
   size_t rootId = 0;
@@ -2791,6 +2792,9 @@ const TarjanResult<T> Graph<T>::tarjan(const unsigned int typeMask) const {
               // the current node has been poped out
               Node<T> nodeAtTop = nodeStack.top();
               nodeStack.pop();
+              if (typeMask & TARJAN_FIND_SCC) {
+                inStack.erase(nodeAtTop.getId());
+              }
               connectedComp.emplace_back(nodeAtTop);
               if (nodeAtTop == *curNode) {
                 break;
@@ -2813,6 +2817,7 @@ const TarjanResult<T> Graph<T>::tarjan(const unsigned int typeMask) const {
     }
   }
 
+  result.success = true;
   return result;
 }
 
