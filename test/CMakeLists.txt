@@ -28,18 +28,17 @@ if(TEST)
         NAME googletest
         GITHUB_REPOSITORY google/googletest
         GIT_TAG origin/main
-        OPTIONS "gtest_forced_shared_crt ON"
+        OPTIONS "gtest_forced_shared_crt ON CACHE BOOL "" FORCE"
     )
 
     CPMAddPackage(
         NAME zlib
         GITHUB_REPOSITORY madler/zlib
-		VERSION 1.2.13
-		OPTIONS "CMAKE_POSITION_INDEPENDENT_CODE True"
+        VERSION 1.2.13
+        OPTIONS "CMAKE_POSITION_INDEPENDENT_CODE True"
     )
 
     file (GLOB TEST_FILES "*.cpp" "*.hpp")
-
     add_executable(test_exe ${TEST_FILES})
 
     target_compile_definitions(test_exe
