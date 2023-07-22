@@ -22,28 +22,21 @@ endif(CODE_COVERAGE)
 
 option(TEST "Enable Test" OFF)
 if(TEST)
-    include(FetchContent)
+    include(${CPM_DOWNLOAD_LOCATION})
 
-    FetchContent_Declare(
-        googletest
-        GIT_REPOSITORY https://github.com/google/googletest.git
+    CPMAddPackage(
+        NAME googletest
+        GITHUB_REPOSITORY google/googletest
         GIT_TAG origin/main
-        #GIT_TAG        v1.13.0 # release-1.13.0
+        OPTIONS "gtest_forced_shared_crt ON"
     )
 
-    FetchContent_Declare(
-        zlib
-        GIT_REPOSITORY https://github.com/madler/zlib.git
-        GIT_TAG v1.2.13
+    CPMAddPackage(
+        NAME zlib
+        GITHUB_REPOSITORY madler/zlib
+		VERSION 1.2.13
+		OPTIONS "CMAKE_POSITION_INDEPENDENT_CODE True"
     )
-
-    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-    FetchContent_MakeAvailable(googletest)
-
-    set(SAVE_CMAKE_POSITION_INDEPENDENT_CODE ${CMAKE_POSITION_INDEPENDENT_CODE})
-    set(CMAKE_POSITION_INDEPENDENT_CODE True)
-    FetchContent_MakeAvailable(zlib)
-    set(CMAKE_POSITION_INDEPENDENT_CODE ${SAVE_CMAKE_POSITION_INDEPENDENT_CODE})
 
     file (GLOB TEST_FILES "*.cpp" "*.hpp")
 
