@@ -30,6 +30,7 @@
 #include <cstring>
 #include <deque>
 #include <fstream>
+#include <sstream>
 #include <functional>
 #include <iostream>
 #include <limits>
