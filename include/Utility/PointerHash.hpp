@@ -69,7 +69,7 @@ template <typename T>
 bool operator==(shared<const Edge<T>> p1, shared<const Edge<T>> p2) {
   return p1->getNodePair().first->getUserId() ==
              p2->getNodePair().first->getUserId() &&
-         p2->getNodePair().second->getUserId() ==
+         p1->getNodePair().second->getUserId() ==
              p2->getNodePair().second->getUserId();
 }
 }  // namespace CXXGraph

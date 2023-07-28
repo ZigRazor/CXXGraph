@@ -168,6 +168,8 @@ TEST(GraphTest, DirectedEdgeCycle_1) {
   CXXGraph::DirectedEdge<int> edge2(1, node2, node1);
   CXXGraph::DirectedEdge<int> edge3(2, node3, node1);
 
+  CXXGraph::Graph<int> graph;
+
   graph.addEdge(&edge1);
   graph.addEdge(&edge2);
   graph.addEdge(&edge3);
@@ -217,8 +219,6 @@ TEST(GraphTest, DirectedEdge_hashequality) {
   CXXGraph::DirectedEdge<int> edge10(10, node6, node2);
   CXXGraph::DirectedEdge<int> edge11(11, node7, node2);
 
-  CXXGraph::Graph<int> graph;
-
   CXXGraph::T_EdgeSet<int> edges;
   auto addEdge = [&](CXXGraph::DirectedEdge<int>& edge)
   {
@@ -233,18 +233,19 @@ TEST(GraphTest, DirectedEdge_hashequality) {
     }
   };
 
-  addEdge(&edge1);
-  addEdge(&edge2);
-  addEdge(&edge3);
-  addEdge(&edge4);
-  addEdge(&edge5);
-  addEdge(&edge6);
-  addEdge(&edge7);
-  addEdge(&edge8);
-  addEdge(&edge9);
-  addEdge(&edge10);
-  addEdge(&edge11);
+  addEdge(edge1);
+  addEdge(edge2);
+  addEdge(edge3);
+  addEdge(edge4);
+  addEdge(edge5);
+  addEdge(edge6);
+  addEdge(edge7);
+  addEdge(edge8);
+  addEdge(edge9);
+  addEdge(edge10);
+  addEdge(edge11);
 
+  CXXGraph::Graph<int> graph;
   graph.setEdgeSet(edges);
 
   // Check that all of the edges have been added to the graph
