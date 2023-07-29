@@ -28,7 +28,7 @@ if(TEST)
         NAME googletest
         GITHUB_REPOSITORY google/googletest
         GIT_TAG origin/main
-        OPTIONS "gtest_forced_shared_crt ON CACHE BOOL "" FORCE"
+        OPTIONS "gtest_forced_shared_crt ON CACHE BOOL FORCE"
     )
 
     CPMAddPackage(
