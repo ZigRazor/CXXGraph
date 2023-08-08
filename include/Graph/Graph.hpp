@@ -2757,7 +2757,7 @@ const TarjanResult<T> Graph<T>::tarjan(const unsigned int typeMask) const {
                   while (true) {
                     // pop a top node out of stack until
                     // the neighbor node has been poped out
-                    Node<T> nodeAtTop = sccNodeStack.top();
+                    Node<T> nodeAtTop = vbccNodeStack.top();
                     vbccNodeStack.pop();
                     vbcc.emplace_back(nodeAtTop);
                     if (nodeAtTop == *neighborNode) {
