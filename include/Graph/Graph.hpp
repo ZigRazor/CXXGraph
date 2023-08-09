@@ -20,6 +20,7 @@
 #ifndef __CXXGRAPH_GRAPH_H__
 #define __CXXGRAPH_GRAPH_H__
 
+#include <cstdio>
 #pragma once
 
 #include <limits.h>
@@ -359,6 +360,21 @@ class Graph {
    */
   virtual const DijkstraResult dijkstra(const Node<T> &source,
                                         const Node<T> &target) const;
+  /**
+   * @brief This function runs the tarjan algorithm and returns different types
+   * of results depending on the input parameter typeMask.
+   *
+   * @param typeMask each bit of typeMask within valid range represents a kind
+   * of results should be returned.
+   *
+   * Note: No Thread Safe
+   *
+   * @return The types of return include strongly connected components
+   * (only for directed graphs) and cut vertices、 bridges、edge
+   * biconnected components and vertice biconnected components
+   * (only for undirected graphs).
+   */
+  virtual const TarjanResult<T> tarjan(const unsigned int typeMask) const;
   /**
    * @brief Function runs the bellman-ford algorithm for some source node and
    * target node in the graph and returns the shortest distance of target
@@ -2541,7 +2557,7 @@ bool Graph<T>::isUndirectedGraph() const {
 }
 
 template <typename T>
-void Graph<T>::reverseDirectedGraph(){
+void Graph<T>::reverseDirectedGraph() {
   if (!isDirectedGraph()) {
     throw std::runtime_error(ERR_UNDIR_GRAPH);
   }
@@ -2635,6 +2651,175 @@ bool Graph<T>::isStronglyConnectedGraph() const {
     }
     return true;
   }
+}
+
+template <typename T>
+const TarjanResult<T> Graph<T>::tarjan(const unsigned int typeMask) const {
+  TarjanResult<T> result;
+  result.success = false;
+  bool isDirected = this->isDirectedGraph();
+  if (isDirected) {
+    // check whether targetMask is a subset of the mask for directed graph
+    unsigned int directedMask = TARJAN_FIND_SCC;
+    if ((typeMask | directedMask) != directedMask) {
+      result.errorMessage = ERR_DIR_GRAPH;
+      return result;
+    }
+  } else {
+    // check whether targetMask is a subset of the mask for undirected graph
+    unsigned int undirectedMask = (TARJAN_FIND_CUTV | TARJAN_FIND_BRIDGE |
+                                   TARJAN_FIND_VBCC | TARJAN_FIND_EBCC);
+    if ((typeMask | undirectedMask) != undirectedMask) {
+      result.errorMessage = ERR_UNDIR_GRAPH;
+      return result;
+    }
+  }
+
+  const auto &adjMatrix = getAdjMatrix();
+  const auto &nodeSet = getNodeSet();
+  std::unordered_map<size_t, int>
+      discoveryTime;  // the timestamp when a node is visited
+  std::unordered_map<size_t, int>
+      lowestDisc;  // the lowest discovery time of all
+                   // reachable nodes from current node
+  int timestamp = 0;
+  size_t rootId = 0;
+  std::stack<Node<T>> sccNodeStack;
+  std::stack<Node<T>> ebccNodeStack;
+  std::stack<Node<T>> vbccNodeStack;
+  std::unordered_set<size_t> inStack;
+  std::function<void(const shared<const Node<T>>, const shared<const Edge<T>>)>
+      dfs_helper = [this, typeMask, isDirected, &dfs_helper, &adjMatrix,
+                    &discoveryTime, &lowestDisc, &timestamp, &rootId,
+                    &sccNodeStack, &ebccNodeStack, &vbccNodeStack, &inStack,
+                    &result](const shared<const Node<T>> curNode,
+                             const shared<const Edge<T>> prevEdge) {
+        // record the visited time of current node
+        discoveryTime[curNode->getId()] = timestamp;
+        lowestDisc[curNode->getId()] = timestamp;
+        timestamp++;
+        if (typeMask & TARJAN_FIND_SCC) {
+          sccNodeStack.emplace(*curNode);
+          inStack.emplace(curNode->getId());
+        }
+        if (typeMask & TARJAN_FIND_EBCC) {
+          ebccNodeStack.emplace(*curNode);
+        }
+        if (typeMask & TARJAN_FIND_VBCC) {
+          vbccNodeStack.emplace(*curNode);
+        }
+        // travel the neighbors
+        int numSon = 0;
+        bool nodeIsAdded =
+            false;  // whether a node has been marked as a cut vertice
+        if (adjMatrix->find(curNode) != adjMatrix->end()) {
+          for (const auto &[neighborNode, edge] : adjMatrix->at(curNode)) {
+            if (!discoveryTime.count(neighborNode->getId())) {
+              dfs_helper(neighborNode, edge);
+              lowestDisc[curNode->getId()] =
+                  std::min(lowestDisc[curNode->getId()],
+                           lowestDisc[neighborNode->getId()]);
+
+              if (typeMask & TARJAN_FIND_BRIDGE) {
+                // lowestDisc of neighbor node is larger than that of current
+                // node means we can travel back to a visited node only through
+                // this edge
+                if (discoveryTime[curNode->getId()] <
+                    lowestDisc[neighborNode->getId()]) {
+                  result.bridges.emplace_back(*edge);
+                }
+              }
+
+              if ((typeMask & TARJAN_FIND_CUTV) && (nodeIsAdded == false)) {
+                if (curNode->getId() == rootId) {
+                  numSon++;
+                  // a root node is a cut vertices only when it connects at
+                  // least two connected components
+                  if (numSon == 2) {
+                    nodeIsAdded = true;
+                    result.cutVertices.emplace_back(*curNode);
+                  }
+                } else {
+                  if (discoveryTime[curNode->getId()] <=
+                      lowestDisc[neighborNode->getId()]) {
+                    nodeIsAdded = true;
+                    result.cutVertices.emplace_back(*curNode);
+                  }
+                }
+              }
+
+              if (typeMask & TARJAN_FIND_VBCC) {
+                if (discoveryTime[curNode->getId()] <=
+                    lowestDisc[neighborNode->getId()]) {
+                  // if current node is a cut vertice or the root node, the vbcc
+                  // a vertice-biconnect-component which contains the neighbor
+                  // node
+                  std::vector<Node<T>> vbcc;
+                  while (true) {
+                    // pop a top node out of stack until
+                    // the neighbor node has been poped out
+                    Node<T> nodeAtTop = vbccNodeStack.top();
+                    vbccNodeStack.pop();
+                    vbcc.emplace_back(nodeAtTop);
+                    if (nodeAtTop == *neighborNode) {
+                      break;
+                    }
+                  }
+                  vbcc.emplace_back(*curNode);
+                  result.verticeBiconnectedComps.emplace_back(std::move(vbcc));
+                }
+              }
+            } else if ((edge != prevEdge) &&
+                       ((isDirected == false) ||
+                        (inStack.count(neighborNode->getId())))) {
+              // it's not allowed to go through the previous edge back
+              // for a directed graph, it's also not allowed to visit
+              // a node that is not in stack
+              lowestDisc[curNode->getId()] =
+                  std::min(lowestDisc[curNode->getId()],
+                           lowestDisc[neighborNode->getId()]);
+            }
+          }
+        }
+        // find sccs for a undirected graph is very similar with
+        // find ebccs for a directed graph
+        if ((typeMask & TARJAN_FIND_SCC) || (typeMask & TARJAN_FIND_EBCC)) {
+          std::stack<Node<T>> &nodeStack =
+              (typeMask & TARJAN_FIND_SCC) ? sccNodeStack : ebccNodeStack;
+          if (discoveryTime[curNode->getId()] == lowestDisc[curNode->getId()]) {
+            std::vector<Node<T>> connectedComp;
+            while (true) {
+              // pop a top node out of stack until
+              // the current node has been poped out
+              Node<T> nodeAtTop = nodeStack.top();
+              nodeStack.pop();
+              if (typeMask & TARJAN_FIND_SCC) {
+                inStack.erase(nodeAtTop.getId());
+              }
+              connectedComp.emplace_back(nodeAtTop);
+              if (nodeAtTop == *curNode) {
+                break;
+              }
+            }
+            // store this component in result
+            (typeMask & TARJAN_FIND_SCC)
+                ? result.stronglyConnectedComps.emplace_back(
+                      std::move(connectedComp))
+                : result.edgeBiconnectedComps.emplace_back(
+                      std::move(connectedComp));
+          }
+        }
+      };
+
+  for (const auto &node : nodeSet) {
+    if (!discoveryTime.count(node->getId())) {
+      rootId = node->getId();
+      dfs_helper(node, nullptr);
+    }
+  }
+
+  result.success = true;
+  return result;
 }
 
 template <typename T>
