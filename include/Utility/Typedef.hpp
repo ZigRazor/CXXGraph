@@ -78,7 +78,7 @@ enum TarjanAlgorithmTypes {
 
 /// Struct useful for union-find operations
 struct Subset_struct {
-  unsigned long long parent = 0;  // parent of the current set
+  CXXGraph::id_t parent = 0;  // parent of the current set
   unsigned long long rank =
       0;  // rank of the current set, used for balancing the trees
 };
