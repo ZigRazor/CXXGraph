@@ -50,16 +50,16 @@ std::ostream &operator<<(std::ostream &o,
 template <typename T>
 class UndirectedWeightedEdge : public UndirectedEdge<T>, public Weighted {
  public:
-  UndirectedWeightedEdge(const unsigned long id, const Node<T> &node1,
+  UndirectedWeightedEdge(const CXXGraph::id_t id, const Node<T> &node1,
                          const Node<T> &node2, const double weight);
-  UndirectedWeightedEdge(const unsigned long id, shared<const Node<T>> node1,
+  UndirectedWeightedEdge(const CXXGraph::id_t id, shared<const Node<T>> node1,
                          shared<const Node<T>> node2, const double weight);
   UndirectedWeightedEdge(
-      const unsigned long id,
+      const CXXGraph::id_t id,
       const std::pair<const Node<T> *, const Node<T> *> &nodepair,
       const double weight);
   UndirectedWeightedEdge(
-      const unsigned long id,
+      const CXXGraph::id_t id,
       const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair,
       const double weight);
   UndirectedWeightedEdge(const UndirectedEdge<T> &edge, const double weight);
@@ -80,14 +80,14 @@ class UndirectedWeightedEdge : public UndirectedEdge<T>, public Weighted {
 };
 
 template <typename T>
-UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const unsigned long id,
+UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const CXXGraph::id_t id,
                                                   const Node<T> &node1,
                                                   const Node<T> &node2,
                                                   const double weight)
     : UndirectedEdge<T>(id, node1, node2), Weighted(weight) {}
 
 template <typename T>
-UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const unsigned long id,
+UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const CXXGraph::id_t id,
                                                   shared<const Node<T>> node1,
                                                   shared<const Node<T>> node2,
                                                   const double weight)
@@ -95,14 +95,14 @@ UndirectedWeightedEdge<T>::UndirectedWeightedEdge(const unsigned long id,
 
 template <typename T>
 UndirectedWeightedEdge<T>::UndirectedWeightedEdge(
-    const unsigned long id,
+    const CXXGraph::id_t id,
     const std::pair<const Node<T> *, const Node<T> *> &nodepair,
     const double weight)
     : UndirectedEdge<T>(id, nodepair), Weighted(weight) {}
 
 template <typename T>
 UndirectedWeightedEdge<T>::UndirectedWeightedEdge(
-    const unsigned long id,
+    const CXXGraph::id_t id,
     const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair,
     const double weight)
     : UndirectedEdge<T>(id, nodepair), Weighted(weight) {}

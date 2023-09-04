@@ -47,7 +47,7 @@ namespace Partitioning {
 template <typename T>
 class CoordinatedPartitionState : public PartitionState<T> {
  private:
-  std::map<int, std::shared_ptr<CoordinatedRecord<T>>> record_map;
+  std::map<CXXGraph::id_t, std::shared_ptr<CoordinatedRecord<T>>> record_map;
   std::vector<int> machines_load_edges;
   std::vector<double> machines_weight_edges;
   std::vector<int> machines_load_vertices;
@@ -63,7 +63,7 @@ class CoordinatedPartitionState : public PartitionState<T> {
   CoordinatedPartitionState(const Globals &G);
   ~CoordinatedPartitionState();
 
-  std::shared_ptr<Record<T>> getRecord(const int x) override;
+  std::shared_ptr<Record<T>> getRecord(CXXGraph::id_t x) override;
   int getMachineLoad(const int m) const override;
   int getMachineWeight(const int m) const override;
   int getMachineLoadVertices(const int m) const override;
@@ -108,7 +108,7 @@ CoordinatedPartitionState<T>::~CoordinatedPartitionState() {}
 
 template <typename T>
 std::shared_ptr<Record<T>> CoordinatedPartitionState<T>::getRecord(
-    const int x) {
+    CXXGraph::id_t x) {
   std::lock_guard<std::mutex> lock(*record_map_mutex);
   if (record_map.find(x) == record_map.end()) {
     record_map[x] = std::make_shared<CoordinatedRecord<T>>();
@@ -236,7 +236,7 @@ int CoordinatedPartitionState<T>::getTotalReplicas() const {
 template <typename T>
 int CoordinatedPartitionState<T>::getNumVertices() const {
   std::lock_guard<std::mutex> lock(*record_map_mutex);
-  return record_map.size();
+  return (int)record_map.size();
 }
 template <typename T>
 std::set<int> CoordinatedPartitionState<T>::getVertexIds() const {
@@ -244,7 +244,7 @@ std::set<int> CoordinatedPartitionState<T>::getVertexIds() const {
   // if (GLOBALS.OUTPUT_FILE_NAME!=null){ out.close(); }
   std::set<int> result;
   for (const auto &record_map_it : record_map) {
-    result.insert(record_map_it.first);
+    result.insert((int)record_map_it.first);
   }
   return result;
 }

@@ -158,7 +158,7 @@ CoordinatedPartitionState<T> Partitioner<T>::startCoordinated() {
   std::vector<std::thread> myThreads(processors);
   std::vector<std::shared_ptr<Runnable>> myRunnable(processors);
   std::vector<std::vector<shared<const Edge<T>>>> list_vector(processors);
-  int n = dataset->size();
+  int n = (int)dataset->size();
   int subSize = n / processors + 1;
   for (int t = 0; t < processors; ++t) {
     int iStart = t * subSize;

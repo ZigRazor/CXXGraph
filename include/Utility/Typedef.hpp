@@ -31,6 +31,7 @@
 
 #include "ConstValue.hpp"
 #include "PointerHash.hpp"
+#include "id_t.hpp"
 
 namespace CXXGraph {
 // Smart pointers alias

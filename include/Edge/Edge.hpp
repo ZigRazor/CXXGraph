@@ -27,6 +27,7 @@
 #include <utility>
 
 #include "Node/Node.hpp"
+#include "Utility/id_t.hpp"
 
 namespace CXXGraph {
 // Smart pointers alias
@@ -46,15 +47,15 @@ std::ostream &operator<<(std::ostream &o, const Edge<T> &edge);
 template <typename T>
 class Edge {
  private:
-  unsigned long long id = 0;
+  CXXGraph::id_t id = 0;
   std::pair<shared<const Node<T>>, shared<const Node<T>>> nodePair;
 
  public:
-  Edge(const unsigned long long id, const Node<T> &node1, const Node<T> &node2);
-  Edge(const unsigned long long id, shared<const Node<T>> node1, shared<const Node<T>> node2);
-  Edge(const unsigned long long id,
+  Edge(const CXXGraph::id_t id, const Node<T> &node1, const Node<T> &node2);
+  Edge(const CXXGraph::id_t id, shared<const Node<T>> node1, shared<const Node<T>> node2);
+  Edge(const CXXGraph::id_t id,
        const std::pair<const Node<T> *, const Node<T> *> &nodepair);
-  Edge(const unsigned long long id,
+  Edge(const CXXGraph::id_t id,
        const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair);
   virtual ~Edge() = default;
   void setFirstNode(shared<const Node<T>> node);
@@ -75,7 +76,7 @@ class Edge {
 };
 
 template <typename T>
-Edge<T>::Edge(const unsigned long long id, const Node<T> &node1,
+Edge<T>::Edge(const CXXGraph::id_t id, const Node<T> &node1,
               const Node<T> &node2) {
   this->nodePair.first = make_shared<const Node<T>>(node1);
   this->nodePair.second = make_shared<const Node<T>>(node2);
@@ -83,14 +84,14 @@ Edge<T>::Edge(const unsigned long long id, const Node<T> &node1,
 }
 
 template <typename T>
-Edge<T>::Edge(const unsigned long long id, shared<const Node<T>> node1, shared<const Node<T>> node2) {
+Edge<T>::Edge(const CXXGraph::id_t id, shared<const Node<T>> node1, shared<const Node<T>> node2) {
   this->nodePair.first = node1;
   this->nodePair.second = node2;
   this->id = id;
 }
 
 template <typename T>
-Edge<T>::Edge(const unsigned long long id,
+Edge<T>::Edge(const CXXGraph::id_t id,
               const std::pair<const Node<T> *, const Node<T> *> &nodepair) {
   this->nodePair.first = make_shared<const Node<T>>(*(nodepair.first));
   this->nodePair.second = make_shared<const Node<T>>(*(nodepair.second));
@@ -98,7 +99,7 @@ Edge<T>::Edge(const unsigned long long id,
 }
 
 template <typename T>
-Edge<T>::Edge(const unsigned long long id,
+Edge<T>::Edge(const CXXGraph::id_t id,
               const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair)
     : nodePair(nodepair) {
   this->id = id;

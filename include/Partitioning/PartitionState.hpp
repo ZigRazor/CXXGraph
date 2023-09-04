@@ -39,7 +39,7 @@ namespace Partitioning {
 template <typename T>
 class PartitionState {
  public:
-  virtual shared<Record<T>> getRecord(const int x) = 0;
+  virtual shared<Record<T>> getRecord(CXXGraph::id_t x) = 0;
   virtual int getMachineLoad(const int m) const = 0;
   virtual int getMachineWeight(const int m) const = 0;
   virtual int getMachineLoadVertices(const int m) const = 0;

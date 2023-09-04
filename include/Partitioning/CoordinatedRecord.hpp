@@ -125,7 +125,7 @@ bool CoordinatedRecord<T>::releaseLock() {
 }
 template <typename T>
 int CoordinatedRecord<T>::getReplicas() const {
-  return partitions.size();
+  return (int)partitions.size();
 }
 template <typename T>
 int CoordinatedRecord<T>::getDegree() const {

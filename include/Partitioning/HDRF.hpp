@@ -71,8 +71,8 @@ void HDRF<T>::performStep(shared<const Edge<T>> e, shared<PartitionState<T>> sta
   double lambda = GLOBALS.param1;
   double epsilon = GLOBALS.param2;
   auto nodePair = e->getNodePair();
-  int u = nodePair.first->getId();
-  int v = nodePair.second->getId();
+  CXXGraph::id_t u = nodePair.first->getId();
+  CXXGraph::id_t v = nodePair.second->getId();
   std::shared_ptr<Record<T>> u_record = state->getRecord(u);
   std::shared_ptr<Record<T>> v_record = state->getRecord(v);
 
@@ -180,7 +180,7 @@ void HDRF<T>::performStep(shared<const Edge<T>> e, shared<PartitionState<T>> sta
       v_record->addPartition(machine_id);
       cord_state->incrementMachineLoadVertices(machine_id);
     }
-  } catch (const std::bad_cast &e) {
+  } catch (const std::bad_cast &) {
     // use employee's member functions
     // 1-UPDATE RECORDS
     if (!u_record->hasReplicaInPartition(machine_id)) {

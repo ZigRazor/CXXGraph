@@ -2,6 +2,9 @@ option(CODE_COVERAGE "Enable coverage reporting" OFF)
 option(CMAKE_USE_WIN32_THREADS_INIT "using WIN32 threads" ON)
 option(gtest_disable_pthreads "Disable uses of pthreads in gtest." ON)
 
+# Force dynamic linking since MSVC now links C runtimes dynamically by default
+set(gtest_force_shared_crt on)
+
 if(CODE_COVERAGE)
 	message( "Code Coverage Enabled" )
 	add_compile_options(
