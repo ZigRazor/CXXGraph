@@ -77,7 +77,7 @@ TEST(UnionFindTest, setUnionTest3) {
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
   // union of (node 1 & node3)  should increase node0 rank by 1
-  std::unordered_map<unsigned long long, CXXGraph::Subset> subset;
+  std::unordered_map<CXXGraph::id_t, CXXGraph::Subset> subset;
 
   CXXGraph::Subset set1{0, 0}, set2{0, 0}, set3{0, 0}, set4{1, 0};
   subset = {{0, set1}, {1, set2}, {2, set3}, {3, set4}};
