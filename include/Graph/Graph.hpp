@@ -2688,17 +2688,17 @@ const TarjanResult<T> Graph<T>::tarjan(const unsigned int typeMask) const {
 
   const auto &adjMatrix = getAdjMatrix();
   const auto &nodeSet = getNodeSet();
-  std::unordered_map<size_t, int>
+  std::unordered_map<CXXGraph::id_t, int>
       discoveryTime;  // the timestamp when a node is visited
-  std::unordered_map<size_t, int>
+  std::unordered_map<CXXGraph::id_t, int>
       lowestDisc;  // the lowest discovery time of all
                    // reachable nodes from current node
   int timestamp = 0;
-  size_t rootId = 0;
+  CXXGraph::id_t rootId = 0;
   std::stack<Node<T>> sccNodeStack;
   std::stack<Node<T>> ebccNodeStack;
   std::stack<Node<T>> vbccNodeStack;
-  std::unordered_set<size_t> inStack;
+  std::unordered_set<CXXGraph::id_t> inStack;
   std::function<void(const shared<const Node<T>>, const shared<const Edge<T>>)>
       dfs_helper = [this, typeMask, isDirected, &dfs_helper, &adjMatrix,
                     &discoveryTime, &lowestDisc, &timestamp, &rootId,
@@ -2894,7 +2894,7 @@ TopoSortResult<T> Graph<T>::kahn() const {
     const auto nodeSet = Graph<T>::getNodeSet();
     result.nodesInTopoOrder.reserve(adjMatrix->size());
 
-    std::unordered_map<size_t, unsigned int> indegree;
+    std::unordered_map<CXXGraph::id_t, unsigned int> indegree;
     for (const auto &node : nodeSet) {
       indegree[node->getId()] = 0;
     }
