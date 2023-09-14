@@ -105,6 +105,36 @@ TEST(GraphTest, GetNodeSet_2) {
               }) != nodeSet.end());
 }
 
+TEST(GraphTest, FindEdge_Test) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
+  CXXGraph::Node<int> node4("4", 2);
+  CXXGraph::Node<int> node5("5", 3);
+  std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
+      &node1, &node2);
+  //CXXGraph::Edge<int> edge(1, pairNode);
+  CXXGraph::UndirectedEdge<int> edge(1, node1, node2);
+  CXXGraph::UndirectedEdge<int> edge2(2, node2, node3);
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge2));
+  CXXGraph::Graph<int> graph(edgeSet);
+  unsigned long long edgeId = 0;
+  ASSERT_TRUE(graph.findEdge(&node1,&node2,edgeId));
+  CXXGraph::UndirectedEdge<int> edge3(3, node1, node3);
+  graph.addEdge(make_shared<CXXGraph::UndirectedEdge<int>>(edge3));
+  ASSERT_TRUE(graph.findEdge(&node1,&node3,edgeId));
+  ASSERT_TRUE(graph.findEdge(&node3,&node1,edgeId));
+  CXXGraph::DirectedEdge<int> edge4(4, node1, node5);
+  graph.addEdge(make_shared<CXXGraph::DirectedEdge<int>>(edge4));
+  ASSERT_TRUE(graph.findEdge(&node1,&node5,edgeId));
+  ASSERT_FALSE(graph.findEdge(&node5,&node1,edgeId));
+  graph.removeEdge(2);
+  ASSERT_FALSE(graph.findEdge(&node2,&node3,edgeId));
+  ASSERT_FALSE(graph.findEdge(&node3,&node2,edgeId));
+}
+
 TEST(GraphTest, RawAddEdge_1) {
   CXXGraph::Node<int> n1("a", 1);
   CXXGraph::Node<int> n2("b", 1);
