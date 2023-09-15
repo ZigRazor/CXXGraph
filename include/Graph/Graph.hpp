@@ -101,7 +101,7 @@ class Graph {
  private:
   T_EdgeSet<T> edgeSet = {};
 
-  std::shared_ptr<AdjacencyMatrix<T>> cachedAdjMatrix;
+  shared<AdjacencyMatrix<T>> cachedAdjMatrix;
 
   // Private non-const getter for the set of nodes
   std::unordered_set<shared<Node<T>>, nodeHash<T>> nodeSet();
@@ -252,7 +252,7 @@ class Graph {
    */
   virtual std::shared_ptr<AdjacencyMatrix<T>> getAdjMatrix() const;
 
-  virtual std::shared_ptr<AdjacencyMatrix<T>> getCacheAdjMatrix();
+  virtual void getCacheAdjMatrix();
   /**
    * \brief This function generates a set of nodes linked to the provided node
    * in a directed graph
@@ -1502,11 +1502,9 @@ std::shared_ptr<AdjacencyMatrix<T>> Graph<T>::getAdjMatrix() const {
 }
 
 template <typename T>
-std::shared_ptr<AdjacencyMatrix<T>>
-Graph<T>::getCacheAdjMatrix() {
+void Graph<T>::getCacheAdjMatrix() {
   const auto adj = Graph<T>::getAdjMatrix();
   this->cachedAdjMatrix = adj;
-  return this->cachedAdjMatrix;
 }
 
 template <typename T>
