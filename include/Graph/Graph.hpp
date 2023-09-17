@@ -250,7 +250,7 @@ class Graph {
    * corrispondent to the link
    * Note: No Thread Safe
    */
-  virtual std::shared_ptr<AdjacencyMatrix<T>> getAdjMatrix() const;
+  virtual shared<AdjacencyMatrix<T>> getAdjMatrix() const;
 
   virtual void getCacheAdjMatrix();
   /**
@@ -1469,7 +1469,7 @@ std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const {
 }
 
 template <typename T>
-std::shared_ptr<AdjacencyMatrix<T>> Graph<T>::getAdjMatrix() const {
+shared<AdjacencyMatrix<T>> Graph<T>::getAdjMatrix() const {
   auto adj = std::make_shared<AdjacencyMatrix<T>>();
   auto addElementToAdjMatrix = [&adj](shared<const Node<T>> nodeFrom,
                                       shared<const Node<T>> nodeTo,

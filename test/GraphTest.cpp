@@ -111,9 +111,6 @@ TEST(GraphTest, FindEdge_Test) {
   CXXGraph::Node<int> node3("3", 3);
   CXXGraph::Node<int> node4("4", 2);
   CXXGraph::Node<int> node5("5", 3);
-  std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
-      &node1, &node2);
-  //CXXGraph::Edge<int> edge(1, pairNode);
   CXXGraph::UndirectedEdge<int> edge(1, node1, node2);
   CXXGraph::UndirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::T_EdgeSet<int> edgeSet;
