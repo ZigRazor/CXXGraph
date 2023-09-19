@@ -66,7 +66,7 @@ Node<T>::Node(const std::string& id, T&& data) noexcept {
   this->userId = id;
   // the userid is set as sha512 hash of the user provided id
   setId(id);
-  std::swap(this->data, data);
+  this->data = std::move(data);
 }
 
 template <typename T>
