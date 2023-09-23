@@ -52,8 +52,8 @@ template <typename T>
 class Partition : public Graph<T> {
  public:
   Partition();
-  Partition(const CXXGraph::id_t partitionId);
-  Partition(const T_EdgeSet<T> &edgeSet);
+  explicit Partition(const CXXGraph::id_t partitionId);
+  explicit Partition(const T_EdgeSet<T> &edgeSet);
   Partition(const CXXGraph::id_t partitionId, const T_EdgeSet<T> &edgeSet);
   ~Partition() = default;
   /**

@@ -51,9 +51,9 @@ class PartitionState {
   virtual int getMachineWithMinWeight(
       const std::set<int>& partitions) const = 0;
   virtual std::vector<int> getMachines_load() const = 0;
-  virtual int getTotalReplicas() const = 0;
-  virtual int getNumVertices() const = 0;
-  virtual std::set<int> getVertexIds() const = 0;
+  virtual size_t getTotalReplicas() const = 0;
+  virtual size_t getNumVertices() const = 0;
+  virtual std::set<CXXGraph::id_t> getVertexIds() const = 0;
 };
 }  // namespace Partitioning
 }  // namespace CXXGraph

@@ -74,9 +74,9 @@ class CoordinatedPartitionState : public PartitionState<T> {
   int getMachineWithMinWeight() const override;
   int getMachineWithMinWeight(const std::set<int> &partitions) const override;
   std::vector<int> getMachines_load() const override;
-  int getTotalReplicas() const override;
-  int getNumVertices() const override;
-  std::set<int> getVertexIds() const override;
+  size_t getTotalReplicas() const override;
+  size_t getNumVertices() const override;
+  std::set<CXXGraph::id_t> getVertexIds() const override;
 
   void incrementMachineLoadVertices(const int m);
   std::vector<int> getMachines_loadVertices() const;
@@ -219,12 +219,12 @@ std::vector<int> CoordinatedPartitionState<T>::getMachines_load() const {
   return result;
 }
 template <typename T>
-int CoordinatedPartitionState<T>::getTotalReplicas() const {
+size_t CoordinatedPartitionState<T>::getTotalReplicas() const {
   // TODO
   std::lock_guard<std::mutex> lock(*record_map_mutex);
-  int result = 0;
+  size_t result = 0;
   for (const auto &record_map_it : record_map) {
-    int r = record_map_it.second->getReplicas();
+    size_t r = record_map_it.second->getReplicas();
     if (r > 0) {
       result += r;
     } else {
@@ -234,17 +234,17 @@ int CoordinatedPartitionState<T>::getTotalReplicas() const {
   return result;
 }
 template <typename T>
-int CoordinatedPartitionState<T>::getNumVertices() const {
+size_t CoordinatedPartitionState<T>::getNumVertices() const {
   std::lock_guard<std::mutex> lock(*record_map_mutex);
-  return (int)record_map.size();
+  return (size_t)record_map.size();
 }
 template <typename T>
-std::set<int> CoordinatedPartitionState<T>::getVertexIds() const {
+std::set<CXXGraph::id_t> CoordinatedPartitionState<T>::getVertexIds() const {
   std::lock_guard<std::mutex> lock(*record_map_mutex);
   // if (GLOBALS.OUTPUT_FILE_NAME!=null){ out.close(); }
-  std::set<int> result;
+  std::set<CXXGraph::id_t> result;
   for (const auto &record_map_it : record_map) {
-    result.insert((int)record_map_it.first);
+    result.insert((CXXGraph::id_t)record_map_it.first);
   }
   return result;
 }
