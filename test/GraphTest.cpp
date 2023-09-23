@@ -130,8 +130,8 @@ TEST(GraphTest, FindEdge_Test) {
   graph.removeEdge(2);
   CXXGraph::UndirectedWeightedEdge<int> edge5(7, node4, node5, 5);
   CXXGraph::DirectedWeightedEdge<int> edge6(8, node2, node5, 10);
-  graph.addEdge(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge5));
-  graph.addEdge(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge6));
+  graph.addEdge(&edge5);
+  graph.addEdge(&edge6);
   ASSERT_FALSE(graph.findEdge(&node2,&node3,edgeId));
   ASSERT_FALSE(graph.findEdge(&node3,&node2,edgeId));
   CXXGraph::Graph<int> graph2;

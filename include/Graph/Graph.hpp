@@ -868,7 +868,7 @@ bool Graph<T>::findEdge(shared<const Node<T>> v1, shared<const Node<T>> v2,
                         unsigned long long &id) const {
   // This could be made faster by looking for the edge hash, assuming we hash
   // based on node data, instead of a unique integer
-  if(cachedAdjMatrix.get() != NULL){
+  if(cachedAdjMatrix.get() != NULL && cachedAdjMatrix->size() != 0){
     /* Searching for the edge using cached adjacency matrix */
 
     for(auto elem : (*cachedAdjMatrix)[v1]){
