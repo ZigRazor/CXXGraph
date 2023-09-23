@@ -60,7 +60,7 @@ class Edge {
   virtual ~Edge() = default;
   void setFirstNode(shared<const Node<T>> node);
   void setSecondNode(shared<const Node<T>> node);
-  const unsigned long long &getId() const;
+  const unsigned long long getId() const;
   const std::pair<shared<const Node<T>>, shared<const Node<T>>> &getNodePair() const;
   shared<const Node<T>> getOtherNode(shared<const Node<T>> node) const;
   virtual const std::optional<bool> isDirected() const;
@@ -118,7 +118,7 @@ void Edge<T>::setSecondNode(shared<const Node<T>> node) {
 }
 
 template <typename T>
-const unsigned long long &Edge<T>::getId() const {
+const unsigned long long Edge<T>::getId() const {
   return id;
 }
 
