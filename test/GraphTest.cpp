@@ -114,12 +114,18 @@ TEST(GraphTest, FindEdge_Test) {
   CXXGraph::UndirectedEdge<int> edge(1, node1, node2);
   CXXGraph::UndirectedEdge<int> edge2(2, node2, node3);
   CXXGraph::T_EdgeSet<int> edgeSet;
+
+  /* adding edges to the edgeset */
+
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge));
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge2));
   CXXGraph::Graph<int> graph(edgeSet);
   unsigned long long edgeId = 0;
   ASSERT_TRUE(graph.findEdge(&node1,&node2,edgeId));
   CXXGraph::UndirectedEdge<int> edge3(3, node1, node3);
+
+  /* adding edge using addEdge() */
+
   graph.addEdge(make_shared<CXXGraph::UndirectedEdge<int>>(edge3));
   ASSERT_TRUE(graph.findEdge(&node1,&node3,edgeId));
   ASSERT_TRUE(graph.findEdge(&node3,&node1,edgeId));
@@ -127,13 +133,22 @@ TEST(GraphTest, FindEdge_Test) {
   graph.addEdge(make_shared<CXXGraph::DirectedEdge<int>>(edge4));
   ASSERT_TRUE(graph.findEdge(&node1,&node5,edgeId));
   ASSERT_FALSE(graph.findEdge(&node5,&node1,edgeId));
+
+  /* removing edge using removeEdge() */
+
   graph.removeEdge(2);
   CXXGraph::UndirectedWeightedEdge<int> edge5(7, node4, node5, 5);
   CXXGraph::DirectedWeightedEdge<int> edge6(8, node2, node5, 10);
+
+  /* adding edge using addEdge() */
+  
   graph.addEdge(&edge5);
   graph.addEdge(&edge6);
   ASSERT_FALSE(graph.findEdge(&node2,&node3,edgeId));
   ASSERT_FALSE(graph.findEdge(&node3,&node2,edgeId));
+
+  /* Test for empty graph */
+
   CXXGraph::Graph<int> graph2;
   ASSERT_FALSE(graph2.findEdge(&node2,&node3,edgeId));
 }

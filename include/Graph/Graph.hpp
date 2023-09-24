@@ -252,7 +252,7 @@ class Graph {
    */
   virtual shared<AdjacencyMatrix<T>> getAdjMatrix() const;
 
-  virtual void getCacheAdjMatrix();
+  virtual void cacheAdjMatrix();
   /**
    * \brief This function generates a set of nodes linked to the provided node
    * in a directed graph
@@ -740,7 +740,7 @@ class Graph {
 template <typename T>
 Graph<T>::Graph() {
   /* Caching the adjacency matrix */
-  getCacheAdjMatrix();
+  cacheAdjMatrix();
 }
 
 template <typename T>
@@ -749,7 +749,7 @@ Graph<T>::Graph(const T_EdgeSet<T> &edgeSet) {
     this->edgeSet.insert(edgeIt);
   }
   /* Caching the adjacency matrix */
-  getCacheAdjMatrix();
+  cacheAdjMatrix();
 }
 
 template <typename T>
@@ -764,7 +764,7 @@ void Graph<T>::setEdgeSet(const T_EdgeSet<T> &edgeSet) {
     this->edgeSet.insert(edgeIt);
   }
   /* Caching the adjacency matrix */
-  getCacheAdjMatrix();
+  cacheAdjMatrix();
 }
 
 template <typename T>
@@ -1502,7 +1502,7 @@ shared<AdjacencyMatrix<T>> Graph<T>::getAdjMatrix() const {
 }
 
 template <typename T>
-void Graph<T>::getCacheAdjMatrix() {
+void Graph<T>::cacheAdjMatrix() {
   const auto adj = Graph<T>::getAdjMatrix();
   this->cachedAdjMatrix = adj;
 }
