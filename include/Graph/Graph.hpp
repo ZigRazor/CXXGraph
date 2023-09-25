@@ -85,6 +85,9 @@ using std::make_unique;
 template <typename T>
 using T_EdgeSet = std::unordered_set<shared<const Edge<T>>, edgeHash<T>>;
 
+template <typename T>
+using T_NodeSet = std::unordered_set<shared<const Node<T>>, nodeHash<T>>;
+
 namespace Partitioning {
 template <typename T>
 class Partition;
@@ -100,11 +103,9 @@ template <typename T>
 class Graph {
  private:
   T_EdgeSet<T> edgeSet = {};
+  T_NodeSet<T> nodeSet = {};
 
   shared<AdjacencyMatrix<T>> cachedAdjMatrix;
-
-  // Private non-const getter for the set of nodes
-  std::unordered_set<shared<Node<T>>, nodeHash<T>> nodeSet();
 
   std::optional<std::pair<std::string, char>> getExtenstionAndSeparator(
       InputOutputFormat format) const;
@@ -177,6 +178,24 @@ class Graph {
   virtual void addEdge(shared<const Edge<T>> edge);
   /**
    * \brief
+   * Function to add a Node to the Graph Node Set
+   * Note: No Thread Safe
+   *
+   * @param pointer to the node
+   *
+   */
+  virtual void addNode(const Node<T> *node);
+  /**
+   * \brief
+   * Function to add a Node to the Graph Node Set
+   * Note: No Thread Safe
+   *
+   * @param shared pointer to the node
+   *
+   */
+  virtual void addNode(shared<const Node<T>> node);
+  /**
+   * \brief
    * Function remove an Edge from the Graph Edge Set
    * Note: No Thread Safe
    *
@@ -184,6 +203,15 @@ class Graph {
    *
    */
   virtual void removeEdge(const CXXGraph::id_t edgeId);
+  /**
+   * \brief
+   * Function to remove a Node from the Graph Node Set
+   * Note: No Thread Safe
+   *
+   * @param edgeId The Edge Id to remove
+   *
+   */
+  virtual void removeNode(const std::string &nodeUserId);
   /**
    * \brief
    * Finds the given edge defined by v1 and v2 within the graph.
@@ -214,8 +242,7 @@ class Graph {
    * @returns a list of Nodes of the graph
    *
    */
-  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
-  getNodeSet() const;
+  virtual const T_NodeSet<T> getNodeSet() const;
   /**
    * \brief
    * Function that sets the data contained in a node
@@ -244,6 +271,17 @@ class Graph {
    */
   virtual const std::optional<shared<const Edge<T>>> getEdge(
       const CXXGraph::id_t edgeId) const;
+  /**
+   * \brief
+   * Function that return a Node with specific ID if Exist in the Graph
+   * Note: No Thread Safe
+   *
+   * @param nodeId The Node Id to return
+   * @returns the Node if exist
+   *
+   */
+  virtual const std::optional<shared<const Node<T>>> getNode(
+      const std::string &nodeUserId) const;
   /**
    * @brief This function generate a list of adjacency matrix with every element
    * of the matrix contain the node where is directed the link and the Edge
@@ -747,6 +785,8 @@ template <typename T>
 Graph<T>::Graph(const T_EdgeSet<T> &edgeSet) {
   for (auto edgeIt : edgeSet) {
     this->edgeSet.insert(edgeIt);
+    this->nodeSet.insert(edgeIt->getNodePair().first);
+    this->nodeSet.insert(edgeIt->getNodePair().second);
   }
   /* Caching the adjacency matrix */
   cacheAdjMatrix();
@@ -762,6 +802,8 @@ void Graph<T>::setEdgeSet(const T_EdgeSet<T> &edgeSet) {
   this->edgeSet.clear();
   for (auto edgeIt : edgeSet) {
     this->edgeSet.insert(edgeIt);
+    this->nodeSet.insert(edgeIt->getNodePair().first);
+    this->nodeSet.insert(edgeIt->getNodePair().second);
   }
   /* Caching the adjacency matrix */
   cacheAdjMatrix();
@@ -773,11 +815,21 @@ void Graph<T>::addEdge(const Edge<T> *edge) {
     if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
       auto edge_shared = make_shared<DirectedWeightedEdge<T>>(*edge);
       this->edgeSet.insert(edge_shared);
+
+      // Add the nodes of the edge
+      this->nodeSet.insert(edge_shared->getNodePair().first);
+      this->nodeSet.insert(edge_shared->getNodePair().second);
+
       std::pair<shared<const Node<T>>, shared<const Edge<T>>> elem = {edge_shared->getNodePair().second, edge_shared};
       (*cachedAdjMatrix)[edge_shared->getNodePair().first].push_back(std::move(elem));
     } else {
       auto edge_shared = make_shared<DirectedEdge<T>>(*edge);
       this->edgeSet.insert(edge_shared);
+
+      // Add the nodes of the edge
+      this->nodeSet.insert(edge_shared->getNodePair().first);
+      this->nodeSet.insert(edge_shared->getNodePair().second);
+
       std::pair<shared<const Node<T>>, shared<const Edge<T>>> elem = {edge_shared->getNodePair().second, edge_shared};
       (*cachedAdjMatrix)[edge_shared->getNodePair().first].push_back(std::move(elem));
     }
@@ -785,6 +837,11 @@ void Graph<T>::addEdge(const Edge<T> *edge) {
     if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
       auto edge_shared = make_shared<UndirectedWeightedEdge<T>>(*edge);
       this->edgeSet.insert(edge_shared);
+
+      // Add the nodes of the edge
+      this->nodeSet.insert(edge_shared->getNodePair().first);
+      this->nodeSet.insert(edge_shared->getNodePair().second);
+
       std::pair<shared<const Node<T>>, shared<const Edge<T>>> elem = {edge_shared->getNodePair().second, edge_shared};
       (*cachedAdjMatrix)[edge_shared->getNodePair().first].push_back(std::move(elem));
       std::pair<shared<const Node<T>>, shared<const Edge<T>>> elem1 = {edge_shared->getNodePair().first, edge_shared};
@@ -792,6 +849,11 @@ void Graph<T>::addEdge(const Edge<T> *edge) {
     } else {
       auto edge_shared = make_shared<UndirectedEdge<T>>(*edge);
       this->edgeSet.insert(edge_shared);
+
+      // Add the nodes of the edge
+      this->nodeSet.insert(edge_shared->getNodePair().first);
+      this->nodeSet.insert(edge_shared->getNodePair().second);
+
       std::pair<shared<const Node<T>>, shared<const Edge<T>>> elem = {edge_shared->getNodePair().second, edge_shared};
       (*cachedAdjMatrix)[edge_shared->getNodePair().first].push_back(std::move(elem));
       std::pair<shared<const Node<T>>, shared<const Edge<T>>> elem1 = {edge_shared->getNodePair().first, edge_shared};
@@ -803,6 +865,11 @@ void Graph<T>::addEdge(const Edge<T> *edge) {
 template <typename T>
 void Graph<T>::addEdge(shared<const Edge<T>> edge) {
   this->edgeSet.insert(edge);
+
+  // Add the nodes of the edge
+  this->nodeSet.insert(edge_shared->getNodePair().first);
+  this->nodeSet.insert(edge_shared->getNodePair().second);
+
   /* Adding new edge in cached adjacency matrix */
   if(edge.get()->isDirected().has_value() && edge.get()->isDirected().value()){
     std::pair<shared<const Node<T>>, shared<const Edge<T>>> elem = {edge.get()->getNodePair().second, edge};
@@ -814,6 +881,17 @@ void Graph<T>::addEdge(shared<const Edge<T>> edge) {
     std::pair<shared<const Node<T>>, shared<const Edge<T>>> elem1 = {edge.get()->getNodePair().first, edge};
     (*cachedAdjMatrix)[edge.get()->getNodePair().second].push_back(std::move(elem1));
   }
+}
+
+template <typename T>
+void Graph<T>::addNode(const Node<T> *node) {
+  auto node_shared = make_shared<const Node<T>>(*node);
+  this->nodeSet.insert(node_shared);
+}
+
+template <typename T>
+void Graph<T>::addNode(shared<const Node<T>> node) {
+  this->nodeSet.insert(node);
 }
 
 template <typename T>
@@ -851,6 +929,14 @@ void Graph<T>::removeEdge(const CXXGraph::id_t edgeId) {
     if(delIndex != -1){
       (*cachedAdjMatrix)[edgeOpt.value().get()->getNodePair().second].erase((*cachedAdjMatrix)[edgeOpt.value().get()->getNodePair().second].begin()+delIndex);
     }
+  }
+}
+
+template <typename T>
+void Graph<T>::removeNode(const std::string &nodeUserId) {
+  auto nodeOpt = Graph<T>::getNode(nodeUserId);
+  if (nodeOpt.has_value()) {
+    nodeSet.erase(nodeSet.find(nodeOpt.value()));
   }
 }
 
@@ -910,46 +996,24 @@ bool Graph<T>::findEdge(shared<const Node<T>> v1, shared<const Node<T>> v2,
 }
 
 template <typename T>
-const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
-Graph<T>::getNodeSet() const {
-  std::unordered_set<shared<const Node<T>>, nodeHash<T>> nodeSet;
-  for (const auto &edgeSetIt : edgeSet) {
-    nodeSet.insert(edgeSetIt->getNodePair().first);
-    nodeSet.insert(edgeSetIt->getNodePair().second);
-  }
-  /*
-  std::deque<const Node<T> *> nodeSet;
-  for (const auto &edge : edgeSet)
-  {
-          if (std::find_if(nodeSet.begin(), nodeSet.end(), [edge](const Node<T>
-  *node) { return (*edge->getNodePair().first == *node); }) == nodeSet.end())
-          {
-                  nodeSet.push_back(edge->getNodePair().first);
-          }
-          if (std::find_if(nodeSet.begin(), nodeSet.end(), [edge](const Node<T>
-  *node) { return (*edge->getNodePair().second == *node); }) == nodeSet.end())
-          {
-                  nodeSet.push_back(edge->getNodePair().second);
-          }
-  }
-  */
+const T_NodeSet<T> Graph<T>::getNodeSet() const {
   return nodeSet;
 }
 
 template <typename T>
 void Graph<T>::setNodeData(const std::string &nodeUserId, T data) {
-  auto nodeset = this->nodeSet();
   auto nodeIt = std::find_if(
-      nodeset.begin(), nodeset.end(),
+      nodeSet.begin(), nodeSet.end(),
       [&nodeUserId](auto node) { return node->getUserId() == nodeUserId; });
-  (*nodeIt)->setData(std::move(data));
+  std::const_pointer_cast<Node<T>>(*nodeIt)->setData(std::move(data));
 }
 
 template <typename T>
 void Graph<T>::setNodeData(std::map<std::string, T> &dataMap) {
   // Construct the set of all the nodes in the graph
-  for (auto &nodeSetIt : this->nodeSet()) {
-    nodeSetIt->setData(std::move(dataMap[nodeSetIt->getUserId()]));
+  for (auto &nodeSetIt : nodeSet) {
+    std::const_pointer_cast<Node<T>>(nodeSetIt)->setData(
+        std::move(dataMap[nodeSetIt->getUserId()]));
   }
 }
 
@@ -966,16 +1030,15 @@ const std::optional<shared<const Edge<T>>> Graph<T>::getEdge(
 }
 
 template <typename T>
-std::unordered_set<shared<Node<T>>, nodeHash<T>> Graph<T>::nodeSet() {
-  std::unordered_set<shared<Node<T>>, nodeHash<T>> nodeSet;
-  for (auto &edgeSetIt : edgeSet) {
-    nodeSet.insert(
-        std::const_pointer_cast<Node<T>>(edgeSetIt->getNodePair().first));
-    nodeSet.insert(
-        std::const_pointer_cast<Node<T>>(edgeSetIt->getNodePair().second));
+const std::optional<shared<const Node<T>>> Graph<T>::getNode(
+    const std::string &nodeUserId) const {
+  for (const auto &it : nodeSet) {
+    if (it->getUserId() == nodeUserId) {
+      return it;
+    }
   }
 
-  return nodeSet;
+  return std::nullopt;
 }
 
 template <typename T>
