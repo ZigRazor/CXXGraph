@@ -684,3 +684,25 @@ TEST(ReverseDirectedGraphTest, test_exception) {
   CXXGraph::Graph<int> mixedGraph(mixedEdgeSet);
   ASSERT_THROW(mixedGraph.reverseDirectedGraph(), std::runtime_error);
 }
+
+TEST(IsolatedNodeGraphTest, Test_1) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
+  CXXGraph::DirectedEdge<int> edge1(1, node1, node2);
+  CXXGraph::DirectedEdge<int> edge2(2, node2, node1);
+  CXXGraph::DirectedEdge<int> edge3(3, node1, node3);
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge3));
+  CXXGraph::Graph<int> graph(edgeSet);
+
+  // Create an isolated node and add it to the graph
+  CXXGraph::Node<int> node4("4", 4);
+  graph.addNode(make_shared<CXXGraph::Node<int>>(node4));
+
+  // Check that the number of nodes in the graph is 4
+  ASSERT_EQ(graph.getNodeSet().size(), 4);
+  ASSERT_EQ(graph.getEdgeSet().size(), 3);
+}
