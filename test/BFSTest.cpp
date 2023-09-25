@@ -1,7 +1,7 @@
 #include <random>
 #include <vector>
 
-#include "CXXGraph.hpp"
+#include "CXXGraph/CXXGraph.hpp"
 #include "gtest/gtest.h"
 
 // Smart pointers alias

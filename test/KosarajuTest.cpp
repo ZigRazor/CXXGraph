@@ -1,8 +1,5 @@
 #include <memory>
-#include "CXXGraph.hpp"
-#include "Edge/DirectedEdge.hpp"
-#include "Edge/UndirectedEdge.hpp"
-#include "Graph/Graph.hpp"
+#include "CXXGraph/CXXGraph.hpp"
 #include "gtest/gtest.h"
 
 // Smart pointers alias

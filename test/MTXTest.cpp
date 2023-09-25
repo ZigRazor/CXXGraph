@@ -1,9 +1,6 @@
-#include <Edge/Edge.hpp>
-#include <Edge/Weighted.hpp>
-#include <Node/Node.hpp>
 #include <memory>
 
-#include "CXXGraph.hpp"
+#include "CXXGraph/CXXGraph.hpp"
 #include "gtest/gtest.h"
 
 // Smart pointers alias

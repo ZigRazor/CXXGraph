@@ -1,7 +1,5 @@
 #include <memory>
-#include "CXXGraph.hpp"
-#include "Utility/ConstString.hpp"
-#include "Utility/Typedef.hpp"
+#include "CXXGraph/CXXGraph.hpp"
 #include "gtest/gtest.h"
 
 // Smart pointers alias

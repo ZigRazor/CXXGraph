@@ -1,8 +1,7 @@
-#include <Edge/Edge.hpp>
 #include <fstream>
 #include <memory>
 
-#include "CXXGraph.hpp"
+#include "CXXGraph/CXXGraph.hpp"
 #include "gtest/gtest.h"
 
 // Smart pointers alias
