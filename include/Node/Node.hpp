@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include "Utility/id_t.hpp"
+
 #include <iomanip>
 #include <iostream>
 
@@ -33,7 +35,7 @@ std::ostream &operator<<(std::ostream &os, const Node<T> &node);
 template <typename T>
 class Node {
  private:
-  std::size_t id = 0;
+  CXXGraph::id_t id = 0;
   std::string userId = "";
   T data;
   void setId(const std::string &);
@@ -43,7 +45,7 @@ class Node {
   // Move constructor
   Node(const std::string &, T&& data) noexcept;
   ~Node() = default;
-  const std::size_t &getId() const;
+  const CXXGraph::id_t &getId() const;
   const std::string &getUserId() const;
   const T &getData() const;
   void setData(T&& new_data);
@@ -96,7 +98,7 @@ void Node<T>::setId(const std::string &inpId) {
 }
 
 template <typename T>
-const std::size_t &Node<T>::getId() const {
+const CXXGraph::id_t &Node<T>::getId() const {
   return id;
 }
 

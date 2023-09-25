@@ -52,25 +52,25 @@ template <typename T>
 class Partition : public Graph<T> {
  public:
   Partition();
-  Partition(const unsigned int partitionId);
-  Partition(const T_EdgeSet<T> &edgeSet);
-  Partition(const unsigned int partitionId, const T_EdgeSet<T> &edgeSet);
+  explicit Partition(const CXXGraph::id_t partitionId);
+  explicit Partition(const T_EdgeSet<T> &edgeSet);
+  Partition(const CXXGraph::id_t partitionId, const T_EdgeSet<T> &edgeSet);
   ~Partition() = default;
   /**
    * @brief Get the Partition ID
    *
    * @return The ID of the partition
    */
-  unsigned int getPartitionId() const;
+  CXXGraph::id_t getPartitionId() const;
   /**
    * @brief Set the Partition ID
    *
    * @param partitionId the ID to set
    */
-  void setPartitionId(const unsigned int partitionId);
+  void setPartitionId(const CXXGraph::id_t partitionId);
 
  private:
-  unsigned int partitionId = 0;
+  CXXGraph::id_t partitionId = 0;
 };
 
 /**
@@ -177,7 +177,7 @@ Partition<T>::Partition() : Graph<T>() {
 }
 
 template <typename T>
-Partition<T>::Partition(const unsigned int partitionId) : Graph<T>() {
+Partition<T>::Partition(const CXXGraph::id_t partitionId) : Graph<T>() {
   this->partitionId = partitionId;
 }
 
@@ -187,19 +187,19 @@ Partition<T>::Partition(const T_EdgeSet<T> &edgeSet) : Graph<T>(edgeSet) {
 }
 
 template <typename T>
-Partition<T>::Partition(const unsigned int partitionId,
+Partition<T>::Partition(const CXXGraph::id_t partitionId,
                         const T_EdgeSet<T> &edgeSet)
     : Graph<T>(edgeSet) {
   this->partitionId = partitionId;
 }
 
 template <typename T>
-unsigned int Partition<T>::getPartitionId() const {
+CXXGraph::id_t Partition<T>::getPartitionId() const {
   return partitionId;
 }
 
 template <typename T>
-void Partition<T>::setPartitionId(const unsigned int partitionId) {
+void Partition<T>::setPartitionId(const CXXGraph::id_t partitionId) {
   this->partitionId = partitionId;
 }
 

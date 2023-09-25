@@ -44,13 +44,13 @@ std::ostream &operator<<(std::ostream &o, const UndirectedEdge<T> &edge);
 template <typename T>
 class UndirectedEdge : public Edge<T> {
  public:
-  UndirectedEdge(const unsigned long id, const Node<T> &node1,
+  UndirectedEdge(const CXXGraph::id_t id, const Node<T> &node1,
                  const Node<T> &node2);
-  UndirectedEdge(const unsigned long id, shared<const Node<T>> node1,
+  UndirectedEdge(const CXXGraph::id_t id, shared<const Node<T>> node1,
                  shared<const Node<T>> node2);
-  UndirectedEdge(const unsigned long id,
+  UndirectedEdge(const CXXGraph::id_t id,
                  const std::pair<const Node<T> *, const Node<T> *> &nodepair);
-  UndirectedEdge(const unsigned long id,
+  UndirectedEdge(const CXXGraph::id_t id,
                  const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair);
   UndirectedEdge(const Edge<T> &edge);
   virtual ~UndirectedEdge() = default;
@@ -68,24 +68,24 @@ class UndirectedEdge : public Edge<T> {
 };
 
 template <typename T>
-UndirectedEdge<T>::UndirectedEdge(const unsigned long id, const Node<T> &node1,
+UndirectedEdge<T>::UndirectedEdge(const CXXGraph::id_t id, const Node<T> &node1,
                                   const Node<T> &node2)
     : Edge<T>(id, node1, node2) {}
 
 template <typename T>
-UndirectedEdge<T>::UndirectedEdge(const unsigned long id, shared<const Node<T>> node1,
+UndirectedEdge<T>::UndirectedEdge(const CXXGraph::id_t id, shared<const Node<T>> node1,
                                   shared<const Node<T>> node2)
     : Edge<T>(id, node1, node2) {}
 
 template <typename T>
 UndirectedEdge<T>::UndirectedEdge(
-    const unsigned long id,
+    const CXXGraph::id_t id,
     const std::pair<const Node<T> *, const Node<T> *> &nodepair)
     : Edge<T>(id, nodepair) {}
 
 template <typename T>
 UndirectedEdge<T>::UndirectedEdge(
-    const unsigned long id,
+    const CXXGraph::id_t id,
     const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair)
     : Edge<T>(id, nodepair) {}
 
