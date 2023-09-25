@@ -1,7 +1,7 @@
 #include <math.h>
 #include <memory>
 
-#include <CXXGraph.hpp>
+#include <CXXGraph/CXXGraph.hpp>
 
 using std::make_shared;
 
