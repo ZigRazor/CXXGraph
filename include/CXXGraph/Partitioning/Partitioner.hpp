@@ -26,15 +26,15 @@
 
 #include "CoordinatedPartitionState.hpp"
 #include "EBV.hpp"
-#include "Edge/Edge.hpp"
+#include "CXXGraph/Edge/Edge.hpp"
 #include "EdgeBalancedVertexCut.hpp"
 #include "GreedyVertexCut.hpp"
 #include "HDRF.hpp"
 #include "PartitionAlgorithm.hpp"
 #include "PartitionStrategy.hpp"
 #include "PartitionerThread.hpp"
-#include "Partitioning/Utility/Globals.hpp"
-#include "Utility/Runnable.hpp"
+#include "CXXGraph/Partitioning/Utility/Globals.hpp"
+#include "CXXGraph/Utility/Runnable.hpp"
 #include "WeightBalancedLibra.hpp"
 
 namespace CXXGraph {

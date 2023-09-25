@@ -41,3 +41,4 @@ add_subdirectory(benchmark)
 add_subdirectory(examples)
 
 #install(FILES include/Graph.hpp DESTINATION /usr/include)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/ DESTINATION include)

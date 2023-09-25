@@ -24,7 +24,7 @@
 
 #include <thread>
 
-#include "Partitioning/PartitionAlgorithm.hpp"
+#include "CXXGraph/Partitioning/PartitionAlgorithm.hpp"
 
 namespace CXXGraph {
 namespace Partitioning {

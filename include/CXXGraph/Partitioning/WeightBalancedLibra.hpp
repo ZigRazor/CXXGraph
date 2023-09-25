@@ -24,9 +24,9 @@
 
 #include <chrono>
 
-#include "Edge/Edge.hpp"
+#include "CXXGraph/Edge/Edge.hpp"
 #include "PartitionStrategy.hpp"
-#include "Partitioning/Utility/Globals.hpp"
+#include "CXXGraph/Partitioning/Utility/Globals.hpp"
 
 namespace CXXGraph {
 namespace Partitioning {

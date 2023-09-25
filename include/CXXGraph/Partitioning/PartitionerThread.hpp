@@ -25,10 +25,10 @@
 #include <list>
 #include <vector>
 
-#include "Edge/Edge.hpp"
+#include "CXXGraph/Edge/Edge.hpp"
 #include "PartitionState.hpp"
 #include "PartitionStrategy.hpp"
-#include "Utility/Runnable.hpp"
+#include "CXXGraph/Utility/Runnable.hpp"
 
 namespace CXXGraph {
 namespace Partitioning {

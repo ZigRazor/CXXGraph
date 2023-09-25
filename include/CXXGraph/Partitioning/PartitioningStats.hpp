@@ -22,7 +22,7 @@
 
 #include <iostream>
 
-#include "Utility/Typedef.hpp"
+#include "CXXGraph/Utility/Typedef.hpp"
 namespace CXXGraph {
 namespace Partitioning {
 class PartitioningStats {
