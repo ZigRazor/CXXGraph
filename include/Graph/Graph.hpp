@@ -867,8 +867,8 @@ void Graph<T>::addEdge(shared<const Edge<T>> edge) {
   this->edgeSet.insert(edge);
 
   // Add the nodes of the edge
-  this->nodeSet.insert(edge_shared->getNodePair().first);
-  this->nodeSet.insert(edge_shared->getNodePair().second);
+  this->nodeSet.insert(edge->getNodePair().first);
+  this->nodeSet.insert(edge->getNodePair().second);
 
   /* Adding new edge in cached adjacency matrix */
   if(edge.get()->isDirected().has_value() && edge.get()->isDirected().value()){
