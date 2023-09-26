@@ -1,6 +1,6 @@
 #include <benchmark/benchmark.h>
 
-#include "CXXGraph.hpp"
+#include "CXXGraph/CXXGraph.hpp"
 #include "Utilities.hpp"
 
 static void BellmanFord_X(benchmark::State &state) {
