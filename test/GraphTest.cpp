@@ -704,6 +704,7 @@ TEST(IsolatedNodeGraphTest, Test_AddNode1) {
 
   // Check that the number of nodes in the graph is 4
   ASSERT_EQ(graph.getNodeSet().size(), 4);
+  ASSERT_EQ(graph.getIsolatedNodeSet().size(), 1);
   ASSERT_EQ(graph.getEdgeSet().size(), 3);
 }
 
@@ -726,6 +727,7 @@ TEST(IsolatedNodeGraphTest, Test_AddNode2) {
 
   // Check that the number of nodes in the graph is 4
   ASSERT_EQ(graph.getNodeSet().size(), 4);
+  ASSERT_EQ(graph.getIsolatedNodeSet().size(), 1);
   ASSERT_EQ(graph.getEdgeSet().size(), 3);
 }
 
@@ -752,6 +754,7 @@ TEST(TestRemoveNode, Test_isolatedNode) {
 
   // Check the initial number of edges and nodes
   ASSERT_EQ(graph.getNodeSet().size(), 6);
+  ASSERT_EQ(graph.getIsolatedNodeSet().size(), 3);
   ASSERT_EQ(graph.getEdgeSet().size(), 3);
 
   // We now remove node 5
@@ -759,6 +762,7 @@ TEST(TestRemoveNode, Test_isolatedNode) {
 
   // Check the final number of edges and nodes
   ASSERT_EQ(graph.getNodeSet().size(), 5);
+  ASSERT_EQ(graph.getIsolatedNodeSet().size(), 2);
   ASSERT_EQ(graph.getEdgeSet().size(), 3);
 }
 
@@ -785,6 +789,7 @@ TEST(TestRemoveNode, Test_connectedNode) {
 
   // Check the initial number of edges and nodes
   ASSERT_EQ(graph.getNodeSet().size(), 6);
+  ASSERT_EQ(graph.getIsolatedNodeSet().size(), 3);
   ASSERT_EQ(graph.getEdgeSet().size(), 3);
 
   // We now remove node 2
@@ -792,6 +797,7 @@ TEST(TestRemoveNode, Test_connectedNode) {
 
   // Check the final number of edges and nodes
   ASSERT_EQ(graph.getNodeSet().size(), 5);
+  ASSERT_EQ(graph.getIsolatedNodeSet().size(), 3);
   ASSERT_EQ(graph.getEdgeSet().size(), 1);
 }
 
