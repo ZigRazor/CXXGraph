@@ -963,6 +963,15 @@ void Graph<T>::removeNode(const std::string &nodeUserId) {
   if (nodeOpt.has_value()) {
     nodeSet.erase(nodeSet.find(nodeOpt.value()));
   }
+
+  // Remove the edges containing the node
+  auto edgeset = edgeSet;
+  for (auto edgeIt : edgeset) {
+    if (edgeIt->getNodePair().first->getUserId() == nodeUserId ||
+        edgeIt->getNodePair().second->getUserId() == nodeUserId) {
+      this->removeEdge(edgeIt->getId());
+    }
+  }
 }
 
 template <typename T>
