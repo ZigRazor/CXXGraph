@@ -120,7 +120,7 @@ TEST(GraphTest, FindEdge_Test) {
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge));
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge2));
   CXXGraph::Graph<int> graph(edgeSet);
-  unsigned long edgeId = 0;
+  size_t edgeId = 0;
   ASSERT_TRUE(graph.findEdge(&node1,&node2,edgeId));
   CXXGraph::UndirectedEdge<int> edge3(3, node1, node3);
 
