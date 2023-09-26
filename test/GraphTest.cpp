@@ -794,3 +794,24 @@ TEST(TestRemoveNode, Test_connectedNode) {
   ASSERT_EQ(graph.getNodeSet().size(), 5);
   ASSERT_EQ(graph.getEdgeSet().size(), 1);
 }
+
+TEST(TestGetNode, Test_1) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
+  CXXGraph::DirectedEdge<int> edge1(1, node1, node2);
+  CXXGraph::DirectedEdge<int> edge2(2, node2, node1);
+  CXXGraph::DirectedEdge<int> edge3(3, node1, node3);
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge3));
+  CXXGraph::Graph<int> graph(edgeSet);
+
+  auto node_found = graph.getNode("2");
+  ASSERT_TRUE(node_found.has_value());
+  ASSERT_EQ(node_found.value()->getUserId(), "2");
+
+  auto node_notfound = graph.getNode("5");
+  ASSERT_FALSE(node_notfound.has_value());
+}
