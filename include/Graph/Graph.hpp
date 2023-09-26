@@ -103,9 +103,12 @@ template <typename T>
 class Graph {
  private:
   T_EdgeSet<T> edgeSet = {};
-  T_NodeSet<T> nodeSet = {};
+  T_NodeSet<T> isolatedNodesSet = {};
 
   shared<AdjacencyMatrix<T>> cachedAdjMatrix;
+
+  // Private non-const getter for the set of nodes
+  std::unordered_set<shared<Node<T>>, nodeHash<T>> nodeSet();
 
   std::optional<std::pair<std::string, char>> getExtenstionAndSeparator(
       InputOutputFormat format) const;
@@ -243,6 +246,16 @@ class Graph {
    *
    */
   virtual const T_NodeSet<T> getNodeSet() const;
+  /**
+   * \brief
+   * Function that return the Set of isolated nodes
+   * in the Graph
+   * Note: No Thread Safe
+   *
+   * @returns a list of Nodes of the graph
+   *
+   */
+  virtual const T_NodeSet<T> getIsolatedNodeSet() const;
   /**
    * \brief
    * Function that sets the data contained in a node
@@ -784,8 +797,6 @@ template <typename T>
 Graph<T>::Graph(const T_EdgeSet<T> &edgeSet) {
   for (auto edgeIt : edgeSet) {
     this->edgeSet.insert(edgeIt);
-    this->nodeSet.insert(edgeIt->getNodePair().first);
-    this->nodeSet.insert(edgeIt->getNodePair().second);
   }
   /* Caching the adjacency matrix */
   cacheAdjMatrix();
@@ -801,8 +812,6 @@ void Graph<T>::setEdgeSet(const T_EdgeSet<T> &edgeSet) {
   this->edgeSet.clear();
   for (auto edgeIt : edgeSet) {
     this->edgeSet.insert(edgeIt);
-    this->nodeSet.insert(edgeIt->getNodePair().first);
-    this->nodeSet.insert(edgeIt->getNodePair().second);
   }
   /* Caching the adjacency matrix */
   cacheAdjMatrix();
@@ -815,10 +824,6 @@ void Graph<T>::addEdge(const Edge<T> *edge) {
       auto edge_shared = make_shared<DirectedWeightedEdge<T>>(*edge);
       this->edgeSet.insert(edge_shared);
 
-      // Add the nodes of the edge
-      this->nodeSet.insert(edge_shared->getNodePair().first);
-      this->nodeSet.insert(edge_shared->getNodePair().second);
-
       std::pair<shared<const Node<T>>, shared<const Edge<T>>> elem = {
           edge_shared->getNodePair().second, edge_shared};
       (*cachedAdjMatrix)[edge_shared->getNodePair().first].push_back(
@@ -826,10 +831,6 @@ void Graph<T>::addEdge(const Edge<T> *edge) {
     } else {
       auto edge_shared = make_shared<DirectedEdge<T>>(*edge);
       this->edgeSet.insert(edge_shared);
-
-      // Add the nodes of the edge
-      this->nodeSet.insert(edge_shared->getNodePair().first);
-      this->nodeSet.insert(edge_shared->getNodePair().second);
 
       std::pair<shared<const Node<T>>, shared<const Edge<T>>> elem = {
           edge_shared->getNodePair().second, edge_shared};
@@ -840,10 +841,6 @@ void Graph<T>::addEdge(const Edge<T> *edge) {
     if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
       auto edge_shared = make_shared<UndirectedWeightedEdge<T>>(*edge);
       this->edgeSet.insert(edge_shared);
-
-      // Add the nodes of the edge
-      this->nodeSet.insert(edge_shared->getNodePair().first);
-      this->nodeSet.insert(edge_shared->getNodePair().second);
 
       std::pair<shared<const Node<T>>, shared<const Edge<T>>> elem = {
           edge_shared->getNodePair().second, edge_shared};
@@ -856,10 +853,6 @@ void Graph<T>::addEdge(const Edge<T> *edge) {
     } else {
       auto edge_shared = make_shared<UndirectedEdge<T>>(*edge);
       this->edgeSet.insert(edge_shared);
-
-      // Add the nodes of the edge
-      this->nodeSet.insert(edge_shared->getNodePair().first);
-      this->nodeSet.insert(edge_shared->getNodePair().second);
 
       std::pair<shared<const Node<T>>, shared<const Edge<T>>> elem = {
           edge_shared->getNodePair().second, edge_shared};
@@ -876,10 +869,6 @@ void Graph<T>::addEdge(const Edge<T> *edge) {
 template <typename T>
 void Graph<T>::addEdge(shared<const Edge<T>> edge) {
   this->edgeSet.insert(edge);
-
-  // Add the nodes of the edge
-  this->nodeSet.insert(edge->getNodePair().first);
-  this->nodeSet.insert(edge->getNodePair().second);
 
   /* Adding new edge in cached adjacency matrix */
   if (edge.get()->isDirected().has_value() &&
@@ -903,12 +892,12 @@ void Graph<T>::addEdge(shared<const Edge<T>> edge) {
 template <typename T>
 void Graph<T>::addNode(const Node<T> *node) {
   auto node_shared = make_shared<const Node<T>>(*node);
-  this->nodeSet.insert(node_shared);
+  this->isolatedNodesSet.insert(node_shared);
 }
 
 template <typename T>
 void Graph<T>::addNode(shared<const Node<T>> node) {
-  this->nodeSet.insert(node);
+  this->isolatedNodesSet.insert(node);
 }
 
 template <typename T>
@@ -959,17 +948,21 @@ void Graph<T>::removeEdge(const CXXGraph::id_t edgeId) {
 
 template <typename T>
 void Graph<T>::removeNode(const std::string &nodeUserId) {
-  auto nodeOpt = Graph<T>::getNode(nodeUserId);
-  if (nodeOpt.has_value()) {
-    nodeSet.erase(nodeSet.find(nodeOpt.value()));
-  }
+  auto nodeOpt = getNode(nodeUserId);
+  auto isolatedNodeIt = isolatedNodesSet.find(nodeOpt.value());
 
-  // Remove the edges containing the node
-  auto edgeset = edgeSet;
-  for (auto edgeIt : edgeset) {
-    if (edgeIt->getNodePair().first->getUserId() == nodeUserId ||
-        edgeIt->getNodePair().second->getUserId() == nodeUserId) {
-      this->removeEdge(edgeIt->getId());
+  if (nodeOpt.has_value() && isolatedNodeIt != isolatedNodesSet.end()) {
+    // The node is isolated
+    isolatedNodesSet.erase(isolatedNodeIt);
+  } else if (nodeOpt.has_value()) {
+    // The node is not isolated
+    // Remove the edges containing the node
+    auto edgeset = edgeSet;
+    for (auto edgeIt : edgeset) {
+      if (edgeIt->getNodePair().first->getUserId() == nodeUserId ||
+          edgeIt->getNodePair().second->getUserId() == nodeUserId) {
+        this->removeEdge(edgeIt->getId());
+      }
     }
   }
 }
@@ -1030,11 +1023,26 @@ bool Graph<T>::findEdge(shared<const Node<T>> v1, shared<const Node<T>> v2,
 
 template <typename T>
 const T_NodeSet<T> Graph<T>::getNodeSet() const {
+  T_NodeSet<T> nodeSet;
+
+  for (const auto &edgeSetIt : edgeSet) {
+    nodeSet.insert(edgeSetIt->getNodePair().first);
+    nodeSet.insert(edgeSetIt->getNodePair().second);
+  }
+  // Merge with the isolated nodes
+  nodeSet.insert(this->isolatedNodesSet.begin(), this->isolatedNodesSet.end());
+
   return nodeSet;
 }
 
 template <typename T>
+const T_NodeSet<T> Graph<T>::getIsolatedNodeSet() const {
+  return isolatedNodesSet;
+}
+
+template <typename T>
 void Graph<T>::setNodeData(const std::string &nodeUserId, T data) {
+  auto nodeSet = this->nodeSet();
   auto nodeIt = std::find_if(
       nodeSet.begin(), nodeSet.end(),
       [&nodeUserId](auto node) { return node->getUserId() == nodeUserId; });
@@ -1044,9 +1052,8 @@ void Graph<T>::setNodeData(const std::string &nodeUserId, T data) {
 template <typename T>
 void Graph<T>::setNodeData(std::map<std::string, T> &dataMap) {
   // Construct the set of all the nodes in the graph
-  for (auto &nodeSetIt : nodeSet) {
-    std::const_pointer_cast<Node<T>>(nodeSetIt)->setData(
-        std::move(dataMap[nodeSetIt->getUserId()]));
+  for (auto &nodeSetIt : this->nodeSet()) {
+    nodeSetIt->setData(std::move(dataMap[nodeSetIt->getUserId()]));
   }
 }
 
@@ -1065,13 +1072,29 @@ const std::optional<shared<const Edge<T>>> Graph<T>::getEdge(
 template <typename T>
 const std::optional<shared<const Node<T>>> Graph<T>::getNode(
     const std::string &nodeUserId) const {
-  for (const auto &it : nodeSet) {
+  for (const auto &it : getNodeSet()) {
     if (it->getUserId() == nodeUserId) {
       return it;
     }
   }
 
   return std::nullopt;
+}
+
+template <typename T>
+std::unordered_set<shared<Node<T>>, nodeHash<T>> Graph<T>::nodeSet() {
+  std::unordered_set<shared<Node<T>>, nodeHash<T>> nodeSet;
+  for (auto &edgeSetIt : edgeSet) {
+    nodeSet.insert(
+        std::const_pointer_cast<Node<T>>(edgeSetIt->getNodePair().first));
+    nodeSet.insert(
+        std::const_pointer_cast<Node<T>>(edgeSetIt->getNodePair().second));
+  }
+  for (auto &isNodeIt : isolatedNodesSet) {
+	nodeSet.insert(std::const_pointer_cast<Node<T>>(isNodeIt));
+  }
+
+  return nodeSet;
 }
 
 template <typename T>
@@ -1169,6 +1192,7 @@ void Graph<T>::writeGraphToStream(std::ostream &oGraph, std::ostream &oNodeFeat,
   }
 
   if (writeNodeFeat) {
+    auto nodeSet = getNodeSet();
     for (const auto &node : nodeSet) {
       oNodeFeat << node->getUserId() << sep << node->getData() << std::endl;
     }
@@ -1524,6 +1548,7 @@ void Graph<T>::setUnion(
 
 template <typename T>
 std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const {
+  const auto nodeSet = Graph<T>::getNodeSet();
   const auto adj = Graph<T>::getAdjMatrix();
 
   std::shared_ptr<std::vector<Node<T>>> eulerPath =
@@ -1659,6 +1684,7 @@ template <typename T>
 const DijkstraResult Graph<T>::dijkstra(const Node<T> &source,
                                         const Node<T> &target) const {
   DijkstraResult result;
+  auto nodeSet = Graph<T>::getNodeSet();
 
   auto source_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),
@@ -1786,6 +1812,7 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
   result.success = false;
   result.errorMessage = "";
   result.result = INF_DOUBLE;
+  auto nodeSet = Graph<T>::getNodeSet();
   auto source_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),
       [&source](auto node) { return node->getUserId() == source.getUserId(); });
@@ -1893,10 +1920,12 @@ const Graph<T> Graph<T>::transitiveReduction() const {
   Graph<T> result(this->edgeSet);
 
   CXXGraph::id_t edgeId = 0;
-  for (auto x : nodeSet) {
-    for (auto y : nodeSet) {
+  std::unordered_set<shared<const Node<T>>, nodeHash<T>> nodes =
+      this->getNodeSet();
+  for (auto x : nodes) {
+    for (auto y : nodes) {
       if (this->findEdge(x, y, edgeId)) {
-        for (auto z : nodeSet) {
+        for (auto z : nodes) {
           if (this->findEdge(y, z, edgeId)) {
             if (this->findEdge(x, z, edgeId)) {
               result.removeEdge(edgeId);
@@ -1918,6 +1947,7 @@ const FWResult Graph<T>::floydWarshall() const {
   std::unordered_map<std::pair<std::string, std::string>, double,
                      CXXGraph::pair_hash>
       pairwise_dist;
+  const auto &nodeSet = Graph<T>::getNodeSet();
   // create a pairwise distance matrix with distance node distances
   // set to inf. Distance of node to itself is set as 0.
   for (const auto &elem1 : nodeSet) {
@@ -1998,6 +2028,7 @@ const MstResult Graph<T>::prim() const {
     result.errorMessage = ERR_NOT_STRONG_CONNECTED;
     return result;
   }
+  auto nodeSet = Graph<T>::getNodeSet();
   auto n = nodeSet.size();
   const auto adj = Graph<T>::getAdjMatrix();
 
@@ -2077,6 +2108,7 @@ const MstResult Graph<T>::boruvka() const {
     result.errorMessage = ERR_DIR_GRAPH;
     return result;
   }
+  const auto nodeSet = Graph<T>::getNodeSet();
   const auto n = nodeSet.size();
 
   // Use std map for storing n subsets.
@@ -2171,6 +2203,7 @@ const MstResult Graph<T>::kruskal() const {
     result.errorMessage = ERR_DIR_GRAPH;
     return result;
   }
+  const auto nodeSet = Graph<T>::getNodeSet();
   auto n = nodeSet.size();
 
   // check if all edges are weighted and store the weights
@@ -2220,6 +2253,7 @@ template <typename T>
 BestFirstSearchResult<T> Graph<T>::best_first_search(
     const Node<T> &source, const Node<T> &target) const {
   BestFirstSearchResult<T> result;
+  auto &nodeSet = Graph<T>::getNodeSet();
   using pq_type = std::pair<double, shared<const Node<T>>>;
 
   auto source_node_it = std::find_if(
@@ -2293,6 +2327,7 @@ const std::vector<Node<T>> Graph<T>::breadth_first_search(
     const Node<T> &start) const {
   // vector to keep track of visited nodes
   std::vector<Node<T>> visited;
+  auto &nodeSet = Graph<T>::getNodeSet();
   // check is exist node in the graph
   auto start_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),
@@ -2331,6 +2366,7 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
     const Node<T> &start, size_t num_threads) const {
   std::vector<Node<T>> bfs_result;
   // check is exist node in the graph
+  auto &nodeSet = Graph<T>::getNodeSet();
   auto start_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),
       [&start](auto node) { return node->getUserId() == start.getUserId(); });
@@ -2486,6 +2522,7 @@ const std::vector<Node<T>> Graph<T>::depth_first_search(
     const Node<T> &start) const {
   // vector to keep track of visited nodes
   std::vector<Node<T>> visited;
+  auto nodeSet = Graph<T>::getNodeSet();
   // check is exist node in the graph
   auto start_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),
@@ -2521,6 +2558,7 @@ bool Graph<T>::isCyclicDirectedGraphDFS() const {
     return false;
   }
   enum nodeStates : uint8_t { not_visited, in_stack, visited };
+  auto nodeSet = Graph<T>::getNodeSet();
   auto adjMatrix = Graph<T>::getAdjMatrix();
 
   /* State of the node.
@@ -2667,6 +2705,7 @@ bool Graph<T>::isCyclicDirectedGraphBFS() const {
     return false;
   }
   const auto adjMatrix = Graph<T>::getAdjMatrix();
+  auto nodeSet = Graph<T>::getNodeSet();
 
   std::unordered_map<CXXGraph::id_t, unsigned int> indegree;
   for (const auto &node : nodeSet) {
@@ -2764,6 +2803,7 @@ bool Graph<T>::isConnectedGraph() const {
   if (!isUndirectedGraph()) {
     return false;
   } else {
+    auto nodeSet = getNodeSet();
     const auto adjMatrix = getAdjMatrix();
     // created visited map
     std::unordered_map<CXXGraph::id_t, bool> visited;
@@ -2803,6 +2843,7 @@ bool Graph<T>::isStronglyConnectedGraph() const {
   if (!isDirectedGraph()) {
     return false;
   } else {
+    auto nodeSet = getNodeSet();
     const auto adjMatrix = getAdjMatrix();
     for (const auto &start_node : nodeSet) {
       // created visited map
@@ -2862,6 +2903,7 @@ const TarjanResult<T> Graph<T>::tarjan(const unsigned int typeMask) const {
   }
 
   const auto &adjMatrix = getAdjMatrix();
+  const auto &nodeSet = getNodeSet();
   std::unordered_map<CXXGraph::id_t, int>
       discoveryTime;  // the timestamp when a node is visited
   std::unordered_map<CXXGraph::id_t, int>
@@ -3020,6 +3062,7 @@ TopoSortResult<T> Graph<T>::topologicalSort() const {
     return result;
   } else {
     const auto &adjMatrix = getAdjMatrix();
+    const auto &nodeSet = getNodeSet();
     std::unordered_map<shared<const Node<T>>, bool, nodeHash<T>> visited;
 
     std::function<void(shared<const Node<T>>)> postorder_helper =
@@ -3064,6 +3107,7 @@ TopoSortResult<T> Graph<T>::kahn() const {
     return result;
   } else {
     const auto adjMatrix = Graph<T>::getAdjMatrix();
+    const auto nodeSet = Graph<T>::getNodeSet();
     result.nodesInTopoOrder.reserve(adjMatrix->size());
 
     std::unordered_map<CXXGraph::id_t, unsigned int> indegree;
@@ -3121,6 +3165,7 @@ SCCResult<T> Graph<T>::kosaraju() const {
     result.errorMessage = ERR_UNDIR_GRAPH;
     return result;
   } else {
+    auto nodeSet = getNodeSet();
     const auto adjMatrix = getAdjMatrix();
     // created visited map
     std::unordered_map<CXXGraph::id_t, bool> visited;
@@ -3213,6 +3258,7 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
   result.success = false;
 
   const auto adj = getAdjMatrix();
+  auto nodeSet = getNodeSet();
 
   auto source_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),
@@ -3367,6 +3413,7 @@ double Graph<T>::fordFulkersonMaxFlow(const Node<T> &source,
   }
 
   // Constuct iterators for source and target nodes in nodeSet
+  auto nodeSet = getNodeSet();
   auto source_node_ptr = *std::find_if(
       nodeSet.begin(), nodeSet.end(),
       [&source](auto node) { return node->getUserId() == source.getUserId(); });
@@ -3418,6 +3465,7 @@ template <typename T>
 const std::vector<Node<T>> Graph<T>::graph_slicing(const Node<T> &start) const {
   std::vector<Node<T>> result;
 
+  auto nodeSet = Graph<T>::getNodeSet();
   // check if start node in the graph
   auto start_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),
@@ -3724,9 +3772,10 @@ int Graph<T>::writeToMTXFile(const std::string &workingDir,
   iFile << header;
 
   // Write the line containing the number of nodes and edges
-  const std::string firstLine = std::to_string(nodeSet.size()) + delimitier +
-                                std::to_string(nodeSet.size()) + delimitier +
-                                std::to_string(getEdgeSet().size()) + '\n';
+  const std::string firstLine =
+      std::to_string(getNodeSet().size()) + delimitier +
+      std::to_string(getNodeSet().size()) + delimitier +
+      std::to_string(getEdgeSet().size()) + '\n';
   iFile << firstLine;
 
   // Construct the edges
@@ -3851,7 +3900,7 @@ PartitionMap<T> Graph<T>::partitionGraph(
                                 param3, numberOfThreads);
   auto edgeSet_ptr = make_shared<const T_EdgeSet<T>>(getEdgeSet());
   globals.edgeCardinality = edgeSet_ptr->size();
-  globals.vertexCardinality = this->nodeSet.size();
+  globals.vertexCardinality = this->getNodeSet().size();
   Partitioning::Partitioner<T> partitioner(edgeSet_ptr, globals);
   Partitioning::CoordinatedPartitionState<T> partitionState =
       partitioner.performCoordinatedPartition();
