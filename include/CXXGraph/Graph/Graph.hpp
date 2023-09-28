@@ -1589,7 +1589,6 @@ void Graph<T>::setUnion(
 template <typename T>
 std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const {
   const auto nodeSet = Graph<T>::getNodeSet();
-  const auto adj = Graph<T>::getAdjMatrix();
 
   std::shared_ptr<std::vector<Node<T>>> eulerPath =
       std::make_shared<std::vector<Node<T>>>();
@@ -1599,15 +1598,15 @@ std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const {
   std::vector<shared<const Node<T>>> currentPath;
   // The starting node is the only node which has more outgoing than ingoing
   // links
-  auto firstNodeIt =
-      std::max_element(nodeSet.begin(), nodeSet.end(), [adj](auto n1, auto n2) {
-        return adj->at(n1).size() < adj->at(n2).size();
+  auto firstNodeIt = std::max_element(
+      nodeSet.begin(), nodeSet.end(), [this](auto n1, auto n2) {
+        return cachedAdjMatrix->at(n1).size() < cachedAdjMatrix->at(n2).size();
       });
   auto currentNode = *(firstNodeIt);
   currentPath.push_back(currentNode);
 
   while (currentPath.size() > 0) {
-    auto &edges = adj->at(currentNode);
+    auto &edges = cachedAdjMatrix->at(currentNode);
     // we keep removing the edges that
     // have been traversed from the adjacency list
     if (edges.size()) {
@@ -1678,11 +1677,10 @@ Graph<T>::outNeighbors(const Node<T> *node) const {
 template <typename T>
 const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
 Graph<T>::outNeighbors(shared<const Node<T>> node) const {
-  auto adj = getAdjMatrix();
-  if (adj->find(node) == adj->end()) {
+  if (cachedAdjMatrix->find(node) == cachedAdjMatrix->end()) {
     return std::unordered_set<shared<const Node<T>>, nodeHash<T>>();
   }
-  auto nodeEdgePairs = adj->at(node);
+  auto nodeEdgePairs = cachedAdjMatrix->at(node);
 
   std::unordered_set<shared<const Node<T>>, nodeHash<T>> outNeighbors;
   for (auto pair : nodeEdgePairs) {
@@ -1706,11 +1704,10 @@ Graph<T>::inOutNeighbors(const Node<T> *node) const {
 template <typename T>
 const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
 Graph<T>::inOutNeighbors(shared<const Node<T>> node) const {
-  auto adj = Graph<T>::getAdjMatrix();
-  if (adj->find(node) == adj->end()) {
+  if (cachedAdjMatrix->find(node) == cachedAdjMatrix->end()) {
     return std::unordered_set<shared<const Node<T>>, nodeHash<T>>();
   }
-  auto nodeEdgePairs = adj->at(node);
+  auto nodeEdgePairs = cachedAdjMatrix->at(node);
 
   std::unordered_set<shared<const Node<T>>, nodeHash<T>> inOutNeighbors;
   for (auto pair : nodeEdgePairs) {
@@ -1794,9 +1791,8 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T> &source,
     result.errorMessage = ERR_TARGET_NODE_NOT_IN_GRAPH;
     return result;
   }
-  const auto adj = getAdjMatrix();
   // n denotes the number of vertices in graph
-  auto n = adj->size();
+  auto n = cachedAdjMatrix->size();
 
   // setting all the distances initially to INF_DOUBLE
   std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist;
@@ -1832,8 +1828,8 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T> &source,
 
     // for all the reachable vertex from the currently exploring vertex
     // we will try to minimize the distance
-    if (adj->find(currentNode) != adj->end()) {
-      for (const auto &elem : adj->at(currentNode)) {
+    if (cachedAdjMatrix->find(currentNode) != cachedAdjMatrix->end()) {
+      for (const auto &elem : cachedAdjMatrix->at(currentNode)) {
         // minimizing distances
         if (elem.second->isWeighted().has_value() &&
             elem.second->isWeighted().value()) {
@@ -2121,11 +2117,10 @@ const MstResult Graph<T>::prim() const {
   }
   auto nodeSet = Graph<T>::getNodeSet();
   auto n = nodeSet.size();
-  const auto adj = Graph<T>::getAdjMatrix();
 
   // setting all the distances initially to INF_DOUBLE
   std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist;
-  for (const auto &elem : (*adj)) {
+  for (const auto &elem : (*cachedAdjMatrix)) {
     dist[elem.first] = INF_DOUBLE;
   }
 
@@ -2162,8 +2157,8 @@ const MstResult Graph<T>::prim() const {
     pq.pop();
     // for all the reachable vertex from the currently exploring vertex
     // we will try to minimize the distance
-    if (adj->find(currentNode) != adj->end()) {
-      for (const auto &elem : adj->at(currentNode)) {
+    if (cachedAdjMatrix->find(currentNode) != cachedAdjMatrix->end()) {
+      for (const auto &elem : cachedAdjMatrix->at(currentNode)) {
         // minimizing distances
         if (elem.second->isWeighted().has_value() &&
             elem.second->isWeighted().value()) {
@@ -2363,7 +2358,6 @@ BestFirstSearchResult<T> Graph<T>::best_first_search(
     return result;
   }
 
-  auto adj = Graph<T>::getAdjMatrix();
   std::priority_queue<pq_type, std::vector<pq_type>, std::greater<pq_type>> pq;
 
   std::vector<Node<T>> visited;
@@ -2378,8 +2372,8 @@ BestFirstSearchResult<T> Graph<T>::best_first_search(
     if (*currentNode == target) {
       break;
     }
-    if (adj->find(currentNode) != adj->end()) {
-      for (const auto &elem : adj->at(currentNode)) {
+    if (cachedAdjMatrix->find(currentNode) != cachedAdjMatrix->end()) {
+      for (const auto &elem : cachedAdjMatrix->at(currentNode)) {
         if (elem.second->isWeighted().has_value()) {
           if (elem.second->isDirected().has_value()) {
             shared<const DirectedWeightedEdge<T>> dw_edge =
@@ -2426,7 +2420,6 @@ const std::vector<Node<T>> Graph<T>::breadth_first_search(
   if (start_node_it == nodeSet.end()) {
     return visited;
   }
-  const auto adj = Graph<T>::getAdjMatrix();
   // queue that stores vertices that need to be further explored
   std::queue<shared<const Node<T>>> tracker;
 
@@ -2436,8 +2429,8 @@ const std::vector<Node<T>> Graph<T>::breadth_first_search(
   while (!tracker.empty()) {
     shared<const Node<T>> node = tracker.front();
     tracker.pop();
-    if (adj->find(node) != adj->end()) {
-      for (const auto &elem : adj->at(node)) {
+    if (cachedAdjMatrix->find(node) != cachedAdjMatrix->end()) {
+      for (const auto &elem : cachedAdjMatrix->at(node)) {
         // if the node is not visited then mark it as visited
         // and push it to the queue
         if (std::find(visited.begin(), visited.end(), *(elem.first)) ==
@@ -2478,7 +2471,6 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
     num_threads = 2;
   }
 
-  const auto &adj = Graph<T>::getAdjMatrix();
   // vector that stores vertices to be visit
   std::vector<shared<const Node<T>>> level_tracker, next_level_tracker;
   level_tracker.reserve(static_cast<int>(1.0 * nodeSet.size()));
@@ -2539,8 +2531,8 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
         }
 
         for (int i = start_index; i < end_index; ++i) {
-          if (adj->count(level_tracker[i])) {
-            for (const auto &elem : adj->at(level_tracker[i])) {
+          if (cachedAdjMatrix->count(level_tracker[i])) {
+            for (const auto &elem : cachedAdjMatrix->at(level_tracker[i])) {
               int index = (int)node_to_index[elem.first];
               if (visited[index] == 0) {
                 visited[index] = 1;
@@ -2621,7 +2613,6 @@ const std::vector<Node<T>> Graph<T>::depth_first_search(
   if (start_node_it == nodeSet.end()) {
     return visited;
   }
-  const auto adj = Graph<T>::getAdjMatrix();
   std::function<void(const std::shared_ptr<AdjacencyMatrix<T>>,
                      shared<const Node<T>>, std::vector<Node<T>> &)>
       explore;
@@ -2638,7 +2629,7 @@ const std::vector<Node<T>> Graph<T>::depth_first_search(
       }
     }
   };
-  explore(adj, *start_node_it, visited);
+  explore(cachedAdjMatrix, *start_node_it, visited);
 
   return visited;
 }
@@ -2650,7 +2641,6 @@ bool Graph<T>::isCyclicDirectedGraphDFS() const {
   }
   enum nodeStates : uint8_t { not_visited, in_stack, visited };
   auto nodeSet = Graph<T>::getNodeSet();
-  auto adjMatrix = Graph<T>::getAdjMatrix();
 
   /* State of the node.
    *
@@ -2712,7 +2702,7 @@ bool Graph<T>::isCyclicDirectedGraphDFS() const {
             // Return that current node didn't result in any cycles.
             return false;
           };
-      if (isCyclicDFSHelper(adjMatrix, state, node)) {
+      if (isCyclicDFSHelper(cachedAdjMatrix, state, node)) {
         return true;
       }
     }
@@ -2795,7 +2785,6 @@ bool Graph<T>::isCyclicDirectedGraphBFS() const {
   if (!isDirectedGraph()) {
     return false;
   }
-  const auto adjMatrix = Graph<T>::getAdjMatrix();
   auto nodeSet = Graph<T>::getNodeSet();
 
   std::unordered_map<CXXGraph::id_t, unsigned int> indegree;
@@ -2803,7 +2792,7 @@ bool Graph<T>::isCyclicDirectedGraphBFS() const {
     indegree[node->getId()] = 0;
   }
   // Calculate the indegree i.e. the number of incident edges to the node.
-  for (auto const &list : (*adjMatrix)) {
+  for (auto const &list : (*cachedAdjMatrix)) {
     auto children = list.second;
     for (auto const &child : children) {
       indegree[std::get<0>(child)->getId()]++;
@@ -2830,8 +2819,8 @@ bool Graph<T>::isCyclicDirectedGraphBFS() const {
     remain--;
 
     // Visit all the children of the visited node.
-    auto it = adjMatrix->find(solved);
-    if (it != adjMatrix->end()) {
+    auto it = cachedAdjMatrix->find(solved);
+    if (it != cachedAdjMatrix->end()) {
       for (const auto &child : it->second) {
         // Check if we can visited the node safely.
         if (--indegree[std::get<0>(child)->getId()] == 0) {
@@ -2895,21 +2884,20 @@ bool Graph<T>::isConnectedGraph() const {
     return false;
   } else {
     auto nodeSet = getNodeSet();
-    const auto adjMatrix = getAdjMatrix();
     // created visited map
     std::unordered_map<CXXGraph::id_t, bool> visited;
     for (const auto &node : nodeSet) {
       visited[node->getId()] = false;
     }
     std::function<void(shared<const Node<T>>)> dfs_helper =
-        [this, &adjMatrix, &visited,
-         &dfs_helper](shared<const Node<T>> source) {
+        [this, &visited, &dfs_helper](shared<const Node<T>> source) {
           // mark the vertex visited
           visited[source->getId()] = true;
 
           // travel the neighbors
-          for (int i = 0; i < (*adjMatrix)[source].size(); i++) {
-            shared<const Node<T>> neighbor = (*adjMatrix)[source].at(i).first;
+          for (int i = 0; i < (*cachedAdjMatrix)[source].size(); i++) {
+            shared<const Node<T>> neighbor =
+                (*cachedAdjMatrix)[source].at(i).first;
             if (visited[neighbor->getId()] == false) {
               // make recursive call from neighbor
               dfs_helper(neighbor);
@@ -2935,7 +2923,6 @@ bool Graph<T>::isStronglyConnectedGraph() const {
     return false;
   } else {
     auto nodeSet = getNodeSet();
-    const auto adjMatrix = getAdjMatrix();
     for (const auto &start_node : nodeSet) {
       // created visited map
       std::unordered_map<CXXGraph::id_t, bool> visited;
@@ -2943,14 +2930,14 @@ bool Graph<T>::isStronglyConnectedGraph() const {
         visited[node->getId()] = false;
       }
       std::function<void(shared<const Node<T>>)> dfs_helper =
-          [this, &adjMatrix, &visited,
-           &dfs_helper](shared<const Node<T>> source) {
+          [this, &visited, &dfs_helper](shared<const Node<T>> source) {
             // mark the vertex visited
             visited[source->getId()] = true;
 
             // travel the neighbors
-            for (int i = 0; i < (*adjMatrix)[source].size(); i++) {
-              shared<const Node<T>> neighbor = (*adjMatrix)[source].at(i).first;
+            for (int i = 0; i < (*cachedAdjMatrix)[source].size(); i++) {
+              shared<const Node<T>> neighbor =
+                  (*cachedAdjMatrix)[source].at(i).first;
               if (visited[neighbor->getId()] == false) {
                 // make recursive call from neighbor
                 dfs_helper(neighbor);
@@ -2993,7 +2980,6 @@ const TarjanResult<T> Graph<T>::tarjan(const unsigned int typeMask) const {
     }
   }
 
-  const auto &adjMatrix = getAdjMatrix();
   const auto &nodeSet = getNodeSet();
   std::unordered_map<CXXGraph::id_t, int>
       discoveryTime;  // the timestamp when a node is visited
@@ -3007,9 +2993,9 @@ const TarjanResult<T> Graph<T>::tarjan(const unsigned int typeMask) const {
   std::stack<Node<T>> vbccNodeStack;
   std::unordered_set<CXXGraph::id_t> inStack;
   std::function<void(const shared<const Node<T>>, const shared<const Edge<T>>)>
-      dfs_helper = [this, typeMask, isDirected, &dfs_helper, &adjMatrix,
-                    &discoveryTime, &lowestDisc, &timestamp, &rootId,
-                    &sccNodeStack, &ebccNodeStack, &vbccNodeStack, &inStack,
+      dfs_helper = [this, typeMask, isDirected, &dfs_helper, &discoveryTime,
+                    &lowestDisc, &timestamp, &rootId, &sccNodeStack,
+                    &ebccNodeStack, &vbccNodeStack, &inStack,
                     &result](const shared<const Node<T>> curNode,
                              const shared<const Edge<T>> prevEdge) {
         // record the visited time of current node
@@ -3030,8 +3016,9 @@ const TarjanResult<T> Graph<T>::tarjan(const unsigned int typeMask) const {
         int numSon = 0;
         bool nodeIsAdded =
             false;  // whether a node has been marked as a cut vertice
-        if (adjMatrix->find(curNode) != adjMatrix->end()) {
-          for (const auto &[neighborNode, edge] : adjMatrix->at(curNode)) {
+        if (cachedAdjMatrix->find(curNode) != cachedAdjMatrix->end()) {
+          for (const auto &[neighborNode, edge] :
+               cachedAdjMatrix->at(curNode)) {
             if (!discoveryTime.count(neighborNode->getId())) {
               dfs_helper(neighborNode, edge);
               lowestDisc[curNode->getId()] =
@@ -3152,17 +3139,16 @@ TopoSortResult<T> Graph<T>::topologicalSort() const {
     result.errorMessage = ERR_CYCLIC_GRAPH;
     return result;
   } else {
-    const auto &adjMatrix = getAdjMatrix();
     const auto &nodeSet = getNodeSet();
     std::unordered_map<shared<const Node<T>>, bool, nodeHash<T>> visited;
 
     std::function<void(shared<const Node<T>>)> postorder_helper =
-        [&postorder_helper, &adjMatrix, &visited,
+        [this, &postorder_helper, &visited,
          &result](shared<const Node<T>> curNode) {
           visited[curNode] = true;
 
-          if (adjMatrix->find(curNode) != adjMatrix->end()) {
-            for (const auto &edge : adjMatrix->at(curNode)) {
+          if (cachedAdjMatrix->find(curNode) != cachedAdjMatrix->end()) {
+            for (const auto &edge : cachedAdjMatrix->at(curNode)) {
               const auto &nextNode = edge.first;
               if (false == visited[nextNode]) {
                 postorder_helper(nextNode);
@@ -3173,7 +3159,7 @@ TopoSortResult<T> Graph<T>::topologicalSort() const {
           result.nodesInTopoOrder.push_back(*curNode);
         };
 
-    auto numNodes = adjMatrix->size();
+    auto numNodes = cachedAdjMatrix->size();
     result.nodesInTopoOrder.reserve(numNodes);
 
     for (const auto &node : nodeSet) {
@@ -3197,15 +3183,14 @@ TopoSortResult<T> Graph<T>::kahn() const {
     result.errorMessage = ERR_UNDIR_GRAPH;
     return result;
   } else {
-    const auto adjMatrix = Graph<T>::getAdjMatrix();
     const auto nodeSet = Graph<T>::getNodeSet();
-    result.nodesInTopoOrder.reserve(adjMatrix->size());
+    result.nodesInTopoOrder.reserve(cachedAdjMatrix->size());
 
     std::unordered_map<CXXGraph::id_t, unsigned int> indegree;
     for (const auto &node : nodeSet) {
       indegree[node->getId()] = 0;
     }
-    for (const auto &list : *adjMatrix) {
+    for (const auto &list : *cachedAdjMatrix) {
       auto children = list.second;
       for (const auto &child : children) {
         indegree[std::get<0>(child)->getId()]++;
@@ -3226,8 +3211,8 @@ TopoSortResult<T> Graph<T>::kahn() const {
       topologicalOrder.pop();
       result.nodesInTopoOrder.push_back(*currentNode);
 
-      if (adjMatrix->find(currentNode) != adjMatrix->end()) {
-        for (const auto &child : adjMatrix->at(currentNode)) {
+      if (cachedAdjMatrix->find(currentNode) != cachedAdjMatrix->end()) {
+        for (const auto &child : cachedAdjMatrix->at(currentNode)) {
           if (--indegree[std::get<0>(child)->getId()] == 0) {
             topologicalOrder.emplace(std::get<0>(child));
           }
@@ -3257,7 +3242,6 @@ SCCResult<T> Graph<T>::kosaraju() const {
     return result;
   } else {
     auto nodeSet = getNodeSet();
-    const auto adjMatrix = getAdjMatrix();
     // created visited map
     std::unordered_map<CXXGraph::id_t, bool> visited;
     for (const auto &node : nodeSet) {
@@ -3266,14 +3250,14 @@ SCCResult<T> Graph<T>::kosaraju() const {
 
     std::stack<shared<const Node<T>>> st;
     std::function<void(shared<const Node<T>>)> dfs_helper =
-        [this, &adjMatrix, &visited, &dfs_helper,
-         &st](shared<const Node<T>> source) {
+        [this, &visited, &dfs_helper, &st](shared<const Node<T>> source) {
           // mark the vertex visited
           visited[source->getId()] = true;
 
           // travel the neighbors
-          for (int i = 0; i < (*adjMatrix)[source].size(); i++) {
-            shared<const Node<T>> neighbor = (*adjMatrix)[source].at(i).first;
+          for (int i = 0; i < (*cachedAdjMatrix)[source].size(); i++) {
+            shared<const Node<T>> neighbor =
+                (*cachedAdjMatrix)[source].at(i).first;
             if (visited[neighbor->getId()] == false) {
               // make recursive call from neighbor
               dfs_helper(neighbor);
@@ -3348,7 +3332,6 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
   DialResult result;
   result.success = false;
 
-  const auto adj = getAdjMatrix();
   auto nodeSet = getNodeSet();
 
   auto source_node_it = std::find_if(
@@ -3400,7 +3383,7 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
 
     // Process all adjacents of extracted vertex 'u' and
     // update their distanced if required.
-    for (const auto &i : (*adj)[u]) {
+    for (const auto &i : (*cachedAdjMatrix)[u]) {
       auto v = i.first;
       int weight = 0;
       if (i.second->isWeighted().has_value() &&
