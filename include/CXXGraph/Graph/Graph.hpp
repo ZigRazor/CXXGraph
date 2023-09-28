@@ -349,7 +349,7 @@ class Graph {
    * @param Pointer to the node
    *
    */
-  virtual const std::unordered_set<shared<const Edge<T>>, nodeHash<T>> outEdges(
+  virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> outEdges(
       const Node<T> *node) const;
   /**
    * \brief
@@ -359,7 +359,7 @@ class Graph {
    * @param Shared pointer to the node
    *
    */
-  virtual const std::unordered_set<shared<const Edge<T>>, nodeHash<T>> outEdges(
+  virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> outEdges(
       shared<const Node<T>> node) const;
   /**
    * \brief
@@ -369,7 +369,7 @@ class Graph {
    * @param Pointer to the node
    *
    */
-  virtual const std::unordered_set<shared<const Edge<T>>, nodeHash<T>>
+  virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
   inOutEdges(const Node<T> *node) const;
   /**
    * \brief
@@ -379,7 +379,7 @@ class Graph {
    * @param Shared pointer to the node
    *
    */
-  virtual const std::unordered_set<shared<const Edge<T>>, nodeHash<T>>
+  virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
   inOutEdges(shared<const Node<T>> node) const;
   /**
    * @brief This function finds the subset of given a nodeId
@@ -1721,7 +1721,7 @@ Graph<T>::inOutNeighbors(shared<const Node<T>> node) const {
 }
 
 template <typename T>
-const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> outEdges(
+const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> Graph<T>::outEdges(
     const Node<T> *node) const {
   auto node_shared = make_shared<const Node<T>>(*node);
 
@@ -1729,14 +1729,14 @@ const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> outEdges(
 }
 
 template <typename T>
-const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> outEdges(
+const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> Graph<T>::outEdges(
     shared<const Node<T>> node) const {
   if (cachedAdjMatrix->find(node) == cachedAdjMatrix->end()) {
-    return std::unordered_set<shared<const Edge<T>>, nodeHash<T>>();
+    return std::unordered_set<shared<const Edge<T>>, edgeHash<T>>();
   }
   auto nodeEdgePairs = cachedAdjMatrix->at(node);
 
-  std::unordered_set<shared<const Node<T>>, nodeHash<T>> outEdges;
+  std::unordered_set<shared<const Edge<T>>, edgeHash<T>> outEdges;
   for (auto pair : nodeEdgePairs) {
     if (pair.second->isDirected().has_value() &&
         pair.second->isDirected().value()) {
@@ -1748,22 +1748,22 @@ const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> outEdges(
 }
 
 template <typename T>
-const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> inOutEdges(
-    const Node<T> *node) const {
+const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
+Graph<T>::inOutEdges(const Node<T> *node) const {
   auto node_shared = make_shared<const Node<T>>(*node);
 
   return outEdges(node_shared);
 }
 
 template <typename T>
-const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> inOutEdges(
-    shared<const Node<T>> node) const {
+const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
+Graph<T>::inOutEdges(shared<const Node<T>> node) const {
   if (cachedAdjMatrix->find(node) == cachedAdjMatrix->end()) {
-    return std::unordered_set<shared<const Edge<T>>, nodeHash<T>>();
+    return std::unordered_set<shared<const Edge<T>>, edgeHash<T>>();
   }
   auto nodeEdgePairs = cachedAdjMatrix->at(node);
 
-  std::unordered_set<shared<const Node<T>>, nodeHash<T>> outEdges;
+  std::unordered_set<shared<const Edge<T>>, edgeHash<T>> outEdges;
   for (auto pair : nodeEdgePairs) {
     outEdges.insert(pair.second);
   }
