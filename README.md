@@ -28,11 +28,11 @@ An alternative to [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_7
 
 ## Warning ⚠️
 
-*From the official release v2.0.0 we make some API break changes.*
+*From the official release v2.0.0 we make some API breaking changes.*
 
 A new major will be released after the Hacktoberfest, on 1st November. 📅
 
-In the meantime the main branch is updated with the last API interface.
+In the meantime the main branch is updated with the lastest API interface.
 
 ## Hacktoberfest
 
