@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include "Edge/Edge.hpp"
+#include "CXXGraph/Edge/Edge.hpp"
 #include "PartitionState.hpp"
 
 namespace CXXGraph {

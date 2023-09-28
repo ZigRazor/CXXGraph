@@ -27,7 +27,7 @@
 #include <unordered_set>
 
 #include "PartitioningStats.hpp"
-#include "Utility/Typedef.hpp"
+#include "CXXGraph/Utility/Typedef.hpp"
 
 namespace CXXGraph {
 // Smart pointers alias

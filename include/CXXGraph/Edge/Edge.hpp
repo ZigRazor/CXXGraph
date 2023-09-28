@@ -26,8 +26,8 @@
 #include <optional>
 #include <utility>
 
-#include "Node/Node.hpp"
-#include "Utility/id_t.hpp"
+#include "CXXGraph/Node/Node.hpp"
+#include "CXXGraph/Utility/id_t.hpp"
 
 namespace CXXGraph {
 // Smart pointers alias

@@ -26,9 +26,9 @@
 #include <chrono>
 #include <unordered_map>
 
-#include "Edge/Edge.hpp"
+#include "CXXGraph/Edge/Edge.hpp"
 #include "PartitionStrategy.hpp"
-#include "Partitioning/Utility/Globals.hpp"
+#include "CXXGraph/Partitioning/Utility/Globals.hpp"
 
 namespace CXXGraph {
 // Smart pointers alias

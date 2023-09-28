@@ -5,8 +5,7 @@
 #include <memory>
 #include <random>
 
-#include "CXXGraph.hpp"
-#include "../include/Utility/PointerHash.hpp"
+#include "CXXGraph/CXXGraph.hpp"
 
 template <typename T>
 using shared = std::shared_ptr<T>;

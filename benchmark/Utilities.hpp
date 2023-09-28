@@ -4,7 +4,7 @@
 
 #include <random>
 
-#include "CXXGraph.hpp"
+#include "CXXGraph/CXXGraph.hpp"
 
 static std::map<unsigned long, CXXGraph::Node<int> *> generateRandomNodes(
     unsigned long numberOfNodes, int MaxValue) {

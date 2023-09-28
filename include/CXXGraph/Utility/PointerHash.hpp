@@ -25,13 +25,13 @@
 #include <memory>
 #include <string>
 
-#include "../Edge/DirectedEdge.hpp"
-#include "../Edge/DirectedWeightedEdge.hpp"
-#include "../Edge/Edge.hpp"
-#include "../Edge/UndirectedEdge.hpp"
-#include "../Edge/UndirectedWeightedEdge.hpp"
-#include "../Edge/Weighted.hpp"
-#include "../Node/Node.hpp"
+#include "CXXGraph/Edge/DirectedEdge.hpp"
+#include "CXXGraph/Edge/DirectedWeightedEdge.hpp"
+#include "CXXGraph/Edge/Edge.hpp"
+#include "CXXGraph/Edge/UndirectedEdge.hpp"
+#include "CXXGraph/Edge/UndirectedWeightedEdge.hpp"
+#include "CXXGraph/Edge/Weighted.hpp"
+#include "CXXGraph/Node/Node.hpp"
 
 namespace CXXGraph {
 template <typename T>

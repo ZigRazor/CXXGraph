@@ -3,7 +3,7 @@
 
 #include <iterator>
 
-#include "CXXGraph.hpp"
+#include "CXXGraph/CXXGraph.hpp"
 
 static CXXGraph::Graph<int> *readGraph(const std::string &filename) {
   CXXGraph::Graph<int> *graph_ptr = new CXXGraph::Graph<int>();

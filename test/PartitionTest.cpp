@@ -1,6 +1,5 @@
-#include <Edge/Edge.hpp>
 #include <memory>
-#include "CXXGraph.hpp"
+#include "CXXGraph/CXXGraph.hpp"
 #include "Utilities.hpp"
 #include "gtest/gtest.h"
 
