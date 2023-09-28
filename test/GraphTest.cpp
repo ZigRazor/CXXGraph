@@ -736,6 +736,12 @@ TEST(InOutNodesTest, test_outEdges_shared) {
                 x == make_shared<const CXXGraph::Edge<int>>(edge4));
     ASSERT_FALSE(x == make_shared<const CXXGraph::Edge<int>>(edge1));
   }
+
+  // Check the result for a node that does not exist in the graph
+  CXXGraph::Node<int> node9("9", 9);
+  auto node9_shared = make_shared<const CXXGraph::Node<int>>(node9);
+  auto edges = graph.outEdges(node9_shared);
+  ASSERT_EQ(edges.size(), 0);
 }
 
 TEST(InOutNodesTest, test_inOutEdges) {
@@ -827,6 +833,12 @@ TEST(InOutNodesTest, test_inOutEdges_shared) {
   for (auto x : graph.inOutEdges(node7_shared)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Edge<int>>(edge7));
   }
+
+  // Check the result for a node that does not exist in the graph
+  CXXGraph::Node<int> node9("9", 9);
+  auto node9_shared = make_shared<const CXXGraph::Node<int>>(node9);
+  auto edges = graph.inOutEdges(node9_shared);
+  ASSERT_EQ(edges.size(), 0);
 }
 
 TEST(ReverseDirectedGraphTest, test_function) {
