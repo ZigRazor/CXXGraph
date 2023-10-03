@@ -861,7 +861,8 @@ template <typename T>
 void Graph<T>::addEdge(const Edge<T> *edge) {
   if (edge->isDirected().has_value() && edge->isDirected().value()) {
     if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
-      auto edge_shared = make_shared<DirectedWeightedEdge<T>>(*edge);
+      auto edge_shared = make_shared<DirectedWeightedEdge<T>>(
+          *dynamic_cast<const DirectedWeightedEdge<T> *>(edge));
       this->edgeSet.insert(edge_shared);
 
       std::pair<shared<const Node<T>>, shared<const Edge<T>>> elem = {
@@ -879,7 +880,8 @@ void Graph<T>::addEdge(const Edge<T> *edge) {
     }
   } else {
     if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
-      auto edge_shared = make_shared<UndirectedWeightedEdge<T>>(*edge);
+      auto edge_shared = make_shared<UndirectedWeightedEdge<T>>(
+          *dynamic_cast<const UndirectedWeightedEdge<T> *>(edge));
       this->edgeSet.insert(edge_shared);
 
       std::pair<shared<const Node<T>>, shared<const Edge<T>>> elem = {
