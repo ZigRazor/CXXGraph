@@ -65,6 +65,7 @@
 #include "CXXGraph/Utility/PointerHash.hpp"
 #include "CXXGraph/Utility/Reader.hpp"
 #include "CXXGraph/Utility/ThreadSafe.hpp"
+#include "CXXGraph/Utility/TypeTraits.hpp"
 #include "CXXGraph/Utility/Typedef.hpp"
 #include "CXXGraph/Utility/Writer.hpp"
 
@@ -181,6 +182,21 @@ class Graph {
   virtual void addEdge(shared<const Edge<T>> edge);
   /**
    * \brief
+   * @param
+   *
+   */
+  template <typename... Tn>
+  void addEdges();
+  /**
+   * \brief
+   * @param
+   *
+   */
+  template <typename T1, typename... Tn>
+  std::enable_if<is_edge_v<T1> && (is_edge_v<Tn> && ...), void> addEdges(
+      T1 edge, Tn... edges);
+  /**
+   * \brief
    * Function to add a Node to the Graph Node Set
    * Note: No Thread Safe
    *
@@ -197,6 +213,21 @@ class Graph {
    *
    */
   virtual void addNode(shared<const Node<T>> node);
+  /**
+   * \brief
+   * @param
+   *
+   */
+  template <typename... Tn>
+  void addNodes();
+  /**
+   * \brief
+   * @param
+   *
+   */
+  template <typename T1, typename... Tn>
+  std::enable_if<is_node_v<T1> && (is_node_v<Tn> && ...), void> addNodes(
+      T1 node, Tn... nodes);
   /**
    * \brief
    * Function remove an Edge from the Graph Edge Set
@@ -932,6 +963,20 @@ void Graph<T>::addEdge(shared<const Edge<T>> edge) {
 }
 
 template <typename T>
+template <typename... Tn>
+void Graph<T>::addEdges() {
+  return;
+}
+
+template <typename T>
+template <typename T1, typename... Tn>
+std::enable_if<is_edge_v<T1> && (is_edge_v<Tn> && ...), void> Graph<T>::addEdges(
+    T1 edge, Tn... edges) {
+  addEdge(edge);
+  addEdges(edges...);
+}
+
+template <typename T>
 void Graph<T>::addNode(const Node<T> *node) {
   auto node_shared = make_shared<const Node<T>>(*node);
   this->isolatedNodesSet.insert(node_shared);
@@ -940,6 +985,20 @@ void Graph<T>::addNode(const Node<T> *node) {
 template <typename T>
 void Graph<T>::addNode(shared<const Node<T>> node) {
   this->isolatedNodesSet.insert(node);
+}
+
+template <typename T>
+template <typename... Tn>
+void Graph<T>::addNodes() {
+  return;
+}
+
+template <typename T>
+template <typename T1, typename... Tn>
+std::enable_if<is_node_v<T1> && (is_node_v<Tn> && ...), void> Graph<T>::addNodes(
+    T1 node, Tn... nodes) {
+  addNode(node);
+  addNodes(nodes...);
 }
 
 template <typename T>
