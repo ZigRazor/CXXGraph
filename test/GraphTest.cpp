@@ -225,8 +225,14 @@ TEST(GraphTest, AddEdgeWeight_raw) {
   ASSERT_TRUE((*graph.getEdge(1))->isWeighted());
   ASSERT_TRUE((*graph.getEdge(2))->isWeighted());
   // Check the value of the weights
-  ASSERT_EQ(std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(1))->getWeight(), 3);
-  ASSERT_EQ(std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(2))->getWeight(), 5);
+  ASSERT_EQ(
+      std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(1))
+          ->getWeight(),
+      3);
+  ASSERT_EQ(
+      std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(2))
+          ->getWeight(),
+      5);
 }
 
 TEST(GraphTest, AddEdgeWeight_shared) {
@@ -238,14 +244,247 @@ TEST(GraphTest, AddEdgeWeight_shared) {
   CXXGraph::Graph<int> graph;
 
   graph.addEdge(make_shared<const CXXGraph::DirectedWeightedEdge<int>>(edge1));
-  graph.addEdge(make_shared<const CXXGraph::UndirectedWeightedEdge<int>>(edge2));
+  graph.addEdge(
+      make_shared<const CXXGraph::UndirectedWeightedEdge<int>>(edge2));
 
   // Check that the edges are weighted
   ASSERT_TRUE((*graph.getEdge(1))->isWeighted());
   ASSERT_TRUE((*graph.getEdge(2))->isWeighted());
   // Check the value of the weights
-  ASSERT_EQ(std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(1))->getWeight(), 3);
-  ASSERT_EQ(std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(2))->getWeight(), 5);
+  ASSERT_EQ(
+      std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(1))
+          ->getWeight(),
+      3);
+  ASSERT_EQ(
+      std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(2))
+          ->getWeight(),
+      5);
+}
+
+TEST(GraphTest, AddEdges_1) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 1);
+  CXXGraph::Node<int> node3("3", 1);
+  CXXGraph::DirectedEdge<int> edge1(1, node1, node2);
+  CXXGraph::DirectedEdge<int> edge2(2, node1, node3);
+  CXXGraph::DirectedEdge<int> edge3(3, node2, node3);
+  CXXGraph::Graph<int> graph;
+
+  graph.addEdges(&edge1, &edge2, &edge3);
+
+  // Check the number of edges
+  ASSERT_EQ(graph.getEdgeSet().size(), 3);
+  // Check the number of nodes
+  ASSERT_EQ(graph.getNodeSet().size(), 3);
+}
+
+TEST(GraphTest, AddEdges_1_shared) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 1);
+  CXXGraph::Node<int> node3("3", 1);
+  CXXGraph::DirectedEdge<int> edge1(1, node1, node2);
+  CXXGraph::DirectedEdge<int> edge2(2, node1, node3);
+  CXXGraph::DirectedEdge<int> edge3(3, node2, node3);
+  CXXGraph::Graph<int> graph;
+
+  auto edge1_shared = make_shared<const CXXGraph::DirectedEdge<int>>(edge1);
+  auto edge2_shared = make_shared<const CXXGraph::DirectedEdge<int>>(edge2);
+  auto edge3_shared = make_shared<const CXXGraph::DirectedEdge<int>>(edge3);
+  graph.addEdges(edge1_shared, edge2_shared, edge3_shared);
+
+  // Check the number of edges
+  ASSERT_EQ(graph.getEdgeSet().size(), 3);
+  // Check the number of nodes
+  ASSERT_EQ(graph.getNodeSet().size(), 3);
+}
+
+TEST(GraphTest, AddEdges_2) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 1);
+  CXXGraph::Node<int> node3("3", 1);
+  CXXGraph::UndirectedEdge<int> edge1(1, node1, node2);
+  CXXGraph::UndirectedEdge<int> edge2(2, node1, node3);
+  CXXGraph::UndirectedEdge<int> edge3(3, node2, node3);
+  CXXGraph::Graph<int> graph;
+
+  graph.addEdges(&edge1, &edge2, &edge3);
+
+  // Check the number of edges
+  ASSERT_EQ(graph.getEdgeSet().size(), 3);
+  // Check the number of nodes
+  ASSERT_EQ(graph.getNodeSet().size(), 3);
+}
+
+TEST(GraphTest, AddEdges_2_shared) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 1);
+  CXXGraph::Node<int> node3("3", 1);
+  CXXGraph::UndirectedEdge<int> edge1(1, node1, node2);
+  CXXGraph::UndirectedEdge<int> edge2(2, node1, node3);
+  CXXGraph::UndirectedEdge<int> edge3(3, node2, node3);
+  CXXGraph::Graph<int> graph;
+
+  auto edge1_shared = make_shared<const CXXGraph::UndirectedEdge<int>>(edge1);
+  auto edge2_shared = make_shared<const CXXGraph::UndirectedEdge<int>>(edge2);
+  auto edge3_shared = make_shared<const CXXGraph::UndirectedEdge<int>>(edge3);
+  graph.addEdges(edge1_shared, edge2_shared, edge3_shared);
+
+  // Check the number of edges
+  ASSERT_EQ(graph.getEdgeSet().size(), 3);
+  // Check the number of nodes
+  ASSERT_EQ(graph.getNodeSet().size(), 3);
+}
+
+TEST(GraphTest, AddEdges_3) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 1);
+  CXXGraph::Node<int> node3("3", 1);
+  CXXGraph::DirectedWeightedEdge<int> edge1(1, node1, node2, 4);
+  CXXGraph::DirectedWeightedEdge<int> edge2(2, node1, node3, 5);
+  CXXGraph::DirectedWeightedEdge<int> edge3(3, node2, node3, 6);
+  CXXGraph::Graph<int> graph;
+
+  graph.addEdges(&edge1, &edge2, &edge3);
+
+  // Check the number of edges
+  ASSERT_EQ(graph.getEdgeSet().size(), 3);
+  // Check the number of nodes
+  ASSERT_EQ(graph.getNodeSet().size(), 3);
+
+  // Check that the edges are weighted
+  ASSERT_TRUE((*graph.getEdge(1))->isWeighted());
+  ASSERT_TRUE((*graph.getEdge(2))->isWeighted());
+  ASSERT_TRUE((*graph.getEdge(3))->isWeighted());
+  // Check the value of the weights
+  ASSERT_EQ(
+      std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(1))
+          ->getWeight(),
+      4);
+  ASSERT_EQ(
+      std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(2))
+          ->getWeight(),
+      5);
+  ASSERT_EQ(
+      std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(3))
+          ->getWeight(),
+      6);
+}
+
+TEST(GraphTest, AddEdges_3_shared) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 1);
+  CXXGraph::Node<int> node3("3", 1);
+  CXXGraph::DirectedWeightedEdge<int> edge1(1, node1, node2, 4);
+  CXXGraph::DirectedWeightedEdge<int> edge2(2, node1, node3, 5);
+  CXXGraph::DirectedWeightedEdge<int> edge3(3, node2, node3, 6);
+  CXXGraph::Graph<int> graph;
+
+  auto edge1_shared =
+      make_shared<const CXXGraph::DirectedWeightedEdge<int>>(edge1);
+  auto edge2_shared =
+      make_shared<const CXXGraph::DirectedWeightedEdge<int>>(edge2);
+  auto edge3_shared =
+      make_shared<const CXXGraph::DirectedWeightedEdge<int>>(edge3);
+  graph.addEdges(edge1_shared, edge2_shared, edge3_shared);
+
+  // Check the number of edges
+  ASSERT_EQ(graph.getEdgeSet().size(), 3);
+  // Check the number of nodes
+  ASSERT_EQ(graph.getNodeSet().size(), 3);
+
+  // Check that the edges are weighted
+  ASSERT_TRUE((*graph.getEdge(1))->isWeighted());
+  ASSERT_TRUE((*graph.getEdge(2))->isWeighted());
+  ASSERT_TRUE((*graph.getEdge(3))->isWeighted());
+  // Check the value of the weights
+  ASSERT_EQ(
+      std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(1))
+          ->getWeight(),
+      4);
+  ASSERT_EQ(
+      std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(2))
+          ->getWeight(),
+      5);
+  ASSERT_EQ(
+      std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(3))
+          ->getWeight(),
+      6);
+}
+
+TEST(GraphTest, AddEdges_4) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 1);
+  CXXGraph::Node<int> node3("3", 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge1(1, node1, node2, 4);
+  CXXGraph::UndirectedWeightedEdge<int> edge2(2, node1, node3, 5);
+  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node2, node3, 6);
+  CXXGraph::Graph<int> graph;
+
+  graph.addEdges(&edge1, &edge2, &edge3);
+
+  // Check the number of edges
+  ASSERT_EQ(graph.getEdgeSet().size(), 3);
+  // Check the number of nodes
+  ASSERT_EQ(graph.getNodeSet().size(), 3);
+
+  // Check that the edges are weighted
+  ASSERT_TRUE((*graph.getEdge(1))->isWeighted());
+  ASSERT_TRUE((*graph.getEdge(2))->isWeighted());
+  ASSERT_TRUE((*graph.getEdge(3))->isWeighted());
+  // Check the value of the weights
+  ASSERT_EQ(
+      std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(1))
+          ->getWeight(),
+      4);
+  ASSERT_EQ(
+      std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(2))
+          ->getWeight(),
+      5);
+  ASSERT_EQ(
+      std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(3))
+          ->getWeight(),
+      6);
+}
+
+TEST(GraphTest, AddEdges_4_shared) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 1);
+  CXXGraph::Node<int> node3("3", 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge1(1, node1, node2, 4);
+  CXXGraph::UndirectedWeightedEdge<int> edge2(2, node1, node3, 5);
+  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node2, node3, 6);
+  CXXGraph::Graph<int> graph;
+
+  auto edge1_shared =
+      make_shared<const CXXGraph::UndirectedWeightedEdge<int>>(edge1);
+  auto edge2_shared =
+      make_shared<const CXXGraph::UndirectedWeightedEdge<int>>(edge2);
+  auto edge3_shared =
+      make_shared<const CXXGraph::UndirectedWeightedEdge<int>>(edge3);
+  graph.addEdges(edge1_shared, edge2_shared, edge3_shared);
+
+  // Check the number of edges
+  ASSERT_EQ(graph.getEdgeSet().size(), 3);
+  // Check the number of nodes
+  ASSERT_EQ(graph.getNodeSet().size(), 3);
+
+  // Check that the edges are weighted
+  ASSERT_TRUE((*graph.getEdge(1))->isWeighted());
+  ASSERT_TRUE((*graph.getEdge(2))->isWeighted());
+  ASSERT_TRUE((*graph.getEdge(3))->isWeighted());
+  // Check the value of the weights
+  ASSERT_EQ(
+      std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(1))
+          ->getWeight(),
+      4);
+  ASSERT_EQ(
+      std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(2))
+          ->getWeight(),
+      5);
+  ASSERT_EQ(
+      std::dynamic_pointer_cast<const CXXGraph::Weighted>(*graph.getEdge(3))
+          ->getWeight(),
+      6);
 }
 
 TEST(GraphTest, DirectedEdgeCycle_1) {
@@ -821,7 +1060,7 @@ TEST(InOutNodesTest, test_inOutEdges) {
   for (auto x : graph.inOutEdges(&node6)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Edge<int>>(edge6) ||
                 x == make_shared<const CXXGraph::Edge<int>>(edge7) ||
-				x == make_shared<const CXXGraph::Edge<int>>(edge8));
+                x == make_shared<const CXXGraph::Edge<int>>(edge8));
   }
 
   for (auto x : graph.inOutEdges(&node7)) {
@@ -867,7 +1106,7 @@ TEST(InOutNodesTest, test_inOutEdges_shared) {
   for (auto x : graph.inOutEdges(node6_shared)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Edge<int>>(edge6) ||
                 x == make_shared<const CXXGraph::Edge<int>>(edge7) ||
-				x == make_shared<const CXXGraph::Edge<int>>(edge8));
+                x == make_shared<const CXXGraph::Edge<int>>(edge8));
   }
 
   auto node7_shared = make_shared<const CXXGraph::Node<int>>(node7);
