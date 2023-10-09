@@ -182,14 +182,20 @@ class Graph {
   virtual void addEdge(shared<const Edge<T>> edge);
   /**
    * \brief
-   * @param
+   * Function that adds any number of Edges to the Graph Edge set
+   * Note: This is the overload needed to terminate the
+   * recursion
+   *
+   * @param None
    *
    */
   template <typename... Tn>
   void addEdges();
   /**
    * \brief
-   * @param
+   * Function that adds any number of Edges to the Graph Edge set
+   *
+   * @param Raw pointers or shared pointers to the Edges
    *
    */
   template <typename T1, typename... Tn>
@@ -215,14 +221,19 @@ class Graph {
   virtual void addNode(shared<const Node<T>> node);
   /**
    * \brief
-   * @param
+   * Function that adds any number of Nodes to the Graph Node set
+   * Note: This overload is needed to terminate the recursion
+   *
+   * @param None
    *
    */
   template <typename... Tn>
   void addNodes();
   /**
    * \brief
-   * @param
+   * Function that adds any number of Nodes to the Graph Node set
+   *
+   * @param Raw pointers or shared pointers to the Edges
    *
    */
   template <typename T1, typename... Tn>
