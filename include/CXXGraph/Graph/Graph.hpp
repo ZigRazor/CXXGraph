@@ -3364,36 +3364,39 @@ SCCResult<T> Graph<T>::kosaraju() const {
 
     visited.clear();
 
-    std::function<void(shared<const Node<T>>, std::vector<Node<T>> &)>
+    std::function<void(shared<const Node<T>>, SCCResult<T>, int)>
         dfs_helper1 =
             [this, &rev, &visited, &dfs_helper1](shared<const Node<T>> source,
-                                                 std::vector<Node<T>> &comp) {
+                                                 SCCResult<T> result, int sccLabel) {
               // mark the vertex visited
               visited[source->getId()] = true;
               // Add the current vertex to the strongly connected
               // component
-              comp.push_back(*source);
+              //comp.push_back(*source);
+              result.sccMap[source->getId()] =  sccLabel;
 
               // travel the neighbors
               for (int i = 0; i < rev[source].size(); i++) {
                 shared<const Node<T>> neighbor = rev[source].at(i).first;
                 if (visited[neighbor->getId()] == false) {
                   // make recursive call from neighbor
-                  dfs_helper1(neighbor, comp);
+                  dfs_helper1(neighbor, result, sccLabel);
                 }
               }
             };
 
+    int sccLabel = 0;
     while (st.size() != 0) {
       auto rem = st.top();
       st.pop();
       if (visited[rem->getId()] == false) {
-        std::vector<Node<T>> comp;
-        dfs_helper1(rem, comp);
-        result.stronglyConnectedComps.push_back(comp);
+        //std::vector<Node<T>> comp;
+        dfs_helper1(rem, result, sccLabel);
+        sccLabel++;
+        //result.stronglyConnectedComps.push_back(comp);
       }
     }
-
+    result.noOfComponents =  sccLabel;
     result.success = true;
     return result;
   }
