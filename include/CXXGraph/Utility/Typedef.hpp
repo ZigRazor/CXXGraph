@@ -255,6 +255,24 @@ using AdjacencyMatrix = std::unordered_map<
     nodeHash<T>>;
 
 template <typename T>
+using DegreeMatrix = std::unordered_map<
+    shared<const Node<T>>,
+    std::vector<int>,
+    nodeHash<T>>;
+
+template <typename T>
+using LaplacianMatrix = std::unordered_map<
+    shared<const Node<T>>,
+    std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>,
+    nodeHash<T>>;
+
+template <typename T>
+using TransitionMatrix = std::unordered_map<
+    shared<const Node<T>>,
+    std::vector<std::pair<shared<const Node<T>>, double>>,
+    nodeHash<T>>;
+
+template <typename T>
 using PartitionMap =
     std::unordered_map<unsigned int,
                        std::shared_ptr<Partitioning::Partition<T>>>;
