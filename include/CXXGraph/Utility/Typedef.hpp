@@ -197,7 +197,9 @@ struct SCCResult_struct {
   bool success =
       false;  // TRUE if the function does not return error, FALSE otherwise
   std::string errorMessage = "";  // message of error
-  Components<T> stronglyConnectedComps;
+  int noOfComponents = 0;
+  std::unordered_map<size_t, int> sccMap;
+  //Components<T> stronglyConnectedComps;
 };
 template <typename T>
 using SCCResult = SCCResult_struct<T>;

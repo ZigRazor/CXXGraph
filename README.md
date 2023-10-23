@@ -22,9 +22,9 @@
 Share on [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Header-Only%20C++%20Library%20for%20Graph%20Representation%20and%20Algorithms%204&url=https://github.com/ZigRazor/CXXGraph&hashtags=cpp,headeronly,library,opensource,developers)
 <br/><br/>
 
+
 ## Introduction
-**CXXGraph** is a small library, header only, that manages the Graph and it's algorithms in **C++**. In other words a "Comprehensive C++ Graph Library".
-An alternative to [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_77_0/libs/graph/doc/index.html).
+**CXXGraph** is a comprehensive C++ library that manages graph algorithms. This header-only library serves as an alternative to the [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_77_0/libs/graph/doc/index.html).
 
 ## Warning ⚠️
 
@@ -49,8 +49,8 @@ Happy Coding!! 😄
 
 **We are looking for:**
 
-- **Site Developer** for the development of the CXXGraph site ( for the moment on GitHub Page );
-- **Developers and Committers**, also at *first experience*, we will guide you step by step to the open-source world!
+- **A Web Developer** for the development of the CXXGraph website. All documentation is currently hosted on this GitHub page.
+- **Developers and Contributors** to provide input. If you are new to the open-source world, we will guide you step by step!
 
 If you are interested, please contact us at zigrazor@gmail.com or contribute to this project. We are waiting for you!
 
@@ -173,149 +173,150 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
 
 ### Install Linux Tarballs
 
-On Unix/Linux system you need to execute the following command to install:
+To install on Unix/Linux systems, execute the following from the command line:
 
 `$ sudo tar xjf CXXGraph-{version}.tar.bz2`
 
-to uninstall:
+To uninstall:
 
 `$ sudo rm -f /usr/include/Graph.hpp /usr/include/CXXGraph*`
 
 ### Install RPM
 
-On Fedora/CentOS/RedHat system you need to execute the following command to install:
+To install on Fedora/CentOS/RedHat systems, execute the following from the command line:
 
 `$ sudo rpm -ivh CXXGraph-{version}.noarch.rpm`
 
-to uninstall:
+To uninstall:
 
 `$ sudo rpm -e CXXGraph-{version}`
 
 ### Install DEB
 
-On Debian/Ubuntu system you need to execute the following command to install:
+To install on Debian/Ubuntu systems, execute the following from the command line:
 
 `$ sudo dpkg -i CXXGraph_{version}.deb`
 
-to uninstall:
+To uninstall:
 
 `$ sudo apt-get remove CXXGraph`
 
 ### Install From Source
 
-You can install from source the library using CMake. After the compilation phase, you can use:
+For self-compiled installations using CMake, execute the following from the command line once compilation is complete:
 
 `$ sudo make install`
 
-to install the library.
-
 ## Classes Explanation
 
-The Classes Explanation can be found in the [Doxygen Documentation](https://rawcdn.githack.com/ZigRazor/CXXGraph/master/docs/html/index.html), in the [Classes Section](https://rawcdn.githack.com/ZigRazor/CXXGraph/master/docs/html/classes.html)
+The Classes Explanation can be found in the [Classes Section](https://rawcdn.githack.com/ZigRazor/CXXGraph/master/docs/html/classes.html) of the [Doxygen Documentation](https://rawcdn.githack.com/ZigRazor/CXXGraph/master/docs/html/index.html)
 
-## Requirements
+## Prerequisites
 
-- The minimum C++ standard required is **C++17**
-- A GCC compiler version greater than 7.3.0 *OR*
-- A MSVC compiler that supports C++17
+- The minimum C++ standard required is **C++17** 
+- A GCC compiler version 7.3.0 and later *OR* a MSVC compiler that supports C++17
 
 ## How to use
 
-The use of the library is very simple, **just put the header file where you need!**
+To use the library **simply put the header file where you need it.** It's that easy!
 
 ## Example
 
-Work in Progess
+Work in Progress
 
 ## Unit-Test Execution
 
-The Unit-Test required the CMake version greater than 3.9 and the **google test**  library.
+The Unit-Test requires CMake 3.9 and later, and the **[GoogleTest](https://github.com/google/googletest)**  library.
 
-### Google Test Installation
+### Install GoogleTest
 
 [GoogleTest](https://github.com/google/googletest)
 
 ```bash
 git clone https://github.com/google/googletest.git
-cd googletest        # Main directory of the cloned repository.
-mkdir -p build       # Create a directory to hold the build output.
+cd googletest        # Main directory of the cloned repository
+mkdir -p build       # Create a directory to hold the build output
 cd build
-cmake ..             # Generate native build scripts for GoogleTest.
+cmake ..             # Generate native build scripts for GoogleTest
 make                 # Compile
 sudo make install    # Install in /usr/local/ by default
 ```
 
-### How to Compile Test
+### How to Compile GoogleTest
 
 From the base directory:
 
 ```bash
-mkdir -p build       # Create a directory to hold the build output.
+mkdir -p build       # Create a directory to hold the build output
 cd build             # Enter the build folder
-cmake ..             # Generate native build scripts for GoogleTest.
+cmake ..             # Generate native build scripts for GoogleTest
 make                 # Compile
 ```
 
-### How to Run Test
+### How to Run GoogleTest
 
-After the compilation, you can run the executable that is under the "build" directory with the name "test_exe", with the simple command `./test_exe`.
+After the build has compiled, run the "test_exe" executable in the "build" directory with the following command: 
+
+`./test_exe`
 
 ## Benchmark Execution
 
-The Benchmark required the CMake version greater than 3.9 and the **google test** and the **google benchmark** library.
+The Benchmark requires CMake 3.9 and later, the **GoogleTest** library, and the **Google Benchmark** library.
 
-### Google Benchmark Installation
+### Install Google Benchmark
 
 [Google Benchmark](https://github.com/google/benchmark)
 
 ```bash
-# Check out the library.
+# Check out the library
 $ git clone https://github.com/google/benchmark.git
-# Benchmark requires Google Test as a dependency. Add the source tree as a subdirectory.
+# Google Benchmark requires GoogleTest as a dependency. Add the source tree as a subdirectory
 $ git clone https://github.com/google/googletest.git benchmark/googletest
-# Go to the library root directory
+# Go to the library's root directory
 $ cd benchmark
-# Make a build directory to place the build output.
+# Make a build directory to place the build output
 $ cmake -E make_directory "build"
-# Generate build system files with cmake.
+# Generate the build system files with CMake
 $ cmake -E chdir "build" cmake -DCMAKE_BUILD_TYPE=Release ../
-# or, starting with CMake 3.13, use a simpler form:
+# If starting with CMake 3.13, you can use the following:
 # cmake -DCMAKE_BUILD_TYPE=Release -S . -B "build"
-# Build the library.
+# Build the library
 $ cmake --build "build" --config Release
-# install library
+# Install the library
 $ sudo cmake --build "build" --config Release --target install
 ```
 
-### How to Compile Benchmark
+### How to Compile Google Benchmark
 
 From the base directory:
 
 ```bash
-mkdir -p build             # Create a directory to hold the build output.
+mkdir -p build             # Create a directory to hold the build output
 cd build                   # Enter the build folder
-cmake -DBENCHMARK=ON ..    # Generate native build scripts for GoogleTest.
+cmake -DBENCHMARK=ON ..    # Generate native build scripts for GoogleTest
 make                       # Compile
 ```
 
-### How to Run Benchmark
+### How to Run Google Benchmark
 
-After the compilation, you can run the executable that is under the "build" directory with the name "benchmark", with the simple command `./benchmark`.
+After the build has compiled, run the "benchmark" executable in the "build" directory with the following command: 
+
+`./benchmark`
 
 ### Benchmark Results
 
-You can check benchmark result at this [link](https://zigrazor.github.io/CXXGraph/dev/bench/)
+You can check the benchmark result using this [link](https://zigrazor.github.io/CXXGraph/dev/bench/).
 
 ## Packaging
 
 ### Tarballs
 
-To create tarballs package you need to follow the following steps:
+To create a tarball package, execute the following from the command line:
 
 ```bash
 # Enter Packaging Directory
 $ cd packaging
-# execute the script to generate tarballs
+# Execute the script to generate tarballs
 $ ./tarballs.sh
 ```
 
@@ -323,12 +324,12 @@ $ ./tarballs.sh
 
 #### (Fedora/CentOS/RedHat)
 
-To create rpm package you need to follow the following steps:
+To create an RPM package, execute the following from the command line:
 
 ```bash
 # Enter Packaging Directory
 $ cd packaging/rpm
-# execute the script to generate tarballs
+# Execute the script to generate tarballs
 $ ./make_rpm.sh
 ```
 
@@ -336,12 +337,12 @@ $ ./make_rpm.sh
 
 #### (Debian/Ubuntu)
 
-To create deb package you need to follow the following steps:
+To create a deb package, execute the following from the command line:
 
 ```bash
 # Enter Packaging Directory
 $ cd packaging/deb
-# execute the script to generate tarballs
+# Execute the script to generate tarballs
 $ ./make_deb.sh
 ```
 
@@ -575,10 +576,10 @@ The lowest value is taken as partition Id.
 ## How to contribute
 
 [![GitHub contributors](https://img.shields.io/github/contributors/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/graphs/contributors/)
-If you want give your support you can create a ***pull request***   [![GitHub pull-requests](https://img.shields.io/github/issues-pr/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/pull/) or report an ***issue***  [![GitHub issues](https://img.shields.io/github/issues/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/issues/).
-If you want to change the code, or fix issue, or implement a new feature please read our [CONTRIBUTING Guide](https://github.com/ZigRazor/CXXGraph/blob/master/CONTRIBUTING.md)
+If you want to give your support you can create a ***pull request***   [![GitHub pull-requests](https://img.shields.io/github/issues-pr/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/pull/) or report an ***issue***  [![GitHub issues](https://img.shields.io/github/issues/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/issues/).
+If you want to change the code, fix an issue, or implement a new feature please read our [CONTRIBUTING Guide](https://github.com/ZigRazor/CXXGraph/blob/master/CONTRIBUTING.md).
 
-If you want to disscuss new feature or you have any question or suggestion about library please open a [Discussion](https://github.com/ZigRazor/CXXGraph/discussions) or simply chat on [![Join the chat at https://gitter.im/CXXGraph-Community/community](https://badges.gitter.im/CXXGraph-Community/community.svg)](https://gitter.im/CXXGraph-Community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+If you want to discuss new features or you have any questions or suggestions about the library, please open a [Discussion](https://github.com/ZigRazor/CXXGraph/discussions) or simply chat on [![Join the chat at https://gitter.im/CXXGraph-Community/community](https://badges.gitter.im/CXXGraph-Community/community.svg)](https://gitter.im/CXXGraph-Community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Stars History
 
@@ -590,7 +591,7 @@ If you want to disscuss new feature or you have any question or suggestion about
 
 ## Contact
 
-E-Mail : zigrazor@gmail.com
+E-mail : zigrazor@gmail.com
 
 [![Join the chat at https://gitter.im/CXXGraph-Community/community](https://badges.gitter.im/CXXGraph-Community/community.svg)](https://gitter.im/CXXGraph-Community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -600,9 +601,9 @@ E-Mail : zigrazor@gmail.com
 
 ## Support
 
-To support me just add ***Star*** the project  [![GitHub stars](https://img.shields.io/github/stars/ZigRazor/CXXGraph.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/ZigRazor/CXXGraph/stargazers/) or ***follow me***  [![GitHub followers](https://img.shields.io/github/followers/ZigRazor.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/ZigRazor?tab=followers)
+To support me, add a ***Star*** to the project  [![GitHub stars](https://img.shields.io/github/stars/ZigRazor/CXXGraph.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/ZigRazor/CXXGraph/stargazers/) or ***follow me***  [![GitHub followers](https://img.shields.io/github/followers/ZigRazor.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/ZigRazor?tab=followers)
 
-To get updated ***watch*** the project  [![GitHub watchers](https://img.shields.io/github/watchers/ZigRazor/CXXGraph.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/ZigRazor/CXXGraph/watchers/)
+To stay updated, ***watch*** the project  [![GitHub watchers](https://img.shields.io/github/watchers/ZigRazor/CXXGraph.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/ZigRazor/CXXGraph/watchers/)
 
 ## References
 
@@ -614,9 +615,9 @@ We are referenced by:
 
 ## Credits
 
-Thanks to the community of [TheAlgorithms](https://github.com/TheAlgorithms) for some algorithms ispiration.
+Thanks to the community of [TheAlgorithms](https://github.com/TheAlgorithms) for some algorithm inspiration.
 
-Thanks to [GeeksForGeeks](https://www.geeksforgeeks.org/) for some algorithms inspiration.
+Thanks to [GeeksForGeeks](https://www.geeksforgeeks.org/) for some algorithm inspiration.
 
 ## Contributors
 
@@ -626,16 +627,16 @@ Thank you to all the people who have already contributed to CXXGraph!
 
 ## Cite Us
 
-If you use this software please follow the [CITATION](https://github.com/ZigRazor/CXXGraph/blob/master/CITATION) istruction.
+If you use this software please follow the [CITATION](https://github.com/ZigRazor/CXXGraph/blob/master/CITATION) instructions.
 Thank you!
 
 ## Hacktoberfest 2k21
 
-We have been participated at Hacktoberfest 2021, thank you to all the contributors!
+We participated at Hacktoberfest 2021. Thank you to all the contributors!
 
 ## Hacktoberfest 2k22
 
-We have been participated at Hacktoberfest 2022, thank you to all the contributors!
+We participated at Hacktoberfest 2022. Thank you to all the contributors!
 
 ## Other Details
 

@@ -65,6 +65,7 @@
 #include "CXXGraph/Utility/PointerHash.hpp"
 #include "CXXGraph/Utility/Reader.hpp"
 #include "CXXGraph/Utility/ThreadSafe.hpp"
+#include "CXXGraph/Utility/TypeTraits.hpp"
 #include "CXXGraph/Utility/Typedef.hpp"
 #include "CXXGraph/Utility/Writer.hpp"
 
@@ -183,6 +184,27 @@ class Graph {
   virtual void addEdge(shared<const Edge<T>> edge);
   /**
    * \brief
+   * Function that adds any number of Edges to the Graph Edge set
+   * Note: This is the overload needed to terminate the
+   * recursion
+   *
+   * @param None
+   *
+   */
+  template <typename... Tn>
+  void addEdges();
+  /**
+   * \brief
+   * Function that adds any number of Edges to the Graph Edge set
+   *
+   * @param Raw pointers or shared pointers to the Edges
+   *
+   */
+  template <typename T1, typename... Tn>
+  std::enable_if<is_edge_ptr_v<T1> && (is_edge_ptr_v<Tn> && ...), void> addEdges(
+      T1 edge, Tn... edges);
+  /**
+   * \brief
    * Function to add a Node to the Graph Node Set
    * Note: No Thread Safe
    *
@@ -199,6 +221,26 @@ class Graph {
    *
    */
   virtual void addNode(shared<const Node<T>> node);
+  /**
+   * \brief
+   * Function that adds any number of Nodes to the Graph Node set
+   * Note: This overload is needed to terminate the recursion
+   *
+   * @param None
+   *
+   */
+  template <typename... Tn>
+  void addNodes();
+  /**
+   * \brief
+   * Function that adds any number of Nodes to the Graph Node set
+   *
+   * @param Raw pointers or shared pointers to the Edges
+   *
+   */
+  template <typename T1, typename... Tn>
+  std::enable_if<is_node_ptr_v<T1> && (is_node_ptr_v<Tn> && ...), void> addNodes(
+      T1 node, Tn... nodes);
   /**
    * \brief
    * Function remove an Edge from the Graph Edge Set
@@ -898,7 +940,8 @@ template <typename T>
 void Graph<T>::addEdge(const Edge<T> *edge) {
   if (edge->isDirected().has_value() && edge->isDirected().value()) {
     if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
-      auto edge_shared = make_shared<DirectedWeightedEdge<T>>(*edge);
+      auto edge_shared = make_shared<DirectedWeightedEdge<T>>(
+          *dynamic_cast<const DirectedWeightedEdge<T> *>(edge));
       this->edgeSet.insert(edge_shared);
 
       std::pair<shared<const Node<T>>, shared<const Edge<T>>> elem = {
@@ -916,7 +959,8 @@ void Graph<T>::addEdge(const Edge<T> *edge) {
     }
   } else {
     if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
-      auto edge_shared = make_shared<UndirectedWeightedEdge<T>>(*edge);
+      auto edge_shared = make_shared<UndirectedWeightedEdge<T>>(
+          *dynamic_cast<const UndirectedWeightedEdge<T> *>(edge));
       this->edgeSet.insert(edge_shared);
 
       std::pair<shared<const Node<T>>, shared<const Edge<T>>> elem = {
@@ -967,6 +1011,20 @@ void Graph<T>::addEdge(shared<const Edge<T>> edge) {
 }
 
 template <typename T>
+template <typename... Tn>
+void Graph<T>::addEdges() {
+  return;
+}
+
+template <typename T>
+template <typename T1, typename... Tn>
+std::enable_if<is_edge_ptr_v<T1> && (is_edge_ptr_v<Tn> && ...), void> Graph<T>::addEdges(
+    T1 edge, Tn... edges) {
+  addEdge(edge);
+  addEdges(edges...);
+}
+
+template <typename T>
 void Graph<T>::addNode(const Node<T> *node) {
   auto node_shared = make_shared<const Node<T>>(*node);
   this->isolatedNodesSet.insert(node_shared);
@@ -975,6 +1033,20 @@ void Graph<T>::addNode(const Node<T> *node) {
 template <typename T>
 void Graph<T>::addNode(shared<const Node<T>> node) {
   this->isolatedNodesSet.insert(node);
+}
+
+template <typename T>
+template <typename... Tn>
+void Graph<T>::addNodes() {
+  return;
+}
+
+template <typename T>
+template <typename T1, typename... Tn>
+std::enable_if<is_node_ptr_v<T1> && (is_node_ptr_v<Tn> && ...), void> Graph<T>::addNodes(
+    T1 node, Tn... nodes) {
+  addNode(node);
+  addNodes(nodes...);
 }
 
 template <typename T>
@@ -3417,36 +3489,39 @@ SCCResult<T> Graph<T>::kosaraju() const {
 
     visited.clear();
 
-    std::function<void(shared<const Node<T>>, std::vector<Node<T>> &)>
+    std::function<void(shared<const Node<T>>, SCCResult<T>, int)>
         dfs_helper1 =
             [this, &rev, &visited, &dfs_helper1](shared<const Node<T>> source,
-                                                 std::vector<Node<T>> &comp) {
+                                                 SCCResult<T> result, int sccLabel) {
               // mark the vertex visited
               visited[source->getId()] = true;
               // Add the current vertex to the strongly connected
               // component
-              comp.push_back(*source);
+              //comp.push_back(*source);
+              result.sccMap[source->getId()] =  sccLabel;
 
               // travel the neighbors
               for (int i = 0; i < rev[source].size(); i++) {
                 shared<const Node<T>> neighbor = rev[source].at(i).first;
                 if (visited[neighbor->getId()] == false) {
                   // make recursive call from neighbor
-                  dfs_helper1(neighbor, comp);
+                  dfs_helper1(neighbor, result, sccLabel);
                 }
               }
             };
 
+    int sccLabel = 0;
     while (st.size() != 0) {
       auto rem = st.top();
       st.pop();
       if (visited[rem->getId()] == false) {
-        std::vector<Node<T>> comp;
-        dfs_helper1(rem, comp);
-        result.stronglyConnectedComps.push_back(comp);
+        //std::vector<Node<T>> comp;
+        dfs_helper1(rem, result, sccLabel);
+        sccLabel++;
+        //result.stronglyConnectedComps.push_back(comp);
       }
     }
-
+    result.noOfComponents =  sccLabel;
     result.success = true;
     return result;
   }
