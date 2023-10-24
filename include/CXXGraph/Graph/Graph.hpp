@@ -107,7 +107,9 @@ class Graph {
   T_NodeSet<T> isolatedNodesSet = {};
 
   shared<AdjacencyMatrix<T>> cachedAdjMatrix;
-
+  shared<DegreeMatrix<T>> cachedDegreeMatrix;
+  shared<LaplacianMatrix<T>> cachedLaplacianMatrix;
+  shared<TransitionMatrix<T>> cachedTransitionMatrix;
   // Private non-const getter for the set of nodes
   std::unordered_set<shared<Node<T>>, nodeHash<T>> nodeSet();
 
@@ -346,6 +348,33 @@ class Graph {
   virtual shared<AdjacencyMatrix<T>> getAdjMatrix() const;
 
   virtual void cacheAdjMatrix();
+  /**
+  * @brief This function generates a list of the degree matrix with every element
+  * of the matrix containing the node where the link is directed and the 
+  * corresponding edge to the link.
+  * Note: No Thread Safe
+  */
+  virtual shared<DegreeMatrix<T>> getDegreeMatrix() const;
+
+  virtual void cacheDegreeMatrix();
+  /**
+  * @brief This function generates a list of the Laplacian matrix with every element
+  * of the matrix containing the node connected to the current node and the
+  * corresponding edge to the link.
+  * Note: No Thread Safe
+  */
+  virtual shared<LaplacianMatrix<T>> getLaplacianMatrix() const;
+
+  virtual void cacheLaplacianMatrix();
+  /**
+  * @brief This function generates a list of the transition matrix with every element
+  * of the matrix containing the node that can be transitioned to from the 
+  * current node and the probability of the transition.
+   * Note: No Thread Safe
+   */
+  virtual shared<TransitionMatrix<T>> getTransitionMatrix() const;
+
+  virtual void cacheTransitionMatrix();
   /**
    * \brief This function generates a set of nodes linked to the provided node
    * in a directed graph
@@ -873,6 +902,9 @@ template <typename T>
 Graph<T>::Graph() {
   /* Caching the adjacency matrix */
   cacheAdjMatrix();
+  cacheDegreeMatrix();
+  cacheLaplacianMatrix();
+  cacheTransitionMatrix();
 }
 
 template <typename T>
@@ -882,6 +914,9 @@ Graph<T>::Graph(const T_EdgeSet<T> &edgeSet) {
   }
   /* Caching the adjacency matrix */
   cacheAdjMatrix();
+  cacheDegreeMatrix();
+  cacheLaplacianMatrix();
+  cacheTransitionMatrix();
 }
 
 template <typename T>
@@ -897,6 +932,8 @@ void Graph<T>::setEdgeSet(const T_EdgeSet<T> &edgeSet) {
   }
   /* Caching the adjacency matrix */
   cacheAdjMatrix();
+  cacheDegreeMatrix();
+  cacheLaplacianMatrix();
 }
 
 template <typename T>
@@ -1736,6 +1773,94 @@ template <typename T>
 void Graph<T>::cacheAdjMatrix() {
   const auto adj = Graph<T>::getAdjMatrix();
   this->cachedAdjMatrix = adj;
+}
+
+template <typename T>
+shared<DegreeMatrix<T>> Graph<T>::getDegreeMatrix() const {
+    auto degreeMatrix = std::make_shared<DegreeMatrix<T>>();
+
+    for (const auto& nodePair : *this->cachedAdjMatrix) {
+        const shared<const Node<T>>& node = nodePair.first;
+        const std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>& neighbors = nodePair.second;
+
+        int degree = neighbors.size();
+
+        (*degreeMatrix)[node] = {degree};
+    }
+
+    return degreeMatrix;
+}
+
+template <typename T>
+void Graph<T>::cacheDegreeMatrix() {
+  const auto degreeMatrix = Graph<T>::getDegreeMatrix();
+  this->cachedDegreeMatrix = degreeMatrix;
+}
+
+template <typename T>
+shared<LaplacianMatrix<T>> Graph<T>::getLaplacianMatrix() const {
+    const auto adjacencyMatrix = this->cachedAdjMatrix;
+    const auto degreeMatrix = this->cachedDegreeMatrix;
+
+    auto laplacianMatrix = std::make_shared<LaplacianMatrix<T>>();
+    for (const auto& nodePair : *adjacencyMatrix) {
+        const shared<const Node<T>>& node = nodePair.first;
+        (*laplacianMatrix)[node] = std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>();
+    }
+
+    for (const auto& nodePair : *adjacencyMatrix) {
+        const shared<const Node<T>>& node = nodePair.first;
+        const std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>& neighbors = nodePair.second;
+
+        int degree = neighbors.size();
+
+        (*laplacianMatrix)[node].emplace_back(node, nullptr); // Insere o nó na diagonal
+        for (const auto& neighborPair : neighbors) {
+            const shared<const Node<T>>& neighbor = neighborPair.first;
+            (*laplacianMatrix)[node].emplace_back(neighbor, neighborPair.second); // Insere os pares de vizinhos
+        }
+    }
+
+    return laplacianMatrix;
+}
+
+template <typename T>
+void Graph<T>::cacheLaplacianMatrix() {
+  const auto laplacianMatrix = Graph<T>::getLaplacianMatrix();
+  this->cachedLaplacianMatrix = laplacianMatrix;
+}
+
+template <typename T>
+shared<TransitionMatrix<T>> Graph<T>::getTransitionMatrix() const {
+    const auto adjacencyMatrix = this->cachedAdjMatrix;
+
+    auto transitionMatrix = std::make_shared<TransitionMatrix<T>>();
+    for (const auto& nodePair : *adjacencyMatrix) {
+        const shared<const Node<T>>& node = nodePair.first;
+        (*transitionMatrix)[node] = std::vector<std::pair<shared<const Node<T>>, double>>();
+    }
+
+    for (const auto& nodePair : *adjacencyMatrix) {
+        const shared<const Node<T>>& node = nodePair.first;
+        const std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>& neighbors = nodePair.second;
+
+        int degree = neighbors.size();
+
+        double transitionProbability = 1.0 / degree;
+
+        for (const auto& neighborPair : neighbors) {
+            const shared<const Node<T>>& neighbor = neighborPair.first;
+            (*transitionMatrix)[node].emplace_back(neighbor, transitionProbability);
+        }
+    }
+
+    return transitionMatrix;
+}
+
+template <typename T>
+void Graph<T>::cacheTransitionMatrix() {
+  const auto transitionMatrix = Graph<T>::getTransitionMatrix();
+  this->cachedTransitionMatrix = transitionMatrix;
 }
 
 template <typename T>
