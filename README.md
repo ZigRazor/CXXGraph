@@ -17,33 +17,12 @@
 
 [![Generic badge](https://img.shields.io/badge/Build-Passed-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/UnitTest-Passed-Green.svg)](https://shields.io/)
 
-[![Join the chat at https://gitter.im/CXXGraph-Community/community](https://badges.gitter.im/CXXGraph-Community/community.svg)](https://gitter.im/CXXGraph-Community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-Share on [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Header-Only%20C++%20Library%20for%20Graph%20Representation%20and%20Algorithms%204&url=https://github.com/ZigRazor/CXXGraph&hashtags=cpp,headeronly,library,opensource,developers)
 <br/><br/>
-
+<br/><br/>
+<br/><br/>
 
 ## Introduction
 **CXXGraph** is a comprehensive C++ library that manages graph algorithms. This header-only library serves as an alternative to the [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_77_0/libs/graph/doc/index.html).
-
-## Warning ⚠️
-
-*From the official release v2.0.0 we make some API breaking changes.*
-
-A new major will be released after the Hacktoberfest, on 1st November. 📅
-
-In the meantime the main branch is updated with the lastest API interface.
-
-## Hacktoberfest
-
-Also this year we partecipating to the Hacktoberfest.
-
-This is the tithe editions of hacktoberfest, and the third editions that we partecipate.
-Hacktoberfest 2023 will be a special event for us.
-
-Feel free to contribute to this project and share your knowledge with the world.
-
-Happy Coding!! 😄
 
 ## We are Looking for...
 
@@ -58,48 +37,15 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
 
 | Completed | Description | Date of Completition |
 | :-------: | :---------- | :-------------------: |
-| :heavy_check_mark: | First Optimization | Apr 4, 2022 |
-| :heavy_check_mark: | Add Benchmark for all algorithms | Oct 5, 2022 |
-| :heavy_check_mark: | Code Optimization | Oct 5, 2022 |
 | :heavy_check_mark: | Release 0.4.0 | Oct 7, 2022 |
-| :heavy_check_mark: | "Const" Code Review [#155](https://github.com/ZigRazor/CXXGraph/issues/155) | Mar 23, 2023 |
 | :heavy_check_mark: | Release 0.5.0 | Mar 23, 2023 |
-| :grey_exclamation: | Test on Partition Algorithm [#264](https://github.com/ZigRazor/CXXGraph/issues/264) | Mar 21, 2023 |
-| :heavy_check_mark: | Bug Resolution [#263](https://github.com/ZigRazor/CXXGraph/issues/263) | Mar 21, 2023 |
-| :heavy_check_mark: | General Performance Optimization [#262](https://github.com/ZigRazor/CXXGraph/issues/262) [#265](https://github.com/ZigRazor/CXXGraph/issues/265) | Mar 28, 2023 |
-| :heavy_check_mark: | Reduction of Code Issue of Static Analysis | Mar 28, 2023 |
 | :heavy_check_mark: | First Stable Release 1.0.0 | Mar 28, 2023 |
-| :heavy_check_mark: | Remove External Dependency [#209](https://github.com/ZigRazor/CXXGraph/issues/209) [#274](https://github.com/ZigRazor/CXXGraph/issues/274) [#275](https://github.com/ZigRazor/CXXGraph/issues/275) | May 7, 2023 |
 | :heavy_check_mark: | Release 1.0.1 | May 7, 2023 |
-| :heavy_check_mark: | Make CXXGraph MSVC-Compatible [#277](https://github.com/ZigRazor/CXXGraph/issues/277) | May 8, 2023 |
-| :heavy_check_mark: | All namespaces should be titlecase [#278](https://github.com/ZigRazor/CXXGraph/issues/278)  | May 8, 2023 |
 | :heavy_check_mark: | Release 1.1.0 | May 8, 2023 |
-| :heavy_check_mark: | Smart Pointers use [#234](https://github.com/ZigRazor/CXXGraph/issues/234) | Jun 1, 2023 |
-| :heavy_check_mark: | Release 2.0.0 | Jun 1, 2023 |
-| :memo: |Switch to C++ 20 standard [#266](https://github.com/ZigRazor/CXXGraph/issues/266) | TBD |
-| :memo: | Markov Chain Algorithm [#107](https://github.com/ZigRazor/CXXGraph/issues/107) | TBD |
-| :memo: | Release 2.1.0 | TBD |
-| :memo: | FP-GraphMiner algorithm [#105](https://github.com/ZigRazor/CXXGraph/issues/105) | TBD |
-| :memo: | Release 2.1.1 | TBD |
-| :memo: | Tarjan's algorithm [#103](https://github.com/ZigRazor/CXXGraph/issues/103) | TBD |
-| :memo: | Release 2.1.2 | TBD |
-| :heavy_check_mark: | Graph Topological Sort [#104](https://github.com/ZigRazor/CXXGraph/issues/107) | Nov 3, 2022 |
-| :memo: | Official Site Release | TBD |
-| :memo: | Release 2.2.0 | TBD |
-| :memo: | Custom export and import [#19](https://github.com/ZigRazor/CXXGraph/issues/19) | TBD |
-| :memo: | Input & Output file format [#172](https://github.com/ZigRazor/CXXGraph/issues/172) | TBD |
-| :memo: | Release 2.3.0 | TBD |
-| :heavy_check_mark: | Multi-Thread implementation of BFS [#121](https://github.com/ZigRazor/CXXGraph/issues/121) | Dec 6, 2022 |
-| :memo: | Release 2.4. | TBD |
-| :grey_exclamation: | Thread Safe implementations of Boruvka, Prim & Kruskal algorithm [#128](https://github.com/ZigRazor/CXXGraph/issues/128) | Oct 5, 2022 |
-| :memo: | Release 2.5.0 | TBD |
-| :memo: | Edge-Cut Partition Algorithm [#183](https://github.com/ZigRazor/CXXGraph/issues/183) | TBD |
-| :memo: | Release 2.5.1 | TBD |
-| :heavy_check_mark: | WB-Libra Parttition Algorithm [#178](https://github.com/ZigRazor/CXXGraph/issues/178) | Nov 25, 2022 |
-| :memo: | Release 2.6.0 | TBD |
+| :heavy_check_mark: | Stable Release 2.0.0 | Jun 1, 2023 |
+| :heavy_check_mark: | Stable Release 3.0.0 | Nov 3, 2023 |
 | :memo: | Introduce Hypergraph [#122](https://github.com/ZigRazor/CXXGraph/issues/122) | TBD |
-| :memo: | Stable Release 3.0.0 | TBD |
-| :memo: | TBD | TBD |
+| :memo: | Stable Release 4.0.0 | TBD |
 
 ## Table of Contents
 
@@ -651,6 +597,10 @@ We participated at Hacktoberfest 2021. Thank you to all the contributors!
 ## Hacktoberfest 2k22
 
 We participated at Hacktoberfest 2022. Thank you to all the contributors!
+
+## Hacktoberfest 2k23
+
+We participated at Hacktoberfest 2023. Thank you to all the contributors!
 
 ## Other Details
 
