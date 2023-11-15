@@ -195,7 +195,7 @@ From the base directory:
 ```bash
 mkdir -p build       # Create a directory to hold the build output
 cd build             # Enter the build folder
-cmake ..             # Generate native build scripts for GoogleTest
+cmake -DTEST=ON ..   # Generate native build scripts for GoogleTest,
 make                 # Compile
 ```
 
@@ -239,7 +239,7 @@ From the base directory:
 ```bash
 mkdir -p build             # Create a directory to hold the build output
 cd build                   # Enter the build folder
-cmake -DBENCHMARK=ON ..    # Generate native build scripts for GoogleTest
+cmake -DBENCHMARK=ON ..    # Generate native build scripts for Google Benchmark
 make                       # Compile
 ```
 
