@@ -350,7 +350,7 @@ class Graph {
   virtual void cacheAdjMatrix();
   /**
   * @brief This function generates a list of the degree matrix with every element
-  * of the matrix containing the node where the link is directed and the 
+  * of the matrix containing the node where the link is directed and the
   * corresponding edge to the link.
   * Note: No Thread Safe
   */
@@ -368,7 +368,7 @@ class Graph {
   virtual void cacheLaplacianMatrix();
   /**
   * @brief This function generates a list of the transition matrix with every element
-  * of the matrix containing the node that can be transitioned to from the 
+  * of the matrix containing the node that can be transitioned to from the
   * current node and the probability of the transition.
    * Note: No Thread Safe
    */
@@ -4195,20 +4195,20 @@ std::ostream &operator<<(std::ostream &os, const Graph<T> &graph) {
                 (*it)->isDirected().value()) &&
                ((*it)->isWeighted().has_value() &&
                 (*it)->isWeighted().value())) {
-      os << std::static_pointer_cast<const DirectedWeightedEdge<T>>(*it)
+      os << *std::static_pointer_cast<const DirectedWeightedEdge<T>>(*it)
          << "\n";
     } else if (((*it)->isDirected().has_value() &&
                 (*it)->isDirected().value()) &&
                !((*it)->isWeighted().has_value() &&
                  (*it)->isWeighted().value())) {
-      os << std::static_pointer_cast<const DirectedEdge<T>>(*it) << "\n";
-    } else if (!(it->isDirected().has_value() && it->isDirected().value()) &&
-               (it->isWeighted().has_value() && it->isWeighted().value())) {
-      os << std::static_pointer_cast<const UndirectedWeightedEdge<T>>(*it)
+      os << *std::static_pointer_cast<const DirectedEdge<T>>(*it) << "\n";
+    } else if (!((*it)->isDirected().has_value() && (*it)->isDirected().value()) &&
+               ((*it)->isWeighted().has_value() && (*it)->isWeighted().value())) {
+      os << *std::static_pointer_cast<const UndirectedWeightedEdge<T>>(*it)
          << "\n";
-    } else if (!(it->isDirected().has_value() && it->isDirected().value()) &&
-               !(it->isWeighted().has_value() && it->isWeighted().value())) {
-      os << std::static_pointer_cast<const UndirectedEdge<T>>(*it) << "\n";
+    } else if (!((*it)->isDirected().has_value() && (*it)->isDirected().value()) &&
+               !((*it)->isWeighted().has_value() && (*it)->isWeighted().value())) {
+      os << *std::static_pointer_cast<const UndirectedEdge<T>>(*it) << "\n";
     } else {
       os << *it << "\n";
     }
