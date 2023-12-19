@@ -201,8 +201,8 @@ class Graph {
    *
    */
   template <typename T1, typename... Tn>
-  std::enable_if<is_edge_ptr_v<T1> && (is_edge_ptr_v<Tn> && ...), void> addEdges(
-      T1 edge, Tn... edges);
+  std::enable_if<is_edge_ptr_v<T1> && (is_edge_ptr_v<Tn> && ...), void>
+  addEdges(T1 edge, Tn... edges);
   /**
    * \brief
    * Function to add a Node to the Graph Node Set
@@ -239,8 +239,8 @@ class Graph {
    *
    */
   template <typename T1, typename... Tn>
-  std::enable_if<is_node_ptr_v<T1> && (is_node_ptr_v<Tn> && ...), void> addNodes(
-      T1 node, Tn... nodes);
+  std::enable_if<is_node_ptr_v<T1> && (is_node_ptr_v<Tn> && ...), void>
+  addNodes(T1 node, Tn... nodes);
   /**
    * \brief
    * Function remove an Edge from the Graph Edge Set
@@ -349,28 +349,26 @@ class Graph {
 
   virtual void cacheAdjMatrix();
   /**
-  * @brief This function generates a list of the degree matrix with every element
-  * of the matrix containing the node where the link is directed and the
-  * corresponding edge to the link.
-  * Note: No Thread Safe
-  */
+   * @brief This function generates a list of the degree matrix with every
+   * element of the matrix containing the node where the link is directed and
+   * the corresponding edge to the link. Note: No Thread Safe
+   */
   virtual shared<DegreeMatrix<T>> getDegreeMatrix() const;
 
   virtual void cacheDegreeMatrix();
   /**
-  * @brief This function generates a list of the Laplacian matrix with every element
-  * of the matrix containing the node connected to the current node and the
-  * corresponding edge to the link.
-  * Note: No Thread Safe
-  */
+   * @brief This function generates a list of the Laplacian matrix with every
+   * element of the matrix containing the node connected to the current node and
+   * the corresponding edge to the link. Note: No Thread Safe
+   */
   virtual shared<LaplacianMatrix<T>> getLaplacianMatrix() const;
 
   virtual void cacheLaplacianMatrix();
   /**
-  * @brief This function generates a list of the transition matrix with every element
-  * of the matrix containing the node that can be transitioned to from the
-  * current node and the probability of the transition.
-   * Note: No Thread Safe
+   * @brief This function generates a list of the transition matrix with every
+   * element of the matrix containing the node that can be transitioned to from
+   * the current node and the probability of the transition. Note: No Thread
+   * Safe
    */
   virtual shared<TransitionMatrix<T>> getTransitionMatrix() const;
 
@@ -1018,8 +1016,8 @@ void Graph<T>::addEdges() {
 
 template <typename T>
 template <typename T1, typename... Tn>
-std::enable_if<is_edge_ptr_v<T1> && (is_edge_ptr_v<Tn> && ...), void> Graph<T>::addEdges(
-    T1 edge, Tn... edges) {
+std::enable_if<is_edge_ptr_v<T1> && (is_edge_ptr_v<Tn> && ...), void>
+Graph<T>::addEdges(T1 edge, Tn... edges) {
   addEdge(edge);
   addEdges(edges...);
 }
@@ -1043,8 +1041,8 @@ void Graph<T>::addNodes() {
 
 template <typename T>
 template <typename T1, typename... Tn>
-std::enable_if<is_node_ptr_v<T1> && (is_node_ptr_v<Tn> && ...), void> Graph<T>::addNodes(
-    T1 node, Tn... nodes) {
+std::enable_if<is_node_ptr_v<T1> && (is_node_ptr_v<Tn> && ...), void>
+Graph<T>::addNodes(T1 node, Tn... nodes) {
   addNode(node);
   addNodes(nodes...);
 }
@@ -1777,18 +1775,19 @@ void Graph<T>::cacheAdjMatrix() {
 
 template <typename T>
 shared<DegreeMatrix<T>> Graph<T>::getDegreeMatrix() const {
-    auto degreeMatrix = std::make_shared<DegreeMatrix<T>>();
+  auto degreeMatrix = std::make_shared<DegreeMatrix<T>>();
 
-    for (const auto& nodePair : *this->cachedAdjMatrix) {
-        const shared<const Node<T>>& node = nodePair.first;
-        const std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>& neighbors = nodePair.second;
+  for (const auto &nodePair : *this->cachedAdjMatrix) {
+    const shared<const Node<T>> &node = nodePair.first;
+    const std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>
+        &neighbors = nodePair.second;
 
-        int degree = neighbors.size();
+    int degree = neighbors.size();
 
-        (*degreeMatrix)[node] = {degree};
-    }
+    (*degreeMatrix)[node] = {degree};
+  }
 
-    return degreeMatrix;
+  return degreeMatrix;
 }
 
 template <typename T>
@@ -1799,29 +1798,33 @@ void Graph<T>::cacheDegreeMatrix() {
 
 template <typename T>
 shared<LaplacianMatrix<T>> Graph<T>::getLaplacianMatrix() const {
-    const auto adjacencyMatrix = this->cachedAdjMatrix;
-    const auto degreeMatrix = this->cachedDegreeMatrix;
+  const auto adjacencyMatrix = this->cachedAdjMatrix;
+  const auto degreeMatrix = this->cachedDegreeMatrix;
 
-    auto laplacianMatrix = std::make_shared<LaplacianMatrix<T>>();
-    for (const auto& nodePair : *adjacencyMatrix) {
-        const shared<const Node<T>>& node = nodePair.first;
-        (*laplacianMatrix)[node] = std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>();
+  auto laplacianMatrix = std::make_shared<LaplacianMatrix<T>>();
+  for (const auto &nodePair : *adjacencyMatrix) {
+    const shared<const Node<T>> &node = nodePair.first;
+    (*laplacianMatrix)[node] =
+        std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>();
+  }
+
+  for (const auto &nodePair : *adjacencyMatrix) {
+    const shared<const Node<T>> &node = nodePair.first;
+    const std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>
+        &neighbors = nodePair.second;
+
+    int degree = neighbors.size();
+
+    (*laplacianMatrix)[node].emplace_back(node,
+                                          nullptr);  // Insere o nó na diagonal
+    for (const auto &neighborPair : neighbors) {
+      const shared<const Node<T>> &neighbor = neighborPair.first;
+      (*laplacianMatrix)[node].emplace_back(
+          neighbor, neighborPair.second);  // Insere os pares de vizinhos
     }
+  }
 
-    for (const auto& nodePair : *adjacencyMatrix) {
-        const shared<const Node<T>>& node = nodePair.first;
-        const std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>& neighbors = nodePair.second;
-
-        int degree = neighbors.size();
-
-        (*laplacianMatrix)[node].emplace_back(node, nullptr); // Insere o nó na diagonal
-        for (const auto& neighborPair : neighbors) {
-            const shared<const Node<T>>& neighbor = neighborPair.first;
-            (*laplacianMatrix)[node].emplace_back(neighbor, neighborPair.second); // Insere os pares de vizinhos
-        }
-    }
-
-    return laplacianMatrix;
+  return laplacianMatrix;
 }
 
 template <typename T>
@@ -1832,29 +1835,31 @@ void Graph<T>::cacheLaplacianMatrix() {
 
 template <typename T>
 shared<TransitionMatrix<T>> Graph<T>::getTransitionMatrix() const {
-    const auto adjacencyMatrix = this->cachedAdjMatrix;
+  const auto adjacencyMatrix = this->cachedAdjMatrix;
 
-    auto transitionMatrix = std::make_shared<TransitionMatrix<T>>();
-    for (const auto& nodePair : *adjacencyMatrix) {
-        const shared<const Node<T>>& node = nodePair.first;
-        (*transitionMatrix)[node] = std::vector<std::pair<shared<const Node<T>>, double>>();
+  auto transitionMatrix = std::make_shared<TransitionMatrix<T>>();
+  for (const auto &nodePair : *adjacencyMatrix) {
+    const shared<const Node<T>> &node = nodePair.first;
+    (*transitionMatrix)[node] =
+        std::vector<std::pair<shared<const Node<T>>, double>>();
+  }
+
+  for (const auto &nodePair : *adjacencyMatrix) {
+    const shared<const Node<T>> &node = nodePair.first;
+    const std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>
+        &neighbors = nodePair.second;
+
+    int degree = neighbors.size();
+
+    double transitionProbability = 1.0 / degree;
+
+    for (const auto &neighborPair : neighbors) {
+      const shared<const Node<T>> &neighbor = neighborPair.first;
+      (*transitionMatrix)[node].emplace_back(neighbor, transitionProbability);
     }
+  }
 
-    for (const auto& nodePair : *adjacencyMatrix) {
-        const shared<const Node<T>>& node = nodePair.first;
-        const std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>& neighbors = nodePair.second;
-
-        int degree = neighbors.size();
-
-        double transitionProbability = 1.0 / degree;
-
-        for (const auto& neighborPair : neighbors) {
-            const shared<const Node<T>>& neighbor = neighborPair.first;
-            (*transitionMatrix)[node].emplace_back(neighbor, transitionProbability);
-        }
-    }
-
-    return transitionMatrix;
+  return transitionMatrix;
 }
 
 template <typename T>
@@ -2245,7 +2250,7 @@ const FWResult Graph<T>::floydWarshall() const {
   }
 
   const auto &edgeSet = Graph<T>::getEdgeSet();
-  // update the weights of nodes
+  // update the weights of nodesfloydWarshall
   // connected by edges
   for (const auto &edge : edgeSet) {
     const auto &elem = edge->getNodePair();
@@ -2255,6 +2260,11 @@ const FWResult Graph<T>::floydWarshall() const {
       auto key =
           std::make_pair(elem.first->getUserId(), elem.second->getUserId());
       pairwise_dist[key] = edgeWeight;
+      if (edge->isDirected() == false) {
+        auto reverseKey =
+            std::make_pair(elem.second->getUserId(), elem.first->getUserId());
+        pairwise_dist[reverseKey] = edgeWeight;
+      }
     } else {
       // if an edge exists but has no weight associated
       // with it, we return an error message
@@ -3489,39 +3499,38 @@ SCCResult<T> Graph<T>::kosaraju() const {
 
     visited.clear();
 
-    std::function<void(shared<const Node<T>>, SCCResult<T>, int)>
-        dfs_helper1 =
-            [this, &rev, &visited, &dfs_helper1](shared<const Node<T>> source,
-                                                 SCCResult<T> result, int sccLabel) {
-              // mark the vertex visited
-              visited[source->getId()] = true;
-              // Add the current vertex to the strongly connected
-              // component
-              //comp.push_back(*source);
-              result.sccMap[source->getId()] =  sccLabel;
+    std::function<void(shared<const Node<T>>, SCCResult<T>, int)> dfs_helper1 =
+        [this, &rev, &visited, &dfs_helper1](
+            shared<const Node<T>> source, SCCResult<T> result, int sccLabel) {
+          // mark the vertex visited
+          visited[source->getId()] = true;
+          // Add the current vertex to the strongly connected
+          // component
+          // comp.push_back(*source);
+          result.sccMap[source->getId()] = sccLabel;
 
-              // travel the neighbors
-              for (int i = 0; i < rev[source].size(); i++) {
-                shared<const Node<T>> neighbor = rev[source].at(i).first;
-                if (visited[neighbor->getId()] == false) {
-                  // make recursive call from neighbor
-                  dfs_helper1(neighbor, result, sccLabel);
-                }
-              }
-            };
+          // travel the neighbors
+          for (int i = 0; i < rev[source].size(); i++) {
+            shared<const Node<T>> neighbor = rev[source].at(i).first;
+            if (visited[neighbor->getId()] == false) {
+              // make recursive call from neighbor
+              dfs_helper1(neighbor, result, sccLabel);
+            }
+          }
+        };
 
     int sccLabel = 0;
     while (st.size() != 0) {
       auto rem = st.top();
       st.pop();
       if (visited[rem->getId()] == false) {
-        //std::vector<Node<T>> comp;
+        // std::vector<Node<T>> comp;
         dfs_helper1(rem, result, sccLabel);
         sccLabel++;
-        //result.stronglyConnectedComps.push_back(comp);
+        // result.stronglyConnectedComps.push_back(comp);
       }
     }
-    result.noOfComponents =  sccLabel;
+    result.noOfComponents = sccLabel;
     result.success = true;
     return result;
   }
@@ -4202,12 +4211,16 @@ std::ostream &operator<<(std::ostream &os, const Graph<T> &graph) {
                !((*it)->isWeighted().has_value() &&
                  (*it)->isWeighted().value())) {
       os << *std::static_pointer_cast<const DirectedEdge<T>>(*it) << "\n";
-    } else if (!((*it)->isDirected().has_value() && (*it)->isDirected().value()) &&
-               ((*it)->isWeighted().has_value() && (*it)->isWeighted().value())) {
+    } else if (!((*it)->isDirected().has_value() &&
+                 (*it)->isDirected().value()) &&
+               ((*it)->isWeighted().has_value() &&
+                (*it)->isWeighted().value())) {
       os << *std::static_pointer_cast<const UndirectedWeightedEdge<T>>(*it)
          << "\n";
-    } else if (!((*it)->isDirected().has_value() && (*it)->isDirected().value()) &&
-               !((*it)->isWeighted().has_value() && (*it)->isWeighted().value())) {
+    } else if (!((*it)->isDirected().has_value() &&
+                 (*it)->isDirected().value()) &&
+               !((*it)->isWeighted().has_value() &&
+                 (*it)->isWeighted().value())) {
       os << *std::static_pointer_cast<const UndirectedEdge<T>>(*it) << "\n";
     } else {
       os << *it << "\n";
