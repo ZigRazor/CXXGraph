@@ -41,7 +41,7 @@ if(TEST)
         OPTIONS "CMAKE_POSITION_INDEPENDENT_CODE True"
     )
 
-    file (GLOB TEST_FILES "*.cpp" "*.hpp")
+    file (GLOB TEST_FILES "*.cpp" "*.hpp" "*.h")
     add_executable(test_exe ${TEST_FILES})
 
     target_compile_definitions(test_exe

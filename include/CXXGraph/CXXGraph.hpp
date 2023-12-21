@@ -8,7 +8,7 @@
 #include "CXXGraph/Edge/UndirectedEdge.h"
 #include "CXXGraph/Edge/UndirectedWeightedEdge.h"
 #include "CXXGraph/Edge/Weighted.h"
-#include "CXXGraph/Graph/Graph.hpp"
+#include "CXXGraph/Graph/Graph.h"
 #include "CXXGraph/Node/Node.h"
 #include "CXXGraph/Partitioning/CoordinatedPartitionState.hpp"
 #include "CXXGraph/Partitioning/CoordinatedRecord.hpp"
