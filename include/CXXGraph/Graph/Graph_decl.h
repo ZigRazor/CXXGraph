@@ -20,10 +20,7 @@
 #ifndef __CXXGRAPH_GRAPH_DECL_H__
 #define __CXXGRAPH_GRAPH_DECL_H__
 
-#include <cstdio>
 #pragma once
-
-#include <limits.h>
 
 #include <atomic>
 #include <cmath>
@@ -872,21 +869,7 @@ class Graph {
   virtual int readFromMTXFile(const std::string &workingDir,
                               const std::string &fileName);
 
-  /**
-   * \brief
-   * This function partition a graph in a set of partitions
-   * Note: No Thread Safe
-   *
-   * @param algorithm The partition algorithm
-   * @param numberOfPartition The number of partitions
-   * @return The partiton Map of the partitioned graph
-   */
-  virtual PartitionMap<T> partitionGraph(
-      const Partitioning::PartitionAlgorithm algorithm,
-      const unsigned int numberOfPartitions, const double param1 = 0.0,
-      const double param2 = 0.0, const double param3 = 0.0,
-      const unsigned int numberOfthreads =
-          std::thread::hardware_concurrency()) const;
+  
 
   friend std::ostream &operator<< <>(std::ostream &os, const Graph<T> &graph);
   friend std::ostream &operator<< <>(std::ostream &os,

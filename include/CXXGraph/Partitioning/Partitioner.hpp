@@ -35,6 +35,7 @@
 #include "PartitionerThread.hpp"
 #include "CXXGraph/Partitioning/Utility/Globals.hpp"
 #include "CXXGraph/Utility/Runnable.hpp"
+#include "CXXGraph/Graph/Graph.h"
 #include "WeightBalancedLibra.hpp"
 
 namespace CXXGraph {
@@ -57,11 +58,30 @@ class Partitioner {
 
   CoordinatedPartitionState<T> startCoordinated();
 
- public:
   Partitioner(shared<const T_EdgeSet<T>> dataset, Globals &G);
   Partitioner(const Partitioner &other);
 
   CoordinatedPartitionState<T> performCoordinatedPartition();
+
+ public:
+ 
+  /**
+   * \brief
+   * This function partition a graph in a set of partitions
+   * Note: No Thread Safe
+   *
+   * @param graph The Graph to partition
+   * @param algorithm The partition algorithm
+   * @param numberOfPartition The number of partitions
+   * @return The partiton Map of the partitioned graph
+   */
+  static PartitionMap<T> partitionGraph(
+      const Graph<T>& graph,
+      const Partitioning::PartitionAlgorithm algorithm,
+      const unsigned int numberOfPartitions, const double param1 = 0.0,
+      const double param2 = 0.0, const double param3 = 0.0,
+      const unsigned int numberOfthreads =
+          std::thread::hardware_concurrency());
 };
 template <typename T>
 Partitioner<T>::Partitioner(shared<const T_EdgeSet<T>> dataset, Globals &G)
@@ -196,6 +216,27 @@ template <typename T>
 CoordinatedPartitionState<T> Partitioner<T>::performCoordinatedPartition() {
   return startCoordinated();
 }
+
+template <typename T>
+PartitionMap<T> Partitioner<T>::partitionGraph(
+    const Graph<T>& graph,
+    const Partitioning::PartitionAlgorithm algorithm,
+    const unsigned int numberOfPartitions, const double param1,
+    const double param2, const double param3,
+    const unsigned int numberOfThreads){
+  PartitionMap<T> partitionMap;
+  Partitioning::Globals globals(numberOfPartitions, algorithm, param1, param2,
+                                param3, numberOfThreads);
+  auto edgeSet_ptr = make_shared<const T_EdgeSet<T>>(graph.getEdgeSet());
+  globals.edgeCardinality = edgeSet_ptr->size();
+  globals.vertexCardinality = graph.getNodeSet().size();
+  Partitioning::Partitioner<T> partitioner(edgeSet_ptr, globals);
+  Partitioning::CoordinatedPartitionState<T> partitionState =
+      partitioner.performCoordinatedPartition();
+  partitionMap = partitionState.getPartitionMap();
+  return partitionMap;
+}
+
 
 }  // namespace Partitioning
 }  // namespace CXXGraph

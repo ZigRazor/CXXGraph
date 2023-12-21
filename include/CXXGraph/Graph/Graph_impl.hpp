@@ -805,24 +805,6 @@ const std::vector<Node<T>> Graph<T>::graph_slicing(const Node<T> &start) const {
   return result;
 }
 
-template <typename T>
-PartitionMap<T> Graph<T>::partitionGraph(
-    const Partitioning::PartitionAlgorithm algorithm,
-    const unsigned int numberOfPartitions, const double param1,
-    const double param2, const double param3,
-    const unsigned int numberOfThreads) const {
-  PartitionMap<T> partitionMap;
-  Partitioning::Globals globals(numberOfPartitions, algorithm, param1, param2,
-                                param3, numberOfThreads);
-  auto edgeSet_ptr = make_shared<const T_EdgeSet<T>>(getEdgeSet());
-  globals.edgeCardinality = edgeSet_ptr->size();
-  globals.vertexCardinality = this->getNodeSet().size();
-  Partitioning::Partitioner<T> partitioner(edgeSet_ptr, globals);
-  Partitioning::CoordinatedPartitionState<T> partitionState =
-      partitioner.performCoordinatedPartition();
-  partitionMap = partitionState.getPartitionMap();
-  return partitionMap;
-}
 
 template <typename T>
 std::ostream &operator<<(std::ostream &os, const Graph<T> &graph) {
