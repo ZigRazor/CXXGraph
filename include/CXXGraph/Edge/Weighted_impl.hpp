@@ -17,23 +17,14 @@
 /***	 License: AGPL v3.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_WEIGHTED_H__
-#define __CXXGRAPH_WEIGHTED_H__
+#ifndef __CXXGRAPH_WEIGHTED_IMPL_H__
+#define __CXXGRAPH_WEIGHTED_IMPL_H__
 
 #pragma once
 
-namespace CXXGraph {
-class Weighted {
- private:
-  double weight = 0.0;
+#include "Weighted_decl.h"
 
- public:
-  Weighted();
-  explicit Weighted(const double weight);
-  virtual ~Weighted() = default;
-  double getWeight() const;
-  void setWeight(const double weight);
-};
+namespace CXXGraph {
 
 // inline because the implementation of non-template function in header file
 inline Weighted::Weighted() { weight = 0.0; }
@@ -49,4 +40,4 @@ inline void Weighted::setWeight(const double weight) { this->weight = weight; }
 
 }  // namespace CXXGraph
 
-#endif  // __CXXGRAPH_WEIGHTED_H__
+#endif  // __CXXGRAPH_WEIGHTED_IMPL_H__

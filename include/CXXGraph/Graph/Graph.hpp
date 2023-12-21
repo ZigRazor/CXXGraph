@@ -49,13 +49,13 @@
 #include <unordered_set>
 #include <utility>
 
-#include "CXXGraph/Edge/DirectedEdge.hpp"
-#include "CXXGraph/Edge/DirectedWeightedEdge.hpp"
-#include "CXXGraph/Edge/Edge.hpp"
-#include "CXXGraph/Edge/UndirectedEdge.hpp"
-#include "CXXGraph/Edge/UndirectedWeightedEdge.hpp"
-#include "CXXGraph/Edge/Weighted.hpp"
-#include "CXXGraph/Node/Node.hpp"
+#include "CXXGraph/Edge/DirectedEdge.h"
+#include "CXXGraph/Edge/DirectedWeightedEdge.h"
+#include "CXXGraph/Edge/Edge.h"
+#include "CXXGraph/Edge/UndirectedEdge.h"
+#include "CXXGraph/Edge/UndirectedWeightedEdge.h"
+#include "CXXGraph/Edge/Weighted.h"
+#include "CXXGraph/Node/Node.h"
 #include "CXXGraph/Partitioning/Partition.hpp"
 #include "CXXGraph/Partitioning/PartitionAlgorithm.hpp"
 #include "CXXGraph/Partitioning/Partitioner.hpp"
@@ -191,7 +191,7 @@ class Graph {
    * @param None
    *
    */
-  template <typename... Tn>
+  //template <typename... Tn>
   void addEdges();
   /**
    * \brief
@@ -1009,7 +1009,7 @@ void Graph<T>::addEdge(shared<const Edge<T>> edge) {
 }
 
 template <typename T>
-template <typename... Tn>
+//template <typename... Tn>
 void Graph<T>::addEdges() {
   return;
 }

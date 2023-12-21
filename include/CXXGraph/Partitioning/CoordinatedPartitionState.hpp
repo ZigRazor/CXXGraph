@@ -28,7 +28,7 @@
 #include <vector>
 
 #include "CoordinatedRecord.hpp"
-#include "CXXGraph/Edge/Edge.hpp"
+#include "CXXGraph/Edge/Edge.h"
 #include "PartitionState.hpp"
 #include "CXXGraph/Partitioning/Utility/Globals.hpp"
 #include "Record.hpp"

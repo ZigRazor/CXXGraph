@@ -25,7 +25,7 @@
 #include <list>
 #include <vector>
 
-#include "CXXGraph/Edge/Edge.hpp"
+#include "CXXGraph/Edge/Edge.h"
 #include "PartitionState.hpp"
 #include "PartitionStrategy.hpp"
 #include "CXXGraph/Utility/Runnable.hpp"

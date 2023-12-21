@@ -26,7 +26,7 @@
 
 #include "CoordinatedPartitionState.hpp"
 #include "EBV.hpp"
-#include "CXXGraph/Edge/Edge.hpp"
+#include "CXXGraph/Edge/Edge.h"
 #include "EdgeBalancedVertexCut.hpp"
 #include "GreedyVertexCut.hpp"
 #include "HDRF.hpp"

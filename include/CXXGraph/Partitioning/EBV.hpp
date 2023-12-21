@@ -26,7 +26,7 @@
 #include <chrono>
 #include <unordered_map>
 
-#include "CXXGraph/Edge/Edge.hpp"
+#include "CXXGraph/Edge/Edge.h"
 #include "PartitionStrategy.hpp"
 #include "CXXGraph/Partitioning/Utility/Globals.hpp"
 

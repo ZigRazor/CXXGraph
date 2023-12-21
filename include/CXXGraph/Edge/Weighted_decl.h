@@ -17,31 +17,23 @@
 /***	 License: AGPL v3.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_PARTITIONING_PARTITIONSTRATEGY_H__
-#define __CXXGRAPH_PARTITIONING_PARTITIONSTRATEGY_H__
+#ifndef __CXXGRAPH_WEIGHTED_DECL_H__
+#define __CXXGRAPH_WEIGHTED_DECL_H__
 
 #pragma once
 
-#include "CXXGraph/Edge/Edge.h"
-#include "PartitionState.hpp"
-
 namespace CXXGraph {
-// Smart pointers alias
-template <typename T>
-using unique = std::unique_ptr<T>;
-template <typename T>
-using shared= std::shared_ptr<T>;
+class Weighted {
+ private:
+  double weight = 0.0;
 
-using std::make_unique;
-using std::make_shared;
-
-namespace Partitioning {
-template <typename T>
-class PartitionStrategy {
  public:
-  virtual void performStep(shared<const Edge<T>> t, shared<PartitionState<T>> Sstate) = 0;
+  Weighted();
+  explicit Weighted(const double weight);
+  virtual ~Weighted() = default;
+  double getWeight() const;
+  void setWeight(const double weight);
 };
-}  // namespace Partitioning
 }  // namespace CXXGraph
 
-#endif  // __CXXGRAPH_PARTITIONING_PARTITIONSTRATEGY_H__
+#endif  // __CXXGRAPH_WEIGHTED_DECL_H__
