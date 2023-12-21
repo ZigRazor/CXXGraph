@@ -22,26 +22,16 @@
 
 #pragma once
 
-#include <atomic>
 #include <cmath>
-#include <condition_variable>
 #include <cstring>
-#include <deque>
 #include <fstream>
 #include <functional>
 #include <iostream>
-#include <limits>
-#include <list>
 #include <map>
 #include <memory>
-#include <mutex>
 #include <optional>
-#include <queue>
-#include <set>
 #include <sstream>
-#include <stack>
 #include <string>
-#include <thread>
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
@@ -53,18 +43,8 @@
 #include "CXXGraph/Edge/UndirectedWeightedEdge.h"
 #include "CXXGraph/Edge/Weighted.h"
 #include "CXXGraph/Node/Node.h"
-#include "CXXGraph/Partitioning/Partition.hpp"
-#include "CXXGraph/Partitioning/PartitionAlgorithm.hpp"
-#include "CXXGraph/Partitioning/Partitioner.hpp"
-#include "CXXGraph/Partitioning/Utility/Globals.hpp"
-#include "CXXGraph/Utility/ConstString.hpp"
-#include "CXXGraph/Utility/ConstValue.hpp"
-#include "CXXGraph/Utility/PointerHash.hpp"
-#include "CXXGraph/Utility/Reader.hpp"
-#include "CXXGraph/Utility/ThreadSafe.hpp"
 #include "CXXGraph/Utility/TypeTraits.hpp"
 #include "CXXGraph/Utility/Typedef.hpp"
-#include "CXXGraph/Utility/Writer.hpp"
 
 #ifdef WITH_COMPRESSION
 #include <zlib.h>
@@ -83,10 +63,9 @@ using T_EdgeSet = std::unordered_set<shared<const Edge<T>>, edgeHash<T>>;
 template <typename T>
 using T_NodeSet = std::unordered_set<shared<const Node<T>>, nodeHash<T>>;
 
-namespace Partitioning {
+
 template <typename T>
-class Partition;
-}
+class Graph;
 
 template <typename T>
 std::ostream &operator<<(std::ostream &o, const Graph<T> &graph);

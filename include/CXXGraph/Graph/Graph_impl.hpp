@@ -23,6 +23,8 @@
 #pragma once
 
 #include "CXXGraph/Graph/Graph_decl.h"
+#include "CXXGraph/Utility/ConstString.hpp"
+#include <deque>
 
 namespace CXXGraph {
 

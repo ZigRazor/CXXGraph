@@ -23,6 +23,11 @@
 #pragma once
 
 #include "CXXGraph/Graph/Graph_decl.h"
+#include <thread>
+#include <queue>
+#include <mutex>
+#include <atomic>
+#include <condition_variable>
 
 namespace CXXGraph {
 template <typename T>

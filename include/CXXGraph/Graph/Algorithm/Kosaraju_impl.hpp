@@ -23,6 +23,7 @@
 #pragma once
 
 #include "CXXGraph/Graph/Graph_decl.h"
+#include <stack>
 
 namespace CXXGraph {
 

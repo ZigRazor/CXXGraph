@@ -23,6 +23,9 @@
 #pragma once  // This is to make sure that this header is only included once
 
 namespace CXXGraph {
+//Foward declaration
+template <typename T>
+class Graph;
 /*!
     Interface to implement for a custom reader.
     */
