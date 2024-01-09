@@ -17,32 +17,42 @@
 /***	 License: AGPL v3.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_READER_H__
-#define __CXXGRAPH_READER_H__
+#ifndef __CXXGRAPH_NODE_DECL_H__
+#define __CXXGRAPH_NODE_DECL_H__
 
-#pragma once  // This is to make sure that this header is only included once
+#pragma once
+#include <iostream>
+
+#include "CXXGraph/Utility/id_t.hpp"
 
 namespace CXXGraph {
-//Foward declaration
 template <typename T>
-class Graph;
-/*!
-    Interface to implement for a custom reader.
-    */
+class Node;
 template <typename T>
-class Reader {
-  /**
-   * \brief
-   * Function performs the writing of the Graph to the file.
-   *
-   * @param graph The graph to be filled.
-   * @param file The input file to be read.
-   * @returns a negative value if is impossible to read the graph from the file,
-   * else 0 if the graph is read successfully.
-   *
-   */
-  virtual int ReadGraph(Graph<T> &graph, std::ifstream &file) = 0;
+std::ostream &operator<<(std::ostream &os, const Node<T> &node);
+template <typename T>
+class Node {
+ private:
+  CXXGraph::id_t id = 0;
+  std::string userId = "";
+  T data;
+  void setId(const std::string &);
+
+ public:
+  Node(const std::string &, const T &data);
+  // Move constructor
+  Node(const std::string &, T &&data) noexcept;
+  ~Node() = default;
+  const CXXGraph::id_t &getId() const;
+  const std::string &getUserId() const;
+  const T &getData() const;
+  void setData(T &&new_data);
+  // operator
+  bool operator==(const Node<T> &b) const;
+  bool operator<(const Node<T> &b) const;
+  friend std::ostream &operator<< <>(std::ostream &os, const Node<T> &node);
 };
+
 }  // namespace CXXGraph
 
-#endif  // __CXXGRAPH_READER_H__
+#endif  // __CXXGRAPH_NODE_DECL_H__

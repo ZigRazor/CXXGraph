@@ -19,13 +19,13 @@ int main() {
   // std::cout << *cit_graph_ptr << std::endl;
   std::cout << cit_graph_ptr->getEdgeSet().size() << std::endl;
   std::cout << cit_graph_ptr->getNodeSet().size() << std::endl;
-  auto partitionedTwo = cit_graph_ptr->partitionGraph(
+  auto partitionedTwo = CXXGraph::Partitioning::Partitioner<int>::partitionGraph( *cit_graph_ptr,
       CXXGraph::Partitioning::HDRF_ALG, 2, 1, 1, 1, 4);
   std::cout << "end partition two" << std::endl;
-  auto partitionedFour = cit_graph_ptr->partitionGraph(
+  auto partitionedFour = CXXGraph::Partitioning::Partitioner<int>::partitionGraph( *cit_graph_ptr,
       CXXGraph::Partitioning::HDRF_ALG, 4, 1, 1, 1, 4);
   std::cout << "end partition four" << std::endl;
-  auto partitionedEight = cit_graph_ptr->partitionGraph(
+  auto partitionedEight = CXXGraph::Partitioning::Partitioner<int>::partitionGraph( *cit_graph_ptr,
       CXXGraph::Partitioning::HDRF_ALG, 8, 1, 1, 1, 4);
   std::cout << "end partition eight" << std::endl;
   auto statsTwo = CXXGraph::Partitioning::getPartitionStats(partitionedTwo);

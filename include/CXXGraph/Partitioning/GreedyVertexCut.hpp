@@ -25,8 +25,9 @@
 
 #include <chrono>
 #include <random>
+#include <limits.h>
 
-#include "CXXGraph/Edge/Edge.hpp"
+#include "CXXGraph/Edge/Edge.h"
 #include "PartitionStrategy.hpp"
 #include "CXXGraph/Partitioning/Utility/Globals.hpp"
 

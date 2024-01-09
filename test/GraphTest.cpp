@@ -1,7 +1,4 @@
 
-#include <CXXGraph/Edge/DirectedWeightedEdge.hpp>
-#include <CXXGraph/Edge/UndirectedWeightedEdge.hpp>
-#include <CXXGraph/Edge/Weighted.hpp>
 #include <memory>
 
 #include "CXXGraph/CXXGraph.hpp"

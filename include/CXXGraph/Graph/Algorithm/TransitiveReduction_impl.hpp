@@ -17,31 +17,45 @@
 /***	 License: AGPL v3.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_PARTITIONING_PARTITIONSTRATEGY_H__
-#define __CXXGRAPH_PARTITIONING_PARTITIONSTRATEGY_H__
+#ifndef __CXXGRAPH_TRANSITIVEREDUCTION_IMPL_H__
+#define __CXXGRAPH_TRANSITIVEREDUCTION_IMPL_H__
 
 #pragma once
 
-#include "CXXGraph/Edge/Edge.h"
-#include "PartitionState.hpp"
+#include "CXXGraph/Graph/Graph_decl.h"
 
 namespace CXXGraph {
-// Smart pointers alias
+/*
+ * See Harry Hsu. "An algorithm for finding a minimal equivalent graph of a
+ * digraph.", Journal of the ACM, 22(1):11-16, January 1975
+ *
+ * foreach x in graph.vertices
+ *   foreach y in graph.vertices
+ *     foreach z in graph.vertices
+ *       delete edge xz if edges xy and yz exist
+ */
 template <typename T>
-using unique = std::unique_ptr<T>;
-template <typename T>
-using shared= std::shared_ptr<T>;
+const Graph<T> Graph<T>::transitiveReduction() const {
+  Graph<T> result(this->edgeSet);
 
-using std::make_unique;
-using std::make_shared;
+  CXXGraph::id_t edgeId = 0;
+  std::unordered_set<shared<const Node<T>>, nodeHash<T>> nodes =
+      this->getNodeSet();
+  for (auto x : nodes) {
+    for (auto y : nodes) {
+      if (this->findEdge(x, y, edgeId)) {
+        for (auto z : nodes) {
+          if (this->findEdge(y, z, edgeId)) {
+            if (this->findEdge(x, z, edgeId)) {
+              result.removeEdge(edgeId);
+            }
+          }
+        }
+      }
+    }
+  }
 
-namespace Partitioning {
-template <typename T>
-class PartitionStrategy {
- public:
-  virtual void performStep(shared<const Edge<T>> t, shared<PartitionState<T>> Sstate) = 0;
-};
-}  // namespace Partitioning
+  return result;
+}
 }  // namespace CXXGraph
-
-#endif  // __CXXGRAPH_PARTITIONING_PARTITIONSTRATEGY_H__
+#endif  // __CXXGRAPH_TRANSITIVEREDUCTION_IMPL_H__
