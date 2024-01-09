@@ -93,7 +93,7 @@ int Graph<T>::writeToFile(InputOutputFormat format,
           workingDir + "/" + OFileName + extension + ".gz";
       int _result = compressFile(completePathToFileGraph,
                                  completePathToFileGraphCompressed);
-      if (_result == 0) {
+      if (_result > 0) {
         _result = remove(completePathToFileGraph.c_str());
       }
       if (_result == 0) {
@@ -104,7 +104,7 @@ int Graph<T>::writeToFile(InputOutputFormat format,
               workingDir + "/" + OFileName + "_NodeFeat" + extension + ".gz";
           _result = compressFile(completePathToFileNodeFeat,
                                  completePathToFileNodeFeatCompressed);
-          if (_result == 0) {
+          if (_result > 0) {
             _result = remove(completePathToFileNodeFeat.c_str());
           }
         }
@@ -117,7 +117,7 @@ int Graph<T>::writeToFile(InputOutputFormat format,
               workingDir + "/" + OFileName + "_EdgeWeight" + extension + ".gz";
           _result = compressFile(completePathToFileEdgeWeight,
                                  completePathToFileEdgeWeightCompressed);
-          if (_result == 0) {
+          if (_result > 0) {
             _result = remove(completePathToFileEdgeWeight.c_str());
           }
         }
