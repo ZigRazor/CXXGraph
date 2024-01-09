@@ -67,7 +67,7 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
   while (true) {
     // Go sequentially through buckets till one non-empty
     // bucket is found
-    while (B[idx].size() == 0u && idx < maxWeight * V) {
+    while (idx < B.size() && B[idx].size() == 0u && idx < maxWeight * V) {
       idx++;
     }
 

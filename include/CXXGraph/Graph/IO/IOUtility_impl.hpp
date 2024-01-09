@@ -49,7 +49,7 @@ struct csv_whitespace : std::ctype<char> {
     v[' '] &= ~space;  // space will not be classified as whitespace
     return &v[0];
   }
-  csv_whitespace(std::size_t refs = 0) : ctype(make_table(), false, refs) {}
+  explicit csv_whitespace(std::size_t refs = 0) : ctype(make_table(), false, refs) {}
 };
 
 #ifdef WITH_COMPRESSION
@@ -78,7 +78,7 @@ int Graph<T>::compressFile(const std::string &inputFile,
 
   ifs.close();
   gzclose(outFileZ);
-  return 0;
+  return zippedBytes;
 }
 
 template <typename T>
@@ -89,8 +89,7 @@ int Graph<T>::decompressFile(const std::string &inputFile,
     // printf("Error: Failed to gzopen %s\n", inputFile.c_str());
     return -1;
   }
-  unsigned char unzipBuffer[8192];
-  unsigned int unzippedBytes;
+  unsigned char unzipBuffer[8192];  
   std::vector<unsigned char> unzippedData;
   std::ofstream ofs;
   ofs.open(outputFile);
@@ -99,6 +98,7 @@ int Graph<T>::decompressFile(const std::string &inputFile,
     return -1;
   }
   while (true) {
+    unsigned int unzippedBytes;
     unzippedBytes = gzread(inFileZ, unzipBuffer, 8192);
     if (unzippedBytes > 0) {
       unzippedData.insert(unzippedData.end(), unzipBuffer,

@@ -570,8 +570,6 @@ shared<LaplacianMatrix<T>> Graph<T>::getLaplacianMatrix() const {
     const std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>
         &neighbors = nodePair.second;
 
-    int degree = neighbors.size();
-
     (*laplacianMatrix)[node].emplace_back(node,
                                           nullptr);  // Insere o nó na diagonal
     for (const auto &neighborPair : neighbors) {
@@ -812,8 +810,7 @@ template <typename T>
 std::ostream &operator<<(std::ostream &os, const Graph<T> &graph) {
   os << "Graph:\n";
   auto edgeList = graph.getEdgeSet();
-  auto it = edgeList.begin();
-  for (it; it != edgeList.end(); ++it) {
+  for (auto it = edgeList.begin(); it != edgeList.end(); ++it) {
     if (!(*it)->isDirected().has_value() && !(*it)->isWeighted().has_value()) {
       // Edge Case
       os << **it << "\n";
