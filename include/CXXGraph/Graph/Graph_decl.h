@@ -164,7 +164,7 @@ class Graph {
    * @param None
    *
    */
-  //template <typename... Tn>
+  template <typename... Tn>
   void addEdges();
   /**
    * \brief

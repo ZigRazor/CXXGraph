@@ -144,7 +144,7 @@ void Graph<T>::addEdge(shared<const Edge<T>> edge) {
 }
 
 template <typename T>
-//template <typename... Tn>
+template <typename... Tn>
 void Graph<T>::addEdges() {
   return;
 }
