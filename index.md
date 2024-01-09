@@ -44,6 +44,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
 | :heavy_check_mark: | Release 1.1.0 | May 8, 2023 |
 | :heavy_check_mark: | Stable Release 2.0.0 | Jun 1, 2023 |
 | :heavy_check_mark: | Stable Release 3.0.0 | Nov 3, 2023 |
+| :heavy_check_mark: | Release 3.1.0 | Jan 9, 2023 |
 | :memo: | Introduce Hypergraph [#122](https://github.com/ZigRazor/CXXGraph/issues/122) | TBD |
 | :memo: | Stable Release 4.0.0 | TBD |
 
