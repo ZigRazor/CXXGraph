@@ -34,45 +34,78 @@
 
 namespace CXXGraph {
 
-// define is_node type trait for Nodes, Nodes pointers and shared pointers
+// is_node type trait
 template <typename T>
-struct is_node : std::false_type {};
+struct is_node
+    : std::integral_constant<
+          bool, std::is_same<Node<typename T::Node_t>,
+                             typename std::remove_const<T>::type>::value> {};
 
 template <typename T>
-struct is_node<Node<T>> : std::true_type {};
+struct is_node<T*>
+    : std::integral_constant<
+          bool, std::is_same<Node<typename T::Node_t>,
+                             typename std::remove_const<T>::type>::value> {};
 
-// define is_node_ptr type trait for Node pointers and shared pointers
+template <typename T>
+struct is_node<shared<T>>
+    : std::integral_constant<
+          bool, std::is_same<Node<typename T::Node_t>,
+                             typename std::remove_const<T>::type>::value> {};
+
+template <typename T>
+inline constexpr bool is_node_v = is_node<T>::value;
+
+// is_node_ptr type trait
 template <typename T>
 struct is_node_ptr : std::false_type {};
 
 template <typename T>
-struct is_node_ptr<const Node<T>*> : std::true_type {};
+struct is_node_ptr<T*> : std::integral_constant<bool, is_node<T>::value> {};
 
 template <typename T>
-struct is_node_ptr<shared<const Node<T>>> : std::true_type {};
+struct is_node_ptr<shared<T>>
+    : std::integral_constant<bool, is_node<T>::value> {};
 
 template <typename T>
-inline constexpr bool is_node_ptr_v = is_node<T>::value;
+inline constexpr bool is_node_ptr_v = is_node_ptr<T>::value;
 
-// define is_edge type trait for Edges
+// is_edge type trait
 template <typename T>
-struct is_edge : std::false_type {};
+struct is_edge
+    : std::integral_constant<
+          bool, std::is_base_of<Edge<typename T::Node_t>,
+                                typename std::remove_const<T>::type>::value> {};
 
 template <typename T>
-struct is_edge<Edge<T>> : std::true_type {};
+struct is_edge<T*>
+    : std::integral_constant<
+          bool, std::is_base_of<Edge<typename T::Node_t>,
+                                typename std::remove_const<T>::type>::value> {};
 
-// define is_edge_ptr type trait for Edge pointers and shared pointers
+template <typename T>
+struct is_edge<shared<T>>
+    : std::integral_constant<
+          bool, std::is_base_of<Edge<typename T::Node_t>,
+                                typename std::remove_const<T>::type>::value> {};
+
+template <typename T>
+inline constexpr bool is_edge_v = is_edge<T>::value;
+
+// is_edge_ptr type trait
 template <typename T>
 struct is_edge_ptr : std::false_type {};
 
 template <typename T>
-struct is_edge_ptr<const Edge<T>*> : std::true_type {};
+struct is_edge_ptr<T*> : std::integral_constant<bool, is_edge<T>::value> {};
 
 template <typename T>
-struct is_edge_ptr<shared<const Edge<T>>> : std::true_type {};
+struct is_edge_ptr<shared<T>>
+    : std::integral_constant<bool, is_edge<T>::value> {};
 
 template <typename T>
-inline constexpr bool is_edge_ptr_v = is_edge<T>::value;
+inline constexpr bool is_edge_ptr_v = is_edge_ptr<T>::value;
+
 }  // namespace CXXGraph
 
 #endif
