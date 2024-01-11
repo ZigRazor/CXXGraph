@@ -39,6 +39,8 @@ class Node {
   void setId(const std::string &);
 
  public:
+  typedef T Node_t;
+
   Node(const std::string &, const T &data);
   // Move constructor
   Node(const std::string &, T &&data) noexcept;

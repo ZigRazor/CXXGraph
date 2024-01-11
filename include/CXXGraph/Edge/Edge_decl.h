@@ -48,6 +48,8 @@ class Edge {
   std::pair<shared<const Node<T>>, shared<const Node<T>>> nodePair;
 
  public:
+  typedef T Node_t;
+
   Edge(const CXXGraph::id_t id, const Node<T> &node1, const Node<T> &node2);
   Edge(const CXXGraph::id_t id, shared<const Node<T>> node1, shared<const Node<T>> node2);
   Edge(const CXXGraph::id_t id,
