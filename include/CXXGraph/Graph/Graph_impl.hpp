@@ -22,9 +22,10 @@
 
 #pragma once
 
+#include <deque>
+
 #include "CXXGraph/Graph/Graph_decl.h"
 #include "CXXGraph/Utility/ConstString.hpp"
-#include <deque>
 
 namespace CXXGraph {
 
@@ -804,7 +805,6 @@ const std::vector<Node<T>> Graph<T>::graph_slicing(const Node<T> &start) const {
   }
   return result;
 }
-
 
 template <typename T>
 std::ostream &operator<<(std::ostream &os, const Graph<T> &graph) {
