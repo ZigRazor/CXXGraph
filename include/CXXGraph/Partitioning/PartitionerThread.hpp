@@ -26,9 +26,9 @@
 #include <vector>
 
 #include "CXXGraph/Edge/Edge.h"
+#include "CXXGraph/Utility/Runnable.hpp"
 #include "PartitionState.hpp"
 #include "PartitionStrategy.hpp"
-#include "CXXGraph/Utility/Runnable.hpp"
 
 namespace CXXGraph {
 namespace Partitioning {
@@ -42,7 +42,7 @@ class PartitionerThread : public Runnable {
  public:
   PartitionerThread(std::vector<shared<const Edge<T>>> &list,
                     shared<PartitionState<T>> state,
-					shared<PartitionStrategy<T>> algorithm);
+                    shared<PartitionStrategy<T>> algorithm);
   ~PartitionerThread();
 
   void run() override;
@@ -50,9 +50,9 @@ class PartitionerThread : public Runnable {
   std::list<int> id_partitions;
 };
 template <typename T>
-PartitionerThread<T>::PartitionerThread(std::vector<shared<const Edge<T>>> &list,
-                                        shared<PartitionState<T>> state,
-                                        shared<PartitionStrategy<T>> algorithm) {
+PartitionerThread<T>::PartitionerThread(
+    std::vector<shared<const Edge<T>>> &list, shared<PartitionState<T>> state,
+    shared<PartitionStrategy<T>> algorithm) {
   this->list = list;
   this->state = state;
   this->algorithm = algorithm;

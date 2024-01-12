@@ -24,8 +24,8 @@
 
 #include <set>
 
-#include "Record.hpp"
 #include "CXXGraph/Utility/Typedef.hpp"
+#include "Record.hpp"
 
 namespace CXXGraph {
 namespace Partitioning {

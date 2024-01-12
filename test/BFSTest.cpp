@@ -8,10 +8,10 @@
 template <typename T>
 using unique = std::unique_ptr<T>;
 template <typename T>
-using shared= std::shared_ptr<T>;
+using shared = std::shared_ptr<T>;
 
-using std::make_unique;
 using std::make_shared;
+using std::make_unique;
 
 TEST(BFSTest, test_1) {
   CXXGraph::Node<int> node1("1", 1);
@@ -310,14 +310,15 @@ TEST(BFSTest, test_13) {
     int randomNumber2 = (distribution(rand) % MaxValue);
     if (randomNumber1 != randomNumber2) {
       shared<CXXGraph::UndirectedEdge<int>> newEdge =
-          make_shared<CXXGraph::UndirectedEdge<int>>(index, *(nodes.at(randomNumber1)),
-                                            *(nodes.at(randomNumber2)));
+          make_shared<CXXGraph::UndirectedEdge<int>>(
+              index, *(nodes.at(randomNumber1)), *(nodes.at(randomNumber2)));
       edgeSet.insert(newEdge);
     }
   }
   for (int i = 1; i < nodes.size(); i += 2) {
-    shared<CXXGraph::UndirectedEdge<int>> newEdge = make_shared<CXXGraph::UndirectedEdge<int>>(
-        edges_size + i + 1, *(nodes.at(0)), *(nodes.at(i)));
+    shared<CXXGraph::UndirectedEdge<int>> newEdge =
+        make_shared<CXXGraph::UndirectedEdge<int>>(
+            edges_size + i + 1, *(nodes.at(0)), *(nodes.at(i)));
     edgeSet.insert(newEdge);
   }
   CXXGraph::Graph<int> graph(edgeSet);

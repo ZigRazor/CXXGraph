@@ -64,6 +64,5 @@ const std::vector<Node<T>> Graph<T>::breadth_first_search(
   return visited;
 }
 
-
 }  // namespace CXXGraph
 #endif  // __CXXGRAPH_BREADTHFIRSTSEARCH_IMPL_H__

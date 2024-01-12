@@ -26,8 +26,8 @@
 
 namespace CXXGraph {
 
-using std::make_unique;
 using std::make_shared;
+using std::make_unique;
 
 template <typename T>
 DirectedWeightedEdge<T>::DirectedWeightedEdge(const CXXGraph::id_t id,

@@ -7,10 +7,10 @@
 template <typename T>
 using unique = std::unique_ptr<T>;
 template <typename T>
-using shared= std::shared_ptr<T>;
+using shared = std::shared_ptr<T>;
 
-using std::make_unique;
 using std::make_shared;
+using std::make_unique;
 
 TEST(DOTTest, WriteToDotDirectedWeighted) {
   // Generate a simple test graph with few nodes and edges

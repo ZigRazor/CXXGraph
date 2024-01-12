@@ -27,18 +27,18 @@
 #include <unordered_map>
 
 #include "CXXGraph/Edge/Edge.h"
-#include "PartitionStrategy.hpp"
 #include "CXXGraph/Partitioning/Utility/Globals.hpp"
+#include "PartitionStrategy.hpp"
 
 namespace CXXGraph {
 // Smart pointers alias
 template <typename T>
 using unique = std::unique_ptr<T>;
 template <typename T>
-using shared= std::shared_ptr<T>;
+using shared = std::shared_ptr<T>;
 
-using std::make_unique;
 using std::make_shared;
+using std::make_unique;
 
 namespace Partitioning {
 /**
@@ -57,7 +57,8 @@ class EBV : public PartitionStrategy<T> {
   explicit EBV(const Globals &G);
   ~EBV();
 
-  void performStep(shared<const Edge<T>> e, shared<PartitionState<T>> Sstate) override;
+  void performStep(shared<const Edge<T>> e,
+                   shared<PartitionState<T>> Sstate) override;
 };
 template <typename T>
 EBV<T>::EBV(const Globals &G) : GLOBALS(G) {
@@ -66,7 +67,8 @@ EBV<T>::EBV(const Globals &G) : GLOBALS(G) {
 template <typename T>
 EBV<T>::~EBV() {}
 template <typename T>
-void EBV<T>::performStep(shared<const Edge<T>> e, shared<PartitionState<T>> state){
+void EBV<T>::performStep(shared<const Edge<T>> e,
+                         shared<PartitionState<T>> state) {
   GLOBALS.edgeAnalyzed++;
 
   int P = GLOBALS.numberOfPartition;

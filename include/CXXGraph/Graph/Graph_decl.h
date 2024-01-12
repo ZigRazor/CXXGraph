@@ -63,7 +63,6 @@ using T_EdgeSet = std::unordered_set<shared<const Edge<T>>, edgeHash<T>>;
 template <typename T>
 using T_NodeSet = std::unordered_set<shared<const Node<T>>, nodeHash<T>>;
 
-
 template <typename T>
 class Graph;
 
@@ -847,8 +846,6 @@ class Graph {
 
   virtual int readFromMTXFile(const std::string &workingDir,
                               const std::string &fileName);
-
-  
 
   friend std::ostream &operator<< <>(std::ostream &os, const Graph<T> &graph);
   friend std::ostream &operator<< <>(std::ostream &os,

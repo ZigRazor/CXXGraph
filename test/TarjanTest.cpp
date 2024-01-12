@@ -116,15 +116,13 @@ TEST(TarjanTest, test_3) {
   for (int i = 1; i <= 18; ++i) {
     nodes.emplace_back(std::to_string(i), i);
   };
-  std::vector<std::pair<int,int>> pairs{
-    {1, 2}, {2, 3}, {3, 4}, {2, 4}, {2, 5}, {2, 6},
-    {5, 6}, {5, 7}, {6, 7}, {7, 8}, {7, 11}, {8, 11},
-    {8, 9}, {9, 11}, {8, 12}, {8, 14}, {8, 15}, 
-    {12, 13}, {14, 13}, {15, 13}, {9, 10}, {11, 10}, 
-    {10, 16}, {10, 17}, {10, 18}, {17, 18}
-  };
+  std::vector<std::pair<int, int>> pairs{
+      {1, 2},   {2, 3},   {3, 4},   {2, 4},   {2, 5},   {2, 6},   {5, 6},
+      {5, 7},   {6, 7},   {7, 8},   {7, 11},  {8, 11},  {8, 9},   {9, 11},
+      {8, 12},  {8, 14},  {8, 15},  {12, 13}, {14, 13}, {15, 13}, {9, 10},
+      {11, 10}, {10, 16}, {10, 17}, {10, 18}, {17, 18}};
   std::vector<CXXGraph::UndirectedWeightedEdge<int>> edges;
-  for (const auto& [id1, id2] : pairs) {
+  for (const auto &[id1, id2] : pairs) {
     edges.emplace_back(edges.size() + 1, nodes[id1], nodes[id2], 1);
   }
   CXXGraph::T_EdgeSet<int> edgeSet;
@@ -137,9 +135,10 @@ TEST(TarjanTest, test_3) {
 
   std::vector<int> expectRes{2, 7, 8, 10};
   ASSERT_EQ(res.cutVertices.size(), expectRes.size());
-  std::sort(res.cutVertices.begin(), res.cutVertices.end(), [&](const auto &node1, const auto &node2) {
-      return node1.getData() < node2.getData();
-  });
+  std::sort(res.cutVertices.begin(), res.cutVertices.end(),
+            [&](const auto &node1, const auto &node2) {
+              return node1.getData() < node2.getData();
+            });
   for (int i = 0; i < expectRes.size(); ++i) {
     ASSERT_EQ(res.cutVertices[i], nodes[expectRes[i]]);
   }
@@ -158,15 +157,13 @@ TEST(TarjanTest, test_4) {
   for (int i = 1; i <= 18; ++i) {
     nodes.emplace_back(std::to_string(i), i);
   };
-  std::vector<std::pair<int,int>> pairs{
-    {1, 2}, {2, 3}, {3, 4}, {2, 4}, {2, 5}, {2, 6},
-    {5, 6}, {5, 7}, {6, 7}, {7, 8}, {7, 11}, {8, 11},
-    {8, 9}, {9, 11}, {8, 12}, {8, 14}, {8, 15}, 
-    {12, 13}, {14, 13}, {15, 13}, {9, 10}, {11, 10}, 
-    {10, 16}, {10, 17}, {10, 18}, {17, 18}
-  };
+  std::vector<std::pair<int, int>> pairs{
+      {1, 2},   {2, 3},   {3, 4},   {2, 4},   {2, 5},   {2, 6},   {5, 6},
+      {5, 7},   {6, 7},   {7, 8},   {7, 11},  {8, 11},  {8, 9},   {9, 11},
+      {8, 12},  {8, 14},  {8, 15},  {12, 13}, {14, 13}, {15, 13}, {9, 10},
+      {11, 10}, {10, 16}, {10, 17}, {10, 18}, {17, 18}};
   std::vector<CXXGraph::UndirectedWeightedEdge<int>> edges;
-  for (const auto& [id1, id2] : pairs) {
+  for (const auto &[id1, id2] : pairs) {
     edges.emplace_back(edges.size() + 1, nodes[id1], nodes[id2], 1);
   }
   CXXGraph::T_EdgeSet<int> edgeSet;
@@ -178,13 +175,13 @@ TEST(TarjanTest, test_4) {
   ASSERT_EQ(res.success, true);
 
   std::vector<std::vector<CXXGraph::Node<int>>> expectRes{
-      {nodes[1], nodes[2]}, {nodes[2], nodes[3], nodes[4]}, 
-      {nodes[2], nodes[5], nodes[6], nodes[7]}, 
+      {nodes[1], nodes[2]},
+      {nodes[2], nodes[3], nodes[4]},
+      {nodes[2], nodes[5], nodes[6], nodes[7]},
       {nodes[7], nodes[8], nodes[9], nodes[10], nodes[11]},
       {nodes[8], nodes[12], nodes[13], nodes[14], nodes[15]},
       {nodes[10], nodes[16]},
-      {nodes[10], nodes[17], nodes[18]}
-  };
+      {nodes[10], nodes[17], nodes[18]}};
   ASSERT_EQ(res.verticeBiconnectedComps.size(), expectRes.size());
 
   // sort nodes in a vbcc by node id
@@ -197,10 +194,11 @@ TEST(TarjanTest, test_4) {
   std::sort(res.verticeBiconnectedComps.begin(),
             res.verticeBiconnectedComps.end(),
             [&](const auto &scc1, const auto &scc2) {
-              if ((scc1.size() == 0) || (scc2.size() == 0) || (scc1[0].getData() == scc2[0].getData())) {
+              if ((scc1.size() == 0) || (scc2.size() == 0) ||
+                  (scc1[0].getData() == scc2[0].getData())) {
                 return scc1.size() < scc2.size();
               }
-              return scc1[0].getData() < scc2[0].getData(); 
+              return scc1[0].getData() < scc2[0].getData();
             });
   for (int i = 0; i < res.verticeBiconnectedComps.size(); ++i) {
     ASSERT_EQ(res.verticeBiconnectedComps[i].size(), expectRes[i].size());
@@ -215,22 +213,20 @@ TEST(TarjanTest, test_4) {
   ASSERT_EQ(res.cutVertices.size(), 0);
 }
 
-
 TEST(TarjanTest, test_5) {
-  // the undirected graph used in this case is a bridge tree from a tutorial on codeforce
-  // https://codeforces.com/blog/entry/99259
+  // the undirected graph used in this case is a bridge tree from a tutorial on
+  // codeforce https://codeforces.com/blog/entry/99259
   std::vector<CXXGraph::Node<int>> nodes;
   nodes.emplace_back("0", 0);
   for (int i = 1; i <= 12; ++i) {
     nodes.emplace_back(std::to_string(i), i);
   };
-  std::vector<std::pair<int,int>> pairs{
-    {1, 2}, {2, 3}, {1, 3}, {3, 4}, {3, 9}, 
-    {4, 5}, {5, 6}, {4, 7}, {6, 7}, {6, 8}, 
-    {7, 8}, {9, 10}, {9, 11}, {10, 12}, {11, 12},
+  std::vector<std::pair<int, int>> pairs{
+      {1, 2}, {2, 3}, {1, 3}, {3, 4},  {3, 9},  {4, 5},   {5, 6},   {4, 7},
+      {6, 7}, {6, 8}, {7, 8}, {9, 10}, {9, 11}, {10, 12}, {11, 12},
   };
   std::vector<CXXGraph::UndirectedWeightedEdge<int>> edges;
-  for (const auto& [id1, id2] : pairs) {
+  for (const auto &[id1, id2] : pairs) {
     edges.emplace_back(edges.size() + 1, nodes[id1], nodes[id2], 1);
   }
   CXXGraph::T_EdgeSet<int> edgeSet;
@@ -243,9 +239,10 @@ TEST(TarjanTest, test_5) {
 
   std::vector<int> expectRes{3, 4};
   ASSERT_EQ(res.bridges.size(), expectRes.size());
-  std::sort(res.bridges.begin(), res.bridges.end(), [&](const auto &edge1, const auto &edge2) {
-      return edge1.getId() < edge2.getId();
-  });
+  std::sort(res.bridges.begin(), res.bridges.end(),
+            [&](const auto &edge1, const auto &edge2) {
+              return edge1.getId() < edge2.getId();
+            });
   for (int i = 0; i < expectRes.size(); ++i) {
     ASSERT_EQ(res.bridges[i], edges[expectRes[i]]);
   }
@@ -257,20 +254,19 @@ TEST(TarjanTest, test_5) {
 }
 
 TEST(TarjanTest, test_6) {
-  // the undirected graph used in this case is a bridge tree from a tutorial on codeforce
-  // https://codeforces.com/blog/entry/99259
+  // the undirected graph used in this case is a bridge tree from a tutorial on
+  // codeforce https://codeforces.com/blog/entry/99259
   std::vector<CXXGraph::Node<int>> nodes;
   nodes.emplace_back("0", 0);
   for (int i = 1; i <= 12; ++i) {
     nodes.emplace_back(std::to_string(i), i);
   };
-  std::vector<std::pair<int,int>> pairs{
-    {1, 2}, {2, 3}, {1, 3}, {3, 4}, {3, 9}, 
-    {4, 5}, {5, 6}, {4, 7}, {6, 7}, {6, 8}, 
-    {7, 8}, {9, 10}, {9, 11}, {10, 12}, {11, 12},
+  std::vector<std::pair<int, int>> pairs{
+      {1, 2}, {2, 3}, {1, 3}, {3, 4},  {3, 9},  {4, 5},   {5, 6},   {4, 7},
+      {6, 7}, {6, 8}, {7, 8}, {9, 10}, {9, 11}, {10, 12}, {11, 12},
   };
   std::vector<CXXGraph::UndirectedWeightedEdge<int>> edges;
-  for (const auto& [id1, id2] : pairs) {
+  for (const auto &[id1, id2] : pairs) {
     edges.emplace_back(edges.size() + 1, nodes[id1], nodes[id2], 1);
   }
   CXXGraph::T_EdgeSet<int> edgeSet;
@@ -282,10 +278,9 @@ TEST(TarjanTest, test_6) {
   ASSERT_EQ(res.success, true);
 
   std::vector<std::vector<CXXGraph::Node<int>>> expectRes{
-      {nodes[1], nodes[2], nodes[3]}, 
-      {nodes[4], nodes[5], nodes[6], nodes[7], nodes[8]}, 
-      {nodes[9], nodes[10], nodes[11], nodes[12]}
-  };
+      {nodes[1], nodes[2], nodes[3]},
+      {nodes[4], nodes[5], nodes[6], nodes[7], nodes[8]},
+      {nodes[9], nodes[10], nodes[11], nodes[12]}};
   ASSERT_EQ(res.edgeBiconnectedComps.size(), expectRes.size());
 
   // sort nodes in a vbcc by node id
@@ -295,13 +290,13 @@ TEST(TarjanTest, test_6) {
     });
   }
   // sort vbccs by first node and size
-  std::sort(res.edgeBiconnectedComps.begin(),
-            res.edgeBiconnectedComps.end(),
+  std::sort(res.edgeBiconnectedComps.begin(), res.edgeBiconnectedComps.end(),
             [&](const auto &scc1, const auto &scc2) {
-              if ((scc1.size() == 0) || (scc2.size() == 0) || (scc1[0].getData() == scc2[0].getData())) {
+              if ((scc1.size() == 0) || (scc2.size() == 0) ||
+                  (scc1[0].getData() == scc2[0].getData())) {
                 return scc1.size() < scc2.size();
               }
-              return scc1[0].getData() < scc2[0].getData(); 
+              return scc1[0].getData() < scc2[0].getData();
             });
   for (int i = 0; i < res.edgeBiconnectedComps.size(); ++i) {
     ASSERT_EQ(res.edgeBiconnectedComps[i].size(), expectRes[i].size());
@@ -324,15 +319,13 @@ TEST(TarjanTest, test_7) {
   for (int i = 1; i <= 18; ++i) {
     nodes.emplace_back(std::to_string(i), i);
   };
-  std::vector<std::pair<int,int>> pairs{
-    {1, 2}, {2, 3}, {3, 4}, {2, 4}, {2, 5}, {2, 6},
-    {5, 6}, {5, 7}, {6, 7}, {7, 8}, {7, 11}, {8, 11},
-    {8, 9}, {9, 11}, {8, 12}, {8, 14}, {8, 15}, 
-    {12, 13}, {14, 13}, {15, 13}, {9, 10}, {11, 10}, 
-    {10, 16}, {10, 17}, {10, 18}, {17, 18}
-  };
+  std::vector<std::pair<int, int>> pairs{
+      {1, 2},   {2, 3},   {3, 4},   {2, 4},   {2, 5},   {2, 6},   {5, 6},
+      {5, 7},   {6, 7},   {7, 8},   {7, 11},  {8, 11},  {8, 9},   {9, 11},
+      {8, 12},  {8, 14},  {8, 15},  {12, 13}, {14, 13}, {15, 13}, {9, 10},
+      {11, 10}, {10, 16}, {10, 17}, {10, 18}, {17, 18}};
   std::vector<CXXGraph::UndirectedWeightedEdge<int>> edges;
-  for (const auto& [id1, id2] : pairs) {
+  for (const auto &[id1, id2] : pairs) {
     edges.emplace_back(edges.size() + 1, nodes[id1], nodes[id2], 1);
   }
   CXXGraph::T_EdgeSet<int> edgeSet;
@@ -341,11 +334,17 @@ TEST(TarjanTest, test_7) {
   }
   CXXGraph::Graph<int> graph(edgeSet);
 
-  CXXGraph::TarjanResult<int> cutvRes = graph.tarjan(CXXGraph::TARJAN_FIND_CUTV);
-  CXXGraph::TarjanResult<int> bridgeRes = graph.tarjan(CXXGraph::TARJAN_FIND_BRIDGE);
-  CXXGraph::TarjanResult<int> vbccRes = graph.tarjan(CXXGraph::TARJAN_FIND_VBCC);
-  CXXGraph::TarjanResult<int> ebccRes = graph.tarjan(CXXGraph::TARJAN_FIND_EBCC);
-  CXXGraph::TarjanResult<int> res = graph.tarjan(CXXGraph::TARJAN_FIND_CUTV | CXXGraph::TARJAN_FIND_BRIDGE | CXXGraph::TARJAN_FIND_EBCC | CXXGraph::TARJAN_FIND_VBCC);
+  CXXGraph::TarjanResult<int> cutvRes =
+      graph.tarjan(CXXGraph::TARJAN_FIND_CUTV);
+  CXXGraph::TarjanResult<int> bridgeRes =
+      graph.tarjan(CXXGraph::TARJAN_FIND_BRIDGE);
+  CXXGraph::TarjanResult<int> vbccRes =
+      graph.tarjan(CXXGraph::TARJAN_FIND_VBCC);
+  CXXGraph::TarjanResult<int> ebccRes =
+      graph.tarjan(CXXGraph::TARJAN_FIND_EBCC);
+  CXXGraph::TarjanResult<int> res =
+      graph.tarjan(CXXGraph::TARJAN_FIND_CUTV | CXXGraph::TARJAN_FIND_BRIDGE |
+                   CXXGraph::TARJAN_FIND_EBCC | CXXGraph::TARJAN_FIND_VBCC);
   ASSERT_EQ(res.success, true);
 
   ASSERT_EQ(res.cutVertices.size(), cutvRes.cutVertices.size());
@@ -356,18 +355,24 @@ TEST(TarjanTest, test_7) {
   for (int i = 0; i < bridgeRes.cutVertices.size(); ++i) {
     ASSERT_EQ(bridgeRes.bridges[i], res.bridges[i]);
   }
-  ASSERT_EQ(res.edgeBiconnectedComps.size(), ebccRes.edgeBiconnectedComps.size());
+  ASSERT_EQ(res.edgeBiconnectedComps.size(),
+            ebccRes.edgeBiconnectedComps.size());
   for (int i = 0; i < res.edgeBiconnectedComps.size(); ++i) {
-    ASSERT_EQ(res.edgeBiconnectedComps[i].size(), ebccRes.edgeBiconnectedComps[i].size());
+    ASSERT_EQ(res.edgeBiconnectedComps[i].size(),
+              ebccRes.edgeBiconnectedComps[i].size());
     for (int j = 0; j < ebccRes.edgeBiconnectedComps[i].size(); ++j) {
-      ASSERT_EQ(res.edgeBiconnectedComps[i][j], ebccRes.edgeBiconnectedComps[i][j]);
+      ASSERT_EQ(res.edgeBiconnectedComps[i][j],
+                ebccRes.edgeBiconnectedComps[i][j]);
     }
   }
-  ASSERT_EQ(res.verticeBiconnectedComps.size(), vbccRes.verticeBiconnectedComps.size());
+  ASSERT_EQ(res.verticeBiconnectedComps.size(),
+            vbccRes.verticeBiconnectedComps.size());
   for (int i = 0; i < res.verticeBiconnectedComps.size(); ++i) {
-    ASSERT_EQ(res.verticeBiconnectedComps[i].size(), vbccRes.verticeBiconnectedComps[i].size());
+    ASSERT_EQ(res.verticeBiconnectedComps[i].size(),
+              vbccRes.verticeBiconnectedComps[i].size());
     for (int j = 0; j < vbccRes.verticeBiconnectedComps[i].size(); ++j) {
-      ASSERT_EQ(res.verticeBiconnectedComps[i][j], vbccRes.verticeBiconnectedComps[i][j]);
+      ASSERT_EQ(res.verticeBiconnectedComps[i][j],
+                vbccRes.verticeBiconnectedComps[i][j]);
     }
   }
 }

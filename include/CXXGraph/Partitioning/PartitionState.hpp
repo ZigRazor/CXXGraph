@@ -23,6 +23,7 @@
 #pragma once
 
 #include <memory>
+
 #include "Record.hpp"
 
 namespace CXXGraph {
@@ -32,8 +33,8 @@ using unique = std::unique_ptr<T>;
 template <typename T>
 using shared = std::shared_ptr<T>;
 
-using std::make_unique;
 using std::make_shared;
+using std::make_unique;
 
 namespace Partitioning {
 template <typename T>

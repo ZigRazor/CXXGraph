@@ -24,18 +24,18 @@
 #pragma once
 #include <vector>
 
+#include "CXXGraph/Edge/Edge.h"
+#include "CXXGraph/Graph/Graph.h"
+#include "CXXGraph/Partitioning/Utility/Globals.hpp"
+#include "CXXGraph/Utility/Runnable.hpp"
 #include "CoordinatedPartitionState.hpp"
 #include "EBV.hpp"
-#include "CXXGraph/Edge/Edge.h"
 #include "EdgeBalancedVertexCut.hpp"
 #include "GreedyVertexCut.hpp"
 #include "HDRF.hpp"
 #include "PartitionAlgorithm.hpp"
 #include "PartitionStrategy.hpp"
 #include "PartitionerThread.hpp"
-#include "CXXGraph/Partitioning/Utility/Globals.hpp"
-#include "CXXGraph/Utility/Runnable.hpp"
-#include "CXXGraph/Graph/Graph.h"
 #include "WeightBalancedLibra.hpp"
 
 namespace CXXGraph {
@@ -43,10 +43,10 @@ namespace CXXGraph {
 template <typename T>
 using unique = std::unique_ptr<T>;
 template <typename T>
-using shared= std::shared_ptr<T>;
+using shared = std::shared_ptr<T>;
 
-using std::make_unique;
 using std::make_shared;
+using std::make_unique;
 
 namespace Partitioning {
 template <typename T>
@@ -64,7 +64,6 @@ class Partitioner {
   CoordinatedPartitionState<T> performCoordinatedPartition();
 
  public:
- 
   /**
    * \brief
    * This function partition a graph in a set of partitions
@@ -76,12 +75,10 @@ class Partitioner {
    * @return The partiton Map of the partitioned graph
    */
   static PartitionMap<T> partitionGraph(
-      const Graph<T>& graph,
-      const Partitioning::PartitionAlgorithm algorithm,
+      const Graph<T> &graph, const Partitioning::PartitionAlgorithm algorithm,
       const unsigned int numberOfPartitions, const double param1 = 0.0,
       const double param2 = 0.0, const double param3 = 0.0,
-      const unsigned int numberOfthreads =
-          std::thread::hardware_concurrency());
+      const unsigned int numberOfthreads = std::thread::hardware_concurrency());
 };
 template <typename T>
 Partitioner<T>::Partitioner(shared<const T_EdgeSet<T>> dataset, Globals &G)
@@ -122,8 +119,8 @@ Partitioner<T>::Partitioner(shared<const T_EdgeSet<T>> dataset, Globals &G)
       vertices_degrees[v]++;
     }
 
-    algorithm = make_shared<WeightBalancedLibra<T>>(GLOBALS, weight_sum_bound,
-                                           std::move(vertices_degrees));
+    algorithm = make_shared<WeightBalancedLibra<T>>(
+        GLOBALS, weight_sum_bound, std::move(vertices_degrees));
   }
 }
 
@@ -165,8 +162,8 @@ Partitioner<T>::Partitioner(const Partitioner &other) {
       vertices_degrees[v]++;
     }
 
-    algorithm = make_shared<WeightBalancedLibra<T>>(GLOBALS, weight_sum_bound,
-                                           std::move(vertices_degrees));
+    algorithm = make_shared<WeightBalancedLibra<T>>(
+        GLOBALS, weight_sum_bound, std::move(vertices_degrees));
   }
 }
 
@@ -184,13 +181,12 @@ CoordinatedPartitionState<T> Partitioner<T>::startCoordinated() {
     int iStart = t * subSize;
     int iEnd = std::min((t + 1) * subSize, (int)n);
     if (iEnd >= iStart) {
-      list_vector[t] =
-          std::vector<shared<const Edge<T>>>(std::next(dataset->begin(), iStart),
-                                       std::next(dataset->begin(), iEnd));
-      myRunnable[t].reset(
-          new PartitionerThread<T>(list_vector[t],
-								   make_shared<CoordinatedPartitionState<T>>(state),
-								   algorithm));
+      list_vector[t] = std::vector<shared<const Edge<T>>>(
+          std::next(dataset->begin(), iStart),
+          std::next(dataset->begin(), iEnd));
+      myRunnable[t].reset(new PartitionerThread<T>(
+          list_vector[t], make_shared<CoordinatedPartitionState<T>>(state),
+          algorithm));
       myThreads[t] = std::thread(&Runnable::run, myRunnable[t].get());
     }
   }
@@ -219,11 +215,10 @@ CoordinatedPartitionState<T> Partitioner<T>::performCoordinatedPartition() {
 
 template <typename T>
 PartitionMap<T> Partitioner<T>::partitionGraph(
-    const Graph<T>& graph,
-    const Partitioning::PartitionAlgorithm algorithm,
+    const Graph<T> &graph, const Partitioning::PartitionAlgorithm algorithm,
     const unsigned int numberOfPartitions, const double param1,
     const double param2, const double param3,
-    const unsigned int numberOfThreads){
+    const unsigned int numberOfThreads) {
   PartitionMap<T> partitionMap;
   Partitioning::Globals globals(numberOfPartitions, algorithm, param1, param2,
                                 param3, numberOfThreads);
@@ -236,7 +231,6 @@ PartitionMap<T> Partitioner<T>::partitionGraph(
   partitionMap = partitionState.getPartitionMap();
   return partitionMap;
 }
-
 
 }  // namespace Partitioning
 }  // namespace CXXGraph

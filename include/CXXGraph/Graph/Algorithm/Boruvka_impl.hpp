@@ -22,11 +22,12 @@
 
 #pragma once
 
-#include "CXXGraph/Graph/Graph_decl.h"
 #include <limits.h>
 
+#include "CXXGraph/Graph/Graph_decl.h"
+
 namespace CXXGraph {
-    
+
 template <typename T>
 const MstResult Graph<T>::boruvka() const {
   MstResult result;

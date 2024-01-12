@@ -22,7 +22,7 @@
 
 #include "CXXGraph/Graph/Graph_impl.hpp"
 
-//Algorithm
+// Algorithm
 #include "CXXGraph/Graph/Algorithm/BellmanFord_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/BestFirstSearch_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/Boruvka_impl.hpp"

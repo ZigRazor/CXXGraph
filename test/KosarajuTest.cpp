@@ -1,4 +1,5 @@
 #include <memory>
+
 #include "CXXGraph/CXXGraph.hpp"
 #include "gtest/gtest.h"
 
@@ -6,10 +7,10 @@
 template <typename T>
 using unique = std::unique_ptr<T>;
 template <typename T>
-using shared= std::shared_ptr<T>;
+using shared = std::shared_ptr<T>;
 
-using std::make_unique;
 using std::make_shared;
+using std::make_unique;
 
 // helper function to compare strongly connected components (SCC) as computed
 // by the algorithm with expected (correct) SCC
@@ -17,9 +18,9 @@ void compareComponents(CXXGraph::SCCResult<int> result,
                        CXXGraph::Components<int>& comp2) {
   ASSERT_EQ(result.noOfComponents, comp2.size());
 
-  for(int i=0;i<comp2.size();i++){
+  for (int i = 0; i < comp2.size(); i++) {
     int curComp = result.sccMap[comp2[i][0].getId()];
-    for(int j=1;j<comp2[i].size();j++){
+    for (int j = 1; j < comp2[i].size(); j++) {
       ASSERT_EQ(result.sccMap[comp2[i][j].getId()], curComp);
     }
   }
@@ -53,7 +54,7 @@ TEST(KosarajuTest, test_2) {
   ASSERT_TRUE(res.success);
   ASSERT_EQ(res.errorMessage, "");
   ASSERT_EQ(res.noOfComponents, 1);
-  //ASSERT_EQ(res.stronglyConnectedComps[0].size(), 2);
+  // ASSERT_EQ(res.stronglyConnectedComps[0].size(), 2);
 }
 
 // 1 comp, 2 strongly connected comp

@@ -25,9 +25,9 @@
 #include "DirectedEdge_decl.h"
 
 namespace CXXGraph {
-  
-using std::make_unique;
+
 using std::make_shared;
+using std::make_unique;
 
 template <typename T>
 DirectedEdge<T>::DirectedEdge(const CXXGraph::id_t id, const Node<T> &node1,
@@ -35,8 +35,10 @@ DirectedEdge<T>::DirectedEdge(const CXXGraph::id_t id, const Node<T> &node1,
     : Edge<T>(id, node1, node2) {}
 
 template <typename T>
-DirectedEdge<T>::DirectedEdge(const CXXGraph::id_t id, shared<const Node<T>> node1,
-			 shared<const Node<T>> node2) : Edge<T>(id, node1, node2) {}
+DirectedEdge<T>::DirectedEdge(const CXXGraph::id_t id,
+                              shared<const Node<T>> node1,
+                              shared<const Node<T>> node2)
+    : Edge<T>(id, node1, node2) {}
 
 template <typename T>
 DirectedEdge<T>::DirectedEdge(

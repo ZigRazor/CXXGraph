@@ -31,8 +31,8 @@ using unique = std::unique_ptr<T>;
 template <typename T>
 using shared = std::shared_ptr<T>;
 
-using std::make_unique;
 using std::make_shared;
+using std::make_unique;
 
 template <typename T>
 Edge<T>::Edge(const CXXGraph::id_t id, const Node<T> &node1,
@@ -43,7 +43,8 @@ Edge<T>::Edge(const CXXGraph::id_t id, const Node<T> &node1,
 }
 
 template <typename T>
-Edge<T>::Edge(const CXXGraph::id_t id, shared<const Node<T>> node1, shared<const Node<T>> node2) {
+Edge<T>::Edge(const CXXGraph::id_t id, shared<const Node<T>> node1,
+              shared<const Node<T>> node2) {
   this->nodePair.first = node1;
   this->nodePair.second = node2;
   this->id = id;
@@ -58,8 +59,9 @@ Edge<T>::Edge(const CXXGraph::id_t id,
 }
 
 template <typename T>
-Edge<T>::Edge(const CXXGraph::id_t id,
-              const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair)
+Edge<T>::Edge(
+    const CXXGraph::id_t id,
+    const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair)
     : nodePair(nodepair) {
   this->id = id;
 }
@@ -82,8 +84,8 @@ const unsigned long long Edge<T>::getId() const {
 }
 
 template <typename T>
-const std::pair<shared<const Node<T>>, shared<const Node<T>>> &Edge<T>::getNodePair()
-    const {
+const std::pair<shared<const Node<T>>, shared<const Node<T>>> &
+Edge<T>::getNodePair() const {
   return nodePair;
 }
 
