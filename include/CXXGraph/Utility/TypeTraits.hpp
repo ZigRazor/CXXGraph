@@ -20,6 +20,7 @@
 #ifndef __CXXGRAPH_TYPE_TRAITS__
 #define __CXXGRAPH_TYPE_TRAITS__
 
+#include <type_traits>
 #pragma once
 
 #include <memory>
@@ -42,16 +43,10 @@ struct is_node
                              typename std::remove_const<T>::type>::value> {};
 
 template <typename T>
-struct is_node<T*>
-    : std::integral_constant<
-          bool, std::is_same<Node<typename T::Node_t>,
-                             typename std::remove_const<T>::type>::value> {};
+struct is_node<T*> : std::false_type {};
 
 template <typename T>
-struct is_node<shared<T>>
-    : std::integral_constant<
-          bool, std::is_same<Node<typename T::Node_t>,
-                             typename std::remove_const<T>::type>::value> {};
+struct is_node<shared<T>> : std::false_type {};
 
 template <typename T>
 inline constexpr bool is_node_v = is_node<T>::value;
@@ -78,16 +73,10 @@ struct is_edge
                                 typename std::remove_const<T>::type>::value> {};
 
 template <typename T>
-struct is_edge<T*>
-    : std::integral_constant<
-          bool, std::is_base_of<Edge<typename T::Node_t>,
-                                typename std::remove_const<T>::type>::value> {};
+struct is_edge<T*> : std::false_type {};
 
 template <typename T>
-struct is_edge<shared<T>>
-    : std::integral_constant<
-          bool, std::is_base_of<Edge<typename T::Node_t>,
-                                typename std::remove_const<T>::type>::value> {};
+struct is_edge<shared<T>> : std::false_type {};
 
 template <typename T>
 inline constexpr bool is_edge_v = is_edge<T>::value;
