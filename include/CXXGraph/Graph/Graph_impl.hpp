@@ -22,9 +22,10 @@
 
 #pragma once
 
+#include <deque>
+
 #include "CXXGraph/Graph/Graph_decl.h"
 #include "CXXGraph/Utility/ConstString.hpp"
-#include <deque>
 
 namespace CXXGraph {
 
@@ -151,7 +152,7 @@ void Graph<T>::addEdges() {
 
 template <typename T>
 template <typename T1, typename... Tn>
-std::enable_if<is_edge_ptr_v<T1> && (is_edge_ptr_v<Tn> && ...), void>
+std::enable_if_t<is_edge_ptr_v<T1> && (is_edge_ptr_v<Tn> && ...), void>
 Graph<T>::addEdges(T1 edge, Tn... edges) {
   addEdge(edge);
   addEdges(edges...);
@@ -176,7 +177,7 @@ void Graph<T>::addNodes() {
 
 template <typename T>
 template <typename T1, typename... Tn>
-std::enable_if<is_node_ptr_v<T1> && (is_node_ptr_v<Tn> && ...), void>
+std::enable_if_t<is_node_ptr_v<T1> && (is_node_ptr_v<Tn> && ...), void>
 Graph<T>::addNodes(T1 node, Tn... nodes) {
   addNode(node);
   addNodes(nodes...);
@@ -804,7 +805,6 @@ const std::vector<Node<T>> Graph<T>::graph_slicing(const Node<T> &start) const {
   }
   return result;
 }
-
 
 template <typename T>
 std::ostream &operator<<(std::ostream &os, const Graph<T> &graph) {

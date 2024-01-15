@@ -35,7 +35,6 @@ using unique = std::unique_ptr<T>;
 template <typename T>
 using shared = std::shared_ptr<T>;
 
-
 template <typename T>
 class Edge;
 // ostream operator
@@ -48,8 +47,11 @@ class Edge {
   std::pair<shared<const Node<T>>, shared<const Node<T>>> nodePair;
 
  public:
+  typedef T Node_t;
+
   Edge(const CXXGraph::id_t id, const Node<T> &node1, const Node<T> &node2);
-  Edge(const CXXGraph::id_t id, shared<const Node<T>> node1, shared<const Node<T>> node2);
+  Edge(const CXXGraph::id_t id, shared<const Node<T>> node1,
+       shared<const Node<T>> node2);
   Edge(const CXXGraph::id_t id,
        const std::pair<const Node<T> *, const Node<T> *> &nodepair);
   Edge(const CXXGraph::id_t id,
@@ -58,7 +60,8 @@ class Edge {
   void setFirstNode(shared<const Node<T>> node);
   void setSecondNode(shared<const Node<T>> node);
   const unsigned long long getId() const;
-  const std::pair<shared<const Node<T>>, shared<const Node<T>>> &getNodePair() const;
+  const std::pair<shared<const Node<T>>, shared<const Node<T>>> &getNodePair()
+      const;
   shared<const Node<T>> getOtherNode(shared<const Node<T>> node) const;
   virtual const std::optional<bool> isDirected() const;
   virtual const std::optional<bool> isWeighted() const;

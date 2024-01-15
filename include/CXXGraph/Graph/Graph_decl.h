@@ -63,7 +63,6 @@ using T_EdgeSet = std::unordered_set<shared<const Edge<T>>, edgeHash<T>>;
 template <typename T>
 using T_NodeSet = std::unordered_set<shared<const Node<T>>, nodeHash<T>>;
 
-
 template <typename T>
 class Graph;
 
@@ -174,7 +173,7 @@ class Graph {
    *
    */
   template <typename T1, typename... Tn>
-  std::enable_if<is_edge_ptr_v<T1> && (is_edge_ptr_v<Tn> && ...), void>
+  std::enable_if_t<is_edge_ptr_v<T1> && (is_edge_ptr_v<Tn> && ...), void>
   addEdges(T1 edge, Tn... edges);
   /**
    * \brief
@@ -212,7 +211,7 @@ class Graph {
    *
    */
   template <typename T1, typename... Tn>
-  std::enable_if<is_node_ptr_v<T1> && (is_node_ptr_v<Tn> && ...), void>
+  std::enable_if_t<is_node_ptr_v<T1> && (is_node_ptr_v<Tn> && ...), void>
   addNodes(T1 node, Tn... nodes);
   /**
    * \brief
@@ -847,8 +846,6 @@ class Graph {
 
   virtual int readFromMTXFile(const std::string &workingDir,
                               const std::string &fileName);
-
-  
 
   friend std::ostream &operator<< <>(std::ostream &os, const Graph<T> &graph);
   friend std::ostream &operator<< <>(std::ostream &os,
