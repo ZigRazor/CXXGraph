@@ -27,10 +27,10 @@
 #include <set>
 #include <vector>
 
-#include "CoordinatedRecord.hpp"
 #include "CXXGraph/Edge/Edge.h"
-#include "PartitionState.hpp"
 #include "CXXGraph/Partitioning/Utility/Globals.hpp"
+#include "CoordinatedRecord.hpp"
+#include "PartitionState.hpp"
 #include "Record.hpp"
 
 namespace CXXGraph {
@@ -38,10 +38,10 @@ namespace CXXGraph {
 template <typename T>
 using unique = std::unique_ptr<T>;
 template <typename T>
-using shared= std::shared_ptr<T>;
+using shared = std::shared_ptr<T>;
 
-using std::make_unique;
 using std::make_shared;
+using std::make_unique;
 
 namespace Partitioning {
 template <typename T>
@@ -134,8 +134,8 @@ int CoordinatedPartitionState<T>::getMachineLoadVertices(const int m) const {
   return (int)machines_load_vertices.at(m);
 }
 template <typename T>
-void CoordinatedPartitionState<T>::incrementMachineLoad(const int m,
-                                                        shared<const Edge<T>> e) {
+void CoordinatedPartitionState<T>::incrementMachineLoad(
+    const int m, shared<const Edge<T>> e) {
   std::lock_guard<std::mutex> lock(*machines_load_edges_mutex);
   machines_load_edges[m] = machines_load_edges[m] + 1;
   int new_value = machines_load_edges.at(m);
@@ -145,8 +145,8 @@ void CoordinatedPartitionState<T>::incrementMachineLoad(const int m,
   partition_map[m]->addEdge(e);
 }
 template <typename T>
-void CoordinatedPartitionState<T>::incrementMachineWeight(const int m,
-                                                          shared<const Edge<T>> e) {
+void CoordinatedPartitionState<T>::incrementMachineWeight(
+    const int m, shared<const Edge<T>> e) {
   std::lock_guard<std::mutex> lock(*machines_weight_edges_mutex);
   double edge_weight = CXXGraph::NEGLIGIBLE_WEIGHT;
   if (e->isWeighted().has_value() && e->isWeighted().value()) {

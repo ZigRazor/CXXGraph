@@ -37,21 +37,21 @@ namespace CXXGraph {
 template <typename T>
 using shared = std::shared_ptr<T>;
 
-// Redefine the hash functions and equality operators for shared pointers of nodes and edges
+// Redefine the hash functions and equality operators for shared pointers of
+// nodes and edges
 template <typename T>
 struct nodeHash {
   size_t operator()(const shared<const Node<T>>& node) const {
     return node->getId();
   }
-  size_t operator()(const shared<Node<T>>& node) const {
-    return node->getId();
-  }
+  size_t operator()(const shared<Node<T>>& node) const { return node->getId(); }
 };
 
 template <typename T>
 struct edgeHash {
   size_t operator()(const shared<const Edge<T>>& edge) const {
-    return (edge->getNodePair().first->getId()) ^ (edge->getNodePair().second->getId());
+    return (edge->getNodePair().first->getId()) ^
+           (edge->getNodePair().second->getId());
   }
 };
 

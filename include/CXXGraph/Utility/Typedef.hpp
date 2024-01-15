@@ -36,7 +36,6 @@ namespace CXXGraph {
 template <typename T>
 using shared = std::shared_ptr<T>;
 
-
 template <typename T>
 class Node;
 
@@ -193,7 +192,7 @@ struct SCCResult_struct {
   std::string errorMessage = "";  // message of error
   int noOfComponents = 0;
   std::unordered_map<size_t, int> sccMap;
-  //Components<T> stronglyConnectedComps;
+  // Components<T> stronglyConnectedComps;
 };
 template <typename T>
 using SCCResult = SCCResult_struct<T>;
@@ -220,9 +219,9 @@ struct TarjanResult_struct {
   std::vector<Node<T>> cutVertices;  // a vector that stores cut vertices
                                      // (valid only is a graph is undirected and
                                      // flag TARJAN_FIND_CUTV is set)
-  std::vector<Edge<T>> bridges;  // a vector that stores bridges
-                                 // (valid only is a graph is undirected and
-                                 // flag TRAJAN_FIND_BRIDGES is set)
+  std::vector<Edge<T>> bridges;      // a vector that stores bridges
+                                     // (valid only is a graph is undirected and
+                                     // flag TRAJAN_FIND_BRIDGES is set)
 };
 template <typename T>
 using TarjanResult = TarjanResult_struct<T>;
@@ -249,10 +248,8 @@ using AdjacencyMatrix = std::unordered_map<
     nodeHash<T>>;
 
 template <typename T>
-using DegreeMatrix = std::unordered_map<
-    shared<const Node<T>>,
-    std::vector<int>,
-    nodeHash<T>>;
+using DegreeMatrix =
+    std::unordered_map<shared<const Node<T>>, std::vector<int>, nodeHash<T>>;
 
 template <typename T>
 using LaplacianMatrix = std::unordered_map<
@@ -261,10 +258,10 @@ using LaplacianMatrix = std::unordered_map<
     nodeHash<T>>;
 
 template <typename T>
-using TransitionMatrix = std::unordered_map<
-    shared<const Node<T>>,
-    std::vector<std::pair<shared<const Node<T>>, double>>,
-    nodeHash<T>>;
+using TransitionMatrix =
+    std::unordered_map<shared<const Node<T>>,
+                       std::vector<std::pair<shared<const Node<T>>, double>>,
+                       nodeHash<T>>;
 
 template <typename T>
 using PartitionMap =

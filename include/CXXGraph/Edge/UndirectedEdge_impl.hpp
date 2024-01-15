@@ -26,8 +26,8 @@
 
 namespace CXXGraph {
 
-using std::make_unique;
 using std::make_shared;
+using std::make_unique;
 
 template <typename T>
 UndirectedEdge<T>::UndirectedEdge(const CXXGraph::id_t id, const Node<T> &node1,
@@ -35,7 +35,8 @@ UndirectedEdge<T>::UndirectedEdge(const CXXGraph::id_t id, const Node<T> &node1,
     : Edge<T>(id, node1, node2) {}
 
 template <typename T>
-UndirectedEdge<T>::UndirectedEdge(const CXXGraph::id_t id, shared<const Node<T>> node1,
+UndirectedEdge<T>::UndirectedEdge(const CXXGraph::id_t id,
+                                  shared<const Node<T>> node1,
                                   shared<const Node<T>> node2)
     : Edge<T>(id, node1, node2) {}
 

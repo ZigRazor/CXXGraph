@@ -37,8 +37,6 @@ std::optional<std::pair<std::string, char>> Graph<T>::getExtenstionAndSeparator(
   }
 }
 
-
-
 // This ctype facet classifies ',' and '\t' as whitespace
 struct csv_whitespace : std::ctype<char> {
   static const mask *make_table() {
@@ -49,7 +47,8 @@ struct csv_whitespace : std::ctype<char> {
     v[' '] &= ~space;  // space will not be classified as whitespace
     return &v[0];
   }
-  explicit csv_whitespace(std::size_t refs = 0) : ctype(make_table(), false, refs) {}
+  explicit csv_whitespace(std::size_t refs = 0)
+      : ctype(make_table(), false, refs) {}
 };
 
 #ifdef WITH_COMPRESSION
@@ -89,7 +88,7 @@ int Graph<T>::decompressFile(const std::string &inputFile,
     // printf("Error: Failed to gzopen %s\n", inputFile.c_str());
     return -1;
   }
-  unsigned char unzipBuffer[8192];  
+  unsigned char unzipBuffer[8192];
   std::vector<unsigned char> unzippedData;
   std::ofstream ofs;
   ofs.open(outputFile);

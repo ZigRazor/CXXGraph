@@ -25,8 +25,8 @@
 #include <chrono>
 
 #include "CXXGraph/Edge/Edge.h"
-#include "PartitionStrategy.hpp"
 #include "CXXGraph/Partitioning/Utility/Globals.hpp"
+#include "PartitionStrategy.hpp"
 
 namespace CXXGraph {
 namespace Partitioning {
@@ -50,7 +50,8 @@ class WeightBalancedLibra : public PartitionStrategy<T> {
       std::unordered_map<std::size_t, int> &&_vertices_degrees);
   ~WeightBalancedLibra();
 
-  void performStep(shared<const Edge<T>> e, shared<PartitionState<T>> Sstate) override;
+  void performStep(shared<const Edge<T>> e,
+                   shared<PartitionState<T>> Sstate) override;
 };
 template <typename T>
 WeightBalancedLibra<T>::WeightBalancedLibra(

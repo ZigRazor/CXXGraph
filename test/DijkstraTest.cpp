@@ -1,4 +1,5 @@
 #include <memory>
+
 #include "CXXGraph/CXXGraph.hpp"
 #include "gtest/gtest.h"
 
@@ -6,10 +7,10 @@
 template <typename T>
 using unique = std::unique_ptr<T>;
 template <typename T>
-using shared= std::shared_ptr<T>;
+using shared = std::shared_ptr<T>;
 
-using std::make_unique;
 using std::make_shared;
+using std::make_unique;
 
 TEST(DijkstraTest, correct_example_1) {
   CXXGraph::Node<int> node1("1", 1);
@@ -33,13 +34,13 @@ TEST(DijkstraTest, correct_example_1) {
   expected.push_back("1");
   expected.push_back("2");
   expected.push_back("3");
-  int index=0;
+  int index = 0;
   ASSERT_TRUE(res.success);
   ASSERT_EQ(res.errorMessage, "");
   ASSERT_EQ(res.result, 2);
   ASSERT_EQ(res.path.size(), expected.size());
-  for(auto elem:res.path){
-    ASSERT_EQ(elem,expected[index]);
+  for (auto elem : res.path) {
+    ASSERT_EQ(elem, expected[index]);
     index++;
   }
 }
@@ -65,13 +66,13 @@ TEST(DijkstraTest, correct_example_2) {
   std::vector<std::string> expected;
   expected.push_back("1");
   expected.push_back("3");
-  int index=0;
+  int index = 0;
   ASSERT_TRUE(res.success);
   ASSERT_EQ(res.errorMessage, "");
   ASSERT_EQ(res.result, 6);
   ASSERT_EQ(res.path.size(), expected.size());
-  for(auto elem:res.path){
-    ASSERT_EQ(elem,expected[index]);
+  for (auto elem : res.path) {
+    ASSERT_EQ(elem, expected[index]);
     index++;
   }
 }
@@ -107,55 +108,55 @@ TEST(DijkstraTest, correct_example_3) {
   expected.push_back("A");
   expected.push_back("B");
   expected.push_back("E");
-  int index=0;
+  int index = 0;
   CXXGraph::Graph<int> graph(edgeSet);
   CXXGraph::DijkstraResult res = graph.dijkstra(nodeC, nodeE);
   ASSERT_TRUE(res.success);
   ASSERT_EQ(res.errorMessage, "");
   ASSERT_EQ(res.result, 5);
   ASSERT_EQ(res.path.size(), expected.size());
-  for(auto elem:res.path){
-    ASSERT_EQ(elem,expected[index]);
+  for (auto elem : res.path) {
+    ASSERT_EQ(elem, expected[index]);
     index++;
   }
   expected.clear();
   expected.push_back("C");
   expected.push_back("A");
-  index=0;
+  index = 0;
   res = graph.dijkstra(nodeC, nodeA);
   ASSERT_TRUE(res.success);
   ASSERT_EQ(res.errorMessage, "");
   ASSERT_EQ(res.result, 1);
   ASSERT_EQ(res.path.size(), expected.size());
-  for(auto elem:res.path){
-    ASSERT_EQ(elem,expected[index]);
+  for (auto elem : res.path) {
+    ASSERT_EQ(elem, expected[index]);
     index++;
   }
   expected.clear();
   expected.push_back("C");
   expected.push_back("A");
   expected.push_back("B");
-  index=0;
+  index = 0;
   res = graph.dijkstra(nodeC, nodeB);
   ASSERT_TRUE(res.success);
   ASSERT_EQ(res.errorMessage, "");
   ASSERT_EQ(res.result, 4);
   ASSERT_EQ(res.path.size(), expected.size());
-  for(auto elem:res.path){
-    ASSERT_EQ(elem,expected[index]);
+  for (auto elem : res.path) {
+    ASSERT_EQ(elem, expected[index]);
     index++;
   }
   expected.clear();
   expected.push_back("C");
   expected.push_back("D");
-  index=0;
+  index = 0;
   res = graph.dijkstra(nodeC, nodeD);
   ASSERT_TRUE(res.success);
   ASSERT_EQ(res.errorMessage, "");
   ASSERT_EQ(res.result, 2);
   ASSERT_EQ(res.path.size(), expected.size());
-  for(auto elem:res.path){
-    ASSERT_EQ(elem,expected[index]);
+  for (auto elem : res.path) {
+    ASSERT_EQ(elem, expected[index]);
     index++;
   }
 }
@@ -195,43 +196,43 @@ TEST(DijkstraTest, correct_example_4) {
   std::vector<std::string> expected;
   expected.push_back("0");
   expected.push_back("1");
-  int index=0;
+  int index = 0;
   CXXGraph::Graph<int> graph(edgeSet);
   CXXGraph::DijkstraResult res = graph.dijkstra(node0, node1);
   ASSERT_TRUE(res.success);
   ASSERT_EQ(res.errorMessage, "");
   ASSERT_EQ(res.result, 2);
   ASSERT_EQ(res.path.size(), expected.size());
-  for(auto elem:res.path){
-    ASSERT_EQ(elem,expected[index]);
+  for (auto elem : res.path) {
+    ASSERT_EQ(elem, expected[index]);
     index++;
   }
   expected.clear();
   expected.push_back("0");
   expected.push_back("2");
-  index=0;
-  
+  index = 0;
+
   res = graph.dijkstra(node0, node2);
   ASSERT_TRUE(res.success);
   ASSERT_EQ(res.errorMessage, "");
   ASSERT_EQ(res.result, 6);
   ASSERT_EQ(res.path.size(), expected.size());
-  for(auto elem:res.path){
-    ASSERT_EQ(elem,expected[index]);
+  for (auto elem : res.path) {
+    ASSERT_EQ(elem, expected[index]);
     index++;
   }
   expected.clear();
   expected.push_back("0");
   expected.push_back("1");
   expected.push_back("3");
-  index=0;
+  index = 0;
   res = graph.dijkstra(node0, node3);
   ASSERT_TRUE(res.success);
   ASSERT_EQ(res.errorMessage, "");
   ASSERT_EQ(res.result, 7);
   ASSERT_EQ(res.path.size(), expected.size());
-  for(auto elem:res.path){
-    ASSERT_EQ(elem,expected[index]);
+  for (auto elem : res.path) {
+    ASSERT_EQ(elem, expected[index]);
     index++;
   }
   expected.clear();
@@ -239,14 +240,14 @@ TEST(DijkstraTest, correct_example_4) {
   expected.push_back("1");
   expected.push_back("3");
   expected.push_back("4");
-  index=0;
+  index = 0;
   res = graph.dijkstra(node0, node4);
   ASSERT_TRUE(res.success);
   ASSERT_EQ(res.errorMessage, "");
   ASSERT_EQ(res.result, 17);
   ASSERT_EQ(res.path.size(), expected.size());
-  for(auto elem:res.path){
-    ASSERT_EQ(elem,expected[index]);
+  for (auto elem : res.path) {
+    ASSERT_EQ(elem, expected[index]);
     index++;
   }
   expected.clear();
@@ -254,14 +255,14 @@ TEST(DijkstraTest, correct_example_4) {
   expected.push_back("1");
   expected.push_back("3");
   expected.push_back("5");
-  index=0;
+  index = 0;
   res = graph.dijkstra(node0, node5);
   ASSERT_TRUE(res.success);
   ASSERT_EQ(res.errorMessage, "");
   ASSERT_EQ(res.result, 22);
   ASSERT_EQ(res.path.size(), expected.size());
-  for(auto elem:res.path){
-    ASSERT_EQ(elem,expected[index]);
+  for (auto elem : res.path) {
+    ASSERT_EQ(elem, expected[index]);
     index++;
   }
   expected.clear();
@@ -270,14 +271,14 @@ TEST(DijkstraTest, correct_example_4) {
   expected.push_back("3");
   expected.push_back("4");
   expected.push_back("6");
-  index=0;
+  index = 0;
   res = graph.dijkstra(node0, node6);
   ASSERT_TRUE(res.success);
   ASSERT_EQ(res.errorMessage, "");
   ASSERT_EQ(res.result, 19);
   ASSERT_EQ(res.path.size(), expected.size());
-  for(auto elem:res.path){
-    ASSERT_EQ(elem,expected[index]);
+  for (auto elem : res.path) {
+    ASSERT_EQ(elem, expected[index]);
     index++;
   }
 }
@@ -313,7 +314,7 @@ TEST(DijkstraTest, correct_example_5) {
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge9));
 
   std::vector<std::string> expected;
-  int index=0;
+  int index = 0;
   expected.push_back("1");
   expected.push_back("3");
   expected.push_back("6");
@@ -324,8 +325,8 @@ TEST(DijkstraTest, correct_example_5) {
   ASSERT_EQ(res.errorMessage, "");
   ASSERT_EQ(res.result, 20);
   ASSERT_EQ(res.path.size(), expected.size());
-  for(auto elem:res.path){
-    ASSERT_EQ(elem,expected[index]);
+  for (auto elem : res.path) {
+    ASSERT_EQ(elem, expected[index]);
     index++;
   }
 }

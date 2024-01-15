@@ -375,8 +375,6 @@ void Graph<T>::readGraphFromStream(std::istream &iGraph,
   recreateGraph(edgeMap, edgeDirectedMap, nodeFeatMap, edgeWeightMap);
 }
 
-
-
 template <typename T>
 void Graph<T>::recreateGraph(
     std::unordered_map<CXXGraph::id_t, std::pair<std::string, std::string>>

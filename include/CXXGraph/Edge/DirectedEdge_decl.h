@@ -29,7 +29,7 @@ namespace CXXGraph {
 template <typename T>
 using unique = std::unique_ptr<T>;
 template <typename T>
-using shared= std::shared_ptr<T>;
+using shared = std::shared_ptr<T>;
 
 template <typename T>
 class UndirectedEdge;
@@ -48,8 +48,9 @@ class DirectedEdge : public Edge<T> {
                shared<const Node<T>> node2);
   DirectedEdge(const CXXGraph::id_t id,
                const std::pair<const Node<T> *, const Node<T> *> &nodepair);
-  DirectedEdge(const CXXGraph::id_t id,
-               const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair);
+  DirectedEdge(
+      const CXXGraph::id_t id,
+      const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair);
   DirectedEdge(const Edge<T> &edge);
   virtual ~DirectedEdge() = default;
   const Node<T> &getFrom() const;

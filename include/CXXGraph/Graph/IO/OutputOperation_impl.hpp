@@ -26,7 +26,6 @@
 
 namespace CXXGraph {
 
-
 template <typename T>
 int Graph<T>::writeToFile(InputOutputFormat format,
                           const std::string &workingDir,

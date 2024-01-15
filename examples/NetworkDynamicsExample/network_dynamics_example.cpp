@@ -1,6 +1,6 @@
-#include "CXXGraph/CXXGraph.hpp"
-
 #include <memory>
+
+#include "CXXGraph/CXXGraph.hpp"
 
 using std::make_shared;
 
@@ -25,11 +25,12 @@ int main() {
 
   auto degreeMatrix = graph.getDegreeMatrix();
   for (const auto& nodePair : *degreeMatrix) {
-        const CXXGraph::shared<const CXXGraph::Node<int>>& node = nodePair.first;
-        const std::vector<int>& degrees = nodePair.second;
+    const CXXGraph::shared<const CXXGraph::Node<int>>& node = nodePair.first;
+    const std::vector<int>& degrees = nodePair.second;
 
-        std::cout << "Node: " << node->getId() << ", Degree: " << degrees[0] << "\n";
-    }
+    std::cout << "Node: " << node->getId() << ", Degree: " << degrees[0]
+              << "\n";
+  }
   auto laplacianMatrix = graph.getLaplacianMatrix();
   for (const auto& nodePair : *laplacianMatrix) {
     const auto& node = nodePair.first;
@@ -37,11 +38,13 @@ int main() {
 
     std::cout << "Node " << node->getId() << " connected to:" << std::endl;
     for (const auto& neighbor : neighbors) {
-        if (neighbor.first == node) {
-            std::cout << "  -> Itself" << std::endl;
-        } else {
-            std::cout << "  -> Node " << neighbor.first->getId() << " with Edge ID " << (neighbor.second ? neighbor.second->getId() : -1) << std::endl;
-        }
+      if (neighbor.first == node) {
+        std::cout << "  -> Itself" << std::endl;
+      } else {
+        std::cout << "  -> Node " << neighbor.first->getId() << " with Edge ID "
+                  << (neighbor.second ? neighbor.second->getId() : -1)
+                  << std::endl;
+      }
     }
     std::cout << std::endl;
   }
@@ -53,7 +56,8 @@ int main() {
 
     std::cout << "Transitions from Node " << node->getId() << ":" << std::endl;
     for (const auto& transition : transitions) {
-        std::cout << "  -> To Node " << transition.first->getId() << " with Probability " << transition.second << std::endl;
+      std::cout << "  -> To Node " << transition.first->getId()
+                << " with Probability " << transition.second << std::endl;
     }
     std::cout << std::endl;
   }

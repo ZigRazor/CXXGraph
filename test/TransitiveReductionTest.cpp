@@ -1,7 +1,7 @@
+#include <memory>
+
 #include "CXXGraph/CXXGraph.hpp"
 #include "gtest/gtest.h"
-
-#include <memory>
 
 template <typename T>
 using shared = std::shared_ptr<T>;

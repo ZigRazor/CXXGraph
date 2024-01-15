@@ -20,8 +20,9 @@
 #ifndef __CXXGRAPH_NODE_IMPL_H__
 #define __CXXGRAPH_NODE_IMPL_H__
 
-#include "Node_decl.h"
 #include <iomanip>
+
+#include "Node_decl.h"
 
 namespace CXXGraph {
 

@@ -29,7 +29,7 @@ namespace CXXGraph {
 template <typename T>
 using unique = std::unique_ptr<T>;
 template <typename T>
-using shared= std::shared_ptr<T>;
+using shared = std::shared_ptr<T>;
 
 // Foward Declaration
 template <typename T>

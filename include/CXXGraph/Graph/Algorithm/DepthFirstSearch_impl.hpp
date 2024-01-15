@@ -25,7 +25,7 @@
 #include "CXXGraph/Graph/Graph_decl.h"
 
 namespace CXXGraph {
-    
+
 template <typename T>
 const std::vector<Node<T>> Graph<T>::depth_first_search(
     const Node<T> &start) const {
