@@ -1173,10 +1173,15 @@ bool Graph<T>::findEdge(shared<const Node<T>> v1, shared<const Node<T>> v2,
 template <typename T>
 const T_NodeSet<T> Graph<T>::getNodeSet() const {
   T_NodeSet<T> nodeSet;
-
-  for (const auto &edgeSetIt : edgeSet) {
-    nodeSet.insert(edgeSetIt->getNodePair().first);
-    nodeSet.insert(edgeSetIt->getNodePair().second);
+  if (this->isUndirectedGraph() == true) {
+    for (const auto &[nodeFrom, nodeEdgeVec] : *getAdjMatrix()) {
+      nodeSet.insert(nodeFrom);
+    }
+  } else {
+    for (const auto &edgeSetIt : edgeSet) {
+      nodeSet.insert(edgeSetIt->getNodePair().first);
+      nodeSet.insert(edgeSetIt->getNodePair().second);
+    }
   }
   // Merge with the isolated nodes
   nodeSet.insert(this->isolatedNodesSet.begin(), this->isolatedNodesSet.end());
