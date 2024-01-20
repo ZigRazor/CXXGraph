@@ -832,7 +832,7 @@ class Graph {
     *          https://www.geeksforgeeks.org/welsh-powell-graph-colouring-algorithm/
     *          https://www.tutorialspoint.com/de-powell-graph-colouring-algorithm
   */
-  virtual std::unordered_map<std::shared_ptr<const Node<T>>, int> welshPowellColoring() const;
+  virtual std::map<Node<T>, int> welshPowellColoring()  const;
   /**
    * \brief
    * This function writes the graph to an output file
@@ -3744,7 +3744,7 @@ double Graph<T>::fordFulkersonMaxFlow(const Node<T> &source,
 }
 
 template <typename T>
-std::unordered_map<std::shared_ptr<const Node<T>>, int>Graph<T>::welshPowellColoring() const {
+std::map<Node<T>, int> Graph<T>::welshPowellColoring() const {
   auto adjMatrix = *getAdjMatrix();
   std::unordered_map<std::shared_ptr<const Node<T>>, int> degreeOfVertexMap = {};
 
@@ -3762,10 +3762,10 @@ std::unordered_map<std::shared_ptr<const Node<T>>, int>Graph<T>::welshPowellColo
   });
 
   // Create a new map of coloring, where the keys are the "color", and the value is a vector of node that belongs to that color.
-  std::unordered_map<std::shared_ptr<const Node<T>>, int> mapOfColoring = {};
+  std::map<Node<T>, int> mapOfColoring;
 
   for (auto &[nodeFrom, _] : adjMatrix) {
-    mapOfColoring[nodeFrom] = 0;
+    mapOfColoring[*nodeFrom] = 0;
   }
   // Going down the list of vertex based on degrees
   for (int i = 0; i < degreeOfVertexVector.size(); i++) {
@@ -3778,13 +3778,13 @@ std::unordered_map<std::shared_ptr<const Node<T>>, int>Graph<T>::welshPowellColo
     std::vector<int> usedColors(degreeOfVertexVector.size() + 1, 0);
 
     for (const auto &[neighbor, _] : adjMatrix[node]) {
-      usedColors[mapOfColoring[neighbor]] = 1;
+      usedColors[mapOfColoring[*neighbor]] = 1;
     }
     // Assign the smallest unused color to the current vertex
 
     for (int c = 1; c < usedColors.size(); c++) {
       if (usedColors[c] == 0) {
-        mapOfColoring[node] = c;
+        mapOfColoring[*node] = c;
         break;
       }
     }
