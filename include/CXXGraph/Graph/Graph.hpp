@@ -3748,7 +3748,7 @@ std::map<Node<T>, int> Graph<T>::welshPowellColoring() const {
   auto adjMatrix = *getAdjMatrix();
   std::unordered_map<std::shared_ptr<const Node<T>>, int> degreeOfVertexMap = {};
 
-  // Find degree of each vertex and put them in a map
+  // Find the degree of each vertex and put them in a map
   for (auto &[nodeFrom, nodeToEdgeVec] : adjMatrix) {
     degreeOfVertexMap[nodeFrom] = nodeToEdgeVec.size();
   }
@@ -3761,27 +3761,22 @@ std::map<Node<T>, int> Graph<T>::welshPowellColoring() const {
     return left.second > right.second;
   });
 
-  // Create a new map of coloring, where the keys are the "color", and the value is a vector of node that belongs to that color.
+  // Create a new map of coloring, where the keys are the nodes, and the value is the color order (assigned by integer)
   std::map<Node<T>, int> mapOfColoring;
-
   for (auto &[nodeFrom, _] : adjMatrix) {
     mapOfColoring[*nodeFrom] = 0;
   }
+
   // Going down the list of vertex based on degrees
-  for (int i = 0; i < degreeOfVertexVector.size(); i++) {
-
-    // Current vertex being considered for coloring
-    auto node = degreeOfVertexVector[i].first;
-
-
+  for (const auto& [node, _] : degreeOfVertexVector) {
     // Find the smallest unused color for the current vertex
     std::vector<int> usedColors(degreeOfVertexVector.size() + 1, 0);
 
     for (const auto &[neighbor, _] : adjMatrix[node]) {
       usedColors[mapOfColoring[*neighbor]] = 1;
     }
-    // Assign the smallest unused color to the current vertex
 
+    // Assign the smallest unused color to the current vertex
     for (int c = 1; c < usedColors.size(); c++) {
       if (usedColors[c] == 0) {
         mapOfColoring[*node] = c;
