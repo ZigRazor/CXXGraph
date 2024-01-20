@@ -19,7 +19,6 @@
 
 #ifndef __CXXGRAPH_GRAPH_H__
 #define __CXXGRAPH_GRAPH_H__
-#include <cassert>
 
 #include <cstdio>
 #pragma once
@@ -3768,7 +3767,6 @@ std::unordered_map<std::shared_ptr<const Node<T>>, int>Graph<T>::welshPowellColo
   for (auto &[nodeFrom, _] : adjMatrix) {
     mapOfColoring[nodeFrom] = 0;
   }
-  assert(mapOfColoring.size() == adjMatrix.size());
   // Going down the list of vertex based on degrees
   for (int i = 0; i < degreeOfVertexVector.size(); i++) {
 
@@ -3784,7 +3782,6 @@ std::unordered_map<std::shared_ptr<const Node<T>>, int>Graph<T>::welshPowellColo
     }
     // Assign the smallest unused color to the current vertex
 
-    int next_value = 0;
     for (int c = 1; c < usedColors.size(); c++) {
       if (usedColors[c] == 0) {
         mapOfColoring[node] = c;
