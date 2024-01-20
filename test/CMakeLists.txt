@@ -97,4 +97,6 @@ if(TEST)
     add_test(test_topological_sort test_exe --gtest_filter=TopologicalSort*)
     add_test(test_transitive_reductiono test_exe --gtest_filter=TransitiveReduction*)
     add_test(test_union_find test_exe --gtest_filter=UnionFind*)
+    add_test(test_union_find test_exe --gtest_filter=welshPowellColoring*)
+
 endif(TEST)

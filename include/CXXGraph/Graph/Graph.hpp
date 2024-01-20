@@ -19,6 +19,7 @@
 
 #ifndef __CXXGRAPH_GRAPH_H__
 #define __CXXGRAPH_GRAPH_H__
+#include <cassert>
 
 #include <cstdio>
 #pragma once
@@ -826,6 +827,14 @@ class Graph {
                                       const Node<T> &target) const;
 
   /**
+    * Welsh-Powell Coloring algorithm
+    * Source :
+    *          https://www.youtube.com/watch?v=SLkyDuG1Puw&ab_channel=TheLogicalLearning
+    *          https://www.geeksforgeeks.org/welsh-powell-graph-colouring-algorithm/
+    *          https://www.tutorialspoint.com/de-powell-graph-colouring-algorithm
+  */
+  virtual std::unordered_map<std::shared_ptr<const Node<T>>, int> welshPowellColoring() const;
+  /**
    * \brief
    * This function writes the graph to an output file
    * Note: Not threadsafe
@@ -1173,15 +1182,10 @@ bool Graph<T>::findEdge(shared<const Node<T>> v1, shared<const Node<T>> v2,
 template <typename T>
 const T_NodeSet<T> Graph<T>::getNodeSet() const {
   T_NodeSet<T> nodeSet;
-  if (this->isUndirectedGraph() == true) {
-    for (const auto &[nodeFrom, nodeEdgeVec] : *getAdjMatrix()) {
-      nodeSet.insert(nodeFrom);
-    }
-  } else {
-    for (const auto &edgeSetIt : edgeSet) {
+
+  for (const auto &edgeSetIt : edgeSet) {
       nodeSet.insert(edgeSetIt->getNodePair().first);
       nodeSet.insert(edgeSetIt->getNodePair().second);
-    }
   }
   // Merge with the isolated nodes
   nodeSet.insert(this->isolatedNodesSet.begin(), this->isolatedNodesSet.end());
@@ -3739,6 +3743,59 @@ double Graph<T>::fordFulkersonMaxFlow(const Node<T> &source,
 
   return maxFlow;
 }
+
+template <typename T>
+std::unordered_map<std::shared_ptr<const Node<T>>, int>Graph<T>::welshPowellColoring() const {
+  auto adjMatrix = *getAdjMatrix();
+  std::unordered_map<std::shared_ptr<const Node<T>>, int> degreeOfVertexMap = {};
+
+  // Find degree of each vertex and put them in a map
+  for (auto &[nodeFrom, nodeToEdgeVec] : adjMatrix) {
+    degreeOfVertexMap[nodeFrom] = nodeToEdgeVec.size();
+  }
+
+  // Transform the map to the vector to sort
+  std::vector<std::pair<std::shared_ptr<const Node<T>>, int>> degreeOfVertexVector(degreeOfVertexMap.begin(), degreeOfVertexMap.end());
+
+  // Sort them based on the vertex degree
+  std::sort(degreeOfVertexVector.begin(), degreeOfVertexVector.end(), [](const auto& left, const auto& right) {
+    return left.second > right.second;
+  });
+
+  // Create a new map of coloring, where the keys are the "color", and the value is a vector of node that belongs to that color.
+  std::unordered_map<std::shared_ptr<const Node<T>>, int> mapOfColoring = {};
+
+  for (auto &[nodeFrom, _] : adjMatrix) {
+    mapOfColoring[nodeFrom] = 0;
+  }
+  assert(mapOfColoring.size() == adjMatrix.size());
+  // Going down the list of vertex based on degrees
+  for (int i = 0; i < degreeOfVertexVector.size(); i++) {
+
+    // Current vertex being considered for coloring
+    auto node = degreeOfVertexVector[i].first;
+
+
+    // Find the smallest unused color for the current vertex
+    std::vector<int> usedColors(degreeOfVertexVector.size() + 1, 0);
+
+    for (const auto &[neighbor, _] : adjMatrix[node]) {
+      usedColors[mapOfColoring[neighbor]] = 1;
+    }
+    // Assign the smallest unused color to the current vertex
+
+    int next_value = 0;
+    for (int c = 1; c < usedColors.size(); c++) {
+      if (usedColors[c] == 0) {
+        mapOfColoring[node] = c;
+        break;
+      }
+    }
+  }
+
+  return mapOfColoring;
+}
+
 
 template <typename T>
 const std::vector<Node<T>> Graph<T>::graph_slicing(const Node<T> &start) const {
