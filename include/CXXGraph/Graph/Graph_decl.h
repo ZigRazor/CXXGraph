@@ -796,6 +796,17 @@ class Graph {
                                       const Node<T> &target) const;
 
   /**
+    * @brief Welsh-Powell Coloring algorithm
+    * @return a std::map of keys being the nodes and the values being the color
+    * order (by integer) starting from 1.
+    * Source :
+    *          https://www.youtube.com/watch?v=SLkyDuG1Puw&ab_channel=TheLogicalLearning
+    *          https://www.geeksforgeeks.org/welsh-powell-graph-colouring-algorithm/
+    *          https://www.tutorialspoint.com/de-powell-graph-colouring-algorithm
+   */
+  virtual std::map<Node<T>, int> welshPowellColoring()  const;
+
+  /**
    * \brief
    * This function writes the graph to an output file
    * Note: Not threadsafe
