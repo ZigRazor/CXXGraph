@@ -25,19 +25,19 @@
 
 #include <chrono>
 
-#include "CXXGraph/Edge/Edge.hpp"
-#include "PartitionStrategy.hpp"
+#include "CXXGraph/Edge/Edge.h"
 #include "CXXGraph/Partitioning/Utility/Globals.hpp"
+#include "PartitionStrategy.hpp"
 
 namespace CXXGraph {
 // Smart pointers alias
 template <typename T>
 using unique = std::unique_ptr<T>;
 template <typename T>
-using shared= std::shared_ptr<T>;
+using shared = std::shared_ptr<T>;
 
-using std::make_unique;
 using std::make_shared;
+using std::make_unique;
 
 namespace Partitioning {
 /**
@@ -55,7 +55,8 @@ class EdgeBalancedVertexCut : public PartitionStrategy<T> {
   explicit EdgeBalancedVertexCut(const Globals &G);
   ~EdgeBalancedVertexCut();
 
-  void performStep(shared<const Edge<T>> e, shared<PartitionState<T>> Sstate) override;
+  void performStep(shared<const Edge<T>> e,
+                   shared<PartitionState<T>> Sstate) override;
 };
 template <typename T>
 EdgeBalancedVertexCut<T>::EdgeBalancedVertexCut(const Globals &G) : GLOBALS(G) {

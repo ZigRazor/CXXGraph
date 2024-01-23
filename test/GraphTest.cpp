@@ -1,11 +1,11 @@
 
-#include <CXXGraph/Edge/DirectedWeightedEdge.hpp>
-#include <CXXGraph/Edge/UndirectedWeightedEdge.hpp>
-#include <CXXGraph/Edge/Weighted.hpp>
 #include <memory>
 
 #include "CXXGraph/CXXGraph.hpp"
 #include "gtest/gtest.h"
+
+// include it to check that the static asserts don't fail
+#include "TypeTraitsTest.hpp"
 
 // Smart pointers alias
 template <typename T>

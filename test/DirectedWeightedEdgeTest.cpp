@@ -5,10 +5,10 @@
 template <typename T>
 using unique = std::unique_ptr<T>;
 template <typename T>
-using shared= std::shared_ptr<T>;
+using shared = std::shared_ptr<T>;
 
-using std::make_unique;
 using std::make_shared;
+using std::make_unique;
 
 TEST(DirectedWeightedEdgeTest, Constructor_1) {
   CXXGraph::Node<int> node1("1", 1);
@@ -107,8 +107,8 @@ TEST(DirectedWeightedEdgeTest, Bool_data) {
   // Second constructor
   CXXGraph::Node<bool> node3("3", true);
   CXXGraph::Node<bool> node4("4", false);
-  std::pair<const CXXGraph::Node<bool> *, const CXXGraph::Node<bool> *> pairNode(
-      &node3, &node4);
+  std::pair<const CXXGraph::Node<bool> *, const CXXGraph::Node<bool> *>
+      pairNode(&node3, &node4);
   CXXGraph::DirectedWeightedEdge<bool> edge2(2, pairNode, 2);
   /* ASSERT_EQ(edge2.getNodePair(), pairNode); */
   ASSERT_EQ(*(edge2.getNodePair().first), node3);
@@ -130,8 +130,8 @@ TEST(DirectedWeightedEdgeTest, String_data) {
   // Second constructor
   CXXGraph::Node<bool> node3("3", "On");
   CXXGraph::Node<bool> node4("4", "Off");
-  std::pair<const CXXGraph::Node<bool> *, const CXXGraph::Node<bool> *> pairNode(
-      &node3, &node4);
+  std::pair<const CXXGraph::Node<bool> *, const CXXGraph::Node<bool> *>
+      pairNode(&node3, &node4);
   CXXGraph::DirectedWeightedEdge<bool> edge2(2, pairNode, 6);
   /* ASSERT_EQ(edge2.getNodePair(), pairNode); */
   ASSERT_EQ(*(edge2.getNodePair().first), node3);

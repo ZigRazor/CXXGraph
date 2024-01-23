@@ -5,5 +5,7 @@ add_subdirectory(DialExample)
 add_subdirectory(DijkstraExample)
 add_subdirectory(NetworkDynamicsExample)
 add_subdirectory(PartitionExample)
+add_subdirectory(PrimExample)
+add_subdirectory(FloydWarshallExample)
 
 endif(EXAMPLES)

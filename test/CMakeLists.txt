@@ -41,7 +41,7 @@ if(TEST)
         OPTIONS "CMAKE_POSITION_INDEPENDENT_CODE True"
     )
 
-    file (GLOB TEST_FILES "*.cpp" "*.hpp")
+    file (GLOB TEST_FILES "*.cpp" "*.hpp" "*.h")
     add_executable(test_exe ${TEST_FILES})
 
     target_compile_definitions(test_exe
@@ -97,6 +97,6 @@ if(TEST)
     add_test(test_topological_sort test_exe --gtest_filter=TopologicalSort*)
     add_test(test_transitive_reductiono test_exe --gtest_filter=TransitiveReduction*)
     add_test(test_union_find test_exe --gtest_filter=UnionFind*)
-    add_test(test_union_find test_exe --gtest_filter=welshPowellColoring*)
-
+    add_test(test_floyd_warshall test_exe --gtest_filter=FloydWarshall*)
+    add_test(test_welsh_powell_coloring test_exe --gtest_filter=welshPowellColoring*)
 endif(TEST)

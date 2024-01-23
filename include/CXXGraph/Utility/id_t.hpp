@@ -6,11 +6,12 @@
 
 namespace CXXGraph {
 #ifdef CXXGRAPH_ID_TYPE
-    // Throw compiler error if the type is signed
-    static_assert(IS_UNSIGNED(CXXGRAPH_ID_TYPE), "CXXGRAPH_ID_TYPE must be unsigned");
+// Throw compiler error if the type is signed
+static_assert(IS_UNSIGNED(CXXGRAPH_ID_TYPE),
+              "CXXGRAPH_ID_TYPE must be unsigned");
 
-    typedef CXXGRAPH_ID_TYPE id_t;
+typedef CXXGRAPH_ID_TYPE id_t;
 #else
-    typedef size_t id_t;
+typedef size_t id_t;
 #endif
-}
+}  // namespace CXXGraph

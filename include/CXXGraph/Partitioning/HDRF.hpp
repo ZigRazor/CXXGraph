@@ -26,9 +26,9 @@
 #include <chrono>
 #include <random>
 
-#include "CXXGraph/Edge/Edge.hpp"
-#include "PartitionStrategy.hpp"
+#include "CXXGraph/Edge/Edge.h"
 #include "CXXGraph/Partitioning/Utility/Globals.hpp"
+#include "PartitionStrategy.hpp"
 
 namespace CXXGraph {
 // Smart pointers alias
@@ -37,8 +37,8 @@ using unique = std::unique_ptr<T>;
 template <typename T>
 using shared = std::shared_ptr<T>;
 
-using std::make_unique;
 using std::make_shared;
+using std::make_unique;
 
 namespace Partitioning {
 /**
@@ -57,7 +57,8 @@ class HDRF : public PartitionStrategy<T> {
   explicit HDRF(const Globals &G);
   ~HDRF();
 
-  void performStep(shared<const Edge<T>> e, shared<PartitionState<T>> Sstate) override;
+  void performStep(shared<const Edge<T>> e,
+                   shared<PartitionState<T>> Sstate) override;
 };
 template <typename T>
 HDRF<T>::HDRF(const Globals &G) : GLOBALS(G) {
@@ -66,7 +67,8 @@ HDRF<T>::HDRF(const Globals &G) : GLOBALS(G) {
 template <typename T>
 HDRF<T>::~HDRF() {}
 template <typename T>
-void HDRF<T>::performStep(shared<const Edge<T>> e, shared<PartitionState<T>> state) {
+void HDRF<T>::performStep(shared<const Edge<T>> e,
+                          shared<PartitionState<T>> state) {
   int P = GLOBALS.numberOfPartition;
   double lambda = GLOBALS.param1;
   double epsilon = GLOBALS.param2;

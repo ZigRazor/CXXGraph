@@ -1,4 +1,5 @@
 #include <benchmark/benchmark.h>
+
 #include <memory>
 
 #include "CXXGraph/CXXGraph.hpp"
