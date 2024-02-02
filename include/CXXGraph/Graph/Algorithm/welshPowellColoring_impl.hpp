@@ -16,7 +16,7 @@ std::map<Node<T>, int> Graph<T>::welshPowellColoring() const {
 
   std::vector<std::pair<std::shared_ptr<const Node<T>>, int>> degreeOfVertexVector = {};
   // Find the degree of each vertex and put them in a vector
-  for (auto &[nodeFrom, nodeToEdgeVec] : adjMatrix) {
+  for (const auto &[nodeFrom, nodeToEdgeVec] : adjMatrix) {
     degreeOfVertexVector.push_back({nodeFrom, nodeToEdgeVec.size()});
   }
 
@@ -27,7 +27,7 @@ std::map<Node<T>, int> Graph<T>::welshPowellColoring() const {
 
   // Create a new map of coloring, where the keys a	re the nodes, and the value is the color order (assigned by integer)
   std::map<Node<T>, int> mapOfColoring;
-  for (auto &[nodeFrom, _] : adjMatrix) {
+  for (const auto &[nodeFrom, _] : adjMatrix) {
     mapOfColoring[*nodeFrom] = 0;
   }
 
