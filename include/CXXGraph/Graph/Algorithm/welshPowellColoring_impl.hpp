@@ -32,21 +32,17 @@ std::map<Node<T>, int> Graph<T>::welshPowellColoring() const {
   }
 
   // Going down the list of vertex based on degrees
+  std::vector<int> usedColors(degreeOfVertexVector.size() + 1, 0);
   for (const auto& [node, _] : degreeOfVertexVector) {
     // Find the smallest unused color for the current vertex
-    std::vector<int> usedColors(degreeOfVertexVector.size() + 1, 0);
-
+	std::fill(usedColors.begin(), usedColors.end(), 0);
     for (const auto &[neighbor, _] : adjMatrix[node]) {
       usedColors[mapOfColoring[*neighbor]] = 1;
     }
 
     // Assign the smallest unused color to the current vertex
-    for (int c = 1; c < usedColors.size(); c++) {
-      if (usedColors[c] == 0) {
-        mapOfColoring[*node] = c;
-        break;
-      }
-    }
+	auto it = std::find(usedColors.begin() + 1, usedColors.end(), 0);
+	mapOfColoring[*node] = std::distance(usedColors.begin(), it);
   }
 
   return mapOfColoring;
