@@ -13,22 +13,19 @@ namespace CXXGraph {
 template <typename T>
 std::map<Node<T>, int> Graph<T>::welshPowellColoring() const {
   auto adjMatrix = *getAdjMatrix();
-  std::unordered_map<std::shared_ptr<const Node<T>>, int> degreeOfVertexMap = {};
 
-  // Find the degree of each vertex and put them in a map
+  std::vector<std::pair<std::shared_ptr<const Node<T>>, int>> degreeOfVertexVector = {};
+  // Find the degree of each vertex and put them in a vector
   for (auto &[nodeFrom, nodeToEdgeVec] : adjMatrix) {
-    degreeOfVertexMap[nodeFrom] = nodeToEdgeVec.size();
+    degreeOfVertexVector.push_back({nodeFrom, nodeToEdgeVec.size()});
   }
-
-  // Transform the map to the vector to sort
-  std::vector<std::pair<std::shared_ptr<const Node<T>>, int>> degreeOfVertexVector(degreeOfVertexMap.begin(), degreeOfVertexMap.end());
 
   // Sort them based on the vertex degree
   std::sort(degreeOfVertexVector.begin(), degreeOfVertexVector.end(), [](const auto& left, const auto& right) {
     return left.second > right.second;
   });
 
-  // Create a new map of coloring, where the keys are the nodes, and the value is the color order (assigned by integer)
+  // Create a new map of coloring, where the keys a	re the nodes, and the value is the color order (assigned by integer)
   std::map<Node<T>, int> mapOfColoring;
   for (auto &[nodeFrom, _] : adjMatrix) {
     mapOfColoring[*nodeFrom] = 0;
