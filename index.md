@@ -475,7 +475,30 @@ The idea behind the algorithm is as follows: as long as there is a path from the
 ### Kahn's Algorithm
 [Kahn's Algorithm](https://en.wikipedia.org/wiki/Topological_sorting#Kahn's_algorithm) finds topological
 ordering by iteratively removing nodes in the graph which have no incoming edges. When a node is removed from the graph, it is added to the topological ordering and all its edges are removed allowing for the next set of nodes with no incoming edges to be selected.
+### Welsh Powell Coloring Algorithms
+[Welsh Powell Coloring algorithm](https://www.geeksforgeeks.org/welsh-powell-graph-colouring-algorithm/) is a greedy vertex coloring algorithm. This algorithm is also used to find the chromatic number of a graph.
 
+Welsh Powell Algorithm consists of following steps :
+
+1. Find the degree of each vertex.
+2. List the vertices in order of descending degrees.
+3. Colour the first vertex with color 1.
+4. Move down the list and color all the vertices not connected to the coloured vertex, with the same color.
+5. Repeat step 4 on all uncolored vertices with a new color, in descending order of degrees until all the vertices are coloured.
+   Hi there, I'm creating a pull request to merge the Welsh Powell Coloring algorithm into the master branch.
+
+The algorithm returns a std::map<Node, int> result that assigns each node to a color ordered by integers.
+Users can also query the minimum chromatic order of the graph by querying the highest value from the resulting map.
+```C++
+std::map<Node, int> result = graph.welshPowellColoring();
+auto chromatic_color = std::max_element(result.begin(), result.end(),
+                                [](const auto& lhs, const auto& rhs) {
+                                    return lhs.second < rhs.second;
+                                }
+```
+The minimum coloring starts from 1 instead of 0.
+
+The algorithm assumes the graph to be undirected. All sources and inspirations are linked in the declaration of the algorithm and test cases.
 ## Partition Algorithm Explanation
 
 ### Vertex-Cut
