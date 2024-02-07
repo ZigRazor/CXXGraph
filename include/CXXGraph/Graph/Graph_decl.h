@@ -495,6 +495,10 @@ class Graph {
    */
   virtual const DijkstraResult dijkstra(const Node<T> &source,
                                         const Node<T> &target) const;
+  virtual const DijkstraResult dijkstra_deterministic(const Node<T> &source,
+                                        const Node<T> &target) const;
+  virtual const DijkstraResult dijkstra_deterministic2(const Node<T> &source,
+                                        const Node<T> &target) const;  
   /**
    * @brief This function runs the tarjan algorithm and returns different types
    * of results depending on the input parameter typeMask.
@@ -562,6 +566,7 @@ class Graph {
    * errorMessage: "" if no error ELSE report the encountered error
    */
   virtual const MstResult boruvka() const;
+  virtual const MstResult boruvka_deterministic() const;
   /**
    * @brief Function runs the kruskal algorithm and returns the minimum spanning
    * tree if the graph is undirected. Note: No Thread Safe
