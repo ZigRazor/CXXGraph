@@ -1,0 +1,51 @@
+{
+  "id": "test-execution/benchmark-execution",
+  "title": "Benchmark Execution",
+  "description": "Benchmark requires CMake 3.9 and later, the GoogleTest library, and the Google Benchmark library.",
+  "source": "@site/docs/test-execution/benchmark-execution.md",
+  "sourceDirName": "test-execution",
+  "slug": "/test-execution/benchmark-execution",
+  "permalink": "/ / /test-execution/benchmark-execution",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/ZigRazor/CXXGraph/docs/test-execution/benchmark-execution.md",
+  "tags": [
+    {
+      "label": "benchmark execution",
+      "permalink": "/ / /tags/benchmark-execution"
+    },
+    {
+      "label": "execution",
+      "permalink": "/ / /tags/execution"
+    },
+    {
+      "label": "testing",
+      "permalink": "/ / /tags/testing"
+    },
+    {
+      "label": "benchmark",
+      "permalink": "/ / /tags/benchmark"
+    },
+    {
+      "label": "googletest",
+      "permalink": "/ / /tags/googletest"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "benchmark-execution",
+    "title": "Benchmark Execution",
+    "tags": [
+      "benchmark execution",
+      "execution",
+      "testing",
+      "benchmark",
+      "googletest"
+    ]
+  },
+  "sidebar": "docSidebar",
+  "previous": {
+    "title": "Unit-Test Execution",
+    "permalink": "/ / /test-execution/unit-test-execution"
+  }
+}

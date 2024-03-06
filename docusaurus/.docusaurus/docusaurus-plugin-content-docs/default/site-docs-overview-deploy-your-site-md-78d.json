@@ -1,0 +1,27 @@
+{
+  "id": "Overview/deploy-your-site",
+  "title": "Deploy your site",
+  "description": "Docusaurus is a static-site-generator (also called Jamstack).",
+  "source": "@site/docs/Overview/deploy-your-site.md",
+  "sourceDirName": "Overview",
+  "slug": "/Overview/deploy-your-site",
+  "permalink": "/cxxgraph/docs/Overview/deploy-your-site",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/ZigRazor/CXXGraph/docs/Overview/deploy-your-site.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "sidebar_position": 5
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "Markdown Features",
+    "permalink": "/cxxgraph/docs/Overview/markdown-features"
+  },
+  "next": {
+    "title": "Congratulations!",
+    "permalink": "/cxxgraph/docs/Overview/congratulations"
+  }
+}

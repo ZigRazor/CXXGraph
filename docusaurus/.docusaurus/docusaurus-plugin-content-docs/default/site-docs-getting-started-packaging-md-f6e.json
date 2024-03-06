@@ -1,0 +1,45 @@
+{
+  "id": "getting-started/packaging",
+  "title": "Packaging",
+  "description": "Tarballs",
+  "source": "@site/docs/getting-started/packaging.md",
+  "sourceDirName": "getting-started",
+  "slug": "/getting-started/packaging",
+  "permalink": "/ / /getting-started/packaging",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/ZigRazor/CXXGraph/docs/getting-started/packaging.md",
+  "tags": [
+    {
+      "label": "packaging",
+      "permalink": "/ / /tags/packaging"
+    },
+    {
+      "label": "getting started",
+      "permalink": "/ / /tags/getting-started"
+    },
+    {
+      "label": "export",
+      "permalink": "/ / /tags/export"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "packaging",
+    "title": "Packaging",
+    "tags": [
+      "packaging",
+      "getting started",
+      "export"
+    ]
+  },
+  "sidebar": "docSidebar",
+  "previous": {
+    "title": "Installing and Uninstalling",
+    "permalink": "/ / /getting-started/installation"
+  },
+  "next": {
+    "title": "Network Dynamics",
+    "permalink": "/ / /component-explanation/network-dynamics"
+  }
+}

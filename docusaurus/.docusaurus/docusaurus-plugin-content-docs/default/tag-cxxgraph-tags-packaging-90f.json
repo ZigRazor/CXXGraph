@@ -1,0 +1,15 @@
+{
+  "label": "packaging",
+  "permalink": "/cxxgraph/tags/packaging",
+  "allTagsPath": "/cxxgraph/tags",
+  "count": 1,
+  "items": [
+    {
+      "id": "getting-started/packaging",
+      "title": "Packaging",
+      "description": "Tarballs",
+      "permalink": "/cxxgraph/getting-started/packaging"
+    }
+  ],
+  "unlisted": false
+}

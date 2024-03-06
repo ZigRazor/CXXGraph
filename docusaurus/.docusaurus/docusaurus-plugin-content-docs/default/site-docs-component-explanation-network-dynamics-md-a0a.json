@@ -1,0 +1,50 @@
+{
+  "id": "component-explanation/network-dynamics",
+  "title": "Network Dynamics",
+  "description": "Degree Matrix",
+  "source": "@site/docs/component-explanation/network-dynamics.md",
+  "sourceDirName": "component-explanation",
+  "slug": "/component-explanation/network-dynamics",
+  "permalink": "/ / /component-explanation/network-dynamics",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/ZigRazor/CXXGraph/docs/component-explanation/network-dynamics.md",
+  "tags": [
+    {
+      "label": "components",
+      "permalink": "/ / /tags/components"
+    },
+    {
+      "label": "components explanation",
+      "permalink": "/ / /tags/components-explanation"
+    },
+    {
+      "label": "graphing-components",
+      "permalink": "/ / /tags/graphing-components"
+    },
+    {
+      "label": "graphing",
+      "permalink": "/ / /tags/graphing"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "network-dynamics",
+    "title": "Network Dynamics",
+    "tags": [
+      "components",
+      "components explanation",
+      "graphing-components",
+      "graphing"
+    ]
+  },
+  "sidebar": "docSidebar",
+  "previous": {
+    "title": "Packaging",
+    "permalink": "/ / /getting-started/packaging"
+  },
+  "next": {
+    "title": "Partition Algorithms Explanation",
+    "permalink": "/ / /component-explanation/partition-algorithm"
+  }
+}

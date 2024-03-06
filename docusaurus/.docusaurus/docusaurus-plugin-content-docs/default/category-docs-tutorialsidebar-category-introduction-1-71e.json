@@ -1,0 +1,16 @@
+{
+  "title": "Introduction",
+  "description": "Take 5 minutes to learn the basics of CXXGraph.",
+  "slug": "/category/introduction-1",
+  "permalink": "/docs/category/introduction-1",
+  "navigation": {
+    "previous": {
+      "title": "Tutorial Intro",
+      "permalink": "/docs/Introduction/Installation"
+    },
+    "next": {
+      "title": "Create a Page",
+      "permalink": "/docs/Overview/create-a-page"
+    }
+  }
+}

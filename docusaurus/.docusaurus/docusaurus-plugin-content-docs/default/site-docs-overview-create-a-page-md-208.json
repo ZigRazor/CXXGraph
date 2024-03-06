@@ -1,0 +1,27 @@
+{
+  "id": "Overview/create-a-page",
+  "title": "Create a Page",
+  "description": "Add Markdown or React files to src/pages to create a standalone page:",
+  "source": "@site/docs/Overview/create-a-page.md",
+  "sourceDirName": "Overview",
+  "slug": "/Overview/create-a-page",
+  "permalink": "/cxxgraph/docs/Overview/create-a-page",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/ZigRazor/CXXGraph/docs/Overview/create-a-page.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "overview",
+    "permalink": "/cxxgraph/docs/category/overview"
+  },
+  "next": {
+    "title": "Create a Document",
+    "permalink": "/cxxgraph/docs/Overview/create-a-document"
+  }
+}

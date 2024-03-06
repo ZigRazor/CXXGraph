@@ -1,0 +1,27 @@
+{
+  "id": "Introduction/Installation and Packaging",
+  "title": "Installation and Packaging",
+  "description": "Install Linux Tarballs",
+  "source": "@site/docs/Introduction/Installation and Packaging.md",
+  "sourceDirName": "Introduction",
+  "slug": "/Introduction/Installation and Packaging",
+  "permalink": "/cxxgraph/docs/Introduction/Installation and Packaging",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/ZigRazor/CXXGraph/docs/Introduction/Installation and Packaging.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "introduction",
+    "permalink": "/cxxgraph/docs/category/introduction"
+  },
+  "next": {
+    "title": "overview",
+    "permalink": "/cxxgraph/docs/category/overview"
+  }
+}

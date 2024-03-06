@@ -1,0 +1,55 @@
+{
+  "id": "component-explanation/regular-algorithm",
+  "title": "Algorithms Explanation",
+  "description": "Dijsktra",
+  "source": "@site/docs/component-explanation/regular-algorithm.md",
+  "sourceDirName": "component-explanation",
+  "slug": "/component-explanation/regular-algorithm",
+  "permalink": "/ / /component-explanation/regular-algorithm",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/ZigRazor/CXXGraph/docs/component-explanation/regular-algorithm.md",
+  "tags": [
+    {
+      "label": "algorithm",
+      "permalink": "/ / /tags/algorithm"
+    },
+    {
+      "label": "partition-algorithm",
+      "permalink": "/ / /tags/partition-algorithm"
+    },
+    {
+      "label": "components",
+      "permalink": "/ / /tags/components"
+    },
+    {
+      "label": "graphing-components",
+      "permalink": "/ / /tags/graphing-components"
+    },
+    {
+      "label": "graphing",
+      "permalink": "/ / /tags/graphing"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "regular-algorithm",
+    "title": "Algorithms Explanation",
+    "tags": [
+      "algorithm",
+      "partition-algorithm",
+      "components",
+      "graphing-components",
+      "graphing"
+    ]
+  },
+  "sidebar": "docSidebar",
+  "previous": {
+    "title": "Partition Algorithms Explanation",
+    "permalink": "/ / /component-explanation/partition-algorithm"
+  },
+  "next": {
+    "title": "Unit-Test Execution",
+    "permalink": "/ / /test-execution/unit-test-execution"
+  }
+}

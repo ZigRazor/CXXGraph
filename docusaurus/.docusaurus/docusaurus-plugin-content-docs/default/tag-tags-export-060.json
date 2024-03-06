@@ -1,0 +1,15 @@
+{
+  "label": "export",
+  "permalink": "/ / /tags/export",
+  "allTagsPath": "/ / /tags",
+  "count": 1,
+  "items": [
+    {
+      "id": "getting-started/packaging",
+      "title": "Packaging",
+      "description": "Tarballs",
+      "permalink": "/ / /getting-started/packaging"
+    }
+  ],
+  "unlisted": false
+}
