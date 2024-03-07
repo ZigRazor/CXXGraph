@@ -11,9 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Configure Git
-        run: git config --global user.email "zigrazor@gmail.com" ; git config --global user.name "ZigRazor"
-
       - name: Configure Yarn
         working-directory: ${{github.workspace}}/docusaurus
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -24,9 +21,16 @@ jobs:
         working-directory: ${{github.workspace}}/docusaurus
         # Build your program with the given configuration
         run: yarn build
-
+      
+      - name: Identify to git
+        run: |
+          git config --local user.email "zigrazor@gmail.com"
+          git config --local user.name "ZigRazor"
+      
       - name: Deploy
-        working-directory: ${{github.workspace}}/docusaurus
-        # Execute tests defined by the CMake configuration.
-        # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
+        env: 
+          GIT_USER: ZigRazor
+          GIT_PASS: ${{ secrets.PERSONAL_TOKEN }}
         run: yarn run deploy
+      
+       
