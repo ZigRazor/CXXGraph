@@ -28,6 +28,7 @@ jobs:
           git config --local user.name "ZigRazor"
       
       - name: Deploy
+        working-directory: ${{github.workspace}}/docusaurus
         env: 
           GIT_USER: ZigRazor
           GIT_PASS: ${{ secrets.PERSONAL_TOKEN }}
