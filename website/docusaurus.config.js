@@ -9,7 +9,7 @@ const config = {
   title: 'CXXGraph',
   tagline: 'A comprehensive C++ graph library',
   url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
+  baseUrl: '/CXXGraph/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
