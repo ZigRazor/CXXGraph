@@ -7,7 +7,7 @@ const config: Config = {
   tagline: 'Header-only C++ library for graph representation and algorithms',
   favicon: 'img/logo.png',
   url: 'https://cxxgraph.github.io',
-  baseUrl: ' / ',
+  baseUrl: '/CXXGraph/',
   organizationName: 'zigrazor',
   projectName: 'cxxgraph.github.io',
   deploymentBranch: 'gh-pages',
