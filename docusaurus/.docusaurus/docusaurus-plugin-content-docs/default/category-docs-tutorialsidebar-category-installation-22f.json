@@ -1,0 +1,12 @@
+{
+  "title": "Installation",
+  "description": "How to install and set up CXXGraph.",
+  "slug": "/category/installation",
+  "permalink": "/docs/category/installation",
+  "navigation": {
+    "next": {
+      "title": "Tutorial Intro",
+      "permalink": "/docs/Installation/"
+    }
+  }
+}

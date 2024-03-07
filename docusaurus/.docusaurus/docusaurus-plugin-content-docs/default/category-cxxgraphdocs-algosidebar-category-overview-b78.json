@@ -1,0 +1,16 @@
+{
+  "title": "overview",
+  "description": "5 minutes to learn the most important Docusaurus concepts.",
+  "slug": "/category/overview-1",
+  "permalink": "/cxxgraph/docs/category/overview-1",
+  "navigation": {
+    "previous": {
+      "title": "Packaging",
+      "permalink": "/cxxgraph/docs/Introduction/Packaging"
+    },
+    "next": {
+      "title": "Create a Page",
+      "permalink": "/cxxgraph/docs/Overview/create-a-page"
+    }
+  }
+}

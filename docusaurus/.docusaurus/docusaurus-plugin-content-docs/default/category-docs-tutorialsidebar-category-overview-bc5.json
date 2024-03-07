@@ -1,0 +1,16 @@
+{
+  "title": "overview",
+  "description": "5 minutes to learn the most important Docusaurus concepts.",
+  "slug": "/category/overview",
+  "permalink": "/docs/category/overview",
+  "navigation": {
+    "previous": {
+      "title": "Installation",
+      "permalink": "/docs/Introduction/Installation"
+    },
+    "next": {
+      "title": "Create a Page",
+      "permalink": "/docs/Overview/create-a-page"
+    }
+  }
+}

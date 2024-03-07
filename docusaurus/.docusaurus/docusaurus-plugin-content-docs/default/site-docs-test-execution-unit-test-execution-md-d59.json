@@ -1,0 +1,60 @@
+{
+  "id": "test-execution/unit-test-execution",
+  "title": "Unit-Test Execution",
+  "description": "The Unit-Test requires CMake 3.9 and later, and the GoogleTest library.",
+  "source": "@site/docs/test-execution/unit-test-execution.md",
+  "sourceDirName": "test-execution",
+  "slug": "/test-execution/unit-test-execution",
+  "permalink": "/ / /test-execution/unit-test-execution",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/ZigRazor/CXXGraph/docs/test-execution/unit-test-execution.md",
+  "tags": [
+    {
+      "label": "benchmark execution",
+      "permalink": "/ / /tags/benchmark-execution"
+    },
+    {
+      "label": "execution",
+      "permalink": "/ / /tags/execution"
+    },
+    {
+      "label": "testing",
+      "permalink": "/ / /tags/testing"
+    },
+    {
+      "label": "benchmark",
+      "permalink": "/ / /tags/benchmark"
+    },
+    {
+      "label": "googletest",
+      "permalink": "/ / /tags/googletest"
+    },
+    {
+      "label": "install",
+      "permalink": "/ / /tags/install"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "unit-test-execution",
+    "title": "Unit-Test Execution",
+    "tags": [
+      "benchmark execution",
+      "execution",
+      "testing",
+      "benchmark",
+      "googletest",
+      "install"
+    ]
+  },
+  "sidebar": "docSidebar",
+  "previous": {
+    "title": "Algorithms Explanation",
+    "permalink": "/ / /component-explanation/regular-algorithm"
+  },
+  "next": {
+    "title": "Benchmark Execution",
+    "permalink": "/ / /test-execution/benchmark-execution"
+  }
+}

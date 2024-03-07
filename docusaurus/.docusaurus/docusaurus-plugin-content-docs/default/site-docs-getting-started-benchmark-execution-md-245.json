@@ -1,0 +1,46 @@
+{
+  "id": "getting-started/benchmark-execution",
+  "title": "Algorithms Explanation",
+  "description": "Benchmark requires CMake 3.9 and later, the GoogleTest library, and the Google Benchmark library.",
+  "source": "@site/docs/getting-started/benchmark-execution.md",
+  "sourceDirName": "getting-started",
+  "slug": "/getting-started/benchmark-execution",
+  "permalink": "/cxxgraph/docs/getting-started/benchmark-execution",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/ZigRazor/CXXGraph/docs/getting-started/benchmark-execution.md",
+  "tags": [
+    {
+      "label": "benchmark execution",
+      "permalink": "/cxxgraph/docs/tags/benchmark-execution"
+    },
+    {
+      "label": "execution",
+      "permalink": "/cxxgraph/docs/tags/execution"
+    },
+    {
+      "label": "testing",
+      "permalink": "/cxxgraph/docs/tags/testing"
+    },
+    {
+      "label": "benchmark",
+      "permalink": "/cxxgraph/docs/tags/benchmark"
+    },
+    {
+      "label": "googletest",
+      "permalink": "/cxxgraph/docs/tags/googletest"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "benchmark-execution",
+    "title": "Algorithms Explanation",
+    "tags": [
+      "benchmark execution",
+      "execution",
+      "testing",
+      "benchmark",
+      "googletest"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "landing-page",
+  "title": "Welcome to the CXXGraph Documentation",
+  "description": "../static/img/homepageIntro.gif",
+  "source": "@site/docs/landing-page.md",
+  "sourceDirName": ".",
+  "slug": "/landing-page",
+  "permalink": "/cxxgraph/docs/landing-page",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/ZigRazor/CXXGraph/docs/landing-page.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "landing-page",
+    "title": "Welcome to the CXXGraph Documentation"
+  }
+}
