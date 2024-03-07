@@ -1,0 +1,28 @@
+name: Copy Github Action on Other Branch
+
+on:
+  workflow_dispatch:
+  push:
+    #paths-ignore:
+    #- '.github/**' # Ignore changes towards the .github directory
+    paths:
+      - '.github'
+    branches:
+    - master # Only trigger on the master branch
+
+jobs:
+  build:
+    runs-on: [ubuntu-latest]
+    steps:
+    - name: Copy
+      uses: andstor/copycat-action@v3
+      with:
+        personal_token: ${{ secrets.PERSONAL_TOKEN }}
+        src_path: /.github
+        dst_path: /.github
+        src_branch: master
+        dst_branch: WebSite
+        username: ZigRazor
+        email: zigrazor@gmail.com
+        dst_owner: ZigRazor
+        dst_repo_name: CXXGraph
