@@ -6,7 +6,7 @@ on:
     #paths-ignore:
     #- '.github/**' # Ignore changes towards the .github directory
     paths:
-      - '.github'
+      - '.github/**'
     branches:
     - master # Only trigger on the master branch
 
@@ -19,7 +19,7 @@ jobs:
       with:
         personal_token: ${{ secrets.PERSONAL_TOKEN }}
         src_path: /.github
-        dst_path: /.github
+        dst_path: /
         src_branch: master
         dst_branch: WebSite
         username: ZigRazor
