@@ -3,26 +3,28 @@ name: Deploy Site
 on:
   workflow_dispatch:
   push:
-    #paths-ignore:
-    #- '.github/**' # Ignore changes towards the .github directory
-    paths:
-      - 'README.md'
     branches:
-    - master # Only trigger on the master branch
+    - WebSite # Only trigger on the WebSite branch
 
 jobs:
   build:
     runs-on: [ubuntu-latest]
     steps:
-    - name: Copy
-      uses: andstor/copycat-action@v3
-      with:
-        personal_token: ${{ secrets.PERSONAL_TOKEN }}
-        src_path: /README.md
-        dst_path: /index.md
-        src_branch: master
-        dst_branch: gh-pages
-        username: ZigRazor
-        email: zigrazor@gmail.com
-        dst_owner: ZigRazor
-        dst_repo_name: CXXGraph
+      - uses: actions/checkout@v4
+
+      - name: Configure Yarn
+        working-directory: ${{github.workspace}}/docusaurus
+        # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+        # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+        run: yarn
+
+      - name: Build
+        working-directory: ${{github.workspace}}/docusaurus
+        # Build your program with the given configuration
+        run: yarn build
+
+      - name: Deploy
+        working-directory: ${{github.workspace}}/docusaurus
+        # Execute tests defined by the CMake configuration.
+        # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
+        run: yarn run deploy
