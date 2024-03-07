@@ -1,0 +1,20 @@
+# Dependencies
+docusaurus/node_modules
+
+# Production
+docusaurus/build
+
+# Generated files
+docusaurus/.docusaurus
+docusaurus/.cache-loader
+
+# Misc
+docusaurus/.DS_Store
+docusaurus/.env.local
+docusaurus/.env.development.local
+docusaurus/.env.test.local
+docusaurus/.env.production.local
+
+docusaurus/npm-debug.log*
+docusaurus/yarn-debug.log*
+docusaurus/yarn-error.log*
