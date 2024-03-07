@@ -3,8 +3,7 @@ name: Deploy Site
 on:
   workflow_dispatch:
   push:
-    branches:
-    - WebSite # Only trigger on the WebSite branch
+    branches:  [ "WebSite" ]
 
 jobs:
   build:
