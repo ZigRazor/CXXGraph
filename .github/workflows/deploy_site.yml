@@ -21,17 +21,11 @@ jobs:
         working-directory: ${{github.workspace}}/docusaurus
         # Build your program with the given configuration
         run: yarn build
-      
-      - name: Identify to git
-        run: |
-          git config --local user.email "zigrazor@gmail.com"
-          git config --local user.name "ZigRazor"
-      
-      - name: Deploy
-        working-directory: ${{github.workspace}}/docusaurus
-        env: 
-          GIT_USER: ZigRazor
-          GIT_PASS: ${{ secrets.PERSONAL_TOKEN }}
-        run: yarn run deploy
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3        
+        with:
+          github_token: ${{ secrets.PERSONAL_TOKEN }}
+          publish_dir: ./docusaurus/build
       
        
