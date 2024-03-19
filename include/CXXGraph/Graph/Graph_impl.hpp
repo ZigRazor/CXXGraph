@@ -707,7 +707,7 @@ const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
 Graph<T>::inOutEdges(const Node<T> *node) const {
   auto node_shared = make_shared<const Node<T>>(*node);
 
-  return outEdges(node_shared);
+  return inOutEdges(node_shared);
 }
 
 template <typename T>
