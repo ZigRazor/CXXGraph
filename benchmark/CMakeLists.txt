@@ -20,7 +20,8 @@ if(BENCHMARK)
 	CPMAddPackage(
 		NAME zlib
 		GITHUB_REPOSITORY madler/zlib
-		VERSION 1.2.13
+		#VERSION 1.2.13
+                VERSION 1.2.12
 		OPTIONS "CMAKE_POSITION_INDEPENDENT_CODE True"
 	)
 
