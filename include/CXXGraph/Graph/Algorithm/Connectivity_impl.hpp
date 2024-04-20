@@ -31,7 +31,8 @@ bool Graph<T>::isConnectedGraph() const {
   if (!isUndirectedGraph()) {
     return false;
   } else {
-    auto nodeSet = getNodeSet();
+    //auto nodeSet = getNodeSet();
+    auto nodeSet = getNodeVector();
     // created visited map
     std::unordered_map<CXXGraph::id_t, bool> visited;
     for (const auto &node : nodeSet) {
@@ -70,7 +71,8 @@ bool Graph<T>::isStronglyConnectedGraph() const {
   if (!isDirectedGraph()) {
     return false;
   } else {
-    auto nodeSet = getNodeSet();
+    //auto nodeSet = getNodeSet();
+    auto nodeSet = getNodeVector();
     for (const auto &start_node : nodeSet) {
       // created visited map
       std::unordered_map<CXXGraph::id_t, bool> visited;

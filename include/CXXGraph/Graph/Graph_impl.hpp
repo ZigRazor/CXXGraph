@@ -24,6 +24,9 @@
 
 #include <deque>
 
+#include <random>
+#include <algorithm>
+
 #include "CXXGraph/Graph/Graph_decl.h"
 #include "CXXGraph/Utility/ConstString.hpp"
 
@@ -293,6 +296,36 @@ bool Graph<T>::findEdge(shared<const Node<T>> v1, shared<const Node<T>> v2,
 }
 
 template <typename T>
+void Graph<T>::shuffleAdjMatrix() {
+  std::random_device rd;
+  std::mt19937 rng(rd());
+  for (auto& p : *(this->cachedAdjMatrix)) {
+    std::shuffle(p.second.begin(), p.second.end(), rng);
+  }
+}
+
+template <typename T>
+const std::vector<shared<const Edge<T>>> Graph<T>::getEdgeVector() const {
+  std::vector<shared<const Edge<T>>> edgeVector;
+  edgeVector.assign(edgeSet.begin(), edgeSet.end());
+  std::random_device rd;
+  std::mt19937 rng(rd());
+  std::shuffle(edgeVector.begin(), edgeVector.end(), rng);
+  return edgeVector;
+}
+
+template <typename T>
+const std::vector<shared<const Node<T>>> Graph<T>::getNodeVector() const {
+  T_NodeSet<T> nodeSet = this->getNodeSet();
+  std::vector<shared<const Node<T>>> nodeVector;
+  nodeVector.assign(nodeSet.begin(), nodeSet.end());
+  std::random_device rd;
+  std::mt19937 rng(rd());
+  std::shuffle(nodeVector.begin(), nodeVector.end(), rng);
+  return nodeVector;
+}
+
+template <typename T>
 const T_NodeSet<T> Graph<T>::getNodeSet() const {
   T_NodeSet<T> nodeSet;
 
@@ -529,6 +562,7 @@ template <typename T>
 void Graph<T>::cacheAdjMatrix() {
   const auto adj = Graph<T>::getAdjMatrix();
   this->cachedAdjMatrix = adj;
+  shuffleAdjMatrix();
 }
 
 template <typename T>

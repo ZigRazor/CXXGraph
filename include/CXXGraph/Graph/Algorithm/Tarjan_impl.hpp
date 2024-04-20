@@ -48,7 +48,8 @@ const TarjanResult<T> Graph<T>::tarjan(const unsigned int typeMask) const {
     }
   }
 
-  const auto &nodeSet = getNodeSet();
+  //const auto &nodeSet = getNodeSet();
+  const auto &nodeSet = getNodeVector();
   std::unordered_map<CXXGraph::id_t, int>
       discoveryTime;  // the timestamp when a node is visited
   std::unordered_map<CXXGraph::id_t, int>

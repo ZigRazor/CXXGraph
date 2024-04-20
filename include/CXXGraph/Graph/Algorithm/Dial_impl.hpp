@@ -31,7 +31,8 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
   DialResult result;
   result.success = false;
 
-  auto nodeSet = getNodeSet();
+  //auto nodeSet = getNodeSet();
+  auto nodeSet = getNodeVector();
 
   auto source_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),
