@@ -84,8 +84,8 @@ const unsigned long long Edge<T>::getId() const {
 }
 
 template <typename T>
-const std::pair<shared<const Node<T>>, shared<const Node<T>>>
-    &Edge<T>::getNodePair() const {
+const std::pair<shared<const Node<T>>, shared<const Node<T>>> &
+Edge<T>::getNodePair() const {
   return nodePair;
 }
 
