@@ -187,16 +187,16 @@ const MstResult Graph<T>::boruvka_deterministic() const {
       // Else check if current edge is closer to previous
       // cheapest edges of set1 and set2
       if (cheapest[set1] == INT_MAX ||
-                (edgeWeight[cheapest[set1]] > edgeWeight[edgeId]) ||
-                (edgeWeight[cheapest[set1]] == edgeWeight[edgeId] && cheapest[set1] > edgeId)
-          )
-          cheapest[set1] = edgeId;
+          (edgeWeight[cheapest[set1]] > edgeWeight[edgeId]) ||
+          (edgeWeight[cheapest[set1]] == edgeWeight[edgeId] &&
+           cheapest[set1] > edgeId))
+        cheapest[set1] = edgeId;
 
       if (cheapest[set2] == INT_MAX ||
-                (edgeWeight[cheapest[set2]] > edgeWeight[edgeId]) ||
-                (edgeWeight[cheapest[set2]] == edgeWeight[edgeId] && cheapest[set2] > edgeId)
-          )
-          cheapest[set2] = edgeId;
+          (edgeWeight[cheapest[set2]] > edgeWeight[edgeId]) ||
+          (edgeWeight[cheapest[set2]] == edgeWeight[edgeId] &&
+           cheapest[set2] > edgeId))
+        cheapest[set2] = edgeId;
     }
 
     // iterate over all the vertices and add picked

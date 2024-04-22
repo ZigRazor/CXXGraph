@@ -152,8 +152,8 @@ void Graph<T>::addEdges() {
 
 template <typename T>
 template <typename T1, typename... Tn>
-std::enable_if_t<is_edge_ptr_v<T1> && (is_edge_ptr_v<Tn> && ...), void>
-Graph<T>::addEdges(T1 edge, Tn... edges) {
+std::enable_if_t<all_are_edge_ptrs_v<T1, Tn...>, void> Graph<T>::addEdges(
+    T1 edge, Tn... edges) {
   addEdge(edge);
   addEdges(edges...);
 }
@@ -177,8 +177,8 @@ void Graph<T>::addNodes() {
 
 template <typename T>
 template <typename T1, typename... Tn>
-std::enable_if_t<is_node_ptr_v<T1> && (is_node_ptr_v<Tn> && ...), void>
-Graph<T>::addNodes(T1 node, Tn... nodes) {
+std::enable_if_t<all_are_node_ptrs_v<T1, Tn...>, void> Graph<T>::addNodes(
+    T1 node, Tn... nodes) {
   addNode(node);
   addNodes(nodes...);
 }
@@ -540,7 +540,7 @@ shared<DegreeMatrix<T>> Graph<T>::getDegreeMatrix() const {
     const std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>
         &neighbors = nodePair.second;
 
-    int degree = neighbors.size();
+    int degree = (int)neighbors.size();
 
     (*degreeMatrix)[node] = {degree};
   }
@@ -605,7 +605,7 @@ shared<TransitionMatrix<T>> Graph<T>::getTransitionMatrix() const {
     const std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>
         &neighbors = nodePair.second;
 
-    int degree = neighbors.size();
+    int degree = (int)neighbors.size();
 
     double transitionProbability = 1.0 / degree;
 

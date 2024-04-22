@@ -65,6 +65,14 @@ struct is_node_ptr<shared<T>>
 template <typename T>
 inline constexpr bool is_node_ptr_v = is_node_ptr<T>::value;
 
+template <typename T, typename... Ts>
+struct all_are_node_ptrs {
+  static constexpr bool value = (is_node_ptr_v<T> && ... && is_node_ptr_v<Ts>);
+};
+
+template <typename T, typename... Ts>
+inline constexpr bool all_are_node_ptrs_v = all_are_node_ptrs<T, Ts...>::value;
+
 // is_edge type trait
 template <typename T>
 struct is_edge
@@ -94,6 +102,14 @@ struct is_edge_ptr<shared<T>>
 
 template <typename T>
 inline constexpr bool is_edge_ptr_v = is_edge_ptr<T>::value;
+
+template <typename T, typename... Ts>
+struct all_are_edge_ptrs {
+  static constexpr bool value = (is_edge_ptr_v<T> && ... && is_edge_ptr_v<Ts>);
+};
+
+template <typename T, typename... Ts>
+inline constexpr bool all_are_edge_ptrs_v = all_are_edge_ptrs<T, Ts...>::value;
 
 }  // namespace CXXGraph
 

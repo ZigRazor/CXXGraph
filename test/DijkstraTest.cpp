@@ -862,8 +862,6 @@ TEST(DijkstraDeterministicTest, target_not_connected_test) {
   ASSERT_EQ(res.result, CXXGraph::INF_DOUBLE);
 }
 
-
-
 TEST(DijkstraDeterministic2Test, correct_example_1) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
