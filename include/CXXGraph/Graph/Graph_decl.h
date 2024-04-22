@@ -173,7 +173,7 @@ class Graph {
    *
    */
   template <typename T1, typename... Tn>
-  std::enable_if_t<is_edge_ptr_v<T1> && (is_edge_ptr_v<Tn> && ...), void>
+  std::enable_if_t<all_are_edge_ptrs_v<T1, Tn...>, void>
   addEdges(T1 edge, Tn... edges);
   /**
    * \brief
@@ -211,7 +211,7 @@ class Graph {
    *
    */
   template <typename T1, typename... Tn>
-  std::enable_if_t<is_node_ptr_v<T1> && (is_node_ptr_v<Tn> && ...), void>
+  std::enable_if_t<all_are_node_ptrs_v<T1, Tn...>, void>
   addNodes(T1 node, Tn... nodes);
   /**
    * \brief
