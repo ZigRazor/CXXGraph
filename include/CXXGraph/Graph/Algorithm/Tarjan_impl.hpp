@@ -148,7 +148,9 @@ const TarjanResult<T> Graph<T>::tarjan(const unsigned int typeMask) const {
               // it's not allowed to go through the previous edge back
               // for a directed graph, it's also not allowed to visit
               // a node that is not in stack
-              lowestDisc[curNode->getId()] = std::min(lowestDisc[curNode->getId()], discoveryTime[neighborNode->getId()]);
+              lowestDisc[curNode->getId()] =
+                  std::min(lowestDisc[curNode->getId()],
+                           discoveryTime[neighborNode->getId()]);
             }
           }
         }

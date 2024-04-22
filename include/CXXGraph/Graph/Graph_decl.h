@@ -173,8 +173,8 @@ class Graph {
    *
    */
   template <typename T1, typename... Tn>
-  std::enable_if_t<all_are_edge_ptrs_v<T1, Tn...>, void>
-  addEdges(T1 edge, Tn... edges);
+  std::enable_if_t<all_are_edge_ptrs_v<T1, Tn...>, void> addEdges(T1 edge,
+                                                                  Tn... edges);
   /**
    * \brief
    * Function to add a Node to the Graph Node Set
@@ -211,8 +211,8 @@ class Graph {
    *
    */
   template <typename T1, typename... Tn>
-  std::enable_if_t<all_are_node_ptrs_v<T1, Tn...>, void>
-  addNodes(T1 node, Tn... nodes);
+  std::enable_if_t<all_are_node_ptrs_v<T1, Tn...>, void> addNodes(T1 node,
+                                                                  Tn... nodes);
   /**
    * \brief
    * Function remove an Edge from the Graph Edge Set
@@ -495,10 +495,10 @@ class Graph {
    */
   virtual const DijkstraResult dijkstra(const Node<T> &source,
                                         const Node<T> &target) const;
-  virtual const DijkstraResult dijkstra_deterministic(const Node<T> &source,
-                                        const Node<T> &target) const;
-  virtual const DijkstraResult dijkstra_deterministic2(const Node<T> &source,
-                                        const Node<T> &target) const;  
+  virtual const DijkstraResult dijkstra_deterministic(
+      const Node<T> &source, const Node<T> &target) const;
+  virtual const DijkstraResult dijkstra_deterministic2(
+      const Node<T> &source, const Node<T> &target) const;
   /**
    * @brief This function runs the tarjan algorithm and returns different types
    * of results depending on the input parameter typeMask.
@@ -801,15 +801,15 @@ class Graph {
                                       const Node<T> &target) const;
 
   /**
-    * @brief Welsh-Powell Coloring algorithm
-    * @return a std::map of keys being the nodes and the values being the color
-    * order (by integer) starting from 1.
-    * Source :
-    *          https://www.youtube.com/watch?v=SLkyDuG1Puw&ab_channel=TheLogicalLearning
-    *          https://www.geeksforgeeks.org/welsh-powell-graph-colouring-algorithm/
-    *          https://www.tutorialspoint.com/de-powell-graph-colouring-algorithm
+   * @brief Welsh-Powell Coloring algorithm
+   * @return a std::map of keys being the nodes and the values being the color
+   * order (by integer) starting from 1.
+   * Source :
+   *          https://www.youtube.com/watch?v=SLkyDuG1Puw&ab_channel=TheLogicalLearning
+   *          https://www.geeksforgeeks.org/welsh-powell-graph-colouring-algorithm/
+   *          https://www.tutorialspoint.com/de-powell-graph-colouring-algorithm
    */
-  virtual std::map<Node<T>, int> welshPowellColoring()  const;
+  virtual std::map<Node<T>, int> welshPowellColoring() const;
 
   /**
    * \brief
