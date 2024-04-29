@@ -1,0 +1,1297 @@
+#include <iostream>
+^ [header file library, adds functionality. CXXGraph is one of these.] 
+using namespace std;
+^ [use names for objects + variables from standard library.]
+
+int main() {                         < Function, uses {}.
+  cout << "Hello World!";  < Object w/ insertion operator (<<)
+  return 0;                           < Ends function main()
+} 
+
+You can include the default library on a per-line basis via std::
+Example:
+
+#include <iostream>
+
+int main() {
+  std::cout << "Hello World!";
+  return 0;
+} 
+
+'/n' inserts whitespace, '/n/n' or '<< endl' a carriage return
+
+Escape sequences are preferred to '<< endl', which is a Manipulator.
+
+// comment
+/*
+ comment
+*/
+
+VARIABLES
+
+Variables in C++:
+- int          = integer
+- double   = floating point number, 15 decimal precision   | can use
+- float       = floating point number, 7 point precision         | #e## not.
+- char       = single characters, like 'a'. Uses '' Can use ASCII codes.
+- string     = stores text, like "Hello World" Uses "" < #include <string> header required
+- bool       = boolean, outputs 1 (true) or 0 (false)
+Declaring variables syntax:
+type variableName = value;
+example: 
+ int nyNum = 15; 
+
+ int nyNum;
+ myNum = 15;
+
+Displaying variables via cout and <<
+int myAge = 35;
+cout << "I am" myAge << " years old." //note whitespace!
+
+Using operators
+int x = 5;
+int y = 6;
+int sum x + y;
+cout << sum;
+
+Declare multiple variables of the same type:
+int x =5, y = 6, z = 50;
+cout << x + y + z;
+
+Declare then assign in batches
+int x, y, z;
+x = y = z = 50;
+
+Identifiers aka variable names
+rules:
+- begin with letter or _
+- case sensitive
+- no whitespace or special characters
+- no reserved words
+
+constants
+const int = 3;
+untouchable, read-only variables.
+must have value assigned in definition.
+
+USER INPUT
+
+cout = output
+cin = input
+[pronounced see-out, c-in]
+
+Example:
+int x;
+cout << "Type a number: "
+cin >> x;
+cout << "Your number is: " << x;
+
+OPERATORS
+
+Arithmetic
+Operator | Name | Desc 
++ | Addition | 
+- | subtraction |
+* | multiplication
+/ | division
+% | modulus | returns division remainder
+++ | increment
+-- | decrement
+
+assignment
+Operator | example | equivalent in math
+= | x = 5 | x = 5
++= | x += 3 | x = x+3
+-= | x -= 3 | x = x-3
+*= | x *= 3 | x = x*3
+/= | x /= 3 | x = x/3
+examples arent clear lmao
+
+comparison
+== | equal to
+!= | not equal to
+> | greater than
+< | less than
+>= | greater than or equal to
+<= | less than or equal to
+
+logical
+&& | logical AND | x < 5 &&  x < 10 | returns true is both statements true
+|| | logical OR | x < 5 || x < 4 | returns true if one statement true
+! | logical NOT | !(x < 5 && x < 10) | returns reversed result
+
+STRINGS
+strings are strictly via "" in C++.
+
+concat strings
++ operator [You cannot add numbers and strings via +]
+.apphend() [string fullName = firstName.apphend(lastName);]
+
+" " for whitespace. /n and /n/n as well.
+
+STRING FUNCTIONS
+
+variableName.length() or .size() returns string length
+
+index numbers can be accessed via variableName[#];
+
+Changing values via index number is done with a char object (uses 'a')
+Example:
+string myString = "Hello";
+myString[0] = 'J';
+
+User Input strings
+cin by itself only collects a string up to the first whitespace.
+Use 'getline' to remedy this issue.
+Example:
+string fullName;
+cout << "Type your full name: ";
+getline (cin, fullName);
+cout << "Your name is: " << fullName;
+
+MATH FUNCTIONS 
+max() finds the numerical maximum of its args
+min() does the same with the minimum
+
+#include <cmath>
+header file for more functions, such as...
+
+sqrt() to find square roots
+round() to round floating point numbers
+log() to find the logarithm
+
+CONDITIONS
+
+if          | block of code to be executed upon meeting a condition
+else     | block of code to be executed when IF is false
+else if  | specify new condition to test if first is false
+switch | specify many alternative blocks of code to be executed
+
+IF
+Syntax:
+if (condition) {
+  // block of code to be executed if the condition is true
+}
+
+Example:
+int x = 20;
+int y = 18;
+if (x > y) {
+  cout << "x is greater than y";
+} 
+
+ELSE
+Syntax
+if (condition) {
+  // block of code to be executed if the condition is true
+} else {
+  // block of code to be executed if the condition is false
+} 
+
+Example:
+int time = 20;
+if (time < 18) {
+  cout << "Good day.";
+} else {
+  cout << "Good evening.";
+}
+// Outputs "Good evening." 
+
+ELSE IF
+Syntax:
+if (condition1) {
+  // block of code to be executed if condition1 is true
+} else if (condition2) {
+  // block of code to be executed if the condition1 is false and condition2 is true
+} else {
+  // block of code to be executed if the condition1 is false and condition2 is false
+}
+
+Example:
+int time = 22;
+if (time < 10) {
+  cout << "Good morning.";
+} else if (time < 20) {
+  cout << "Good day.";
+} else {
+  cout << "Good evening.";
+}
+// Outputs "Good evening." 
+
+Shorthand IF ELSE
+Syntax:
+ variable = (condition) ? expressionTrue : expressionFalse;
+
+ Example:
+int time = 20;
+string result = (time < 18) ? "Good day." : "Good evening.";
+cout << result; 
+
+SWITCH
+
+Syntax:
+
+switch(expression) {
+  case x:
+    // code block
+    break;
+  case y:
+    // code block
+    break;
+  default:
+    // code block
+}
+
+Example:
+
+int day = 4;
+switch (day) {
+  case 1:
+    cout << "Monday";
+    break;
+  case 2:
+    cout << "Tuesday";
+    break;
+  case 3:
+    cout << "Wednesday";
+    break;
+  case 4:
+    cout << "Thursday";
+    break;
+  case 5:
+    cout << "Friday";
+    break;
+  case 6:
+    cout << "Saturday";
+    break;
+  case 7:
+    cout << "Sunday";
+    break;
+}
+// Outputs "Thursday" (day 4) 
+
+Break keyword makes C++ stop after match is found.
+Default keyword specifies what to do if no match is found.
+
+LOOPS
+
+WHILE loop
+loops through block of code as long as condition is true.
+
+Syntax:
+while (condition) {
+  // code block to be executed
+}
+
+Example:
+int i = 0;
+while (i < 5) {
+  cout << i << "\n";
+  i++;
+}
+
+DO/WHILE 
+Executes block once, then checks if condition is true, and if true, repeats.
+
+Syntax:
+do {
+  // code block to be executed
+}
+while (condition);
+
+Example:
+int i = 0;
+do {
+  cout << i << "\n";
+  i++;
+}
+while (i < 5);
+
+FOR loop 
+Statement 1 is executed (one time) before the execution of the code block.
+
+Statement 2 defines the condition for executing the code block.
+
+Statement 3 is executed (every time) after the code block has been executed.
+
+Syntax:
+ for (statement 1; statement 2; statement 3) {
+  // code block to be executed
+}
+
+Example:
+for (int i = 0; i < 5; i++) {
+  cout << i << "\n";
+}
+
+for (int i = 0; i <= 10; i = i + 2) {
+  cout << i << "\n";
+}
+[only prints even values between 0-10.]
+
+Nested Loops:
+Placing for loops within for loops.
+inner loop executed once for each iteration of outer loop.
+Check a condition, act, check a condition in response to 1, act.
+
+Example:
+// Outer loop
+for (int i = 1; i <= 2; ++i) {
+  cout << "Outer: " << i << "\n"; // Executes 2 times
+
+  // Inner loop
+  for (int j = 1; j <= 3; ++j) {
+    cout << " Inner: " << j << "\n"; // Executes 6 times (2 * 3)
+  }
+}
+
+FOREACH loop
+
+Syntax:
+for (type variableName : arrayName) {
+  // code block to be executed
+}
+
+Example:
+int myNumbers[5] = {10, 20, 30, 40, 50};
+for (int i : myNumbers) {
+  cout << i << "\n";
+}
+
+BREAK and CONTINUE
+
+BREAK is used to 'jump out' of a statement.
+Once condition met, BREAK terminates the block.
+
+CONTINUE breaks one iteration of the loop.
+if the condition occurs, skip to the next.
+
+Example:
+for (int i = 0; i < 10; i++) {
+  if (i == 4) {
+    continue;
+  }
+  cout << i << "\n";
+} 
+// Output skips number 4.
+
+In a WHILE loop:
+
+BREAK:
+int i = 0;
+while (i < 10) {
+  cout << i << "\n";
+  i++;
+  if (i == 4) {
+    break;
+  }
+} 
+
+CONTINUE:
+int i = 0;
+while (i < 10) {
+  if (i == 4) {
+    i++;
+    continue;
+  }
+  cout << i << "\n";
+  i++;
+} 
+
+ARRAYS
+
+Multiple values in a single variable.
+
+syntax:
+type arrayName[#ofItems] = {"item1", "item2", "item3", "item4"};
+
+Use index #s to access array items. starts at 0.
+Syntax:
+arrayName[#] // in a call to access.
+
+Redefine an array element by declaring a value with an index #.
+Syntax:
+arrayName[#] = "newValue"
+
+ARRAYS and LOOPS
+
+Use a FOR loop.
+Example:
+string cars[5] = {"Volvo", "BMW", "Ford", "Oldsmobile", "GMC"};
+for (int i=0; i < 5; i++) {
+  cout << cars[i] << "\n";
+}
+
+Use a FOREACH loop.
+Syntax:
+for (type variableName : arrayName) {
+  // code block to be executed
+}
+
+Example:
+int myNumbers[5] = {10, 20, 30, 40, 50};
+for (int i : myNumbers) {
+  cout << i << "\n";
+}
+
+Regarding the initial array quantity declaration,
+best practice to define first, though not necessary.
+Can specify without values.
+
+Array Operator: sizeof(arrayName);
+Returns size in bytes.
+
+To return the length via number of elements, specify a function.
+getArrayLength divides the sizeof array by sizeof the data type.
+Example:
+int myNumbers[5] = {10, 20, 30, 40, 50};
+int getArrayLength = sizeof(myNumbers) / sizeof(int);
+cout << getArrayLength;
+
+You can use this simple equation to refine a FOREACH loop.
+Example:
+int myNumbers[5] = {10, 20, 30, 40, 50};
+for (int i = 0; i < sizeof(myNumbers) / sizeof(int); i++) {
+  cout << myNumbers[i] << "\n";
+}
+// Array size will be calculated and looped through properly without oversight.
+
+MULTI-DIMENSIONAL ARRAYS
+arrays of arrays.
+
+Syntax:
+type arrayName[#ofArrays] [#ofElementsInEach];
+
+Example:
+string letters[2][4] = {
+  { "A", "B", "C", "D" },
+  { "E", "F", "G", "H" }
+};
+
+A three dimensional array:
+string letters[2][2][2] = {
+  {
+    { "A", "B" },
+    { "C", "D" }
+  },
+  {
+    { "E", "F" },
+    { "G", "H" }
+  }
+}
+
+Accessing elements from a multidimensional array
+Syntax:
+arrayName[#ofFirst][#ofSecond][etc];
+
+Example:
+string letters[2][4] = {
+  { "A", "B", "C", "D" },
+  { "E", "F", "G", "H" }
+};
+
+cout << letters[0][2];  // Outputs "C" 
+
+Elements can be changed through accessing this way.
+
+LOOPING THROUGH MULTIDIMENSIONAL ARRAYS
+string letters[2][4] = {
+  { "A", "B", "C", "D" },
+  { "E", "F", "G", "H" }
+};
+
+for (int i = 0; i < 2; i++) {
+  for (int j = 0; j < 4; j++) { 
+    cout << letters[i][j] << "\n";
+  }
+} 
+// simply add in another FOREACH for each dimension.
+
+A use case for multidimensional arrays is grids.
+Example of using them for a simple game of Battleship:
+// We put "1" to indicate there is a ship.
+bool ships[4][4] = {
+  { 0, 1, 1, 0 },
+  { 0, 0, 0, 0 },
+  { 0, 0, 1, 0 },
+  { 0, 0, 1, 0 }
+};
+
+// Keep track of how many hits the player has and how many turns they have played in these variables
+int hits = 0;
+int numberOfTurns = 0;
+
+// Allow the player to keep going until they have hit all four ships
+while (hits < 4) {
+  int row, column;
+
+  cout << "Selecting coordinates\n";
+
+  // Ask the player for a row
+  cout << "Choose a row number between 0 and 3: ";
+  cin >> row;
+
+  // Ask the player for a column
+  cout << "Choose a column number between 0 and 3: ";
+  cin >> column;
+
+  // Check if a ship exists in those coordinates
+  if (ships[row][column]) {
+    // If the player hit a ship, remove it by setting the value to zero.
+    ships[row][column] = 0;
+
+    // Increase the hit counter
+    hits++;
+
+    // Tell the player that they have hit a ship and how many ships are left
+    cout << "Hit! " << (4-hits) << " left.\n\n";
+  } else {
+    // Tell the player that they missed
+    cout << "Miss\n\n";
+  }
+
+  // Count how many turns the player has taken
+  numberOfTurns++;
+}
+
+cout << "Victory!\n";
+cout << "You won in " << numberOfTurns << " turns"; 
+
+STRUCTURES aka Structs
+Group variables together regardless of type.
+The variables within are referred to as "members."
+
+Syntax:
+struct {                  // Structure declaration
+  int myNum;         // Member (int variable)
+  string myString;  // Member (string variable)
+} myStructure;       // Structure variable
+
+Accessing struct members uses '.' syntax.
+EG myStruct.myNum
+
+Example:
+// Create a structure variable called myStructure
+struct {
+  int myNum;
+  string myString;
+} myStructure;
+
+// Assign values to members of myStructure
+myStructure.myNum = 1;
+myStructure.myString = "Hello World!";
+
+// Print members of myStructure
+cout << myStructure.myNum << "\n";
+cout << myStructure.myString << "\n";
+
+You can define multiple variables with one structure definition using
+the same contents. Just separate with ','
+
+Example:
+struct {
+  int myNum;
+  string myString;
+} myStruct1, myStruct2, myStruct3;
+// Multiple structure variables separated with commas 
+
+Using a single structure with multiple variables as a data template:
+Example:
+struct {
+  string brand;
+  string model;
+  int year;
+} myCar1, myCar2;
+// We can add variables by separating them with a comma here
+
+// Put data into the first structure
+myCar1.brand = "BMW";
+myCar1.model = "X5";
+myCar1.year = 1999;
+
+// Put data into the second structure
+myCar2.brand = "Ford";
+myCar2.model = "Mustang";
+myCar2.year = 1969;
+
+// Print the structure members
+cout << myCar1.brand << " " << myCar1.model << " " << myCar1.year << "\n";
+cout << myCar2.brand << " " << myCar2.model << " " << myCar2.year << "\n";
+
+As you might imagine, naming structs is advantageous.
+Syntax:
+struct myDataType {
+  int myNum;
+  string myString;
+};
+
+To create a variable using this struct, reference the name:
+example:
+myDataType myVar;
+
+REFERENCES
+a variable that references another variable.
+Syntax:
+string food = "Pizza"; // original variable
+string &meal = food; //references food via meal
+
+Referencing food via meal.
+Example:
+cout << food << "\n";  // Outputs Pizza
+cout << meal << "\n";  // Outputs Pizza
+
+the & operator used to create references, can be used on the original.
+This will output the variable's location.
+
+Example:
+string food = "Pizza";
+
+cout << &food; // Outputs 0x6dfed4, a hexadecimal address to the var.
+// These addresses are the most powerful aspect of C++ compared
+to sister programming languages.
+
+POINTERS
+
+A pointer variable takes the memory address and stores it as a value.
+Syntax:
+string food = "Pizza";  // A food variable of type string
+string* ptr = &food;    // A pointer variable, with the name ptr, that stores the address of food
+
+// Output the value of food (Pizza)
+cout << food << "\n";
+
+// Output the memory address of food (0x6dfed4)
+cout << &food << "\n";
+
+// Output the memory address of food with the pointer (0x6dfed4)
+cout << ptr << "\n";
+
+DEREFERENCING
+By using the '*' operator, you can use a pointer variable to 
+get the value of a variable, rather than the address.
+
+Example:
+string food = "Pizza";  // Variable declaration
+string* ptr = &food;    // Pointer declaration
+
+// Reference: Output the memory address of food with the pointer (0x6dfed4)
+cout << ptr << "\n";
+
+// Dereference: Output the value of food with the pointer (Pizza)
+cout << *ptr << "\n";
+
+Changing a pointer's value will change the original.
+Example:
+string food = "Pizza"; // original
+string* ptr = &food;    // pointer
+
+// Output the value of food (Pizza)
+cout << food << "\n";
+
+// Output the memory address of food (0x6dfed4)
+cout << &food << "\n";
+
+// Access the memory address of food and output its value (Pizza)
+cout << *ptr << "\n";
+
+// Change the value of the pointer
+*ptr = "Hamburger";
+
+// Output the new value of the pointer (Hamburger)
+cout << *ptr << "\n";
+
+// Output the new value of the food variable (Hamburger)
+cout << food << "\n";
+
+Just a reminder:
+& | CREATES references, allowing one to reference and assign pointers.
+*  | DEREFERENCES, reversing this property on pointers.
+
+FUNCTIONS
+Callable and reusable code.
+
+Syntax:
+void myFunction() {
+  //code to be executed
+}
+
+VOID refers to a function with no return values.
+a function is defined by the () on its name.
+
+Calling a function:
+//define function
+void myFunction() {
+  cout << "I just got executed!";
+}
+
+//call function
+int main() {
+  myFunction(); //function call, just use names
+  return 0;
+}
+
+//outputs string "I just got executed!"
+
+a function can be called multiple times in the same block.
+
+A function can be declared before it is defined.
+Example:
+//declare the function
+void myFunction();
+
+//the primary method
+int main() {
+  myFunction();
+  return 0;
+}
+
+//function definition
+void myFunction() {
+  cout << "I just got executed!"
+}
+
+This is a common practice for purposes of code organization.
+
+PARAMETERS AND ARGUMENTS
+Parameters are set within a function definition, and serve as
+variables with in the function.
+
+Example:
+// define function with fname parameter
+void functionName(type variableName1, type variableName2) {
+  cout << fname << "Refsnes\n";
+}
+
+// execute myFunction with different args for fname
+int main() {
+  myFunction("Liam");
+  myFunction("Jenny");
+  myFunction("Anja");
+  return 0;
+}
+
+DEFAULT PARAMETERS
+can be set via an '=' in definition.
+Example:
+void myFunction(string country = "Norway") {
+  cout << country << "\n";
+}
+
+int main() {
+  myFunction("sweden");
+  myFunction("India");
+  myFunction();  //outputs "Norway"
+  myFunction("USA");
+  return 0;
+}
+
+MULTIPLE PARAMETERS
+void myFunction(string fname, int age) {
+  cout << fname << " Refnes." << age << " years old.";
+}
+
+int main() {
+  myFunction("Liam", 3);
+  myFunction("Jenny", 14);
+  myFunction("Anja", 30);
+  return 0;
+}
+// Function calls must match number of parameters and type.
+// Arg assignment order follows parameter definition order
+
+RETURN VALUES
+
+When you want a function to return a value, assign it in the definiton.
+Example:
+int myFunction(int x) {
+  return 5 + x;
+}
+
+int main() {
+  cout << myFunction(3);
+  return 0;
+}
+// Outputs 8 (5 + 3)
+
+Using multiple parameters with args to define a callable equation:
+int myFunction(int x, int y) {
+  return x + y;
+}
+
+int main() {
+  int z = myFunction(5, 3); // Storing the result in a variable
+  cout << z;
+  return 0;
+}
+
+PASS BY REFERENCE
+You can define a function with reference parameters to change args.
+Example:
+
+// args slot into parameter slots and become referenced by function.
+void swapNums(int &x, int &y) {
+  int z = x;
+  x = y
+  y = z
+}
+
+// calling swapNums to reassign the same args
+int main() {
+  int firstNum = 10;
+  int secondNum = 20;
+
+  cout << "unswapped:" << "\n";
+  cout << firstNum << secondNum << "\n";
+
+  // calling swapNums to reassign args
+  swapNums(firstNum, secondNum);
+
+  cout << "swapped" << "\n";
+  cout << firstNum << secondNum << "\n";
+
+  return 0;
+}
+
+PASS ARRAYS
+
+Example:
+// Function uses array as parameter.
+void myFunction(int myNumbers[5]) {
+  for (int i = 0; i < 5; i++) {
+    cout << myNumbers[i] << "\n";
+  }
+}
+
+// args fill myFunction's array and are output via myFunction's code.
+int main() {
+  int myNumbers[5] = {10, 20, 30, 40, 50};
+  myFunction(myNumbers);
+  return 0;
+} 
+
+OVERLOADING FUNCTIONS 
+Rather than defining multiple functions to do the same task,
+simply define the same function twice with different datatypes.
+This is OVERLOADING, and preferable.
+
+Example:
+int plusFunc(int x, int y) {
+  return x + y;
+}
+
+double plusFunc(double x, double y) {
+  return x + y;
+}
+
+int main() {
+  int myNum1 = plusFunc(8, 5);
+  double myNum2 = plusFunc(4.3, 6.26);
+  cout << "Int: " << myNum1 << "\n";
+  cout << "Double: " << myNum2;
+  return 0;
+}
+// no need to specify different calls for different kinds of numbers.
+
+RECURSION
+Functions can call themselves. Be wary of DDOSing oneself, but useful.
+Use if-else to ensure recursion is stopped properly.
+
+Example:
+int sum(int k) {
+  if (k > 0) {
+    return k + sum(k - 1); //takes arg and adds itself-1 to itself, count down.
+  } else {
+    return 0;
+  }
+}
+
+int main() {
+  int result = sum(10);
+  cout << result;
+  return 0;
+} 
+
+CLASSES
+Puts functionality and data into containers rather than in procedures.
+
+Two aspects of Object Oriented Programming:
+Classes (template) - fruit
+Objects (instance) - Banana, Orange, Strawberry
+
+Class syntax:
+class MyClass {          // The class
+  public:                      // Access specifier
+    int myNum;            // Attribute (int variable)
+    string myString;    // Attribute (string variable)
+};                                // dont forget to end with a ';'
+
+Creating an object and printing its values
+Example:
+int main() {
+  MyClass myObj;  // Create an object of MyClass
+
+  // Access attributes and set values
+  myObj.myNum = 15; 
+  myObj.myString = "Some text";
+
+  // Print attribute values
+  cout << myObj.myNum << "\n";
+  cout << myObj.myString;
+  return 0;
+}
+
+METHODS
+functions belonging to a class.
+Definable within class and outside it.
+
+INSIDE:
+class MyClass {        // The class
+  public:              // Access specifier
+    void myMethod() {  // Method/function defined inside the class
+      cout << "Hello World!";
+    }
+};
+
+int main() {
+  MyClass myObj;     // Create an object of MyClass
+  myObj.myMethod();  // Call the method
+  return 0;
+}
+
+OUTSIDE:
+class MyClass {        // The class
+  public:              // Access specifier
+    void myMethod();   // Method/function declaration
+};
+
+// Method/function definition outside the class
+void MyClass::myMethod() { // link method to class via "ClassName::" 
+  cout << "Hello World!";
+}
+
+int main() {
+  MyClass myObj;     // Create an object of MyClass
+  myObj.myMethod();  // Call the method
+  return 0;
+}
+
+Setting parameters and passing args via classes and objects
+Example:
+class Car {
+  public:
+    int speed(int maxSpeed);
+};
+
+int Car::speed(int maxSpeed) {
+  return maxSpeed;
+}
+
+int main() {
+  Car myObj; // Create an object of Car
+  cout << myObj.speed(200); // Call the method with an argument
+  return 0;
+}
+
+CONSTRUCTOR
+Method called upon object creation using the class.
+Example:
+class MyClass {     // The class
+  public:           // Access specifier
+    MyClass() {     // Constructor
+      cout << "Hello World!";
+    }
+};
+
+int main() {
+  MyClass myObj;    // Create an object of MyClass (this will call the constructor)
+  return 0;
+}
+
+CONSTRUCTOR PARAMETERS
+Constructors can set values for the class attributes.
+Example:
+class Car {        // The class
+  public:          // Access specifier
+    string brand;  // Attribute
+    string model;  // Attribute
+    int year;      // Attribute
+    Car(string x, string y, int z) { // Constructor with parameters, sets values
+      brand = x;
+      model = y;
+      year = z;
+    }
+};
+
+int main() {
+  // Create Car objects and call the constructor with different values
+  Car carObj1("BMW", "X5", 1999);
+  Car carObj2("Ford", "Mustang", 1969);
+
+  // Print values
+  cout << carObj1.brand << " " << carObj1.model << " " << carObj1.year << "\n";
+  cout << carObj2.brand << " " << carObj2.model << " " << carObj2.year << "\n";
+  return 0;
+}
+
+You can also define a constructor outside the class definition.
+Example:
+// Constructor definition outside the class
+Car::Car(string x, string y, int z) {
+  brand = x;
+  model = y;
+  year = z;
+}
+
+ACCESS SPECIFIERS
+Sets level of access a class has to the rest of the program.
+Three levels in C++:
+public: members accessible from outside the class.
+private: members cannot be viewed or accessed from outside the class.
+protected: members cannot be accessed from outside the class,
+but class inheritors retain access.
+
+All class members are private unless specified otherwise.
+
+Example:
+lass MyClass {
+  public:    // Public access specifier
+    int x;   // Public attribute
+  private:   // Private access specifier
+    int y;   // Private attribute
+};
+
+int main() {
+  MyClass myObj;
+  myObj.x = 25;  // Allowed (public)
+  myObj.y = 50;  // Not allowed (private)
+  return 0;
+}
+// You will get an error for y.
+
+ENCAPSULATION
+To access protected members, use public
+getters and setters.
+
+Example:
+class Employee {
+  private:
+    // Private attribute
+    int salary;
+
+  public:
+    // Setter
+    void setSalary(int s) {
+      salary = s;
+    }
+    // Getter
+    int getSalary() {
+      return salary;
+    }
+};
+
+int main() {
+  Employee myObj;
+  myObj.setSalary(50000);
+  cout << myObj.getSalary();
+  return 0;
+} 
+
+INHERITANCE
+attributes and methods can be passed between classes.
+Derived class (child): class that inherits from another class.
+Base class (parent): the class being inherited from
+
+Inheritance is invoked via ':'
+
+// base class
+class Vehicle {
+  public:
+    string brand = "Ford";
+    void honk() {
+      cout << "Tuut, tuut! \n"
+    }
+};
+
+// derived class
+class Car: public Vehicle {
+  public:
+    string model = "Mustang"
+};
+
+int main() {
+  Car myCar;
+  myCar.honk();
+  cout << myCar.brand + " " + myCar.model;
+  return 0;
+}
+
+MULTILEVEL INHERITANCE
+Inheritance stacks many times over.
+
+MULTIPLE INHERITANCE
+Derive a class from multiple parents.
+Use a comma seperated list.
+
+Example:
+// base class
+class MyClass (
+  public:
+    void myFunction() {
+      cout << "Some content in parent class. /n"
+    }
+);
+
+// another base class
+class MyOtherClass {
+  public:
+    void myOtherFunction() {
+      cout << "Some content in another class /n"
+    }
+};
+
+// Child class
+class MyChildClass: public MyClass, public MyOtherClass {
+};
+
+POLYMORPHISM
+"Many forms" uses derived classes with methods of the same name
+performing specialized tasks to each child.
+
+Example:
+// Base class
+class Animal {
+  public:
+    void animalSound() {
+      cout << "The animal makes a sound \n";
+    }
+};
+
+// Derived class
+class Pig : public Animal {
+  public:
+    void animalSound() {
+      cout << "The pig says: wee wee \n";
+    }
+};
+
+// Derived class
+class Dog : public Animal {
+  public:
+    void animalSound() {
+      cout << "The dog says: bow wow \n";
+    }
+}; 
+
+// by specifying class the same method has multiple forms
+int main() {
+  Animal myAnimal;
+  Pig myPig;
+  Dog myDog;
+
+  myAnimal.animalSound();
+  myPig.animalSound();
+  myDog.animalSound();
+  return 0;
+} 
+
+FILES
+the 'fstream' library allows us to work with 
+syntax:
+#include <fstream> 
+
+Three classes from <fstream>:
+ofstream: creates and writes to files
+ifstream: reads files
+fstream: combination of above Two
+
+Create and write to file
+Example: 
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main() {
+  // create and open a text files
+  ofstream MyFile("filename.txt");
+
+  // write to file
+  MyFile << "Files can be tricky";
+
+  // close the file
+  MyFile.close();
+}
+
+read a file
+Example:
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main() {
+  // create a txt string to contain file contents
+  string myText;
+  
+  // read from the text file
+  ifstream MyReadFile("filename.txt");
+
+  // use a while loop together with the getline() function to read file
+  while (getline (MyreadFile, myText)) {
+    // output text from file
+    cout << myText;
+  }
+
+  // close the file
+  MyReadFile.close();
+
+}
+
+ERRORS
+
+handling errors uses 3 keywords.
+try: define a block of code to be tested for errors while executing
+throw: throws an exception when problem is detected, custom errors.
+catch: defines a block of code to try when error is detected by try
+// try and catch come in pairs.
+Syntax:
+try {
+  // Block of code to try
+  throw exception; // throw an exception
+}
+catch () {
+  // block of code to handle errors 
+}
+
+Example:
+try {
+  int age = 15;
+  if (age >= 18) {
+    cout << "Access granted, over 18. /n";
+  } else {
+    throw (age);
+  }
+}
+catch (int myNum) {
+  cout << "403 forbidden";
+  cout << "Age is: " << myNum;
+}
+
+You can also use throw to output a code for a custom error.
+Example:
+try {
+  int age = 15;
+  if (age >= 18) {
+    cout << "Access granted, over 18. /n";
+  } else {
+    throw 505;
+  }
+}
+catch (int myNum) {
+  cout << "403 forbidden";
+  cout << "Error number: " << myNum;
+}
+
+To create a general purpose error message, use '...' in catch
+Example:
+catch (...) {
+  cout << "An Error Occured";
+} 
