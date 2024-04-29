@@ -1,0 +1,27 @@
+{
+  "id": "Introduction/How to Use CXXGraph",
+  "title": "How to Use CXXGraph",
+  "description": "What is CXXGraph?",
+  "source": "@site/docs/Introduction/How to Use CXXGraph.md",
+  "sourceDirName": "Introduction",
+  "slug": "/Introduction/How to Use CXXGraph",
+  "permalink": "/cxxgraph/docs/Introduction/How to Use CXXGraph",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/ZigRazor/CXXGraph/docs/Introduction/How to Use CXXGraph.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "introduction",
+    "permalink": "/cxxgraph/docs/category/introduction"
+  },
+  "next": {
+    "title": "Installation",
+    "permalink": "/cxxgraph/docs/Introduction/Installation"
+  }
+}

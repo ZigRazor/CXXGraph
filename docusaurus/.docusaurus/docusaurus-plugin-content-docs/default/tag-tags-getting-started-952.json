@@ -1,0 +1,27 @@
+{
+  "label": "getting started",
+  "permalink": "/ / /tags/getting-started",
+  "allTagsPath": "/ / /tags",
+  "count": 3,
+  "items": [
+    {
+      "id": "getting-started/how-to-use-cxxgraph",
+      "title": "How to Use CXXGraph",
+      "description": "How do I put CXXGraph on my project?",
+      "permalink": "/ / /getting-started/how-to-use-cxxgraph"
+    },
+    {
+      "id": "getting-started/installation",
+      "title": "Installing and Uninstalling",
+      "description": "Prerequesites",
+      "permalink": "/ / /getting-started/installation"
+    },
+    {
+      "id": "getting-started/packaging",
+      "title": "Packaging",
+      "description": "Tarballs",
+      "permalink": "/ / /getting-started/packaging"
+    }
+  ],
+  "unlisted": false
+}

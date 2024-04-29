@@ -1,0 +1,27 @@
+{
+  "id": "Introduction/Packaging",
+  "title": "Packaging",
+  "description": "Tarballs",
+  "source": "@site/docs/Introduction/Packaging.md",
+  "sourceDirName": "Introduction",
+  "slug": "/Introduction/Packaging",
+  "permalink": "/cxxgraph/docs/Introduction/Packaging",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/ZigRazor/CXXGraph/docs/Introduction/Packaging.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "Installation",
+    "permalink": "/cxxgraph/docs/Introduction/Installation"
+  },
+  "next": {
+    "title": "overview",
+    "permalink": "/cxxgraph/docs/category/overview"
+  }
+}

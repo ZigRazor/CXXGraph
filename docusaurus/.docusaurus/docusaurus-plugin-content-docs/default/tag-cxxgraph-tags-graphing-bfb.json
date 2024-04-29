@@ -1,0 +1,27 @@
+{
+  "label": "graphing",
+  "permalink": "/cxxgraph/tags/graphing",
+  "allTagsPath": "/cxxgraph/tags",
+  "count": 3,
+  "items": [
+    {
+      "id": "component-explanation/regular-algorithm",
+      "title": "Algorithms Explanation",
+      "description": "Dijsktra",
+      "permalink": "/cxxgraph/component-explanation/regular-algorithm"
+    },
+    {
+      "id": "component-explanation/network-dynamics",
+      "title": "Network Dynamics",
+      "description": "Degree Matrix",
+      "permalink": "/cxxgraph/component-explanation/network-dynamics"
+    },
+    {
+      "id": "component-explanation/partition-algorithm",
+      "title": "Partition Algorithms Explanation",
+      "description": "Vertex-Cut",
+      "permalink": "/cxxgraph/component-explanation/partition-algorithm"
+    }
+  ],
+  "unlisted": false
+}

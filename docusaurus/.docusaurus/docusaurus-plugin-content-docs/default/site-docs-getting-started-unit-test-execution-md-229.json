@@ -1,0 +1,51 @@
+{
+  "id": "getting-started/unittestexecution",
+  "title": "Unit-Test Execution",
+  "description": "The Unit-Test requires CMake 3.9 and later, and the GoogleTest library.",
+  "source": "@site/docs/getting-started/unit-test-execution.md",
+  "sourceDirName": "getting-started",
+  "slug": "/getting-started/unittestexecution",
+  "permalink": "/cxxgraph/docs/getting-started/unittestexecution",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/ZigRazor/CXXGraph/docs/getting-started/unit-test-execution.md",
+  "tags": [
+    {
+      "label": "benchmark execution",
+      "permalink": "/cxxgraph/docs/tags/benchmark-execution"
+    },
+    {
+      "label": "execution",
+      "permalink": "/cxxgraph/docs/tags/execution"
+    },
+    {
+      "label": "testing",
+      "permalink": "/cxxgraph/docs/tags/testing"
+    },
+    {
+      "label": "benchmark",
+      "permalink": "/cxxgraph/docs/tags/benchmark"
+    },
+    {
+      "label": "googletest",
+      "permalink": "/cxxgraph/docs/tags/googletest"
+    },
+    {
+      "label": "install",
+      "permalink": "/cxxgraph/docs/tags/install"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "unittestexecution",
+    "title": "Unit-Test Execution",
+    "tags": [
+      "benchmark execution",
+      "execution",
+      "testing",
+      "benchmark",
+      "googletest",
+      "install"
+    ]
+  }
+}
