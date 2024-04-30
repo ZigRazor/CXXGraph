@@ -34,7 +34,7 @@ CXXGraph::Node<int> node2("2", 2);
 ...and then pair them together.
 
 ```
-std::pair<const CXXGraph::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(
+std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
 ```
 
