@@ -27,14 +27,14 @@ To begin using the graph, we require nodes to create edges between. Nodes are cr
 Here we create two nodes...
 
 ```
-CXXGRAPH::Node<int> node1("1", 1);
-CXXGRAPH::Node<int> node2("2", 2);
+CXXGraph::Node<int> node1("1", 1);
+CXXGraph::Node<int> node2("2", 2);
 ```
 
 ...and then pair them together.
 
 ```
-std::pair<const CXXGRAPH::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(
+std::pair<const CXXGraph::Node<int> *, const CXXGRAPH::Node<int> *> pairNode(
       &node1, &node2);
 ```
 
@@ -43,13 +43,13 @@ These nodes are ready to have an edge created between them.
 **Undirected**
 
 ```
-CXXGRAPH::UndirectedEdge<int> edge(1, pairNode);
+CXXGraph::UndirectedEdge<int> edge(1, pairNode);
 ```
 
 **Directed**
 
 ```
-CXXGRAPH::DirectedEdge<int> edge(1, pairNode);
+CXXGraph::DirectedEdge<int> edge(1, pairNode);
 ```
 
 With the edge created, add the edge to the graph object with the `addEdge` function.
