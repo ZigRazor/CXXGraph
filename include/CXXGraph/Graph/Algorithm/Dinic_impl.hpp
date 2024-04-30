@@ -4,6 +4,8 @@
 #include <unordered_map>
 #include <vector>
 #include "Node_impl.h"
+#include "CXXGraph/Graph/Graph_decl.h"
+
 
 namespace CXXGraph {
 
