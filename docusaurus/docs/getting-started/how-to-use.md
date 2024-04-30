@@ -10,7 +10,7 @@ To use CXXGraph in your project, simply put the header file `CXXGraph.hpp` where
 ```
 include "CXXGraph.hpp"
 
-using namespace CXXGRAPH;
+using namespace CXXGraph;
 ```
 
 It's that easy!
