@@ -9,7 +9,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'getting-started/how-to-use-cxxgraph',
         'getting-started/installation',
-        'how-to-make-a-graph',
+        'getting-started/how-to-make-a-graph',
         'getting-started/packaging',
       ],
     },
