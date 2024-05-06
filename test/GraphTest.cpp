@@ -1340,6 +1340,45 @@ TEST(TestRemoveNode, Test_connectedNode) {
   ASSERT_EQ(graph.getEdgeSet().size(), 1);
 }
 
+TEST(TestRemoveNode, Test_removeInvalidNode) {
+  /** Test to call the remove_node function on a node that was never added. In this case getNode will return an optional that is nullptr*/
+  // Create a graph with 3 nodes and 3 edges.
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
+  CXXGraph::DirectedEdge<int> edge1(1, node1, node2);
+  CXXGraph::DirectedEdge<int> edge2(2, node2, node1);
+  CXXGraph::DirectedEdge<int> edge3(3, node1, node3);
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  // Add the 3 edges into the graph.
+  edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge3));
+  // Initialise the graph
+  CXXGraph::Graph<int> graph(edgeSet);
+
+  // Check the initial number of edges and nodes. Everything should be okay so far
+  ASSERT_EQ(graph.getNodeSet().size(), 3);
+  ASSERT_EQ(graph.getEdgeSet().size(), 3);
+
+  // Remove a node that was never in the graph
+  graph.removeNode("4");
+
+  // Number of nodes and edges in the graph should remain the same
+  ASSERT_EQ(graph.getNodeSet().size(), 3);
+  ASSERT_EQ(graph.getEdgeSet().size(), 3);
+
+  // Remove an existing node, the edge associated with that node should also be removed. Node "3" had just outgoing edge, so there should now be 2 nodes and 2 edges.
+  graph.removeNode("3");
+  ASSERT_EQ(graph.getNodeSet().size(), 2);
+  ASSERT_EQ(graph.getEdgeSet().size(), 2);
+
+  // Remove the node that had already been removed. Should not change anything about the graph now, similar to when "4" was removed above
+  graph.removeNode("3");
+  ASSERT_EQ(graph.getNodeSet().size(), 2);
+  ASSERT_EQ(graph.getEdgeSet().size(), 2);
+}
+
 TEST(TestGetNode, Test_1) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);

@@ -234,7 +234,7 @@ void Graph<T>::removeNode(const std::string &nodeUserId) {
   auto nodeOpt = getNode(nodeUserId);
   auto isolatedNodeIt = isolatedNodesSet.end();
   if (nodeOpt) {
-    isolatedNodeIt  = isolatedNodeIt.find(nodeOpt.value());
+    isolatedNodeIt  = isolatedNodesSet.find(nodeOpt.value());
   }
   
   if (nodeOpt.has_value() && isolatedNodeIt != isolatedNodesSet.end()) {
