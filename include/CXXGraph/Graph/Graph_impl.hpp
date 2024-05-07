@@ -232,7 +232,7 @@ void Graph<T>::removeEdge(const CXXGraph::id_t edgeId) {
 template <typename T>
 void Graph<T>::removeNode(const std::string &nodeUserId) {
   auto nodeOpt = getNode(nodeUserId);
-  if (nodeOpt) {
+  if (nodeOpt.has_value()) {
     auto isolatedNodeIt  = isolatedNodesSet.find(nodeOpt.value());
     if (isolatedNodeIt != isolatedNodesSet.end()) {
       // The node is isolated
@@ -240,12 +240,16 @@ void Graph<T>::removeNode(const std::string &nodeUserId) {
     } else {
       // The node is not isolated
       // Remove the edges containing the node
-      auto edgeset = edgeSet;
-      for (auto edgeIt : edgeset) {
-        if (edgeIt->getNodePair().first->getUserId() == nodeUserId ||
-            edgeIt->getNodePair().second->getUserId() == nodeUserId) {
-          this->removeEdge(edgeIt->getId());
+      auto edgeIt = edgeSet.begin();
+      auto nextIt = edgeIt;
+      while(edgeIt != edgeSet.end()) {
+        nextIt = std::next(edgeIt);
+        if ((*edgeIt)->getNodePair().first->getUserId() == nodeUserId ||
+            (*edgeIt)->getNodePair().second->getUserId() == nodeUserId) {
+          
+          this->removeEdge((*edgeIt)->getId());
         }
+        edgeIt = nextIt;
       }
     }
   }  
