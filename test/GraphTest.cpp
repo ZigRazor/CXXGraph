@@ -1341,7 +1341,8 @@ TEST(TestRemoveNode, Test_connectedNode) {
 }
 
 TEST(TestRemoveNode, Test_removeInvalidNode) {
-  /** Test to call the remove_node function on a node that was never added. In this case getNode will return an optional that is nullptr*/
+  /** Test to call the remove_node function on a node that was never added. In
+   * this case getNode will return an optional that is nullptr*/
   // Create a graph with 3 nodes and 3 edges.
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
@@ -1357,7 +1358,8 @@ TEST(TestRemoveNode, Test_removeInvalidNode) {
   // Initialise the graph
   CXXGraph::Graph<int> graph(edgeSet);
 
-  // Check the initial number of edges and nodes. Everything should be okay so far
+  // Check the initial number of edges and nodes. Everything should be okay so
+  // far
   ASSERT_EQ(graph.getNodeSet().size(), 3);
   ASSERT_EQ(graph.getEdgeSet().size(), 3);
 
@@ -1368,12 +1370,15 @@ TEST(TestRemoveNode, Test_removeInvalidNode) {
   ASSERT_EQ(graph.getNodeSet().size(), 3);
   ASSERT_EQ(graph.getEdgeSet().size(), 3);
 
-  // Remove an existing node, the edge associated with that node should also be removed. Node "3" had just outgoing edge, so there should now be 2 nodes and 2 edges.
+  // Remove an existing node, the edge associated with that node should also be
+  // removed. Node "3" had just outgoing edge, so there should now be 2 nodes
+  // and 2 edges.
   graph.removeNode("3");
   ASSERT_EQ(graph.getNodeSet().size(), 2);
   ASSERT_EQ(graph.getEdgeSet().size(), 2);
 
-  // Remove the node that had already been removed. Should not change anything about the graph now, similar to when "4" was removed above
+  // Remove the node that had already been removed. Should not change anything
+  // about the graph now, similar to when "4" was removed above
   graph.removeNode("3");
   ASSERT_EQ(graph.getNodeSet().size(), 2);
   ASSERT_EQ(graph.getEdgeSet().size(), 2);
