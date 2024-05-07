@@ -233,7 +233,7 @@ template <typename T>
 void Graph<T>::removeNode(const std::string &nodeUserId) {
   auto nodeOpt = getNode(nodeUserId);
   if (nodeOpt.has_value()) {
-    auto isolatedNodeIt  = isolatedNodesSet.find(nodeOpt.value());
+    auto isolatedNodeIt = isolatedNodesSet.find(nodeOpt.value());
     if (isolatedNodeIt != isolatedNodesSet.end()) {
       // The node is isolated
       isolatedNodesSet.erase(isolatedNodeIt);
@@ -242,17 +242,16 @@ void Graph<T>::removeNode(const std::string &nodeUserId) {
       // Remove the edges containing the node
       auto edgeIt = edgeSet.begin();
       auto nextIt = edgeIt;
-      while(edgeIt != edgeSet.end()) {
+      while (edgeIt != edgeSet.end()) {
         nextIt = std::next(edgeIt);
         if ((*edgeIt)->getNodePair().first->getUserId() == nodeUserId ||
             (*edgeIt)->getNodePair().second->getUserId() == nodeUserId) {
-          
           this->removeEdge((*edgeIt)->getId());
         }
         edgeIt = nextIt;
       }
     }
-  }  
+  }
 }
 
 template <typename T>
