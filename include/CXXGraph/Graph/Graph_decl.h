@@ -35,7 +35,6 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
-#include <algorithm>
 
 #include "CXXGraph/Edge/DirectedEdge.h"
 #include "CXXGraph/Edge/DirectedWeightedEdge.h"
