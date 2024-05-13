@@ -40,10 +40,11 @@ jobs:
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: |
-        if [ "${{ matrix.os }}" == "windows-latest" ]; then
+        if [ ${{ matrix.os }} == 'windows-latest' ]; then
           cmake -DTEST=ON -Dgtest_disable_pthreads=ON -B ${{github.workspace}}/build
         else
           cmake -DTEST=ON -B ${{github.workspace}}/build
+        fi;
       shell: bash
 
 
