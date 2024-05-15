@@ -67,6 +67,7 @@ const TarjanResult<T> Graph<T>::tarjan(const unsigned int typeMask) const {
                     &ebccNodeStack, &vbccNodeStack, &inStack,
                     &result](const shared<const Node<T>> curNode,
                              const shared<const Edge<T>> prevEdge) {
+        result.vertex_traversal_ordering.push_back(curNode->getData());
         // record the visited time of current node
         discoveryTime[curNode->getId()] = timestamp;
         lowestDisc[curNode->getId()] = timestamp;

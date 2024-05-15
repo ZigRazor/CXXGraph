@@ -204,6 +204,13 @@ struct TarjanResult_struct {
   bool success =
       false;  // TRUE if the function does not return error, FALSE otherwise
   std::string errorMessage = "";  // message of error
+  std::vector<T> vertex_traversal_ordering;
+  inline void show_ordering() const {
+    for (const auto& v : vertex_traversal_ordering) {
+      std::cout << v << " ";
+    }
+    std::cout << "\n";
+  }
   Components<T>
       stronglyConnectedComps;  // vectors that store nodes belong to same SCC
                                // (valid only if a graph is directed and flag

@@ -345,6 +345,18 @@ TEST(TarjanTest, test_7) {
   CXXGraph::TarjanResult<int> res =
       graph.tarjan(CXXGraph::TARJAN_FIND_CUTV | CXXGraph::TARJAN_FIND_BRIDGE |
                    CXXGraph::TARJAN_FIND_EBCC | CXXGraph::TARJAN_FIND_VBCC);
+  {
+    std::cout << "cutvRes ordering:\n";
+    cutvRes.show_ordering();
+    std::cout << "bridgeRes ordering:\n";
+    bridgeRes.show_ordering();
+    std::cout << "vbccRes ordering:\n";
+    vbccRes.show_ordering();
+    std::cout << "ebccRes ordering:\n";
+    ebccRes.show_ordering();
+    std::cout << "res ordering:\n";
+    res.show_ordering();
+  } 
   ASSERT_EQ(res.success, true);
 
   ASSERT_EQ(res.cutVertices.size(), cutvRes.cutVertices.size());
