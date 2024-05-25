@@ -205,7 +205,7 @@ struct TarjanResult_struct {
       false;  // TRUE if the function does not return error, FALSE otherwise
   std::string errorMessage = "";  // message of error
   std::vector<T> vertexTraversalOrdering;
-  inline void show_ordering() const {
+  inline void showOrdering() const {
     for (const auto& v : vertexTraversalOrdering) {
       std::cout << v << " ";
     }
@@ -229,6 +229,44 @@ struct TarjanResult_struct {
   std::vector<Edge<T>> bridges;      // a vector that stores bridges
                                      // (valid only is a graph is undirected and
                                      // flag TRAJAN_FIND_BRIDGES is set)
+  inline void sort() {
+    auto cmpNodeVec = [&](const auto& left, const auto& right) -> bool {
+      int i = 0;
+      while (left[i] == right[i]) {
+        ++i;
+        if (i == left.size()) {
+          return true;
+        } else if (i == right.size()) {
+          return false;
+        }
+      }
+      return left[i].getData() < right[i].getData();
+    }; /// cmpNodeVec
+    
+    /// SCC
+    for (auto& comp : stronglyConnectedComps) {
+      std::sort(comp.begin(), comp.end());
+    }
+    std::sort(stronglyConnectedComps.begin(), stronglyConnectedComps.end(), cmpNodeVec);
+
+    /// VBCC
+    for (auto& comp : verticeBiconnectedComps) {
+      std::sort(comp.begin(), comp.end());
+    }
+    std::sort(verticeBiconnectedComps.begin(), verticeBiconnectedComps.end(), cmpNodeVec);
+
+    /// EBCC
+    for (auto& comp : edgeBiconnectedComps) {
+      std::sort(comp.begin(), comp.end());
+    }
+    std::sort(edgeBiconnectedComps.begin(), edgeBiconnectedComps.end(), cmpNodeVec);
+
+    /// CUTV
+    std::sort(cutVertices.begin(), cutVertices.end());    
+
+    /// BRIDGE
+    std::sort(bridges.begin(), bridges.end());
+  } /// sort
 };
 template <typename T>
 using TarjanResult = TarjanResult_struct<T>;
