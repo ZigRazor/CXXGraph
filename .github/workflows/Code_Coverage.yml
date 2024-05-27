@@ -49,7 +49,7 @@ jobs:
         working-directory: ${{github.workspace}}/build/test
         run: lcov --capture --directory .. --output-file coverage.info
 
-      - uses: codecov/codecov-action@v4.3.1
+      - uses: codecov/codecov-action@v4.4.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           file: ${{github.workspace}}/build/test/coverage.info # optional
