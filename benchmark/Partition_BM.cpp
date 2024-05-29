@@ -13,7 +13,7 @@ static void PartitionHDRF_X(benchmark::State &state) {
     g.addEdge(&(*e.second));
   }
   for (auto _ : state) {
-    auto result = g.partitionGraph(
+    auto result = CXXGraph::Partitioning::Partitioner<int>::partitionGraph(g,
         CXXGraph::Partitioning::PartitionAlgorithm::HDRF_ALG, 4, 1, 0.001);
   }
 }
@@ -24,7 +24,7 @@ BENCHMARK(PartitionHDRF_X)
 static void PartitionHDRF_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
-    auto result = cit_graph_ptr->partitionGraph(
+    auto result = CXXGraph::Partitioning::Partitioner<int>::partitionGraph(*cit_graph_ptr,
         CXXGraph::Partitioning::PartitionAlgorithm::HDRF_ALG, 4, 1, 0.001);
   }
 }
@@ -41,7 +41,7 @@ static void PartitionEBVC_X(benchmark::State &state) {
     g.addEdge(&(*e.second));
   }
   for (auto _ : state) {
-    auto result = g.partitionGraph(
+    auto result = CXXGraph::Partitioning::Partitioner<int>::partitionGraph(g,
         CXXGraph::Partitioning::PartitionAlgorithm::EDGEBALANCED_VC_ALG, 4);
   }
 }
@@ -52,7 +52,7 @@ BENCHMARK(PartitionEBVC_X)
 static void PartitionEBVC_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
-    auto result = cit_graph_ptr->partitionGraph(
+    auto result = CXXGraph::Partitioning::Partitioner<int>::partitionGraph(*cit_graph_ptr,
         CXXGraph::Partitioning::PartitionAlgorithm::EDGEBALANCED_VC_ALG, 4);
   }
 }
@@ -69,7 +69,7 @@ static void PartitionGVC_X(benchmark::State &state) {
     g.addEdge(&(*e.second));
   }
   for (auto _ : state) {
-    auto result = g.partitionGraph(
+    auto result = CXXGraph::Partitioning::Partitioner<int>::partitionGraph(g,
         CXXGraph::Partitioning::PartitionAlgorithm::GREEDY_VC_ALG, 4);
   }
 }
@@ -80,7 +80,7 @@ BENCHMARK(PartitionGVC_X)
 static void PartitionGVC_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
-    auto result = cit_graph_ptr->partitionGraph(
+    auto result = CXXGraph::Partitioning::Partitioner<int>::partitionGraph(*cit_graph_ptr,
         CXXGraph::Partitioning::PartitionAlgorithm::GREEDY_VC_ALG, 4);
   }
 }
@@ -97,7 +97,7 @@ static void PartitionEBV_X(benchmark::State &state) {
     g.addEdge(&(*e.second));
   }
   for (auto _ : state) {
-    auto result = g.partitionGraph(
+    auto result = CXXGraph::Partitioning::Partitioner<int>::partitionGraph(g,
         CXXGraph::Partitioning::PartitionAlgorithm::EBV_ALG, 4, 1, 1);
   }
 }
@@ -108,7 +108,7 @@ BENCHMARK(PartitionEBV_X)
 static void PartitionEBV_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
-    auto result = cit_graph_ptr->partitionGraph(
+    auto result = CXXGraph::Partitioning::Partitioner<int>::partitionGraph(*cit_graph_ptr,
         CXXGraph::Partitioning::PartitionAlgorithm::EBV_ALG, 4, 1, 1);
   }
 }
