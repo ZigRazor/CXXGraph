@@ -104,7 +104,6 @@ void EdgeBalancedVertexCut<T>::performStep(shared<const Edge<T>> e,
   //*** Check which partition has the less load
   int MIN_LOAD = state->getMachineLoad(0);
   int machine_id = 0;
-  double MAX_SCORE = 0.0;
 
   for (int m = 0; m < P; m++) {
     int load = state->getMachineLoad(m);
