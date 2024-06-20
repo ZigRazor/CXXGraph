@@ -27,6 +27,7 @@
 #include <mutex>
 #include <queue>
 #include <thread>
+#include <algorithm>
 
 #include "CXXGraph/Graph/Graph_decl.h"
 
