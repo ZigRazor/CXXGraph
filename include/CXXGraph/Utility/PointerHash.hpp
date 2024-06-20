@@ -57,16 +57,23 @@ struct edgeHash {
 
 template <typename T>
 bool operator==(shared<const Node<T>> p1, shared<const Node<T>> p2) {
+  if (p1 == nullptr && p2 == nullptr) return true;
+  if (p1 == nullptr || p2 == nullptr) return false;
   return p1->getUserId() == p2->getUserId();
 }
 
 template <typename T>
 bool operator==(shared<Node<T>> p1, shared<Node<T>> p2) {
+  if (p1 == nullptr && p2 == nullptr) return true;
+  if (p1 == nullptr || p2 == nullptr) return false;
   return p1->getUserId() == p2->getUserId();
 }
 
 template <typename T>
 bool operator==(shared<const Edge<T>> p1, shared<const Edge<T>> p2) {
+  if (p1 == nullptr && p2 == nullptr) return true;
+  if (p1 == nullptr || p2 == nullptr) return false;
+
   return p1->getNodePair().first->getUserId() ==
              p2->getNodePair().first->getUserId() &&
          p1->getNodePair().second->getUserId() ==
