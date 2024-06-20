@@ -59,7 +59,7 @@ class Edge {
   virtual ~Edge() = default;
   void setFirstNode(shared<const Node<T>> node);
   void setSecondNode(shared<const Node<T>> node);
-  const unsigned long long getId() const;
+  unsigned long long getId() const;
   const std::pair<shared<const Node<T>>, shared<const Node<T>>> &getNodePair()
       const;
   shared<const Node<T>> getOtherNode(shared<const Node<T>> node) const;

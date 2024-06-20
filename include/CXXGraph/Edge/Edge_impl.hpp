@@ -79,7 +79,7 @@ void Edge<T>::setSecondNode(shared<const Node<T>> node) {
 }
 
 template <typename T>
-const unsigned long long Edge<T>::getId() const {
+unsigned long long Edge<T>::getId() const {
   return id;
 }
 

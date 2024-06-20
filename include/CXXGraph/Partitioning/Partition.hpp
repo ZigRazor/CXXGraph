@@ -274,7 +274,6 @@ unsigned int getMinNodesLoad(const PartitionMap<T> &partitionMap) {
 
 template <typename T>
 unsigned int getNumberOfEdges(const PartitionMap<T> &partitionMap) {
-  unsigned int numberOfEdges = 0;
   T_EdgeSet<T> edgeSet;
 
   for (const auto &it : partitionMap) {
@@ -289,7 +288,6 @@ unsigned int getNumberOfEdges(const PartitionMap<T> &partitionMap) {
 
 template <typename T>
 unsigned int getNumberOfNodes(const PartitionMap<T> &partitionMap) {
-  unsigned int numberOfNodes = 0;
   std::unordered_set<shared<const Node<T>>, nodeHash<T>> nodeSet;
 
   for (const auto &it : partitionMap) {
@@ -358,8 +356,7 @@ std::ostream &operator<<(std::ostream &os, const Partition<T> &partition) {
       os << *std::static_pointer_cast<const UndirectedEdge<T>>(*it) << "\n";
     } else {
       // Should never happens
-      os << "Wrong Edge Class"
-         << "\n";
+      os << "Wrong Edge Class" << "\n";
     }
   }
   return os;

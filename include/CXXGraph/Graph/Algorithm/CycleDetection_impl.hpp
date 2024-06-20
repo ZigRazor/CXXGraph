@@ -44,7 +44,6 @@ bool Graph<T>::isCyclicDirectedGraphDFS() const {
   for (const auto &node : nodeSet) {
     state[node->getId()] = not_visited;
   }
-  int stateCounter = 0;
 
   // Start visiting each node.
   for (const auto &node : nodeSet) {

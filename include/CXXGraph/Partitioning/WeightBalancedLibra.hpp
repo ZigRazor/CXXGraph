@@ -138,8 +138,6 @@ void WeightBalancedLibra<T>::performStep(shared<const Edge<T>> e,
 
       // according to paper, s refers to node with lower degree, t = {u, v} -
       // {s}
-      size_t s_node = (u_degree > v_degree) ? v : u;
-      size_t t_node = (u_degree > v_degree) ? u : v;
       const std::set<int> &s_partition =
           (u_degree > v_degree) ? v_partition : u_partition;
       const std::set<int> &t_partition =
