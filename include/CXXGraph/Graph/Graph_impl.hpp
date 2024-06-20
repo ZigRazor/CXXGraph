@@ -233,19 +233,23 @@ void Graph<T>::removeEdge(const CXXGraph::id_t edgeId) {
 template <typename T>
 void Graph<T>::removeNode(const std::string &nodeUserId) {
   auto nodeOpt = getNode(nodeUserId);
-  auto isolatedNodeIt = isolatedNodesSet.find(nodeOpt.value());
-
-  if (nodeOpt.has_value() && isolatedNodeIt != isolatedNodesSet.end()) {
-    // The node is isolated
-    isolatedNodesSet.erase(isolatedNodeIt);
-  } else if (nodeOpt.has_value()) {
-    // The node is not isolated
-    // Remove the edges containing the node
-    auto edgeset = edgeSet;
-    for (auto edgeIt : edgeset) {
-      if (edgeIt->getNodePair().first->getUserId() == nodeUserId ||
-          edgeIt->getNodePair().second->getUserId() == nodeUserId) {
-        this->removeEdge(edgeIt->getId());
+  if (nodeOpt.has_value()) {
+    auto isolatedNodeIt = isolatedNodesSet.find(nodeOpt.value());
+    if (isolatedNodeIt != isolatedNodesSet.end()) {
+      // The node is isolated
+      isolatedNodesSet.erase(isolatedNodeIt);
+    } else {
+      // The node is not isolated
+      // Remove the edges containing the node
+      auto edgeIt = edgeSet.begin();
+      auto nextIt = edgeIt;
+      while (edgeIt != edgeSet.end()) {
+        nextIt = std::next(edgeIt);
+        if ((*edgeIt)->getNodePair().first->getUserId() == nodeUserId ||
+            (*edgeIt)->getNodePair().second->getUserId() == nodeUserId) {
+          this->removeEdge((*edgeIt)->getId());
+        }
+        edgeIt = nextIt;
       }
     }
   }
