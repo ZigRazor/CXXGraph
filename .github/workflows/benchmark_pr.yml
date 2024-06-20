@@ -11,7 +11,11 @@ env:
 jobs:
   benchmark:
     name: Performance regression check
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
       #- name: Install gtest manually
       #  run: sudo apt-get install libgtest-dev
