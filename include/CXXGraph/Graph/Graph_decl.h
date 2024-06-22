@@ -550,9 +550,34 @@ class Graph {
   virtual const DijkstraResult dijkstra(const Node<T> &source,
                                         const Node<T> &target) const;
 
+  /**
+   * @brief Deterministic implementation of the dijkstra algorithm
+   * Note: No Thread Safe
+   *
+   * @param source source vertex
+   * @param target target vertex
+   *
+   * @return shortest distance if target is reachable from source else ERROR in
+   * case if target is not reachable from source or there is error in the
+   * computation.
+   */
   virtual const DijkstraResult dijkstra_deterministic(
       const Node<T> &source, const Node<T> &target) const;
 
+  /**
+   * @brief Alternative version of the deterministic dijkstra algorithm which
+   * assures complete determinism even in particular cases of paths with equal
+   * length and sum of vertex ids. More spatially and temporally expensive
+   * than the other two implementations of the algorithm.
+   * Note: No Thread Safe
+   *
+   * @param source source vertex
+   * @param target target vertex
+   *
+   * @return shortest distance if target is reachable from source else ERROR in
+   * case if target is not reachable from source or there is error in the
+   * computation.
+   */
   virtual const DijkstraResult dijkstra_deterministic2(
       const Node<T> &source, const Node<T> &target) const;
 
@@ -629,6 +654,16 @@ class Graph {
    */
   virtual const MstResult boruvka() const;
 
+  /**
+   * @brief Deterministic implementation of the boruvka algorithm
+   * Note: No Thread Safe
+   *
+   * @return struct of type MstResult with following fields
+   * success: true if algorithm completed successfully ELSE false
+   * mst: vector containing id of nodes in minimum spanning tree & cost of MST
+   * mstCost: Cost of MST
+   * errorMessage: "" if no error ELSE report the encountered error
+   */	
   virtual const MstResult boruvka_deterministic() const;
 
   /**
