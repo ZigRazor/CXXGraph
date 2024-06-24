@@ -114,6 +114,7 @@ class Graph {
   Graph();
   Graph(const T_EdgeSet<T> &edgeSet);
   virtual ~Graph() = default;
+
   /**
    * \brief
    * Function that return the Edge set of the Graph
@@ -123,6 +124,7 @@ class Graph {
    *
    */
   virtual const T_EdgeSet<T> &getEdgeSet() const;
+
   /**
    * \brief
    * Function set the Edge Set of the Graph
@@ -132,6 +134,7 @@ class Graph {
    *
    */
   virtual void setEdgeSet(const T_EdgeSet<T> &edgeSet);
+
   /**
    * \brief
    * Function add an Edge to the Graph Edge Set
@@ -143,6 +146,7 @@ class Graph {
    *
    */
   virtual void addEdge(const Edge<T> *edge);
+
   /**
    * \brief
    * Function add an Edge to the Graph Edge Set
@@ -154,6 +158,7 @@ class Graph {
    *
    */
   virtual void addEdge(shared<const Edge<T>> edge);
+
   /**
    * \brief
    * Function that adds any number of Edges to the Graph Edge set
@@ -165,6 +170,7 @@ class Graph {
    */
   template <typename... Tn>
   void addEdges();
+
   /**
    * \brief
    * Function that adds any number of Edges to the Graph Edge set
@@ -175,6 +181,7 @@ class Graph {
   template <typename T1, typename... Tn>
   std::enable_if_t<all_are_edge_ptrs_v<T1, Tn...>, void> addEdges(T1 edge,
                                                                   Tn... edges);
+
   /**
    * \brief
    * Function to add a Node to the Graph Node Set
@@ -184,6 +191,7 @@ class Graph {
    *
    */
   virtual void addNode(const Node<T> *node);
+
   /**
    * \brief
    * Function to add a Node to the Graph Node Set
@@ -193,6 +201,7 @@ class Graph {
    *
    */
   virtual void addNode(shared<const Node<T>> node);
+
   /**
    * \brief
    * Function that adds any number of Nodes to the Graph Node set
@@ -203,6 +212,7 @@ class Graph {
    */
   template <typename... Tn>
   void addNodes();
+
   /**
    * \brief
    * Function that adds any number of Nodes to the Graph Node set
@@ -213,6 +223,7 @@ class Graph {
   template <typename T1, typename... Tn>
   std::enable_if_t<all_are_node_ptrs_v<T1, Tn...>, void> addNodes(T1 node,
                                                                   Tn... nodes);
+
   /**
    * \brief
    * Function remove an Edge from the Graph Edge Set
@@ -222,6 +233,7 @@ class Graph {
    *
    */
   virtual void removeEdge(const CXXGraph::id_t edgeId);
+
   /**
    * \brief
    * Function to remove a Node from the Graph Node Set
@@ -231,6 +243,7 @@ class Graph {
    *
    */
   virtual void removeNode(const std::string &nodeUserId);
+
   /**
    * \brief
    * Finds the given edge defined by v1 and v2 within the graph.
@@ -242,6 +255,7 @@ class Graph {
    */
   virtual bool findEdge(const Node<T> *v1, const Node<T> *v2,
                         CXXGraph::id_t &id) const;
+
   /**
    * \brief
    * Overload of findEdge which takes shared pointers as parameters
@@ -253,6 +267,7 @@ class Graph {
    */
   virtual bool findEdge(shared<const Node<T>> v1, shared<const Node<T>> v2,
                         CXXGraph::id_t &id) const;
+
   /**
    * \brief
    * Function that return the Node Set of the Graph
@@ -262,6 +277,7 @@ class Graph {
    *
    */
   virtual const T_NodeSet<T> getNodeSet() const;
+
   /**
    * \brief
    * Function that return the Set of isolated nodes
@@ -272,6 +288,7 @@ class Graph {
    *
    */
   virtual const T_NodeSet<T> getIsolatedNodeSet() const;
+
   /**
    * \brief
    * Function that sets the data contained in a node
@@ -281,6 +298,7 @@ class Graph {
    *
    */
   virtual void setNodeData(const std::string &nodeUserId, T data);
+
   /**
    * \brief
    * Function that sets the data contained in every node of the graph
@@ -289,6 +307,7 @@ class Graph {
    *
    */
   virtual void setNodeData(std::map<std::string, T> &dataMap);
+
   /**
    * \brief
    * Function that return an Edge with specific ID if Exist in the Graph
@@ -300,6 +319,7 @@ class Graph {
    */
   virtual const std::optional<shared<const Edge<T>>> getEdge(
       const CXXGraph::id_t edgeId) const;
+
   /**
    * \brief
    * Function that return a Node with specific ID if Exist in the Graph
@@ -311,6 +331,7 @@ class Graph {
    */
   virtual const std::optional<shared<const Node<T>>> getNode(
       const std::string &nodeUserId) const;
+
   /**
    * @brief This function generate a list of adjacency matrix with every element
    * of the matrix contain the node where is directed the link and the Edge
@@ -319,7 +340,12 @@ class Graph {
    */
   virtual shared<AdjacencyMatrix<T>> getAdjMatrix() const;
 
+  /**
+   * @brief This function calculates the adjacency matrix of the graph and
+   * stores it in the cachedAdjMatrix variable.
+   */
   virtual void cacheAdjMatrix();
+
   /**
    * @brief This function generates a list of the degree matrix with every
    * element of the matrix containing the node where the link is directed and
@@ -327,7 +353,12 @@ class Graph {
    */
   virtual shared<DegreeMatrix<T>> getDegreeMatrix() const;
 
+  /**
+   * @brief This function calculates the degree matrix of the graph and stores
+   * it in the cachedDegreeMatrix variable.
+   */
   virtual void cacheDegreeMatrix();
+
   /**
    * @brief This function generates a list of the Laplacian matrix with every
    * element of the matrix containing the node connected to the current node and
@@ -335,7 +366,12 @@ class Graph {
    */
   virtual shared<LaplacianMatrix<T>> getLaplacianMatrix() const;
 
+  /**
+   * @brief This function calculates the laplacian matrix of the graph and
+   * stores it in the cachedLaplacianMatrix variable.
+   */
   virtual void cacheLaplacianMatrix();
+
   /**
    * @brief This function generates a list of the transition matrix with every
    * element of the matrix containing the node that can be transitioned to from
@@ -344,7 +380,12 @@ class Graph {
    */
   virtual shared<TransitionMatrix<T>> getTransitionMatrix() const;
 
+  /**
+   * @brief This function calculates the transition matrix of the graph and
+   * stores it in the cachedTransitionMatrix variable.
+   */
   virtual void cacheTransitionMatrix();
+
   /**
    * \brief This function generates a set of nodes linked to the provided node
    * in a directed graph
@@ -354,6 +395,7 @@ class Graph {
    */
   virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
   outNeighbors(const Node<T> *node) const;
+
   /**
    * \brief This function generates a set of nodes linked to the provided node
    * in a directed graph
@@ -363,6 +405,7 @@ class Graph {
    */
   virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
   outNeighbors(shared<const Node<T>> node) const;
+
   /**
    * \brief This function generates a set of nodes linked to the provided node
    * in any graph
@@ -372,6 +415,7 @@ class Graph {
    */
   virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
   inOutNeighbors(const Node<T> *node) const;
+
   /**
    * \brief
    * \brief This function generates a set of nodes linked to the provided node
@@ -382,6 +426,7 @@ class Graph {
    */
   virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
   inOutNeighbors(shared<const Node<T>> node) const;
+
   /**
    * \brief
    * \brief This function generates a set of Edges going out of a node
@@ -392,6 +437,7 @@ class Graph {
    */
   virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> outEdges(
       const Node<T> *node) const;
+
   /**
    * \brief
    * \brief This function generates a set of Edges going out of a node
@@ -402,6 +448,7 @@ class Graph {
    */
   virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> outEdges(
       shared<const Node<T>> node) const;
+
   /**
    * \brief
    * \brief This function generates a set of Edges coming in or going out of
@@ -412,6 +459,7 @@ class Graph {
    */
   virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
   inOutEdges(const Node<T> *node) const;
+
   /**
    * \brief
    * \brief This function generates a set of Edges coming in or going out of
@@ -422,6 +470,7 @@ class Graph {
    */
   virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
   inOutEdges(shared<const Node<T>> node) const;
+
   /**
    * @brief This function finds the subset of given a nodeId
    * Subset is stored in a map where keys are the hash-id of the node & values
@@ -434,6 +483,7 @@ class Graph {
    */
   virtual CXXGraph::id_t setFind(std::unordered_map<CXXGraph::id_t, Subset> *,
                                  const CXXGraph::id_t elem) const;
+
   /**
    * @brief This function finds the subset of given a nodeId
    * Subset is stored in a map where keys are the hash-id of the node & values
@@ -448,6 +498,7 @@ class Graph {
   virtual CXXGraph::id_t setFind(
       shared<std::unordered_map<CXXGraph::id_t, Subset>>,
       const CXXGraph::id_t elem) const;
+
   /**
    * @brief This function modifies the original subset array
    * such that it the union of two sets a and b
@@ -460,6 +511,7 @@ class Graph {
   virtual void setUnion(std::unordered_map<CXXGraph::id_t, Subset> *,
                         const CXXGraph::id_t set1,
                         const CXXGraph::id_t elem2) const;
+
   /**
    * @brief This function modifies the original subset array
    * such that it the union of two sets a and b
@@ -472,6 +524,7 @@ class Graph {
   virtual void setUnion(shared<std::unordered_map<CXXGraph::id_t, Subset>>,
                         const CXXGraph::id_t set1,
                         const CXXGraph::id_t elem2) const;
+
   /**
    * @brief This function finds the eulerian path of a directed graph using
    * hierholzers algorithm
@@ -480,6 +533,7 @@ class Graph {
    * Note: No Thread Safe
    */
   virtual std::shared_ptr<std::vector<Node<T>>> eulerianPath() const;
+
   /**
    * @brief Function runs the dijkstra algorithm for some source node and
    * target node in the graph and returns the shortest distance of target
@@ -495,10 +549,38 @@ class Graph {
    */
   virtual const DijkstraResult dijkstra(const Node<T> &source,
                                         const Node<T> &target) const;
+
+  /**
+   * @brief Deterministic implementation of the dijkstra algorithm
+   * Note: No Thread Safe
+   *
+   * @param source source vertex
+   * @param target target vertex
+   *
+   * @return shortest distance if target is reachable from source else ERROR in
+   * case if target is not reachable from source or there is error in the
+   * computation.
+   */
   virtual const DijkstraResult dijkstra_deterministic(
       const Node<T> &source, const Node<T> &target) const;
+
+  /**
+   * @brief Alternative version of the deterministic dijkstra algorithm which
+   * assures complete determinism even in particular cases of paths with equal
+   * length and sum of vertex ids. More spatially and temporally expensive
+   * than the other two implementations of the algorithm.
+   * Note: No Thread Safe
+   *
+   * @param source source vertex
+   * @param target target vertex
+   *
+   * @return shortest distance if target is reachable from source else ERROR in
+   * case if target is not reachable from source or there is error in the
+   * computation.
+   */
   virtual const DijkstraResult dijkstra_deterministic2(
       const Node<T> &source, const Node<T> &target) const;
+
   /**
    * @brief This function runs the tarjan algorithm and returns different types
    * of results depending on the input parameter typeMask.
@@ -514,6 +596,7 @@ class Graph {
    * (only for undirected graphs).
    */
   virtual const TarjanResult<T> tarjan(const unsigned int typeMask) const;
+
   /**
    * @brief Function runs the bellman-ford algorithm for some source node and
    * target node in the graph and returns the shortest distance of target
@@ -529,6 +612,7 @@ class Graph {
    */
   virtual const BellmanFordResult bellmanford(const Node<T> &source,
                                               const Node<T> &target) const;
+
   /**
    * @brief This function computes the transitive reduction of the graph,
    * returning a graph with the property of transitive closure satisfied. It
@@ -540,6 +624,7 @@ class Graph {
    *
    */
   virtual const Graph<T> transitiveReduction() const;
+
   /**
    * @brief Function runs the floyd-warshall algorithm and returns the shortest
    * distance of all pair of nodes. It can also detect if a negative cycle
@@ -549,6 +634,7 @@ class Graph {
    * cycle.
    */
   virtual const FWResult floydWarshall() const;
+
   /**
    * @brief Function runs the prim algorithm and returns the minimum spanning
    * tree if the graph is undirected. Note: No Thread Safe
@@ -556,6 +642,7 @@ class Graph {
    * MST
    */
   virtual const MstResult prim() const;
+
   /**
    * @brief Function runs the boruvka algorithm and returns the minimum spanning
    * tree & cost if the graph is undirected. Note: No Thread Safe
@@ -566,7 +653,19 @@ class Graph {
    * errorMessage: "" if no error ELSE report the encountered error
    */
   virtual const MstResult boruvka() const;
+
+  /**
+   * @brief Deterministic implementation of the boruvka algorithm
+   * Note: No Thread Safe
+   *
+   * @return struct of type MstResult with following fields
+   * success: true if algorithm completed successfully ELSE false
+   * mst: vector containing id of nodes in minimum spanning tree & cost of MST
+   * mstCost: Cost of MST
+   * errorMessage: "" if no error ELSE report the encountered error
+   */	
   virtual const MstResult boruvka_deterministic() const;
+
   /**
    * @brief Function runs the kruskal algorithm and returns the minimum spanning
    * tree if the graph is undirected. Note: No Thread Safe
@@ -577,6 +676,7 @@ class Graph {
    * errorMessage: "" if no error ELSE report the encountered error
    */
   virtual const MstResult kruskal() const;
+
   /**
    * \brief
    * Function runs the best first search algorithm over the graph
@@ -592,6 +692,7 @@ class Graph {
    */
   virtual BestFirstSearchResult<T> best_first_search(
       const Node<T> &source, const Node<T> &target) const;
+
   /**
    * \brief
    * Function performs the breadth first search algorithm over the graph
@@ -604,6 +705,7 @@ class Graph {
    */
   virtual const std::vector<Node<T>> breadth_first_search(
       const Node<T> &start) const;
+
   /**
    * \brief
    * The multithreaded version of breadth_first_search
@@ -618,6 +720,7 @@ class Graph {
    */
   virtual const std::vector<Node<T>> concurrency_breadth_first_search(
       const Node<T> &start, size_t num_threads) const;
+
   /**
    * \brief
    * Function performs the depth first search algorithm over the graph
@@ -830,10 +933,24 @@ class Graph {
       const std::string &OFileName = "graph", bool compress = false,
       bool writeNodeFeat = false, bool writeEdgeWeight = false) const;
 
+  /**
+   * @brief This function writes the graph to a dot file
+   *
+   * @param workingDir The parent directory of the output file
+   * @param OFileName The output filename
+   * @param graphName The name of the graph
+   * @return 0 if OK, else return a negative value
+   */
   virtual int writeToDotFile(const std::string &workingDir,
                              const std::string &OFileName,
                              const std::string &graphName) const;
-
+  /**
+   * @brief This function writes the graph to a MTX file
+   * @param workingDir The parent directory of the output file
+   * @param OFileName The output filename
+   * @param delimier The delimiter to use in the file
+   * @return 0 if OK, else return a negative value
+   */
   virtual int writeToMTXFile(const std::string &workingDir,
                              const std::string &OFileName, char delimier) const;
 
@@ -856,10 +973,22 @@ class Graph {
       const std::string &workingDir = ".",
       const std::string &OFileName = "graph", bool compress = false,
       bool readNodeFeat = false, bool readEdgeWeight = false);
-
+  /**
+   * @brief This function reads the graph from a dot file
+   *
+   * @param workingDir The parent directory of the input file
+   * @param fileName The input filename
+   * @return 0 if OK, else return a negative value
+   */
   virtual int readFromDotFile(const std::string &workingDir,
                               const std::string &fileName);
-
+  /**
+   * @brief This function reads the graph from a MTX file
+   *
+   * @param workingDir The parent directory of the input file
+   * @param fileName The input filename
+   * @return 0 if OK, else return a negative value
+   */
   virtual int readFromMTXFile(const std::string &workingDir,
                               const std::string &fileName);
 
