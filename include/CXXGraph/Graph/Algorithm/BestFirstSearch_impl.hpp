@@ -36,7 +36,8 @@ template <typename T>
 BestFirstSearchResult<T> Graph<T>::best_first_search(
     const Node<T> &source, const Node<T> &target) const {
   BestFirstSearchResult<T> result;
-  auto &nodeSet = Graph<T>::getNodeSet();
+  //auto &nodeSet = Graph<T>::getNodeSet();
+  auto &nodeSet = Graph<T>::getNodeVector();
   using pq_type = std::pair<double, shared<const Node<T>>>;
 
   auto source_node_it = std::find_if(
@@ -109,7 +110,8 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
     const Node<T> &start, size_t num_threads) const {
   std::vector<Node<T>> bfs_result;
   // check is exist node in the graph
-  auto &nodeSet = Graph<T>::getNodeSet();
+  //auto &nodeSet = Graph<T>::getNodeSet();
+  auto &nodeSet = Graph<T>::getNodeVector();
   auto start_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),
       [&start](auto node) { return node->getUserId() == start.getUserId(); });

@@ -37,7 +37,8 @@ SCCResult<T> Graph<T>::kosaraju() const {
     result.errorMessage = ERR_UNDIR_GRAPH;
     return result;
   } else {
-    auto nodeSet = getNodeSet();
+    //auto nodeSet = getNodeSet();
+    auto nodeSet = getNodeVector();
     // created visited map
     std::unordered_map<CXXGraph::id_t, bool> visited;
     for (const auto &node : nodeSet) {

@@ -38,7 +38,8 @@ const MstResult Graph<T>::boruvka() const {
     result.errorMessage = ERR_DIR_GRAPH;
     return result;
   }
-  const auto nodeSet = Graph<T>::getNodeSet();
+  //const auto nodeSet = Graph<T>::getNodeSet();
+  const auto nodeSet = Graph<T>::getNodeVector();
   const auto n = nodeSet.size();
 
   // Use std map for storing n subsets.
@@ -133,7 +134,8 @@ const MstResult Graph<T>::boruvka_deterministic() const {
     result.errorMessage = ERR_DIR_GRAPH;
     return result;
   }
-  const auto nodeSet = Graph<T>::getNodeSet();
+  //const auto nodeSet = Graph<T>::getNodeSet();
+  const auto nodeSet = Graph<T>::getNodeVector();
   const auto n = nodeSet.size();
 
   // Use std map for storing n subsets.
@@ -145,7 +147,8 @@ const MstResult Graph<T>::boruvka_deterministic() const {
 
   // check if all edges are weighted and store the weights
   // in a map whose keys are the edge ids and values are the edge weights
-  const auto edgeSet = Graph<T>::getEdgeSet();
+  //const auto edgeSet = Graph<T>::getEdgeSet();
+  const auto edgeSet = Graph<T>::getEdgeVector();
   std::unordered_map<CXXGraph::id_t, double> edgeWeight;
   for (const auto &edge : edgeSet) {
     if (edge->isWeighted().has_value() && edge->isWeighted().value())

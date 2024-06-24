@@ -34,7 +34,8 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
   result.success = false;
   result.errorMessage = "";
   result.result = INF_DOUBLE;
-  auto nodeSet = Graph<T>::getNodeSet();
+  //auto nodeSet = Graph<T>::getNodeSet();
+  auto nodeSet = Graph<T>::getNodeVector();
   auto source_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),
       [&source](auto node) { return node->getUserId() == source.getUserId(); });
@@ -68,7 +69,8 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
   auto earlyStopping = false;
   // outer loop for vertex relaxation
   for (int i = 0; i < n - 1; ++i) {
-    auto edgeSet = Graph<T>::getEdgeSet();
+    //auto edgeSet = Graph<T>::getEdgeSet();
+    auto edgeSet = Graph<T>::getEdgeVector();
     // inner loop for distance updates of
     // each relaxation
     for (const auto &edge : edgeSet) {
@@ -102,7 +104,8 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
 
   // check if there exists a negative cycle
   if (!earlyStopping) {
-    auto edgeSet = Graph<T>::getEdgeSet();
+    //auto edgeSet = Graph<T>::getEdgeSet();
+    auto edgeSet = Graph<T>::getEdgeVector();
     for (const auto &edge : edgeSet) {
       auto elem = edge->getNodePair();
       auto edge_weight =

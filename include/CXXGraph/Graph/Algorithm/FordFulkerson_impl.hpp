@@ -43,7 +43,8 @@ double Graph<T>::fordFulkersonMaxFlow(const Node<T> &source,
       nodeHash<T>>
       weightMap;
   // build weight map
-  auto edgeSet = this->getEdgeSet();
+  //auto edgeSet = this->getEdgeSet();
+  auto edgeSet = this->getEdgeVector();
   for (const auto &edge : edgeSet) {
     // The Edge are all Directed at this point because is checked at the
     // start
@@ -59,7 +60,8 @@ double Graph<T>::fordFulkersonMaxFlow(const Node<T> &source,
   }
 
   // Constuct iterators for source and target nodes in nodeSet
-  auto nodeSet = getNodeSet();
+  //auto nodeSet = getNodeSet();
+  auto nodeSet = getNodeVector();
   auto source_node_ptr = *std::find_if(
       nodeSet.begin(), nodeSet.end(),
       [&source](auto node) { return node->getUserId() == source.getUserId(); });

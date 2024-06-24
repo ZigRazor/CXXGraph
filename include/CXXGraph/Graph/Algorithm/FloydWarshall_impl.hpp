@@ -34,6 +34,7 @@ const FWResult Graph<T>::floydWarshall() const {
                      CXXGraph::pair_hash>
       pairwise_dist;
   const auto &nodeSet = Graph<T>::getNodeSet();
+  //const auto &nodeSet = Graph<T>::getNodeVector();
   // create a pairwise distance matrix with distance node distances
   // set to inf. Distance of node to itself is set as 0.
   for (const auto &elem1 : nodeSet) {
@@ -47,6 +48,7 @@ const FWResult Graph<T>::floydWarshall() const {
   }
 
   const auto &edgeSet = Graph<T>::getEdgeSet();
+  //const auto &edgeSet = Graph<T>::getEdgeVector();
   // update the weights of nodesfloydWarshall
   // connected by edges
   for (const auto &edge : edgeSet) {

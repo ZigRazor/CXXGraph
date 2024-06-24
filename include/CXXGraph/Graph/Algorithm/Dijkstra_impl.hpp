@@ -31,7 +31,8 @@ template <typename T>
 const DijkstraResult Graph<T>::dijkstra(const Node<T>& source,
                                         const Node<T>& target) const {
   DijkstraResult result;
-  auto nodeSet = Graph<T>::getNodeSet();
+  //auto nodeSet = Graph<T>::getNodeSet();
+  auto nodeSet = Graph<T>::getNodeVector();
 
   auto source_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),
@@ -152,19 +153,20 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T>& source,
 }
 
 template <typename T>
-const DijkstraResult Graph<T>::dijkstra_deterministic(
-    const Node<T>& source, const Node<T>& target) const {
-  DijkstraResult result;
-  auto nodeSet = Graph<T>::getNodeSet();
+const DijkstraResult Graph<T>::dijkstra_deterministic(const Node<T>& source,
+                                                      const Node<T>& target) const {
+    DijkstraResult result;
+    //auto nodeSet = Graph<T>::getNodeSet();
+    auto nodeSet = Graph<T>::getNodeVector();
 
-  auto source_node_it = std::find_if(
-      nodeSet.begin(), nodeSet.end(),
-      [&source](auto node) { return node->getUserId() == source.getUserId(); });
-  if (source_node_it == nodeSet.end()) {
-    // check if source node exist in the graph
-    result.errorMessage = ERR_SOURCE_NODE_NOT_IN_GRAPH;
-    return result;
-  }
+    auto source_node_it = std::find_if(
+        nodeSet.begin(), nodeSet.end(),
+        [&source](auto node) { return node->getUserId() == source.getUserId(); });
+    if (source_node_it == nodeSet.end()) {
+        // check if source node exist in the graph
+        result.errorMessage = ERR_SOURCE_NODE_NOT_IN_GRAPH;
+        return result;
+    }
 
   auto target_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),
@@ -299,19 +301,20 @@ const DijkstraResult Graph<T>::dijkstra_deterministic(
 }
 
 template <typename T>
-const DijkstraResult Graph<T>::dijkstra_deterministic2(
-    const Node<T>& source, const Node<T>& target) const {
-  DijkstraResult result;
-  auto nodeSet = Graph<T>::getNodeSet();
+const DijkstraResult Graph<T>::dijkstra_deterministic2(const Node<T>& source,
+                                                       const Node<T>& target) const {
+    DijkstraResult result;
+    //auto nodeSet = Graph<T>::getNodeSet();
+    auto nodeSet = Graph<T>::getNodeVector();
 
-  auto source_node_it = std::find_if(
-      nodeSet.begin(), nodeSet.end(),
-      [&source](auto node) { return node->getUserId() == source.getUserId(); });
-  if (source_node_it == nodeSet.end()) {
-    // check if source node exist in the graph
-    result.errorMessage = ERR_SOURCE_NODE_NOT_IN_GRAPH;
-    return result;
-  }
+    auto source_node_it = std::find_if(
+        nodeSet.begin(), nodeSet.end(),
+        [&source](auto node) { return node->getUserId() == source.getUserId(); });
+    if (source_node_it == nodeSet.end()) {
+        // check if source node exist in the graph
+        result.errorMessage = ERR_SOURCE_NODE_NOT_IN_GRAPH;
+        return result;
+    }
 
   auto target_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),

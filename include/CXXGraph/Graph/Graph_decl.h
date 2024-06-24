@@ -117,6 +117,32 @@ class Graph {
 
   /**
    * \brief
+   * Function that shuffle cachedAdjMatrix
+   * Note: No Thread Safe
+   *
+   * @no returns
+   */
+  virtual void shuffleAdjMatrix();
+  /**
+   * \brief
+   * Function that return the Node vector of the Graph
+   * Note: No Thread Safe
+   *
+   * @returns a vector of Nodes of the graph
+   *
+   */
+  virtual const std::vector<shared<const Node<T>>> getNodeVector() const;
+  /**
+   * \brief
+   * Function that return the Edge vector of the Graph
+   * Note: No Thread Safe
+   *
+   * @returns a vector of Edges of the graph
+   *
+   */
+  virtual const std::vector<shared<const Edge<T>>> getEdgeVector() const;
+  /**
+   * \brief
    * Function that return the Edge set of the Graph
    * Note: No Thread Safe
    *

@@ -36,12 +36,14 @@ const MstResult Graph<T>::kruskal() const {
     result.errorMessage = ERR_DIR_GRAPH;
     return result;
   }
-  const auto nodeSet = Graph<T>::getNodeSet();
+  //const auto nodeSet = Graph<T>::getNodeSet();
+  const auto nodeSet = Graph<T>::getNodeVector();
   auto n = nodeSet.size();
 
   // check if all edges are weighted and store the weights
   // in a map whose keys are the edge ids and values are the edge weights
-  auto edgeSet = Graph<T>::getEdgeSet();
+  //auto edgeSet = Graph<T>::getEdgeSet();
+  auto edgeSet = Graph<T>::getEdgeVector();
   std::priority_queue<std::pair<double, shared<const Edge<T>>>,
                       std::vector<std::pair<double, shared<const Edge<T>>>>,
                       std::greater<std::pair<double, shared<const Edge<T>>>>>

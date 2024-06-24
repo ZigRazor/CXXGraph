@@ -40,7 +40,8 @@ const MstResult Graph<T>::prim() const {
     result.errorMessage = ERR_NOT_STRONG_CONNECTED;
     return result;
   }
-  auto nodeSet = Graph<T>::getNodeSet();
+  //auto nodeSet = Graph<T>::getNodeSet();
+  auto nodeSet = Graph<T>::getNodeVector();
   auto n = nodeSet.size();
 
   // setting all the distances initially to INF_DOUBLE

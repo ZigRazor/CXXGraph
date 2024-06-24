@@ -38,7 +38,8 @@ TopoSortResult<T> Graph<T>::topologicalSort() const {
     result.errorMessage = ERR_CYCLIC_GRAPH;
     return result;
   } else {
-    const auto &nodeSet = getNodeSet();
+    //const auto &nodeSet = getNodeSet();
+    const auto &nodeSet = getNodeVector();
     std::unordered_map<shared<const Node<T>>, bool, nodeHash<T>> visited;
 
     std::function<void(shared<const Node<T>>)> postorder_helper =

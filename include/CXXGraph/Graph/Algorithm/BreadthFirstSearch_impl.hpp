@@ -33,7 +33,8 @@ const std::vector<Node<T>> Graph<T>::breadth_first_search(
     const Node<T> &start) const {
   // vector to keep track of visited nodes
   std::vector<Node<T>> visited;
-  auto &nodeSet = Graph<T>::getNodeSet();
+  //auto &nodeSet = Graph<T>::getNodeSet();
+  auto &nodeSet = Graph<T>::getNodeVector();
   // check is exist node in the graph
   auto start_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),

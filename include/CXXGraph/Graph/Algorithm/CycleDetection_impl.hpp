@@ -33,7 +33,8 @@ bool Graph<T>::isCyclicDirectedGraphDFS() const {
     return false;
   }
   enum nodeStates : uint8_t { not_visited, in_stack, visited };
-  auto nodeSet = Graph<T>::getNodeSet();
+  //auto nodeSet = Graph<T>::getNodeSet();
+  auto nodeSet = Graph<T>::getNodeVector();
 
   /* State of the node.
    *
@@ -177,7 +178,8 @@ bool Graph<T>::isCyclicDirectedGraphBFS() const {
   if (!isDirectedGraph()) {
     return false;
   }
-  auto nodeSet = Graph<T>::getNodeSet();
+  //auto nodeSet = Graph<T>::getNodeSet();
+  auto nodeSet = Graph<T>::getNodeVector();
 
   std::unordered_map<CXXGraph::id_t, unsigned int> indegree;
   for (const auto &node : nodeSet) {
