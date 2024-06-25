@@ -51,7 +51,7 @@ SCCResult<T> Graph<T>::kosaraju() const {
           visited[source->getId()] = true;
 
           // travel the neighbors
-          for (int i = 0; i < (*cachedAdjMatrix)[source].size(); i++) {
+          for (size_t i = 0; i < (*cachedAdjMatrix)[source].size(); i++) {
             shared<const Node<T>> neighbor =
                 (*cachedAdjMatrix)[source].at(i).first;
             if (visited[neighbor->getId()] == false) {
@@ -99,7 +99,7 @@ SCCResult<T> Graph<T>::kosaraju() const {
           result.sccMap[source->getId()] = sccLabel;
 
           // travel the neighbors
-          for (int i = 0; i < rev[source].size(); i++) {
+          for (size_t i = 0; i < rev[source].size(); i++) {
             shared<const Node<T>> neighbor = rev[source].at(i).first;
             if (visited[neighbor->getId()] == false) {
               // make recursive call from neighbor

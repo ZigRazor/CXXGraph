@@ -181,8 +181,8 @@ int Graph<T>::readFromMTXFile(const std::string &workingDir,
   }
 
   // Define the number of columns and rows in the matrix
-  int n_cols, n_rows;
-  int n_edges;
+  std::size_t n_cols, n_rows;
+  std::size_t n_edges;
   bool undirected = false;
 
   // From the first line of the file read the number of rows, columns and edges
@@ -201,11 +201,11 @@ int Graph<T>::readFromMTXFile(const std::string &workingDir,
   std::stringstream header_stream(row_content);
   std::string value;
   getline(header_stream, value, ' ');
-  n_rows = std::stoi(value);
+  n_rows = std::stoul(value);
   getline(header_stream, value, ' ');
-  n_cols = std::stoi(value);
+  n_cols = std::stoul(value);
   getline(header_stream, value, ' ');
-  n_edges = std::stoi(value);
+  n_edges = std::stoul(value);
 
   // Since the matrix represents the adjacency matrix, it must be square
   if (n_rows != n_cols) {

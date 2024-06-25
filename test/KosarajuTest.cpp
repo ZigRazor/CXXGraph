@@ -18,9 +18,9 @@ void compareComponents(CXXGraph::SCCResult<int> result,
                        CXXGraph::Components<int>& comp2) {
   ASSERT_EQ(result.noOfComponents, comp2.size());
 
-  for (int i = 0; i < comp2.size(); i++) {
+  for (size_t i = 0; i < comp2.size(); i++) {
     int curComp = result.sccMap[comp2[i][0].getId()];
-    for (int j = 1; j < comp2[i].size(); j++) {
+    for (size_t j = 1; j < comp2[i].size(); j++) {
       ASSERT_EQ(result.sccMap[comp2[i][j].getId()], curComp);
     }
   }

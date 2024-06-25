@@ -315,7 +315,7 @@ TEST(BFSTest, test_13) {
       edgeSet.insert(newEdge);
     }
   }
-  for (int i = 1; i < nodes.size(); i += 2) {
+  for (size_t i = 1; i < nodes.size(); i += 2) {
     shared<CXXGraph::UndirectedEdge<int>> newEdge =
         make_shared<CXXGraph::UndirectedEdge<int>>(
             edges_size + i + 1, *(nodes.at(0)), *(nodes.at(i)));

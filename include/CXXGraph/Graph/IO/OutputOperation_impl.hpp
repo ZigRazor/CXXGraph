@@ -124,9 +124,9 @@ int Graph<T>::writeToFile(InputOutputFormat format,
       return _result;
     };
     if (format == InputOutputFormat::STANDARD_CSV) {
-      auto result = _compress(".csv");
+      result = _compress(".csv");
     } else if (format == InputOutputFormat::STANDARD_TSV) {
-      auto result = _compress(".tsv");
+      result = _compress(".tsv");
     } else {
       // OUTPUT FORMAT NOT RECOGNIZED
       result = -1;

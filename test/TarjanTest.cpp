@@ -95,9 +95,9 @@ TEST(TarjanTest, test_2) {
   }
   std::vector<std::vector<CXXGraph::Node<int>>> expectRes{
       {node9}, {node4, node5}, {node1, node2, node3}, {node6, node7, node8}};
-  for (int i = 0; i < 4; ++i) {
+  for (short i = 0; i < 4; ++i) {
     ASSERT_EQ(res.stronglyConnectedComps[i].size(), expectRes[i].size());
-    for (int j = 0; j < expectRes[i].size(); ++j) {
+    for (size_t j = 0; j < expectRes[i].size(); ++j) {
       ASSERT_EQ(res.stronglyConnectedComps[i][j], expectRes[i][j]);
     }
   }
@@ -113,7 +113,7 @@ TEST(TarjanTest, test_3) {
   // https://en.wikipedia.org/wiki/Biconnected_component#/media/File:Block-cut_tree2.svg
   std::vector<CXXGraph::Node<int>> nodes;
   nodes.emplace_back("0", 0);
-  for (int i = 1; i <= 18; ++i) {
+  for (short i = 1; i <= 18; ++i) {
     nodes.emplace_back(std::to_string(i), i);
   };
   std::vector<std::pair<int, int>> pairs{
@@ -139,7 +139,7 @@ TEST(TarjanTest, test_3) {
             [&](const auto &node1, const auto &node2) {
               return node1.getData() < node2.getData();
             });
-  for (int i = 0; i < expectRes.size(); ++i) {
+  for (size_t i = 0; i < expectRes.size(); ++i) {
     ASSERT_EQ(res.cutVertices[i], nodes[expectRes[i]]);
   }
   // check whether other types of functions are not be executed
@@ -154,7 +154,7 @@ TEST(TarjanTest, test_4) {
   // https://en.wikipedia.org/wiki/Biconnected_component#/media/File:Block-cut_tree2.svg
   std::vector<CXXGraph::Node<int>> nodes;
   nodes.emplace_back("0", 0);
-  for (int i = 1; i <= 18; ++i) {
+  for (short i = 1; i <= 18; ++i) {
     nodes.emplace_back(std::to_string(i), i);
   };
   std::vector<std::pair<int, int>> pairs{
@@ -200,9 +200,9 @@ TEST(TarjanTest, test_4) {
               }
               return scc1[0].getData() < scc2[0].getData();
             });
-  for (int i = 0; i < res.verticeBiconnectedComps.size(); ++i) {
+  for (size_t i = 0; i < res.verticeBiconnectedComps.size(); ++i) {
     ASSERT_EQ(res.verticeBiconnectedComps[i].size(), expectRes[i].size());
-    for (int j = 0; j < expectRes[i].size(); ++j) {
+    for (size_t j = 0; j < expectRes[i].size(); ++j) {
       ASSERT_EQ(res.verticeBiconnectedComps[i][j], expectRes[i][j]);
     }
   }
@@ -218,7 +218,7 @@ TEST(TarjanTest, test_5) {
   // codeforce https://codeforces.com/blog/entry/99259
   std::vector<CXXGraph::Node<int>> nodes;
   nodes.emplace_back("0", 0);
-  for (int i = 1; i <= 12; ++i) {
+  for (short i = 1; i <= 12; ++i) {
     nodes.emplace_back(std::to_string(i), i);
   };
   std::vector<std::pair<int, int>> pairs{
@@ -243,7 +243,7 @@ TEST(TarjanTest, test_5) {
             [&](const auto &edge1, const auto &edge2) {
               return edge1.getId() < edge2.getId();
             });
-  for (int i = 0; i < expectRes.size(); ++i) {
+  for (size_t i = 0; i < expectRes.size(); ++i) {
     ASSERT_EQ(res.bridges[i], edges[expectRes[i]]);
   }
   // check whether other types of functions are not be executed
@@ -258,7 +258,7 @@ TEST(TarjanTest, test_6) {
   // codeforce https://codeforces.com/blog/entry/99259
   std::vector<CXXGraph::Node<int>> nodes;
   nodes.emplace_back("0", 0);
-  for (int i = 1; i <= 12; ++i) {
+  for (short i = 1; i <= 12; ++i) {
     nodes.emplace_back(std::to_string(i), i);
   };
   std::vector<std::pair<int, int>> pairs{
@@ -298,9 +298,9 @@ TEST(TarjanTest, test_6) {
               }
               return scc1[0].getData() < scc2[0].getData();
             });
-  for (int i = 0; i < res.edgeBiconnectedComps.size(); ++i) {
+  for (size_t i = 0; i < res.edgeBiconnectedComps.size(); ++i) {
     ASSERT_EQ(res.edgeBiconnectedComps[i].size(), expectRes[i].size());
-    for (int j = 0; j < expectRes[i].size(); ++j) {
+    for (size_t j = 0; j < expectRes[i].size(); ++j) {
       ASSERT_EQ(res.edgeBiconnectedComps[i][j], expectRes[i][j]);
     }
   }
@@ -316,7 +316,7 @@ TEST(TarjanTest, test_7) {
   // https://en.wikipedia.org/wiki/Biconnected_component#/media/File:Block-cut_tree2.svg
   std::vector<CXXGraph::Node<int>> nodes;
   nodes.emplace_back("0", 0);
-  for (int i = 1; i <= 18; ++i) {
+  for (short i = 1; i <= 18; ++i) {
     nodes.emplace_back(std::to_string(i), i);
   };
   std::vector<std::pair<int, int>> pairs{
@@ -348,29 +348,29 @@ TEST(TarjanTest, test_7) {
   ASSERT_EQ(res.success, true);
 
   ASSERT_EQ(res.cutVertices.size(), cutvRes.cutVertices.size());
-  for (int i = 0; i < cutvRes.cutVertices.size(); ++i) {
+  for (size_t i = 0; i < cutvRes.cutVertices.size(); ++i) {
     ASSERT_EQ(cutvRes.cutVertices[i], res.cutVertices[i]);
   }
   ASSERT_EQ(res.bridges.size(), bridgeRes.bridges.size());
-  for (int i = 0; i < bridgeRes.cutVertices.size(); ++i) {
+  for (size_t i = 0; i < bridgeRes.cutVertices.size(); ++i) {
     ASSERT_EQ(bridgeRes.bridges[i], res.bridges[i]);
   }
   ASSERT_EQ(res.edgeBiconnectedComps.size(),
             ebccRes.edgeBiconnectedComps.size());
-  for (int i = 0; i < res.edgeBiconnectedComps.size(); ++i) {
+  for (size_t i = 0; i < res.edgeBiconnectedComps.size(); ++i) {
     ASSERT_EQ(res.edgeBiconnectedComps[i].size(),
               ebccRes.edgeBiconnectedComps[i].size());
-    for (int j = 0; j < ebccRes.edgeBiconnectedComps[i].size(); ++j) {
+    for (size_t j = 0; j < ebccRes.edgeBiconnectedComps[i].size(); ++j) {
       ASSERT_EQ(res.edgeBiconnectedComps[i][j],
                 ebccRes.edgeBiconnectedComps[i][j]);
     }
   }
   ASSERT_EQ(res.verticeBiconnectedComps.size(),
             vbccRes.verticeBiconnectedComps.size());
-  for (int i = 0; i < res.verticeBiconnectedComps.size(); ++i) {
+  for (size_t i = 0; i < res.verticeBiconnectedComps.size(); ++i) {
     ASSERT_EQ(res.verticeBiconnectedComps[i].size(),
               vbccRes.verticeBiconnectedComps[i].size());
-    for (int j = 0; j < vbccRes.verticeBiconnectedComps[i].size(); ++j) {
+    for (size_t j = 0; j < vbccRes.verticeBiconnectedComps[i].size(); ++j) {
       ASSERT_EQ(res.verticeBiconnectedComps[i][j],
                 vbccRes.verticeBiconnectedComps[i][j]);
     }
