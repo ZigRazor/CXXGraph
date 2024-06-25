@@ -65,7 +65,7 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
   B[0].push_back(*source_node_it);
   dist[*source_node_it].first = 0;
 
-  int idx = 0;
+  std::size_t idx = 0;
   while (true) {
     // Go sequentially through buckets till one non-empty
     // bucket is found

@@ -209,7 +209,7 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
 
       // last worker need to do preparation for the next iteration
       int cur_level = level;
-      if (num_threads == 1 + waiting_workers.fetch_add(1)) {
+      if (num_threads == 1u + waiting_workers.fetch_add(1u)) {
         swap(level_tracker, next_level_tracker);
         next_level_tracker.clear();
 
@@ -240,7 +240,7 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
   };
 
   std::vector<std::thread> workers;
-  for (int i = 0; i < num_threads - 1; ++i) {
+  for (size_t i = 0; i < num_threads - 1; ++i) {
     workers.emplace_back(std::thread(bfs_worker));
   }
   bfs_worker();

@@ -43,7 +43,7 @@ bool Graph<T>::isConnectedGraph() const {
           visited[source->getId()] = true;
 
           // travel the neighbors
-          for (int i = 0; i < (*cachedAdjMatrix)[source].size(); i++) {
+          for (size_t i = 0; i < (*cachedAdjMatrix)[source].size(); i++) {
             shared<const Node<T>> neighbor =
                 (*cachedAdjMatrix)[source].at(i).first;
             if (visited[neighbor->getId()] == false) {
@@ -83,7 +83,7 @@ bool Graph<T>::isStronglyConnectedGraph() const {
             visited[source->getId()] = true;
 
             // travel the neighbors
-            for (int i = 0; i < (*cachedAdjMatrix)[source].size(); i++) {
+            for (size_t i = 0; i < (*cachedAdjMatrix)[source].size(); i++) {
               shared<const Node<T>> neighbor =
                   (*cachedAdjMatrix)[source].at(i).first;
               if (visited[neighbor->getId()] == false) {

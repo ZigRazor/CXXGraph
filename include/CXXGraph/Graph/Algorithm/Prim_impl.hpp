@@ -41,7 +41,8 @@ const MstResult Graph<T>::prim() const {
     return result;
   }
   auto nodeSet = Graph<T>::getNodeSet();
-  auto n = nodeSet.size();
+  // unused
+  /* auto n = nodeSet.size(); */
 
   // setting all the distances initially to INF_DOUBLE
   std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist;

@@ -26,6 +26,10 @@ endif(CODE_COVERAGE)
 option(TEST "Enable Test" OFF)
 if(TEST)
     include(${CPM_DOWNLOAD_LOCATION})
+	add_compile_options(
+	  -Wall
+	  -Wextra
+	)
 
     CPMAddPackage(
         NAME googletest

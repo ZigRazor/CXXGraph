@@ -67,7 +67,7 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
   // iterations remain the same.
   auto earlyStopping = false;
   // outer loop for vertex relaxation
-  for (int i = 0; i < n - 1; ++i) {
+  for (size_t i = 0; i < n - 1; ++i) {
     auto edgeSet = Graph<T>::getEdgeSet();
     // inner loop for distance updates of
     // each relaxation

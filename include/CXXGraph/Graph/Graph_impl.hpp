@@ -463,7 +463,8 @@ std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const {
   std::shared_ptr<std::vector<Node<T>>> eulerPath =
       std::make_shared<std::vector<Node<T>>>();
 
-  bool undirected = this->isUndirectedGraph();
+  // unused
+  // bool undirected = this->isUndirectedGraph();
 
   std::vector<shared<const Node<T>>> currentPath;
   // The starting node is the only node which has more outgoing than ingoing

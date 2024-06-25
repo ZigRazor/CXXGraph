@@ -182,7 +182,7 @@ int CoordinatedPartitionState<T>::getMachineWithMinWeight() const {
 
   double MIN_LOAD = std::numeric_limits<double>::max();
   int machine_id = 0;
-  for (int i = 0; i < machines_weight_edges.size(); ++i) {
+  for (size_t i = 0; i < machines_weight_edges.size(); ++i) {
     double loadi = machines_weight_edges[i];
     if (loadi < MIN_LOAD) {
       MIN_LOAD = loadi;

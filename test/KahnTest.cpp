@@ -92,7 +92,7 @@ TEST(KahnTest, correct_example_small) {
   ASSERT_EQ(res.nodesInTopoOrder.size(), graph.getNodeSet().size());
 
   std::unordered_map<CXXGraph::id_t, int> topOrderNodeIds;
-  for (int i = 0; i < res.nodesInTopoOrder.size(); ++i) {
+  for (size_t i = 0; i < res.nodesInTopoOrder.size(); ++i) {
     topOrderNodeIds[res.nodesInTopoOrder[i].getId()] = i;
   }
 
@@ -161,7 +161,7 @@ TEST(KahnTest, correct_example_big) {
   ASSERT_EQ(res.nodesInTopoOrder.size(), graph.getNodeSet().size());
 
   std::unordered_map<CXXGraph::id_t, int> topOrderNodeIds;
-  for (int i = 0; i < res.nodesInTopoOrder.size(); ++i) {
+  for (size_t i = 0; i < res.nodesInTopoOrder.size(); ++i) {
     topOrderNodeIds[res.nodesInTopoOrder[i].getId()] = i;
   }
 
