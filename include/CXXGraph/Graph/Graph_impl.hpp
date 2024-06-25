@@ -545,8 +545,7 @@ shared<DegreeMatrix<T>> Graph<T>::getDegreeMatrix() const {
     const std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>
         &neighbors = nodePair.second;
 
-    const int degree = neighbors.size();
-    (*degreeMatrix)[node] = degree;
+    (*degreeMatrix)[node] = neighbors.size();
   }
 
   return degreeMatrix;
