@@ -48,7 +48,7 @@ class Node {
   const CXXGraph::id_t &getId() const;
   const std::string &getUserId() const;
   const T &getData() const;
-  T &getData() const;
+  T &getData() ;
   void setData(T &&new_data);
   // operator
   bool operator==(const Node<T> &b) const;
