@@ -237,6 +237,26 @@ struct BestFirstSearchResult_struct {
 template <typename T>
 using BestFirstSearchResult = BestFirstSearchResult_struct<T>;
 
+/// Struct that contains the results from an adjacency matrix exponentiation
+/// results
+struct PowAdjResult_struct {
+  bool success = false;
+  std::string errorMessage = "";
+  std::unordered_map<std::pair<std::string, std::string>, unsigned long long, pair_hash>
+      result = {};
+};
+typedef PowAdjResult_struct PowAdjResult;
+
+/// Struct that contains the results from a transition matrix exponentiation
+/// results
+struct PowTransResult_struct {
+  bool success = false;
+  std::string errorMessage = "";
+  std::unordered_map<std::pair<std::string, std::string>, double, pair_hash>
+      result = {};
+};
+typedef PowTransResult_struct PowTransResult;
+
 ///////////////////////////////////////////////////////////////////////////////////
 // Using Definition
 // ///////////////////////////////////////////////////////////////

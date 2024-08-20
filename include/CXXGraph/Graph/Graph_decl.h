@@ -535,6 +535,16 @@ class Graph {
   virtual std::shared_ptr<std::vector<Node<T>>> eulerianPath() const;
 
   /**
+   * @brief TODO
+   */
+  virtual const PowAdjResult powAdjMatrix(unsigned int k) const;
+
+  /**
+   * @brief TODO
+   */
+  virtual const PowTransResult powTransitionMatrix(unsigned int k) const;
+
+  /**
    * @brief Function runs the dijkstra algorithm for some source node and
    * target node in the graph and returns the shortest distance of target
    * from the source.
