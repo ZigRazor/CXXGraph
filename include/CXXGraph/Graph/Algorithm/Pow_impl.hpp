@@ -122,6 +122,7 @@ const PowAdjResult Graph<T>::powAdjMatrix(unsigned int k) const {
     }
 
     result.result = std::move(powAdj);
+    result.success = true;
 
     return result;
 }
@@ -146,6 +147,8 @@ const PowTransResult Graph<T>::powTransitionMatrix(unsigned int k) const {
 
     std::vector<std::vector<double>> tempDoubleTrans(n, std::vector<double>(n, 0));
 
+    // get a map between index in adj matrix
+    // and userId
     int i = 0;
     for (const auto &node : nodeSet) { 
         userIdToIdx[node->getUserId()] = i;
@@ -153,6 +156,8 @@ const PowTransResult Graph<T>::powTransitionMatrix(unsigned int k) const {
         i++;
     }
 
+    // given transition matrix, convert it to 
+    // stochastic matrix
     for (const auto &it : *transMatrix) {
         const auto f = it.first;
         const auto idx = userIdToIdx[f->getUserId()];
@@ -163,8 +168,10 @@ const PowTransResult Graph<T>::powTransitionMatrix(unsigned int k) const {
         }
     }
 
+    // exponentiate stochastic matrix
     auto powerTransMatrix = exponentiation(tempDoubleTrans, k);
 
+    // turn back into a map between nodes
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             auto pr = std::make_pair(idxToUserId[i], idxToUserId[j]);
@@ -172,14 +179,8 @@ const PowTransResult Graph<T>::powTransitionMatrix(unsigned int k) const {
         }
     }
 
-    // for (int i = 0; i < n; i++) {
-    //     for (int j = 0; j < n; j++) {
-    //         std::cout << tempDoubleTrans[i][j] << " ";
-    //     }
-    //     std::cout << std::endl;
-    // }
-
     result.result = std::move(powTrans);
+    result.success = true;
 
     return result;
 }
