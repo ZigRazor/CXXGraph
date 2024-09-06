@@ -70,7 +70,7 @@ template <typename T>
 void Graph<T>::checkOddNodesCycleUtil(std::vector<int>& visited, std::vector<int>& chainNo, 
                                       int root, int cycleLength, bool &isBiPartite) const {
     chainNo[root] = cycleLength;
-    for (const auto& child : cachedAdjMatrix->at(root)) {
+    for (const auto& child : cachedAdjMatrix->find(root)) {
         if (!visited[std::get<0>(child)->getId()]) {
             visited[std::get<0>(child)->getId()] = 1;
             checkOddNodesCycleUtil(visited, chainNo, std::get<0>(child)->getId(), cycleLength + 1, isBiPartite);
