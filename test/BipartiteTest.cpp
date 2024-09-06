@@ -44,7 +44,8 @@ TEST(IsBipartiteTest, non_bipartite_graph) {
 
   CXXGraph::UndirectedEdge<int> edge1(1, node1, node2);
   CXXGraph::UndirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedEdge<int> edge3(3, node3, node1);  // Forms a cycle of 3 nodes
+  CXXGraph::UndirectedEdge<int> edge3(3, node3,
+                                      node1);  // Forms a cycle of 3 nodes
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
@@ -54,7 +55,9 @@ TEST(IsBipartiteTest, non_bipartite_graph) {
   CXXGraph::Graph<int> graph(edgeSet);
 
   bool isBipartite = graph.isBipartite();
-  ASSERT_EQ(isBipartite, false);  // This graph has an odd-length cycle, so it's not bipartite
+  ASSERT_EQ(
+      isBipartite,
+      false);  // This graph has an odd-length cycle, so it's not bipartite
 }
 
 TEST(IsBipartiteTest, empty_graph) {
