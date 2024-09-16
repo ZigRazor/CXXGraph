@@ -535,22 +535,6 @@ class Graph {
   virtual std::shared_ptr<std::vector<Node<T>>> eulerianPath() const;
 
   /**
-   * @brief This function raises the adjacency matrix to some k. 
-   * Best used for counting number of k-length walks from i to j.
-   * @param k value by which to raise matrix
-   * @return (success, errorMessage, matrix): where matrix is equivalent to A^k
-   */
-  virtual const PowAdjResult powAdjMatrix(unsigned int k) const;
-
-  /**
-   * @brief This function raises a transition matrix to some k. 
-   * Best used for finding equilibrium. 
-   * @param k value by which to raise matrix
-   * @return (success, errorMessage, matrix): where matrix is equivalent to S^k
-   */
-  virtual const PowTransResult powTransitionMatrix(unsigned int k) const;
-
-  /**
    * @brief Function runs the dijkstra algorithm for some source node and
    * target node in the graph and returns the shortest distance of target
    * from the source.

@@ -38,7 +38,7 @@ TEST(PowAdjTest, libre_texts) {
   graph.addEdge(&e5);
   graph.addEdge(&e6);
 
-  auto res = graph.powAdjMatrix(2);
+  auto res = matrixPow(graph.getAdjMatrix(), 2);
 
   ASSERT_TRUE(res.success);
   ASSERT_TRUE(res.result[std::make_pair("a", "c")] == 2);
@@ -50,6 +50,49 @@ TEST(PowAdjTest, libre_texts) {
   ASSERT_TRUE(res.result[std::make_pair("d", "b")] == 1);
   ASSERT_TRUE(res.result[std::make_pair("c", "a")] == 0);
   ASSERT_TRUE(res.result[std::make_pair("d", "c")] == 0);
+}
+
+TEST(PowAdjTest, triangle) {
+  CXXGraph::Node<int> a("a", 1);
+  CXXGraph::Node<int> b("b", 1);
+  CXXGraph::Node<int> c("c", 1);
+
+  CXXGraph::UndirectedEdge<int> e1(0, a, b);
+  CXXGraph::UndirectedEdge<int> e2(1, b, c);
+  CXXGraph::UndirectedEdge<int> e3(2, c, a);
+
+  CXXGraph::Graph<int> graph;
+  graph.addEdge(&e1);
+  graph.addEdge(&e2);
+  graph.addEdge(&e3);
+
+  auto res = matrixPow(graph.getAdjMatrix(), 5);
+
+  std::cout << "HERE" << std::endl;
+
+  for (const auto &[node, edges] : *graph.getAdjMatrix()) {
+    for (const auto &e : edges) {
+      const auto edge = e.second->getNodePair();
+      const auto firstId = edge.first->getUserId();
+      const auto secondId = edge.second->getUserId();
+
+      std::cout << firstId << " " << secondId << std::endl;
+    }
+  }
+  for (const auto &[nodes, value] : res.result) {
+    std::cout << value << std::endl;
+  }
+
+  ASSERT_TRUE(res.success);
+  ASSERT_TRUE(res.result[std::make_pair("a", "a")] == 10);
+  ASSERT_TRUE(res.result[std::make_pair("b", "b")] == 10);
+  ASSERT_TRUE(res.result[std::make_pair("c", "c")] == 10);
+  ASSERT_TRUE(res.result[std::make_pair("a", "b")] == 11);
+  ASSERT_TRUE(res.result[std::make_pair("b", "a")] == 11);
+  ASSERT_TRUE(res.result[std::make_pair("b", "c")] == 11);
+  ASSERT_TRUE(res.result[std::make_pair("c", "b")] == 11);
+  ASSERT_TRUE(res.result[std::make_pair("a", "c")] == 11);
+  ASSERT_TRUE(res.result[std::make_pair("c", "a")] == 11);
 }
 
 // https://docs.dgl.ai/generated/dgl.khop_adj.html#dgl.khop_adj
@@ -83,7 +126,7 @@ TEST(PowAdjTest, dgl) {
   graph.addEdge(&e9);
   graph.addEdge(&e10);
 
-  auto res = graph.powAdjMatrix(3);
+  auto res = matrixPow(graph.getAdjMatrix(), 3);
 
   ASSERT_TRUE(res.success);
   ASSERT_TRUE(res.result[std::make_pair("a", "a")] == 1);
@@ -120,7 +163,7 @@ TEST(PowTransTest, transition_matrix) {
   graph.addEdge(&e6);
   graph.addEdge(&e7);
 
-  auto res = graph.powTransitionMatrix(10);
+  auto res = matrixPow(graph.getTransitionMatrix(), 10);
 
   const double threshold = 1e-3;
 
