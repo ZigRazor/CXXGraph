@@ -56,7 +56,7 @@ template <typename T>
 std::vector<std::vector<T>> exponentiation(std::vector<std::vector<T>> &mat,
                                            unsigned int k) {
   static_assert(std::is_arithmetic<T>::value,
-                "Type T must be any artithmetic type");
+                "Type T must be any arithmetic type");
 
   // validate size and shape of matrix
   if (mat.size() == 0 || mat.size() != mat[0].size()) {
