@@ -107,16 +107,13 @@ const PowAdjResult matrixPow(const shared<AdjacencyMatrix<T>> &adj,
   PowAdjResult result;
   result.success = false;
   result.errorMessage = "";
-  std::unordered_map<std::pair<std::string, std::string>, unsigned long long,
-                     CXXGraph::pair_hash>
-      powAdj;
 
   // convert back and forth between user ids and index in temporary adj matrix
   std::unordered_map<std::string, int> userIdToIdx;
   std::unordered_map<int, std::string> idxToUserId;
 
   int n = 0;
-  for (const auto &[node, list] : *adj) {
+  for (const auto &[node, _] : *adj) {
     userIdToIdx[node->getUserId()] = n;
     idxToUserId[n] = node->getUserId();
     n++;
@@ -128,27 +125,30 @@ const PowAdjResult matrixPow(const shared<AdjacencyMatrix<T>> &adj,
 
   // populate temporary adjacency matrix w/ edges
   // can handle both directed and undirected
-  for (const auto &[node, edges] : *adj) {
-    for (const auto &e : edges) {
-      const auto edge = e.second->getNodePair();
-      const auto firstId = edge.first->getUserId();
-      const auto secondId = edge.second->getUserId();
+  for (const auto &[_, edges] : *adj) {
+    for (const auto &[_, edge] : edges) {
+      const auto &[u, v] = edge->getNodePair();
+      const auto uIdx = userIdToIdx[u->getUserId()];
+      const auto vIdx = userIdToIdx[v->getUserId()];
 
       // if undirected, add both sides
-      if (!(e.second->isDirected().has_value() &&
-            e.second->isDirected().value()))
-        tempIntAdj[userIdToIdx[secondId]][userIdToIdx[firstId]] = 1;
-      tempIntAdj[userIdToIdx[firstId]][userIdToIdx[secondId]] = 1;
+      if (!(edge->isDirected().has_value() && edge->isDirected().value()))
+        tempIntAdj[vIdx][uIdx] = 1;
+      tempIntAdj[uIdx][vIdx] = 1;
     }
   }
 
   // calculate the power matrix
-  auto powerMatrix = exponentiation(tempIntAdj, k);
+  const auto powerMatrix = exponentiation(tempIntAdj, k);
 
+  // remap values
+  std::unordered_map<std::pair<std::string, std::string>, unsigned long long,
+                     CXXGraph::pair_hash>
+      powAdj;
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < n; j++) {
-      auto pr = std::make_pair(idxToUserId[i], idxToUserId[j]);
-      powAdj[pr] = powerMatrix[i][j];
+      powAdj[std::make_pair(idxToUserId[i], idxToUserId[j])] =
+          powerMatrix[i][j];
     }
   }
 
