@@ -128,8 +128,8 @@ const PowAdjResult matrixPow(const shared<AdjacencyMatrix<T>> &adj,
   for (const auto &[_, edges] : *adj) {
     for (const auto &[_, edge] : edges) {
       const auto &[u, v] = edge->getNodePair();
-      const auto uIdx = userIdToIdx[u->getUserId()];
-      const auto vIdx = userIdToIdx[v->getUserId()];
+      const int uIdx = userIdToIdx[u->getUserId()];
+      const int vIdx = userIdToIdx[v->getUserId()];
 
       // if undirected, add both sides
       if (!(edge->isDirected().has_value() && edge->isDirected().value()))
@@ -170,45 +170,44 @@ const PowTransResult matrixPow(const shared<TransitionMatrix<T>> &trans,
   PowTransResult result;
   result.success = false;
   result.errorMessage = "";
-  std::unordered_map<std::pair<std::string, std::string>, double,
-                     CXXGraph::pair_hash>
-      powTrans;
-
-  std::unordered_map<std::string, int> userIdToIdx;
-  std::unordered_map<int, std::string> idxToUserId;
 
   // get a map between index in adj matrix
   // and userId
+  std::unordered_map<std::string, int> userIdToIdx;
+  std::unordered_map<int, std::string> idxToUserId;
+
   int n = 0;
-  for (const auto &[node, list] : *trans) {
+  for (const auto &[node, _] : *trans) {
     userIdToIdx[node->getUserId()] = n;
     idxToUserId[n] = node->getUserId();
     n++;
   }
 
-  std::vector<std::vector<double>> tempDoubleTrans(n,
-                                                   std::vector<double>(n, 0));
+  std::vector<std::vector<double>> stochasticMatrix(n,
+                                                   std::vector<double>(n, 0.0));
 
   // given transition matrix, convert it to
   // stochastic matrix
-  for (const auto &it : *trans) {
-    const auto f = it.first;
-    const auto idx = userIdToIdx[f->getUserId()];
+  for (const auto &[u, edges] : *trans) {
+    const int uIdx = userIdToIdx[u->getUserId()];
 
-    for (const auto &e : it.second) {
-      const auto idx2 = userIdToIdx[e.first->getUserId()];
-      tempDoubleTrans[idx][idx2] = e.second;
+    for (const auto &[v, weight] : edges) {
+      const int vIdx = userIdToIdx[v->getUserId()];
+      stochasticMatrix[uIdx][vIdx] = weight;
     }
   }
 
   // exponentiate stochastic matrix
-  auto powerTransMatrix = exponentiation(tempDoubleTrans, k);
+  auto powerTransMatrix = exponentiation(stochasticMatrix, k);
 
   // turn back into a map between nodes
+  std::unordered_map<std::pair<std::string, std::string>, double,
+                     CXXGraph::pair_hash>
+      powTrans;
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < n; j++) {
-      auto pr = std::make_pair(idxToUserId[i], idxToUserId[j]);
-      powTrans[pr] = powerTransMatrix[i][j];
+      powTrans[std::make_pair(idxToUserId[i], idxToUserId[j])] =
+          powerTransMatrix[i][j];
     }
   }
 
