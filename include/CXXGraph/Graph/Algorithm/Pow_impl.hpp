@@ -46,10 +46,22 @@ std::vector<std::vector<T>> matMult(std::vector<std::vector<T>> &a,
 }
 
 template <typename T>
+/**
+ * @brief exponentation takes a matrix of arithmetic type and
+ * raises it to the power of k.
+ * @param mat a square matrix
+ * @param k a nonnegative integer
+ * @return M, the result of mat^k
+ */
 std::vector<std::vector<T>> exponentiation(std::vector<std::vector<T>> &mat,
                                            unsigned int k) {
   static_assert(std::is_arithmetic<T>::value,
                 "Type T must be any artithmetic type");
+
+  // validate size and shape of matrix
+  if (mat.size() == 0 || mat.size() != mat[0].size()) {
+    throw std::invalid_argument("Matrix must be square and at least 1x1.");
+  }
 
   int n = static_cast<int>(mat.size());
   std::vector<std::vector<T>> res(n, std::vector<T>(n, 0));
@@ -76,7 +88,8 @@ namespace CXXGraph {
  * @return (success, errorMessage, matrix): where matrix is equivalent to A^k
  */
 template <typename T>
-const PowAdjResult matrixPow(const shared<AdjacencyMatrix<T>> &adj, unsigned int k) {
+const PowAdjResult matrixPow(const shared<AdjacencyMatrix<T>> &adj,
+                             unsigned int k) {
   PowAdjResult result;
   result.success = false;
   result.errorMessage = "";
@@ -106,9 +119,10 @@ const PowAdjResult matrixPow(const shared<AdjacencyMatrix<T>> &adj, unsigned int
       const auto edge = e.second->getNodePair();
       const auto firstId = edge.first->getUserId();
       const auto secondId = edge.second->getUserId();
-      
+
       // if undirected, add both sides
-      if (!(e.second->isDirected().has_value() && e.second->isDirected().value()))
+      if (!(e.second->isDirected().has_value() &&
+            e.second->isDirected().value()))
         tempIntAdj[userIdToIdx[secondId]][userIdToIdx[firstId]] = 1;
       tempIntAdj[userIdToIdx[firstId]][userIdToIdx[secondId]] = 1;
     }
@@ -138,7 +152,7 @@ const PowAdjResult matrixPow(const shared<AdjacencyMatrix<T>> &adj, unsigned int
  */
 template <typename T>
 const PowTransResult matrixPow(const shared<TransitionMatrix<T>> &trans,
-                                         unsigned int k) {
+                               unsigned int k) {
   PowTransResult result;
   result.success = false;
   result.errorMessage = "";
@@ -159,8 +173,7 @@ const PowTransResult matrixPow(const shared<TransitionMatrix<T>> &trans,
   }
 
   std::vector<std::vector<double>> tempDoubleTrans(n,
-                                                   std::vector<double>(n,
-                                                   0));
+                                                   std::vector<double>(n, 0));
 
   // given transition matrix, convert it to
   // stochastic matrix
