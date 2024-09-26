@@ -45,7 +45,6 @@ std::vector<std::vector<T>> matMult(std::vector<std::vector<T>> &a,
   return res;
 }
 
-template <typename T>
 /**
  * @brief exponentation takes a matrix of arithmetic type and
  * raises it to the power of k.
@@ -53,6 +52,7 @@ template <typename T>
  * @param k a nonnegative integer
  * @return M, the result of mat^k
  */
+template <typename T>
 std::vector<std::vector<T>> exponentiation(std::vector<std::vector<T>> &mat,
                                            unsigned int k) {
   static_assert(std::is_arithmetic<T>::value,
