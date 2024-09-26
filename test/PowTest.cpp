@@ -68,21 +68,6 @@ TEST(PowAdjTest, triangle) {
 
   auto res = matrixPow(graph.getAdjMatrix(), 5);
 
-  std::cout << "HERE" << std::endl;
-
-  for (const auto &[node, edges] : *graph.getAdjMatrix()) {
-    for (const auto &e : edges) {
-      const auto edge = e.second->getNodePair();
-      const auto firstId = edge.first->getUserId();
-      const auto secondId = edge.second->getUserId();
-
-      std::cout << firstId << " " << secondId << std::endl;
-    }
-  }
-  for (const auto &[nodes, value] : res.result) {
-    std::cout << value << std::endl;
-  }
-
   ASSERT_TRUE(res.success);
   ASSERT_TRUE(res.result[std::make_pair("a", "a")] == 10);
   ASSERT_TRUE(res.result[std::make_pair("b", "b")] == 10);

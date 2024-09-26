@@ -48,9 +48,8 @@ std::vector<std::vector<T>> matMult(std::vector<std::vector<T>> &a,
 template <typename T>
 std::vector<std::vector<T>> exponentiation(std::vector<std::vector<T>> &mat,
                                            unsigned int k) {
-  // typechecking
   static_assert(std::is_arithmetic<T>::value,
-                "Type T must be either unsigned long long or double");
+                "Type T must be any artithmetic type");
 
   int n = static_cast<int>(mat.size());
   std::vector<std::vector<T>> res(n, std::vector<T>(n, 0));
@@ -58,7 +57,7 @@ std::vector<std::vector<T>> exponentiation(std::vector<std::vector<T>> &mat,
   // build identity matrix
   for (int i = 0; i < n; i++) res[i][i] = 1;
 
-  // fast exponentation!
+  // fast exponentiation!
   while (k) {
     if (k & 1) res = matMult(res, mat);
     mat = matMult(mat, mat);
