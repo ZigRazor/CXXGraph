@@ -24,11 +24,23 @@
 
 #include "CXXGraph/Graph/Graph_decl.h"
 
+/**
+ * @brief simple matrix multiplication of two matrices
+ * A and B
+ * @param a matrix A
+ * @param b matrix B
+ * @return A times B
+ */
 template <typename T>
-std::vector<std::vector<T>> matMult(std::vector<std::vector<T>> &a,
-                                    std::vector<std::vector<T>> &b) {
+std::vector<std::vector<T>> matMult(const std::vector<std::vector<T>> &a,
+                                    const std::vector<std::vector<T>> &b) {
   static_assert(std::is_arithmetic<T>::value,
-                "Type T must be either unsigned long long or double");
+                "Type T must be an arithmetic type");
+
+  // two square matrices both of size N x N where N > 0
+  if (a.empty() || a[0].size() != b.size() || a.size() != a[0].size() || b.size() != b[0].size()) {
+    throw std::invalid_argument("Matrix must have valid dimensions and be at least 1x1.");
+  }
 
   int n = static_cast<int>(a.size());  // N x N matrix
   std::vector<std::vector<T>> res(n, std::vector<T>(n, 0));
