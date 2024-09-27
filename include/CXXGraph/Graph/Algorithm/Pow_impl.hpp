@@ -67,7 +67,7 @@ std::vector<std::vector<T>> matMult(const std::vector<std::vector<T>> &a,
  * @return M, the result of mat^k
  */
 template <typename T>
-std::vector<std::vector<T>> exponentiation(std::vector<std::vector<T>> &mat,
+std::vector<std::vector<T>> exponentiation(std::vector<std::vector<T>> mat,
                                            unsigned int k) {
   static_assert(std::is_arithmetic<T>::value,
                 "Type T must be any arithmetic type");
