@@ -38,7 +38,7 @@ TEST(PowAdjTest, libre_texts) {
   graph.addEdge(&e5);
   graph.addEdge(&e6);
 
-  auto res = matrixPow(graph.getAdjMatrix(), 2);
+  CXXGraph::PowAdjResult res = matrixPow(graph.getAdjMatrix(), 2);
 
   ASSERT_TRUE(res.success);
   ASSERT_TRUE(res.result[std::make_pair("a", "c")] == 2);
@@ -66,7 +66,7 @@ TEST(PowAdjTest, triangle) {
   graph.addEdge(&e2);
   graph.addEdge(&e3);
 
-  auto res = matrixPow(graph.getAdjMatrix(), 5);
+  CXXGraph::PowAdjResult res = matrixPow(graph.getAdjMatrix(), 5);
 
   ASSERT_TRUE(res.success);
   ASSERT_TRUE(res.result[std::make_pair("a", "a")] == 10);
@@ -111,7 +111,7 @@ TEST(PowAdjTest, dgl) {
   graph.addEdge(&e9);
   graph.addEdge(&e10);
 
-  auto res = matrixPow(graph.getAdjMatrix(), 3);
+  CXXGraph::PowAdjResult res = matrixPow(graph.getAdjMatrix(), 3);
 
   ASSERT_TRUE(res.success);
   ASSERT_TRUE(res.result[std::make_pair("a", "a")] == 1);
@@ -148,7 +148,7 @@ TEST(PowTransTest, transition_matrix) {
   graph.addEdge(&e6);
   graph.addEdge(&e7);
 
-  auto res = matrixPow(graph.getTransitionMatrix(), 10);
+  CXXGraph::PowTransResult res = matrixPow(graph.getTransitionMatrix(), 10);
 
   const double threshold = 1e-3;
 
