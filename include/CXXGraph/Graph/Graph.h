@@ -37,6 +37,7 @@
 #include "CXXGraph/Graph/Algorithm/Kahn_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/Kosaraju_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/Kruskal_impl.hpp"
+#include "CXXGraph/Graph/Algorithm/Pow_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/Prim_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/Tarjan_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/TopologicalSort_impl.hpp"
