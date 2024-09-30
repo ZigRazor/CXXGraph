@@ -703,6 +703,10 @@ class Graph {
    * search.
    *
    */
+
+
+  virtual const BronKerboschResult<T> bron_kerbosch() const;
+
   virtual const std::vector<Node<T>> breadth_first_search(
       const Node<T> &start) const;
 
