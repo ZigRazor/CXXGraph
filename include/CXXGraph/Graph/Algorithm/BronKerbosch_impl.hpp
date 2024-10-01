@@ -32,6 +32,7 @@ const BronKerboschResult<T> Graph<T>::bron_kerbosch() const{
   BronKerboschResult<T> result;
 
   if(!isUndirectedGraph()){
+    result.success = false;
     result.errorMessage = ERR_DIR_GRAPH;
     return result;
   }
