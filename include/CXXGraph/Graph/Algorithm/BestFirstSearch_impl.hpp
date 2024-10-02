@@ -22,12 +22,12 @@
 
 #pragma once
 
+#include <algorithm>
 #include <atomic>
 #include <condition_variable>
 #include <mutex>
 #include <queue>
 #include <thread>
-#include <algorithm>
 
 #include "CXXGraph/Graph/Graph_decl.h"
 

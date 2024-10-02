@@ -663,7 +663,7 @@ class Graph {
    * mst: vector containing id of nodes in minimum spanning tree & cost of MST
    * mstCost: Cost of MST
    * errorMessage: "" if no error ELSE report the encountered error
-   */	
+   */
   virtual const MstResult boruvka_deterministic() const;
 
   /**
@@ -703,7 +703,6 @@ class Graph {
    * search.
    *
    */
-
 
   virtual const BronKerboschResult<T> bron_kerbosch() const;
 

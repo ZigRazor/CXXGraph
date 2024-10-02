@@ -237,13 +237,15 @@ struct BestFirstSearchResult_struct {
 template <typename T>
 using BestFirstSearchResult = BestFirstSearchResult_struct<T>;
 
+// Struct that contains information about BronKerbosch algorithm results
 template <typename T>
 struct BronKerboschResult_struct {
   bool success = false;
   std::string errorMessage = "";
-  std::vector<std::unordered_set<shared<const Node<T>>, nodeHash<T>>> maximalCliques = {};
+  std::vector<std::unordered_set<shared<const Node<T>>, nodeHash<T>>>
+      maximalCliques = {};
 };
-template<typename T>
+template <typename T>
 using BronKerboschResult = BronKerboschResult_struct<T>;
 
 ///////////////////////////////////////////////////////////////////////////////////

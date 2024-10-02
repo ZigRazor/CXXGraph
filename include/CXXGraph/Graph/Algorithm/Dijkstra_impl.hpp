@@ -52,7 +52,7 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T>& source,
   }
   // n denotes the number of vertices in graph
   // unused
-  //auto n = cachedAdjMatrix->size();
+  // auto n = cachedAdjMatrix->size();
 
   // setting all the distances initially to INF_DOUBLE
   std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist;
@@ -177,7 +177,7 @@ const DijkstraResult Graph<T>::dijkstra_deterministic(
   }
   // n denotes the number of vertices in graph
   // unused
-  //auto n = cachedAdjMatrix->size();
+  // auto n = cachedAdjMatrix->size();
 
   // setting all the distances initially to INF_DOUBLE
   std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist;
