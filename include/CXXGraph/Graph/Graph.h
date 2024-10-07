@@ -27,6 +27,7 @@
 #include "CXXGraph/Graph/Algorithm/BestFirstSearch_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/Boruvka_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/BreadthFirstSearch_impl.hpp"
+#include "CXXGraph/Graph/Algorithm/BronKerbosch_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/Connectivity_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/CycleDetection_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/DepthFirstSearch_impl.hpp"

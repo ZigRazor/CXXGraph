@@ -89,6 +89,7 @@ if(TEST)
 
     add_test(test_bellmanford test_exe --gtest_filter=BellmanFord*)
     add_test(test_boruvka test_exe --gtest_filter=Boruvka*)
+    add_test(test_bron_kerbosch test_exe --gtest_filter=BronKerbosch*)
     add_test(test_connectivity test_exe --gtest_filter=Connectivity*)
     add_test(test_euler_path test_exe --gtest_filter=EulerPath*)
     add_test(test_fordfulkerson test_exe --gtest_filter=FordFulkerson*)
