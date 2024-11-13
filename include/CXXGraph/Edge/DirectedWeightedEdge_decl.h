@@ -14,7 +14,7 @@
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0 ***/
+/***	 License: MPL v2.0***/
 /***********************************************************/
 #ifndef __CXXGRAPH_DIRECTEDWEIGHTEDEDGE_DECL_H__
 #define __CXXGRAPH_DIRECTEDWEIGHTEDEDGE_DECL_H__
