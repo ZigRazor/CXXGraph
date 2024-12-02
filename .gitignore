@@ -38,3 +38,4 @@ packaging/
 # ignore vscode files
 .vscode
 .code-workspace
+CXXGraph.code-workspace
