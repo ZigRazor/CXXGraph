@@ -18,7 +18,8 @@ static void Kosaraju_X(benchmark::State &state) {
 }
 BENCHMARK(Kosaraju_X)
     ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16);
+    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->Complexity();
 
 static void Kosaraju_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
@@ -27,4 +28,4 @@ static void Kosaraju_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(Kosaraju_FromReadedCitHep);
+BENCHMARK(Kosaraju_FromReadedCitHep)->Complexity();

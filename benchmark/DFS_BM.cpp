@@ -18,8 +18,10 @@ static void DFS_X(benchmark::State &state) {
   }
 }
 
-BENCHMARK(DFS_X)->RangeMultiplier(16)->Range((unsigned long)1,
-                                             (unsigned long)1 << 16);
+BENCHMARK(DFS_X)
+    ->RangeMultiplier(16)
+    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->Complexity();
 
 static void DFS_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
@@ -29,4 +31,4 @@ static void DFS_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(DFS_FromReadedCitHep);
+BENCHMARK(DFS_FromReadedCitHep)->Complexity();

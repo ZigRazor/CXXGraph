@@ -16,8 +16,10 @@ static void Prim_X(benchmark::State &state) {
     auto &result = g.prim();
   }
 }
-BENCHMARK(Prim_X)->RangeMultiplier(16)->Range((unsigned long)1,
-                                              (unsigned long)1 << 16);
+BENCHMARK(Prim_X)
+    ->RangeMultiplier(16)
+    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->Complexity();
 
 static void Prim_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
@@ -26,4 +28,4 @@ static void Prim_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(Prim_FromReadedCitHep);
+BENCHMARK(Prim_FromReadedCitHep)->Complexity();

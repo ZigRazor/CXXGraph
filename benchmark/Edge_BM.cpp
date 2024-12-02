@@ -12,7 +12,7 @@ static void BM_EdgeCreation(benchmark::State &state) {
   }
 }
 
-BENCHMARK(BM_EdgeCreation);
+BENCHMARK(BM_EdgeCreation)->Complexity();
 
 static void EdgeCreationDestruction_new_delete(benchmark::State &state) {
   auto nodes = generateRandomNodes(2, 2);
@@ -25,7 +25,7 @@ static void EdgeCreationDestruction_new_delete(benchmark::State &state) {
   }
 }
 
-BENCHMARK(EdgeCreationDestruction_new_delete);
+BENCHMARK(EdgeCreationDestruction_new_delete)->Complexity();
 
 static void EdgeGetId(benchmark::State &state) {
   auto nodes = generateRandomNodes(2, 2);
@@ -36,7 +36,7 @@ static void EdgeGetId(benchmark::State &state) {
     e.getId();
   }
 }
-BENCHMARK(EdgeGetId);
+BENCHMARK(EdgeGetId)->Complexity();
 
 static void NodeGetNodePair(benchmark::State &state) {
   auto nodes = generateRandomNodes(2, 2);
@@ -47,4 +47,4 @@ static void NodeGetNodePair(benchmark::State &state) {
     e.getNodePair();
   }
 }
-BENCHMARK(NodeGetNodePair);
+BENCHMARK(NodeGetNodePair)->Complexity();

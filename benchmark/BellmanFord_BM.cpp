@@ -19,7 +19,8 @@ static void BellmanFord_X(benchmark::State &state) {
 }
 BENCHMARK(BellmanFord_X)
     ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16);
+    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->Complexity();
 
 static void BellmanFord_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
@@ -30,4 +31,4 @@ static void BellmanFord_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(BellmanFord_FromReadedCitHep);
+BENCHMARK(BellmanFord_FromReadedCitHep)->Complexity();

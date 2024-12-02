@@ -20,7 +20,8 @@ static void FordFulkerson_X(benchmark::State &state) {
 }
 BENCHMARK(FordFulkerson_X)
     ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16);
+    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->Complexity();
 
 static void FordFulkerson_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
@@ -31,4 +32,4 @@ static void FordFulkerson_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(FordFulkerson_FromReadedCitHep);
+BENCHMARK(FordFulkerson_FromReadedCitHep)->Complexity();

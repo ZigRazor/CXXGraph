@@ -16,8 +16,10 @@ static void Dial_X(benchmark::State &state) {
     auto &result = g.dial(*(range_start->second->getNodePair().first), 1);
   }
 }
-BENCHMARK(Dial_X)->RangeMultiplier(16)->Range((unsigned long)1,
-                                              (unsigned long)1 << 16);
+BENCHMARK(Dial_X)
+    ->RangeMultiplier(16)
+    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->Complexity();
 
 static void Dial_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
@@ -27,4 +29,4 @@ static void Dial_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(Dial_FromReadedCitHep);
+BENCHMARK(Dial_FromReadedCitHep)->Complexity();

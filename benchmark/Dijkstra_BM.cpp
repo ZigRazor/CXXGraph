@@ -19,7 +19,8 @@ static void Dijkstra_X(benchmark::State &state) {
 }
 BENCHMARK(Dijkstra_X)
     ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16);
+    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->Complexity();
 
 static void Dijkstra_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
@@ -30,4 +31,4 @@ static void Dijkstra_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(Dijkstra_FromReadedCitHep);
+BENCHMARK(Dijkstra_FromReadedCitHep)->Complexity();
