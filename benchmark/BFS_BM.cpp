@@ -17,8 +17,10 @@ static void BFS_X(benchmark::State &state) {
         g.breadth_first_search(*(range_start->second->getNodePair().first));
   }
 }
-BENCHMARK(BFS_X)->RangeMultiplier(18)->Range((unsigned long)1,
-                                             (unsigned long)1 << 18);
+BENCHMARK(BFS_X)
+    ->RangeMultiplier(18)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
+    ->Complexity();
 
 static void BFS_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
@@ -28,7 +30,7 @@ static void BFS_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(BFS_FromReadedCitHep);
+BENCHMARK(BFS_FromReadedCitHep)->Complexity();
 
 static void PSEUDO_CONCURRENCY_BFS_X(benchmark::State &state) {
   CXXGraph::Graph<int> g;
@@ -46,7 +48,8 @@ static void PSEUDO_CONCURRENCY_BFS_X(benchmark::State &state) {
 }
 BENCHMARK(PSEUDO_CONCURRENCY_BFS_X)
     ->RangeMultiplier(18)
-    ->Range((unsigned long)1, (unsigned long)1 << 18);
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
+    ->Complexity();
 
 static void PSEUDO_CONCURRENCY_BFS_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
@@ -56,7 +59,7 @@ static void PSEUDO_CONCURRENCY_BFS_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(PSEUDO_CONCURRENCY_BFS_FromReadedCitHep);
+BENCHMARK(PSEUDO_CONCURRENCY_BFS_FromReadedCitHep)->Complexity();
 
 static void CONCURRENCY_BFS_X(benchmark::State &state) {
   CXXGraph::Graph<int> g;
@@ -72,9 +75,9 @@ static void CONCURRENCY_BFS_X(benchmark::State &state) {
         *(range_start->second->getNodePair().first), 8);
   }
 }
-BENCHMARK(CONCURRENCY_BFS_X)
-    ->RangeMultiplier(18)
-    ->Range((unsigned long)1, (unsigned long)1 << 18);
+// BENCHMARK(CONCURRENCY_BFS_X)
+//     ->RangeMultiplier(18)
+//     ->Range((unsigned long)1, (unsigned long)1 << 18);
 
 static void CONCURRENCY_BFS_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
@@ -84,4 +87,4 @@ static void CONCURRENCY_BFS_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(CONCURRENCY_BFS_FromReadedCitHep);
+// BENCHMARK(CONCURRENCY_BFS_FromReadedCitHep);

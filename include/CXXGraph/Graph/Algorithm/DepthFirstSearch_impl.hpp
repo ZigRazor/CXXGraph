@@ -33,11 +33,11 @@ const std::vector<Node<T>> Graph<T>::depth_first_search(
     const Node<T> &start) const {
   // vector to keep track of visited nodes
   std::vector<Node<T>> visited;
-  auto nodeSet = Graph<T>::getNodeSet();
+  auto &nodeSet = Graph<T>::getNodeSet();
   // check is exist node in the graph
   auto start_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),
-      [&start](auto node) { return node->getUserId() == start.getUserId(); });
+      [&start](auto &node) { return node->getUserId() == start.getUserId(); });
   if (start_node_it == nodeSet.end()) {
     return visited;
   }

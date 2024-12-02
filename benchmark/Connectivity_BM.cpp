@@ -18,7 +18,8 @@ static void Connectivity_X(benchmark::State &state) {
 }
 BENCHMARK(Connectivity_X)
     ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16);
+    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->Complexity();
 
 static void Connectivity_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
@@ -27,7 +28,7 @@ static void Connectivity_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(Connectivity_FromReadedCitHep);
+BENCHMARK(Connectivity_FromReadedCitHep)->Complexity();
 
 static void StrongConnectivity_X(benchmark::State &state) {
   CXXGraph::Graph<int> g;
@@ -44,7 +45,8 @@ static void StrongConnectivity_X(benchmark::State &state) {
 }
 BENCHMARK(StrongConnectivity_X)
     ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16);
+    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->Complexity();
 
 static void StrongConnectivity_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
@@ -53,4 +55,4 @@ static void StrongConnectivity_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(StrongConnectivity_FromReadedCitHep);
+BENCHMARK(StrongConnectivity_FromReadedCitHep)->Complexity();

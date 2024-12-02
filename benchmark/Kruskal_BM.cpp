@@ -16,8 +16,10 @@ static void Kruskal_X(benchmark::State &state) {
     auto &result = g.kruskal();
   }
 }
-BENCHMARK(Kruskal_X)->RangeMultiplier(16)->Range((unsigned long)1,
-                                                 (unsigned long)1 << 16);
+BENCHMARK(Kruskal_X)
+    ->RangeMultiplier(16)
+    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->Complexity();
 
 static void Kruskal_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
@@ -26,4 +28,4 @@ static void Kruskal_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(Kruskal_FromReadedCitHep);
+BENCHMARK(Kruskal_FromReadedCitHep)->Complexity();

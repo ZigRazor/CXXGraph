@@ -24,6 +24,7 @@
 
 #include <cmath>
 #include <cstring>
+#include <deque>
 #include <fstream>
 #include <functional>
 #include <iostream>
@@ -61,7 +62,13 @@ template <typename T>
 using T_EdgeSet = std::unordered_set<shared<const Edge<T>>, edgeHash<T>>;
 
 template <typename T>
+using T_EdgeVector = std::vector<shared<const Edge<T>>>;
+
+template <typename T>
 using T_NodeSet = std::unordered_set<shared<const Node<T>>, nodeHash<T>>;
+
+template <typename T>
+using T_NodeVector = std::vector<shared<const Node<T>>>;
 
 template <typename T>
 class Graph;
@@ -124,6 +131,16 @@ class Graph {
    *
    */
   virtual const T_EdgeSet<T> &getEdgeSet() const;
+
+  /**
+   * \brief
+   * Function that return the Edge set of the Graph
+   * Note: No Thread Safe
+   *
+   * @returns a list of Edges of the graph
+   *
+   */
+  virtual T_EdgeVector<T> getEdgeVector() const;
 
   /**
    * \brief
@@ -277,6 +294,16 @@ class Graph {
    *
    */
   virtual const T_NodeSet<T> getNodeSet() const;
+
+  /**
+   * \brief
+   * Function that return the Node Set of the Graph
+   * Note: No Thread Safe
+   *
+   * @returns a list of Nodes of the graph
+   *
+   */
+  virtual const T_NodeVector<T> getNodeVector() const;
 
   /**
    * \brief

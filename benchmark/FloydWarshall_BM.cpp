@@ -32,7 +32,7 @@ static void BM_FWDirected(benchmark::State &state) {
     CXXGraph::FWResult res = graph.floydWarshall();
   }
 }
-BENCHMARK(BM_FWDirected);
+BENCHMARK(BM_FWDirected)->Complexity();
 
 // a graph with negative cycle
 static void BM_FWNegCycle(benchmark::State &state) {
@@ -51,7 +51,7 @@ static void BM_FWNegCycle(benchmark::State &state) {
     CXXGraph::FWResult res = graph.floydWarshall();
   }
 }
-BENCHMARK(BM_FWNegCycle);
+BENCHMARK(BM_FWNegCycle)->Complexity();
 
 static void BM_FWUndirectedWeighted(benchmark::State &state) {
   CXXGraph::Node<int> node1("1", 1);
@@ -71,7 +71,7 @@ static void BM_FWUndirectedWeighted(benchmark::State &state) {
     CXXGraph::FWResult res = graph.floydWarshall();
   }
 }
-BENCHMARK(BM_FWUndirectedWeighted);
+BENCHMARK(BM_FWUndirectedWeighted)->Complexity();
 
 static void BM_FWNoWeighted(benchmark::State &state) {
   CXXGraph::Node<int> node1("1", 1);
@@ -92,4 +92,4 @@ static void BM_FWNoWeighted(benchmark::State &state) {
   }
 }
 
-BENCHMARK(BM_FWNoWeighted);
+BENCHMARK(BM_FWNoWeighted)->Complexity();

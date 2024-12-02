@@ -60,6 +60,12 @@ const T_EdgeSet<T> &Graph<T>::getEdgeSet() const {
 }
 
 template <typename T>
+T_EdgeVector<T> Graph<T>::getEdgeVector() const {
+  T_EdgeVector<T> edgeVector(edgeSet.begin(), edgeSet.end());
+  return edgeVector;
+}
+
+template <typename T>
 void Graph<T>::setEdgeSet(const T_EdgeSet<T> &edgeSet) {
   this->edgeSet.clear();
   for (auto edgeIt : edgeSet) {
@@ -309,6 +315,17 @@ const T_NodeSet<T> Graph<T>::getNodeSet() const {
   nodeSet.insert(this->isolatedNodesSet.begin(), this->isolatedNodesSet.end());
 
   return nodeSet;
+}
+
+template <typename T>
+const T_NodeVector<T> Graph<T>::getNodeVector() const {
+  auto &nodeSet = getNodeSet();
+  T_NodeVector<T> nodeVector(nodeSet.begin(), nodeSet.end());
+  // Merge with the isolated nodes
+  nodeVector.insert(nodeVector.end(), this->isolatedNodesSet.begin(),
+                    this->isolatedNodesSet.end());
+
+  return nodeVector;
 }
 
 template <typename T>

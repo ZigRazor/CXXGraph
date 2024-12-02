@@ -16,8 +16,10 @@ static void Boruvka_X(benchmark::State &state) {
     auto &result = g.boruvka();
   }
 }
-BENCHMARK(Boruvka_X)->RangeMultiplier(16)->Range((unsigned long)1,
-                                                 (unsigned long)1 << 16);
+BENCHMARK(Boruvka_X)
+    ->RangeMultiplier(16)
+    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->Complexity();
 
 static void Boruvka_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
@@ -26,4 +28,4 @@ static void Boruvka_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(Boruvka_FromReadedCitHep);
+BENCHMARK(Boruvka_FromReadedCitHep)->Complexity();

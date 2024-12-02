@@ -18,4 +18,5 @@ static void GraphSlicing_X(benchmark::State &state) {
 }
 BENCHMARK(GraphSlicing_X)
     ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 8);
+    ->Range((unsigned long)1, (unsigned long)1 << 8)
+    ->Complexity();
