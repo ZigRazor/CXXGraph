@@ -88,8 +88,8 @@ constexpr bool Node<T>::operator<(const Node<T> &b) const {
 
 // ostream overload
 // The data type T must have an overload of the ostream operator
-template <typename T, typename Stream>
-constexpr Stream &operator<<(Stream &os, const Node<T> &node) {
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const Node<T> &node) {
   os << "Node: {\n"
      << "  Id:\t" << node.userId << "\n  Data:\t" << node.data << "\n}";
   return os;
