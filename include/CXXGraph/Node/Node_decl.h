@@ -28,8 +28,8 @@
 namespace CXXGraph {
 template <typename T>
 class Node;
-template <typename T>
-std::ostream &operator<<(std::ostream &os, const Node<T> &node);
+template <typename T, typename Stream>
+constexpr Stream &operator<<(Stream &os, const Node<T> &node);
 template <typename T>
 class Node {
  private:
@@ -39,7 +39,7 @@ class Node {
   void setId(const std::string &);
 
  public:
-  typedef T Node_t;
+  using Node_t = T;
 
   Node(const std::string &, const T &data);
   // Move constructor
@@ -53,7 +53,8 @@ class Node {
   // operator
   bool operator==(const Node<T> &b) const;
   bool operator<(const Node<T> &b) const;
-  friend std::ostream &operator<< <>(std::ostream &os, const Node<T> &node);
+  template<typename Stream>
+  friend Stream &operator<< <>(Stream &os, const Node<T> &node);
 };
 
 }  // namespace CXXGraph

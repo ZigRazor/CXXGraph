@@ -51,7 +51,7 @@ void Node<T>::setId(const std::string &inpId) {
 }
 
 template <typename T>
-const CXXGraph::id_t &Node<T>::getId() const {
+constexpr const CXXGraph::id_t &Node<T>::getId() const {
   return id;
 }
 
@@ -61,7 +61,7 @@ const std::string &Node<T>::getUserId() const {
 }
 
 template <typename T>
-const T &Node<T>::getData() const {
+constexpr const T &Node<T>::getData() const {
   return data;
 }
 
@@ -77,19 +77,19 @@ void Node<T>::setData(T &&new_data) {
 
 // The data type T must have an overload of the equality operator
 template <typename T>
-bool Node<T>::operator==(const Node<T> &b) const {
+constexpr bool Node<T>::operator==(const Node<T> &b) const {
   return (this->id == b.id && this->data == b.data);
 }
 
 template <typename T>
-bool Node<T>::operator<(const Node<T> &b) const {
+constexpr bool Node<T>::operator<(const Node<T> &b) const {
   return (this->id < b.id);
 }
 
 // ostream overload
 // The data type T must have an overload of the ostream operator
-template <typename T>
-std::ostream &operator<<(std::ostream &os, const Node<T> &node) {
+template <typename T, typename Stream>
+constexpr Stream &operator<<(Stream &os, const Node<T> &node) {
   os << "Node: {\n"
      << "  Id:\t" << node.userId << "\n  Data:\t" << node.data << "\n}";
   return os;
