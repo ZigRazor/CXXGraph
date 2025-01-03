@@ -17,8 +17,8 @@
 /***	 License: MPL v2.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_UNDIRECTEDEDGE_DECL_H__
-#define __CXXGRAPH_UNDIRECTEDEDGE_DECL_H__
+#ifndef CXXGRAPH_UNDIRECTEDEDGE_DECL_H_
+#define CXXGRAPH_UNDIRECTEDEDGE_DECL_H_
 
 #pragma once
 
@@ -67,4 +67,4 @@ class UndirectedEdge : public Edge<T> {
 
 }  // namespace CXXGraph
 
-#endif  // __CXXGRAPH_UNDIRECTEDEDGE_DECL_H__
+#endif  // CXXGRAPH_UNDIRECTEDEDGE_DECL_H_
