@@ -36,7 +36,7 @@ namespace CXXGraph {
 template <typename T>
 using shared = std::shared_ptr<T>;
 
-template <typename T>
+template <typename T, typename UserID>
 class Node;
 
 template <typename T>

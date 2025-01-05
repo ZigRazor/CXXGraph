@@ -22,39 +22,39 @@
 
 #pragma once
 #include <iostream>
-
+#include <type_traits>
 #include "CXXGraph/Utility/id_t.hpp"
 
 namespace CXXGraph {
-template <typename T>
+template <typename T, typename = std::string>
 class Node;
-template <typename T>
-std::ostream &operator<<(std::ostream &os, const Node<T> &node);
-template <typename T>
+template <typename T, typename UserID>
+std::ostream &operator<<(std::ostream &os, const Node<T, UserID> &node);
+template <typename T, typename UserID>
 class Node {
  private:
   CXXGraph::id_t id = 0;
-  std::string userId = "";
+  UserID userId{};
   T data;
-  void setId(const std::string &);
+  constexpr void setId(const UserID &);
 
  public:
   using Node_t = T;
 
-  Node(const std::string &, const T &data);
+  constexpr Node(const UserID &, const T &data);
   // Move constructor
-  explicit Node(const std::string &, T &&data) noexcept;
-  ~Node() = default;
+  constexpr explicit Node(const UserID &, T &&data) noexcept(std::is_nothrow_move_assignable<T>::value);
+  ~Node() noexcept = default;
   constexpr const CXXGraph::id_t &getId() const;
-  const std::string &getUserId() const;
+  constexpr const UserID &getUserId() const;
   constexpr const T &getData() const;
   constexpr T& getData();
-  void setData(T &&new_data);
+  constexpr void setData(T &&new_data);
   // operator
-  constexpr bool operator==(const Node<T> &b) const;
-  constexpr bool operator<(const Node<T> &b) const;
+  constexpr bool operator==(const Node<T, UserID> &b) const;
+  constexpr bool operator<(const Node<T, UserID> &b) const;
   
-  friend std::ostream &operator<< <>(std::ostream &os, const Node<T> &node);
+  friend std::ostream &operator<< <>(std::ostream &os, const Node<T, UserID> &node);
 };
 
 }  // namespace CXXGraph
