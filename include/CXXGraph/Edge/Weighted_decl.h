@@ -28,11 +28,11 @@ class Weighted {
   double weight = 0.0;
 
  public:
-  Weighted();
-  explicit Weighted(const double weight);
-  virtual ~Weighted() = default;
-  double getWeight() const;
-  void setWeight(const double weight);
+  constexpr Weighted() noexcept;
+  constexpr explicit Weighted(const double weight) noexcept;
+  virtual ~Weighted() noexcept = default;
+  constexpr double getWeight() const;
+  constexpr void setWeight(const double weight);
 };
 }  // namespace CXXGraph
 

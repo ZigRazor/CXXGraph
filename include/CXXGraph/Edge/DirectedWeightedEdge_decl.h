@@ -70,7 +70,7 @@ class DirectedWeightedEdge : public DirectedEdge<T>, public Weighted {
                                      Weighted::getWeight());
   }
 
-  friend std::ostream &operator<< <>(std::ostream &os,
+  friend std::ostream &operator<< (std::ostream &os,
                                      const DirectedWeightedEdge<T> &edge);
 };
 
