@@ -31,7 +31,7 @@ class Weighted {
   constexpr Weighted() noexcept;
   constexpr explicit Weighted(const double weight) noexcept;
   virtual ~Weighted() noexcept = default;
-  constexpr double getWeight() const;
+  constexpr double getWeight() const noexcept;
   constexpr void setWeight(const double weight);
 };
 }  // namespace CXXGraph
