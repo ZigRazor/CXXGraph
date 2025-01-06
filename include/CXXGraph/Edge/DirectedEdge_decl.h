@@ -17,8 +17,8 @@
 /***	 License: MPL v2.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_DIRECTEDEDGE_DECL_H__
-#define __CXXGRAPH_DIRECTEDEDGE_DECL_H__
+#ifndef CXXGRAPH_DIRECTEDEDGE_DECL_H_
+#define CXXGRAPH_DIRECTEDEDGE_DECL_H_
 
 #pragma once
 
@@ -42,19 +42,21 @@ std::ostream &operator<<(std::ostream &o, const DirectedEdge<T> &edge);
 template <typename T>
 class DirectedEdge : public Edge<T> {
  public:
-  DirectedEdge(const CXXGraph::id_t id, const Node<T> &node1,
+  constexpr DirectedEdge(const CXXGraph::id_t id, const Node<T> &node1,
                const Node<T> &node2);
-  DirectedEdge(const CXXGraph::id_t id, shared<const Node<T>> node1,
+  constexpr DirectedEdge(const CXXGraph::id_t id, shared<const Node<T>> node1,
                shared<const Node<T>> node2);
-  DirectedEdge(const CXXGraph::id_t id,
+  constexpr DirectedEdge(
+      const CXXGraph::id_t id,
                const std::pair<const Node<T> *, const Node<T> *> &nodepair);
-  DirectedEdge(
+  constexpr DirectedEdge(
       const CXXGraph::id_t id,
       const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair);
-  DirectedEdge(const Edge<T> &edge);
+  constexpr DirectedEdge(const Edge<T> &edge);
   virtual ~DirectedEdge() = default;
-  const Node<T> &getFrom() const;
-  const Node<T> &getTo() const;
+  constexpr const Node<T> &getFrom() const;
+  constexpr const Node<T> &getTo() const;
+  // 
   const std::optional<bool> isDirected() const override;
   const std::optional<bool> isWeighted() const override;
   // operator
@@ -67,4 +69,4 @@ class DirectedEdge : public Edge<T> {
 };
 }  // namespace CXXGraph
 
-#endif  // __CXXGRAPH_DIRECTEDEDGE_H__
+#endif  // CXXGRAPH_DIRECTEDEDGE_H_
