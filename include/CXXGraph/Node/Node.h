@@ -17,11 +17,11 @@
 /***	 License: MPL v2.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_NODE_H__
-#define __CXXGRAPH_NODE_H__
+#ifndef CXXGRAPH_NODE_H_
+#define CXXGRAPH_NODE_H_
 
 #pragma once
 
 #include "Node_impl.hpp"
 
-#endif  // __CXXGRAPH_NODE_H__
+#endif  // CXXGRAPH_NODE_H_

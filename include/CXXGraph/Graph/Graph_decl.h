@@ -17,8 +17,8 @@
 /***	 License: MPL v2.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_GRAPH_DECL_H__
-#define __CXXGRAPH_GRAPH_DECL_H__
+#ifndef CXXGRAPH_GRAPH_DECL_H_
+#define CXXGRAPH_GRAPH_DECL_H_
 
 #pragma once
 
@@ -1028,4 +1028,4 @@ class Graph {
 };
 
 }  // namespace CXXGraph
-#endif  // __CXXGRAPH_GRAPH_DECL_H__
+#endif  // CXXGRAPH_GRAPH_DECL_H_

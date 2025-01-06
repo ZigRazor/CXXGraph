@@ -17,8 +17,8 @@
 /***	 License: MPL v2.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_UNDIRECTEDWEIGHTEDEDGE_DECL_H__
-#define __CXXGRAPH_UNDIRECTEDWEIGHTEDEDGE_DECL_H__
+#ifndef CXXGRAPH_UNDIRECTEDWEIGHTEDEDGE_DECL_H_
+#define CXXGRAPH_UNDIRECTEDWEIGHTEDEDGE_DECL_H_
 
 #pragma once
 
@@ -78,4 +78,4 @@ class UndirectedWeightedEdge : public UndirectedEdge<T>, public Weighted {
 
 }  // namespace CXXGraph
 
-#endif  // __CXXGRAPH_UNDIRECTEDWEIGHTEDEDGE_DECL_H__
+#endif  // CXXGRAPH_UNDIRECTEDWEIGHTEDEDGE_DECL_H_

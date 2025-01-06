@@ -17,8 +17,8 @@
 /***	 License: MPL v2.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_WEIGHTED_DECL_H__
-#define __CXXGRAPH_WEIGHTED_DECL_H__
+#ifndef CXXGRAPH_WEIGHTED_DECL_H_
+#define CXXGRAPH_WEIGHTED_DECL_H_
 
 #pragma once
 
@@ -28,12 +28,12 @@ class Weighted {
   double weight = 0.0;
 
  public:
-  Weighted();
-  explicit Weighted(const double weight);
-  virtual ~Weighted() = default;
-  double getWeight() const;
-  void setWeight(const double weight);
+  constexpr Weighted() noexcept;
+  constexpr explicit Weighted(const double weight) noexcept;
+  virtual ~Weighted() noexcept = default;
+  constexpr double getWeight() const noexcept;
+  constexpr void setWeight(const double weight);
 };
 }  // namespace CXXGraph
 
-#endif  // __CXXGRAPH_WEIGHTED_DECL_H__
+#endif  // CXXGRAPH_WEIGHTED_DECL_H_

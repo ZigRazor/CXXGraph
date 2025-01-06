@@ -31,28 +31,21 @@
 namespace CXXGraph {
 
 using std::make_shared;
-using std::make_unique;
 
 template <typename T>
-Graph<T>::Graph() {
-  /* Caching the adjacency matrix */
-  cacheAdjMatrix();
-  cacheDegreeMatrix();
-  cacheLaplacianMatrix();
-  cacheTransitionMatrix();
-}
+Graph<T>::Graph()
+    : cachedAdjMatrix(Graph<T>::getAdjMatrix()),
+      cachedDegreeMatrix(Graph<T>::getDegreeMatrix()),
+      cachedLaplacianMatrix(Graph<T>::getLaplacianMatrix()),
+      cachedTransitionMatrix(Graph<T>::getTransitionMatrix()) {}
 
 template <typename T>
-Graph<T>::Graph(const T_EdgeSet<T> &edgeSet) {
-  for (auto edgeIt : edgeSet) {
-    this->edgeSet.insert(edgeIt);
-  }
-  /* Caching the adjacency matrix */
-  cacheAdjMatrix();
-  cacheDegreeMatrix();
-  cacheLaplacianMatrix();
-  cacheTransitionMatrix();
-}
+Graph<T>::Graph(const T_EdgeSet<T> &edgeSetToCopy)
+    : edgeSet(edgeSetToCopy),
+      cachedAdjMatrix(Graph<T>::getAdjMatrix()),
+      cachedDegreeMatrix(Graph<T>::getDegreeMatrix()),
+      cachedLaplacianMatrix(Graph<T>::getLaplacianMatrix()),
+      cachedTransitionMatrix(Graph<T>::getTransitionMatrix()) {}
 
 template <typename T>
 const T_EdgeSet<T> &Graph<T>::getEdgeSet() const {

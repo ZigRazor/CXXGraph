@@ -17,11 +17,11 @@
 /***	 License: MPL v2.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_UNDIRECTEDWEIGHTEDEDGE_H__
-#define __CXXGRAPH_UNDIRECTEDWEIGHTEDEDGE_H__
+#ifndef CXXGRAPH_UNDIRECTEDWEIGHTEDEDGE_H_
+#define CXXGRAPH_UNDIRECTEDWEIGHTEDEDGE_H_
 
 #pragma once
 
 #include "UndirectedWeightedEdge_impl.hpp"
 
-#endif  // __CXXGRAPH_UNDIRECTEDWEIGHTEDEDGE_H__
+#endif  // CXXGRAPH_UNDIRECTEDWEIGHTEDEDGE_H_

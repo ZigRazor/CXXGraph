@@ -17,8 +17,8 @@
 /***	 License: MPL v2.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_EDGE_DECL_H__
-#define __CXXGRAPH_EDGE_DECL_H__
+#ifndef CXXGRAPH_EDGE_DECL_H_
+#define CXXGRAPH_EDGE_DECL_H_
 
 #pragma once
 
@@ -49,17 +49,18 @@ class Edge {
  public:
   typedef T Node_t;
 
-  Edge(const CXXGraph::id_t id, const Node<T> &node1, const Node<T> &node2);
-  Edge(const CXXGraph::id_t id, shared<const Node<T>> node1,
+  constexpr Edge(const CXXGraph::id_t id, const Node<T> &node1, const Node<T> &node2);
+  constexpr Edge(const CXXGraph::id_t id, shared<const Node<T>> node1,
        shared<const Node<T>> node2);
-  Edge(const CXXGraph::id_t id,
+  constexpr Edge(const CXXGraph::id_t id,
        const std::pair<const Node<T> *, const Node<T> *> &nodepair);
-  Edge(const CXXGraph::id_t id,
+  constexpr Edge(
+      const CXXGraph::id_t id,
        const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair);
   virtual ~Edge() = default;
   void setFirstNode(shared<const Node<T>> node);
   void setSecondNode(shared<const Node<T>> node);
-  unsigned long long getId() const;
+  constexpr unsigned long long getId() const;
   const std::pair<shared<const Node<T>>, shared<const Node<T>>> &getNodePair()
       const;
   shared<const Node<T>> getOtherNode(shared<const Node<T>> node) const;
@@ -67,11 +68,11 @@ class Edge {
   virtual const std::optional<bool> isWeighted() const;
   // operator
   virtual bool operator==(const Edge<T> &b) const;
-  bool operator<(const Edge<T> &b) const;
+  constexpr bool operator<(const Edge<T> &b) const;
 
   friend std::ostream &operator<< <>(std::ostream &os, const Edge<T> &edge);
 };
 
 }  // namespace CXXGraph
 
-#endif  // __CXXGRAPH_EDGE_DECL_H__
+#endif  // CXXGRAPH_EDGE_DECL_H_
