@@ -31,7 +31,7 @@ using unique = std::unique_ptr<T>;
 template <typename T>
 using shared = std::shared_ptr<T>;
 
-// Foward Declaration
+// Forward Declaration
 template <typename T>
 class UndirectedWeightedEdge;
 
@@ -70,7 +70,7 @@ class DirectedWeightedEdge : public DirectedEdge<T>, public Weighted {
                                      Weighted::getWeight());
   }
 
-  friend std::ostream &operator<< (std::ostream &os,
+  friend std::ostream &operator<< <>(std::ostream &os,
                                      const DirectedWeightedEdge<T> &edge);
 };
 
