@@ -23,7 +23,7 @@ if (NOT MSVC)
         )
 
     endif(CODE_COVERAGE)
-endif()
+endif(NOT MSVC)
 
 option(TEST "Enable Test" OFF)
 if(TEST)
@@ -33,7 +33,7 @@ if(TEST)
         -Wall
         -Wextra
         )
-    endif()
+    endif(NOT MSVC)
 
     CPMAddPackage(
         NAME googletest

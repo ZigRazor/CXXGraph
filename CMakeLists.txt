@@ -31,7 +31,7 @@ if (NOT MSVC)
 			-fsanitize=leak
 		)
 	endif(SANITIZE)
-endif()
+endif(NOT MSVC)
 
 # set up CPM.cmake
 if(CPM_SOURCE_CACHE)
