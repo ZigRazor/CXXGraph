@@ -2,10 +2,7 @@ name: CMake
 
 on:
   push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
-
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
@@ -41,7 +38,7 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: |
         if [ ${{ matrix.os }} == 'windows-latest' ]; then
-          cmake -DTEST=ON -Dgtest_disable_pthreads=ON -B ${{github.workspace}}/build
+          cmake -DTEST=ON -Dgtest_disable_pthreads=ON -B ./build
         else
           cmake -DTEST=ON -B ${{github.workspace}}/build
         fi;
