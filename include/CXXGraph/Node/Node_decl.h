@@ -43,7 +43,7 @@ class Node {
 
   Node(const std::string &, const T &data);
   // Move constructor
-  Node(const std::string &, T &&data) noexcept;
+  explicit Node(const std::string &, T &&data) noexcept;
   ~Node() = default;
   const CXXGraph::id_t &getId() const;
   const std::string &getUserId() const;
