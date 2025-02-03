@@ -17,11 +17,11 @@
 /***	 License: MPL v2.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_EDGE_H__
-#define __CXXGRAPH_EDGE_H__
+#ifndef CXXGRAPH_EDGE_H_
+#define CXXGRAPH_EDGE_H_
 
 #pragma once
 
 #include "CXXGraph/Edge/Edge_impl.hpp"
 
-#endif  // __CXXGRAPH_EDGE_H__
+#endif  // CXXGRAPH_EDGE_H_

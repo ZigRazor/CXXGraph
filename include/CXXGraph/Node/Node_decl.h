@@ -17,8 +17,8 @@
 /***	 License: MPL v2.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_NODE_DECL_H__
-#define __CXXGRAPH_NODE_DECL_H__
+#ifndef CXXGRAPH_NODE_DECL_H_
+#define CXXGRAPH_NODE_DECL_H_
 
 #pragma once
 #include <iostream>
@@ -57,4 +57,4 @@ class Node {
 
 }  // namespace CXXGraph
 
-#endif  // __CXXGRAPH_NODE_DECL_H__
+#endif  // CXXGRAPH_NODE_DECL_H_
