@@ -66,7 +66,7 @@ const T &Node<T>::getData() const {
 }
 
 template <typename T>
-T& Node<T>::getData() {
+T &Node<T>::getData() {
   return data;
 }
 
