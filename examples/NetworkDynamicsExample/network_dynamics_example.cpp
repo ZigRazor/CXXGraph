@@ -26,10 +26,9 @@ int main() {
   auto degreeMatrix = graph.getDegreeMatrix();
   for (const auto& nodePair : *degreeMatrix) {
     const CXXGraph::shared<const CXXGraph::Node<int>>& node = nodePair.first;
-    const std::vector<int>& degrees = nodePair.second;
+    const unsigned int degree = nodePair.second;
 
-    std::cout << "Node: " << node->getId() << ", Degree: " << degrees[0]
-              << "\n";
+    std::cout << "Node: " << node->getId() << ", Degree: " << degree << "\n";
   }
   auto laplacianMatrix = graph.getLaplacianMatrix();
   for (const auto& nodePair : *laplacianMatrix) {

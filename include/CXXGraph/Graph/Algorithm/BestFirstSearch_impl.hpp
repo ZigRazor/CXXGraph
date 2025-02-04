@@ -14,7 +14,7 @@
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0 ***/
+/***	 License: MPL v2.0 ***/
 /***********************************************************/
 
 #ifndef __CXXGRAPH_BESTFIRSTSEARCH_IMPL_H__
@@ -22,12 +22,12 @@
 
 #pragma once
 
+#include <algorithm>
 #include <atomic>
 #include <condition_variable>
 #include <mutex>
 #include <queue>
 #include <thread>
-#include <algorithm>
 
 #include "CXXGraph/Graph/Graph_decl.h"
 

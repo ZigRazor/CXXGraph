@@ -14,14 +14,14 @@
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0 ***/
+/***	 License: MPL v2.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_WEIGHTED_H__
-#define __CXXGRAPH_WEIGHTED_H__
+#ifndef CXXGRAPH_WEIGHTED_H_
+#define CXXGRAPH_WEIGHTED_H_
 
 #pragma once
 
 #include "Weighted_impl.hpp"
 
-#endif  // __CXXGRAPH_WEIGHTED_H__
+#endif  // CXXGRAPH_WEIGHTED_H_

@@ -11,7 +11,7 @@ static void GraphCreation(benchmark::State &state) {
   }
 }
 
-BENCHMARK(GraphCreation);
+BENCHMARK(GraphCreation)->Complexity();
 
 static void AddEdge(benchmark::State &state) {
   CXXGraph::Graph<int> g;
@@ -22,7 +22,7 @@ static void AddEdge(benchmark::State &state) {
     g.addEdge(&e);
   }
 }
-BENCHMARK(AddEdge);
+BENCHMARK(AddEdge)->Complexity();
 
 static void AddEdgeX(benchmark::State &state) {
   CXXGraph::Graph<int> g;
@@ -36,8 +36,10 @@ static void AddEdgeX(benchmark::State &state) {
     }
   }
 }
-BENCHMARK(AddEdgeX)->RangeMultiplier(16)->Range((unsigned long)1,
-                                                (unsigned long)1 << 16);
+BENCHMARK(AddEdgeX)
+    ->RangeMultiplier(16)
+    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->Complexity();
 
 static void ReadGraphCitHep(benchmark::State &state) {
   for (auto _ : state) {
@@ -46,7 +48,7 @@ static void ReadGraphCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(ReadGraphCitHep);
+BENCHMARK(ReadGraphCitHep)->Complexity();
 
 static void getEdgeSetX(benchmark::State &state) {
   CXXGraph::Graph<int> g;
@@ -64,7 +66,8 @@ static void getEdgeSetX(benchmark::State &state) {
 
 BENCHMARK(getEdgeSetX)
     ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16);
+    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->Complexity();
 
 static void getNodeSetX(benchmark::State &state) {
   CXXGraph::Graph<int> g;
@@ -82,7 +85,8 @@ static void getNodeSetX(benchmark::State &state) {
 
 BENCHMARK(getNodeSetX)
     ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16);
+    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->Complexity();
 
 static void getEdgeSetCitHep(benchmark::State &state) {
   for (auto _ : state) {
@@ -90,7 +94,7 @@ static void getEdgeSetCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(getEdgeSetCitHep);
+BENCHMARK(getEdgeSetCitHep)->Complexity();
 
 static void getNodeSetCitHep(benchmark::State &state) {
   for (auto _ : state) {
@@ -98,7 +102,7 @@ static void getNodeSetCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(getNodeSetCitHep);
+BENCHMARK(getNodeSetCitHep)->Complexity();
 
 static void getAdjMatrixX(benchmark::State &state) {
   CXXGraph::Graph<int> g;
@@ -116,7 +120,8 @@ static void getAdjMatrixX(benchmark::State &state) {
 
 BENCHMARK(getAdjMatrixX)
     ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16);
+    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->Complexity();
 
 static void getAdjMatrixCitHep(benchmark::State &state) {
   for (auto _ : state) {
@@ -124,4 +129,4 @@ static void getAdjMatrixCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(getAdjMatrixCitHep);
+BENCHMARK(getAdjMatrixCitHep)->Complexity();

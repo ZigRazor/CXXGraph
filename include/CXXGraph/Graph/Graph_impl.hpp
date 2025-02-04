@@ -14,7 +14,7 @@
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0 ***/
+/***	 License: MPL v2.0 ***/
 /***********************************************************/
 
 #ifndef __CXXGRAPH_GRAPH_IMPL_H__
@@ -22,8 +22,8 @@
 
 #pragma once
 
-#include <deque>
 #include <algorithm>
+#include <deque>
 
 #include "CXXGraph/Graph/Graph_decl.h"
 #include "CXXGraph/Utility/ConstString.hpp"
@@ -57,6 +57,12 @@ Graph<T>::Graph(const T_EdgeSet<T> &edgeSet) {
 template <typename T>
 const T_EdgeSet<T> &Graph<T>::getEdgeSet() const {
   return edgeSet;
+}
+
+template <typename T>
+T_EdgeVector<T> Graph<T>::getEdgeVector() const {
+  T_EdgeVector<T> edgeVector(edgeSet.begin(), edgeSet.end());
+  return edgeVector;
 }
 
 template <typename T>
@@ -309,6 +315,17 @@ const T_NodeSet<T> Graph<T>::getNodeSet() const {
   nodeSet.insert(this->isolatedNodesSet.begin(), this->isolatedNodesSet.end());
 
   return nodeSet;
+}
+
+template <typename T>
+const T_NodeVector<T> Graph<T>::getNodeVector() const {
+  auto &nodeSet = getNodeSet();
+  T_NodeVector<T> nodeVector(nodeSet.begin(), nodeSet.end());
+  // Merge with the isolated nodes
+  nodeVector.insert(nodeVector.end(), this->isolatedNodesSet.begin(),
+                    this->isolatedNodesSet.end());
+
+  return nodeVector;
 }
 
 template <typename T>

@@ -14,16 +14,17 @@
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0 ***/
+/***	 License: MPL v2.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_GRAPH_DECL_H__
-#define __CXXGRAPH_GRAPH_DECL_H__
+#ifndef CXXGRAPH_GRAPH_DECL_H_
+#define CXXGRAPH_GRAPH_DECL_H_
 
 #pragma once
 
 #include <cmath>
 #include <cstring>
+#include <deque>
 #include <fstream>
 #include <functional>
 #include <iostream>
@@ -61,7 +62,13 @@ template <typename T>
 using T_EdgeSet = std::unordered_set<shared<const Edge<T>>, edgeHash<T>>;
 
 template <typename T>
+using T_EdgeVector = std::vector<shared<const Edge<T>>>;
+
+template <typename T>
 using T_NodeSet = std::unordered_set<shared<const Node<T>>, nodeHash<T>>;
+
+template <typename T>
+using T_NodeVector = std::vector<shared<const Node<T>>>;
 
 template <typename T>
 class Graph;
@@ -124,6 +131,16 @@ class Graph {
    *
    */
   virtual const T_EdgeSet<T> &getEdgeSet() const;
+
+  /**
+   * \brief
+   * Function that return the Edge set of the Graph
+   * Note: No Thread Safe
+   *
+   * @returns a list of Edges of the graph
+   *
+   */
+  virtual T_EdgeVector<T> getEdgeVector() const;
 
   /**
    * \brief
@@ -277,6 +294,16 @@ class Graph {
    *
    */
   virtual const T_NodeSet<T> getNodeSet() const;
+
+  /**
+   * \brief
+   * Function that return the Node Set of the Graph
+   * Note: No Thread Safe
+   *
+   * @returns a list of Nodes of the graph
+   *
+   */
+  virtual const T_NodeVector<T> getNodeVector() const;
 
   /**
    * \brief
@@ -663,7 +690,7 @@ class Graph {
    * mst: vector containing id of nodes in minimum spanning tree & cost of MST
    * mstCost: Cost of MST
    * errorMessage: "" if no error ELSE report the encountered error
-   */	
+   */
   virtual const MstResult boruvka_deterministic() const;
 
   /**
@@ -703,6 +730,9 @@ class Graph {
    * search.
    *
    */
+
+  virtual const BronKerboschResult<T> bron_kerbosch() const;
+
   virtual const std::vector<Node<T>> breadth_first_search(
       const Node<T> &start) const;
 
@@ -998,4 +1028,4 @@ class Graph {
 };
 
 }  // namespace CXXGraph
-#endif  // __CXXGRAPH_GRAPH_DECL_H__
+#endif  // CXXGRAPH_GRAPH_DECL_H_

@@ -14,7 +14,7 @@
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0 ***/
+/***	 License: MPL v2.0 ***/
 /***********************************************************/
 
 #ifndef __CXXGRAPH_TYPEDEF_H__
@@ -236,6 +236,17 @@ struct BestFirstSearchResult_struct {
 };
 template <typename T>
 using BestFirstSearchResult = BestFirstSearchResult_struct<T>;
+
+// Struct that contains information about BronKerbosch algorithm results
+template <typename T>
+struct BronKerboschResult_struct {
+  bool success = false;
+  std::string errorMessage = "";
+  std::vector<std::unordered_set<shared<const Node<T>>, nodeHash<T>>>
+      maximalCliques = {};
+};
+template <typename T>
+using BronKerboschResult = BronKerboschResult_struct<T>;
 
 ///////////////////////////////////////////////////////////////////////////////////
 // Using Definition

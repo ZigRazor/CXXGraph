@@ -14,10 +14,10 @@
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0 ***/
+/***	 License: MPL v2.0 ***/
 /***********************************************************/
-#ifndef __CXXGRAPH_DIRECTEDWEIGHTEDEDGE_DECL_H__
-#define __CXXGRAPH_DIRECTEDWEIGHTEDEDGE_DECL_H__
+#ifndef CXXGRAPH_DIRECTEDWEIGHTEDEDGE_DECL_H_
+#define CXXGRAPH_DIRECTEDWEIGHTEDEDGE_DECL_H_
 
 #pragma once
 
@@ -76,4 +76,4 @@ class DirectedWeightedEdge : public DirectedEdge<T>, public Weighted {
 
 }  // namespace CXXGraph
 
-#endif  // __CXXGRAPH_DIRECTEDWEIGHTEDEDGE_DECL_H__
+#endif  // CXXGRAPH_DIRECTEDWEIGHTEDEDGE_DECL_H_

@@ -14,7 +14,7 @@
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0 ***/
+/***	 License: MPL v2.0 ***/
 /***********************************************************/
 
 #ifndef __CXXGRAPH_BREADTHFIRSTSEARCH_IMPL_H__
@@ -37,7 +37,7 @@ const std::vector<Node<T>> Graph<T>::breadth_first_search(
   // check is exist node in the graph
   auto start_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),
-      [&start](auto node) { return node->getUserId() == start.getUserId(); });
+      [&start](auto &node) { return node->getUserId() == start.getUserId(); });
   if (start_node_it == nodeSet.end()) {
     return visited;
   }

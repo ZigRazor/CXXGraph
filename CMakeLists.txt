@@ -19,6 +19,18 @@ if(DEBUG)
 	)
 endif(DEBUG)
 
+option(SANITIZE "Enable Sanitize" OFF)
+if(SANITIZE)
+	add_compile_options(
+		-fsanitize=address
+		-fsanitize=leak
+	)
+	add_link_options(
+		-fsanitize=address
+		-fsanitize=leak
+	)
+endif(SANITIZE)
+
 # set up CPM.cmake
 if(CPM_SOURCE_CACHE)
 	set(CPM_DOWNLOAD_LOCATION "${CPM_SOURCE_CACHE}/cpm/CPM.cmake")

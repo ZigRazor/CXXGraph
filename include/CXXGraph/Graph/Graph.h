@@ -14,11 +14,13 @@
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0 ***/
+/***	 License: MPL v2.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_GRAPH_H__
-#define __CXXGRAPH_GRAPH_H__
+#ifndef CXXGRAPH_GRAPH_H_
+#define CXXGRAPH_GRAPH_H_
+
+#pragma once
 
 #include "CXXGraph/Graph/Graph_impl.hpp"
 
@@ -27,6 +29,7 @@
 #include "CXXGraph/Graph/Algorithm/BestFirstSearch_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/Boruvka_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/BreadthFirstSearch_impl.hpp"
+#include "CXXGraph/Graph/Algorithm/BronKerbosch_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/Connectivity_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/CycleDetection_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/DepthFirstSearch_impl.hpp"
@@ -48,4 +51,4 @@
 #include "CXXGraph/Graph/IO/InputOperation_impl.hpp"
 #include "CXXGraph/Graph/IO/OutputOperation_impl.hpp"
 
-#endif  // __CXXGRAPH_GRAPH_H__
+#endif  // CXXGRAPH_GRAPH_H_

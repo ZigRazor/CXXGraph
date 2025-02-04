@@ -14,11 +14,11 @@
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0 ***/
+/***	 License: MPL v2.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_NODE_DECL_H__
-#define __CXXGRAPH_NODE_DECL_H__
+#ifndef CXXGRAPH_NODE_DECL_H_
+#define CXXGRAPH_NODE_DECL_H_
 
 #pragma once
 #include <iostream>
@@ -43,7 +43,7 @@ class Node {
 
   Node(const std::string &, const T &data);
   // Move constructor
-  Node(const std::string &, T &&data) noexcept;
+  explicit Node(const std::string &, T &&data) noexcept;
   ~Node() = default;
   const CXXGraph::id_t &getId() const;
   const std::string &getUserId() const;
@@ -58,4 +58,4 @@ class Node {
 
 }  // namespace CXXGraph
 
-#endif  // __CXXGRAPH_NODE_DECL_H__
+#endif  // CXXGRAPH_NODE_DECL_H_

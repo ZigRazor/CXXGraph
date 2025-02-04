@@ -14,13 +14,13 @@
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0 ***/
+/***	 License: MPL v2.0 ***/
 /***********************************************************/
-#ifndef __CXXGRAPH_DIRECTEDWEIGHTEDEDGE_H__
-#define __CXXGRAPH_DIRECTEDWEIGHTEDEDGE_H__
+#ifndef CXXGRAPH_DIRECTEDWEIGHTEDEDGE_H_
+#define CXXGRAPH_DIRECTEDWEIGHTEDEDGE_H_
 
 #pragma once
 
 #include "DirectedWeightedEdge_impl.hpp"
 
-#endif  // __CXXGRAPH_DIRECTEDWEIGHTEDEDGE_H__
+#endif  // CXXGRAPH_DIRECTEDWEIGHTEDEDGE_H_

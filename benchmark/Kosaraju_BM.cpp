@@ -3,7 +3,7 @@
 #include "CXXGraph/CXXGraph.hpp"
 #include "Utilities.hpp"
 
-static void Dijkstra_X(benchmark::State &state) {
+static void Kosaraju_X(benchmark::State &state) {
   CXXGraph::Graph<int> g;
   auto range_start = edges.begin();
   auto range_end = edges.find(state.range(0));
@@ -13,22 +13,19 @@ static void Dijkstra_X(benchmark::State &state) {
     g.addEdge(&(*e.second));
   }
   for (auto _ : state) {
-    auto &result = g.dijkstra(*(range_start->second->getNodePair().first),
-                              *(range_end->second->getNodePair().second));
+    const auto &result = g.kosaraju();
   }
 }
-BENCHMARK(Dijkstra_X)
+BENCHMARK(Kosaraju_X)
     ->RangeMultiplier(16)
     ->Range((unsigned long)1, (unsigned long)1 << 16)
     ->Complexity();
 
-static void Dijkstra_FromReadedCitHep(benchmark::State &state) {
+static void Kosaraju_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
-    auto &result = cit_graph_ptr->dijkstra(
-        *((*(edgeSet.begin()))->getNodePair().first),
-        *((*(++edgeSet.begin()))->getNodePair().second));
+    const auto &result = cit_graph_ptr->kosaraju();
   }
 }
 
-BENCHMARK(Dijkstra_FromReadedCitHep)->Complexity();
+BENCHMARK(Kosaraju_FromReadedCitHep)->Complexity();

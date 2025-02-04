@@ -18,4 +18,5 @@ static void EulerPath_X(benchmark::State &state) {
 }
 BENCHMARK(EulerPath_X)
     ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16);
+    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->Complexity();

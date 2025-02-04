@@ -14,14 +14,14 @@
 /***********************************************************/
 /***	 Collaboration: ----------- 				     ***/
 /***********************************************************/
-/***	 License: AGPL v3.0 ***/
+/***	 License: MPL v2.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_UNDIRECTEDEDGE_H__
-#define __CXXGRAPH_UNDIRECTEDEDGE_H__
+#ifndef CXXGRAPH_UNDIRECTEDEDGE_H_
+#define CXXGRAPH_UNDIRECTEDEDGE_H_
 
 #pragma once
 
 #include "UndirectedEdge_impl.hpp"
 
-#endif  // __CXXGRAPH_UNDIRECTEDEDGE_H__
+#endif  // CXXGRAPH_UNDIRECTEDEDGE_H_

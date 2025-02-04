@@ -18,7 +18,8 @@ static void CycleCheckBFS_X(benchmark::State &state) {
 }
 BENCHMARK(CycleCheckBFS_X)
     ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16);
+    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->Complexity();
 
 static void CycleCheckBFS_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
@@ -27,7 +28,7 @@ static void CycleCheckBFS_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(CycleCheckBFS_FromReadedCitHep);
+BENCHMARK(CycleCheckBFS_FromReadedCitHep)->Complexity();
 
 static void CycleCheckDFS_X(benchmark::State &state) {
   CXXGraph::Graph<int> g;
@@ -44,7 +45,8 @@ static void CycleCheckDFS_X(benchmark::State &state) {
 }
 BENCHMARK(CycleCheckDFS_X)
     ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16);
+    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->Complexity();
 
 static void CycleCheckDFS_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
@@ -53,4 +55,4 @@ static void CycleCheckDFS_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(CycleCheckDFS_FromReadedCitHep);
+BENCHMARK(CycleCheckDFS_FromReadedCitHep)->Complexity();

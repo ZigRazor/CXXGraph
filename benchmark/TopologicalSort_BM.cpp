@@ -18,7 +18,8 @@ static void TopologicalSort_X(benchmark::State &state) {
 }
 BENCHMARK(TopologicalSort_X)
     ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16);
+    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->Complexity();
 
 static void TopologicalSort_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
@@ -27,4 +28,4 @@ static void TopologicalSort_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(TopologicalSort_FromReadedCitHep);
+BENCHMARK(TopologicalSort_FromReadedCitHep)->Complexity();
