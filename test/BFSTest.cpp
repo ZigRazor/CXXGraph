@@ -339,3 +339,123 @@ TEST(BFSTest, test_13) {
     }
   }
 }
+
+
+// Next 3 test cases on parallel edges on BFS
+TEST(BFSTest, test_14) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
+  std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
+      &node1, &node2);
+  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
+  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
+  CXXGraph::DirectedWeightedEdge<int> edge4(4, node2, node3, 6);
+  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge4));
+  CXXGraph::Graph<int> graph(edgeSet);
+  std::vector<CXXGraph::Node<int>> res = graph.breadth_first_search(node1);
+  ASSERT_EQ(res.size(), 3);
+  ASSERT_TRUE(std::find(res.begin(), res.end(), node1) != res.end());
+  ASSERT_TRUE(std::find(res.begin(), res.end(), node2) != res.end());
+  ASSERT_TRUE(std::find(res.begin(), res.end(), node3) != res.end());
+}
+
+TEST(BFSTest, test_15) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
+  std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
+      &node1, &node2);
+  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
+  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge4(4, node1, node3, 6);
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge4));
+  CXXGraph::Graph<int> graph(edgeSet);
+  std::vector<CXXGraph::Node<int>> res = graph.breadth_first_search(node2);
+  ASSERT_EQ(res.size(), 3);
+  ASSERT_TRUE(std::find(res.begin(), res.end(), node1) != res.end());
+  ASSERT_TRUE(std::find(res.begin(), res.end(), node2) != res.end());
+  ASSERT_TRUE(std::find(res.begin(), res.end(), node3) != res.end());
+}
+
+TEST(BFSTest, test_16) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
+  std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
+      &node1, &node2);
+  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
+  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge4(4, node1, node3, 6);
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
+  CXXGraph::Graph<int> graph(edgeSet);
+  std::vector<CXXGraph::Node<int>> res = graph.breadth_first_search(node2);
+  ASSERT_EQ(res.size(), 3);
+  ASSERT_TRUE(std::find(res.begin(), res.end(), node1) != res.end());
+  ASSERT_TRUE(std::find(res.begin(), res.end(), node2) != res.end());
+  ASSERT_TRUE(std::find(res.begin(), res.end(), node3) != res.end());
+}
+
+// The next 2 testcases on parallel edges on concurency BFS
+TEST(BFSTest, test_17) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
+  std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
+      &node1, &node2);
+  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
+  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge4(4, node1, node3, 6);
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge4));
+  CXXGraph::Graph<int> graph(edgeSet);
+  std::vector<CXXGraph::Node<int>> res =
+      graph.concurrency_breadth_first_search(node2, 4);
+  ASSERT_EQ(res.size(), 3);
+  ASSERT_TRUE(std::find(res.begin(), res.end(), node1) != res.end());
+  ASSERT_TRUE(std::find(res.begin(), res.end(), node2) != res.end());
+  ASSERT_TRUE(std::find(res.begin(), res.end(), node3) != res.end());
+}
+
+TEST(BFSTest, test_18) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
+  std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
+      &node1, &node2);
+  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
+  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge4(4, node1, node3, 6);
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
+  CXXGraph::Graph<int> graph(edgeSet);
+  std::vector<CXXGraph::Node<int>> res =
+      graph.concurrency_breadth_first_search(node2, 4);
+  ASSERT_EQ(res.size(), 3);
+  ASSERT_TRUE(std::find(res.begin(), res.end(), node1) != res.end());
+  ASSERT_TRUE(std::find(res.begin(), res.end(), node2) != res.end());
+  ASSERT_TRUE(std::find(res.begin(), res.end(), node3) != res.end());
+}
