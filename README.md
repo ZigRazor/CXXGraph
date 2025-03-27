@@ -609,6 +609,10 @@ Thank you to all the people who have already contributed to CXXGraph!
 
 [![Contributors](https://contrib.rocks/image?repo=zigrazor/CXXGraph)](https://github.com/ZigRazor/CXXGraph/graphs/contributors) 
 
+## Cited By
+
+- Ruizhe Wang, Meng Xu, and N. Asokan. 2024. SeMalloc: Semantics-Informed Memory Allocator. In Proceedings of the 2024 on ACM SIGSAC Conference on Computer and Communications Security (CCS '24). Association for Computing Machinery, New York, NY, USA, 1375–1389. https://doi.org/10.1145/3658644.3670363
+
 ## Cite Us
 
 If you use this software please follow the [CITATION](https://github.com/ZigRazor/CXXGraph/blob/master/CITATION) instructions.
