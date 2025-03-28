@@ -1,35 +1,39 @@
-option(CODE_COVERAGE "Enable coverage reporting" OFF)
 option(CMAKE_USE_WIN32_THREADS_INIT "using WIN32 threads" ON)
 option(gtest_disable_pthreads "Disable uses of pthreads in gtest." ON)
 
 # Force dynamic linking since MSVC now links C runtimes dynamically by default
 set(gtest_force_shared_crt on)
 
-if(CODE_COVERAGE)
-	message( "Code Coverage Enabled" )
-	add_compile_options(
-		-O0  #no optimization
-		-g   #generate debug info
-		--coverage #set coverage flag
-		-fprofile-arcs
-		-ftest-coverage
-		-fPIC
-	)
-	link_libraries(
-		"gcov"
-		"-fprofile-arcs"
-		"--coverage"
-	)
+if (NOT MSVC)
+    option(CODE_COVERAGE "Enable coverage reporting" OFF)
+    if(CODE_COVERAGE)
+        message( "Code Coverage Enabled" )
+        add_compile_options(
+            -O0  #no optimization
+            -g   #generate debug info
+            --coverage #set coverage flag
+            -fprofile-arcs
+            -ftest-coverage
+            -fPIC
+        )
+        link_libraries(
+            "gcov"
+            "-fprofile-arcs"
+            "--coverage"
+        )
 
-endif(CODE_COVERAGE)
+    endif(CODE_COVERAGE)
+endif(NOT MSVC)
 
 option(TEST "Enable Test" OFF)
 if(TEST)
     include(${CPM_DOWNLOAD_LOCATION})
-	add_compile_options(
-	  -Wall
-	  -Wextra
-	)
+	if (NOT MSVC)
+        add_compile_options(
+        -Wall
+        -Wextra
+        )
+    endif(NOT MSVC)
 
     CPMAddPackage(
         NAME googletest
