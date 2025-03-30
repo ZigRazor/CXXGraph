@@ -70,6 +70,18 @@ void Node<T>::setData(T &&new_data) {
   this->data = std::move(new_data);
 }
 
+ bool deleteNodeById(const std::string &id) {
+    auto it = std::find_if(nodes.begin(), nodes.end(), [&](const auto &pair) {
+      return pair.second.getUserId() == id;
+    });
+
+    if (it != nodes.end()) {
+      nodes.erase(it);
+      return true; // Node deleted successfully
+    }
+    return false; // Node not found
+  }
+
 // The data type T must have an overload of the equality operator
 template <typename T>
 bool Node<T>::operator==(const Node<T> &b) const {
