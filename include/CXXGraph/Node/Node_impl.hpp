@@ -66,6 +66,11 @@ const T &Node<T>::getData() const {
 }
 
 template <typename T>
+T &Node<T>::getData() {
+  return data;
+}
+
+template <typename T>
 void Node<T>::setData(T &&new_data) {
   this->data = std::move(new_data);
 }
