@@ -50,6 +50,7 @@ class Node {
   const T &getData() const;
   T& getData();
   void setData(T &&new_data);
+  
   // operator
   bool operator==(const Node<T> &b) const;
   bool operator<(const Node<T> &b) const;
