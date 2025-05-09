@@ -562,6 +562,23 @@ class Graph {
   virtual std::shared_ptr<std::vector<Node<T>>> eulerianPath() const;
 
   /**
+   * @brief Function runs the dijkstra algorithm with inverted metric for some source node and
+   * target node in the graph and returns the longest distance of target
+   * from the source (called critical path).
+   * Note: No Thread Safe
+   *
+   * @param source source vertex
+   * @param target target vertex
+   *
+   * @return longest distance if target is reachable from source else ERROR in
+   * case if target is not reachable from source or there is error in the
+   * computation.
+   */
+  virtual const DijkstraResult criticalpath_deterministic(const Node<T>& source, 
+                                                          const Node<T>& target) const;
+
+
+  /**
    * @brief Function runs the dijkstra algorithm for some source node and
    * target node in the graph and returns the shortest distance of target
    * from the source.
