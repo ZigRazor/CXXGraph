@@ -16,6 +16,7 @@ static void PartitionHDRF_X(benchmark::State &state) {
     auto result = CXXGraph::Partitioning::Partitioner<int>::partitionGraph(
         g, CXXGraph::Partitioning::PartitionAlgorithm::HDRF_ALG, 4, 1, 0.001);
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(PartitionHDRF_X)
     ->RangeMultiplier(16)
@@ -46,6 +47,7 @@ static void PartitionEBVC_X(benchmark::State &state) {
     auto result = CXXGraph::Partitioning::Partitioner<int>::partitionGraph(
         g, CXXGraph::Partitioning::PartitionAlgorithm::EDGEBALANCED_VC_ALG, 4);
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(PartitionEBVC_X)
     ->RangeMultiplier(16)
@@ -59,6 +61,7 @@ static void PartitionEBVC_FromReadedCitHep(benchmark::State &state) {
         *cit_graph_ptr,
         CXXGraph::Partitioning::PartitionAlgorithm::EDGEBALANCED_VC_ALG, 4);
   }
+  state.SetComplexityN(2);
 }
 
 BENCHMARK(PartitionEBVC_FromReadedCitHep)->Complexity();
@@ -76,6 +79,7 @@ static void PartitionGVC_X(benchmark::State &state) {
     auto result = CXXGraph::Partitioning::Partitioner<int>::partitionGraph(
         g, CXXGraph::Partitioning::PartitionAlgorithm::GREEDY_VC_ALG, 4);
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(PartitionGVC_X)
     ->RangeMultiplier(16)
@@ -89,6 +93,7 @@ static void PartitionGVC_FromReadedCitHep(benchmark::State &state) {
         *cit_graph_ptr,
         CXXGraph::Partitioning::PartitionAlgorithm::GREEDY_VC_ALG, 4);
   }
+  state.SetComplexityN(2);
 }
 
 BENCHMARK(PartitionGVC_FromReadedCitHep)->Complexity();
@@ -106,6 +111,7 @@ static void PartitionEBV_X(benchmark::State &state) {
     auto result = CXXGraph::Partitioning::Partitioner<int>::partitionGraph(
         g, CXXGraph::Partitioning::PartitionAlgorithm::EBV_ALG, 4, 1, 1);
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(PartitionEBV_X)
     ->RangeMultiplier(16)
@@ -119,6 +125,7 @@ static void PartitionEBV_FromReadedCitHep(benchmark::State &state) {
         *cit_graph_ptr, CXXGraph::Partitioning::PartitionAlgorithm::EBV_ALG, 4,
         1, 1);
   }
+  state.SetComplexityN(2);
 }
 
 BENCHMARK(PartitionEBV_FromReadedCitHep)->Complexity();

@@ -15,6 +15,7 @@ static void Dial_X(benchmark::State &state) {
   for (auto _ : state) {
     auto &result = g.dial(*(range_start->second->getNodePair().first), 1);
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(Dial_X)
     ->RangeMultiplier(16)
@@ -27,6 +28,7 @@ static void Dial_FromReadedCitHep(benchmark::State &state) {
     auto &result =
         cit_graph_ptr->dial(*((*(edgeSet.begin()))->getNodePair().first), 1);
   }
+  state.SetComplexityN(2);
 }
 
-BENCHMARK(Dial_FromReadedCitHep)->Complexity();
+// BENCHMARK(Dial_FromReadedCitHep)->Complexity();

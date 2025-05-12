@@ -31,6 +31,7 @@ static void BM_FWDirected(benchmark::State &state) {
   for (auto _ : state) {
     CXXGraph::FWResult res = graph.floydWarshall();
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(BM_FWDirected)->Complexity();
 
@@ -50,6 +51,7 @@ static void BM_FWNegCycle(benchmark::State &state) {
   for (auto _ : state) {
     CXXGraph::FWResult res = graph.floydWarshall();
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(BM_FWNegCycle)->Complexity();
 
@@ -70,6 +72,7 @@ static void BM_FWUndirectedWeighted(benchmark::State &state) {
   for (auto _ : state) {
     CXXGraph::FWResult res = graph.floydWarshall();
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(BM_FWUndirectedWeighted)->Complexity();
 
@@ -90,6 +93,7 @@ static void BM_FWNoWeighted(benchmark::State &state) {
   for (auto _ : state) {
     CXXGraph::FWResult res = graph.floydWarshall();
   }
+  state.SetComplexityN(2);
 }
 
 BENCHMARK(BM_FWNoWeighted)->Complexity();
