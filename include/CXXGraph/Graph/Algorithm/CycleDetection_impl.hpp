@@ -59,7 +59,7 @@ bool Graph<T>::isCyclicDirectedGraphDFS() const {
                          shared<const Node<T>>)>
           isCyclicDFSHelper;
       isCyclicDFSHelper =
-          [this, &isCyclicDFSHelper](
+          [&isCyclicDFSHelper](
               const std::shared_ptr<AdjacencyMatrix<T>> adjMatrix,
               std::unordered_map<CXXGraph::id_t, nodeStates> &states,
               shared<const Node<T>> node) {

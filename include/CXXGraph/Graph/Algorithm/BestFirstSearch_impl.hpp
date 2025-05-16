@@ -151,8 +151,8 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
   int block_size = 1;
   int level = 1;
 
-  auto extract_tasks = [&level_tracker, &tracker_mutex, &assigned_tasks,
-                        &num_tasks, &block_size]() -> std::pair<int, int> {
+  auto extract_tasks = [&assigned_tasks, &num_tasks,
+                        &block_size]() -> std::pair<int, int> {
     /*
     std::lock_guard<std::mutex> tracker_guard(tracker_mutex);
     int task_block_size = std::min(num_tasks - assigned_tasks,
