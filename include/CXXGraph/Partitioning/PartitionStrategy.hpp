@@ -39,6 +39,8 @@ namespace Partitioning {
 template <typename T>
 class PartitionStrategy {
  public:
+  virtual ~PartitionStrategy() = default;
+
   virtual void performStep(shared<const Edge<T>> t,
                            shared<PartitionState<T>> Sstate) = 0;
 };
