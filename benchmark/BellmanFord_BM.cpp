@@ -16,6 +16,7 @@ static void BellmanFord_X(benchmark::State &state) {
     auto &result = g.bellmanford(*(range_start->second->getNodePair().first),
                                  *(range_end->second->getNodePair().second));
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(BellmanFord_X)
     ->RangeMultiplier(16)
@@ -29,6 +30,7 @@ static void BellmanFord_FromReadedCitHep(benchmark::State &state) {
         *((*(edgeSet.begin()))->getNodePair().first),
         *((*(++edgeSet.begin()))->getNodePair().second));
   }
+  state.SetComplexityN(2);
 }
 
-BENCHMARK(BellmanFord_FromReadedCitHep)->Complexity();
+// BENCHMARK(BellmanFord_FromReadedCitHep)->Complexity();

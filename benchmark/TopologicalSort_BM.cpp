@@ -15,6 +15,7 @@ static void TopologicalSort_X(benchmark::State &state) {
   for (auto _ : state) {
     const auto &result = g.topologicalSort();
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(TopologicalSort_X)
     ->RangeMultiplier(16)
@@ -26,6 +27,7 @@ static void TopologicalSort_FromReadedCitHep(benchmark::State &state) {
   for (auto _ : state) {
     const auto &result = cit_graph_ptr->topologicalSort();
   }
+  state.SetComplexityN(2);
 }
 
 BENCHMARK(TopologicalSort_FromReadedCitHep)->Complexity();

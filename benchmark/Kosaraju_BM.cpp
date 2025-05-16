@@ -15,6 +15,7 @@ static void Kosaraju_X(benchmark::State &state) {
   for (auto _ : state) {
     const auto &result = g.kosaraju();
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(Kosaraju_X)
     ->RangeMultiplier(16)
@@ -26,6 +27,7 @@ static void Kosaraju_FromReadedCitHep(benchmark::State &state) {
   for (auto _ : state) {
     const auto &result = cit_graph_ptr->kosaraju();
   }
+  state.SetComplexityN(2);
 }
 
 BENCHMARK(Kosaraju_FromReadedCitHep)->Complexity();

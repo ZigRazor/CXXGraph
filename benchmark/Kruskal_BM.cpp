@@ -15,6 +15,7 @@ static void Kruskal_X(benchmark::State &state) {
   for (auto _ : state) {
     auto &result = g.kruskal();
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(Kruskal_X)
     ->RangeMultiplier(16)
@@ -26,6 +27,7 @@ static void Kruskal_FromReadedCitHep(benchmark::State &state) {
   for (auto _ : state) {
     auto &result = cit_graph_ptr->kruskal();
   }
+  state.SetComplexityN(2);
 }
 
 BENCHMARK(Kruskal_FromReadedCitHep)->Complexity();

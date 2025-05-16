@@ -15,6 +15,7 @@ static void EulerPath_X(benchmark::State &state) {
   for (auto _ : state) {
     auto result = g.eulerianPath();
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(EulerPath_X)
     ->RangeMultiplier(16)
