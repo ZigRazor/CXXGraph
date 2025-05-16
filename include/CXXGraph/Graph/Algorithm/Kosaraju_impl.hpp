@@ -89,8 +89,8 @@ SCCResult<T> Graph<T>::kosaraju() const {
     visited.clear();
 
     std::function<void(shared<const Node<T>>, SCCResult<T>, int)> dfs_helper1 =
-        [this, &rev, &visited, &dfs_helper1](
-            shared<const Node<T>> source, SCCResult<T> result, int sccLabel) {
+        [&rev, &visited, &dfs_helper1](shared<const Node<T>> source,
+                                       SCCResult<T> result, int sccLabel) {
           // mark the vertex visited
           visited[source->getId()] = true;
           // Add the current vertex to the strongly connected

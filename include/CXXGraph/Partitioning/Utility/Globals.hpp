@@ -41,8 +41,8 @@ class Globals {
   const std::string print() const;
 
   // CONSTANT
-  const int SLEEP_LIMIT = 16;  // In microseconds
-  const int PLACES = 4;
+  int SLEEP_LIMIT = 16;  // In microseconds
+  int PLACES = 4;
 
   int numberOfPartition = 0;  // number of partitions
   // OPTIONAL

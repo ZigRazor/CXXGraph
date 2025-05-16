@@ -40,6 +40,8 @@ namespace Partitioning {
 template <typename T>
 class PartitionState {
  public:
+  virtual ~PartitionState() = default;
+
   virtual shared<Record<T>> getRecord(CXXGraph::id_t x) = 0;
   virtual int getMachineLoad(const int m) const = 0;
   virtual int getMachineWeight(const int m) const = 0;
