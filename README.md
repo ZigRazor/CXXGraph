@@ -635,4 +635,3 @@ View the [Estimated Value of the Project](https://www.openhub.net/p/CXXGraph/est
 | [<img src="https://avatars0.githubusercontent.com/u/6591180?s=460&v=4" width="100"><br><sub>@ZigRazor</sub>](https://github.com/ZigRazor) |
 |:----:|
 
-![footer](https://raw.github.com/ZigRazor/CXXGraph/master/logos/CXXGraph_footer.gif)
