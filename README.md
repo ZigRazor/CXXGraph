@@ -1,4 +1,4 @@
-<img style="float: right;" align="left" src="https://raw.github.com/ZigRazor/CXXGraph/master/logos/CXXGraph.gif">
+<img style="float: right;" align="left" src="https://raw.github.com/ZigRazor/CXXGraph/master/logos/CXXBanner.png">
 
 # CXXGraph
 
@@ -16,10 +16,6 @@
 [![Generic badge](https://img.shields.io/badge/Required-G++7.3.0-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/required-C++17-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Required-CMake3.9-Green.svg)](https://shields.io/) 
 
 [![Generic badge](https://img.shields.io/badge/Build-Passed-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/UnitTest-Passed-Green.svg)](https://shields.io/)
-
-<br/><br/>
-<br/><br/>
-<br/><br/>
 
 ## Introduction
 **CXXGraph** is a comprehensive C++ library that manages graph algorithms. This header-only library serves as an alternative to the [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_77_0/libs/graph/doc/index.html).
