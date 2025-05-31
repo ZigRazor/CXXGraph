@@ -388,7 +388,7 @@ void Graph<T>::recreateGraph(
     shared<Node<T>> node2(nullptr);
     if (nodeMap.find(edgeIt.second.first) == nodeMap.end()) {
       // Create new Node
-      T feat;
+      T feat {};
       if (nodeFeatMap.find(edgeIt.second.first) != nodeFeatMap.end()) {
         feat = std::move(nodeFeatMap.at(edgeIt.second.first));
       }
@@ -399,7 +399,7 @@ void Graph<T>::recreateGraph(
     }
     if (nodeMap.find(edgeIt.second.second) == nodeMap.end()) {
       // Create new Node
-      T feat;
+      T feat {};
       if (nodeFeatMap.find(edgeIt.second.second) != nodeFeatMap.end()) {
         feat = std::move(nodeFeatMap.at(edgeIt.second.second));
       }
