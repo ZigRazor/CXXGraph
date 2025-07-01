@@ -1,4 +1,4 @@
-<img style="float: right;" align="left" src="https://raw.github.com/ZigRazor/CXXGraph/master/logos/CXXGraph.gif">
+<img style="float: right;" align="left" src="https://raw.github.com/ZigRazor/CXXGraph/master/logos/CXXBanner.png">
 
 # CXXGraph
 
@@ -11,15 +11,11 @@
 [![codecov](https://codecov.io/gh/ZigRazor/CXXGraph/branch/master/graph/badge.svg?token=773AQ2H9RQ)](https://codecov.io/gh/ZigRazor/CXXGraph)
 [![CodeFactor](https://www.codefactor.io/repository/github/zigrazor/cxxgraph/badge)](https://www.codefactor.io/repository/github/zigrazor/cxxgraph)
 
-[![GitHub license](https://img.shields.io/github/license/ZigRazor/CXXGraph.svg)](https://github.com/ZigRazor/CXXGraph/blob/master/LICENSE) [![GitHub release](https://img.shields.io/github/release/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/releases/)
+[![GitHub license](https://img.shields.io/github/license/ZigRazor/CXXGraph.svg)](https://github.com/ZigRazor/CXXGraph/blob/master/LICENSE) [![GitHub release](https://img.shields.io/github/release/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/releases/) [![Conan Center](https://img.shields.io/conan/v/cxxgraph)](https://conan.io/center/recipes/cxxgraph)
 
-[![Generic badge](https://img.shields.io/badge/Required-G++7.3.0-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/required-C++17-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Required-CMake3.9-Green.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Required-G++7.3.0-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/required-C++17-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Required-CMake3.9-Green.svg)](https://shields.io/) 
 
 [![Generic badge](https://img.shields.io/badge/Build-Passed-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/UnitTest-Passed-Green.svg)](https://shields.io/)
-
-<br/><br/>
-<br/><br/>
-<br/><br/>
 
 ## Introduction
 **CXXGraph** is a comprehensive C++ library that manages graph algorithms. This header-only library serves as an alternative to the [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_77_0/libs/graph/doc/index.html).
@@ -609,6 +605,10 @@ Thank you to all the people who have already contributed to CXXGraph!
 
 [![Contributors](https://contrib.rocks/image?repo=zigrazor/CXXGraph)](https://github.com/ZigRazor/CXXGraph/graphs/contributors) 
 
+## Cited By
+
+- Ruizhe Wang, Meng Xu, and N. Asokan. 2024. SeMalloc: Semantics-Informed Memory Allocator. In Proceedings of the 2024 on ACM SIGSAC Conference on Computer and Communications Security (CCS '24). Association for Computing Machinery, New York, NY, USA, 1375–1389. https://doi.org/10.1145/3658644.3670363
+
 ## Cite Us
 
 If you use this software please follow the [CITATION](https://github.com/ZigRazor/CXXGraph/blob/master/CITATION) instructions.
@@ -635,4 +635,3 @@ View the [Estimated Value of the Project](https://www.openhub.net/p/CXXGraph/est
 | [<img src="https://avatars0.githubusercontent.com/u/6591180?s=460&v=4" width="100"><br><sub>@ZigRazor</sub>](https://github.com/ZigRazor) |
 |:----:|
 
-![footer](https://raw.github.com/ZigRazor/CXXGraph/master/logos/CXXGraph_footer.gif)

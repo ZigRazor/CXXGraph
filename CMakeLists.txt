@@ -19,17 +19,19 @@ if(DEBUG)
 	)
 endif(DEBUG)
 
-option(SANITIZE "Enable Sanitize" OFF)
-if(SANITIZE)
-	add_compile_options(
-		-fsanitize=address
-		-fsanitize=leak
-	)
-	add_link_options(
-		-fsanitize=address
-		-fsanitize=leak
-	)
-endif(SANITIZE)
+if (NOT MSVC)
+	option(SANITIZE "Enable Sanitize" OFF)
+	if(SANITIZE)
+		add_compile_options(
+			-fsanitize=address
+			-fsanitize=leak
+		)
+		add_link_options(
+			-fsanitize=address
+			-fsanitize=leak
+		)
+	endif(SANITIZE)
+endif(NOT MSVC)
 
 # set up CPM.cmake
 if(CPM_SOURCE_CACHE)
@@ -52,5 +54,4 @@ add_subdirectory(test)
 add_subdirectory(benchmark)
 add_subdirectory(examples)
 
-#install(FILES include/Graph.hpp DESTINATION /usr/include)
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/ DESTINATION include)

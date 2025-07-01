@@ -15,6 +15,7 @@ static void Boruvka_X(benchmark::State &state) {
   for (auto _ : state) {
     auto &result = g.boruvka();
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(Boruvka_X)
     ->RangeMultiplier(16)

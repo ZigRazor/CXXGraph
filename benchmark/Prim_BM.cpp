@@ -15,6 +15,7 @@ static void Prim_X(benchmark::State &state) {
   for (auto _ : state) {
     auto &result = g.prim();
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(Prim_X)
     ->RangeMultiplier(16)
@@ -26,6 +27,7 @@ static void Prim_FromReadedCitHep(benchmark::State &state) {
   for (auto _ : state) {
     auto &result = cit_graph_ptr->prim();
   }
+  state.SetComplexityN(2);
 }
 
-BENCHMARK(Prim_FromReadedCitHep)->Complexity();
+// BENCHMARK(Prim_FromReadedCitHep)->Complexity();

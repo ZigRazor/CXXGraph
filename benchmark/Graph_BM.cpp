@@ -9,6 +9,7 @@ static void GraphCreation(benchmark::State &state) {
   for (auto _ : state) {
     CXXGraph::Graph<int> g;
   }
+  state.SetComplexityN(2);
 }
 
 BENCHMARK(GraphCreation)->Complexity();
@@ -21,6 +22,7 @@ static void AddEdge(benchmark::State &state) {
   for (auto _ : state) {
     g.addEdge(&e);
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(AddEdge)->Complexity();
 
@@ -35,6 +37,7 @@ static void AddEdgeX(benchmark::State &state) {
       g.addEdge(&(*e.second));
     }
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(AddEdgeX)
     ->RangeMultiplier(16)
@@ -46,6 +49,7 @@ static void ReadGraphCitHep(benchmark::State &state) {
     auto g = readGraph("CitHepPh");
     delete g;
   }
+  state.SetComplexityN(2);
 }
 
 BENCHMARK(ReadGraphCitHep)->Complexity();
@@ -62,6 +66,7 @@ static void getEdgeSetX(benchmark::State &state) {
   for (auto _ : state) {
     auto edgeSet = g.getEdgeSet();
   }
+  state.SetComplexityN(2);
 }
 
 BENCHMARK(getEdgeSetX)
@@ -81,6 +86,7 @@ static void getNodeSetX(benchmark::State &state) {
   for (auto _ : state) {
     auto nodeSet = g.getNodeSet();
   }
+  state.SetComplexityN(2);
 }
 
 BENCHMARK(getNodeSetX)
@@ -92,6 +98,7 @@ static void getEdgeSetCitHep(benchmark::State &state) {
   for (auto _ : state) {
     auto edgeSet = cit_graph_ptr->getEdgeSet();
   }
+  state.SetComplexityN(2);
 }
 
 BENCHMARK(getEdgeSetCitHep)->Complexity();
@@ -100,6 +107,7 @@ static void getNodeSetCitHep(benchmark::State &state) {
   for (auto _ : state) {
     auto nodeSet = cit_graph_ptr->getNodeSet();
   }
+  state.SetComplexityN(2);
 }
 
 BENCHMARK(getNodeSetCitHep)->Complexity();
@@ -116,6 +124,7 @@ static void getAdjMatrixX(benchmark::State &state) {
   for (auto _ : state) {
     auto adjMatrix = g.getAdjMatrix();
   }
+  state.SetComplexityN(2);
 }
 
 BENCHMARK(getAdjMatrixX)
@@ -127,6 +136,7 @@ static void getAdjMatrixCitHep(benchmark::State &state) {
   for (auto _ : state) {
     auto adjMatrix = cit_graph_ptr->getAdjMatrix();
   }
+  state.SetComplexityN(2);
 }
 
 BENCHMARK(getAdjMatrixCitHep)->Complexity();

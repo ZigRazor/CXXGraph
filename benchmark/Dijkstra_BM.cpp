@@ -16,6 +16,7 @@ static void Dijkstra_X(benchmark::State &state) {
     auto &result = g.dijkstra(*(range_start->second->getNodePair().first),
                               *(range_end->second->getNodePair().second));
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(Dijkstra_X)
     ->RangeMultiplier(16)
@@ -29,6 +30,7 @@ static void Dijkstra_FromReadedCitHep(benchmark::State &state) {
         *((*(edgeSet.begin()))->getNodePair().first),
         *((*(++edgeSet.begin()))->getNodePair().second));
   }
+  state.SetComplexityN(2);
 }
 
-BENCHMARK(Dijkstra_FromReadedCitHep)->Complexity();
+// BENCHMARK(Dijkstra_FromReadedCitHep)->Complexity();

@@ -15,6 +15,7 @@ static void Connectivity_X(benchmark::State &state) {
   for (auto _ : state) {
     auto result = g.isConnectedGraph();
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(Connectivity_X)
     ->RangeMultiplier(16)
@@ -25,10 +26,11 @@ static void Connectivity_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
     auto result = cit_graph_ptr->isConnectedGraph();
+    state.SetComplexityN(2);
   }
 }
 
-BENCHMARK(Connectivity_FromReadedCitHep)->Complexity();
+// BENCHMARK(Connectivity_FromReadedCitHep)->Complexity();
 
 static void StrongConnectivity_X(benchmark::State &state) {
   CXXGraph::Graph<int> g;
@@ -42,6 +44,7 @@ static void StrongConnectivity_X(benchmark::State &state) {
   for (auto _ : state) {
     auto result = g.isConnectedGraph();
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(StrongConnectivity_X)
     ->RangeMultiplier(16)
@@ -53,6 +56,7 @@ static void StrongConnectivity_FromReadedCitHep(benchmark::State &state) {
   for (auto _ : state) {
     auto result = cit_graph_ptr->isConnectedGraph();
   }
+  state.SetComplexityN(2);
 }
 
-BENCHMARK(StrongConnectivity_FromReadedCitHep)->Complexity();
+// BENCHMARK(StrongConnectivity_FromReadedCitHep)->Complexity();

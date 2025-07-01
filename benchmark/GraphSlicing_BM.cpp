@@ -15,6 +15,7 @@ static void GraphSlicing_X(benchmark::State &state) {
   for (auto _ : state) {
     auto &result = g.graph_slicing(*(range_start->second->getNodePair().first));
   }
+  state.SetComplexityN(2);
 }
 BENCHMARK(GraphSlicing_X)
     ->RangeMultiplier(16)
