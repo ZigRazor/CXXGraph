@@ -111,13 +111,13 @@ constexpr const T &Node<T, UserID>::getData() const {
   return data;
 }
 
-template <typename T>
-T &Node<T>::getData() {
+template <typename T, typename UserID>
+constexpr T &Node<T, UserID>::getData() {
   return data;
 }
 
-template <typename T>
-void Node<T>::setData(T &&new_data) {
+template <typename T, typename UserID>
+constexpr void Node<T, UserID>::setData(T &&new_data) {
   this->data = std::move(new_data);
 }
 
