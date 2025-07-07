@@ -47,7 +47,7 @@ jobs:
 
       - name: create Report
         working-directory: ${{github.workspace}}/build/test
-        run: lcov --capture --directory .. --output-file coverage.info
+        run: lcov --capture --directory .. --output-file coverage.info --ignore-errors mismatch
 
       - uses: codecov/codecov-action@v5.4.3
         with:
