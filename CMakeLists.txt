@@ -53,5 +53,6 @@ endif()
 add_subdirectory(test)
 add_subdirectory(benchmark)
 add_subdirectory(examples)
+add_subdirectory(python)
 
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/ DESTINATION include)
