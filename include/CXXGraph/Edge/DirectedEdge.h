@@ -17,11 +17,11 @@
 /***	 License: MPL v2.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_DIRECTEDEDGE_H__
-#define __CXXGRAPH_DIRECTEDEDGE_H__
+#ifndef CXXGRAPH_DIRECTEDEDGE_H
+#define CXXGRAPH_DIRECTEDEDGE_H
 
 #pragma once
 
 #include "DirectedEdge_impl.hpp"
 
-#endif  // __CXXGRAPH_DIRECTEDEDGE_H__
+#endif  // CXXGRAPH_DIRECTEDEDGE_H

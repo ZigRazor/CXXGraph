@@ -26,17 +26,16 @@
 
 namespace CXXGraph {
 
-// inline because the implementation of non-template function in header file
-inline Weighted::Weighted() { weight = 0.0; }
+constexpr Weighted::Weighted() noexcept : weight(0.0) {}
 
-// inline because the implementation of non-template function in header file
-inline Weighted::Weighted(const double weight) { this->weight = weight; }
+constexpr Weighted::Weighted(const double inputWeight) noexcept
+    : weight(inputWeight) {}
 
-// inline because the implementation of non-template function in header file
-inline double Weighted::getWeight() const { return weight; }
+constexpr double Weighted::getWeight() const noexcept { return weight; }
 
-// inline because the implementation of non-template function in header file
-inline void Weighted::setWeight(const double weight) { this->weight = weight; }
+constexpr void Weighted::setWeight(const double inputWeight) {
+  weight = inputWeight;
+}
 
 }  // namespace CXXGraph
 

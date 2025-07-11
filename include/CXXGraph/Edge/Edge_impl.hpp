@@ -35,36 +35,30 @@ using std::make_shared;
 using std::make_unique;
 
 template <typename T>
-Edge<T>::Edge(const CXXGraph::id_t id, const Node<T> &node1,
-              const Node<T> &node2) {
-  this->nodePair.first = make_shared<const Node<T>>(node1);
-  this->nodePair.second = make_shared<const Node<T>>(node2);
-  this->id = id;
-}
+constexpr Edge<T>::Edge(const CXXGraph::id_t otherId, const Node<T> &node1,
+              const Node<T> &node2)
+    : id(otherId), nodePair{std::make_shared<const Node<T>>(node1),
+               std::make_shared<const Node<T>>(node2)}
+      {}
 
 template <typename T>
-Edge<T>::Edge(const CXXGraph::id_t id, shared<const Node<T>> node1,
-              shared<const Node<T>> node2) {
-  this->nodePair.first = node1;
-  this->nodePair.second = node2;
-  this->id = id;
-}
+constexpr Edge<T>::Edge(const CXXGraph::id_t otherId, shared<const Node<T>> node1,
+              shared<const Node<T>> node2)
+    : id(otherId), nodePair(node1, node2) {}
 
 template <typename T>
-Edge<T>::Edge(const CXXGraph::id_t id,
-              const std::pair<const Node<T> *, const Node<T> *> &nodepair) {
-  this->nodePair.first = make_shared<const Node<T>>(*(nodepair.first));
-  this->nodePair.second = make_shared<const Node<T>>(*(nodepair.second));
-  this->id = id;
-}
+constexpr Edge<T>::Edge(const CXXGraph::id_t otherId,
+              const std::pair<const Node<T> *, const Node<T> *> &nodepair) 
+    : id(otherId) 
+    , nodePair(std::make_shared<const Node<T>>(*(nodepair.first)),
+                           std::make_shared<const Node<T>>(*(nodepair.second)))
+{ }
 
 template <typename T>
-Edge<T>::Edge(
-    const CXXGraph::id_t id,
+constexpr Edge<T>::Edge(
+    const CXXGraph::id_t otherId,
     const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair)
-    : nodePair(nodepair) {
-  this->id = id;
-}
+    : id(otherId), nodePair(nodepair) { }
 
 template <typename T>
 void Edge<T>::setFirstNode(shared<const Node<T>> node) {
@@ -79,7 +73,7 @@ void Edge<T>::setSecondNode(shared<const Node<T>> node) {
 }
 
 template <typename T>
-unsigned long long Edge<T>::getId() const {
+constexpr unsigned long long Edge<T>::getId() const {
   return id;
 }
 
@@ -114,7 +108,7 @@ bool Edge<T>::operator==(const Edge<T> &b) const {
 }
 
 template <typename T>
-bool Edge<T>::operator<(const Edge<T> &b) const {
+constexpr bool Edge<T>::operator<(const Edge<T> &b) const {
   return (this->id < b.id);
 }
 
