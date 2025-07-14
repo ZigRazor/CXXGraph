@@ -2,3 +2,42 @@
 #define CXXGraph_VERSION_MAJOR @CXXGraph_VERSION_MAJOR@
 #define CXXGraph_VERSION_MINOR @CXXGraph_VERSION_MINOR@
 #define CXXGraph_VERSION_PATCH @CXXGraph_VERSION_PATCH@
+
+#include <string_view>
+
+#if defined(CXXGraph_CUSTOM_MAP) || defined(CXXGraph_CUSTOM_MAP_HEADER)
+//  Very custom types, not explictly supported. 
+//   Should be usable as a replacement std::unordered_map and set.
+#   if !__has_include( CXXGraph_CUSTOM_MAP_HEADER )
+#       error "CXXGraph_CUSTOM_MAP is defined but CXXGraph_CUSTOM_MAP_HEADER is not valid"
+#   elif !defined(CXXGraph_CUSTOM_MAP)
+#       error "CXXGraph_CUSTOM_MAP is defined but CXXGraph_CUSTOM_MAP is not set."
+#   else
+#       include CXXGraph_CUSTOM_MAP_HEADER
+#       include CXXGraph_CUSTOM_SET_HEADER
+        namespace CXXGraph {
+            template<typename Key, typename Value, typename... Args>
+            using Map = CXXGraph_CUSTOM_MAP<Key, Value, Args...>;
+            template<typename Key, typename... Args>
+            using Set = CXXGraph_CUSTOM_SET<Key, Args...>;
+        }
+#   endif
+#elif __has_include(<frozen/set.h>)
+#   include <frozen/set.h>
+#   include <frozen/unordered_map.h>
+    namespace CXXGraph {
+        template<typename Key, typename Value, typename... Args>
+        using Map = frozen::unordered_map<Key, Value, Args...>;
+        template<typename Key, typename... Args>
+        using Set = frozen::set<Key, Args...>;
+    }
+#else
+#   include <unordered_map>
+#   include <set>
+    namespace CXXGraph {
+        template<typename Key, typename Value, typename... Args>
+        using Map = std::unordered_map<Key, Value, Args...>;
+        template<typename Key, typename... Args>
+        using Set = std::set<Key, Args...>;
+    }
+#endif

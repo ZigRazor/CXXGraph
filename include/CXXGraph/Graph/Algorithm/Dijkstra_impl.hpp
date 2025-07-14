@@ -55,7 +55,7 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T>& source,
   // auto n = cachedAdjMatrix->size();
 
   // setting all the distances initially to INF_DOUBLE
-  std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist;
+  CXXGraph::Map<shared<const Node<T>>, double, nodeHash<T>> dist;
 
   for (const auto& node : nodeSet) {
     dist[node] = INF_DOUBLE;
@@ -75,7 +75,7 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T>& source,
   // marking the distance of source as 0
   dist[*source_node_it] = 0;
 
-  std::unordered_map<std::string, std::string> parent;
+  CXXGraph::Map<std::string, std::string> parent;
   parent[source.getUserId()] = "";
 
   while (!pq.empty()) {
@@ -180,7 +180,7 @@ const DijkstraResult Graph<T>::dijkstra_deterministic(
   // auto n = cachedAdjMatrix->size();
 
   // setting all the distances initially to INF_DOUBLE
-  std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist;
+  CXXGraph::Map<shared<const Node<T>>, double, nodeHash<T>> dist;
   std::map<std::string, shared<const Node<T>>> userIds;
 
   for (const auto& node : nodeSet) {
@@ -188,7 +188,7 @@ const DijkstraResult Graph<T>::dijkstra_deterministic(
     userIds[node->getUserId()] = node;
   }
 
-  std::unordered_map<shared<const Node<T>>, size_t, nodeHash<T>> stableIds;
+  CXXGraph::Map<shared<const Node<T>>, size_t, nodeHash<T>> stableIds;
   size_t index(0);
   for (const auto& it : userIds) stableIds[it.second] = index++;
 
@@ -218,7 +218,7 @@ const DijkstraResult Graph<T>::dijkstra_deterministic(
   // marking the distance of source as 0
   dist[*source_node_it] = 0;
 
-  std::unordered_map<std::string, std::string> parent;
+  CXXGraph::Map<std::string, std::string> parent;
   parent[source.getUserId()] = "";
 
   while (!pq.empty()) {
@@ -328,7 +328,7 @@ const DijkstraResult Graph<T>::dijkstra_deterministic2(
   // auto n = cachedAdjMatrix->size();
 
   // setting all the distances initially to INF_DOUBLE
-  std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist;
+  CXXGraph::Map<shared<const Node<T>>, double, nodeHash<T>> dist;
   std::map<std::string, shared<const Node<T>>> userIds;
 
   for (const auto& node : nodeSet) {
@@ -336,7 +336,7 @@ const DijkstraResult Graph<T>::dijkstra_deterministic2(
     userIds[node->getUserId()] = node;
   }
 
-  std::unordered_map<shared<const Node<T>>, uint64_t, nodeHash<T>> stableIds;
+  CXXGraph::Map<shared<const Node<T>>, uint64_t, nodeHash<T>> stableIds;
   size_t index(0);
   for (const auto& it : userIds) stableIds[it.second] = index++;
 
@@ -374,7 +374,7 @@ const DijkstraResult Graph<T>::dijkstra_deterministic2(
   // marking the distance of source as 0
   dist[*source_node_it] = 0;
 
-  std::unordered_map<std::string, std::string> parent;
+  CXXGraph::Map<std::string, std::string> parent;
   parent[source.getUserId()] = "";
 
   while (!pq.empty()) {
@@ -484,7 +484,7 @@ const DijkstraResult Graph<T>::criticalpath_deterministic(
   // auto n = cachedAdjMatrix->size();
 
   // setting all the distances initially to -INF_DOUBLE
-  std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist;
+  CXXGraph::Map<shared<const Node<T>>, double, nodeHash<T>> dist;
   std::map<std::string, shared<const Node<T>>> userIds;
 
   for (const auto& node : nodeSet) {
@@ -492,7 +492,7 @@ const DijkstraResult Graph<T>::criticalpath_deterministic(
     userIds[node->getUserId()] = node;
   }
 
-  std::unordered_map<shared<const Node<T>>, size_t, nodeHash<T>> stableIds;
+  CXXGraph::Map<shared<const Node<T>>, size_t, nodeHash<T>> stableIds;
   size_t index(0);
   for (const auto& it : userIds) stableIds[it.second] = index++;
 
@@ -522,7 +522,7 @@ const DijkstraResult Graph<T>::criticalpath_deterministic(
   // marking the distance of source as 0
   dist[*source_node_it] = 0;
 
-  std::unordered_map<std::string, std::string> parent;
+  CXXGraph::Map<std::string, std::string> parent;
   parent[source.getUserId()] = "";
 
   while (!pq.empty()) {

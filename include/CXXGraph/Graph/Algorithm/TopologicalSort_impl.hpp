@@ -39,7 +39,7 @@ TopoSortResult<T> Graph<T>::topologicalSort() const {
     return result;
   } else {
     const auto &nodeSet = getNodeSet();
-    std::unordered_map<shared<const Node<T>>, bool, nodeHash<T>> visited;
+    CXXGraph::Map<shared<const Node<T>>, bool, nodeHash<T>> visited;
 
     std::function<void(shared<const Node<T>>)> postorder_helper =
         [this, &postorder_helper, &visited,

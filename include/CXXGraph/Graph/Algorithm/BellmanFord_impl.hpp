@@ -52,7 +52,7 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
     return result;
   }
   // setting all the distances initially to INF_DOUBLE
-  std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist,
+  CXXGraph::Map<shared<const Node<T>>, double, nodeHash<T>> dist,
       currentDist;
   // n denotes the number of vertices in graph
   auto n = nodeSet.size();

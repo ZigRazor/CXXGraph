@@ -33,7 +33,7 @@ bool Graph<T>::isConnectedGraph() const {
   } else {
     auto nodeSet = getNodeSet();
     // created visited map
-    std::unordered_map<CXXGraph::id_t, bool> visited;
+    CXXGraph::Map<CXXGraph::id_t, bool> visited;
     for (const auto &node : nodeSet) {
       visited[node->getId()] = false;
     }
@@ -73,7 +73,7 @@ bool Graph<T>::isStronglyConnectedGraph() const {
     auto nodeSet = getNodeSet();
     for (const auto &start_node : nodeSet) {
       // created visited map
-      std::unordered_map<CXXGraph::id_t, bool> visited;
+      CXXGraph::Map<CXXGraph::id_t, bool> visited;
       for (const auto &node : nodeSet) {
         visited[node->getId()] = false;
       }

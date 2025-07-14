@@ -127,7 +127,7 @@ struct FWResult_struct {
   bool negativeCycle =
       false;  // TRUE if graph contains a negative cycle, FALSE otherwise
   std::string errorMessage = "";  // message of error
-  std::unordered_map<std::pair<std::string, std::string>, double, pair_hash>
+  CXXGraph::Map<std::pair<std::string, std::string>, double, pair_hash>
       result = {};
 };
 typedef FWResult_struct FWResult;
@@ -150,7 +150,7 @@ struct DialResult_struct {
   bool success =
       false;  // TRUE if the function does not return error, FALSE otherwise
   std::string errorMessage = "";  // message of error
-  std::unordered_map<unsigned long long, long> minDistanceMap =
+  CXXGraph::Map<unsigned long long, long> minDistanceMap =
       {};  // result a map that contains the node id and the minumum distance
            // from source (valid only if success is TRUE)
 };
@@ -191,7 +191,7 @@ struct SCCResult_struct {
       false;  // TRUE if the function does not return error, FALSE otherwise
   std::string errorMessage = "";  // message of error
   int noOfComponents = 0;
-  std::unordered_map<size_t, int> sccMap;
+  CXXGraph::Map<size_t, int> sccMap;
   // Components<T> stronglyConnectedComps;
 };
 template <typename T>
@@ -253,30 +253,30 @@ using BronKerboschResult = BronKerboschResult_struct<T>;
 // ///////////////////////////////////////////////////////////////
 
 template <typename T>
-using AdjacencyMatrix = std::unordered_map<
+using AdjacencyMatrix = CXXGraph::Map<
     shared<const Node<T>>,
     std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>,
     nodeHash<T>>;
 
 template <typename T>
 using DegreeMatrix =
-    std::unordered_map<shared<const Node<T>>, unsigned int, nodeHash<T>>;
+    CXXGraph::Map<shared<const Node<T>>, unsigned int, nodeHash<T>>;
 
 template <typename T>
-using LaplacianMatrix = std::unordered_map<
+using LaplacianMatrix = CXXGraph::Map<
     shared<const Node<T>>,
     std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>,
     nodeHash<T>>;
 
 template <typename T>
 using TransitionMatrix =
-    std::unordered_map<shared<const Node<T>>,
+    CXXGraph::Map<shared<const Node<T>>,
                        std::vector<std::pair<shared<const Node<T>>, double>>,
                        nodeHash<T>>;
 
 template <typename T>
 using PartitionMap =
-    std::unordered_map<unsigned int,
+    CXXGraph::Map<unsigned int,
                        std::shared_ptr<Partitioning::Partition<T>>>;
 
 ///////////////////////////////////////////////////////////////////////////////////

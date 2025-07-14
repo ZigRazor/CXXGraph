@@ -42,12 +42,12 @@ class WeightBalancedLibra : public PartitionStrategy<T> {
  private:
   Globals GLOBALS;
   double weight_sum_bound;
-  std::unordered_map<std::size_t, int> vertices_degrees;
+  CXXGraph::Map<std::size_t, int> vertices_degrees;
 
  public:
   explicit WeightBalancedLibra(
       const Globals &G, double _weight_sum_bound,
-      std::unordered_map<std::size_t, int> &&_vertices_degrees);
+      CXXGraph::Map<std::size_t, int> &&_vertices_degrees);
   ~WeightBalancedLibra();
 
   void performStep(shared<const Edge<T>> e,
@@ -56,7 +56,7 @@ class WeightBalancedLibra : public PartitionStrategy<T> {
 template <typename T>
 WeightBalancedLibra<T>::WeightBalancedLibra(
     const Globals &G, double _weight_sum_bound,
-    std::unordered_map<std::size_t, int> &&_vertices_degrees)
+    CXXGraph::Map<std::size_t, int> &&_vertices_degrees)
     : GLOBALS(G),
       weight_sum_bound(_weight_sum_bound),
       vertices_degrees(_vertices_degrees) {}

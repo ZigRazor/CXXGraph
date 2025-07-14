@@ -30,7 +30,7 @@ const FWResult Graph<T>::floydWarshall() const {
   FWResult result;
   result.success = false;
   result.errorMessage = "";
-  std::unordered_map<std::pair<std::string, std::string>, double,
+  CXXGraph::Map<std::pair<std::string, std::string>, double,
                      CXXGraph::pair_hash>
       pairwise_dist;
   const auto &nodeSet = Graph<T>::getNodeSet();

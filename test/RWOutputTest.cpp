@@ -18,9 +18,9 @@ inline bool exists_test(const std::string &name) {
   return (stat(name.c_str(), &buffer) == 0);
 }
 
-static std::unordered_map<unsigned long, shared<CXXGraph::Node<int>>>
+static CXXGraph::Map<unsigned long, shared<CXXGraph::Node<int>>>
 generateRandomNodes(unsigned long numberOfNodes, int MaxValue) {
-  std::unordered_map<unsigned long, shared<CXXGraph::Node<int>>> nodes;
+  CXXGraph::Map<unsigned long, shared<CXXGraph::Node<int>>> nodes;
   srand(static_cast<unsigned>(time(NULL)));
   int randomNumber;
   for (unsigned long index = 0; index < numberOfNodes; ++index) {
@@ -33,11 +33,11 @@ generateRandomNodes(unsigned long numberOfNodes, int MaxValue) {
   return nodes;
 }
 
-static std::unordered_map<unsigned long, shared<CXXGraph::Edge<int>>>
+static CXXGraph::Map<unsigned long, shared<CXXGraph::Edge<int>>>
 generateRandomEdges(
     unsigned long numberOfEdges,
-    std::unordered_map<unsigned long, shared<CXXGraph::Node<int>>> nodes) {
-  std::unordered_map<unsigned long, shared<CXXGraph::Edge<int>>> edges;
+    CXXGraph::Map<unsigned long, shared<CXXGraph::Node<int>>> nodes) {
+  CXXGraph::Map<unsigned long, shared<CXXGraph::Edge<int>>> edges;
   srand(static_cast<unsigned>(time(NULL)));
   int randomNumber1;
   int randomNumber2;

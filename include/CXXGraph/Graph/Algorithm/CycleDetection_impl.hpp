@@ -42,7 +42,7 @@ bool Graph<T>::isCyclicDirectedGraphDFS() const {
    *
    * Initially, all nodes are in "not_visited" state.
    */
-  std::unordered_map<CXXGraph::id_t, nodeStates> state;
+  CXXGraph::Map<CXXGraph::id_t, nodeStates> state;
   for (const auto &node : nodeSet) {
     state[node->getId()] = not_visited;
   }
@@ -55,13 +55,13 @@ bool Graph<T>::isCyclicDirectedGraphDFS() const {
     if (state[node->getId()] == not_visited) {
       // Check for cycle.
       std::function<bool(const std::shared_ptr<AdjacencyMatrix<T>>,
-                         std::unordered_map<CXXGraph::id_t, nodeStates> &,
+                         CXXGraph::Map<CXXGraph::id_t, nodeStates> &,
                          shared<const Node<T>>)>
           isCyclicDFSHelper;
       isCyclicDFSHelper =
           [&isCyclicDFSHelper](
               const std::shared_ptr<AdjacencyMatrix<T>> adjMatrix,
-              std::unordered_map<CXXGraph::id_t, nodeStates> &states,
+              CXXGraph::Map<CXXGraph::id_t, nodeStates> &states,
               shared<const Node<T>> node) {
             // Add node "in_stack" state.
             states[node->getId()] = in_stack;
@@ -108,7 +108,7 @@ bool Graph<T>::isCyclicDirectedGraphDFS() const {
 template <typename T>
 bool Graph<T>::containsCycle(const T_EdgeSet<T> *edgeSet) const {
   auto edgeSet_ptr = make_shared<const T_EdgeSet<T>>(*edgeSet);
-  auto subset = make_shared<std::unordered_map<CXXGraph::id_t, Subset>>();
+  auto subset = make_shared<CXXGraph::Map<CXXGraph::id_t, Subset>>();
   // initialize the subset parent and rank values
   for (const auto &edge : *edgeSet_ptr) {
     auto &[first, second] = edge->getNodePair();
@@ -134,7 +134,7 @@ bool Graph<T>::containsCycle(const T_EdgeSet<T> *edgeSet) const {
 
 template <typename T>
 bool Graph<T>::containsCycle(shared<const T_EdgeSet<T>> edgeSet) const {
-  auto subset = make_shared<std::unordered_map<CXXGraph::id_t, Subset>>();
+  auto subset = make_shared<CXXGraph::Map<CXXGraph::id_t, Subset>>();
   // initialize the subset parent and rank values
   for (const auto &edge : *edgeSet) {
     auto &[first, second] = edge->getNodePair();
@@ -161,7 +161,7 @@ bool Graph<T>::containsCycle(shared<const T_EdgeSet<T>> edgeSet) const {
 template <typename T>
 bool Graph<T>::containsCycle(
     shared<const T_EdgeSet<T>> edgeSet,
-    shared<std::unordered_map<CXXGraph::id_t, Subset>> subset) const {
+    shared<CXXGraph::Map<CXXGraph::id_t, Subset>> subset) const {
   for (const auto &edge : *edgeSet) {
     auto &[first, second] = edge->getNodePair();
     auto set1 = Graph<T>::setFind(subset, first->getId());
@@ -179,7 +179,7 @@ bool Graph<T>::isCyclicDirectedGraphBFS() const {
   }
   auto nodeSet = Graph<T>::getNodeSet();
 
-  std::unordered_map<CXXGraph::id_t, unsigned int> indegree;
+  CXXGraph::Map<CXXGraph::id_t, unsigned int> indegree;
   for (const auto &node : nodeSet) {
     indegree[node->getId()] = 0;
   }

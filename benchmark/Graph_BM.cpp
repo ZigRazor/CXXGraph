@@ -30,7 +30,7 @@ static void AddEdgeX(benchmark::State &state) {
   CXXGraph::Graph<int> g;
   auto range_start = edges.begin();
   auto range_end = edges.find(state.range(0));
-  std::unordered_map<unsigned long, CXXGraph::Edge<int> *> edgesX;
+  CXXGraph::Map<unsigned long, CXXGraph::Edge<int> *> edgesX;
   edgesX.insert(range_start, range_end);
   for (auto _ : state) {
     for (auto e : edgesX) {
@@ -58,7 +58,7 @@ static void getEdgeSetX(benchmark::State &state) {
   CXXGraph::Graph<int> g;
   auto range_start = edges.begin();
   auto range_end = edges.find(state.range(0));
-  std::unordered_map<unsigned long, CXXGraph::Edge<int> *> edgesX;
+  CXXGraph::Map<unsigned long, CXXGraph::Edge<int> *> edgesX;
   edgesX.insert(range_start, range_end);
   for (auto e : edgesX) {
     g.addEdge(&(*e.second));
@@ -78,7 +78,7 @@ static void getNodeSetX(benchmark::State &state) {
   CXXGraph::Graph<int> g;
   auto range_start = edges.begin();
   auto range_end = edges.find(state.range(0));
-  std::unordered_map<unsigned long, CXXGraph::Edge<int> *> edgesX;
+  CXXGraph::Map<unsigned long, CXXGraph::Edge<int> *> edgesX;
   edgesX.insert(range_start, range_end);
   for (auto e : edgesX) {
     g.addEdge(&(*e.second));
@@ -116,7 +116,7 @@ static void getAdjMatrixX(benchmark::State &state) {
   CXXGraph::Graph<int> g;
   auto range_start = undirectedEdges.begin();
   auto range_end = undirectedEdges.find(state.range(0));
-  std::unordered_map<unsigned long, CXXGraph::UndirectedEdge<int> *> edgesX;
+  CXXGraph::Map<unsigned long, CXXGraph::UndirectedEdge<int> *> edgesX;
   edgesX.insert(range_start, range_end);
   for (auto e : edgesX) {
     g.addEdge(&(*e.second));

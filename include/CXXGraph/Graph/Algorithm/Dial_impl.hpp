@@ -49,7 +49,7 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
           dist[i].first = distance of ith vertex from src vertex
           dits[i].second = vertex i in bucket number */
   auto V = nodeSet.size();
-  std::unordered_map<shared<const Node<T>>,
+  CXXGraph::Map<shared<const Node<T>>,
                      std::pair<long, shared<const Node<T>>>, nodeHash<T>>
       dist;
 

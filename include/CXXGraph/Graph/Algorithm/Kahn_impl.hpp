@@ -37,7 +37,7 @@ TopoSortResult<T> Graph<T>::kahn() const {
     const auto nodeSet = Graph<T>::getNodeSet();
     result.nodesInTopoOrder.reserve(cachedAdjMatrix->size());
 
-    std::unordered_map<CXXGraph::id_t, unsigned int> indegree;
+    CXXGraph::Map<CXXGraph::id_t, unsigned int> indegree;
     for (const auto &node : nodeSet) {
       indegree[node->getId()] = 0;
     }

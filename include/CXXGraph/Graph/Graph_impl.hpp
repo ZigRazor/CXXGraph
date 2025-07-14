@@ -392,10 +392,10 @@ std::unordered_set<shared<Node<T>>, nodeHash<T>> Graph<T>::nodeSet() {
 
 template <typename T>
 CXXGraph::id_t Graph<T>::setFind(
-    std::unordered_map<CXXGraph::id_t, Subset> *subsets,
+    CXXGraph::Map<CXXGraph::id_t, Subset> *subsets,
     const CXXGraph::id_t nodeId) const {
   auto subsets_ptr =
-      make_shared<std::unordered_map<CXXGraph::id_t, Subset>>(*subsets);
+      make_shared<CXXGraph::Map<CXXGraph::id_t, Subset>>(*subsets);
   // find root and make root as parent of i
   // (path compression)
   if ((*subsets)[nodeId].parent != nodeId) {
@@ -408,7 +408,7 @@ CXXGraph::id_t Graph<T>::setFind(
 
 template <typename T>
 CXXGraph::id_t Graph<T>::setFind(
-    shared<std::unordered_map<CXXGraph::id_t, Subset>> subsets,
+    shared<CXXGraph::Map<CXXGraph::id_t, Subset>> subsets,
     const CXXGraph::id_t nodeId) const {
   // find root and make root as parent of i
   // (path compression)
@@ -421,10 +421,10 @@ CXXGraph::id_t Graph<T>::setFind(
 }
 
 template <typename T>
-void Graph<T>::setUnion(std::unordered_map<CXXGraph::id_t, Subset> *subsets,
+void Graph<T>::setUnion(CXXGraph::Map<CXXGraph::id_t, Subset> *subsets,
                         const CXXGraph::id_t elem1,
                         const CXXGraph::id_t elem2) const {
-  /* auto subsets_ptr = make_shared<std::unordered_map<CXXGraph::id_t,
+  /* auto subsets_ptr = make_shared<CXXGraph::Map<CXXGraph::id_t,
    * Subset>>(*subsets); */
   // if both sets have same parent
   // then there's nothing to be done
@@ -456,7 +456,7 @@ void Graph<T>::setUnion(std::unordered_map<CXXGraph::id_t, Subset> *subsets,
 
 template <typename T>
 void Graph<T>::setUnion(
-    shared<std::unordered_map<CXXGraph::id_t, Subset>> subsets,
+    shared<CXXGraph::Map<CXXGraph::id_t, Subset>> subsets,
     const CXXGraph::id_t elem1, const CXXGraph::id_t elem2) const {
   // if both sets have same parent
   // then there's nothing to be done

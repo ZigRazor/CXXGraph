@@ -36,7 +36,7 @@ TEST(FWTest, test_1) {
   CXXGraph::Graph<int> graph(edgeSet);
   CXXGraph::FWResult res = graph.floydWarshall();
 
-  std::unordered_map<std::pair<std::string, std::string>, double,
+  CXXGraph::Map<std::pair<std::string, std::string>, double,
                      CXXGraph::pair_hash>
       pairwise_dist;
   auto key = std::make_pair(node1.getUserId(), node1.getUserId());
