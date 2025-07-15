@@ -47,7 +47,7 @@ namespace Partitioning {
 template <typename T>
 class CoordinatedPartitionState : public PartitionState<T> {
  private:
-  std::map<CXXGraph::id_t, std::shared_ptr<CoordinatedRecord<T>>> record_map;
+  CXXGraph::OrderedMap<CXXGraph::id_t, std::shared_ptr<CoordinatedRecord<T>>> record_map;
   std::vector<int> machines_load_edges;
   std::vector<double> machines_weight_edges;
   std::vector<int> machines_load_vertices;

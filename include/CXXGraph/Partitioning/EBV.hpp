@@ -111,7 +111,7 @@ void EBV<T>::performStep(shared<const Edge<T>> e,
   int machine_id = -1;
 
   //*** COMPUTE SCORES, FIND MIN SCORE, AND COMPUTE CANDIDATES PARTITIONS
-  std::map<int, double> eva;
+  CXXGraph::OrderedMap<int, double> eva;
   auto u_partition = u_record->getPartitions();
   auto v_partition = v_record->getPartitions();
   auto optimalEdgesNumber = (double)edgeCardinality / (double)P;
