@@ -39,7 +39,7 @@ const Graph<T> Graph<T>::transitiveReduction() const {
   Graph<T> result(this->edgeSet);
 
   CXXGraph::id_t edgeId = 0;
-  std::unordered_set<shared<const Node<T>>, nodeHash<T>> nodes =
+  CXXGraph::Set<shared<const Node<T>>, nodeHash<T>> nodes =
       this->getNodeSet();
   for (auto x : nodes) {
     for (auto y : nodes) {

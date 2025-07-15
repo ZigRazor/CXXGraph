@@ -242,7 +242,7 @@ template <typename T>
 struct BronKerboschResult_struct {
   bool success = false;
   std::string errorMessage = "";
-  std::vector<std::unordered_set<shared<const Node<T>>, nodeHash<T>>>
+  std::vector<CXXGraph::Set<shared<const Node<T>>, nodeHash<T>>>
       maximalCliques = {};
 };
 template <typename T>

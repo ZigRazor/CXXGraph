@@ -72,11 +72,11 @@ class CoordinatedPartitionState : public PartitionState<T> {
   int getMinLoad() const override;
   int getMaxLoad() const override;
   int getMachineWithMinWeight() const override;
-  int getMachineWithMinWeight(const std::set<int> &partitions) const override;
+  int getMachineWithMinWeight(const CXXGraph::OrderedSet<int> &partitions) const override;
   std::vector<int> getMachines_load() const override;
   size_t getTotalReplicas() const override;
   size_t getNumVertices() const override;
-  std::set<CXXGraph::id_t> getVertexIds() const override;
+  CXXGraph::OrderedSet<CXXGraph::id_t> getVertexIds() const override;
 
   void incrementMachineLoadVertices(const int m);
   std::vector<int> getMachines_loadVertices() const;
@@ -194,7 +194,7 @@ int CoordinatedPartitionState<T>::getMachineWithMinWeight() const {
 }
 template <typename T>
 int CoordinatedPartitionState<T>::getMachineWithMinWeight(
-    const std::set<int> &partitions) const {
+    const CXXGraph::OrderedSet<int> &partitions) const {
   std::lock_guard<std::mutex> lock(*machines_weight_edges_mutex);
 
   double MIN_LOAD = std::numeric_limits<double>::max();
@@ -239,10 +239,10 @@ size_t CoordinatedPartitionState<T>::getNumVertices() const {
   return (size_t)record_map.size();
 }
 template <typename T>
-std::set<CXXGraph::id_t> CoordinatedPartitionState<T>::getVertexIds() const {
+CXXGraph::OrderedSet<CXXGraph::id_t> CoordinatedPartitionState<T>::getVertexIds() const {
   std::lock_guard<std::mutex> lock(*record_map_mutex);
   // if (GLOBALS.OUTPUT_FILE_NAME!=null){ out.close(); }
-  std::set<CXXGraph::id_t> result;
+  CXXGraph::OrderedSet<CXXGraph::id_t> result;
   for (const auto &record_map_it : record_map) {
     result.insert((CXXGraph::id_t)record_map_it.first);
   }

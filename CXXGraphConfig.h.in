@@ -15,29 +15,49 @@
 #   else
 #       include CXXGraph_CUSTOM_MAP_HEADER
 #       include CXXGraph_CUSTOM_SET_HEADER
+#       include CXXGraph_CUSTOM_ORDERED_SET_HEADER
+#       include CXXGraph_CUSTOM_ORDERED_MAP_HEADER
+
         namespace CXXGraph {
             template<typename Key, typename Value, typename... Args>
             using Map = CXXGraph_CUSTOM_MAP<Key, Value, Args...>;
+            template<typename Key, typename Value, typename... Args>
+            using OrderedMap = CXXGraph_CUSTOM_ORDERED_MAP<Key, Value, Args...>;
+            template<typename Key, typename... Args>
+            using OrderedSet = CXXGraph_CUSTOM_ORDERED_SET<Key, Args...>;
             template<typename Key, typename... Args>
             using Set = CXXGraph_CUSTOM_SET<Key, Args...>;
         }
 #   endif
 #elif __has_include(<frozen/set.h>)
 #   include <frozen/set.h>
+#   include <frozen/unordered_set.h>
 #   include <frozen/unordered_map.h>
+#   include <frozen/map.h>
+
     namespace CXXGraph {
         template<typename Key, typename Value, typename... Args>
         using Map = frozen::unordered_map<Key, Value, Args...>;
+        template<typename Key, typename Value, typename... Args>
+        using OrderedMap = frozen::map<Key, Value, Args...>;
+        template<typename Key, typename... Args>
+        using OrderedSet = frozen::set<Key, Args...>;
         template<typename Key, typename... Args>
         using Set = frozen::set<Key, Args...>;
     }
 #else
 #   include <unordered_map>
 #   include <set>
+#   include <unordered_set>
+#   include <map>
     namespace CXXGraph {
         template<typename Key, typename Value, typename... Args>
         using Map = std::unordered_map<Key, Value, Args...>;
+        template<typename Key, typename Value, typename... Args>
+        using OrderedMap = std::map<Key, Value, Args...>;
         template<typename Key, typename... Args>
-        using Set = std::set<Key, Args...>;
+        using Set = std::unordered_set<Key, Args...>;
+        template<typename Key, typename... Args>
+        using OrderedSet = std::set<Key, Args...>;
     }
 #endif

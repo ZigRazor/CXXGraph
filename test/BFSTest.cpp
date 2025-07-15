@@ -324,7 +324,7 @@ TEST(BFSTest, test_13) {
   CXXGraph::Graph<int> graph(edgeSet);
 
   auto &result1 = graph.breadth_first_search(*(nodes[0]));
-  std::set<CXXGraph::Node<int>> st1;
+  CXXGraph::OrderedSet<CXXGraph::Node<int>> st1;
   for (const auto &node : result1) {
     st1.emplace(node);
   }
