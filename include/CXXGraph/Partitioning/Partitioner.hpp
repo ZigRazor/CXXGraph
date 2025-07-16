@@ -208,7 +208,7 @@ CoordinatedPartitionState<T> Partitioner<T>::startCoordinated() {
   */
   // new shared state is move constructed then returned
   //  (so has no effect on the shared ponter)
-  return *shared_state;
+  return std::move(*shared_state);
 }
 
 template <typename T>
