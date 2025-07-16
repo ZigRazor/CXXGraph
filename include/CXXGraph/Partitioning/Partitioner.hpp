@@ -17,11 +17,11 @@
 /***	 License: MPL v2.0 ***/
 /***********************************************************/
 
-#ifndef __CXXGRAPH_PARTITIONING_PARTITIONER_H__
-#define __CXXGRAPH_PARTITIONING_PARTITIONER_H__
+#ifndef CXXGRAPH_PARTITIONING_PARTITIONER_H_
+#define CXXGRAPH_PARTITIONING_PARTITIONER_H_
 
-#include <memory>
 #pragma once
+#include <memory>
 #include <vector>
 
 #include "CXXGraph/Edge/Edge.h"
@@ -170,6 +170,7 @@ Partitioner<T>::Partitioner(const Partitioner &other) {
 template <typename T>
 CoordinatedPartitionState<T> Partitioner<T>::startCoordinated() {
   CoordinatedPartitionState<T> state(GLOBALS);
+  auto shared_state = make_shared<CoordinatedPartitionState<T>>(std::move(state));
   int processors = GLOBALS.threads;
 
   std::vector<std::thread> myThreads(processors);
@@ -185,7 +186,7 @@ CoordinatedPartitionState<T> Partitioner<T>::startCoordinated() {
           std::next(dataset->begin(), iStart),
           std::next(dataset->begin(), iEnd));
       myRunnable[t].reset(new PartitionerThread<T>(
-          list_vector[t], make_shared<CoordinatedPartitionState<T>>(state),
+          list_vector[t], shared_state,
           algorithm));
       myThreads[t] = std::thread(&Runnable::run, myRunnable[t].get());
     }
@@ -205,7 +206,9 @@ CoordinatedPartitionState<T> Partitioner<T>::startCoordinated() {
       }
   }
   */
-  return state;
+  // new shared state is move constructed then returned
+  //  (so has no effect on the shared ponter)
+  return *shared_state;
 }
 
 template <typename T>
@@ -235,4 +238,4 @@ PartitionMap<T> Partitioner<T>::partitionGraph(
 }  // namespace Partitioning
 }  // namespace CXXGraph
 
-#endif  // __CXXGRAPH_PARTITIONING_PARTITIONER_H__
+#endif  // CXXGRAPH_PARTITIONING_PARTITIONER_H_
