@@ -192,20 +192,9 @@ CoordinatedPartitionState<T> Partitioner<T>::startCoordinated() {
     }
   }
   for (int t = 0; t < processors; ++t) {
-    if (myThreads[t].joinable()) {
-      myThreads[t].join();
-    }
-    // if(myRunnable[t] != nullptr){
-    //    delete myRunnable[t];
-    //}
+    myThreads[t].join();
   }
-  /*
-  for (int t = 0; t < processors; ++t){
-      if (runnableList[t] != nullptr){
-          delete runnableList[t];
-      }
-  }
-  */
+
   // new shared state is move constructed then returned
   //  (so has no effect on the shared ponter)
   return std::move(*shared_state);
