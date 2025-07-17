@@ -7,7 +7,7 @@ static void EulerPath_X(benchmark::State &state) {
   CXXGraph::Graph<int> g;
   auto range_start = undirectedEdges.begin();
   auto range_end = undirectedEdges.find(state.range(0));
-  CXXGraph::Maplong, CXXGraph::Edge<int> *> edgesX;
+  CXXGraph::Map<long, CXXGraph::Edge<int> *> edgesX;
   edgesX.insert(range_start, range_end);
   for (auto e : edgesX) {
     g.addEdge(&(*e.second));
