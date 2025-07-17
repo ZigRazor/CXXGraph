@@ -35,11 +35,11 @@ double Graph<T>::fordFulkersonMaxFlow(const Node<T> &source,
     return -1;
   }
   double maxFlow = 0;
-  std::unordered_map<shared<const Node<T>>, shared<const Node<T>>, nodeHash<T>>
+  CXXGraph::Map<shared<const Node<T>>, shared<const Node<T>>, nodeHash<T>>
       parent;
-  std::unordered_map<
+  CXXGraph::Map<
       shared<const Node<T>>,
-      std::unordered_map<shared<const Node<T>>, double, nodeHash<T>>,
+      CXXGraph::Map<shared<const Node<T>>, double, nodeHash<T>>,
       nodeHash<T>>
       weightMap;
   // build weight map
@@ -69,7 +69,7 @@ double Graph<T>::fordFulkersonMaxFlow(const Node<T> &source,
 
   auto bfs_helper = [&source_node_ptr, &target_node_ptr, &parent,
                      &weightMap]() -> bool {
-    std::unordered_map<shared<const Node<T>>, bool, nodeHash<T>> visited;
+    CXXGraph::Map<shared<const Node<T>>, bool, nodeHash<T>> visited;
     std::queue<shared<const Node<T>>> queue;
     queue.push(source_node_ptr);
     visited[source_node_ptr] = true;

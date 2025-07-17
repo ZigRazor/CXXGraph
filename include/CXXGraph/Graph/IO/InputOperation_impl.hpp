@@ -165,11 +165,11 @@ template <typename T>
 int Graph<T>::readFromMTXFile(const std::string &workingDir,
                               const std::string &fileName) {
   // Define the edge maps
-  std::unordered_map<CXXGraph::id_t, std::pair<std::string, std::string>>
+  CXXGraph::Map<CXXGraph::id_t, std::pair<std::string, std::string>>
       edgeMap;
-  std::unordered_map<std::string, T> nodeFeatMap;
-  std::unordered_map<CXXGraph::id_t, bool> edgeDirectedMap;
-  std::unordered_map<CXXGraph::id_t, double> edgeWeightMap;
+  CXXGraph::Map<std::string, T> nodeFeatMap;
+  CXXGraph::Map<CXXGraph::id_t, bool> edgeDirectedMap;
+  CXXGraph::Map<CXXGraph::id_t, double> edgeWeightMap;
 
   // Get full path to the file and open it
   const std::string completePathToFileGraph =
@@ -253,11 +253,11 @@ template <typename T>
 int Graph<T>::readFromDot(const std::string &workingDir,
                           const std::string &fileName) {
   // Define the edge maps
-  std::unordered_map<CXXGraph::id_t, std::pair<std::string, std::string>>
+  CXXGraph::Map<CXXGraph::id_t, std::pair<std::string, std::string>>
       edgeMap;
-  std::unordered_map<std::string, T> nodeFeatMap;
-  std::unordered_map<CXXGraph::id_t, bool> edgeDirectedMap;
-  std::unordered_map<CXXGraph::id_t, double> edgeWeightMap;
+  CXXGraph::Map<std::string, T> nodeFeatMap;
+  CXXGraph::Map<CXXGraph::id_t, bool> edgeDirectedMap;
+  CXXGraph::Map<CXXGraph::id_t, double> edgeWeightMap;
 
   // Define the node strings and the "garbage collector" temp string
   std::string node1;
@@ -337,11 +337,11 @@ void Graph<T>::readGraphFromStream(std::istream &iGraph,
                                    std::istream &iNodeFeat,
                                    std::istream &iEdgeWeight, bool readNodeFeat,
                                    bool readEdgeWeight) {
-  std::unordered_map<CXXGraph::id_t, std::pair<std::string, std::string>>
+  CXXGraph::Map<CXXGraph::id_t, std::pair<std::string, std::string>>
       edgeMap;
-  std::unordered_map<CXXGraph::id_t, bool> edgeDirectedMap;
-  std::unordered_map<std::string, T> nodeFeatMap;
-  std::unordered_map<CXXGraph::id_t, double> edgeWeightMap;
+  CXXGraph::Map<CXXGraph::id_t, bool> edgeDirectedMap;
+  CXXGraph::Map<std::string, T> nodeFeatMap;
+  CXXGraph::Map<CXXGraph::id_t, double> edgeWeightMap;
 
   CXXGraph::id_t edgeId;
   std::string nodeId1;
@@ -377,12 +377,12 @@ void Graph<T>::readGraphFromStream(std::istream &iGraph,
 
 template <typename T>
 void Graph<T>::recreateGraph(
-    std::unordered_map<CXXGraph::id_t, std::pair<std::string, std::string>>
+    CXXGraph::Map<CXXGraph::id_t, std::pair<std::string, std::string>>
         &edgeMap,
-    std::unordered_map<CXXGraph::id_t, bool> &edgeDirectedMap,
-    std::unordered_map<std::string, T> &nodeFeatMap,
-    std::unordered_map<CXXGraph::id_t, double> &edgeWeightMap) {
-  std::unordered_map<std::string, shared<Node<T>>> nodeMap;
+    CXXGraph::Map<CXXGraph::id_t, bool> &edgeDirectedMap,
+    CXXGraph::Map<std::string, T> &nodeFeatMap,
+    CXXGraph::Map<CXXGraph::id_t, double> &edgeWeightMap) {
+  CXXGraph::Map<std::string, shared<Node<T>>> nodeMap;
   for (const auto &edgeIt : edgeMap) {
     shared<Node<T>> node1(nullptr);
     shared<Node<T>> node2(nullptr);

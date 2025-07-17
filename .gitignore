@@ -31,8 +31,12 @@
 *.out
 *.app
 
-# ignore the build folder contents from git
+# ignore the build folder contents
 build/
+# ignore ctest files
+Testing/
+# ignore cmake generated files
+include/CXXGraph/CXXGraphConfig.h 
 # ignore the packaging folder contents from git
 packaging/
 # ignore vscode files

@@ -110,7 +110,7 @@ Partitioner<T>::Partitioner(shared<const T_EdgeSet<T>> dataset, Globals &G)
         (GLOBALS.numberOfPartition == 0) ? 0.0 : lambda * weight_sum / P;
 
     // precompute degrees of vertices
-    std::unordered_map<std::size_t, int> vertices_degrees;
+    CXXGraph::Map<std::size_t, int> vertices_degrees;
     for (const auto &edge_it : *(this->dataset)) {
       auto nodePair = edge_it->getNodePair();
       std::size_t u = nodePair.first->getId();
@@ -153,7 +153,7 @@ Partitioner<T>::Partitioner(const Partitioner &other) {
         (GLOBALS.numberOfPartition == 0) ? 0.0 : lambda * weight_sum / P;
 
     // precompute degrees of vertices
-    std::unordered_map<std::size_t, int> vertices_degrees;
+    CXXGraph::Map<std::size_t, int> vertices_degrees;
     for (const auto &edge_it : *(this->dataset)) {
       auto nodePair = edge_it->getNodePair();
       std::size_t u = nodePair.first->getId();

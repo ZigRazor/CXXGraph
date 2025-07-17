@@ -42,12 +42,12 @@ class WeightBalancedLibra : public PartitionStrategy<T> {
  private:
   Globals GLOBALS;
   double weight_sum_bound;
-  std::unordered_map<std::size_t, int> vertices_degrees;
+  CXXGraph::Map<std::size_t, int> vertices_degrees;
 
  public:
   explicit WeightBalancedLibra(
       const Globals &G, double _weight_sum_bound,
-      std::unordered_map<std::size_t, int> &&_vertices_degrees);
+      CXXGraph::Map<std::size_t, int> &&_vertices_degrees);
   ~WeightBalancedLibra();
 
   void performStep(shared<const Edge<T>> e,
@@ -56,7 +56,7 @@ class WeightBalancedLibra : public PartitionStrategy<T> {
 template <typename T>
 WeightBalancedLibra<T>::WeightBalancedLibra(
     const Globals &G, double _weight_sum_bound,
-    std::unordered_map<std::size_t, int> &&_vertices_degrees)
+    CXXGraph::Map<std::size_t, int> &&_vertices_degrees)
     : GLOBALS(G),
       weight_sum_bound(_weight_sum_bound),
       vertices_degrees(_vertices_degrees) {}
@@ -99,8 +99,8 @@ void WeightBalancedLibra<T>::performStep(shared<const Edge<T>> e,
   }
   //*** LOCK TAKEN
   int machine_id = -1;
-  const std::set<int> &u_partition = u_record->getPartitions();
-  const std::set<int> &v_partition = v_record->getPartitions();
+  const CXXGraph::OrderedSet<int> &u_partition = u_record->getPartitions();
+  const CXXGraph::OrderedSet<int> &v_partition = v_record->getPartitions();
 
   // Case 1: no edges of two nodes have been assigned
   if (u_partition.empty() && v_partition.empty()) {
@@ -138,9 +138,9 @@ void WeightBalancedLibra<T>::performStep(shared<const Edge<T>> e,
 
       // according to paper, s refers to node with lower degree, t = {u, v} -
       // {s}
-      const std::set<int> &s_partition =
+      const CXXGraph::OrderedSet<int> &s_partition =
           (u_degree > v_degree) ? v_partition : u_partition;
-      const std::set<int> &t_partition =
+      const CXXGraph::OrderedSet<int> &t_partition =
           (u_degree > v_degree) ? u_partition : v_partition;
 
       machine_id = state->getMachineWithMinWeight(s_partition);

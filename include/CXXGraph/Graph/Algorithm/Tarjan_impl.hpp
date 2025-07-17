@@ -49,9 +49,9 @@ const TarjanResult<T> Graph<T>::tarjan(const unsigned int typeMask) const {
   }
 
   const auto &nodeSet = getNodeSet();
-  std::unordered_map<CXXGraph::id_t, int>
+  CXXGraph::Map<CXXGraph::id_t, int>
       discoveryTime;  // the timestamp when a node is visited
-  std::unordered_map<CXXGraph::id_t, int>
+  CXXGraph::Map<CXXGraph::id_t, int>
       lowestDisc;  // the lowest discovery time of all
                    // reachable nodes from current node
   int timestamp = 0;
@@ -59,7 +59,7 @@ const TarjanResult<T> Graph<T>::tarjan(const unsigned int typeMask) const {
   std::stack<Node<T>> sccNodeStack;
   std::stack<Node<T>> ebccNodeStack;
   std::stack<Node<T>> vbccNodeStack;
-  std::unordered_set<CXXGraph::id_t> inStack;
+  CXXGraph::Set<CXXGraph::id_t> inStack;
   std::function<void(const shared<const Node<T>>, const shared<const Edge<T>>)>
       dfs_helper = [this, typeMask, isDirected, &dfs_helper, &discoveryTime,
                     &lowestDisc, &timestamp, &rootId, &sccNodeStack,

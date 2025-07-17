@@ -41,7 +41,7 @@ TEST(StringNodeTest, StringConstructor) {
   char charTest = 'w';
   std::string stringTest = "myStr";
   std::vector<int> vectorTest = {1, 2, 3, 4};
-  std::unordered_map<int, int> mapTest = {{1, 2}, {3, 4}, {5, 6}, {7, 8}};
+  CXXGraph::Map<int, int> mapTest = {{1, 2}, {3, 4}, {5, 6}, {7, 8}};
   testStruct structTest(42, true, "abc");
 
   CXXGraph::Node<int> intNode("1", intTest);
@@ -51,7 +51,7 @@ TEST(StringNodeTest, StringConstructor) {
   CXXGraph::Node<char> charNode("5", charTest);
   CXXGraph::Node<std::string> stringNode("6", stringTest);
   CXXGraph::Node<std::vector<int>> vectorNode("7", vectorTest);
-  CXXGraph::Node<std::unordered_map<int, int>> mapNode("8", mapTest);
+  CXXGraph::Node<CXXGraph::Map<int, int>> mapNode("8", mapTest);
   CXXGraph::Node<testStruct> structNode("9", structTest);
 
   ASSERT_EQ(intNode.getUserId(), "1");

@@ -375,8 +375,8 @@ const std::optional<shared<const Node<T>>> Graph<T>::getNode(
 }
 
 template <typename T>
-std::unordered_set<shared<Node<T>>, nodeHash<T>> Graph<T>::nodeSet() {
-  std::unordered_set<shared<Node<T>>, nodeHash<T>> nodeSet;
+CXXGraph::Set<shared<Node<T> >, nodeHash<T>> Graph<T>::nodeSet() {
+  CXXGraph::Set<shared<Node<T>>, nodeHash<T>> nodeSet;
   for (auto &edgeSetIt : edgeSet) {
     nodeSet.insert(
         std::const_pointer_cast<Node<T>>(edgeSetIt->getNodePair().first));
@@ -392,10 +392,10 @@ std::unordered_set<shared<Node<T>>, nodeHash<T>> Graph<T>::nodeSet() {
 
 template <typename T>
 CXXGraph::id_t Graph<T>::setFind(
-    std::unordered_map<CXXGraph::id_t, Subset> *subsets,
+    CXXGraph::Map<CXXGraph::id_t, Subset> *subsets,
     const CXXGraph::id_t nodeId) const {
   auto subsets_ptr =
-      make_shared<std::unordered_map<CXXGraph::id_t, Subset>>(*subsets);
+      make_shared<CXXGraph::Map<CXXGraph::id_t, Subset>>(*subsets);
   // find root and make root as parent of i
   // (path compression)
   if ((*subsets)[nodeId].parent != nodeId) {
@@ -408,7 +408,7 @@ CXXGraph::id_t Graph<T>::setFind(
 
 template <typename T>
 CXXGraph::id_t Graph<T>::setFind(
-    shared<std::unordered_map<CXXGraph::id_t, Subset>> subsets,
+    shared<CXXGraph::Map<CXXGraph::id_t, Subset>> subsets,
     const CXXGraph::id_t nodeId) const {
   // find root and make root as parent of i
   // (path compression)
@@ -421,10 +421,10 @@ CXXGraph::id_t Graph<T>::setFind(
 }
 
 template <typename T>
-void Graph<T>::setUnion(std::unordered_map<CXXGraph::id_t, Subset> *subsets,
+void Graph<T>::setUnion(CXXGraph::Map<CXXGraph::id_t, Subset> *subsets,
                         const CXXGraph::id_t elem1,
                         const CXXGraph::id_t elem2) const {
-  /* auto subsets_ptr = make_shared<std::unordered_map<CXXGraph::id_t,
+  /* auto subsets_ptr = make_shared<CXXGraph::Map<CXXGraph::id_t,
    * Subset>>(*subsets); */
   // if both sets have same parent
   // then there's nothing to be done
@@ -456,7 +456,7 @@ void Graph<T>::setUnion(std::unordered_map<CXXGraph::id_t, Subset> *subsets,
 
 template <typename T>
 void Graph<T>::setUnion(
-    shared<std::unordered_map<CXXGraph::id_t, Subset>> subsets,
+    shared<CXXGraph::Map<CXXGraph::id_t, Subset>> subsets,
     const CXXGraph::id_t elem1, const CXXGraph::id_t elem2) const {
   // if both sets have same parent
   // then there's nothing to be done
@@ -646,7 +646,7 @@ void Graph<T>::cacheTransitionMatrix() {
 }
 
 template <typename T>
-const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+const CXXGraph::Set<shared<const Node<T>>, nodeHash<T>>
 Graph<T>::outNeighbors(const Node<T> *node) const {
   auto node_shared = make_shared<const Node<T>>(*node);
 
@@ -654,14 +654,14 @@ Graph<T>::outNeighbors(const Node<T> *node) const {
 }
 
 template <typename T>
-const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+const CXXGraph::Set<shared<const Node<T>>, nodeHash<T>>
 Graph<T>::outNeighbors(shared<const Node<T>> node) const {
   if (cachedAdjMatrix->find(node) == cachedAdjMatrix->end()) {
-    return std::unordered_set<shared<const Node<T>>, nodeHash<T>>();
+    return CXXGraph::Set<shared<const Node<T>>, nodeHash<T>>();
   }
   auto nodeEdgePairs = cachedAdjMatrix->at(node);
 
-  std::unordered_set<shared<const Node<T>>, nodeHash<T>> outNeighbors;
+  CXXGraph::Set<shared<const Node<T>>, nodeHash<T>> outNeighbors;
   for (auto pair : nodeEdgePairs) {
     if (pair.second->isDirected().has_value() &&
         pair.second->isDirected().value()) {
@@ -673,7 +673,7 @@ Graph<T>::outNeighbors(shared<const Node<T>> node) const {
 }
 
 template <typename T>
-const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+const CXXGraph::Set<shared<const Node<T>>, nodeHash<T>>
 Graph<T>::inOutNeighbors(const Node<T> *node) const {
   auto node_shared = make_shared<const Node<T>>(*node);
 
@@ -681,14 +681,14 @@ Graph<T>::inOutNeighbors(const Node<T> *node) const {
 }
 
 template <typename T>
-const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+const CXXGraph::Set<shared<const Node<T>>, nodeHash<T>>
 Graph<T>::inOutNeighbors(shared<const Node<T>> node) const {
   if (cachedAdjMatrix->find(node) == cachedAdjMatrix->end()) {
-    return std::unordered_set<shared<const Node<T>>, nodeHash<T>>();
+    return CXXGraph::Set<shared<const Node<T>>, nodeHash<T>>();
   }
   auto nodeEdgePairs = cachedAdjMatrix->at(node);
 
-  std::unordered_set<shared<const Node<T>>, nodeHash<T>> inOutNeighbors;
+  CXXGraph::Set<shared<const Node<T>>, nodeHash<T>> inOutNeighbors;
   for (auto pair : nodeEdgePairs) {
     inOutNeighbors.insert(pair.first);
   }
@@ -697,7 +697,7 @@ Graph<T>::inOutNeighbors(shared<const Node<T>> node) const {
 }
 
 template <typename T>
-const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> Graph<T>::outEdges(
+const CXXGraph::Set<shared<const Edge<T>>, edgeHash<T>> Graph<T>::outEdges(
     const Node<T> *node) const {
   auto node_shared = make_shared<const Node<T>>(*node);
 
@@ -705,14 +705,14 @@ const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> Graph<T>::outEdges(
 }
 
 template <typename T>
-const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> Graph<T>::outEdges(
+const CXXGraph::Set<shared<const Edge<T>>, edgeHash<T>> Graph<T>::outEdges(
     shared<const Node<T>> node) const {
   if (cachedAdjMatrix->find(node) == cachedAdjMatrix->end()) {
-    return std::unordered_set<shared<const Edge<T>>, edgeHash<T>>();
+    return CXXGraph::Set<shared<const Edge<T>>, edgeHash<T>>();
   }
   auto nodeEdgePairs = cachedAdjMatrix->at(node);
 
-  std::unordered_set<shared<const Edge<T>>, edgeHash<T>> outEdges;
+  CXXGraph::Set<shared<const Edge<T>>, edgeHash<T>> outEdges;
   for (auto pair : nodeEdgePairs) {
     if (pair.second->isDirected().has_value() &&
         pair.second->isDirected().value()) {
@@ -724,7 +724,7 @@ const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> Graph<T>::outEdges(
 }
 
 template <typename T>
-const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
+const CXXGraph::Set<shared<const Edge<T>>, edgeHash<T>>
 Graph<T>::inOutEdges(const Node<T> *node) const {
   auto node_shared = make_shared<const Node<T>>(*node);
 
@@ -732,14 +732,14 @@ Graph<T>::inOutEdges(const Node<T> *node) const {
 }
 
 template <typename T>
-const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
+const CXXGraph::Set<shared<const Edge<T>>, edgeHash<T>>
 Graph<T>::inOutEdges(shared<const Node<T>> node) const {
   if (cachedAdjMatrix->find(node) == cachedAdjMatrix->end()) {
-    return std::unordered_set<shared<const Edge<T>>, edgeHash<T>>();
+    return CXXGraph::Set<shared<const Edge<T>>, edgeHash<T>>();
   }
   auto nodeEdgePairs = cachedAdjMatrix->at(node);
 
-  std::unordered_set<shared<const Edge<T>>, edgeHash<T>> outEdges;
+  CXXGraph::Set<shared<const Edge<T>>, edgeHash<T>> outEdges;
   for (auto pair : nodeEdgePairs) {
     outEdges.insert(pair.second);
   }

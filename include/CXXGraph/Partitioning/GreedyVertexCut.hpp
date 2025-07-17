@@ -145,7 +145,7 @@ void GreedyVertexCut<T>::performStep(shared<const Edge<T>> e,
   } else if (!u_record->getPartitions().empty() &&
              !v_record->getPartitions().empty()) {
     // check if have intersection
-    std::set<int> intersection;
+    CXXGraph::OrderedSet<int> intersection;
     std::set_intersection(
         u_record->getPartitions().begin(), u_record->getPartitions().end(),
         v_record->getPartitions().begin(), v_record->getPartitions().end(),
@@ -163,7 +163,7 @@ void GreedyVertexCut<T>::performStep(shared<const Edge<T>> e,
       candidates.push_back(machine_id);
     } else {
       // Find the partition with min load in the union of u and v
-      std::set<int> part_union;
+      CXXGraph::OrderedSet<int> part_union;
       std::set_union(
           u_record->getPartitions().begin(), u_record->getPartitions().end(),
           v_record->getPartitions().begin(), v_record->getPartitions().end(),

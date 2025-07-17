@@ -39,7 +39,7 @@ SCCResult<T> Graph<T>::kosaraju() const {
   } else {
     auto nodeSet = getNodeSet();
     // created visited map
-    std::unordered_map<CXXGraph::id_t, bool> visited;
+    CXXGraph::Map<CXXGraph::id_t, bool> visited;
     for (const auto &node : nodeSet) {
       visited[node->getId()] = false;
     }

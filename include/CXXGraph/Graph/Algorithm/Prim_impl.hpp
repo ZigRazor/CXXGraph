@@ -45,7 +45,7 @@ const MstResult Graph<T>::prim() const {
   /* auto n = nodeSet.size(); */
 
   // setting all the distances initially to INF_DOUBLE
-  std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist;
+  CXXGraph::Map<shared<const Node<T>>, double, nodeHash<T>> dist;
   for (const auto &elem : (*cachedAdjMatrix)) {
     dist[elem.first] = INF_DOUBLE;
   }
@@ -68,7 +68,7 @@ const MstResult Graph<T>::prim() const {
   doneNode.push_back(source->getId());
   // stores the parent and corresponding child node
   // of the edges that are part of MST
-  std::unordered_map<CXXGraph::id_t, std::string> parentNode;
+  CXXGraph::Map<CXXGraph::id_t, std::string> parentNode;
   while (!pq.empty()) {
     // second element of pair denotes the node / vertex
     shared<const Node<T>> currentNode = pq.top().second;

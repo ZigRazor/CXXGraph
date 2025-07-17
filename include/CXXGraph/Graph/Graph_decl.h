@@ -104,11 +104,11 @@ class Graph {
                  const std::string &graphName) const;
   int readFromDot(const std::string &workingDir, const std::string &fileName);
   void recreateGraph(
-      std::unordered_map<CXXGraph::id_t, std::pair<std::string, std::string>>
+      CXXGraph::Map<CXXGraph::id_t, std::pair<std::string, std::string>>
           &edgeMap,
-      std::unordered_map<CXXGraph::id_t, bool> &edgeDirectedMap,
-      std::unordered_map<std::string, T> &nodeFeatMap,
-      std::unordered_map<CXXGraph::id_t, double> &edgeWeightMap);
+      CXXGraph::Map<CXXGraph::id_t, bool> &edgeDirectedMap,
+      CXXGraph::Map<std::string, T> &nodeFeatMap,
+      CXXGraph::Map<CXXGraph::id_t, double> &edgeWeightMap);
 
 #ifdef WITH_COMPRESSION
   int compressFile(const std::string &inputFile,
@@ -508,7 +508,7 @@ class Graph {
    * @return parent node of elem
    * Note: No Thread Safe
    */
-  virtual CXXGraph::id_t setFind(std::unordered_map<CXXGraph::id_t, Subset> *,
+  virtual CXXGraph::id_t setFind(CXXGraph::Map<CXXGraph::id_t, Subset> *,
                                  const CXXGraph::id_t elem) const;
 
   /**
@@ -523,7 +523,7 @@ class Graph {
    * Note: No Thread Safe
    */
   virtual CXXGraph::id_t setFind(
-      shared<std::unordered_map<CXXGraph::id_t, Subset>>,
+      shared<CXXGraph::Map<CXXGraph::id_t, Subset>>,
       const CXXGraph::id_t elem) const;
 
   /**
@@ -535,7 +535,7 @@ class Graph {
    * NOTE: Original subset is no longer available after union.
    * Note: No Thread Safe
    */
-  virtual void setUnion(std::unordered_map<CXXGraph::id_t, Subset> *,
+  virtual void setUnion(CXXGraph::Map<CXXGraph::id_t, Subset> *,
                         const CXXGraph::id_t set1,
                         const CXXGraph::id_t elem2) const;
 
@@ -548,7 +548,7 @@ class Graph {
    * NOTE: Original subset is no longer available after union.
    * Note: No Thread Safe
    */
-  virtual void setUnion(shared<std::unordered_map<CXXGraph::id_t, Subset>>,
+  virtual void setUnion(shared<CXXGraph::Map<CXXGraph::id_t, Subset>>,
                         const CXXGraph::id_t set1,
                         const CXXGraph::id_t elem2) const;
 
@@ -828,7 +828,7 @@ class Graph {
    */
   virtual bool containsCycle(
       shared<const T_EdgeSet<T>> edgeSet,
-      shared<std::unordered_map<CXXGraph::id_t, Subset>>) const;
+      shared<CXXGraph::Map<CXXGraph::id_t, Subset>>) const;
 
   /**
    * \brief

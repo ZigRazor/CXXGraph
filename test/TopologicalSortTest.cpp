@@ -95,7 +95,7 @@ TEST(TopologicalSortTest, test_3) {
   ASSERT_EQ(res.nodesInTopoOrder.size(), 8);
 
   // check topological order of nodes
-  std::unordered_map<CXXGraph::id_t, int> nodeToOrder;
+  CXXGraph::Map<CXXGraph::id_t, int> nodeToOrder;
   for (size_t i = 0; i < res.nodesInTopoOrder.size(); ++i) {
     nodeToOrder[res.nodesInTopoOrder[i].getId()] = i;
   }

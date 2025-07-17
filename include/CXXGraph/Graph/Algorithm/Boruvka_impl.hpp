@@ -42,7 +42,7 @@ const MstResult Graph<T>::boruvka() const {
   const auto n = nodeSet.size();
 
   // Use std map for storing n subsets.
-  auto subsets = make_shared<std::unordered_map<CXXGraph::id_t, Subset>>();
+  auto subsets = make_shared<CXXGraph::Map<CXXGraph::id_t, Subset>>();
 
   // Initially there are n different trees.
   // Finally there will be one tree that will be MST
@@ -51,7 +51,7 @@ const MstResult Graph<T>::boruvka() const {
   // check if all edges are weighted and store the weights
   // in a map whose keys are the edge ids and values are the edge weights
   const auto edgeSet = Graph<T>::getEdgeSet();
-  std::unordered_map<CXXGraph::id_t, double> edgeWeight;
+  CXXGraph::Map<CXXGraph::id_t, double> edgeWeight;
   for (const auto &edge : edgeSet) {
     if (edge->isWeighted().has_value() && edge->isWeighted().value())
       edgeWeight[edge->getId()] =
@@ -73,7 +73,7 @@ const MstResult Graph<T>::boruvka() const {
   while (numTrees > 1) {
     // Everytime initialize cheapest map
     // It stores index of the cheapest edge of subset.
-    std::unordered_map<CXXGraph::id_t, CXXGraph::id_t> cheapest;
+    CXXGraph::Map<CXXGraph::id_t, CXXGraph::id_t> cheapest;
     for (const auto &node : nodeSet) cheapest[node->getId()] = INT_MAX;
 
     // Traverse through all edges and update
@@ -137,7 +137,7 @@ const MstResult Graph<T>::boruvka_deterministic() const {
   const auto n = nodeSet.size();
 
   // Use std map for storing n subsets.
-  auto subsets = make_shared<std::unordered_map<CXXGraph::id_t, Subset>>();
+  auto subsets = make_shared<CXXGraph::Map<CXXGraph::id_t, Subset>>();
 
   // Initially there are n different trees.
   // Finally there will be one tree that will be MST
@@ -146,7 +146,7 @@ const MstResult Graph<T>::boruvka_deterministic() const {
   // check if all edges are weighted and store the weights
   // in a map whose keys are the edge ids and values are the edge weights
   const auto edgeSet = Graph<T>::getEdgeSet();
-  std::unordered_map<CXXGraph::id_t, double> edgeWeight;
+  CXXGraph::Map<CXXGraph::id_t, double> edgeWeight;
   for (const auto &edge : edgeSet) {
     if (edge->isWeighted().has_value() && edge->isWeighted().value())
       edgeWeight[edge->getId()] =
@@ -168,7 +168,7 @@ const MstResult Graph<T>::boruvka_deterministic() const {
   while (numTrees > 1) {
     // Everytime initialize cheapest map
     // It stores index of the cheapest edge of subset.
-    std::unordered_map<CXXGraph::id_t, CXXGraph::id_t> cheapest;
+    CXXGraph::Map<CXXGraph::id_t, CXXGraph::id_t> cheapest;
     for (const auto &node : nodeSet) cheapest[node->getId()] = INT_MAX;
 
     // Traverse through all edges and update

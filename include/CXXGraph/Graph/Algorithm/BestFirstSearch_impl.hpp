@@ -117,7 +117,7 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
     return bfs_result;
   }
 
-  std::unordered_map<shared<const Node<T>>, size_t, nodeHash<T>> node_to_index;
+  CXXGraph::Map<shared<const Node<T>>, size_t, nodeHash<T>> node_to_index;
   for (const auto &node : nodeSet) {
     node_to_index[node] = node_to_index.size();
   }

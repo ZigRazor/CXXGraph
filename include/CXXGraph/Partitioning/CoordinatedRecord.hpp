@@ -33,7 +33,7 @@ namespace Partitioning {
 template <typename T>
 class CoordinatedRecord : public Record<T> {
  private:
-  std::set<int> partitions = {};
+  CXXGraph::OrderedSet<int> partitions = {};
   std::mutex *lock = nullptr;
   int degree = 0;
 
@@ -41,7 +41,7 @@ class CoordinatedRecord : public Record<T> {
   CoordinatedRecord();
   ~CoordinatedRecord();
 
-  const std::set<int> &getPartitions() const override;
+  const CXXGraph::OrderedSet<int> &getPartitions() const override;
   void addPartition(const int m) override;
   bool hasReplicaInPartition(const int m) const override;
   bool getLock() override;
@@ -50,36 +50,36 @@ class CoordinatedRecord : public Record<T> {
   int getDegree() const override;
   void incrementDegree() override;
 
-  void addAll(const std::set<int> &set);
-  std::set<int> partition_intersection(
+  void addAll(const CXXGraph::OrderedSet<int> &set);
+  CXXGraph::OrderedSet<int> partition_intersection(
       const std::shared_ptr<CoordinatedRecord> other) const;
-  std::set<int> partition_union(
+  CXXGraph::OrderedSet<int> partition_union(
       const std::shared_ptr<CoordinatedRecord> other) const;
-  std::set<int> partition_difference(
+  CXXGraph::OrderedSet<int> partition_difference(
       const std::shared_ptr<CoordinatedRecord> other) const;
 };
 template <typename T>
-std::set<int> CoordinatedRecord<T>::partition_intersection(
+CXXGraph::OrderedSet<int> CoordinatedRecord<T>::partition_intersection(
     std::shared_ptr<CoordinatedRecord> other) const {
-  std::set<int> result;
+  CXXGraph::OrderedSet<int> result;
   set_intersection(this->partitions.begin(), this->partitions.end(),
                    other->partitions.begin(), other->partitions.end(),
                    std::inserter(result, result.begin()));
   return result;
 }
 template <typename T>
-std::set<int> CoordinatedRecord<T>::partition_union(
+CXXGraph::OrderedSet<int> CoordinatedRecord<T>::partition_union(
     std::shared_ptr<CoordinatedRecord> other) const {
-  std::set<int> result;
+  CXXGraph::OrderedSet<int> result;
   set_union(this->partitions.begin(), this->partitions.end(),
             other->partitions.begin(), other->partitions.end(),
             std::inserter(result, result.begin()));
   return result;
 }
 template <typename T>
-std::set<int> CoordinatedRecord<T>::partition_difference(
+CXXGraph::OrderedSet<int> CoordinatedRecord<T>::partition_difference(
     std::shared_ptr<CoordinatedRecord> other) const {
-  std::set<int> result;
+  CXXGraph::OrderedSet<int> result;
   set_difference(this->partitions.begin(), this->partitions.end(),
                  other->partitions.begin(), other->partitions.end(),
                  std::inserter(result, result.begin()));
@@ -99,7 +99,7 @@ CoordinatedRecord<T>::~CoordinatedRecord() {
   }
 }
 template <typename T>
-const std::set<int> &CoordinatedRecord<T>::getPartitions() const {
+const CXXGraph::OrderedSet<int> &CoordinatedRecord<T>::getPartitions() const {
   return partitions;
 }
 template <typename T>
@@ -136,7 +136,7 @@ void CoordinatedRecord<T>::incrementDegree() {
   degree++;
 }
 template <typename T>
-void CoordinatedRecord<T>::addAll(const std::set<int> &set) {
+void CoordinatedRecord<T>::addAll(const CXXGraph::OrderedSet<int> &set) {
   partitions.insert(set.begin(), set.end());
 }
 }  // namespace Partitioning

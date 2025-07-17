@@ -2,3 +2,56 @@
 #define CXXGraph_VERSION_MAJOR @CXXGraph_VERSION_MAJOR@
 #define CXXGraph_VERSION_MINOR @CXXGraph_VERSION_MINOR@
 #define CXXGraph_VERSION_PATCH @CXXGraph_VERSION_PATCH@
+
+#pragma once
+#if defined(CXXGraph_CUSTOM_MAP_HEADER)
+//  Very custom types, not explictly supported. 
+//   Should be usable as a replacement std::unordered_map and set.
+#   if defined(CXXGraph_NO_CUSTOM_MAP_HEADER_INCLUDE)
+//  User does not want us to include the custom map header
+//    They might not want to define lots of macros
+//    They will have to do all the includes themselves
+#   elif !__has_include( CXXGraph_CUSTOM_MAP_HEADER )
+#       error "CXXGraph_CUSTOM_MAP_HEADER is defined but is not a valid include path. \
+Use CXXGraph_NO_CUSTOM_MAP_HEADER_INCLUDE to disable this check"
+#   else
+//  If one include is fine, assume the rest are also fine.
+#       include CXXGraph_CUSTOM_MAP_HEADER
+#       include CXXGraph_CUSTOM_SET_HEADER
+#       include CXXGraph_CUSTOM_ORDERED_SET_HEADER
+#       include CXXGraph_CUSTOM_ORDERED_MAP_HEADER
+// Users are expected to declare types in our namespace (saves us gessing what they are) 
+#   endif
+#elif __has_include(<frozen/set.h>)
+// Frozen library is available, use it for better performance
+#   include <frozen/set.h>
+#   include <frozen/unordered_set.h>
+#   include <frozen/unordered_map.h>
+#   include <frozen/map.h>
+
+    namespace CXXGraph {
+        template<typename Key, typename Value, typename... Args>
+        using Map = frozen::unordered_map<Key, Value, Args...>;
+        template<typename Key, typename Value, typename... Args>
+        using OrderedMap = frozen::map<Key, Value, Args...>;
+        template<typename Key, typename... Args>
+        using OrderedSet = frozen::set<Key, Args...>;
+        template<typename Key, typename... Args>
+        using Set = frozen::set<Key, Args...>;
+    }
+#else
+#   include <unordered_map>
+#   include <set>
+#   include <unordered_set>
+#   include <map>
+    namespace CXXGraph {
+        template<typename Key, typename Value, typename... Args>
+        using Map = std::unordered_map<Key, Value, Args...>;
+        template<typename Key, typename Value, typename... Args>
+        using OrderedMap = std::map<Key, Value, Args...>;
+        template<typename Key, typename... Args>
+        using Set = std::unordered_set<Key, Args...>;
+        template<typename Key, typename... Args>
+        using OrderedSet = std::set<Key, Args...>;
+    }
+#endif

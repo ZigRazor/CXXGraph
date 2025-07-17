@@ -58,7 +58,7 @@ const MstResult Graph<T>::kruskal() const {
     }
   }
 
-  auto subset = make_shared<std::unordered_map<CXXGraph::id_t, Subset>>();
+  auto subset = make_shared<CXXGraph::Map<CXXGraph::id_t, Subset>>();
 
   for (const auto &node : nodeSet) {
     Subset set{node->getId(), 0};
