@@ -2,7 +2,10 @@ name: CMake
 
 on:
   push:
-    # FAIL REVIEW -- I like pipelines to run on push
+    branches: [ master ]
+  pull_request:
+      branches: [ master ]
+
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
