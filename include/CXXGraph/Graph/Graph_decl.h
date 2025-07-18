@@ -263,6 +263,17 @@ class Graph {
 
   /**
    * \brief
+   * Function to invalidate and rebuild the core caches of the Graph.
+   * This includes adjacency matrix, degree matrix, and Laplacian matrix.
+   * Note: No Thread Safe
+   *
+   * Call after any structural modification of the graph.
+   *
+   */
+  void invalidateCache();
+
+  /**
+   * \brief
    * Finds the given edge defined by v1 and v2 within the graph.
    *
    * @param v1 The first vertex.
