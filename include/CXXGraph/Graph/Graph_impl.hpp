@@ -36,8 +36,7 @@ using std::make_unique;
 template <typename T>
 Graph<T>::Graph() {
   /* Caching the adjacency matrix */
-  invalidateCache();
-  cacheTransitionMatrix();
+  invalidateCache(true);
 }
 
 template <typename T>
@@ -46,8 +45,7 @@ Graph<T>::Graph(const T_EdgeSet<T> &edgeSet) {
     this->edgeSet.insert(edgeIt);
   }
   /* Caching the adjacency matrix */
-  invalidateCache();
-  cacheTransitionMatrix();
+  invalidateCache(true);
 }
 
 template <typename T>
@@ -68,7 +66,7 @@ void Graph<T>::setEdgeSet(const T_EdgeSet<T> &edgeSet) {
     this->edgeSet.insert(edgeIt);
   }
   /* Caching the adjacency matrix */
-  invalidateCache();
+  invalidateCache(false);
 }
 
 template <typename T>
@@ -605,10 +603,14 @@ void Graph<T>::cacheLaplacianMatrix() {
 }
 
 template <typename T>
-void Graph<T>::invalidateCache() {
+void Graph<T>::invalidateCache(bool includeTransitionMatrix) {
   cacheAdjMatrix();
   cacheDegreeMatrix();
   cacheLaplacianMatrix();
+
+  if (includeTransitionMatrix) {
+    cacheTransitionMatrix();
+  }
 }
 
 template <typename T>

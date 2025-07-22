@@ -263,14 +263,17 @@ class Graph {
 
   /**
    * \brief
-   * Function to invalidate and rebuild the core caches of the Graph.
-   * This includes adjacency matrix, degree matrix, and Laplacian matrix.
-   * Note: No Thread Safe
+   * Invalidates and rebuilds the graph's core caches.
+   * This includes the adjacency matrix, degree matrix, and Laplacian matrix.
+   * Optionally, the transition matrix can also be rebuilt.
    *
-   * Call after any structural modification of the graph.
+   * \param includeTransitionMatrix
+   * If true, the transition matrix will be rebuilt as part of the cache update.
    *
+   * \note Not thread-safe.
+   * \note Call after any structural modification of the graph.
    */
-  void invalidateCache();
+  void invalidateCache(bool includeTransitionMatrix);
 
   /**
    * \brief
