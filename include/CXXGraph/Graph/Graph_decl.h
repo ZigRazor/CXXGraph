@@ -263,6 +263,20 @@ class Graph {
 
   /**
    * \brief
+   * Invalidates and rebuilds the graph's core caches.
+   * This includes the adjacency matrix, degree matrix, and Laplacian matrix.
+   * Optionally, the transition matrix can also be rebuilt.
+   *
+   * \param includeTransitionMatrix
+   * If true, the transition matrix will be rebuilt as part of the cache update.
+   *
+   * \note Not thread-safe.
+   * \note Call after any structural modification of the graph.
+   */
+  void invalidateCache(bool includeTransitionMatrix);
+
+  /**
+   * \brief
    * Finds the given edge defined by v1 and v2 within the graph.
    *
    * @param v1 The first vertex.
@@ -562,10 +576,9 @@ class Graph {
   virtual std::shared_ptr<std::vector<Node<T>>> eulerianPath() const;
 
   /**
-   * @brief Function runs the dijkstra algorithm with inverted metric for some source node and
-   * target node in the graph and returns the longest distance of target
-   * from the source (called critical path).
-   * Note: No Thread Safe
+   * @brief Function runs the dijkstra algorithm with inverted metric for some
+   * source node and target node in the graph and returns the longest distance
+   * of target from the source (called critical path). Note: No Thread Safe
    *
    * @param source source vertex
    * @param target target vertex
@@ -574,9 +587,8 @@ class Graph {
    * case if target is not reachable from source or there is error in the
    * computation.
    */
-  virtual const DijkstraResult criticalpath_deterministic(const Node<T>& source, 
-                                                          const Node<T>& target) const;
-
+  virtual const DijkstraResult criticalpath_deterministic(
+      const Node<T> &source, const Node<T> &target) const;
 
   /**
    * @brief Function runs the dijkstra algorithm for some source node and
