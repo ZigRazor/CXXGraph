@@ -248,6 +248,15 @@ struct BronKerboschResult_struct {
 template <typename T>
 using BronKerboschResult = BronKerboschResult_struct<T>;
 
+/// Struct that contains the information about Hopcroft-Karp Algorithm results
+struct HopcroftKarpResult_struct {
+  bool success = false;  // TRUE if the function does not return error, FALSE otherwise
+  std::string errorMessage = "";  // message of error
+  int maxMatching = 0;            // Size of maximum bipartite matching
+  std::vector<std::pair<std::string, std::string>> matching = {};  // The matching pairs (node userIds)
+};
+using HopcroftKarpResult = HopcroftKarpResult_struct;
+
 ///////////////////////////////////////////////////////////////////////////////////
 // Using Definition
 // ///////////////////////////////////////////////////////////////
