@@ -963,6 +963,22 @@ class Graph {
                                       const Node<T> &target) const;
 
   /**
+   * @brief This function performs the Hopcroft-Karp algorithm to find the
+   * maximum matching in a bipartite graph.
+   *
+   * @return HopcroftKarpResult containing success status, error message (if
+   * any), the size of maximum matching, and the actual matching pairs
+   *
+   * Note: The function requires an undirected graph. If the graph is not
+   * bipartite, the algorithm will return a matching of size 0 with success =
+   * true.
+   *
+   * Complexity: O(E√V) where E is the number of edges and V is the number of
+   * vertices
+   */
+  virtual const HopcroftKarpResult_struct hopcroftKarp() const;
+
+  /**
    * @brief Welsh-Powell Coloring algorithm
    * @return a std::map of keys being the nodes and the values being the color
    * order (by integer) starting from 1.

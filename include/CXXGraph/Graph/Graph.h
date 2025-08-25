@@ -37,6 +37,7 @@
 #include "CXXGraph/Graph/Algorithm/Dijkstra_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/FloydWarshall_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/FordFulkerson_impl.hpp"
+#include "CXXGraph/Graph/Algorithm/HopcroftKarp_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/Kahn_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/Kosaraju_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/Kruskal_impl.hpp"

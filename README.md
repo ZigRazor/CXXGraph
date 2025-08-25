@@ -91,6 +91,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
     - [Borůvka's Algorithm](#borůvkas-algorithm)
     - [Graph Slicing based on connectivity](#graph-slicing-based-on-connectivity)
     - [Ford-Fulkerson Algorithm](#ford-fulkerson-algorithm)
+    - [Hopcroft-Karp Algorithm](#hopcroft-karp-algorithm)
     - [Kosaraju's Algorithm](#kosarajus-algorithm)
     - [Kahn's Algorithm](#kahns-algorithm)
   - [Partition Algorithm Explanation](#partition-algorithm-explanation)
@@ -460,6 +461,18 @@ This algorithm is used in garbage collection systems to decide which other objec
 
 [Ford-Fulkerson Algorithm](https://en.wikipedia.org/wiki/Ford%E2%80%93Fulkerson_algorithm) is a greedy algorithm for finding a maximum flow in a flow network.
 The idea behind the algorithm is as follows: as long as there is a path from the source (start node) to the sink (end node), with available capacity on all edges in the path, we send flow along one of the paths. Then we find another path, and so on. A path with available capacity is called an augmenting path.
+
+### Hopcroft-Karp Algorithm
+
+[Hopcroft-Karp Algorithm](https://en.wikipedia.org/wiki/Hopcroft%E2%80%93Karp_algorithm) is an algorithm that finds the maximum cardinality matching in a bipartite graph in O(E√V) time. It repeatedly finds augmenting paths of shortest length using BFS, then uses DFS to find a maximal set of vertex-disjoint augmenting paths of that length.
+
+The algorithm operates in phases:
+
+1. **BFS Phase**: Find the shortest augmenting path length from unmatched left vertices to unmatched right vertices. If no augmenting path exists, the current matching is maximum.
+2. **DFS Phase**: Use DFS to find a maximal set of vertex-disjoint augmenting paths of the shortest length found in the BFS phase.
+3. **Augmentation**: Add all found augmenting paths to the matching simultaneously.
+
+This process repeats until no more augmenting paths exist. Each iteration increases the matching size by at least one, and there are at most O(√V) iterations, giving the overall O(E√V) time complexity.
 
 ### Kosaraju's Algorithm
 [Kosaraju's Algorithm](https://en.wikipedia.org/wiki/Kosaraju%27s_algorithm) is a linear time algorithm to find the strongly connected components of a directed graph.  It is based on the idea that if one is able to reach a vertex v starting from vertex u, then one should be able to reach vertex u starting from vertex v and if such is the case, one can say that vertices u and v are strongly connected - they are in a strongly connected sub-graph. Following is an example:
