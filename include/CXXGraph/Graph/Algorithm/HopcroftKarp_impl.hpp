@@ -34,6 +34,14 @@ namespace CXXGraph {
         result.errorMessage = "";
         result.maxMatching = 0;
 
+        // If the graph is empty or has no edges, the maximum matching is 0.
+        // The graph is still bipartite.
+        if (this->getNodeSet().empty() || this->getEdgeSet().empty()) {
+            result.success = true;
+            result.maxMatching = 0;
+            return result;
+        }
+
         auto nodeSet = getNodeSet();
 
         // need at least 2 nodes for matching
@@ -116,7 +124,6 @@ namespace CXXGraph {
             return result;
         }
 
-        // main Hopcroft-Karp algorithm
         std::unordered_map<shared<const Node<T>>, shared<const Node<T>>, nodeHash<T>> match;
         std::unordered_map<shared<const Node<T>>, int, nodeHash<T>> dist;
         int matchingSize = 0;

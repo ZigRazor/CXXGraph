@@ -84,29 +84,27 @@ TEST(HopcroftKarpTest, test_single_edge) {
 }
 
 TEST(HopcroftKarpTest, test_empty_graph) {
-  // empty graph should fail due to insufficient nodes
+  // empty graph should be considered bipartite with 0 matching
   CXXGraph::T_EdgeSet<int> edgeSet;
 
   CXXGraph::Graph<int> graph(edgeSet);
   CXXGraph::HopcroftKarpResult result = graph.hopcroftKarp();
 
-  ASSERT_FALSE(result.success);
+  ASSERT_TRUE(result.success);
   ASSERT_EQ(result.maxMatching, 0);
-  ASSERT_FALSE(result.errorMessage.empty());
-  ASSERT_EQ(result.errorMessage, "Graph must have at least 2 nodes for bipartite matching.");
+  ASSERT_TRUE(result.errorMessage.empty());
 }
 
 TEST(HopcroftKarpTest, test_single_node_graph) {
-  // single node should fail due to insufficient nodes
+  // single node graph is also bipartite with 0 matching
   CXXGraph::Graph<int> graph;
   graph.addNode(std::make_shared<CXXGraph::Node<int>>("1", 1));
-  
+
   CXXGraph::HopcroftKarpResult result = graph.hopcroftKarp();
 
-  ASSERT_FALSE(result.success);
+  ASSERT_TRUE(result.success);
   ASSERT_EQ(result.maxMatching, 0);
-  ASSERT_FALSE(result.errorMessage.empty());
-  ASSERT_EQ(result.errorMessage, "Graph must have at least 2 nodes for bipartite matching.");
+  ASSERT_TRUE(result.errorMessage.empty());
 }
 
 TEST(HopcroftKarpTest, test_non_bipartite_graph) {
@@ -222,4 +220,108 @@ TEST(HopcroftKarpTest, test_incremental_matching) {
   ASSERT_EQ(result.matching[0].first, "u1");
   std::set<std::string> possibleMatches = { "v1", "v2", "v3" };
   ASSERT_TRUE(possibleMatches.count(result.matching[0].second) > 0);
+}
+
+TEST(HopcroftKarpTest, test_disconnected_graph) {
+  // tests matching on a graph with multiple disconnected components
+  // component 1: a single edge (matching size 1)
+  CXXGraph::Node<int> u1("u1", 1), v1("v1", 2);
+  CXXGraph::UndirectedEdge<int> edge1(1, u1, v1);
+
+  // component 2: a 4-cycle (matching size 2)
+  CXXGraph::Node<int> u2("u2", 3), v2("v2", 4);
+  CXXGraph::Node<int> u3("u3", 5), v3("v3", 6);
+  CXXGraph::UndirectedEdge<int> edge2(2, u2, v2);
+  CXXGraph::UndirectedEdge<int> edge3(3, v2, u3);
+  CXXGraph::UndirectedEdge<int> edge4(4, u3, v3);
+  CXXGraph::UndirectedEdge<int> edge5(5, v3, u2);
+
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge5));
+
+  CXXGraph::Graph<int> graph(edgeSet);
+  CXXGraph::HopcroftKarpResult result = graph.hopcroftKarp();
+
+  // expected matching is sum of matchings from each component (1 + 2 = 3)
+  ASSERT_TRUE(result.success);
+  ASSERT_EQ(result.maxMatching, 3);
+  ASSERT_EQ(result.matching.size(), 3);
+  ASSERT_TRUE(result.errorMessage.empty());
+}
+
+TEST(HopcroftKarpTest, test_graph_with_isolated_vertices) {
+  // tests matching on a graph with isolated vertices
+  CXXGraph::Node<int> u1("u1", 1), v1("v1", 2);
+  CXXGraph::UndirectedEdge<int> edge1(1, u1, v1);
+
+  // isolated nodes
+  CXXGraph::Node<int> iso1("iso1", 3), iso2("iso2", 4);
+
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
+  
+  CXXGraph::Graph<int> graph(edgeSet);
+  graph.addNode(make_shared<CXXGraph::Node<int>>(iso1));
+  graph.addNode(make_shared<CXXGraph::Node<int>>(iso2));
+
+  CXXGraph::HopcroftKarpResult result = graph.hopcroftKarp();
+
+  // isolated vertices should not affect the matching
+  ASSERT_TRUE(result.success);
+  ASSERT_EQ(result.maxMatching, 1);
+  ASSERT_EQ(result.matching.size(), 1);
+  ASSERT_TRUE(result.errorMessage.empty());
+  ASSERT_EQ(result.matching[0].first, "u1");
+  ASSERT_EQ(result.matching[0].second, "v1");
+}
+
+TEST(HopcroftKarpTest, test_no_matching_possible) {
+  // tests a bipartite graph with no edges between partitions
+  CXXGraph::Node<int> u1("u1", 1), u2("u2", 2);
+  CXXGraph::Node<int> v1("v1", 3), v2("v2", 4);
+
+  // no edges connect U and V partitions
+  CXXGraph::T_EdgeSet<int> edgeSet;
+
+  CXXGraph::Graph<int> graph(edgeSet);
+  graph.addNode(make_shared<CXXGraph::Node<int>>(u1));
+  graph.addNode(make_shared<CXXGraph::Node<int>>(u2));
+  graph.addNode(make_shared<CXXGraph::Node<int>>(v1));
+  graph.addNode(make_shared<CXXGraph::Node<int>>(v2));
+
+  CXXGraph::HopcroftKarpResult result = graph.hopcroftKarp();
+
+  // graph is bipartite, but matching should be 0
+  ASSERT_TRUE(result.success);
+  ASSERT_EQ(result.maxMatching, 0);
+  ASSERT_EQ(result.matching.size(), 0);
+  ASSERT_TRUE(result.errorMessage.empty());
+}
+
+TEST(HopcroftKarpTest, test_unbalanced_bipartite_graph) {
+  // tests an unbalanced bipartite graph (U=3, V=2)
+  CXXGraph::Node<int> u1("u1", 1), u2("u2", 2), u3("u3", 3);
+  CXXGraph::Node<int> v1("v1", 4), v2("v2", 5);
+
+  CXXGraph::UndirectedEdge<int> edge1(1, u1, v1);
+  CXXGraph::UndirectedEdge<int> edge2(2, u2, v1);
+  CXXGraph::UndirectedEdge<int> edge3(3, u3, v2);
+
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge3));
+
+  CXXGraph::Graph<int> graph(edgeSet);
+  CXXGraph::HopcroftKarpResult result = graph.hopcroftKarp();
+
+  // max matching cannot exceed the size of the smaller partition (V)
+  ASSERT_TRUE(result.success);
+  ASSERT_EQ(result.maxMatching, 2);
+  ASSERT_EQ(result.matching.size(), 2);
+  ASSERT_TRUE(result.errorMessage.empty());
 }
