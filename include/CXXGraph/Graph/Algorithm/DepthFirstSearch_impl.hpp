@@ -57,7 +57,7 @@ const std::vector<Node<T>> Graph<T>::depth_first_search(
       }
     }
   };
-  explore(cachedAdjMatrix, *start_node_it, visited);
+  explore(cachedAdjMatrixOut, *start_node_it, visited);
 
   return visited;
 }

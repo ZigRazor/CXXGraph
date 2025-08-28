@@ -143,3 +143,38 @@ TEST(DirectedEdgeTest, print_1) {
   std::cout << "Test Print DirectedEdge" << std::endl;
   std::cout << edge << std::endl;
 }
+
+TEST(DirectedEdgeTest, inOutNeigbors_1) {
+  CXXGraph::Graph<int> g;
+
+  CXXGraph::Node<int> n1("1", 1);
+  CXXGraph::Node<int> n2("2", 2);
+  CXXGraph::Node<int> n3("3", 3);
+
+  for (auto &&n : {n1, n2, n3}) {
+    g.addNode(&n);
+  }
+
+  CXXGraph::DirectedEdge<int> e1(1, {&n1, &n2});
+  CXXGraph::DirectedEdge<int> e2(2, {&n2, &n3});
+
+  for (auto &&e : {e1, e2}) {
+    g.addEdge(&e);
+  }
+
+  ASSERT_EQ(g.outNotInNeighbors(&n1).size(), 1);
+  ASSERT_EQ(g.outNotInNeighbors(&n2).size(), 1);
+  ASSERT_EQ(g.outNotInNeighbors(&n3).size(), 0);
+
+  ASSERT_EQ(g.inOrOutNeighbors(&n1).size(), 1);
+  ASSERT_EQ(g.inOrOutNeighbors(&n2).size(), 2);
+  ASSERT_EQ(g.inOrOutNeighbors(&n3).size(), 1);  
+
+  ASSERT_EQ(g.outNotInEdges(&n1).size(), 1);
+  ASSERT_EQ(g.outNotInEdges(&n2).size(), 1);
+  ASSERT_EQ(g.outNotInEdges(&n3).size(), 0);
+
+  ASSERT_EQ(g.inOrOutEdges(&n1).size(), 1);
+  ASSERT_EQ(g.inOrOutEdges(&n2).size(), 2);
+  ASSERT_EQ(g.inOrOutEdges(&n3).size(), 1);
+}

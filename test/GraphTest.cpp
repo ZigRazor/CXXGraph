@@ -595,7 +595,7 @@ TEST(GraphTest, adj_print_1) {
   edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge));
   CXXGraph::Graph<int> graph(edgeSet);
   std::cout << "Test Print Adjacency Matrix" << std::endl;
-  std::cout << *graph.getAdjMatrix() << std::endl;
+  std::cout << *graph.getAdjMatrixOut() << std::endl;
 }
 
 TEST(GraphTest, adj_print_2) {
@@ -608,7 +608,7 @@ TEST(GraphTest, adj_print_2) {
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge));
   CXXGraph::Graph<int> graph(edgeSet);
   std::cout << "Test Print Adjacency Matrix" << std::endl;
-  std::cout << *graph.getAdjMatrix() << std::endl;
+  std::cout << *graph.getAdjMatrixOut() << std::endl;
 }
 
 TEST(GraphTest, adj_print_3) {
@@ -621,7 +621,7 @@ TEST(GraphTest, adj_print_3) {
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge));
   CXXGraph::Graph<int> graph(edgeSet);
   std::cout << "Test Print Adjacency Matrix" << std::endl;
-  std::cout << *graph.getAdjMatrix() << std::endl;
+  std::cout << *graph.getAdjMatrixOut() << std::endl;
 }
 
 TEST(GraphTest, adj_print_4) {
@@ -639,7 +639,7 @@ TEST(GraphTest, adj_print_4) {
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   std::cout << "Test Print Adjacency Matrix" << std::endl;
-  std::cout << *graph.getAdjMatrix() << std::endl;
+  std::cout << *graph.getAdjMatrixOut() << std::endl;
 }
 
 TEST(GraphTest, adj_print_5) {
@@ -657,7 +657,7 @@ TEST(GraphTest, adj_print_5) {
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   std::cout << "Test Print Adjacency Matrix" << std::endl;
-  std::cout << *graph.getAdjMatrix() << std::endl;
+  std::cout << *graph.getAdjMatrixOut() << std::endl;
 }
 
 TEST(GraphTest, adj_print_6) {
@@ -675,7 +675,7 @@ TEST(GraphTest, adj_print_6) {
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   std::cout << "Test Print Adjacency Matrix" << std::endl;
-  std::cout << *graph.getAdjMatrix() << std::endl;
+  std::cout << *graph.getAdjMatrixOut() << std::endl;
 }
 
 TEST(GraphTest, set_data) {
@@ -760,25 +760,25 @@ TEST(GraphTest, test_outNodes) {
   CXXGraph::Graph<int> graph(edgeSet);
 
   // Check node 1
-  for (auto x : graph.outNeighbors(&node1)) {
+  for (auto x : graph.outNotInNeighbors(&node1)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Node<int>>(node2) ||
                 x == make_shared<const CXXGraph::Node<int>>(node3));
   }
   // Check node 2
-  for (auto x : graph.outNeighbors(&node2)) {
+  for (auto x : graph.outNotInNeighbors(&node2)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Node<int>>(node4) ||
                 x == make_shared<const CXXGraph::Node<int>>(node5));
     ASSERT_FALSE(x == make_shared<const CXXGraph::Node<int>>(node1));
   }
   // Check node 5
-  for (auto x : graph.outNeighbors(&node5)) {
+  for (auto x : graph.outNotInNeighbors(&node5)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Node<int>>(node6) ||
                 x == make_shared<const CXXGraph::Node<int>>(node7));
     ASSERT_FALSE(x == make_shared<const CXXGraph::Node<int>>(node2));
     ASSERT_FALSE(x == make_shared<const CXXGraph::Node<int>>(node3));
   }
   // Check that node 8 does not have any neighbors
-  ASSERT_EQ(graph.outNeighbors(&node8).size(), 0);
+  ASSERT_EQ(graph.outNotInNeighbors(&node8).size(), 0);
 }
 
 // Test the overload that takes shared_ptr as input
@@ -819,13 +819,13 @@ TEST(GraphTest, test_outNodes_shared) {
   CXXGraph::Graph<int> graph(edgeSet);
 
   for (auto x :
-       graph.outNeighbors(make_shared<const CXXGraph::Node<int>>(node1))) {
+       graph.outNotInNeighbors(make_shared<const CXXGraph::Node<int>>(node1))) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Node<int>>(node2) ||
                 x == make_shared<const CXXGraph::Node<int>>(node3));
   }
 
   auto node2_shared = make_shared<const CXXGraph::Node<int>>(node2);
-  for (auto x : graph.outNeighbors(node2_shared)) {
+  for (auto x : graph.outNotInNeighbors(node2_shared)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Node<int>>(node4) ||
                 x == make_shared<const CXXGraph::Node<int>>(node5));
     ASSERT_FALSE(x == make_shared<const CXXGraph::Node<int>>(node1));
@@ -861,19 +861,19 @@ TEST(GraphTest, test_inOutNodes) {
   CXXGraph::Graph<int> graph(edgeSet);
 
   // Check node 1
-  for (auto x : graph.inOutNeighbors(&node1)) {
+  for (auto x : graph.inOrOutNeighbors(&node1)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Node<int>>(node2) ||
                 x == make_shared<const CXXGraph::Node<int>>(node3));
   }
   // Check node 4
-  for (auto x : graph.inOutNeighbors(&node4)) {
+  for (auto x : graph.inOrOutNeighbors(&node4)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Node<int>>(node2) ||
                 x == make_shared<const CXXGraph::Node<int>>(node3) ||
                 x == make_shared<const CXXGraph::Node<int>>(node5) ||
                 x == make_shared<const CXXGraph::Node<int>>(node6));
   }
   // Check node 7
-  for (auto x : graph.inOutNeighbors(&node7)) {
+  for (auto x : graph.inOrOutNeighbors(&node7)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Node<int>>(node6));
   }
 }
@@ -908,13 +908,13 @@ TEST(GraphTest, test_inOutNodes_shared) {
   CXXGraph::Graph<int> graph(edgeSet);
 
   for (auto x :
-       graph.inOutNeighbors(make_shared<const CXXGraph::Node<int>>(node1))) {
+       graph.inOrOutNeighbors(make_shared<const CXXGraph::Node<int>>(node1))) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Node<int>>(node2) ||
                 x == make_shared<const CXXGraph::Node<int>>(node3));
   }
 
   auto node7_shared = make_shared<const CXXGraph::Node<int>>(node7);
-  for (auto x : graph.inOutNeighbors(node7_shared)) {
+  for (auto x : graph.inOrOutNeighbors(node7_shared)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Node<int>>(node6));
   }
 }
@@ -955,13 +955,13 @@ TEST(InOutNodesTest, test_outEdges) {
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge12));
   CXXGraph::Graph<int> graph(edgeSet);
 
-  for (auto x : graph.outEdges(&node1)) {
+  for (auto x : graph.outNotInEdges(&node1)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Edge<int>>(edge1) ||
                 x == make_shared<const CXXGraph::Edge<int>>(edge2));
   }
 
   auto node2_shared = make_shared<const CXXGraph::Node<int>>(node2);
-  for (auto x : graph.outEdges(&node2)) {
+  for (auto x : graph.outNotInEdges(&node2)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Edge<int>>(edge3) ||
                 x == make_shared<const CXXGraph::Edge<int>>(edge4));
     ASSERT_FALSE(x == make_shared<const CXXGraph::Edge<int>>(edge1));
@@ -1005,13 +1005,13 @@ TEST(InOutNodesTest, test_outEdges_shared) {
   CXXGraph::Graph<int> graph(edgeSet);
 
   auto node1_shared = make_shared<const CXXGraph::Node<int>>(node1);
-  for (auto x : graph.outEdges(node1_shared)) {
+  for (auto x : graph.outNotInEdges(node1_shared)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Edge<int>>(edge1) ||
                 x == make_shared<const CXXGraph::Edge<int>>(edge2));
   }
 
   auto node2_shared = make_shared<const CXXGraph::Node<int>>(node2);
-  for (auto x : graph.outEdges(node2_shared)) {
+  for (auto x : graph.outNotInEdges(node2_shared)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Edge<int>>(edge3) ||
                 x == make_shared<const CXXGraph::Edge<int>>(edge4));
     ASSERT_FALSE(x == make_shared<const CXXGraph::Edge<int>>(edge1));
@@ -1020,7 +1020,7 @@ TEST(InOutNodesTest, test_outEdges_shared) {
   // Check the result for a node that does not exist in the graph
   CXXGraph::Node<int> node9("9", 9);
   auto node9_shared = make_shared<const CXXGraph::Node<int>>(node9);
-  auto edges = graph.outEdges(node9_shared);
+  auto edges = graph.outNotInEdges(node9_shared);
   ASSERT_EQ(edges.size(), 0);
 }
 
@@ -1052,18 +1052,18 @@ TEST(InOutNodesTest, test_inOutEdges) {
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge8));
   CXXGraph::Graph<int> graph(edgeSet);
 
-  for (auto x : graph.inOutEdges(&node1)) {
+  for (auto x : graph.inOrOutEdges(&node1)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Edge<int>>(edge1) ||
                 x == make_shared<const CXXGraph::Edge<int>>(edge2));
   }
 
-  for (auto x : graph.inOutEdges(&node6)) {
+  for (auto x : graph.inOrOutEdges(&node6)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Edge<int>>(edge6) ||
                 x == make_shared<const CXXGraph::Edge<int>>(edge7) ||
                 x == make_shared<const CXXGraph::Edge<int>>(edge8));
   }
 
-  for (auto x : graph.inOutEdges(&node7)) {
+  for (auto x : graph.inOrOutEdges(&node7)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Edge<int>>(edge7));
   }
 }
@@ -1097,27 +1097,27 @@ TEST(InOutNodesTest, test_inOutEdges_shared) {
   CXXGraph::Graph<int> graph(edgeSet);
 
   auto node1_shared = make_shared<const CXXGraph::Node<int>>(node1);
-  for (auto x : graph.inOutEdges(node1_shared)) {
+  for (auto x : graph.inOrOutEdges(node1_shared)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Edge<int>>(edge1) ||
                 x == make_shared<const CXXGraph::Edge<int>>(edge2));
   }
 
   auto node6_shared = make_shared<const CXXGraph::Node<int>>(node6);
-  for (auto x : graph.inOutEdges(node6_shared)) {
+  for (auto x : graph.inOrOutEdges(node6_shared)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Edge<int>>(edge6) ||
                 x == make_shared<const CXXGraph::Edge<int>>(edge7) ||
                 x == make_shared<const CXXGraph::Edge<int>>(edge8));
   }
 
   auto node7_shared = make_shared<const CXXGraph::Node<int>>(node7);
-  for (auto x : graph.inOutEdges(node7_shared)) {
+  for (auto x : graph.inOrOutEdges(node7_shared)) {
     ASSERT_TRUE(x == make_shared<const CXXGraph::Edge<int>>(edge7));
   }
 
   // Check the result for a node that does not exist in the graph
   CXXGraph::Node<int> node9("9", 9);
   auto node9_shared = make_shared<const CXXGraph::Node<int>>(node9);
-  auto edges = graph.inOutEdges(node9_shared);
+  auto edges = graph.inOrOutEdges(node9_shared);
   ASSERT_EQ(edges.size(), 0);
 }
 

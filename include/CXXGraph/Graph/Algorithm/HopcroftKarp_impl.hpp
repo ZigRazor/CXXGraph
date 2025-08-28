@@ -74,7 +74,7 @@ namespace CXXGraph {
                     auto current = queue.front();
                     queue.pop();
 
-                    auto neighbors = this->inOutNeighbors(current);
+                    auto neighbors = this->inOrOutNeighbors(current);
                     for(const auto& neighbor : neighbors) {
                         if(color.find(neighbor->getUserId()) == color.end()) {
                             // assign opposite color
@@ -180,7 +180,7 @@ namespace CXXGraph {
                 // stop if shortest path already found
                 if (path_len != -1 && dist.at(u) >= path_len) continue;
 
-                auto neighbors = this->inOutNeighbors(u);
+                auto neighbors = this->inOrOutNeighbors(u);
                 for (const auto& v : neighbors) {
                     if (match.find(v) == match.end()) {
                         // found unmatched node - augmenting path exists
@@ -202,7 +202,7 @@ namespace CXXGraph {
         auto dfs = [&](auto&& self, shared<const Node<T>> u) -> bool {
             if (dist.find(u) == dist.end()) return false;
 
-            auto neighbors = this->inOutNeighbors(u);
+            auto neighbors = this->inOrOutNeighbors(u);
             for (const auto& v : neighbors) {
                 if (match.find(v) == match.end()) {
                     // found unmatched node at correct distance

@@ -94,7 +94,7 @@ bool Graph<T>::isCyclicDirectedGraphDFS() const {
             // Return that current node didn't result in any cycles.
             return false;
           };
-      if (isCyclicDFSHelper(cachedAdjMatrix, state, node)) {
+      if (isCyclicDFSHelper(cachedAdjMatrixOut, state, node)) {
         return true;
       }
     }
@@ -184,7 +184,7 @@ bool Graph<T>::isCyclicDirectedGraphBFS() const {
     indegree[node->getId()] = 0;
   }
   // Calculate the indegree i.e. the number of incident edges to the node.
-  for (auto const &list : (*cachedAdjMatrix)) {
+  for (auto const &list : (*cachedAdjMatrixOut)) {
     auto children = list.second;
     for (auto const &child : children) {
       indegree[std::get<0>(child)->getId()]++;
@@ -211,8 +211,8 @@ bool Graph<T>::isCyclicDirectedGraphBFS() const {
     remain--;
 
     // Visit all the children of the visited node.
-    auto it = cachedAdjMatrix->find(solved);
-    if (it != cachedAdjMatrix->end()) {
+    auto it = cachedAdjMatrixOut->find(solved);
+    if (it != cachedAdjMatrixOut->end()) {
       for (const auto &child : it->second) {
         // Check if we can visited the node safely.
         if (--indegree[std::get<0>(child)->getId()] == 0) {

@@ -81,12 +81,12 @@ const TarjanResult<T> Graph<T>::tarjan(const unsigned int typeMask) const {
           vbccNodeStack.emplace(*curNode);
         }
         // travel the neighbors
-        if (cachedAdjMatrix->find(curNode) != cachedAdjMatrix->end()) {
+        if (cachedAdjMatrixOut->find(curNode) != cachedAdjMatrixOut->end()) {
           int numSon = 0;
           bool nodeIsAdded =
               false;  // whether a node has been marked as a cut vertice
           for (const auto &[neighborNode, edge] :
-               cachedAdjMatrix->at(curNode)) {
+               cachedAdjMatrixOut->at(curNode)) {
             if (!discoveryTime.count(neighborNode->getId())) {
               dfs_helper(neighborNode, edge);
               lowestDisc[curNode->getId()] =

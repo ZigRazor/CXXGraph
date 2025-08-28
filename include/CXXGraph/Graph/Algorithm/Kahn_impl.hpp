@@ -35,13 +35,13 @@ TopoSortResult<T> Graph<T>::kahn() const {
     return result;
   } else {
     const auto nodeSet = Graph<T>::getNodeSet();
-    result.nodesInTopoOrder.reserve(cachedAdjMatrix->size());
+    result.nodesInTopoOrder.reserve(cachedAdjMatrixOut->size());
 
     std::unordered_map<CXXGraph::id_t, unsigned int> indegree;
     for (const auto &node : nodeSet) {
       indegree[node->getId()] = 0;
     }
-    for (const auto &list : *cachedAdjMatrix) {
+    for (const auto &list : *cachedAdjMatrixOut) {
       auto children = list.second;
       for (const auto &child : children) {
         indegree[std::get<0>(child)->getId()]++;
@@ -62,8 +62,8 @@ TopoSortResult<T> Graph<T>::kahn() const {
       topologicalOrder.pop();
       result.nodesInTopoOrder.push_back(*currentNode);
 
-      if (cachedAdjMatrix->find(currentNode) != cachedAdjMatrix->end()) {
-        for (const auto &child : cachedAdjMatrix->at(currentNode)) {
+      if (cachedAdjMatrixOut->find(currentNode) != cachedAdjMatrixOut->end()) {
+        for (const auto &child : cachedAdjMatrixOut->at(currentNode)) {
           if (--indegree[std::get<0>(child)->getId()] == 0) {
             topologicalOrder.emplace(std::get<0>(child));
           }

@@ -46,7 +46,7 @@ const MstResult Graph<T>::prim() const {
 
   // setting all the distances initially to INF_DOUBLE
   std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist;
-  for (const auto &elem : (*cachedAdjMatrix)) {
+  for (const auto &elem : (*cachedAdjMatrixOut)) {
     dist[elem.first] = INF_DOUBLE;
   }
 
@@ -83,8 +83,8 @@ const MstResult Graph<T>::prim() const {
     pq.pop();
     // for all the reachable vertex from the currently exploring vertex
     // we will try to minimize the distance
-    if (cachedAdjMatrix->find(currentNode) != cachedAdjMatrix->end()) {
-      for (const auto &elem : cachedAdjMatrix->at(currentNode)) {
+    if (cachedAdjMatrixOut->find(currentNode) != cachedAdjMatrixOut->end()) {
+      for (const auto &elem : cachedAdjMatrixOut->at(currentNode)) {
         // minimizing distances
         if (elem.second->isWeighted().has_value() &&
             elem.second->isWeighted().value()) {
