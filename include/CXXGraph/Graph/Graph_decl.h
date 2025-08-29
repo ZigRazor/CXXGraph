@@ -76,7 +76,7 @@ class Graph;
 template <typename T>
 std::ostream &operator<<(std::ostream &o, const Graph<T> &graph);
 template <typename T>
-std::ostream &operator<<(std::ostream &o, const AdjacencyMatrix<T> &adj);
+std::ostream &operator<<(std::ostream &o, const AdjacencyList<T> &adj);
 
 /// Class that implement the Graph. ( This class is not Thread Safe )
 template <typename T>
@@ -85,8 +85,8 @@ class Graph {
   T_EdgeSet<T> edgeSet = {};
   T_NodeSet<T> isolatedNodesSet = {};
 
-  shared<AdjacencyMatrix<T>> cachedAdjMatrixOut;
-  shared<AdjacencyMatrix<T>> cachedAdjMatrixIn;
+  shared<AdjacencyList<T>> cachedAdjListOut;
+  shared<AdjacencyList<T>> cachedAdjListIn;
   shared<DegreeMatrix<T>> cachedDegreeMatrix;
   shared<LaplacianMatrix<T>> cachedLaplacianMatrix;
   shared<TransitionMatrix<T>> cachedTransitionMatrix;
@@ -265,7 +265,7 @@ class Graph {
   /**
    * \brief
    * Invalidates and rebuilds the graph's core caches.
-   * This includes the adjacency matrix, degree matrix, and Laplacian matrix.
+   * This includes the adjacency lists, degree matrix, and Laplacian matrix.
    * Optionally, the transition matrix can also be rebuilt.
    *
    * \param includeTransitionMatrix
@@ -375,25 +375,25 @@ class Graph {
       const std::string &nodeUserId) const;
 
   /**
-   * @brief This function generates a list of adjacency matrix with every
-   * element of the matrix contain the node where is directed the link and the
+   * @brief This function generates an adjacency list with every
+   * element of the list containing the node where is directed the link and the
    * Edge corrispondent to the link Note: No Thread Safe
-   */
-  virtual shared<AdjacencyMatrix<T>> getAdjMatrixOut() const;
-
-  /**
-   * @brief This function generate a list of adjacency matrix with every element
-   * of the matrix contain the node where is the origin of the Edge and the Edge
-   * corrispondent to the link
    * Note: No Thread Safe
    */
-  virtual shared<AdjacencyMatrix<T>> getAdjMatrixIn() const;
+  virtual shared<AdjacencyList<T>> getAdjListOut() const;
+
+  /**
+   * @brief This function generate an adjacency list with every element
+   * of the list containing the node where is the origin of the Edge and the
+   * Edge corrispondent to the link Note: No Thread Safe
+   */
+  virtual shared<AdjacencyList<T>> getAdjListIn() const;
 
   /**
    * @brief This function calculates the adjacency matricies of the graph and
-   * stores it in the cachedAdjMatrixOut and cachedAdjMatrixIn variable.
+   * stores it in the cachedAdjListOut and cachedAdjListIn variable.
    */
-  virtual void cacheAdjMatricies();
+  virtual void cacheAdjLists();
 
   /**
    * @brief This function generates a list of the degree matrix with every
@@ -1117,7 +1117,7 @@ class Graph {
 
   friend std::ostream &operator<< <>(std::ostream &os, const Graph<T> &graph);
   friend std::ostream &operator<< <>(std::ostream &os,
-                                     const AdjacencyMatrix<T> &adj);
+                                     const AdjacencyList<T> &adj);
 };
 
 }  // namespace CXXGraph

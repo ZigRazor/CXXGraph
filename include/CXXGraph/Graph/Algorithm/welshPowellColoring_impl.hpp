@@ -12,7 +12,7 @@
 namespace CXXGraph {
 template <typename T>
 std::map<Node<T>, int> Graph<T>::welshPowellColoring() const {
-  auto adjMatrix = *getAdjMatrixOut();
+  auto adjMatrix = *getAdjListOut();
 
   std::vector<std::pair<std::shared_ptr<const Node<T>>, int>>
       degreeOfVertexVector = {};

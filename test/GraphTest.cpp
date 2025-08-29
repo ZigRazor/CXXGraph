@@ -595,7 +595,7 @@ TEST(GraphTest, adj_print_1) {
   edgeSet.insert(make_shared<CXXGraph::Edge<int>>(edge));
   CXXGraph::Graph<int> graph(edgeSet);
   std::cout << "Test Print Adjacency Matrix" << std::endl;
-  std::cout << *graph.getAdjMatrixOut() << std::endl;
+  std::cout << *graph.getAdjListOut() << std::endl;
 }
 
 TEST(GraphTest, adj_print_2) {
@@ -608,7 +608,7 @@ TEST(GraphTest, adj_print_2) {
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge));
   CXXGraph::Graph<int> graph(edgeSet);
   std::cout << "Test Print Adjacency Matrix" << std::endl;
-  std::cout << *graph.getAdjMatrixOut() << std::endl;
+  std::cout << *graph.getAdjListOut() << std::endl;
 }
 
 TEST(GraphTest, adj_print_3) {
@@ -621,7 +621,7 @@ TEST(GraphTest, adj_print_3) {
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge));
   CXXGraph::Graph<int> graph(edgeSet);
   std::cout << "Test Print Adjacency Matrix" << std::endl;
-  std::cout << *graph.getAdjMatrixOut() << std::endl;
+  std::cout << *graph.getAdjListOut() << std::endl;
 }
 
 TEST(GraphTest, adj_print_4) {
@@ -639,7 +639,7 @@ TEST(GraphTest, adj_print_4) {
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   std::cout << "Test Print Adjacency Matrix" << std::endl;
-  std::cout << *graph.getAdjMatrixOut() << std::endl;
+  std::cout << *graph.getAdjListOut() << std::endl;
 }
 
 TEST(GraphTest, adj_print_5) {
@@ -657,7 +657,7 @@ TEST(GraphTest, adj_print_5) {
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   std::cout << "Test Print Adjacency Matrix" << std::endl;
-  std::cout << *graph.getAdjMatrixOut() << std::endl;
+  std::cout << *graph.getAdjListOut() << std::endl;
 }
 
 TEST(GraphTest, adj_print_6) {
@@ -675,7 +675,7 @@ TEST(GraphTest, adj_print_6) {
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge3));
   CXXGraph::Graph<int> graph(edgeSet);
   std::cout << "Test Print Adjacency Matrix" << std::endl;
-  std::cout << *graph.getAdjMatrixOut() << std::endl;
+  std::cout << *graph.getAdjListOut() << std::endl;
 }
 
 TEST(GraphTest, set_data) {

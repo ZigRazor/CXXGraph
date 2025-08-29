@@ -91,14 +91,14 @@ TEST(EdgeTest, test) {
 
   CXXGraph::Graph<int> graph;
   graph.setEdgeSet(edgeSet);
-  auto adj = graph.getAdjMatrixOut();
+  auto adj = graph.getAdjListOut();
   ASSERT_EQ(adj->size(), 3);
   graph.removeEdge(3);
-  adj = graph.getAdjMatrixOut();
+  adj = graph.getAdjListOut();
   ASSERT_EQ(adj->size(), 3);
 
   graph.removeEdge(2);
-  adj = graph.getAdjMatrixOut();
+  adj = graph.getAdjListOut();
   ASSERT_EQ(adj->size(), 1);
   std::cout << *adj << std::endl;
 }

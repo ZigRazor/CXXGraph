@@ -157,9 +157,9 @@ TEST(HopcroftKarpTest, test_augmenting_path_behavior) {
   CXXGraph::Node<int> r1("R1", 3);
   CXXGraph::Node<int> r2("R2", 4);
 
-  CXXGraph::UndirectedEdge<int> edge1(1, l1, r1);   // L1 -> R1
-  CXXGraph::UndirectedEdge<int> edge2(2, l2, r1);   // L2 -> R1  
-  CXXGraph::UndirectedEdge<int> edge3(3, l2, r2);   // L2 -> R2
+  CXXGraph::UndirectedEdge<int> edge1(1, l1, r1);  // L1 -> R1
+  CXXGraph::UndirectedEdge<int> edge2(2, l2, r1);  // L2 -> R1
+  CXXGraph::UndirectedEdge<int> edge3(3, l2, r2);  // L2 -> R2
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
@@ -169,7 +169,8 @@ TEST(HopcroftKarpTest, test_augmenting_path_behavior) {
   CXXGraph::Graph<int> graph(edgeSet);
   CXXGraph::HopcroftKarpResult result = graph.hopcroftKarp();
 
-  // l1-r1, l2-r1, l2-r2 structure tests augmenting path discovery with optimal matching of 2
+  // l1-r1, l2-r1, l2-r2 structure tests augmenting path discovery with optimal
+  // matching of 2
   ASSERT_TRUE(result.success);
   ASSERT_EQ(result.maxMatching, 2);
   ASSERT_EQ(result.matching.size(), 2);
@@ -177,11 +178,11 @@ TEST(HopcroftKarpTest, test_augmenting_path_behavior) {
 
   // verify no duplicates in matching - each node appears exactly once
   std::set<std::string> leftMatched, rightMatched;
-  for(const auto& match : result.matching) {
+  for (const auto& match : result.matching) {
     ASSERT_TRUE(leftMatched.find(match.first) == leftMatched.end())
-      << "Left node " << match.first << " is matched multiple times";
+        << "Left node " << match.first << " is matched multiple times";
     ASSERT_TRUE(rightMatched.find(match.second) == rightMatched.end())
-      << "Right node " << match.second << " is matched multiple times";
+        << "Right node " << match.second << " is matched multiple times";
     leftMatched.insert(match.first);
     rightMatched.insert(match.second);
   }
@@ -191,7 +192,8 @@ TEST(HopcroftKarpTest, test_augmenting_path_behavior) {
 }
 
 TEST(HopcroftKarpTest, test_incremental_matching) {
-  // star-like graph (one left node to multiple right nodes) should give matching of size 1
+  // star-like graph (one left node to multiple right nodes) should give
+  // matching of size 1
   CXXGraph::Node<int> u1("u1", 1);
   CXXGraph::Node<int> v1("v1", 2);
   CXXGraph::Node<int> v2("v2", 3);
@@ -218,7 +220,7 @@ TEST(HopcroftKarpTest, test_incremental_matching) {
 
   // verify exactly one match exists and u1 is matched
   ASSERT_EQ(result.matching[0].first, "u1");
-  std::set<std::string> possibleMatches = { "v1", "v2", "v3" };
+  std::set<std::string> possibleMatches = {"v1", "v2", "v3"};
   ASSERT_TRUE(possibleMatches.count(result.matching[0].second) > 0);
 }
 
@@ -263,7 +265,7 @@ TEST(HopcroftKarpTest, test_graph_with_isolated_vertices) {
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
-  
+
   CXXGraph::Graph<int> graph(edgeSet);
   graph.addNode(make_shared<CXXGraph::Node<int>>(iso1));
   graph.addNode(make_shared<CXXGraph::Node<int>>(iso2));

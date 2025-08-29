@@ -145,44 +145,44 @@ TEST(DirectedEdgeTest, print_1) {
 }
 
 TEST(DirectedEdgeTest, inOutNeigbors_1) {
-  CXXGraph::Graph<int> g;
+  CXXGraph::Graph<int> graph;
 
-  CXXGraph::Node<int> n1("1", 1);
-  CXXGraph::Node<int> n2("2", 2);
-  CXXGraph::Node<int> n3("3", 3);
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
 
-  for (auto &&n : {n1, n2, n3}) {
-    g.addNode(&n);
+  for (auto &&n : {node1, node2, node3}) {
+    graph.addNode(&n);
   }
 
-  CXXGraph::DirectedEdge<int> e1(1, {&n1, &n2});
-  CXXGraph::DirectedEdge<int> e2(2, {&n2, &n3});
+  CXXGraph::DirectedEdge<int> edge1(1, node1, node2);
+  CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
 
-  for (auto &&e : {e1, e2}) {
-    g.addEdge(&e);
+  for (auto &&edge : {edge1, edge2}) {
+    graph.addEdge(&edge);
   }
 
-  ASSERT_EQ(g.outNotInNeighbors(&n1).size(), 1);
-  ASSERT_EQ(g.outNotInNeighbors(&n2).size(), 1);
-  ASSERT_EQ(g.outNotInNeighbors(&n3).size(), 0);
+  ASSERT_EQ(graph.outNotInNeighbors(&node1).size(), 1);
+  ASSERT_EQ(graph.outNotInNeighbors(&node2).size(), 1);
+  ASSERT_EQ(graph.outNotInNeighbors(&node3).size(), 0);
 
-  ASSERT_EQ(g.inNotOutNeighbors(&n1).size(), 0);
-  ASSERT_EQ(g.inNotOutNeighbors(&n2).size(), 1);
-  ASSERT_EQ(g.inNotOutNeighbors(&n3).size(), 1);
+  ASSERT_EQ(graph.inNotOutNeighbors(&node1).size(), 0);
+  ASSERT_EQ(graph.inNotOutNeighbors(&node2).size(), 1);
+  ASSERT_EQ(graph.inNotOutNeighbors(&node3).size(), 1);
 
-  ASSERT_EQ(g.inOrOutNeighbors(&n1).size(), 1);
-  ASSERT_EQ(g.inOrOutNeighbors(&n2).size(), 2);
-  ASSERT_EQ(g.inOrOutNeighbors(&n3).size(), 1);  
+  ASSERT_EQ(graph.inOrOutNeighbors(&node1).size(), 1);
+  ASSERT_EQ(graph.inOrOutNeighbors(&node2).size(), 2);
+  ASSERT_EQ(graph.inOrOutNeighbors(&node3).size(), 1);
 
-  ASSERT_EQ(g.outNotInEdges(&n1).size(), 1);
-  ASSERT_EQ(g.outNotInEdges(&n2).size(), 1);
-  ASSERT_EQ(g.outNotInEdges(&n3).size(), 0);
+  ASSERT_EQ(graph.outNotInEdges(&node1).size(), 1);
+  ASSERT_EQ(graph.outNotInEdges(&node2).size(), 1);
+  ASSERT_EQ(graph.outNotInEdges(&node3).size(), 0);
 
-  ASSERT_EQ(g.inNotOutEdges(&n1).size(), 0);
-  ASSERT_EQ(g.inNotOutEdges(&n2).size(), 1);
-  ASSERT_EQ(g.inNotOutEdges(&n3).size(), 1);
+  ASSERT_EQ(graph.inNotOutEdges(&node1).size(), 0);
+  ASSERT_EQ(graph.inNotOutEdges(&node2).size(), 1);
+  ASSERT_EQ(graph.inNotOutEdges(&node3).size(), 1);
 
-  ASSERT_EQ(g.inOrOutEdges(&n1).size(), 1);
-  ASSERT_EQ(g.inOrOutEdges(&n2).size(), 2);
-  ASSERT_EQ(g.inOrOutEdges(&n3).size(), 1);
+  ASSERT_EQ(graph.inOrOutEdges(&node1).size(), 1);
+  ASSERT_EQ(graph.inOrOutEdges(&node2).size(), 2);
+  ASSERT_EQ(graph.inOrOutEdges(&node3).size(), 1);
 }

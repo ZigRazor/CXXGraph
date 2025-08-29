@@ -101,14 +101,14 @@ void Graph<T>::addEdge(shared<const Edge<T>> edge) {
 
   auto &[from, to] = edge->getNodePair();
 
-  /* Adding new edge in cached adjacency matrix */
+  /* Adding new edge in cached adjacency lists */
   this->edgeSet.insert(edge);
 
-  (*cachedAdjMatrixOut)[from].emplace_back(to, edge);
-  (*cachedAdjMatrixIn)[to].emplace_back(from, edge);
+  (*cachedAdjListOut)[from].emplace_back(to, edge);
+  (*cachedAdjListIn)[to].emplace_back(from, edge);
   if (!edge.get()->isDirected().value_or(true)) {
-    (*cachedAdjMatrixOut)[to].emplace_back(from, edge);
-    (*cachedAdjMatrixIn)[from].emplace_back(to, edge);
+    (*cachedAdjListOut)[to].emplace_back(from, edge);
+    (*cachedAdjListIn)[from].emplace_back(to, edge);
   }
 }
 
@@ -165,8 +165,8 @@ void Graph<T>::removeEdge(const CXXGraph::id_t edgeId) {
 
     int delIndex = -1;
     int i = 0;
-    /* Removing the edge from the cached adjacency matrix */
-    for (auto elem : (*cachedAdjMatrixOut)[from]) {
+    /* Removing the edge from the cached adjacency lists */
+    for (auto elem : (*cachedAdjListOut)[from]) {
       if (elem.second.get()->getId() == edgeId) {
         delIndex = i;
         break;
@@ -174,13 +174,13 @@ void Graph<T>::removeEdge(const CXXGraph::id_t edgeId) {
       i++;
     }
     if (delIndex != -1) {
-      (*cachedAdjMatrixOut)[from].erase((*cachedAdjMatrixOut)[from].begin() +
-                                        delIndex);
+      (*cachedAdjListOut)[from].erase((*cachedAdjListOut)[from].begin() +
+                                      delIndex);
     }
 
     delIndex = -1;
     i = 0;
-    for (auto elem : (*cachedAdjMatrixIn)[to]) {
+    for (auto elem : (*cachedAdjListIn)[to]) {
       if (elem.second.get()->getId() == edgeId) {
         delIndex = i;
         break;
@@ -188,14 +188,13 @@ void Graph<T>::removeEdge(const CXXGraph::id_t edgeId) {
       i++;
     }
     if (delIndex != -1) {
-      (*cachedAdjMatrixIn)[to].erase((*cachedAdjMatrixIn)[to].begin() +
-                                     delIndex);
+      (*cachedAdjListIn)[to].erase((*cachedAdjListIn)[to].begin() + delIndex);
     }
 
     if (!edgeOpt.value().get()->isDirected().value_or(true)) {
       delIndex = -1;
       i = 0;
-      for (auto elem : (*cachedAdjMatrixOut)[to]) {
+      for (auto elem : (*cachedAdjListOut)[to]) {
         if (elem.second.get()->getId() == edgeId) {
           delIndex = i;
           break;
@@ -203,13 +202,13 @@ void Graph<T>::removeEdge(const CXXGraph::id_t edgeId) {
         i++;
       }
       if (delIndex != -1) {
-        (*cachedAdjMatrixOut)[to].erase((*cachedAdjMatrixOut)[to].begin() +
-                                        delIndex);
+        (*cachedAdjListOut)[to].erase((*cachedAdjListOut)[to].begin() +
+                                      delIndex);
       }
 
       delIndex = -1;
       i = 0;
-      for (auto elem : (*cachedAdjMatrixIn)[from]) {
+      for (auto elem : (*cachedAdjListIn)[from]) {
         if (elem.second.get()->getId() == edgeId) {
           delIndex = i;
           break;
@@ -217,8 +216,8 @@ void Graph<T>::removeEdge(const CXXGraph::id_t edgeId) {
         i++;
       }
       if (delIndex != -1) {
-        (*cachedAdjMatrixIn)[from].erase((*cachedAdjMatrixIn)[from].begin() +
-                                         delIndex);
+        (*cachedAdjListIn)[from].erase((*cachedAdjListIn)[from].begin() +
+                                       delIndex);
       }
     }
   }
@@ -263,10 +262,10 @@ bool Graph<T>::findEdge(shared<const Node<T>> v1, shared<const Node<T>> v2,
                         CXXGraph::id_t &id) const {
   // This could be made faster by looking for the edge hash, assuming we hash
   // based on node data, instead of a unique integer
-  if (cachedAdjMatrixOut.get() != NULL && cachedAdjMatrixOut->size() != 0) {
-    /* Searching for the edge using cached adjacency matrix */
+  if (cachedAdjListOut.get() != NULL && cachedAdjListOut->size() != 0) {
+    /* Searching for the edge using cached adjacency list out */
 
-    for (auto elem : (*cachedAdjMatrixOut)[v1]) {
+    for (auto elem : (*cachedAdjListOut)[v1]) {
       if (elem.first == v2) {
         id = elem.second.get()->getId();
         return true;
@@ -474,16 +473,16 @@ std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const {
   std::vector<shared<const Node<T>>> currentPath;
   // The starting node is the only node which has more outgoing than ingoing
   // links
-  auto firstNodeIt = std::max_element(
-      nodeSet.begin(), nodeSet.end(), [this](auto n1, auto n2) {
-        return cachedAdjMatrixOut->at(n1).size() <
-               cachedAdjMatrixOut->at(n2).size();
-      });
+  auto firstNodeIt = std::max_element(nodeSet.begin(), nodeSet.end(),
+                                      [this](auto n1, auto n2) {
+                                        return cachedAdjListOut->at(n1).size() <
+                                               cachedAdjListOut->at(n2).size();
+                                      });
   auto currentNode = *(firstNodeIt);
   currentPath.push_back(currentNode);
 
   while (currentPath.size() > 0) {
-    auto &edges = cachedAdjMatrixOut->at(currentNode);
+    auto &edges = cachedAdjListOut->at(currentNode);
     // we keep removing the edges that
     // have been traversed from the adjacency list
     if (edges.size()) {
@@ -505,8 +504,8 @@ std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const {
 }
 
 template <typename T>
-shared<AdjacencyMatrix<T>> Graph<T>::getAdjMatrixOut() const {
-  auto adj = std::make_shared<AdjacencyMatrix<T>>();
+shared<AdjacencyList<T>> Graph<T>::getAdjListOut() const {
+  auto adj = std::make_shared<AdjacencyList<T>>();
   auto addElementToAdjMatrix = [&adj](shared<const Node<T>> nodeFrom,
                                       shared<const Node<T>> nodeTo,
                                       shared<const Edge<T>> edge) {
@@ -535,8 +534,8 @@ shared<AdjacencyMatrix<T>> Graph<T>::getAdjMatrixOut() const {
 }
 
 template <typename T>
-shared<AdjacencyMatrix<T>> Graph<T>::getAdjMatrixIn() const {
-  auto adj = std::make_shared<AdjacencyMatrix<T>>();
+shared<AdjacencyList<T>> Graph<T>::getAdjListIn() const {
+  auto adj = std::make_shared<AdjacencyList<T>>();
   auto addElementToAdjMatrix = [&adj](shared<const Node<T>> nodeTo,
                                       shared<const Node<T>> nodeFrom,
                                       shared<const Edge<T>> edge) {
@@ -557,7 +556,7 @@ shared<AdjacencyMatrix<T>> Graph<T>::getAdjMatrixIn() const {
                             ud_edge->getNodePair().first, ud_edge);
       addElementToAdjMatrix(ud_edge->getNodePair().first,
                             ud_edge->getNodePair().second, ud_edge);
-    } else {  // is a simple edge we cannot create adj matrix
+    } else {  // is a simple edge we cannot create adj list
       return adj;
     }
   }
@@ -565,19 +564,19 @@ shared<AdjacencyMatrix<T>> Graph<T>::getAdjMatrixIn() const {
 }
 
 template <typename T>
-void Graph<T>::cacheAdjMatricies() {
-  const auto adjOut = Graph<T>::getAdjMatrixOut();
-  this->cachedAdjMatrixOut = adjOut;
+void Graph<T>::cacheAdjLists() {
+  const auto adjOut = Graph<T>::getAdjListOut();
+  this->cachedAdjListOut = adjOut;
 
-  const auto adjIn = Graph<T>::getAdjMatrixIn();
-  this->cachedAdjMatrixIn = adjIn;
+  const auto adjIn = Graph<T>::getAdjListIn();
+  this->cachedAdjListIn = adjIn;
 }
 
 template <typename T>
 shared<DegreeMatrix<T>> Graph<T>::getDegreeMatrix() const {
   auto degreeMatrix = std::make_shared<DegreeMatrix<T>>();
 
-  for (const auto &nodePair : *this->cachedAdjMatrixOut) {
+  for (const auto &nodePair : *this->cachedAdjListOut) {
     const shared<const Node<T>> &node = nodePair.first;
     const std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>
         &neighbors = nodePair.second;
@@ -596,17 +595,17 @@ void Graph<T>::cacheDegreeMatrix() {
 
 template <typename T>
 shared<LaplacianMatrix<T>> Graph<T>::getLaplacianMatrix() const {
-  const auto adjacencyMatrix = this->cachedAdjMatrixOut;
+  const auto AdjacencyList = this->cachedAdjListOut;
   const auto degreeMatrix = this->cachedDegreeMatrix;
 
   auto laplacianMatrix = std::make_shared<LaplacianMatrix<T>>();
-  for (const auto &nodePair : *adjacencyMatrix) {
+  for (const auto &nodePair : *AdjacencyList) {
     const shared<const Node<T>> &node = nodePair.first;
     (*laplacianMatrix)[node] =
         std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>();
   }
 
-  for (const auto &nodePair : *adjacencyMatrix) {
+  for (const auto &nodePair : *AdjacencyList) {
     const shared<const Node<T>> &node = nodePair.first;
     const std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>
         &neighbors = nodePair.second;
@@ -631,7 +630,7 @@ void Graph<T>::cacheLaplacianMatrix() {
 
 template <typename T>
 void Graph<T>::invalidateCache(bool includeTransitionMatrix) {
-  cacheAdjMatricies();
+  cacheAdjLists();
   cacheDegreeMatrix();
   cacheLaplacianMatrix();
 
@@ -642,16 +641,16 @@ void Graph<T>::invalidateCache(bool includeTransitionMatrix) {
 
 template <typename T>
 shared<TransitionMatrix<T>> Graph<T>::getTransitionMatrix() const {
-  const auto adjacencyMatrix = this->cachedAdjMatrixOut;
+  const auto AdjacencyList = this->cachedAdjListOut;
 
   auto transitionMatrix = std::make_shared<TransitionMatrix<T>>();
-  for (const auto &nodePair : *adjacencyMatrix) {
+  for (const auto &nodePair : *AdjacencyList) {
     const shared<const Node<T>> &node = nodePair.first;
     (*transitionMatrix)[node] =
         std::vector<std::pair<shared<const Node<T>>, double>>();
   }
 
-  for (const auto &nodePair : *adjacencyMatrix) {
+  for (const auto &nodePair : *AdjacencyList) {
     const shared<const Node<T>> &node = nodePair.first;
     const std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>
         &neighbors = nodePair.second;
@@ -686,10 +685,10 @@ Graph<T>::outNotInNeighbors(const Node<T> *node) const {
 template <typename T>
 const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
 Graph<T>::outNotInNeighbors(shared<const Node<T>> node) const {
-  if (cachedAdjMatrixOut->find(node) == cachedAdjMatrixOut->end()) {
+  if (cachedAdjListOut->find(node) == cachedAdjListOut->end()) {
     return std::unordered_set<shared<const Node<T>>, nodeHash<T>>();
   }
-  auto nodeEdgePairsOut = cachedAdjMatrixOut->at(node);
+  auto nodeEdgePairsOut = cachedAdjListOut->at(node);
 
   std::unordered_set<shared<const Node<T>>, nodeHash<T>> outNotInNeighbors;
   for (auto pair : nodeEdgePairsOut) {
@@ -712,10 +711,10 @@ Graph<T>::inNotOutNeighbors(const Node<T> *node) const {
 template <typename T>
 const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
 Graph<T>::inNotOutNeighbors(shared<const Node<T>> node) const {
-  if (cachedAdjMatrixIn->find(node) == cachedAdjMatrixIn->end()) {
+  if (cachedAdjListIn->find(node) == cachedAdjListIn->end()) {
     return std::unordered_set<shared<const Node<T>>, nodeHash<T>>();
   }
-  auto nodeEdgePairsIn = cachedAdjMatrixIn->at(node);
+  auto nodeEdgePairsIn = cachedAdjListIn->at(node);
 
   std::unordered_set<shared<const Node<T>>, nodeHash<T>> inNotOutNeighbors;
   for (auto pair : nodeEdgePairsIn) {
@@ -738,20 +737,20 @@ Graph<T>::inOrOutNeighbors(const Node<T> *node) const {
 template <typename T>
 const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
 Graph<T>::inOrOutNeighbors(shared<const Node<T>> node) const {
-  if (cachedAdjMatrixOut->find(node) == cachedAdjMatrixOut->end() &&
-      cachedAdjMatrixIn->find(node) == cachedAdjMatrixIn->end()) {
+  if (cachedAdjListOut->find(node) == cachedAdjListOut->end() &&
+      cachedAdjListIn->find(node) == cachedAdjListIn->end()) {
     return std::unordered_set<shared<const Node<T>>, nodeHash<T>>();
   }
 
   std::unordered_set<shared<const Node<T>>, nodeHash<T>> inOrOutNeighbors;
-  if (cachedAdjMatrixOut->find(node) != cachedAdjMatrixOut->end()) {
-    auto nodeEdgePairsOut = cachedAdjMatrixOut->at(node);
+  if (cachedAdjListOut->find(node) != cachedAdjListOut->end()) {
+    auto nodeEdgePairsOut = cachedAdjListOut->at(node);
     for (auto pair : nodeEdgePairsOut) {
       inOrOutNeighbors.insert(pair.first);
     }
   }
-  if (cachedAdjMatrixIn->find(node) != cachedAdjMatrixIn->end()) {
-    auto nodeEdgePairsIn = cachedAdjMatrixIn->at(node);
+  if (cachedAdjListIn->find(node) != cachedAdjListIn->end()) {
+    auto nodeEdgePairsIn = cachedAdjListIn->at(node);
     for (auto pair : nodeEdgePairsIn) {
       inOrOutNeighbors.insert(pair.first);
     }
@@ -771,10 +770,10 @@ Graph<T>::outNotInEdges(const Node<T> *node) const {
 template <typename T>
 const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
 Graph<T>::outNotInEdges(shared<const Node<T>> node) const {
-  if (cachedAdjMatrixOut->find(node) == cachedAdjMatrixOut->end()) {
+  if (cachedAdjListOut->find(node) == cachedAdjListOut->end()) {
     return std::unordered_set<shared<const Edge<T>>, edgeHash<T>>();
   }
-  auto nodeEdgePairsOut = cachedAdjMatrixOut->at(node);
+  auto nodeEdgePairsOut = cachedAdjListOut->at(node);
 
   std::unordered_set<shared<const Edge<T>>, edgeHash<T>> outNotInEdges;
   for (auto pair : nodeEdgePairsOut) {
@@ -797,10 +796,10 @@ Graph<T>::inNotOutEdges(const Node<T> *node) const {
 template <typename T>
 const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
 Graph<T>::inNotOutEdges(shared<const Node<T>> node) const {
-  if (cachedAdjMatrixIn->find(node) == cachedAdjMatrixIn->end()) {
+  if (cachedAdjListIn->find(node) == cachedAdjListIn->end()) {
     return std::unordered_set<shared<const Edge<T>>, edgeHash<T>>();
   }
-  auto nodeEdgePairsIn = cachedAdjMatrixIn->at(node);
+  auto nodeEdgePairsIn = cachedAdjListIn->at(node);
 
   std::unordered_set<shared<const Edge<T>>, edgeHash<T>> inNotOutEdges;
   for (auto pair : nodeEdgePairsIn) {
@@ -823,20 +822,20 @@ Graph<T>::inOrOutEdges(const Node<T> *node) const {
 template <typename T>
 const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
 Graph<T>::inOrOutEdges(shared<const Node<T>> node) const {
-  if (cachedAdjMatrixOut->find(node) == cachedAdjMatrixOut->end() &&
-      cachedAdjMatrixIn->find(node) == cachedAdjMatrixIn->end()) {
+  if (cachedAdjListOut->find(node) == cachedAdjListOut->end() &&
+      cachedAdjListIn->find(node) == cachedAdjListIn->end()) {
     return std::unordered_set<shared<const Edge<T>>, edgeHash<T>>();
   }
 
   std::unordered_set<shared<const Edge<T>>, edgeHash<T>> inOrOutEdges;
-  if (cachedAdjMatrixOut->find(node) != cachedAdjMatrixOut->end()) {
-    auto nodeEdgePairsOut = cachedAdjMatrixOut->at(node);
+  if (cachedAdjListOut->find(node) != cachedAdjListOut->end()) {
+    auto nodeEdgePairsOut = cachedAdjListOut->at(node);
     for (auto pair : nodeEdgePairsOut) {
       inOrOutEdges.insert(pair.second);
     }
   }
-  if (cachedAdjMatrixIn->find(node) != cachedAdjMatrixIn->end()) {
-    auto nodeEdgePairsIn = cachedAdjMatrixIn->at(node);
+  if (cachedAdjListIn->find(node) != cachedAdjListIn->end()) {
+    auto nodeEdgePairsIn = cachedAdjListIn->at(node);
     for (auto pair : nodeEdgePairsIn) {
       inOrOutEdges.insert(pair.second);
     }
@@ -963,7 +962,7 @@ std::ostream &operator<<(std::ostream &os, const Graph<T> &graph) {
 }
 
 template <typename T>
-std::ostream &operator<<(std::ostream &os, const AdjacencyMatrix<T> &adj) {
+std::ostream &operator<<(std::ostream &os, const AdjacencyList<T> &adj) {
   os << "Adjacency Matrix:\n";
   unsigned long max_column = 0;
   for (const auto &it : adj) {

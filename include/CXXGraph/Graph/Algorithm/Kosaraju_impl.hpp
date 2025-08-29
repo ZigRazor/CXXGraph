@@ -51,9 +51,9 @@ SCCResult<T> Graph<T>::kosaraju() const {
           visited[source->getId()] = true;
 
           // travel the neighbors
-          for (size_t i = 0; i < (*cachedAdjMatrixOut)[source].size(); i++) {
+          for (size_t i = 0; i < (*cachedAdjListOut)[source].size(); i++) {
             shared<const Node<T>> neighbor =
-                (*cachedAdjMatrixOut)[source].at(i).first;
+                (*cachedAdjListOut)[source].at(i).first;
             if (visited[neighbor->getId()] == false) {
               // make recursive call from neighbor
               dfs_helper(neighbor);
@@ -70,7 +70,7 @@ SCCResult<T> Graph<T>::kosaraju() const {
     }
 
     // construct the transpose of the given graph
-    AdjacencyMatrix<T> rev;
+    AdjacencyList<T> rev;
     auto addElementToAdjMatrix = [&rev](shared<const Node<T>> nodeFrom,
                                         shared<const Node<T>> nodeTo,
                                         shared<const Edge<T>> edge) {

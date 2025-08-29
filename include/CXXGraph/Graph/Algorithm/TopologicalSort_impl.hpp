@@ -46,8 +46,8 @@ TopoSortResult<T> Graph<T>::topologicalSort() const {
          &result](shared<const Node<T>> curNode) {
           visited[curNode] = true;
 
-          if (cachedAdjMatrixOut->find(curNode) != cachedAdjMatrixOut->end()) {
-            for (const auto &edge : cachedAdjMatrixOut->at(curNode)) {
+          if (cachedAdjListOut->find(curNode) != cachedAdjListOut->end()) {
+            for (const auto &edge : cachedAdjListOut->at(curNode)) {
               const auto &nextNode = edge.first;
               if (false == visited[nextNode]) {
                 postorder_helper(nextNode);
@@ -58,7 +58,7 @@ TopoSortResult<T> Graph<T>::topologicalSort() const {
           result.nodesInTopoOrder.push_back(*curNode);
         };
 
-    auto numNodes = cachedAdjMatrixOut->size();
+    auto numNodes = cachedAdjListOut->size();
     result.nodesInTopoOrder.reserve(numNodes);
 
     for (const auto &node : nodeSet) {

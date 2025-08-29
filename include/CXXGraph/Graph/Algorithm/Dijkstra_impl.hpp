@@ -52,7 +52,7 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T>& source,
   }
   // n denotes the number of vertices in graph
   // unused
-  // auto n = cachedAdjMatrixOut->size();
+  // auto n = cachedAdjListOut->size();
 
   // setting all the distances initially to INF_DOUBLE
   std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist;
@@ -88,8 +88,8 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T>& source,
 
     // for all the reachable vertex from the currently exploring vertex
     // we will try to minimize the distance
-    if (cachedAdjMatrixOut->find(currentNode) != cachedAdjMatrixOut->end()) {
-      for (const auto& elem : cachedAdjMatrixOut->at(currentNode)) {
+    if (cachedAdjListOut->find(currentNode) != cachedAdjListOut->end()) {
+      for (const auto& elem : cachedAdjListOut->at(currentNode)) {
         // minimizing distances
         if (elem.second->isWeighted().has_value() &&
             elem.second->isWeighted().value()) {
@@ -177,7 +177,7 @@ const DijkstraResult Graph<T>::dijkstra_deterministic(
   }
   // n denotes the number of vertices in graph
   // unused
-  // auto n = cachedAdjMatrixOut->size();
+  // auto n = cachedAdjListOut->size();
 
   // setting all the distances initially to INF_DOUBLE
   std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist;
@@ -232,8 +232,8 @@ const DijkstraResult Graph<T>::dijkstra_deterministic(
 
     // for all the reachable vertex from the currently exploring vertex
     // we will try to minimize the distance
-    if (cachedAdjMatrixOut->find(currentNode) != cachedAdjMatrixOut->end()) {
-      for (const auto& elem : cachedAdjMatrixOut->at(currentNode)) {
+    if (cachedAdjListOut->find(currentNode) != cachedAdjListOut->end()) {
+      for (const auto& elem : cachedAdjListOut->at(currentNode)) {
         // minimizing distances
         if (elem.second->isWeighted().has_value() &&
             elem.second->isWeighted().value()) {
@@ -325,7 +325,7 @@ const DijkstraResult Graph<T>::dijkstra_deterministic2(
   }
   // n denotes the number of vertices in graph
   // unused
-  // auto n = cachedAdjMatrixOut->size();
+  // auto n = cachedAdjListOut->size();
 
   // setting all the distances initially to INF_DOUBLE
   std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist;
@@ -388,8 +388,8 @@ const DijkstraResult Graph<T>::dijkstra_deterministic2(
 
     // for all the reachable vertex from the currently exploring vertex
     // we will try to minimize the distance
-    if (cachedAdjMatrixOut->find(currentNode) != cachedAdjMatrixOut->end()) {
-      for (const auto& elem : cachedAdjMatrixOut->at(currentNode)) {
+    if (cachedAdjListOut->find(currentNode) != cachedAdjListOut->end()) {
+      for (const auto& elem : cachedAdjListOut->at(currentNode)) {
         // minimizing distances
         if (elem.second->isWeighted().has_value() &&
             elem.second->isWeighted().value()) {
@@ -481,7 +481,7 @@ const DijkstraResult Graph<T>::criticalpath_deterministic(
   }
   // n denotes the number of vertices in graph
   // unused
-  // auto n = cachedAdjMatrixOut->size();
+  // auto n = cachedAdjListOut->size();
 
   // setting all the distances initially to -INF_DOUBLE
   std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist;
@@ -513,8 +513,7 @@ const DijkstraResult Graph<T>::criticalpath_deterministic(
     };
   };
 
-  std::priority_queue<VertexInfo, std::vector<VertexInfo>, VertexInfoLesser>
-      pq;
+  std::priority_queue<VertexInfo, std::vector<VertexInfo>, VertexInfoLesser> pq;
 
   // pushing the source vertex 's' with 0 distance in min heap
   pq.push(VertexInfo{0.0, stableIds[*source_node_it], *source_node_it});
@@ -536,8 +535,8 @@ const DijkstraResult Graph<T>::criticalpath_deterministic(
 
     // for all the reachable vertex from the currently exploring vertex
     // we will try to minimize the distance
-    if (cachedAdjMatrixOut->find(currentNode) != cachedAdjMatrixOut->end()) {
-      for (const auto& elem : cachedAdjMatrixOut->at(currentNode)) {
+    if (cachedAdjListOut->find(currentNode) != cachedAdjListOut->end()) {
+      for (const auto& elem : cachedAdjListOut->at(currentNode)) {
         // minimizing distances
         if (elem.second->isWeighted().has_value() &&
             elem.second->isWeighted().value()) {
