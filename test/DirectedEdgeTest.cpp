@@ -166,6 +166,10 @@ TEST(DirectedEdgeTest, inOutNeigbors_1) {
   ASSERT_EQ(g.outNotInNeighbors(&n2).size(), 1);
   ASSERT_EQ(g.outNotInNeighbors(&n3).size(), 0);
 
+  ASSERT_EQ(g.inNotOutNeighbors(&n1).size(), 0);
+  ASSERT_EQ(g.inNotOutNeighbors(&n2).size(), 1);
+  ASSERT_EQ(g.inNotOutNeighbors(&n3).size(), 1);
+
   ASSERT_EQ(g.inOrOutNeighbors(&n1).size(), 1);
   ASSERT_EQ(g.inOrOutNeighbors(&n2).size(), 2);
   ASSERT_EQ(g.inOrOutNeighbors(&n3).size(), 1);  
@@ -173,6 +177,10 @@ TEST(DirectedEdgeTest, inOutNeigbors_1) {
   ASSERT_EQ(g.outNotInEdges(&n1).size(), 1);
   ASSERT_EQ(g.outNotInEdges(&n2).size(), 1);
   ASSERT_EQ(g.outNotInEdges(&n3).size(), 0);
+
+  ASSERT_EQ(g.inNotOutEdges(&n1).size(), 0);
+  ASSERT_EQ(g.inNotOutEdges(&n2).size(), 1);
+  ASSERT_EQ(g.inNotOutEdges(&n3).size(), 1);
 
   ASSERT_EQ(g.inOrOutEdges(&n1).size(), 1);
   ASSERT_EQ(g.inOrOutEdges(&n2).size(), 2);

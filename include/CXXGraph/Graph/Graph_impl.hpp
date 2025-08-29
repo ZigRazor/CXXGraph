@@ -703,6 +703,32 @@ Graph<T>::outNotInNeighbors(shared<const Node<T>> node) const {
 
 template <typename T>
 const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+Graph<T>::inNotOutNeighbors(const Node<T> *node) const {
+  auto node_shared = make_shared<const Node<T>>(*node);
+
+  return inNotOutNeighbors(node_shared);
+}
+
+template <typename T>
+const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+Graph<T>::inNotOutNeighbors(shared<const Node<T>> node) const {
+  if (cachedAdjMatrixIn->find(node) == cachedAdjMatrixIn->end()) {
+    return std::unordered_set<shared<const Node<T>>, nodeHash<T>>();
+  }
+  auto nodeEdgePairsIn = cachedAdjMatrixIn->at(node);
+
+  std::unordered_set<shared<const Node<T>>, nodeHash<T>> inNotOutNeighbors;
+  for (auto pair : nodeEdgePairsIn) {
+    if (pair.second->isDirected().value_or(false)) {
+      inNotOutNeighbors.insert(pair.first);
+    }
+  }
+
+  return inNotOutNeighbors;
+}
+
+template <typename T>
+const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
 Graph<T>::inOrOutNeighbors(const Node<T> *node) const {
   auto node_shared = make_shared<const Node<T>>(*node);
 
@@ -758,6 +784,32 @@ Graph<T>::outNotInEdges(shared<const Node<T>> node) const {
   }
 
   return outNotInEdges;
+}
+
+template <typename T>
+const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
+Graph<T>::inNotOutEdges(const Node<T> *node) const {
+  auto node_shared = make_shared<const Node<T>>(*node);
+
+  return inNotOutEdges(node_shared);
+}
+
+template <typename T>
+const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
+Graph<T>::inNotOutEdges(shared<const Node<T>> node) const {
+  if (cachedAdjMatrixIn->find(node) == cachedAdjMatrixIn->end()) {
+    return std::unordered_set<shared<const Edge<T>>, edgeHash<T>>();
+  }
+  auto nodeEdgePairsIn = cachedAdjMatrixIn->at(node);
+
+  std::unordered_set<shared<const Edge<T>>, edgeHash<T>> inNotOutEdges;
+  for (auto pair : nodeEdgePairsIn) {
+    if (pair.second->isDirected().value_or(false)) {
+      inNotOutEdges.insert(pair.second);
+    }
+  }
+
+  return inNotOutEdges;
 }
 
 template <typename T>
