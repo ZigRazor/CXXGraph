@@ -18,7 +18,7 @@ struct testStruct {
 
   testStruct() = default;
   explicit testStruct(int a, bool b, const std::string &c)
-      : testInt(a), testBool(b), testString(c){};
+      : testInt(a), testBool(b), testString(c) {};
 
   bool operator==(const testStruct &b) const {
     return (this->testInt == b.testInt && this->testBool == b.testBool &&

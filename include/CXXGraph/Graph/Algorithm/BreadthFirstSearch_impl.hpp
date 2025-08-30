@@ -50,8 +50,8 @@ const std::vector<Node<T>> Graph<T>::breadth_first_search(
   while (!tracker.empty()) {
     shared<const Node<T>> node = tracker.front();
     tracker.pop();
-    if (cachedAdjMatrix->find(node) != cachedAdjMatrix->end()) {
-      for (const auto &elem : cachedAdjMatrix->at(node)) {
+    if (cachedAdjListOut->find(node) != cachedAdjListOut->end()) {
+      for (const auto &elem : cachedAdjListOut->at(node)) {
         // if the node is not visited then mark it as visited
         // and push it to the queue
         if (std::find(visited.begin(), visited.end(), *(elem.first)) ==

@@ -41,10 +41,10 @@ const std::vector<Node<T>> Graph<T>::depth_first_search(
   if (start_node_it == nodeSet.end()) {
     return visited;
   }
-  std::function<void(const std::shared_ptr<AdjacencyMatrix<T>>,
+  std::function<void(const std::shared_ptr<AdjacencyList<T>>,
                      shared<const Node<T>>, std::vector<Node<T>> &)>
       explore;
-  explore = [&explore](const std::shared_ptr<AdjacencyMatrix<T>> adj,
+  explore = [&explore](const std::shared_ptr<AdjacencyList<T>> adj,
                        shared<const Node<T>> node,
                        std::vector<Node<T>> &visited) -> void {
     visited.push_back(*node);
@@ -57,7 +57,7 @@ const std::vector<Node<T>> Graph<T>::depth_first_search(
       }
     }
   };
-  explore(cachedAdjMatrix, *start_node_it, visited);
+  explore(cachedAdjListOut, *start_node_it, visited);
 
   return visited;
 }

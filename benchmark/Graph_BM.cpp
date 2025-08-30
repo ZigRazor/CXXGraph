@@ -122,7 +122,7 @@ static void getAdjMatrixX(benchmark::State &state) {
     g.addEdge(&(*e.second));
   }
   for (auto _ : state) {
-    auto adjMatrix = g.getAdjMatrix();
+    auto adjMatrix = g.getAdjListOut();
   }
   state.SetComplexityN(2);
 }
@@ -134,7 +134,7 @@ BENCHMARK(getAdjMatrixX)
 
 static void getAdjMatrixCitHep(benchmark::State &state) {
   for (auto _ : state) {
-    auto adjMatrix = cit_graph_ptr->getAdjMatrix();
+    auto adjMatrix = cit_graph_ptr->getAdjListOut();
   }
   state.SetComplexityN(2);
 }

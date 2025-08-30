@@ -49,7 +49,7 @@ const BronKerboschResult<T> Graph<T>::bron_kerbosch() const {
         auto it = P.begin();
         while (it != P.end()) {
           const auto v = *it;
-          T_NodeSet<T> X2, R2(R), P2, nbd(inOutNeighbors(v));
+          T_NodeSet<T> X2, R2(R), P2, nbd(inOrOutNeighbors(v));
           R2.insert(v);
           for (const auto &u : nbd) {
             if (X.count(u) > 0 && u != v) {
