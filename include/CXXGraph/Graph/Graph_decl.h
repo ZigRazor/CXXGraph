@@ -76,7 +76,7 @@ class Graph;
 template <typename T>
 std::ostream &operator<<(std::ostream &o, const Graph<T> &graph);
 template <typename T>
-std::ostream &operator<<(std::ostream &o, const AdjacencyMatrix<T> &adj);
+std::ostream &operator<<(std::ostream &o, const AdjacencyList<T> &adj);
 
 /// Class that implement the Graph. ( This class is not Thread Safe )
 template <typename T>
@@ -85,7 +85,8 @@ class Graph {
   T_EdgeSet<T> edgeSet = {};
   T_NodeSet<T> isolatedNodesSet = {};
 
-  shared<AdjacencyMatrix<T>> cachedAdjMatrix;
+  shared<AdjacencyList<T>> cachedAdjListOut;
+  shared<AdjacencyList<T>> cachedAdjListIn;
   shared<DegreeMatrix<T>> cachedDegreeMatrix;
   shared<LaplacianMatrix<T>> cachedLaplacianMatrix;
   shared<TransitionMatrix<T>> cachedTransitionMatrix;
@@ -264,7 +265,7 @@ class Graph {
   /**
    * \brief
    * Invalidates and rebuilds the graph's core caches.
-   * This includes the adjacency matrix, degree matrix, and Laplacian matrix.
+   * This includes the adjacency lists, degree matrix, and Laplacian matrix.
    * Optionally, the transition matrix can also be rebuilt.
    *
    * \param includeTransitionMatrix
@@ -374,18 +375,25 @@ class Graph {
       const std::string &nodeUserId) const;
 
   /**
-   * @brief This function generate a list of adjacency matrix with every element
-   * of the matrix contain the node where is directed the link and the Edge
-   * corrispondent to the link
+   * @brief This function generates an adjacency list with every
+   * element of the list containing the node where is directed the link and the
+   * Edge corrispondent to the link Note: No Thread Safe
    * Note: No Thread Safe
    */
-  virtual shared<AdjacencyMatrix<T>> getAdjMatrix() const;
+  virtual shared<AdjacencyList<T>> getAdjListOut() const;
 
   /**
-   * @brief This function calculates the adjacency matrix of the graph and
-   * stores it in the cachedAdjMatrix variable.
+   * @brief This function generate an adjacency list with every element
+   * of the list containing the node where is the origin of the Edge and the
+   * Edge corrispondent to the link Note: No Thread Safe
    */
-  virtual void cacheAdjMatrix();
+  virtual shared<AdjacencyList<T>> getAdjListIn() const;
+
+  /**
+   * @brief This function calculates the adjacency matricies of the graph and
+   * stores it in the cachedAdjListOut and cachedAdjListIn variable.
+   */
+  virtual void cacheAdjLists();
 
   /**
    * @brief This function generates a list of the degree matrix with every
@@ -428,24 +436,44 @@ class Graph {
   virtual void cacheTransitionMatrix();
 
   /**
-   * \brief This function generates a set of nodes linked to the provided node
-   * in a directed graph
+   * \brief This function generates a set of nodes linked only out (not in) from
+   * the provided node in a directed graph
    *
    * @param Pointer to the node
    *
    */
   virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
-  outNeighbors(const Node<T> *node) const;
+  outNotInNeighbors(const Node<T> *node) const;
 
   /**
-   * \brief This function generates a set of nodes linked to the provided node
-   * in a directed graph
+   * \brief This function generates a set of nodes linked only out (not in) from
+   * the provided node in a directed graph
    *
    * @param Pointer to the node
    *
    */
   virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
-  outNeighbors(shared<const Node<T>> node) const;
+  outNotInNeighbors(shared<const Node<T>> node) const;
+
+  /**
+   * \brief This function generates a set of nodes linked only in (not out) of
+   * the provided node in a directed graph
+   *
+   * @param Pointer to the node
+   *
+   */
+  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+  inNotOutNeighbors(const Node<T> *node) const;
+
+  /**
+   * \brief This function generates a set of nodes linked only in (not out) of
+   * the provided node in a directed graph
+   *
+   * @param Pointer to the node
+   *
+   */
+  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+  inNotOutNeighbors(shared<const Node<T>> node) const;
 
   /**
    * \brief This function generates a set of nodes linked to the provided node
@@ -455,7 +483,7 @@ class Graph {
    *
    */
   virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
-  inOutNeighbors(const Node<T> *node) const;
+  inOrOutNeighbors(const Node<T> *node) const;
 
   /**
    * \brief
@@ -466,29 +494,49 @@ class Graph {
    *
    */
   virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
-  inOutNeighbors(shared<const Node<T>> node) const;
+  inOrOutNeighbors(shared<const Node<T>> node) const;
 
   /**
    * \brief
-   * \brief This function generates a set of Edges going out of a node
-   * in any graph
+   * \brief This function generates a set of directed Edges going only out of
+   * (not in) to a node in any graph
    *
    * @param Pointer to the node
    *
    */
-  virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> outEdges(
-      const Node<T> *node) const;
+  virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
+  outNotInEdges(const Node<T> *node) const;
 
   /**
-   * \brief
-   * \brief This function generates a set of Edges going out of a node
-   * in any graph
+   * \brief This function generates a set of directed Edges going only out of
+   * (not in) to a node in any graph
    *
    * @param Shared pointer to the node
    *
    */
-  virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> outEdges(
-      shared<const Node<T>> node) const;
+  virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
+  outNotInEdges(shared<const Node<T>> node) const;
+
+  /**
+   * \brief
+   * \brief This function generates a set of directed Edges going only out of
+   * (not in) to a node in any graph
+   *
+   * @param Pointer to the node
+   *
+   */
+  virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
+  inNotOutEdges(const Node<T> *node) const;
+
+  /**
+   * \brief This function generates a set of directed Edges going only out of
+   * (not in) to a node in any graph
+   *
+   * @param Shared pointer to the node
+   *
+   */
+  virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
+  inNotOutEdges(shared<const Node<T>> node) const;
 
   /**
    * \brief
@@ -499,7 +547,7 @@ class Graph {
    *
    */
   virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
-  inOutEdges(const Node<T> *node) const;
+  inOrOutEdges(const Node<T> *node) const;
 
   /**
    * \brief
@@ -510,7 +558,7 @@ class Graph {
    *
    */
   virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
-  inOutEdges(shared<const Node<T>> node) const;
+  inOrOutEdges(shared<const Node<T>> node) const;
 
   /**
    * @brief This function finds the subset of given a nodeId
@@ -1069,7 +1117,7 @@ class Graph {
 
   friend std::ostream &operator<< <>(std::ostream &os, const Graph<T> &graph);
   friend std::ostream &operator<< <>(std::ostream &os,
-                                     const AdjacencyMatrix<T> &adj);
+                                     const AdjacencyList<T> &adj);
 };
 
 }  // namespace CXXGraph

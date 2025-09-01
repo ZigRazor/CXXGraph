@@ -69,8 +69,8 @@ BestFirstSearchResult<T> Graph<T>::best_first_search(
     if (*currentNode == target) {
       break;
     }
-    if (cachedAdjMatrix->find(currentNode) != cachedAdjMatrix->end()) {
-      for (const auto &elem : cachedAdjMatrix->at(currentNode)) {
+    if (cachedAdjListOut->find(currentNode) != cachedAdjListOut->end()) {
+      for (const auto &elem : cachedAdjListOut->at(currentNode)) {
         if (elem.second->isWeighted().has_value()) {
           if (elem.second->isDirected().has_value()) {
             shared<const DirectedWeightedEdge<T>> dw_edge =
@@ -190,8 +190,8 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
         }
 
         for (int i = start_index; i < end_index; ++i) {
-          if (cachedAdjMatrix->count(level_tracker[i])) {
-            for (const auto &elem : cachedAdjMatrix->at(level_tracker[i])) {
+          if (cachedAdjListOut->count(level_tracker[i])) {
+            for (const auto &elem : cachedAdjListOut->at(level_tracker[i])) {
               int index = (int)node_to_index[elem.first];
               if (visited[index] == 0) {
                 visited[index] = 1;

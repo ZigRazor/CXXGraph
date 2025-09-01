@@ -84,7 +84,7 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
 
     // Process all adjacents of extracted vertex 'u' and
     // update their distanced if required.
-    for (const auto &i : (*cachedAdjMatrix)[u]) {
+    for (const auto &i : (*cachedAdjListOut)[u]) {
       auto v = i.first;
       int weight = 0;
       if (i.second->isWeighted().has_value() &&

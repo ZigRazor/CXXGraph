@@ -39,3 +39,5 @@ packaging/
 .vscode
 .code-workspace
 CXXGraph.code-workspace
+# ignore visual studio files
+.vs

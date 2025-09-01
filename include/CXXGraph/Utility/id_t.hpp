@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-#define IS_UNSIGNED(T) !(((T)-1) < 0)
+#define IS_UNSIGNED(T) !(((T) - 1) < 0)
 
 namespace CXXGraph {
 #ifdef CXXGRAPH_ID_TYPE

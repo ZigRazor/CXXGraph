@@ -250,10 +250,12 @@ using BronKerboschResult = BronKerboschResult_struct<T>;
 
 /// Struct that contains the information about Hopcroft-Karp Algorithm results
 struct HopcroftKarpResult_struct {
-  bool success = false;  // TRUE if the function does not return error, FALSE otherwise
+  bool success =
+      false;  // TRUE if the function does not return error, FALSE otherwise
   std::string errorMessage = "";  // message of error
   int maxMatching = 0;            // Size of maximum bipartite matching
-  std::vector<std::pair<std::string, std::string>> matching = {};  // The matching pairs (node userIds)
+  std::vector<std::pair<std::string, std::string>> matching =
+      {};  // The matching pairs (node userIds)
 };
 using HopcroftKarpResult = HopcroftKarpResult_struct;
 
@@ -262,7 +264,7 @@ using HopcroftKarpResult = HopcroftKarpResult_struct;
 // ///////////////////////////////////////////////////////////////
 
 template <typename T>
-using AdjacencyMatrix = std::unordered_map<
+using AdjacencyList = std::unordered_map<
     shared<const Node<T>>,
     std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>,
     nodeHash<T>>;

@@ -54,13 +54,13 @@ bool Graph<T>::isCyclicDirectedGraphDFS() const {
     // node as it has already been checked for presence of cycle.
     if (state[node->getId()] == not_visited) {
       // Check for cycle.
-      std::function<bool(const std::shared_ptr<AdjacencyMatrix<T>>,
+      std::function<bool(const std::shared_ptr<AdjacencyList<T>>,
                          std::unordered_map<CXXGraph::id_t, nodeStates> &,
                          shared<const Node<T>>)>
           isCyclicDFSHelper;
       isCyclicDFSHelper =
           [&isCyclicDFSHelper](
-              const std::shared_ptr<AdjacencyMatrix<T>> adjMatrix,
+              const std::shared_ptr<AdjacencyList<T>> adjMatrix,
               std::unordered_map<CXXGraph::id_t, nodeStates> &states,
               shared<const Node<T>> node) {
             // Add node "in_stack" state.
@@ -94,7 +94,7 @@ bool Graph<T>::isCyclicDirectedGraphDFS() const {
             // Return that current node didn't result in any cycles.
             return false;
           };
-      if (isCyclicDFSHelper(cachedAdjMatrix, state, node)) {
+      if (isCyclicDFSHelper(cachedAdjListOut, state, node)) {
         return true;
       }
     }
@@ -184,7 +184,7 @@ bool Graph<T>::isCyclicDirectedGraphBFS() const {
     indegree[node->getId()] = 0;
   }
   // Calculate the indegree i.e. the number of incident edges to the node.
-  for (auto const &list : (*cachedAdjMatrix)) {
+  for (auto const &list : (*cachedAdjListOut)) {
     auto children = list.second;
     for (auto const &child : children) {
       indegree[std::get<0>(child)->getId()]++;
@@ -211,8 +211,8 @@ bool Graph<T>::isCyclicDirectedGraphBFS() const {
     remain--;
 
     // Visit all the children of the visited node.
-    auto it = cachedAdjMatrix->find(solved);
-    if (it != cachedAdjMatrix->end()) {
+    auto it = cachedAdjListOut->find(solved);
+    if (it != cachedAdjListOut->end()) {
       for (const auto &child : it->second) {
         // Check if we can visited the node safely.
         if (--indegree[std::get<0>(child)->getId()] == 0) {
