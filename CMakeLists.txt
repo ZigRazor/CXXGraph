@@ -19,7 +19,9 @@ if(DEBUG)
 	)
 endif(DEBUG)
 
-if (NOT MSVC)
+if (MSVC)
+	add_compile_options(/bigobj)
+else ()
 	option(SANITIZE "Enable Sanitize" OFF)
 	if(SANITIZE)
 		add_compile_options(
