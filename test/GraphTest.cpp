@@ -723,7 +723,7 @@ TEST(GraphTest, set_data) {
   }
 }
 
-TEST(GraphTest, test_outNodes) {
+TEST(GraphTest, outNodes) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -782,7 +782,7 @@ TEST(GraphTest, test_outNodes) {
 }
 
 // Test the overload that takes shared_ptr as input
-TEST(GraphTest, test_outNodes_shared) {
+TEST(GraphTest, outNodes_shared) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -832,7 +832,7 @@ TEST(GraphTest, test_outNodes_shared) {
   }
 }
 
-TEST(GraphTest, test_inOutNodes) {
+TEST(GraphTest, inOutNodes) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -879,7 +879,7 @@ TEST(GraphTest, test_inOutNodes) {
 }
 
 // Test the overload that takes shared_ptr as input
-TEST(GraphTest, test_inOutNodes_shared) {
+TEST(GraphTest, inOutNodes_shared) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -919,7 +919,7 @@ TEST(GraphTest, test_inOutNodes_shared) {
   }
 }
 
-TEST(InOutNodesTest, test_outEdges) {
+TEST(GraphTest, outEdges) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -968,7 +968,7 @@ TEST(InOutNodesTest, test_outEdges) {
   }
 }
 
-TEST(InOutNodesTest, test_outEdges_shared) {
+TEST(GraphTest, outEdges_shared) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -1024,7 +1024,7 @@ TEST(InOutNodesTest, test_outEdges_shared) {
   ASSERT_EQ(edges.size(), 0);
 }
 
-TEST(InOutNodesTest, test_inOutEdges) {
+TEST(GraphTest, inOutEdges) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -1068,7 +1068,7 @@ TEST(InOutNodesTest, test_inOutEdges) {
   }
 }
 
-TEST(InOutNodesTest, test_inOutEdges_shared) {
+TEST(GraphTest, inOutEdges_shared) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -1121,7 +1121,7 @@ TEST(InOutNodesTest, test_inOutEdges_shared) {
   ASSERT_EQ(edges.size(), 0);
 }
 
-TEST(ReverseDirectedGraphTest, test_function) {
+TEST(GraphTest, reverse_directed) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -1152,7 +1152,7 @@ TEST(ReverseDirectedGraphTest, test_function) {
   }
 }
 
-TEST(ReverseDirectedGraphTest, test_exception) {
+TEST(GraphTest, reverse_directed_exception) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -1174,7 +1174,7 @@ TEST(ReverseDirectedGraphTest, test_exception) {
   ASSERT_THROW(mixedGraph.reverseDirectedGraph(), std::runtime_error);
 }
 
-TEST(IsolatedNodeGraphTest, Test_AddNode1) {
+TEST(GraphTest, isolated_node_AddNode1) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -1197,7 +1197,7 @@ TEST(IsolatedNodeGraphTest, Test_AddNode1) {
   ASSERT_EQ(graph.getEdgeSet().size(), 3);
 }
 
-TEST(IsolatedNodeGraphTest, Test_AddNode2) {
+TEST(GraphTest, isolated_node_AddNode2) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -1220,7 +1220,7 @@ TEST(IsolatedNodeGraphTest, Test_AddNode2) {
   ASSERT_EQ(graph.getEdgeSet().size(), 3);
 }
 
-TEST(IsolatedNodeGraphTest, Test_AddNodes1) {
+TEST(GraphTest, isolated_node_AddNodes1) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -1246,7 +1246,7 @@ TEST(IsolatedNodeGraphTest, Test_AddNodes1) {
   ASSERT_EQ(graph.getEdgeSet().size(), 3);
 }
 
-TEST(IsolatedNodeGraphTest, Test_AddNodes2) {
+TEST(GraphTest, isolated_node_AddNodes2) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -1270,7 +1270,7 @@ TEST(IsolatedNodeGraphTest, Test_AddNodes2) {
   ASSERT_EQ(graph.getEdgeSet().size(), 3);
 }
 
-TEST(TestRemoveNode, Test_isolatedNode) {
+TEST(GraphTest, remove_node_isolatedNode) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -1305,7 +1305,7 @@ TEST(TestRemoveNode, Test_isolatedNode) {
   ASSERT_EQ(graph.getEdgeSet().size(), 3);
 }
 
-TEST(TestRemoveNode, Test_connectedNode) {
+TEST(GraphTest, remove_node_connectedNode) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -1340,7 +1340,7 @@ TEST(TestRemoveNode, Test_connectedNode) {
   ASSERT_EQ(graph.getEdgeSet().size(), 1);
 }
 
-TEST(TestRemoveNode, Test_removeInvalidNode) {
+TEST(GraphTest, remove_node_removeInvalidNode) {
   /** Test to call the remove_node function on a node that was never added. In
    * this case getNode will return an optional that is nullptr*/
   // Create a graph with 3 nodes and 3 edges.
@@ -1384,7 +1384,7 @@ TEST(TestRemoveNode, Test_removeInvalidNode) {
   ASSERT_EQ(graph.getEdgeSet().size(), 2);
 }
 
-TEST(TestGetNode, Test_1) {
+TEST(GraphTest, get_node_1) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);

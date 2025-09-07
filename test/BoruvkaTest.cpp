@@ -185,7 +185,7 @@ TEST(BoruvkaTest, test_4) {
 
 // example taken from
 // https://www.geeksforgeeks.org/prims-mst-for-adjacency-list-representation-greedy-algo-6/
-TEST(BoruvkaDeterministicTest, test_1) {
+TEST(BoruvkaTest, deterministic_test_1) {
   CXXGraph::Node<int> node0("0", 0);
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
@@ -238,7 +238,7 @@ TEST(BoruvkaDeterministicTest, test_1) {
 
 // example taken from
 // https://www.gatevidyalay.com/prims-algorithm-prim-algorithm-example/
-TEST(BoruvkaDeterministicTest, test_2) {
+TEST(BoruvkaTest, deterministic_test_2) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -278,7 +278,7 @@ TEST(BoruvkaDeterministicTest, test_2) {
 
 // example taken from
 // https://www.gatevidyalay.com/prims-algorithm-prim-algorithm-example/
-TEST(BoruvkaDeterministicTest, test_3) {
+TEST(BoruvkaTest, deterministic_test_3) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -323,7 +323,7 @@ TEST(BoruvkaDeterministicTest, test_3) {
 }
 
 // test for directed and no weighted edge errors
-TEST(BoruvkaDeterministicTest, test_4) {
+TEST(BoruvkaTest, deterministic_test_4) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
