@@ -35,6 +35,7 @@
 #include "CXXGraph/Graph/Algorithm/DepthFirstSearch_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/Dial_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/Dijkstra_impl.hpp"
+#include "CXXGraph/Graph/Algorithm/EulerianPath_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/FloydWarshall_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/FordFulkerson_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/HopcroftKarp_impl.hpp"

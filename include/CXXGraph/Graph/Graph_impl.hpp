@@ -479,49 +479,6 @@ void Graph<T>::setUnion(
 }
 
 template <typename T>
-std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const {
-  const auto nodeSet = Graph<T>::getNodeSet();
-
-  std::shared_ptr<std::vector<Node<T>>> eulerPath =
-      std::make_shared<std::vector<Node<T>>>();
-
-  // unused
-  // bool undirected = this->isUndirectedGraph();
-
-  std::vector<shared<const Node<T>>> currentPath;
-  // The starting node is the only node which has more outgoing than ingoing
-  // links
-  auto firstNodeIt = std::max_element(nodeSet.begin(), nodeSet.end(),
-                                      [this](auto n1, auto n2) {
-                                        return cachedAdjListOut->at(n1).size() <
-                                               cachedAdjListOut->at(n2).size();
-                                      });
-  auto currentNode = *(firstNodeIt);
-  currentPath.push_back(currentNode);
-
-  while (currentPath.size() > 0) {
-    auto &edges = cachedAdjListOut->at(currentNode);
-    // we keep removing the edges that
-    // have been traversed from the adjacency list
-    if (edges.size()) {
-      auto firstEdge = edges.back().second;
-
-      shared<const Node<T>> nextNodeId;
-      nextNodeId = firstEdge->getOtherNode(currentNode);
-
-      currentPath.push_back(nextNodeId);
-      currentNode = nextNodeId;
-      edges.pop_back();
-    } else {
-      eulerPath->push_back(*currentNode);
-      currentNode = currentPath.back();
-      currentPath.pop_back();
-    }
-  }
-  return eulerPath;
-}
-
-template <typename T>
 shared<AdjacencyList<T>> Graph<T>::getAdjListOut() const {
   auto adj = std::make_shared<AdjacencyList<T>>();
   auto addElementToAdjList = [&adj](shared<const Node<T>> nodeFrom,
@@ -932,76 +889,6 @@ const std::vector<Node<T>> Graph<T>::graph_slicing(const Node<T> &start) const {
       result.push_back(nodeC);
   }
   return result;
-}
-
-template <typename T>
-std::ostream &operator<<(std::ostream &os, const Graph<T> &graph) {
-  os << "Graph:\n";
-  auto edgeList = graph.getEdgeSet();
-  for (auto it = edgeList.begin(); it != edgeList.end(); ++it) {
-    if (!(*it)->isDirected().has_value() && !(*it)->isWeighted().has_value()) {
-      // Edge Case
-      os << **it << "\n";
-    } else if (((*it)->isDirected().has_value() &&
-                (*it)->isDirected().value()) &&
-               ((*it)->isWeighted().has_value() &&
-                (*it)->isWeighted().value())) {
-      os << *std::static_pointer_cast<const DirectedWeightedEdge<T>>(*it)
-         << "\n";
-    } else if (((*it)->isDirected().has_value() &&
-                (*it)->isDirected().value()) &&
-               !((*it)->isWeighted().has_value() &&
-                 (*it)->isWeighted().value())) {
-      os << *std::static_pointer_cast<const DirectedEdge<T>>(*it) << "\n";
-    } else if (!((*it)->isDirected().has_value() &&
-                 (*it)->isDirected().value()) &&
-               ((*it)->isWeighted().has_value() &&
-                (*it)->isWeighted().value())) {
-      os << *std::static_pointer_cast<const UndirectedWeightedEdge<T>>(*it)
-         << "\n";
-    } else if (!((*it)->isDirected().has_value() &&
-                 (*it)->isDirected().value()) &&
-               !((*it)->isWeighted().has_value() &&
-                 (*it)->isWeighted().value())) {
-      os << *std::static_pointer_cast<const UndirectedEdge<T>>(*it) << "\n";
-    } else {
-      os << *it << "\n";
-    }
-  }
-  return os;
-}
-
-template <typename T>
-std::ostream &operator<<(std::ostream &os, const AdjacencyList<T> &adj) {
-  os << "Adjacency Matrix:\n";
-  unsigned long max_column = 0;
-  for (const auto &it : adj) {
-    if (it.second.size() > max_column) {
-      max_column = (unsigned long)it.second.size();
-    }
-  }
-  if (max_column == 0) {
-    os << "ERROR in Print\n";
-    return os;
-  } else {
-    os << "|--|";
-    for (unsigned long i = 0; i < max_column; ++i) {
-      os << "-----|";
-    }
-    os << "\n";
-    for (const auto &it : adj) {
-      os << "|N" << it.first->getId() << "|";
-      for (const auto &it2 : it.second) {
-        os << "N" << it2.first->getId() << ",E" << it2.second->getId() << "|";
-      }
-      os << "\n|--|";
-      for (unsigned long i = 0; i < max_column; ++i) {
-        os << "-----|";
-      }
-      os << "\n";
-    }
-  }
-  return os;
 }
 
 }  // namespace CXXGraph

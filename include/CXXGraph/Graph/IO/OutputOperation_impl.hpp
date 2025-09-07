@@ -284,5 +284,75 @@ void Graph<T>::writeGraphToStream(std::ostream &oGraph, std::ostream &oNodeFeat,
   }
 }
 
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const Graph<T> &graph) {
+  os << "Graph:\n";
+  auto edgeList = graph.getEdgeSet();
+  for (auto it = edgeList.begin(); it != edgeList.end(); ++it) {
+    if (!(*it)->isDirected().has_value() && !(*it)->isWeighted().has_value()) {
+      // Edge Case
+      os << **it << "\n";
+    } else if (((*it)->isDirected().has_value() &&
+                (*it)->isDirected().value()) &&
+               ((*it)->isWeighted().has_value() &&
+                (*it)->isWeighted().value())) {
+      os << *std::static_pointer_cast<const DirectedWeightedEdge<T>>(*it)
+         << "\n";
+    } else if (((*it)->isDirected().has_value() &&
+                (*it)->isDirected().value()) &&
+               !((*it)->isWeighted().has_value() &&
+                 (*it)->isWeighted().value())) {
+      os << *std::static_pointer_cast<const DirectedEdge<T>>(*it) << "\n";
+    } else if (!((*it)->isDirected().has_value() &&
+                 (*it)->isDirected().value()) &&
+               ((*it)->isWeighted().has_value() &&
+                (*it)->isWeighted().value())) {
+      os << *std::static_pointer_cast<const UndirectedWeightedEdge<T>>(*it)
+         << "\n";
+    } else if (!((*it)->isDirected().has_value() &&
+                 (*it)->isDirected().value()) &&
+               !((*it)->isWeighted().has_value() &&
+                 (*it)->isWeighted().value())) {
+      os << *std::static_pointer_cast<const UndirectedEdge<T>>(*it) << "\n";
+    } else {
+      os << *it << "\n";
+    }
+  }
+  return os;
+}
+
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const AdjacencyList<T> &adj) {
+  os << "Adjacency Matrix:\n";
+  unsigned long max_column = 0;
+  for (const auto &it : adj) {
+    if (it.second.size() > max_column) {
+      max_column = (unsigned long)it.second.size();
+    }
+  }
+  if (max_column == 0) {
+    os << "ERROR in Print\n";
+    return os;
+  } else {
+    os << "|--|";
+    for (unsigned long i = 0; i < max_column; ++i) {
+      os << "-----|";
+    }
+    os << "\n";
+    for (const auto &it : adj) {
+      os << "|N" << it.first->getId() << "|";
+      for (const auto &it2 : it.second) {
+        os << "N" << it2.first->getId() << ",E" << it2.second->getId() << "|";
+      }
+      os << "\n|--|";
+      for (unsigned long i = 0; i < max_column; ++i) {
+        os << "-----|";
+      }
+      os << "\n";
+    }
+  }
+  return os;
+}
+
 }  // namespace CXXGraph
 #endif  // __CXXGRAPH_OUTPUTOPERATION_IMPL_H__
