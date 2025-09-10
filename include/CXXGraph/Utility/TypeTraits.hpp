@@ -113,4 +113,4 @@ inline constexpr bool all_are_edge_ptrs_v = all_are_edge_ptrs<T, Ts...>::value;
 
 }  // namespace CXXGraph
 
-#endif
+#endif  // __CXXGRAPH_TYPE_TRAITS__
