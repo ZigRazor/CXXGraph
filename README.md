@@ -60,7 +60,7 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
   - [Classes Explanation](#classes-explanation)
   - [Requirements](#requirements)
   - [How to use](#how-to-use)
-  - [Example](#example)
+  - [Examples](#examples)
   - [Unit-Test Execution](#unit-test-execution)
     - [Google Test Installation](#google-test-installation)
     - [How to Compile Test](#how-to-compile-test)
@@ -164,9 +164,39 @@ The Classes Explanation can be found in the [Classes Section](https://rawcdn.git
 
 To use the library **simply put the header file where you need it.** It's that easy!
 
-## Example
+## Examples
 
-Work in Progress
+In this example, the shortest path between nodeA and nodeC is obtained using Dijkstra's algorithm.
+
+```cpp
+#include <iostream>
+#include "CXXGraph/CXXGraph.hpp"
+
+int main(){
+  CXXGraph::Node<int> nodeA("A", 1);
+  CXXGraph::Node<int> nodeB("B", 2);
+  CXXGraph::Node<int> nodeC("C", 3);
+
+  CXXGraph::DirectedWeightedEdge<int> edge1(1, nodeA, nodeB, 1);
+  CXXGraph::DirectedWeightedEdge<int> edge2(2, nodeB, nodeC, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge3(3, nodeA, nodeC, 6);
+
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
+
+  CXXGraph::Graph<int> graph(edgeSet);
+  CXXGraph::DijkstraResult res = graph.dijkstra(nodeA, nodeC);
+
+  for(auto node_user_id : res.path){
+    std::cout << node_user_id << '\n';
+  }
+}
+```
+
+See more examples in the [examples folder](https://github.com/ZigRazor/CXXGraph/tree/master/examples).
+
 
 ## Unit-Test Execution
 
