@@ -1,7 +1,7 @@
 #include "CXXGraph/CXXGraph.hpp"
 #include "gtest/gtest.h"
 
-TEST(welshPowellColoring, one_edge_two_nodes_undirected) {
+TEST(WelshPowellColoring, one_edge_two_nodes_undirected) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
 
@@ -28,7 +28,7 @@ TEST(welshPowellColoring, one_edge_two_nodes_undirected) {
   ASSERT_EQ(highest_coloring_order, 2);
 }
 
-TEST(welshPowellColoring, undirected_simon_james) {
+TEST(WelshPowellColoring, undirected_simon_james) {
   // https://www.youtube.com/watch?v=CQIW2mLfG04&ab_channel=SimonJames
   CXXGraph::Node<int> nodeA("a", 1);
   CXXGraph::Node<int> nodeB("b", 1);
