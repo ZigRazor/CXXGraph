@@ -70,7 +70,7 @@ void Graph<T>::setEdgeSet(const T_EdgeSet<T> &edgeSet) {
 }
 
 template <typename T>
-void Graph<T>::addEdge(const Edge<T> *edge) {
+bool Graph<T>::addEdge(const Edge<T> *edge) {
   shared<const Edge<T>> edge_shared;
 
   bool is_directed = edge->isDirected().value_or(false);
@@ -92,24 +92,32 @@ void Graph<T>::addEdge(const Edge<T> *edge) {
     }
   }
 
-  addEdge(edge_shared);
+  return addEdge(edge_shared);
 }
 
 template <typename T>
-void Graph<T>::addEdge(shared<const Edge<T>> edge) {
-  this->edgeSet.insert(edge);
+bool Graph<T>::addEdge(shared<const Edge<T>> edge) {
+  auto result = this->edgeSet.insert(edge);
+  
+  /* Checking if new edge was inserted into set of edges */
+  bool is_added = result.second;
+
+  if(!is_added) {
+    
+    return false;
+  }
 
   auto &[from, to] = edge->getNodePair();
 
-  /* Adding new edge in cached adjacency lists */
-  this->edgeSet.insert(edge);
-
+  /* Adding new edge in cached adjacency lists if edge was inserted */
   (*cachedAdjListOut)[from].emplace_back(to, edge);
   (*cachedAdjListIn)[to].emplace_back(from, edge);
   if (!edge.get()->isDirected().value_or(true)) {
     (*cachedAdjListOut)[to].emplace_back(from, edge);
     (*cachedAdjListIn)[from].emplace_back(to, edge);
   }
+
+  return true;
 }
 
 template <typename T>

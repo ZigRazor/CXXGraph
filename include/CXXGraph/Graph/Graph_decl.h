@@ -172,7 +172,7 @@ class Graph {
    * @param edge The Edge to insert
    *
    */
-  virtual void addEdge(const Edge<T> *edge);
+  virtual bool addEdge(const Edge<T> *edge);
 
   /**
    * \brief
@@ -184,7 +184,7 @@ class Graph {
    * @param edge The Edge to insert
    *
    */
-  virtual void addEdge(shared<const Edge<T>> edge);
+  virtual bool addEdge(shared<const Edge<T>> edge);
 
   /**
    * \brief
