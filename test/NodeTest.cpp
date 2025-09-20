@@ -32,7 +32,7 @@ std::ostream &operator<<(std::ostream &os, const testStruct &TestStruct) {
   return os;
 }
 
-TEST(StringNodeTest, StringConstructor) {
+TEST(NodeTest, StringConstructor) {
   // Testing constructor and getters with different types of data
   int intTest = 42;
   float floatTest = 3.14f;
@@ -74,7 +74,7 @@ TEST(StringNodeTest, StringConstructor) {
   ASSERT_EQ(structNode.getData(), structTest);
 }
 
-TEST(StringNodeTest, StringeqOperator) {
+TEST(NodeTest, StringeqOperator) {
   // Testing equal operator with different types of data
   int int1 = 2;
   int int2 = 2;
@@ -102,7 +102,7 @@ TEST(StringNodeTest, StringeqOperator) {
 
 #include <iostream>
 
-TEST(StringNodeTest, StringltOperator) {
+TEST(NodeTest, StringltOperator) {
   // Testing Less Than operator with different types of data
   int int1 = 2;
   int int2 = 2;
@@ -126,7 +126,7 @@ TEST(StringNodeTest, StringltOperator) {
   ASSERT_FALSE(nodeDouble1 < nodeDouble2);  // Same id different data
 }
 
-TEST(StringNodeTest, StringprintOperator) {
+TEST(NodeTest, StringprintOperator) {
   // Testing << operator with different types of data
   std::string nodesId = "1";
   int testInt = 2;

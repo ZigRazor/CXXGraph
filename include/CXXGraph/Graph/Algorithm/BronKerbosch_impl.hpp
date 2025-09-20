@@ -72,4 +72,4 @@ const BronKerboschResult<T> Graph<T>::bron_kerbosch() const {
 }
 
 }  // namespace CXXGraph
-#endif
+#endif  // __CXXGRAPH_BRONKERBOSCH_IMPL_H__

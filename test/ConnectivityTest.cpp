@@ -215,60 +215,54 @@ TEST(ConnectivityTest, test_4) {
 
   ASSERT_FALSE(graph.isConnectedGraph());
 }
-/////////////////////////////////////////////////////////
-// Not a possible test until not implemented addNode function. All the
-// undirected graph can be only connected with this interface.
-/*
-TEST(ConnectivityTest, test_5)
-{
-    CXXGraph::Node<int> node0("0", 0);
-    CXXGraph::Node<int> node1("1", 1);
-    CXXGraph::Node<int> node2("2", 2);
-    CXXGraph::Node<int> node3("3", 3);
-    CXXGraph::Node<int> node4("4", 4);
-    CXXGraph::Node<int> node5("5", 5);
-    CXXGraph::Node<int> node6("6", 6);
-    CXXGraph::Node<int> node7("7", 7);
-    CXXGraph::Node<int> node8("8", 8);
 
-    CXXGraph::UndirectedWeightedEdge<int> edge1(1, node0, node1, 4);
-    CXXGraph::UndirectedWeightedEdge<int> edge2(2, node0, node7, 8);
-    CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node7, 11);
-    CXXGraph::UndirectedWeightedEdge<int> edge4(3, node1, node2, 8);
-    CXXGraph::UndirectedWeightedEdge<int> edge5(4, node7, node8, 7);
-    CXXGraph::UndirectedWeightedEdge<int> edge6(3, node7, node6, 1);
-    CXXGraph::UndirectedWeightedEdge<int> edge7(3, node8, node2, 2);
-    CXXGraph::UndirectedWeightedEdge<int> edge8(3, node8, node6, 6);
-    CXXGraph::UndirectedWeightedEdge<int> edge9(3, node2, node5, 4);
-    CXXGraph::UndirectedWeightedEdge<int> edge10(3, node2, node3, 7);
-    CXXGraph::UndirectedWeightedEdge<int> edge11(3, node6, node5, 2);
-    CXXGraph::UndirectedWeightedEdge<int> edge12(3, node3, node4, 9);
-    CXXGraph::UndirectedWeightedEdge<int> edge13(3, node3, node5, 14);
-    CXXGraph::UndirectedWeightedEdge<int> edge14(3, node5, node4, 10);
+TEST(ConnectivityTest, test_5) {
+  CXXGraph::Node<int> node0("0", 0);
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 2);
+  CXXGraph::Node<int> node3("3", 3);
+  CXXGraph::Node<int> node4("4", 4);
+  CXXGraph::Node<int> node5("5", 5);
+  CXXGraph::Node<int> node6("6", 6);
+  CXXGraph::Node<int> node7("7", 7);
+  CXXGraph::Node<int> node8("8", 8);
 
-    CXXGraph::T_EdgeSet<int> edgeSet;
-    edgeSet.insert(&edge1);
-    edgeSet.insert(&edge2);
-    edgeSet.insert(&edge3);
-    edgeSet.insert(&edge4);
-    edgeSet.insert(&edge5);
-    edgeSet.insert(&edge6);
-    edgeSet.insert(&edge7);
-    edgeSet.insert(&edge8);
-    edgeSet.insert(&edge9);
-    edgeSet.insert(&edge10);
-    edgeSet.insert(&edge11);
-    edgeSet.insert(&edge12);
-    edgeSet.insert(&edge13);
-    edgeSet.insert(&edge14);
+  CXXGraph::UndirectedWeightedEdge<int> edge1(1, node0, node1, 4);
+  CXXGraph::UndirectedWeightedEdge<int> edge2(2, node0, node7, 8);
+  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node7, 11);
+  CXXGraph::UndirectedWeightedEdge<int> edge4(3, node1, node2, 8);
+  CXXGraph::UndirectedWeightedEdge<int> edge5(4, node7, node8, 7);
+  CXXGraph::UndirectedWeightedEdge<int> edge6(3, node7, node6, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge7(3, node8, node2, 2);
+  CXXGraph::UndirectedWeightedEdge<int> edge8(3, node8, node6, 6);
+  CXXGraph::UndirectedWeightedEdge<int> edge9(3, node2, node5, 4);
+  CXXGraph::UndirectedWeightedEdge<int> edge10(3, node2, node3, 7);
+  CXXGraph::UndirectedWeightedEdge<int> edge11(3, node6, node5, 2);
+  CXXGraph::UndirectedWeightedEdge<int> edge12(3, node3, node4, 9);
+  CXXGraph::UndirectedWeightedEdge<int> edge13(3, node3, node5, 14);
+  CXXGraph::UndirectedWeightedEdge<int> edge14(3, node5, node4, 10);
 
-    CXXGraph::Graph<int> graph(edgeSet);
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge4));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge5));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge6));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge7));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge8));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge9));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge10));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge11));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge12));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge13));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge14));
 
-    ASSERT_FALSE(graph.isConnectedGraph());
 
+  CXXGraph::Graph<int> graph(edgeSet);
+
+  ASSERT_FALSE(graph.isConnectedGraph());
 }
-*/
-////////////////////////////////////////////////////////////////////
 
 TEST(ConnectivityTest, test_6) {
   CXXGraph::Node<int> node0("0", 0);

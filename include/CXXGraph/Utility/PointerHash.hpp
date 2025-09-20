@@ -81,4 +81,4 @@ bool operator==(shared<const Edge<T>> p1, shared<const Edge<T>> p2) {
 }
 }  // namespace CXXGraph
 
-#endif
+#endif  // __CXXGRAPH_POINTER_HASH__

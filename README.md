@@ -20,6 +20,8 @@
 ## Introduction
 **CXXGraph** is a comprehensive C++ library that manages graph algorithms. This header-only library serves as an alternative to the [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_77_0/libs/graph/doc/index.html).
 
+[CXXGraph Website](https://zigrazor.github.io/CXXGraph/)
+
 ## We are Looking for...
 
 **We are looking for:**
@@ -29,38 +31,21 @@
 
 If you are interested, please contact us at zigrazor@gmail.com or contribute to this project. We are waiting for you!
 
-## Roadmap
-
-| Completed | Description | Date of Completition |
-| :-------: | :---------- | :-------------------: |
-| :heavy_check_mark: | Release 0.4.0 | Oct 7, 2022 |
-| :heavy_check_mark: | Release 0.5.0 | Mar 23, 2023 |
-| :heavy_check_mark: | First Stable Release 1.0.0 | Mar 28, 2023 |
-| :heavy_check_mark: | Release 1.0.1 | May 7, 2023 |
-| :heavy_check_mark: | Release 1.1.0 | May 8, 2023 |
-| :heavy_check_mark: | Stable Release 2.0.0 | Jun 1, 2023 |
-| :heavy_check_mark: | Stable Release 3.0.0 | Nov 3, 2023 |
-| :heavy_check_mark: | Release 3.1.0 | Jan 9, 2023 |
-| :memo: | Introduce Hypergraph [#122](https://github.com/ZigRazor/CXXGraph/issues/122) | TBD |
-| :memo: | Stable Release 4.0.0 | TBD |
 
 ## Table of Contents
 
 - [CXXGraph](#cxxgraph)
   - [Introduction](#introduction)
-  - [Hacktoberfest 2k22](#hacktoberfest-2k22)
   - [We are Looking for...](#we-are-looking-for)
-  - [Roadmap](#roadmap)
   - [Table of Contents](#table-of-contents)
   - [Install and Uninstall](#install-and-uninstall)
     - [Install Linux Tarballs](#install-linux-tarballs)
     - [Install RPM](#install-rpm)
     - [Install DEB](#install-deb)
     - [Install From Source](#install-from-source)
-  - [Classes Explanation](#classes-explanation)
   - [Requirements](#requirements)
   - [How to use](#how-to-use)
-  - [Example](#example)
+  - [Examples](#examples)
   - [Unit-Test Execution](#unit-test-execution)
     - [Google Test Installation](#google-test-installation)
     - [How to Compile Test](#how-to-compile-test)
@@ -76,39 +61,15 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
       - [(Fedora/CentOS/RedHat)](#fedoracentosredhat)
     - [DEB](#deb)
       - [(Debian/Ubuntu)](#debianubuntu)
-  - [Algorithm Explanation](#algorithm-explanation)
-    - [Dijkstra](#dijkstra)
-    - [Dial](#dial)
-    - [Prim's Algorithm](#prims-algorithm)
-    - [BFS](#bfs)
-    - [DFS](#dfs)
-    - [Best First Search](#best-first-search)
-    - [Cycle Detection](#cycle-detection)
-    - [Bellman-Ford](#bellman-ford)
-    - [Floyd Warshall](#floyd-warshall)
-    - [Transitive Reduction](#transitive-reduction)
-    - [Kruskal Algorithm](#kruskal-algorithm)
-    - [Borůvka's Algorithm](#borůvkas-algorithm)
-    - [Graph Slicing based on connectivity](#graph-slicing-based-on-connectivity)
-    - [Ford-Fulkerson Algorithm](#ford-fulkerson-algorithm)
-    - [Hopcroft-Karp Algorithm](#hopcroft-karp-algorithm)
-    - [Kosaraju's Algorithm](#kosarajus-algorithm)
-    - [Kahn's Algorithm](#kahns-algorithm)
-  - [Partition Algorithm Explanation](#partition-algorithm-explanation)
-    - [Vertex-Cut](#vertex-cut)
-    - [Edge Balanced Vertex-Cut](#edge-balanced-vertex-cut)
-    - [Greedy Vertex-Cut](#greedy-vertex-cut)
-    - [HDRF](#hdrf)
-    - [EBV](#ebv)
+  - [Algorithms, Classes and Network Dynamics](#algorithms-classes-and-network-dynamics)
   - [How to contribute](#how-to-contribute)
-  - [Site](#site)
+  - [Roadmap](#roadmap)
   - [Contact](#contact)
   - [Support](#support)
   - [References](#references)
   - [Credits](#credits)
   - [Contributors](#contributors)
   - [Cite Us](#cite-us)
-  - [Hacktoberfest 2k21](#hacktoberfest-2k21)
   - [Other Details](#other-details)
   - [Author](#author)
 
@@ -151,10 +112,6 @@ For self-compiled installations using CMake, execute the following from the comm
 
 `$ sudo make install`
 
-## Classes Explanation
-
-The Classes Explanation can be found in the [Classes Section](https://rawcdn.githack.com/ZigRazor/CXXGraph/master/docs/html/classes.html) of the [Doxygen Documentation](https://rawcdn.githack.com/ZigRazor/CXXGraph/master/docs/html/index.html)
-
 ## Prerequisites
 
 - The minimum C++ standard required is **C++17** 
@@ -162,11 +119,43 @@ The Classes Explanation can be found in the [Classes Section](https://rawcdn.git
 
 ## How to use
 
-To use the library **simply put the header file where you need it.** It's that easy!
+To use the library **simply include the header file `CXXGraph.hpp`**, (make sure to add the [include folder](https://github.com/ZigRazor/CXXGraph/tree/master/include) to your compiler's inlcude path).
 
-## Example
+CXXGraph revolves around the graph object which contains nodes and edges. This object can then be manipulated with a wide variety of algorithms. Please see the [examples section](#examples), [examples folder](https://github.com/ZigRazor/CXXGraph/tree/master/examples) and [website](https://zigrazor.github.io/CXXGraph/) for more information 
 
-Work in Progress
+## Examples
+
+In this example, the shortest path between nodeA and nodeC is obtained using Dijkstra's algorithm.
+
+```cpp
+#include <iostream>
+#include "CXXGraph/CXXGraph.hpp"
+
+int main(){
+  CXXGraph::Node<int> nodeA("A", 1);
+  CXXGraph::Node<int> nodeB("B", 2);
+  CXXGraph::Node<int> nodeC("C", 3);
+
+  CXXGraph::DirectedWeightedEdge<int> edge1(1, nodeA, nodeB, 1);
+  CXXGraph::DirectedWeightedEdge<int> edge2(2, nodeB, nodeC, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge3(3, nodeA, nodeC, 6);
+
+  CXXGraph::T_EdgeSet<int> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
+
+  CXXGraph::Graph<int> graph(edgeSet);
+  CXXGraph::DijkstraResult res = graph.dijkstra(nodeA, nodeC);
+
+  for(auto node_user_id : res.path){
+    std::cout << node_user_id << '\n';
+  }
+}
+```
+
+See more examples in the [examples folder](https://github.com/ZigRazor/CXXGraph/tree/master/examples).
+
 
 ## Unit-Test Execution
 
@@ -290,281 +279,80 @@ $ cd packaging/deb
 $ ./make_deb.sh
 ```
 
-## Algorithm Explanation
+## Algorithms, Classes and Network Dynamics
 
-### Dijkstra
+Both the [Doxygen documentation](https://rawcdn.githack.com/ZigRazor/CXXGraph/master/docs/html/index.html) and the [website](https://zigrazor.github.io/CXXGraph/) provide implementation and explanation information on the [classes](https://rawcdn.githack.com/ZigRazor/CXXGraph/master/docs/html/classes.html) and [algorithms](https://zigrazor.github.io/CXXGraph/component-explanation/regular-algorithm) of CXXGraph.
 
-[Graph Dijkstras Shortest Path Algorithm(Dijkstra's Shortest Path)](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
-**[Dijkstra's Algorithm]**(https://www.interviewbit.com/blog/find-shortest-path-dijkstras-algorithm/) is used to find the shortest path from a source node to all other reachable nodes in the graph. The algorithm initially assumes all the nodes are unreachable from the given source node so we mark the distances of all nodes as infinity.
-(infinity) from source node (INF / infinity denotes unable to reach).
+#### Classes
 
-### Dial
+The Classes Explanation can be found in the [classes section](https://rawcdn.githack.com/ZigRazor/CXXGraph/master/docs/html/classes.html) of the [Doxygen documentation](https://rawcdn.githack.com/ZigRazor/CXXGraph/master/docs/html/index.html).
 
-Dial specialization of dijkstra’s algorithm.
+#### Network Dynamics
+More information can be found [here](https://zigrazor.github.io/CXXGraph/component-explanation/network-dynamics).
 
-When edge weights are small integers (bounded by a parameter *C*), specialized queues which take advantage of this fact can be used to speed up Dijkstra's algorithm. The first algorithm of this type was Dial's algorithm (Dial 1969) for graphs with positive integer edge weights, which uses a bucket queue to obtain a running time
-*O(|E|+|V|C)*.([source wikipedia](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Specialized_variants))
+- Adjacency Matrix
+- Degree Matrix
+- Laplacian Matrix
+- Transition Matrix
 
-Below is complete algorithm:
+### Algorithms
+The following is a list of all the implemented algorithms, more information on the algorithms can be found [here](https://zigrazor.github.io/CXXGraph/component-explanation/regular-algorithm). 
+#### Graph Traversal Algorithms.
 
- 1. Maintains some buckets, numbered 0, 1, 2,…,wV.
- 2. Bucket k contains all temporarily labeled nodes with distance equal to k.
- 3. Nodes in each bucket are represented by list of vertices.
- 4. Buckets 0, 1, 2,..wV are checked sequentially until the first non-empty bucket is found. Each node contained in the first non-empty bucket has the minimum distance label by definition.
- 5. One by one, these nodes with minimum distance label are permanently labeled and deleted from the bucket during the scanning process.
- 6. Thus operations involving vertex include:
-    - Checking if a bucket is empty
-    - Adding a vertex to a bucket
-    - Deleting a vertex from a bucket.
- 7. The position of a temporarily labeled vertex in the buckets is updated accordingly when the distance label of a vertex changes.
- 8. Process repeated until all vertices are permanently labeled (or distances of all vertices are finalized).
+- Breadth First Search (BFS)
+- Depth First Search (DFS)
+- Best First Search (a heuristic-based traversal)
+- Bron–Kerbosch Algorithm (for finding maximal cliques; DFS-based)
 
-At this [link](https://ocw.mit.edu/courses/sloan-school-of-management/15-082j-network-optimization-fall-2010/animations/MIT15_082JF10_av07.pdf) you can find a step-by-step illustrations.
+#### Shortest Path Algorithms
 
-### Prim's Algorithm
+- Dijkstra's Algorithm (single-source shortest path, non-negative weights)
+- Bellman-Ford Algorithm (handles negative weights)
+- Floyd–Warshall Algorithm (all-pairs shortest path)
+- Dial's Algorithm (optimized Dijkstra for small integer weights)
 
-[Prim's Algorithm](https://en.wikipedia.org/wiki/Prim%27s_algorithm)
-Prim's Algorithm is is a greedy algorithm that finds a minimum spanning tree for a weighted undirected graph. This means it finds a subset of the edges that forms a tree that includes every vertex, where the total weight of all the edges in the tree is minimized. The algorithm operates by building this tree one vertex at a time, from an arbitrary starting vertex, at each step adding the cheapest possible connection from the tree to another vertex.
+#### Minimum Spanning Tree Algorithms
 
-Steps:
+- Prim's Algorithm
+- Kruskal's Algorithm
+- Borůvka's Algorithm
 
-1. Initialize a tree with a single vertex, chosen arbitrarily from the graph.
-2. Grow the tree by one edge: of the edges that connect the tree to vertices not yet in the tree, find the minimum-weight edge, and transfer it to the tree.
-3. Repeat step 2 (until all vertices are in the tree).
+#### Network Flow Algorithms
 
-### BFS
+- Ford–Fulkerson Algorithm (maximum flow)
+- Hopcroft–Karp Algorithm (maximum bipartite matching)
 
-(Breadth First Search)
-[Breadth First Search Algorithm(Breadth First Search)](https://en.wikipedia.org/wiki/Breadth-first_search)
-**Breadth First Search**, also quoted as **BFS**, is a Graph Traversal Algorithm. Time Complexity O(|V| + |E|) where V are the number of vertices and E are the number of edges in the graph.
-Applications of Breadth First Search are :
+#### Connectivity and Component Detection
 
- 1. Finding shortest path between two vertices say u and v, with path length measured by number of edges (an advantage over depth first search algorithm)
- 2. Ford-Fulkerson Method for computing the maximum flow in a flow network.
- 3. Testing bipartiteness of a graph.
- 4. Cheney's Algorithm, Copying garbage collection.
+- Kosaraju's Algorithm (strongly connected components in directed graphs)
+- Tarjan's Algorithm (strongly connected components or articulation points)
+- Connectivity (general graph connectivity checking)
+- Cycle Detection
 
-  And there are many more...
+#### Topological & Dependency Sorting
 
-### DFS
+- Topological Sort
+- Kahn’s Algorithm (BFS-based topological sorting)
+- Tarjan’s Algorithm (DFS-based topological sorting)
 
-(Depth First Search)
-[Depth First Search Algorithm (Depth First Search)](https://en.wikipedia.org/wiki/Depth-first_search)
-**Depth First Search**, also quoted as **DFS**, is a Graph Traversal Algorithm. Time Complexity O(|V| + |E|) where V is number of vertices and E is number of edges in graph.
-Application of Depth First Search are:
+#### Eulerian Path/Cycle Detection
+- Hierholzer's Algorithm
 
-  1. Finding connected components
-  2. Finding 2-(edge or vertex)-connected components.
-  3. Finding 3-(edge or vertex)-connected components.
-  4. Finding the bridges of a graph.
-  5. Generating words in order to plot the limit set of a group.
-  6. Finding strongly connected components.
+#### Graph Transformation
+- Transitive Reduction (reduce graph to essential edges while preserving reachability)
 
-  And there are many more...
+#### Graph Coloring Algorithms
+- Welsh–Powell Coloring Algorithm
 
-### Best First Search
 
-[Best First Search](https://en.wikipedia.org/wiki/Best-first_search)
-Best First Search is a class of search algorithms which traverses the graph by exploring the most promising node chosen according to an evaluation function. The worst-case time complexity is O(n * log n) where n is the number of nodes in the graph.
+#### Partition Algorithms
+- Vertex-Cut
+- Edge Balanced Vertex-Cut
+- Edge Balanced Vertex-Cut based on this [paper](https://arxiv.org/abs/2010.09007)
+- Greedy Vertex-Cut
+- High Degree Replicated First
 
-### Cycle Detection
 
-[Cycle (graph theory)](https://en.wikipedia.org/wiki/Cycle_(graph_theory))
-
-The existence of a cycle in directed and undirected graphs can be determined by whether depth-first search (DFS) finds an edge that points to an ancestor of the current vertex (it contains a back edge). All the back edges which DFS skips over are part of cycles. In an undirected graph, the edge to the parent of a node should not be counted as a back edge, but finding any other already visited vertex will indicate a back edge. In the case of undirected graphs, only O(n) time is required to find a cycle in an n-vertex graph, since at most n − 1 edges can be tree edges.
-
-Many topological sorting algorithms will detect cycles too, since those are obstacles for topological order to exist. Also, if a directed graph has been divided into strongly connected components, cycles only exist within the components and not between them, since cycles are strongly connected.
-
-For directed graphs, distributed message based algorithms can be used. These algorithms rely on the idea that a message sent by a vertex in a cycle will come back to itself.    Distributed cycle detection algorithms are useful for processing large-scale graphs using a distributed graph processing system on a computer cluster (or supercomputer).
-
-Applications of cycle detection include the use of wait-for graphs to detect deadlocks in concurrent systems.
-
-### Bellman-Ford
-
-[Bellman-Ford Algorithm](https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm) can be used to find the shortest distance between a source and a target node. Time Complexity O(|V| . |E|) where V is number of vertices and E is number of edges in graph which is higher than Dijkstra's shortest path algorithm. The time complexity of dijkstra's algorithm is O(|E| + |V| log |v| ). The advantage of bellman-ford over dijkstra is that it can handle graphs with negative edge weights. Further, if the graph contains a negative weight cycle then the algorithm can detect and report the presense of negative cycle.
-
-[This video](https://www.youtube.com/watch?v=24HziTZ8_xo) gives a nice overview of the algorithm implementation. This [MIT lecture](https://courses.csail.mit.edu/6.006/spring11/lectures/lec15.pdf) gives a proof of Bellman-Ford's correctness & its ability to detect negative cycles.
-Applications:
-
-- Distance‐vector routing protocol
-- Routing Information Protocol (RIP)
-- Interior Gateway Routing Protocol (IGRP)
-
-### Floyd Warshall
-
-[Floyd Warshall Algorithm](https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm)
-
-We initialize the solution matrix same as the input graph matrix as a first step. Then we update the solution matrix by considering all vertices as an intermediate vertex. The idea is to one by one pick all vertices and updates all shortest paths which include the picked vertex as an intermediate vertex in the shortest path. When we pick vertex number k as an intermediate vertex, we already have considered vertices {0, 1, 2, .. k-1} as intermediate vertices. For every pair (i, j) of the source and destination vertices respectively, there are two possible cases.
-
-1) k is not an intermediate vertex in shortest path from i to j. We keep the value of dist[i][j] as it is.
-2) k is an intermediate vertex in shortest path from i to j. We update the value of dist[i][j] as dist[i][k] + dist[k][j] if dist[i][j] > dist[i][k] + dist[k][j]
-
-### Transitive Reduction
-
-[Transitive Reduction](https://en.wikipedia.org/wiki/Transitive_reduction)
-
-This algorithm is used to construct a directed graph with the same reachability and satisfies transitive closure, with as few edges as possible. More concretely, it creates a minimum equivalent graph with as few edges as possible, removing "short-circuit" paths through the graph.
-
-This is done by iterating through each node-pair, checking to see if two edges exist that leads out of the first node OR out of the last node, removing the node-pair edge if it exists.
-
-In pseudocode:
-foreach x in graph.vertices
-   foreach y in graph.vertices
-      foreach z in graph.vertices
-         delete edge xz if edges xy and yz exist
-
-Our implementation has if gates that do early checking for edges in multiple places, which gives it a slightly faster runtime than the cubic pseudocode here.
-
-### Kruskal Algorithm
-
-[Kruskal Algorithm](https://en.wikipedia.org/wiki/Kruskal%27s_algorithm) can be used to find the minimum spanning forest of an undirected edge-weighted graph.  Time Complexity O(E log E) = O(E log V) where V is number of vertices and E is number of edges in graph. The main speed limitation for this algorithm is sorting the edges.
-
-For a quick understanding of the algorithm procedure, check [this video](https://www.youtube.com/watch?v=71UQH7Pr9kU).
-Some of the real life applications are:
-
-- LAN/TV Network
-- Tour Operations
-- Water/gas pipe network
-- Electric grid
-
-Other algorithms to find the minimum spanning forest are Prim's algorithm or Borůvka's algorithm.
-
-### Borůvka's Algorithm
-
-[Borůvka's Algorithm](https://en.wikipedia.org/wiki/Bor%C5%AFvka%27s_algorithm#)  is a greedy algorithm that can be used for finding a minimum spanning tree in a graph, or a minimum spanning forest in the case of a graph that is not connected.
-
-The algorithm begins by finding the minimum-weight edge incident to each vertex of the graph, and adding all of those edges to the forest. Then, it repeats a similar process of finding the minimum-weight edge from each tree constructed so far to a different tree, and adding all of those edges to the forest. Each repetition of this process reduces the number of trees, within each connected component of the graph, to at most half of this former value, so after logarithmically many repetitions the process finishes. When it does, the set of edges it has added forms the minimum spanning forest.
-
-Borůvka's algorithm can be shown to take O(log V) iterations of the outer loop until it terminates, and therefore to run in time O(E log V), where E is the number of edges, and V is the number of vertices in G (assuming E ≥ V).
-
-### Graph Slicing based on connectivity
-
-Mathematical definition of the problem:
-Let G be the set of nodes in a graph and n be a given node in that set.
-Let C be the non-strict subset of G containing both n and all nodes reachable
-from n, and let C' be its complement. There's a third set M, which is the
-non-strict subset of C containing all nodes that are reachable from any node in C'.
-The problem consists of finding all nodes that belong to C but not to M.
-
-Currently implemented Algorithm:
-
-- Use DFS to find all nodes reachable from n. These are elements of set C.
-- Initialize C' to be complement of C (i.e. all nodes - nodes that are in C)
-- For all nodes in C', apply DFS and get the list of reachable nodes. This is set M.
-- Finally removes nodes from C that belong to M. This is our solution.
-
-Application:
-
-This algorithm is used in garbage collection systems to decide which other objects need to be released, given that one object is about to be released.
-
-### Ford-Fulkerson Algorithm
-
-[Ford-Fulkerson Algorithm](https://en.wikipedia.org/wiki/Ford%E2%80%93Fulkerson_algorithm) is a greedy algorithm for finding a maximum flow in a flow network.
-The idea behind the algorithm is as follows: as long as there is a path from the source (start node) to the sink (end node), with available capacity on all edges in the path, we send flow along one of the paths. Then we find another path, and so on. A path with available capacity is called an augmenting path.
-
-### Hopcroft-Karp Algorithm
-
-[Hopcroft-Karp Algorithm](https://en.wikipedia.org/wiki/Hopcroft%E2%80%93Karp_algorithm) is an algorithm that finds the maximum cardinality matching in a bipartite graph in O(E√V) time. It repeatedly finds augmenting paths of shortest length using BFS, then uses DFS to find a maximal set of vertex-disjoint augmenting paths of that length.
-
-The algorithm operates in phases:
-
-1. **BFS Phase**: Find the shortest augmenting path length from unmatched left vertices to unmatched right vertices. If no augmenting path exists, the current matching is maximum.
-2. **DFS Phase**: Use DFS to find a maximal set of vertex-disjoint augmenting paths of the shortest length found in the BFS phase.
-3. **Augmentation**: Add all found augmenting paths to the matching simultaneously.
-
-This process repeats until no more augmenting paths exist. Each iteration increases the matching size by at least one, and there are at most O(√V) iterations, giving the overall O(E√V) time complexity.
-
-### Kosaraju's Algorithm
-[Kosaraju's Algorithm](https://en.wikipedia.org/wiki/Kosaraju%27s_algorithm) is a linear time algorithm to find the strongly connected components of a directed graph.  It is based on the idea that if one is able to reach a vertex v starting from vertex u, then one should be able to reach vertex u starting from vertex v and if such is the case, one can say that vertices u and v are strongly connected - they are in a strongly connected sub-graph. Following is an example:
-
-1). Create an empty stack ‘S’ and do DFS traversal of a graph. In DFS traversal, after calling recursive DFS for adjacent vertices of a vertex, push the vertex to stack. 
-2). Reverse directions of all arcs to obtain the transpose graph. 
-3). One by one pop a vertex from S while S is not empty. Let the popped vertex be ‘v’. Take v as source and do DFS (call DFSUtil(v)). The DFS starting from v prints strongly connected component of v.
-
-### Kahn's Algorithm
-[Kahn's Algorithm](https://en.wikipedia.org/wiki/Topological_sorting#Kahn's_algorithm) finds topological
-ordering by iteratively removing nodes in the graph which have no incoming edges. When a node is removed from the graph, it is added to the topological ordering and all its edges are removed allowing for the next set of nodes with no incoming edges to be selected.
-### Welsh Powell Coloring Algorithms
-[Welsh Powell Coloring algorithm](https://www.geeksforgeeks.org/welsh-powell-graph-colouring-algorithm/) is a greedy vertex coloring algorithm. This algorithm is also used to find the chromatic number of a graph.
-
-Welsh Powell Algorithm consists of following steps :
-
-1. Find the degree of each vertex.
-2. List the vertices in order of descending degrees.
-3. Colour the first vertex with color 1.
-4. Move down the list and color all the vertices not connected to the coloured vertex, with the same color.
-5. Repeat step 4 on all uncolored vertices with a new color, in descending order of degrees until all the vertices are coloured.
-   Hi there, I'm creating a pull request to merge the Welsh Powell Coloring algorithm into the master branch.
-
-The algorithm returns a std::map<Node, int> result that assigns each node to a color ordered by integers.
-Users can also query the minimum chromatic order of the graph by querying the highest value from the resulting map.
-```C++
-std::map<Node, int> result = graph.welshPowellColoring();
-auto chromatic_color = std::max_element(result.begin(), result.end(),
-                                [](const auto& lhs, const auto& rhs) {
-                                    return lhs.second < rhs.second;
-                                }
-```
-The minimum coloring starts from 1 instead of 0.
-
-The algorithm assumes the graph to be undirected. All sources and inspirations are linked in the declaration of the algorithm and test cases.
-## Partition Algorithm Explanation
-
-### Vertex-Cut
-
-A vertex-cut partitioning divides edges of a graph into equal size partitions. The vertices that hold the endpoints of an edge are also placed in the same partition as the edge itself. However, the vertices are not unique across partitions and might have to be replicated (cut), due to the distribution of their edge across different partitions.
-
-Replication factor quantifies how many vertices are replicated over computers compared with the the number of vertices of the original input graph.
-
-### Edge Balanced Vertex-Cut
-
-This Algorithm is a simple vertex-cut in Round-Robin fashion.
-It takes the original graph edges and assign them to the partitions, dividing it in equal(or similar) size. This algorithm does not take care of optimization in vertex replication ( Replication Factor) but only balance the edge in the partitions.
-
-### Greedy Vertex-Cut
-
-Greedy partitioning algorithms uses the entire history of the edge assignments to make the next decision.
-The algorithm stores the set of partitions A(v) to which each already observed vertex v has been assigned and the current partition sizes.
-When processing edge e ∈ E connecting vertices vi, vj ∈ V , the greedy algorithm follows this simple set of rules:
-
-- Rule 1: If neither vi nor vj have been assigned to a partition, then e is placed in the partition with the smallest size in P.
-- Rule 2: If only one of the two vertices has been already assigned (without loss of generality assume that vi is the assigned vertex) then e is placed in the partition with the smallest size in A(vi).
-- Rule 3: If A(vi) ∩ A(vj ) 6= ∅, then edge e is placed in the partition with the smallest size in A(vi) ∩ A(vj).
-- Rule 4: If A(vi) != ∅, A(vj ) != ∅ and A(vi)∩A(vj ) = ∅, then e is placed in the partition with the smallest size in A(vi)∪A(vj) and a new vertex replica is created accordingly.
-
-### HDRF
-
-High Degree (are) Replicated First(HDRF) Algorithm is a greedy vertex-cut algorithm as described by this [paper](https://www.fabiopetroni.com/Download/petroni2015HDRF.pdf).
-This Algorithm try to optimize Replication Factor by using the history of the edge assignements amd the incremental vertex degree.
-With a function that take in consideration this two factors calculate the best partition to assign the analyzed edge.
-The replica created are based on the degree of the verteices, and the vertices replicated are probably a so called "Hub-Node", which are the vertices with higher degree.
-
-### EBV
-
-Efficient and Balanced Vertex-cut(EBV) is an offline vertex-cut algorithm as described by this [paper](https://arxiv.org/abs/2010.09007).
-This algorithm try to balance the partitions with respect to the number of edges and vertices of each partitions and the Replication Factor.
-It apply a formula to evaluate the partition in which assigns the edge that take into consideration also the total number of edges and vertices of the graph.
-The evaluation formula is the following:
-
-```math
-Eva(u,v)(i) =I(u ∈ keep[i]) + I(v ∈ keep[i]) +α * \frac{ecount[i]}{(|E|/p)} + β * \frac{vcount[i]}{(|V|/p)}
-```
-
-The lowest value is taken as partition Id.
-
-## Network Dynamics
-
-### Degree Matrix
-
-The Degree Matrix is a square matrix that provides insights into the connectivity of nodes in a graph. For directed graphs, it reflects the number of incoming and outgoing edges for each node, while for undirected graphs, it represents the number of edges incident to each node.
-
-### Laplacian Matrix
-
-The Laplacian Matrix is a square matrix derived from the adjacency matrix and degree matrix of a graph. It is instrumental in analyzing various properties of the graph, such as connectedness, the count of spanning trees, and other spectral characteristics.
-
-### Transition Matrix
-
-The Transition Matrix is commonly used in the study of Markov Chains and stochastic processes. Within the context of a graph, it denotes the probabilities of transitioning from one node to another, often based on the edge weights or predetermined criteria. This matrix finds applications in various fields such as network analysis, machine learning, and optimization.
 
 ## How to contribute
 
@@ -574,13 +362,25 @@ If you want to change the code, fix an issue, or implement a new feature please 
 
 If you want to discuss new features or you have any questions or suggestions about the library, please open a [Discussion](https://github.com/ZigRazor/CXXGraph/discussions) or simply chat on [![Join the chat at https://gitter.im/CXXGraph-Community/community](https://badges.gitter.im/CXXGraph-Community/community.svg)](https://gitter.im/CXXGraph-Community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+
+## Roadmap
+
+| Completed | Description | Date of Completition |
+| :-------: | :---------- | :-------------------: |
+| :heavy_check_mark: | Release 0.4.0 | Oct 7, 2022 |
+| :heavy_check_mark: | Release 0.5.0 | Mar 23, 2023 |
+| :heavy_check_mark: | First Stable Release 1.0.0 | Mar 28, 2023 |
+| :heavy_check_mark: | Release 1.0.1 | May 7, 2023 |
+| :heavy_check_mark: | Release 1.1.0 | May 8, 2023 |
+| :heavy_check_mark: | Stable Release 2.0.0 | Jun 1, 2023 |
+| :heavy_check_mark: | Stable Release 3.0.0 | Nov 3, 2023 |
+| :heavy_check_mark: | Release 3.1.0 | Jan 9, 2023 |
+| :memo: | Introduce Hypergraph [#122](https://github.com/ZigRazor/CXXGraph/issues/122) | TBD |
+| :memo: | Stable Release 4.0.0 | TBD |
+
 ## Stars History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=ZigRazor/CXXGraph&type=Date)](https://star-history.com/#ZigRazor/CXXGraph&Date)
-
-## Site
-
-[CXXGraph Site](https://zigrazor.github.io/CXXGraph/)
 
 ## Contact
 
@@ -627,19 +427,9 @@ Thank you to all the people who have already contributed to CXXGraph!
 If you use this software please follow the [CITATION](https://github.com/ZigRazor/CXXGraph/blob/master/CITATION) instructions.
 Thank you!
 
-## Hacktoberfest 2k21
-
-We participated at Hacktoberfest 2021. Thank you to all the contributors!
-
-## Hacktoberfest 2k22
-
-We participated at Hacktoberfest 2022. Thank you to all the contributors!
-
-## Hacktoberfest 2k23
-
-We participated at Hacktoberfest 2023. Thank you to all the contributors!
-
 ## Other Details
+
+We participated in Hacktoberfest 2021, 2022 and 2023. Thank you to all the contributors!
 
 View the [Estimated Value of the Project](https://www.openhub.net/p/CXXGraph/estimated_cost)
 

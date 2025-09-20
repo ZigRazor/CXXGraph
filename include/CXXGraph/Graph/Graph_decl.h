@@ -111,6 +111,15 @@ class Graph {
       std::unordered_map<std::string, T> &nodeFeatMap,
       std::unordered_map<CXXGraph::id_t, double> &edgeWeightMap);
 
+  // Type trait used to compile allow compilation when T is not extractable
+  template <typename U, typename = void>
+  struct is_istream_extractable : std::false_type {};
+
+  template <typename U>
+  struct is_istream_extractable<
+      U, std::void_t<decltype(std::declval<std::istream &>() >>
+                              std::declval<U &>())>> : std::true_type {};
+
 #ifdef WITH_COMPRESSION
   int compressFile(const std::string &inputFile,
                    const std::string &outputFile) const;

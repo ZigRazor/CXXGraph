@@ -355,9 +355,14 @@ void Graph<T>::readGraphFromStream(std::istream &iGraph,
 
   if (readNodeFeat) {
     std::string nodeId;
-    T nodeFeat;
-    while (iNodeFeat >> nodeId >> nodeFeat) {
-      nodeFeatMap[nodeId] = nodeFeat;
+    if constexpr (is_istream_extractable<T>::value) {
+      T nodeFeat;
+      while (iNodeFeat >> nodeId >> nodeFeat) {
+        nodeFeatMap[nodeId] = nodeFeat;
+      }
+    } else {
+      std::cout << "Warning: Cannot read node features for type T — operator>> "
+                   "not supported.\n";
     }
   }
 

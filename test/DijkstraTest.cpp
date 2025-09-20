@@ -12,7 +12,7 @@ using shared = std::shared_ptr<T>;
 using std::make_shared;
 using std::make_unique;
 
-TEST(DijkstraTest, correct_example_1) {
+TEST(DijkstraTest, test_1) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -45,7 +45,7 @@ TEST(DijkstraTest, correct_example_1) {
   }
 }
 
-TEST(DijkstraTest, correct_example_2) {
+TEST(DijkstraTest, test_2) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -77,7 +77,7 @@ TEST(DijkstraTest, correct_example_2) {
   }
 }
 
-TEST(DijkstraTest, correct_example_3) {
+TEST(DijkstraTest, test_3) {
   // Example from
   // https://www.analyticssteps.com/blogs/dijkstras-algorithm-shortest-path-algorithm
   CXXGraph::Node<int> nodeA("A", 1);
@@ -161,7 +161,7 @@ TEST(DijkstraTest, correct_example_3) {
   }
 }
 
-TEST(DijkstraTest, correct_example_4) {
+TEST(DijkstraTest, test_4) {
   // Example from
   // https://www.freecodecamp.org/news/dijkstras-shortest-path-algorithm-visual-introduction/
   CXXGraph::Node<int> node0("0", 1);
@@ -283,7 +283,7 @@ TEST(DijkstraTest, correct_example_4) {
   }
 }
 
-TEST(DijkstraTest, correct_example_5) {
+TEST(DijkstraTest, test_5) {
   // Example from https://es.wikipedia.org/wiki/Algoritmo_de_Dijkstra
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 1);
@@ -436,9 +436,7 @@ TEST(DijkstraTest, target_not_connected_test) {
   ASSERT_EQ(res.result, CXXGraph::INF_DOUBLE);
 }
 
-// Deterministic versions of algorithm:
-
-TEST(DijkstraDeterministicTest, correct_example_1) {
+TEST(DijkstraTest, deterministic_test_1) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -471,7 +469,7 @@ TEST(DijkstraDeterministicTest, correct_example_1) {
   }
 }
 
-TEST(DijkstraDeterministicTest, correct_example_2) {
+TEST(DijkstraTest, deterministic_test_2) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -503,7 +501,7 @@ TEST(DijkstraDeterministicTest, correct_example_2) {
   }
 }
 
-TEST(DijkstraDeterministicTest, correct_example_3) {
+TEST(DijkstraTest, deterministic_test_3) {
   // Example from
   // https://www.analyticssteps.com/blogs/dijkstras-algorithm-shortest-path-algorithm
   CXXGraph::Node<int> nodeA("A", 1);
@@ -587,7 +585,7 @@ TEST(DijkstraDeterministicTest, correct_example_3) {
   }
 }
 
-TEST(DijkstraDeterministicTest, correct_example_4) {
+TEST(DijkstraTest, deterministic_test_4) {
   // Example from
   // https://www.freecodecamp.org/news/dijkstras-shortest-path-algorithm-visual-introduction/
   CXXGraph::Node<int> node0("0", 1);
@@ -709,7 +707,7 @@ TEST(DijkstraDeterministicTest, correct_example_4) {
   }
 }
 
-TEST(DijkstraDeterministicTest, correct_example_5) {
+TEST(DijkstraTest, deterministic_test_5) {
   // Example from https://es.wikipedia.org/wiki/Algoritmo_de_Dijkstra
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 1);
@@ -757,7 +755,7 @@ TEST(DijkstraDeterministicTest, correct_example_5) {
   }
 }
 
-TEST(DijkstraDeterministicTest, non_weigthed_node_test) {
+TEST(DijkstraTest, deterministic_non_weigthed_node_test) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -780,7 +778,7 @@ TEST(DijkstraDeterministicTest, non_weigthed_node_test) {
   ASSERT_EQ(res.result, CXXGraph::INF_DOUBLE);
 }
 
-TEST(DijkstraDeterministicTest, negative_weigthed_node_test) {
+TEST(DijkstraTest, deterministic_negative_weigthed_node_test) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -803,7 +801,7 @@ TEST(DijkstraDeterministicTest, negative_weigthed_node_test) {
   ASSERT_EQ(res.result, CXXGraph::INF_DOUBLE);
 }
 
-TEST(DijkstraDeterministicTest, unreachable_node_test) {
+TEST(DijkstraTest, deterministic_unreachable_node_test) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -822,7 +820,7 @@ TEST(DijkstraDeterministicTest, unreachable_node_test) {
   ASSERT_EQ(res.result, CXXGraph::INF_DOUBLE);
 }
 
-TEST(DijkstraDeterministicTest, source_not_connected_test) {
+TEST(DijkstraTest, deterministic_source_not_connected_test) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -842,7 +840,7 @@ TEST(DijkstraDeterministicTest, source_not_connected_test) {
   ASSERT_EQ(res.result, CXXGraph::INF_DOUBLE);
 }
 
-TEST(DijkstraDeterministicTest, target_not_connected_test) {
+TEST(DijkstraTest, deterministic_target_not_connected_test) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -862,7 +860,7 @@ TEST(DijkstraDeterministicTest, target_not_connected_test) {
   ASSERT_EQ(res.result, CXXGraph::INF_DOUBLE);
 }
 
-TEST(DijkstraDeterministic2Test, correct_example_1) {
+TEST(DijkstraTest, deterministic2_test_1) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -895,7 +893,7 @@ TEST(DijkstraDeterministic2Test, correct_example_1) {
   }
 }
 
-TEST(DijkstraDeterministic2Test, correct_example_2) {
+TEST(DijkstraTest, deterministic2_test_2) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -927,7 +925,7 @@ TEST(DijkstraDeterministic2Test, correct_example_2) {
   }
 }
 
-TEST(DijkstraDeterministic2Test, correct_example_3) {
+TEST(DijkstraTest, deterministic2_test_3) {
   // Example from
   // https://www.analyticssteps.com/blogs/dijkstras-algorithm-shortest-path-algorithm
   CXXGraph::Node<int> nodeA("A", 1);
@@ -1011,7 +1009,7 @@ TEST(DijkstraDeterministic2Test, correct_example_3) {
   }
 }
 
-TEST(DijkstraDeterministic2Test, correct_example_4) {
+TEST(DijkstraTest, deterministic2_test_4) {
   // Example from
   // https://www.freecodecamp.org/news/dijkstras-shortest-path-algorithm-visual-introduction/
   CXXGraph::Node<int> node0("0", 1);
@@ -1133,7 +1131,7 @@ TEST(DijkstraDeterministic2Test, correct_example_4) {
   }
 }
 
-TEST(DijkstraDeterministic2Test, correct_example_5) {
+TEST(DijkstraTest, deterministic2_test_5) {
   // Example from https://es.wikipedia.org/wiki/Algoritmo_de_Dijkstra
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 1);
@@ -1181,7 +1179,7 @@ TEST(DijkstraDeterministic2Test, correct_example_5) {
   }
 }
 
-TEST(DijkstraDeterministic2Test, non_weigthed_node_test) {
+TEST(DijkstraTest, deterministic2_non_weigthed_node_test) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -1204,7 +1202,7 @@ TEST(DijkstraDeterministic2Test, non_weigthed_node_test) {
   ASSERT_EQ(res.result, CXXGraph::INF_DOUBLE);
 }
 
-TEST(DijkstraDeterministic2Test, negative_weigthed_node_test) {
+TEST(DijkstraTest, deterministic2_negative_weigthed_node_test) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -1227,7 +1225,7 @@ TEST(DijkstraDeterministic2Test, negative_weigthed_node_test) {
   ASSERT_EQ(res.result, CXXGraph::INF_DOUBLE);
 }
 
-TEST(DijkstraDeterministic2Test, unreachable_node_test) {
+TEST(DijkstraTest, deterministic2_unreachable_node_test) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -1246,7 +1244,7 @@ TEST(DijkstraDeterministic2Test, unreachable_node_test) {
   ASSERT_EQ(res.result, CXXGraph::INF_DOUBLE);
 }
 
-TEST(DijkstraDeterministic2Test, source_not_connected_test) {
+TEST(DijkstraTest, deterministic2_source_not_connected_test) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -1266,7 +1264,7 @@ TEST(DijkstraDeterministic2Test, source_not_connected_test) {
   ASSERT_EQ(res.result, CXXGraph::INF_DOUBLE);
 }
 
-TEST(DijkstraDeterministic2Test, target_not_connected_test) {
+TEST(DijkstraTest, deterministic2_target_not_connected_test) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
@@ -1285,3 +1283,8 @@ TEST(DijkstraDeterministic2Test, target_not_connected_test) {
   ASSERT_EQ(res.errorMessage, CXXGraph::ERR_TARGET_NODE_NOT_IN_GRAPH);
   ASSERT_EQ(res.result, CXXGraph::INF_DOUBLE);
 }
+
+
+
+
+
