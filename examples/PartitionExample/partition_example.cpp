@@ -13,7 +13,7 @@ static CXXGraph::Graph<int> *readGraph(const std::string &filename) {
   return graph_ptr;
 }
 
-static auto cit_graph_ptr = readGraph("CitHepPh");
+static const auto cit_graph_ptr = readGraph("CitHepPh");
 
 int main() {
   // std::cout << *cit_graph_ptr << std::endl;
