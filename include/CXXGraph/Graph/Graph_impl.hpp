@@ -71,6 +71,11 @@ void Graph<T>::setEdgeSet(const T_EdgeSet<T> &edgeSet) {
 
 template <typename T>
 bool Graph<T>::addEdge(const Edge<T> *edge) {
+  /* Checking if new edge is nullptr */
+  if(edge == nullptr){
+    return false;
+  }
+
   shared<const Edge<T>> edge_shared;
 
   bool is_directed = edge->isDirected().value_or(false);
@@ -78,15 +83,27 @@ bool Graph<T>::addEdge(const Edge<T> *edge) {
 
   if (is_directed) {
     if (is_weighted) {
-      edge_shared = make_shared<DirectedWeightedEdge<T>>(
-          *dynamic_cast<const DirectedWeightedEdge<T> *>(edge));
+      auto cast = dynamic_cast<const DirectedWeightedEdge<T> *>(edge);
+      
+      /* Checking if cast succeeds */
+      if(cast == nullptr) {
+        return false;
+      }
+
+      edge_shared = make_shared<DirectedWeightedEdge<T>>(*cast);
     } else {
       edge_shared = make_shared<DirectedEdge<T>>(*edge);
     }
   } else {
     if (is_weighted) {
-      edge_shared = make_shared<UndirectedWeightedEdge<T>>(
-          *dynamic_cast<const UndirectedWeightedEdge<T> *>(edge));
+      auto cast = dynamic_cast<const UndirectedWeightedEdge<T> *>(edge);
+      
+      /* Checking if cast succeeds */
+      if(cast == nullptr) {
+        return false;
+      }
+      
+      edge_shared = make_shared<UndirectedWeightedEdge<T>>(*cast);
     } else {
       edge_shared = make_shared<UndirectedEdge<T>>(*edge);
     }
@@ -97,13 +114,11 @@ bool Graph<T>::addEdge(const Edge<T> *edge) {
 
 template <typename T>
 bool Graph<T>::addEdge(shared<const Edge<T>> edge) {
-  auto result = this->edgeSet.insert(edge);
+  auto res = this->edgeSet.insert(edge);
   
   /* Checking if new edge was inserted into set of edges */
-  bool is_added = result.second;
-
+  bool is_added = res.second;
   if(!is_added) {
-    
     return false;
   }
 
