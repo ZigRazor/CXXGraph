@@ -170,9 +170,10 @@ class Graph {
    * Note: No Thread Safe
    *
    * @param edge The Edge to insert
+   * @returns True if the edge was successfully added to the graph
    *
    */
-  virtual void addEdge(const Edge<T> *edge);
+  virtual bool addEdge(const Edge<T> *edge);
 
   /**
    * \brief

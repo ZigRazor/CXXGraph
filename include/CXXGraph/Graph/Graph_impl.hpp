@@ -70,11 +70,15 @@ void Graph<T>::setEdgeSet(const T_EdgeSet<T> &edgeSet) {
 }
 
 template <typename T>
-void Graph<T>::addEdge(const Edge<T> *edge) {
+bool Graph<T>::addEdge(const Edge<T> *edge) {
   shared<const Edge<T>> edge_shared;
 
-  bool is_directed = edge->isDirected().value_or(false);
-  bool is_weighted = edge->isWeighted().value_or(false);
+  if(!edge->isDirected() || !edge->isWeighted()) {
+    return false;
+  }
+
+  bool is_directed = edge->isDirected().value();
+  bool is_weighted = edge->isWeighted().value();
 
   if (is_directed) {
     if (is_weighted) {
@@ -93,6 +97,8 @@ void Graph<T>::addEdge(const Edge<T> *edge) {
   }
 
   addEdge(edge_shared);
+
+  return true;
 }
 
 template <typename T>

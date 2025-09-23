@@ -210,6 +210,24 @@ TEST(GraphTest, RawAddEdge_3) {
   ASSERT_FALSE(graph.isUndirectedGraph());
 }
 
+TEST(GraphTest, AddEdge_ReturnsFailureFlag) {
+  CXXGraph::Node<int> node1("1", 1);
+  CXXGraph::Node<int> node2("2", 1);
+  CXXGraph::Node<int> node3("3", 1);
+
+  CXXGraph::Edge<int> edge1(1, node1, node2);
+  CXXGraph::Edge<int> edge2(2, node1, node3);
+  CXXGraph::Edge<int> edge3(3, node2, node3);
+
+  CXXGraph::Graph<int> graph;
+
+  ASSERT_FALSE(graph.addEdge(&edge1));
+  ASSERT_FALSE(graph.addEdge(&edge2));
+  ASSERT_FALSE(graph.addEdge(&edge3));
+
+  ASSERT_EQ(graph.getEdgeSet().size(), 0);
+}
+
 TEST(GraphTest, AddEdgeWeight_raw) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 1);
