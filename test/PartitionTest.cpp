@@ -13,8 +13,8 @@ using shared = std::shared_ptr<T>;
 using std::make_shared;
 using std::make_unique;
 
-static auto nodes = generateRandomNodes(10000, 2);
-static auto edges = generateRandomEdges(10000, nodes);
+static const auto nodes = generateRandomNodes(10000, 2);
+static const auto edges = generateRandomEdges(10000, nodes);
 
 TEST(PartitionTest, test_1) {
   CXXGraph::Node<int> node1("1", 1);

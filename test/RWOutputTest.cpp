@@ -52,8 +52,8 @@ generateRandomEdges(
   return edges;
 }
 
-static auto nodes = generateRandomNodes(10000, 2);
-static auto edges = generateRandomEdges(10000, nodes);
+static const auto nodes = generateRandomNodes(10000, 2);
+static const auto edges = generateRandomEdges(10000, nodes);
 
 //************* CSV ***************//
 
