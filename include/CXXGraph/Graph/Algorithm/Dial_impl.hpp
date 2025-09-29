@@ -47,7 +47,7 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
           its bucket is stored so that vertex can be deleted
           in O(1) at time of updation. So
           dist[i].first = distance of ith vertex from src vertex
-          dits[i].second = vertex i in bucket number */
+          dist[i].second = vertex i in bucket number */
   auto V = nodeSet.size();
   std::unordered_map<shared<const Node<T>>,
                      std::pair<long, shared<const Node<T>>>, nodeHash<T>>

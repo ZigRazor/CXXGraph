@@ -145,13 +145,13 @@ struct MstResult_struct {
 };
 typedef MstResult_struct MstResult;
 
-/// Struct that contains the information about Dijsktra's Algorithm results
+/// Struct that contains the information about Dijkstra's Algorithm results
 struct DialResult_struct {
   bool success =
       false;  // TRUE if the function does not return error, FALSE otherwise
   std::string errorMessage = "";  // message of error
   std::unordered_map<unsigned long long, long> minDistanceMap =
-      {};  // result a map that contains the node id and the minumum distance
+      {};  // result a map that contains the node id and the minimum distance
            // from source (valid only if success is TRUE)
 };
 typedef DialResult_struct DialResult;
