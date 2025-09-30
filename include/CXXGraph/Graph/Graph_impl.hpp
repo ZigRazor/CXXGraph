@@ -97,7 +97,10 @@ void Graph<T>::addEdge(const Edge<T> *edge) {
 
 template <typename T>
 void Graph<T>::addEdge(shared<const Edge<T>> edge) {
-  this->edgeSet.insert(edge);
+  auto [it, inserted] = edgeSet.insert(edge);
+  if (!inserted) {
+      return;
+  }
 
   auto &[from, to] = edge->getNodePair();
 
