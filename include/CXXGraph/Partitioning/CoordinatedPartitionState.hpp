@@ -110,10 +110,8 @@ template <typename T>
 std::shared_ptr<Record<T>> CoordinatedPartitionState<T>::getRecord(
     CXXGraph::id_t x) {
   std::lock_guard<std::mutex> lock(*record_map_mutex);
-  if (record_map.find(x) == record_map.end()) {
-    record_map[x] = std::make_shared<CoordinatedRecord<T>>();
-  }
-  return record_map.at(x);
+  return record_map.try_emplace(x, std::make_shared<CoordinatedRecord<T>>())
+      .first->second;
 }
 
 template <typename T>
