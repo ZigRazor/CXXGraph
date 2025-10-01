@@ -212,11 +212,7 @@ int CoordinatedPartitionState<T>::getMachineWithMinWeight(
 template <typename T>
 std::vector<int> CoordinatedPartitionState<T>::getMachines_load() const {
   std::lock_guard<std::mutex> lock(*machines_load_edges_mutex);
-  std::vector<int> result;
-  for (const auto &machines_load_edges_it : machines_load_edges) {
-    result.push_back(machines_load_edges_it);
-  }
-  return result;
+  return machines_load_edges;
 }
 template <typename T>
 size_t CoordinatedPartitionState<T>::getTotalReplicas() const {
@@ -257,11 +253,7 @@ template <typename T>
 std::vector<int> CoordinatedPartitionState<T>::getMachines_loadVertices()
     const {
   std::lock_guard<std::mutex> lock(*machines_load_vertices_mutex);
-  std::vector<int> result;
-  for (const auto &machines_load_vertices_it : machines_load_vertices) {
-    result.push_back(machines_load_vertices_it);
-  }
-  return result;
+  return machines_load_vertices;
 }
 
 template <typename T>
