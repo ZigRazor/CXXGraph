@@ -104,7 +104,7 @@ CoordinatedPartitionState<T>::CoordinatedPartitionState(const Globals &G)
 }
 
 template <typename T>
-CoordinatedPartitionState<T>::~CoordinatedPartitionState() {}
+CoordinatedPartitionState<T>::~CoordinatedPartitionState() = default;
 
 template <typename T>
 std::shared_ptr<Record<T>> CoordinatedPartitionState<T>::getRecord(

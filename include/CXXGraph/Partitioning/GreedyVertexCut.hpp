@@ -65,7 +65,7 @@ template <typename T>
 GreedyVertexCut<T>::GreedyVertexCut(const Globals &G) : GLOBALS(G) {}
 
 template <typename T>
-GreedyVertexCut<T>::~GreedyVertexCut() {}
+GreedyVertexCut<T>::~GreedyVertexCut() = default;
 
 template <typename T>
 void GreedyVertexCut<T>::performStep(shared<const Edge<T>> e,

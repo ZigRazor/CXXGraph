@@ -65,7 +65,7 @@ HDRF<T>::HDRF(const Globals &G) : GLOBALS(G) {
   // this->GLOBALS = G;
 }
 template <typename T>
-HDRF<T>::~HDRF() {}
+HDRF<T>::~HDRF() = default;
 template <typename T>
 void HDRF<T>::performStep(shared<const Edge<T>> e,
                           shared<PartitionState<T>> state) {

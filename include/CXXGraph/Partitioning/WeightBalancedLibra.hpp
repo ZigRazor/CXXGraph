@@ -61,7 +61,7 @@ WeightBalancedLibra<T>::WeightBalancedLibra(
       weight_sum_bound(_weight_sum_bound),
       vertices_degrees(_vertices_degrees) {}
 template <typename T>
-WeightBalancedLibra<T>::~WeightBalancedLibra() {}
+WeightBalancedLibra<T>::~WeightBalancedLibra() = default;
 template <typename T>
 void WeightBalancedLibra<T>::performStep(shared<const Edge<T>> e,
                                          shared<PartitionState<T>> state) {
