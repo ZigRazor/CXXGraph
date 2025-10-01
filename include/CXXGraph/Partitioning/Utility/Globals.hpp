@@ -72,7 +72,7 @@ inline Globals::Globals(const int numberOfPartiton,
   }
 }
 
-inline Globals::~Globals() {}
+inline Globals::~Globals() = default;
 
 inline const std::string Globals::print() const {
   std::string prt_str;

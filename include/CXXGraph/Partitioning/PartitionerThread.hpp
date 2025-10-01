@@ -58,7 +58,7 @@ PartitionerThread<T>::PartitionerThread(
   this->algorithm = algorithm;
 }
 template <typename T>
-PartitionerThread<T>::~PartitionerThread() {}
+PartitionerThread<T>::~PartitionerThread() = default;
 template <typename T>
 void PartitionerThread<T>::run() {
   for (const auto &edge_it : list) {

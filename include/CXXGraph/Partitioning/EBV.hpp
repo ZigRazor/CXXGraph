@@ -65,7 +65,7 @@ EBV<T>::EBV(const Globals &G) : GLOBALS(G) {
   // this->GLOBALS = G;
 }
 template <typename T>
-EBV<T>::~EBV() {}
+EBV<T>::~EBV() = default;
 template <typename T>
 void EBV<T>::performStep(shared<const Edge<T>> e,
                          shared<PartitionState<T>> state) {

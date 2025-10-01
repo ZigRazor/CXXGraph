@@ -63,7 +63,7 @@ EdgeBalancedVertexCut<T>::EdgeBalancedVertexCut(const Globals &G) : GLOBALS(G) {
   // this->GLOBALS = G;
 }
 template <typename T>
-EdgeBalancedVertexCut<T>::~EdgeBalancedVertexCut() {}
+EdgeBalancedVertexCut<T>::~EdgeBalancedVertexCut() = default;
 template <typename T>
 void EdgeBalancedVertexCut<T>::performStep(shared<const Edge<T>> e,
                                            shared<PartitionState<T>> state) {
