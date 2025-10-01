@@ -78,30 +78,30 @@ void HDRF<T>::performStep(shared<const Edge<T>> e,
   std::shared_ptr<Record<T>> u_record = state->getRecord(u);
   std::shared_ptr<Record<T>> v_record = state->getRecord(v);
 
-  //*** ASK FOR LOCK
-  bool locks_taken = false;
-  while (!locks_taken) {
-    srand((unsigned)time(NULL));
-    int usleep_time = 2;
-    while (!u_record->getLock()) {
-      std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
-      usleep_time = (int)pow(usleep_time, 2);
-    }
-    usleep_time = 2;
-    if (u != v) {
-      while (!v_record->getLock()) {
-        std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
-        usleep_time = (int)pow(usleep_time, 2);
+  //*** OBTAIN LOCK
+  int backoff = 10;  // microseconds
+  while (true) {
+    bool got_u = u_record->getLock();
+    bool got_v = false;
 
-        if (usleep_time > GLOBALS.SLEEP_LIMIT) {
+    if (got_u) {
+      if (u != v) {
+        got_v = v_record->getLock();
+        if (got_v) {
+          break;
+        } else {
           u_record->releaseLock();
-          performStep(e, state);
-          return;
-        }  // TO AVOID DEADLOCK
+        }
+      } else {
+        got_v = true;
+        break;
       }
     }
-    locks_taken = true;
+
+    std::this_thread::sleep_for(std::chrono::microseconds(backoff));
+    if (backoff < GLOBALS.SLEEP_LIMIT) backoff *= 2;
   }
+  
   //*** LOCK TAKEN
   int machine_id = -1;
 
