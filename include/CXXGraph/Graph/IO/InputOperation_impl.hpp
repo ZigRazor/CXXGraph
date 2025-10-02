@@ -361,7 +361,7 @@ void Graph<T>::readGraphFromStream(std::istream &iGraph,
         nodeFeatMap[nodeId] = nodeFeat;
       }
     } else {
-      std::cout << "Warning: Cannot read node features for type T — operator>> "
+      std::cout << "Warning: Cannot read node features for type T operator>> "
                    "not supported.\n";
     }
   }
