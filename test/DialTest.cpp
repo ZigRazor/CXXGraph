@@ -17,7 +17,7 @@ using std::make_unique;
  * Node1 -> Node2 weight = 1
  * Node2 -> Node3 weight = 1
  * Node1 <-> Node3 weight = 6
-*/
+ */
 TEST(DialTest, test_1) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
@@ -45,7 +45,7 @@ TEST(DialTest, test_1) {
  * Node1 -> Node2 weight = 5
  * Node2 -> Node3 weight = 4
  * Node1 <-> Node3 weight = 6
-*/
+ */
 TEST(DialTest, test_2) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
@@ -74,7 +74,7 @@ TEST(DialTest, test_2) {
  * Node1 -> Node2 weight = 5
  * Node2 -> Node3 unweighted
  * Node1 <-> Node3 weight = 6
-*/
+ */
 TEST(DialTest, test_3) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
@@ -99,7 +99,7 @@ TEST(DialTest, test_3) {
  * 3 Nodes
  * Node2 -> Node3 unweighted
  * Node1 <-> Node3 weight = 6
-*/
+ */
 TEST(DialTest, test_4) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
@@ -124,7 +124,7 @@ TEST(DialTest, test_4) {
  * Node2 -> Node3 unweighted
  * Node1 <-> Node3 weight = 6
  * Only nodes which are a part of the edgeSet are a part of the graph (nodeSet)
-*/
+ */
 TEST(DialTest, test_5) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
@@ -146,7 +146,7 @@ TEST(DialTest, test_5) {
  * 3 Nodes, zero weight edges
  * Node1 -> Node2 weight = 0
  * Node2 -> Node3 weight = 0
-*/
+ */
 TEST(DialTest, test_6) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
@@ -175,7 +175,7 @@ TEST(DialTest, test_6) {
  * 2 Nodes, multi edges, same end points, choose smaller edge
  * Node1 -> Node2 weight = 3
  * Node1 -> Node2 weight = 5
-*/
+ */
 TEST(DialTest, test_7) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
@@ -185,7 +185,8 @@ TEST(DialTest, test_7) {
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge12First));
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge12Second));
+  edgeSet.insert(
+      make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge12Second));
 
   CXXGraph::Graph<int> graph(edgeSet);
 
@@ -202,7 +203,7 @@ TEST(DialTest, test_7) {
  * Node2 -> Node3 weight = 5
  * Node3 -> Node1 weight = 8
  * Node1 -> Node3 weight = 2
-*/
+ */
 TEST(DialTest, test_8) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
@@ -233,7 +234,7 @@ TEST(DialTest, test_8) {
  * 2 Nodes, self loop
  * Node1 -> Node1 weight = 3
  * Node1 -> Node2 weight = 5
-*/
+ */
 TEST(DialTest, test_9) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
@@ -259,27 +260,24 @@ class BadDirectedWeightedEdge : public CXXGraph::DirectedWeightedEdge<T> {
  public:
   using Base = CXXGraph::DirectedWeightedEdge<T>;
   // forward to existing ctor
-  BadDirectedWeightedEdge(const CXXGraph::id_t id,
-                          const CXXGraph::Node<T> &n1,
-                          const CXXGraph::Node<T> &n2,
-                          const double weight)
+  BadDirectedWeightedEdge(const CXXGraph::id_t id, const CXXGraph::Node<T> &n1,
+                          const CXXGraph::Node<T> &n2, const double weight)
       : Base(id, n1, n2, weight) {}
 
-  const std::optional<bool> isDirected() const override {
-    return std::nullopt;
-  }
+  const std::optional<bool> isDirected() const override { return std::nullopt; }
 };
 
 /*
  * 2 Nodes, invalid directed weighted edge
  * The edge claims it's weighted but does not tell us direction
  * Node1 -> Node2 weight = 5
-*/
+ */
 TEST(DialTest, test_10) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
 
-  auto badEdge = std::make_shared<BadDirectedWeightedEdge<int>>(1, node1, node2, 5);
+  auto badEdge =
+      std::make_shared<BadDirectedWeightedEdge<int>>(1, node1, node2, 5);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(badEdge);

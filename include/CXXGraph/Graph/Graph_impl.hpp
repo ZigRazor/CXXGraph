@@ -99,7 +99,7 @@ template <typename T>
 void Graph<T>::addEdge(shared<const Edge<T>> edge) {
   auto [it, inserted] = edgeSet.insert(edge);
   if (!inserted) {
-      return;
+    return;
   }
 
   auto &[from, to] = edge->getNodePair();
@@ -388,7 +388,7 @@ std::unordered_set<shared<Node<T>>, nodeHash<T>> Graph<T>::nodeSet() {
   }
 
   for (const auto &adjListOutIt : *cachedAdjListOut) {
-    nodeSet.insert(std::const_pointer_cast<Node<T>> (adjListOutIt.first));
+    nodeSet.insert(std::const_pointer_cast<Node<T>>(adjListOutIt.first));
   }
 
   for (auto &isNodeIt : isolatedNodesSet) {

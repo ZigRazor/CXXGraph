@@ -1283,8 +1283,3 @@ TEST(DijkstraTest, deterministic2_target_not_connected_test) {
   ASSERT_EQ(res.errorMessage, CXXGraph::ERR_TARGET_NODE_NOT_IN_GRAPH);
   ASSERT_EQ(res.result, CXXGraph::INF_DOUBLE);
 }
-
-
-
-
-

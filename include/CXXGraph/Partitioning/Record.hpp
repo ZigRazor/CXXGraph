@@ -28,8 +28,9 @@ namespace CXXGraph {
 namespace Partitioning {
 template <typename T>
 class Record {
-  protected:
+ protected:
   bool owns_lock = false;
+
  public:
   virtual ~Record() = default;
 

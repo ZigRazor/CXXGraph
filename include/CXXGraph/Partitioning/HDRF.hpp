@@ -101,7 +101,7 @@ void HDRF<T>::performStep(shared<const Edge<T>> e,
     std::this_thread::sleep_for(std::chrono::microseconds(backoff));
     if (backoff < GLOBALS.SLEEP_LIMIT) backoff *= 2;
   }
-  
+
   //*** LOCK TAKEN
   int machine_id = -1;
 

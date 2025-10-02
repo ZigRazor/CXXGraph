@@ -258,7 +258,6 @@ TEST(ConnectivityTest, test_5) {
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge13));
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge14));
 
-
   CXXGraph::Graph<int> graph(edgeSet);
 
   ASSERT_FALSE(graph.isConnectedGraph());

@@ -1459,13 +1459,13 @@ TEST(GraphTest, set_data_isolated) {
 }
 
 TEST(GraphTest, type_trait_not_extractable) {
-  CXXGraph::Node<int*> node1("1", nullptr);
-  CXXGraph::Node<int*> node2("2", nullptr);
-  CXXGraph::Edge<int*> edge(1, node1, node2);
+  CXXGraph::Node<int *> node1("1", nullptr);
+  CXXGraph::Node<int *> node2("2", nullptr);
+  CXXGraph::Edge<int *> edge(1, node1, node2);
 
-  CXXGraph::T_EdgeSet<int*> edgeSet;
-  edgeSet.insert(make_shared<CXXGraph::Edge<int*>>(edge));
+  CXXGraph::T_EdgeSet<int *> edgeSet;
+  edgeSet.insert(make_shared<CXXGraph::Edge<int *>>(edge));
 
-  CXXGraph::Graph<int*> graph(edgeSet);
+  CXXGraph::Graph<int *> graph(edgeSet);
   ASSERT_EQ(graph.getEdgeSet(), edgeSet);
 }
