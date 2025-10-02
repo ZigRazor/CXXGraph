@@ -49,16 +49,19 @@ jobs:
           gh-code-scanning-compat: true
           max-allowed-issues: 2147483647
 
-      # Split SARIF file into per-run files
+      - name: Download SARIF Multitool
+        run: |
+          curl -L https://github.com/microsoft/sarif-sdk/releases/download/v4.6.2/Sarif.Multitool.4.6.2-linux-x64.zip -o multitool.zip
+          unzip multitool.zip -d multitool
+
       - name: Split SARIF runs
         run: |
-          pip install sarif-tools
           mkdir sarif_split
-          sarif split results.sarif --output sarif_split/
+          ./multitool/Sarif.Multitool split results.sarif --output-directory sarif_split
 
-      # Upload each SARIF run separately
       - name: Upload SARIF results
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: sarif_split
+
 
