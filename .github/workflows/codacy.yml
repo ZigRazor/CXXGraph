@@ -49,19 +49,29 @@ jobs:
           gh-code-scanning-compat: true
           max-allowed-issues: 2147483647
 
-      - name: Download SARIF Multitool
+      - name: Merge SARIF runs into one
         run: |
-          curl -L https://github.com/microsoft/sarif-sdk/releases/download/v4.6.2/Sarif.Multitool.4.6.2-linux-x64.zip -o multitool.zip
-          unzip multitool.zip -d multitool
+          python3 <<'EOF'
+          import json
+          with open("results.sarif") as f:
+              sarif = json.load(f)
 
-      - name: Split SARIF runs
-        run: |
-          mkdir sarif_split
-          ./multitool/Sarif.Multitool split results.sarif --output-directory sarif_split
+          # Flatten multiple runs into a single run
+          all_results = []
+          for run in sarif["runs"]:
+              all_results.extend(run.get("results", []))
 
-      - name: Upload SARIF results
+          merged_run = sarif["runs"][0]
+          merged_run["results"] = all_results
+          sarif["runs"] = [merged_run]
+
+          with open("merged.sarif", "w") as f:
+              json.dump(sarif, f)
+          EOF
+
+      - name: Upload merged SARIF
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: sarif_split
+          sarif_file: merged.sarif
 
 
