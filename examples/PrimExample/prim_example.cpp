@@ -71,7 +71,7 @@ int main() {
   auto res = graph.prim();
   std::cout << "Prim Result: "
             << "\n";
-  for (auto edge : res.mst) {
+  for (const auto& edge : res.mst) {
     std::cout << edge.first << " " << edge.second << "\n";
   }
   std::cout << "mstCost: " << res.mstCost << "\n";
