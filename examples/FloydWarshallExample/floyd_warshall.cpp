@@ -37,7 +37,7 @@ int main() {
   CXXGraph::FWResult res = graph.floydWarshall();
   std::cout << "floyd Warshall Result: "
             << "\n";
-  for (auto i : res.result) {
+  for (const auto& i : res.result) {
     std::cout << "distance of: " << i.first.first << " " << i.first.second
               << " = " << i.second << "\n";
   }

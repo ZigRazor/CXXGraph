@@ -41,10 +41,10 @@ const Graph<T> Graph<T>::transitiveReduction() const {
   CXXGraph::id_t edgeId = 0;
   std::unordered_set<shared<const Node<T>>, nodeHash<T>> nodes =
       this->getNodeSet();
-  for (auto x : nodes) {
-    for (auto y : nodes) {
+  for (const auto& x : nodes) {
+    for (const auto& y : nodes) {
       if (this->findEdge(x, y, edgeId)) {
-        for (auto z : nodes) {
+        for (const auto& z : nodes) {
           if (this->findEdge(y, z, edgeId)) {
             if (this->findEdge(x, z, edgeId)) {
               result.removeEdge(edgeId);
