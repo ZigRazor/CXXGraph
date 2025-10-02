@@ -116,12 +116,18 @@ bool CoordinatedRecord<T>::hasReplicaInPartition(const int m) const {
 }
 template <typename T>
 bool CoordinatedRecord<T>::getLock() {
-  return lock->try_lock();
+  this->owns_lock = lock->try_lock();
+  return this->owns_lock;
 }
+
 template <typename T>
 bool CoordinatedRecord<T>::releaseLock() {
-  lock->unlock();
-  return true;
+  if (this->owns_lock) {
+    lock->unlock();
+    this->owns_lock = false;
+    return true;
+  }
+  return false;
 }
 template <typename T>
 int CoordinatedRecord<T>::getReplicas() const {
