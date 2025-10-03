@@ -14,11 +14,13 @@ if (NOT MSVC)
             --coverage #set coverage flag
             -fprofile-arcs
             -ftest-coverage
+            -fprofile-update=atomic
             -fPIC
         )
         link_libraries(
             "gcov"
             "-fprofile-arcs"
+            "-fprofile-update=atomic"
             "--coverage"
         )
 
