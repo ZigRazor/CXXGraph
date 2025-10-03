@@ -70,7 +70,7 @@ void Graph<T>::setEdgeSet(const T_EdgeSet<T> &edgeSet) {
 }
 
 template <typename T>
-void Graph<T>::addEdge(const Edge<T> *edge) {
+std::optional<CXXGraph::id_t> Graph<T>::addEdge(const Edge<T> *edge) {
   shared<const Edge<T>> edge_shared;
 
   bool is_directed = edge->isDirected().value_or(false);
@@ -78,34 +78,44 @@ void Graph<T>::addEdge(const Edge<T> *edge) {
 
   if (is_directed) {
     if (is_weighted) {
-      edge_shared = make_shared<DirectedWeightedEdge<T>>(
-          *dynamic_cast<const DirectedWeightedEdge<T> *>(edge));
+      const DirectedWeightedEdge<T> *edge_casted =
+          dynamic_cast<const DirectedWeightedEdge<T> *>(edge);
+      if (edge_casted) {
+        edge_shared = make_shared<DirectedWeightedEdge<T>>(*edge_casted);
+      } else {
+        // The edge is not of the correct type
+        return std::nullopt;
+      }
+
     } else {
       edge_shared = make_shared<DirectedEdge<T>>(*edge);
     }
   } else {
     if (is_weighted) {
-      edge_shared = make_shared<UndirectedWeightedEdge<T>>(
-          *dynamic_cast<const UndirectedWeightedEdge<T> *>(edge));
+      const UndirectedWeightedEdge<T> *edge_casted =
+          dynamic_cast<const UndirectedWeightedEdge<T> *>(edge);
+      if (edge_casted) {
+        edge_shared = make_shared<UndirectedWeightedEdge<T>>(*edge_casted);
+      } else {
+        // The edge is not of the correct type
+        return std::nullopt;
+      }
     } else {
       edge_shared = make_shared<UndirectedEdge<T>>(*edge);
     }
   }
 
-  addEdge(edge_shared);
+  return addEdge(edge_shared);
 }
 
 template <typename T>
-void Graph<T>::addEdge(shared<const Edge<T>> edge) {
+std::optional<CXXGraph::id_t> Graph<T>::addEdge(shared<const Edge<T>> edge) {
   auto [it, inserted] = edgeSet.insert(edge);
   if (!inserted) {
-    return;
+    return std::nullopt;
   }
 
   auto &[from, to] = edge->getNodePair();
-
-  /* Adding new edge in cached adjacency lists */
-  this->edgeSet.insert(edge);
 
   (*cachedAdjListOut)[from].emplace_back(to, edge);
   (*cachedAdjListIn)[to].emplace_back(from, edge);
@@ -113,6 +123,8 @@ void Graph<T>::addEdge(shared<const Edge<T>> edge) {
     (*cachedAdjListOut)[to].emplace_back(from, edge);
     (*cachedAdjListIn)[from].emplace_back(to, edge);
   }
+
+  return std::optional<CXXGraph::id_t>(edge->getId());
 }
 
 template <typename T>

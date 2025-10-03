@@ -170,9 +170,11 @@ class Graph {
    * Note: No Thread Safe
    *
    * @param edge The Edge to insert
+   * @return The id of the added edge or nullopt if the edge was already present
+   * or if failed
    *
    */
-  virtual void addEdge(const Edge<T> *edge);
+  virtual std::optional<CXXGraph::id_t> addEdge(const Edge<T> *edge);
 
   /**
    * \brief
@@ -182,9 +184,11 @@ class Graph {
    * Note: No Thread Safe
    *
    * @param edge The Edge to insert
+   * @return The id of the added edge or nullopt if the edge was already present
+   * or if failed
    *
    */
-  virtual void addEdge(shared<const Edge<T>> edge);
+  virtual std::optional<CXXGraph::id_t> addEdge(shared<const Edge<T>> edge);
 
   /**
    * \brief
