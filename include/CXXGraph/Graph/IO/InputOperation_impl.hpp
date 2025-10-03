@@ -217,13 +217,13 @@ int Graph<T>::readFromMTXFile(const std::string &workingDir,
   std::string edge_weight;
   CXXGraph::id_t edge_id = 0;
   while (getline(iFile, row_content)) {
+    const std::string str_edge_id = std::to_string(edge_id);
     std::stringstream row_stream(row_content);
 
     // Read the content of the node ids and the weight into strings
     getline(row_stream, node1, ' ');
     getline(row_stream, node2, ' ');
     getline(row_stream, edge_weight);
-    const std::string str_edge_id = std::to_string(edge_id);
     edgeMap[str_edge_id] = std::pair<std::string, std::string>(node1, node2);
     edgeWeightMap[str_edge_id] = std::stod(edge_weight);
     edgeDirectedMap[str_edge_id] = !undirected;
@@ -288,6 +288,7 @@ int Graph<T>::readFromDot(const std::string &workingDir,
   CXXGraph::id_t edgeId = 0;
   std::string fileRow;
   while (getline(iFile, fileRow)) {
+    const std::string str_edge_id = std::to_string(edgeId);
     // If you've reached the end of the file, stop
     if (fileRow == "}") {
       break;
@@ -302,7 +303,6 @@ int Graph<T>::readFromDot(const std::string &workingDir,
     getline(row_stream, node1, ' ');
     // Store the symbol representing the edge inside temp
     getline(row_stream, temp, ' ');
-    const std::string str_edge_id = std::to_string(edgeId);
     if (weighted) {
       getline(row_stream, node2, '[');
       // Remove any whitespaces or tabs from the node string

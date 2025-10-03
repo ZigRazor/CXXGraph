@@ -81,16 +81,17 @@ TEST(DOTTest, ReadFromDotUndirected) {
   ASSERT_EQ(graph.getEdgeSet().size(), 212);
   ASSERT_EQ(graph.getNodeSet().size(), 30);
   // Check that the first edge is correct
-  ASSERT_EQ(graph.getEdge(0).value()->getNodePair().first->getUserId(), "0");
-  ASSERT_EQ(graph.getEdge(0).value()->getNodePair().second->getUserId(), "4");
-  ASSERT_EQ(graph.getEdge(0).value()->isDirected(), false);
-  ASSERT_EQ(graph.getEdge(0).value()->isWeighted(), false);
+  ASSERT_EQ(graph.getEdge("0").value()->getNodePair().first->getUserId(), "0");
+  ASSERT_EQ(graph.getEdge("0").value()->getNodePair().second->getUserId(), "4");
+  ASSERT_EQ(graph.getEdge("0").value()->isDirected(), false);
+  ASSERT_EQ(graph.getEdge("0").value()->isWeighted(), false);
   // Check that the last edge is correct
-  ASSERT_EQ(graph.getEdge(211).value()->getNodePair().first->getUserId(), "28");
-  ASSERT_EQ(graph.getEdge(211).value()->getNodePair().second->getUserId(),
+  ASSERT_EQ(graph.getEdge("211").value()->getNodePair().first->getUserId(),
+            "28");
+  ASSERT_EQ(graph.getEdge("211").value()->getNodePair().second->getUserId(),
             "29");
-  ASSERT_EQ(graph.getEdge(211).value()->isDirected(), false);
-  ASSERT_EQ(graph.getEdge(211).value()->isWeighted(), false);
+  ASSERT_EQ(graph.getEdge("211").value()->isDirected(), false);
+  ASSERT_EQ(graph.getEdge("211").value()->isWeighted(), false);
 }
 
 TEST(DOTTest, ReadFromDotUndirectedWeighted) {
@@ -103,24 +104,25 @@ TEST(DOTTest, ReadFromDotUndirectedWeighted) {
   ASSERT_EQ(graph.getEdgeSet().size(), 211);
   ASSERT_EQ(graph.getNodeSet().size(), 30);
   // Check that the first edge is correct
-  ASSERT_EQ(graph.getEdge(0).value()->getNodePair().first->getUserId(), "0");
-  ASSERT_EQ(graph.getEdge(0).value()->getNodePair().second->getUserId(), "1");
+  ASSERT_EQ(graph.getEdge("0").value()->getNodePair().first->getUserId(), "0");
+  ASSERT_EQ(graph.getEdge("0").value()->getNodePair().second->getUserId(), "1");
   ASSERT_EQ(dynamic_cast<const CXXGraph::UndirectedWeightedEdge<int> *>(
-                graph.getEdge(0).value().get())
+                graph.getEdge("0").value().get())
                 ->getWeight(),
             6);
-  ASSERT_EQ(graph.getEdge(0).value()->isDirected(), false);
-  ASSERT_EQ(graph.getEdge(0).value()->isWeighted(), true);
+  ASSERT_EQ(graph.getEdge("0").value()->isDirected(), false);
+  ASSERT_EQ(graph.getEdge("0").value()->isWeighted(), true);
   // Check that the last edge is correct
-  ASSERT_EQ(graph.getEdge(210).value()->getNodePair().first->getUserId(), "27");
-  ASSERT_EQ(graph.getEdge(210).value()->getNodePair().second->getUserId(),
+  ASSERT_EQ(graph.getEdge("210").value()->getNodePair().first->getUserId(),
+            "27");
+  ASSERT_EQ(graph.getEdge("210").value()->getNodePair().second->getUserId(),
             "28");
   ASSERT_EQ(dynamic_cast<const CXXGraph::UndirectedWeightedEdge<int> *>(
-                graph.getEdge(210).value().get())
+                graph.getEdge("210").value().get())
                 ->getWeight(),
             2);
-  ASSERT_EQ(graph.getEdge(210).value()->isDirected(), false);
-  ASSERT_EQ(graph.getEdge(0).value()->isWeighted(), true);
+  ASSERT_EQ(graph.getEdge("210").value()->isDirected(), false);
+  ASSERT_EQ(graph.getEdge("0").value()->isWeighted(), true);
 }
 
 TEST(DOTTest, ReadFromDotDirected) {
@@ -133,34 +135,35 @@ TEST(DOTTest, ReadFromDotDirected) {
   ASSERT_EQ(graph.getEdgeSet().size(), 410);
   ASSERT_EQ(graph.getNodeSet().size(), 30);
   // Check that the first edge is correct
-  ASSERT_EQ(graph.getEdge(0).value()->getNodePair().first->getUserId(), "0");
-  ASSERT_EQ(graph.getEdge(0).value()->getNodePair().second->getUserId(), "1");
+  ASSERT_EQ(graph.getEdge("0").value()->getNodePair().first->getUserId(), "0");
+  ASSERT_EQ(graph.getEdge("0").value()->getNodePair().second->getUserId(), "1");
   ASSERT_EQ(dynamic_cast<const CXXGraph::DirectedEdge<int> *>(
-                graph.getEdge(0).value().get())
+                graph.getEdge("0").value().get())
                 ->getFrom()
                 .getUserId(),
             "0");
   ASSERT_EQ(dynamic_cast<const CXXGraph::DirectedEdge<int> *>(
-                graph.getEdge(0).value().get())
+                graph.getEdge("0").value().get())
                 ->getTo()
                 .getUserId(),
             "1");
-  ASSERT_EQ(graph.getEdge(0).value()->isDirected(), true);
-  ASSERT_EQ(graph.getEdge(0).value()->isWeighted(), false);
+  ASSERT_EQ(graph.getEdge("0").value()->isDirected(), true);
+  ASSERT_EQ(graph.getEdge("0").value()->isWeighted(), false);
   // Check that the last edge is correct
-  ASSERT_EQ(graph.getEdge(409).value()->getNodePair().first->getUserId(), "29");
-  ASSERT_EQ(graph.getEdge(409).value()->getNodePair().second->getUserId(),
+  ASSERT_EQ(graph.getEdge("409").value()->getNodePair().first->getUserId(),
+            "29");
+  ASSERT_EQ(graph.getEdge("409").value()->getNodePair().second->getUserId(),
             "27");
   ASSERT_EQ(dynamic_cast<const CXXGraph::DirectedEdge<int> *>(
-                graph.getEdge(409).value().get())
+                graph.getEdge("409").value().get())
                 ->getFrom()
                 .getUserId(),
             "29");
   ASSERT_EQ(dynamic_cast<const CXXGraph::DirectedEdge<int> *>(
-                graph.getEdge(409).value().get())
+                graph.getEdge("409").value().get())
                 ->getTo()
                 .getUserId(),
             "27");
-  ASSERT_EQ(graph.getEdge(409).value()->isDirected(), true);
-  ASSERT_EQ(graph.getEdge(409).value()->isWeighted(), false);
+  ASSERT_EQ(graph.getEdge("409").value()->isDirected(), true);
+  ASSERT_EQ(graph.getEdge("409").value()->isWeighted(), false);
 }
