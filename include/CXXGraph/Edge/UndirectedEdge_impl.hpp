@@ -30,31 +30,31 @@ using std::make_shared;
 using std::make_unique;
 
 template <typename T>
-UndirectedEdge<T>::UndirectedEdge(const CXXGraph::id_t id, const Node<T> &node1,
-                                  const Node<T> &node2)
-    : Edge<T>(id, node1, node2) {}
+UndirectedEdge<T>::UndirectedEdge(const std::string &userId,
+                                  const Node<T> &node1, const Node<T> &node2)
+    : Edge<T>(userId, node1, node2) {}
 
 template <typename T>
-UndirectedEdge<T>::UndirectedEdge(const CXXGraph::id_t id,
+UndirectedEdge<T>::UndirectedEdge(const std::string &userId,
                                   shared<const Node<T>> node1,
                                   shared<const Node<T>> node2)
-    : Edge<T>(id, node1, node2) {}
+    : Edge<T>(userId, node1, node2) {}
 
 template <typename T>
 UndirectedEdge<T>::UndirectedEdge(
-    const CXXGraph::id_t id,
+    const std::string &userId,
     const std::pair<const Node<T> *, const Node<T> *> &nodepair)
-    : Edge<T>(id, nodepair) {}
+    : Edge<T>(userId, nodepair) {}
 
 template <typename T>
 UndirectedEdge<T>::UndirectedEdge(
-    const CXXGraph::id_t id,
+    const std::string &userId,
     const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair)
-    : Edge<T>(id, nodepair) {}
+    : Edge<T>(userId, nodepair) {}
 
 template <typename T>
 UndirectedEdge<T>::UndirectedEdge(const Edge<T> &edge)
-    : UndirectedEdge(edge.getId(), *(edge.getNodePair().first),
+    : UndirectedEdge(edge.getUserId(), *(edge.getNodePair().first),
                      *(edge.getNodePair().second)) {}
 
 template <typename T>

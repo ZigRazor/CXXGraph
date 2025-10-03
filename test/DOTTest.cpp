@@ -19,9 +19,9 @@ TEST(DOTTest, WriteToDotDirectedWeighted) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 3);
-  CXXGraph::DirectedWeightedEdge<int> edge3(3, node3, node1, 7);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 5);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", node2, node3, 3);
+  CXXGraph::DirectedWeightedEdge<int> edge3("3", node3, node1, 7);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
@@ -40,9 +40,9 @@ TEST(DOTTest, WriteToDotUndirected) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::UndirectedEdge<int> edge1(1, pairNode);
-  CXXGraph::UndirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedEdge<int> edge3(3, node3, node1);
+  CXXGraph::UndirectedEdge<int> edge1("1", pairNode);
+  CXXGraph::UndirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedEdge<int> edge3("3", node3, node1);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge2));
@@ -58,9 +58,9 @@ TEST(DOTTest, WriteToDotMixed) {
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
 
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, node1, node2, 1);
-  CXXGraph::UndirectedWeightedEdge<int> edge2(2, node2, node3, 1);
-  CXXGraph::DirectedEdge<int> edge3(3, node1, node3);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", node1, node2, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge2("2", node2, node3, 1);
+  CXXGraph::DirectedEdge<int> edge3("3", node1, node3);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));

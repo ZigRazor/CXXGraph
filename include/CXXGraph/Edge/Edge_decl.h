@@ -44,22 +44,26 @@ template <typename T>
 class Edge {
  private:
   CXXGraph::id_t id = 0;
+  std::string userId = "";
   std::pair<shared<const Node<T>>, shared<const Node<T>>> nodePair;
+
+  void setId(const std::string &);
 
  public:
   typedef T Node_t;
 
-  Edge(const CXXGraph::id_t id, const Node<T> &node1, const Node<T> &node2);
-  Edge(const CXXGraph::id_t id, shared<const Node<T>> node1,
+  Edge(const std::string &userId, const Node<T> &node1, const Node<T> &node2);
+  Edge(const std::string &userId, shared<const Node<T>> node1,
        shared<const Node<T>> node2);
-  Edge(const CXXGraph::id_t id,
+  Edge(const std::string &userId,
        const std::pair<const Node<T> *, const Node<T> *> &nodepair);
-  Edge(const CXXGraph::id_t id,
+  Edge(const std::string &userId,
        const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair);
   virtual ~Edge() = default;
   void setFirstNode(shared<const Node<T>> node);
   void setSecondNode(shared<const Node<T>> node);
-  unsigned long long getId() const;
+  CXXGraph::id_t getId() const;
+  const std::string &getUserId() const;
   const std::pair<shared<const Node<T>>, shared<const Node<T>>> &getNodePair()
       const;
   shared<const Node<T>> getOtherNode(shared<const Node<T>> node) const;

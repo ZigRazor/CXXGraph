@@ -18,7 +18,7 @@ static void AddEdge(benchmark::State &state) {
   CXXGraph::Graph<int> g;
   auto n1 = *nodes.at(0);
   auto n2 = *nodes.at(1);
-  CXXGraph::Edge<int> e(1, n1, n2);
+  CXXGraph::Edge<int> e("1", n1, n2);
   for (auto _ : state) {
     g.addEdge(&e);
   }

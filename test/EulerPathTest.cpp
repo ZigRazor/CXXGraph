@@ -23,9 +23,9 @@ TEST(EulerPathTest, test_1) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
 
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, node0, node1, 4);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, node1, node2, 8);
-  CXXGraph::DirectedWeightedEdge<int> edge3(3, node2, node0, 11);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", node0, node1, 4);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", node1, node2, 8);
+  CXXGraph::DirectedWeightedEdge<int> edge3("3", node2, node0, 11);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
@@ -50,12 +50,12 @@ TEST(EulerPathTest, test_2) {
   CXXGraph::Node<int> node3("3", 3);
   CXXGraph::Node<int> node4("4", 4);
 
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, node0, node1, 4);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, node1, node2, 8);
-  CXXGraph::DirectedWeightedEdge<int> edge3(3, node2, node0, 11);
-  CXXGraph::DirectedWeightedEdge<int> edge4(4, node1, node3, 11);
-  CXXGraph::DirectedWeightedEdge<int> edge5(5, node3, node4, 11);
-  CXXGraph::DirectedWeightedEdge<int> edge6(6, node4, node1, 11);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", node0, node1, 4);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", node1, node2, 8);
+  CXXGraph::DirectedWeightedEdge<int> edge3("3", node2, node0, 11);
+  CXXGraph::DirectedWeightedEdge<int> edge4("4", node1, node3, 11);
+  CXXGraph::DirectedWeightedEdge<int> edge5("5", node3, node4, 11);
+  CXXGraph::DirectedWeightedEdge<int> edge6("6", node4, node1, 11);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
@@ -86,14 +86,14 @@ TEST(EulerPathTest, test_3) {
   CXXGraph::Node<int> node5("5", 5);
   CXXGraph::Node<int> node6("6", 6);
 
-  CXXGraph::DirectedEdge<int> edge1(1, node0, node1);
-  CXXGraph::DirectedEdge<int> edge2(2, node0, node6);
-  CXXGraph::DirectedEdge<int> edge3(3, node1, node2);
-  CXXGraph::DirectedEdge<int> edge4(4, node2, node3);
-  CXXGraph::DirectedEdge<int> edge5(5, node3, node4);
-  CXXGraph::DirectedEdge<int> edge6(6, node4, node5);
-  CXXGraph::DirectedEdge<int> edge7(6, node5, node0);
-  CXXGraph::DirectedEdge<int> edge8(6, node6, node4);
+  CXXGraph::DirectedEdge<int> edge1("1", node0, node1);
+  CXXGraph::DirectedEdge<int> edge2("2", node0, node6);
+  CXXGraph::DirectedEdge<int> edge3("3", node1, node2);
+  CXXGraph::DirectedEdge<int> edge4("4", node2, node3);
+  CXXGraph::DirectedEdge<int> edge5("5", node3, node4);
+  CXXGraph::DirectedEdge<int> edge6("6", node4, node5);
+  CXXGraph::DirectedEdge<int> edge7("6", node5, node0);
+  CXXGraph::DirectedEdge<int> edge8("6", node6, node4);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
@@ -125,13 +125,13 @@ TEST(EulerPathTest, test_4) {
   CXXGraph::Node<int> node_e("e", 4);
   CXXGraph::Node<int> node_f("f", 5);
 
-  CXXGraph::UndirectedEdge<int> edge1(1, node_a, node_b);
-  CXXGraph::UndirectedEdge<int> edge2(2, node_b, node_e);
-  CXXGraph::UndirectedEdge<int> edge3(3, node_e, node_f);
-  CXXGraph::UndirectedEdge<int> edge4(4, node_f, node_a);
-  CXXGraph::UndirectedEdge<int> edge5(5, node_b, node_c);
-  CXXGraph::UndirectedEdge<int> edge6(6, node_b, node_d);
-  CXXGraph::UndirectedEdge<int> edge7(7, node_c, node_d);
+  CXXGraph::UndirectedEdge<int> edge1("1", node_a, node_b);
+  CXXGraph::UndirectedEdge<int> edge2("2", node_b, node_e);
+  CXXGraph::UndirectedEdge<int> edge3("3", node_e, node_f);
+  CXXGraph::UndirectedEdge<int> edge4("4", node_f, node_a);
+  CXXGraph::UndirectedEdge<int> edge5("5", node_b, node_c);
+  CXXGraph::UndirectedEdge<int> edge6("6", node_b, node_d);
+  CXXGraph::UndirectedEdge<int> edge7("7", node_c, node_d);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));

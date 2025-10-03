@@ -30,7 +30,7 @@ void compareComponents(CXXGraph::SCCResult<int> result,
 TEST(KosarajuTest, test_1) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
-  CXXGraph::UndirectedEdge<int> edge(1, node1, node2);
+  CXXGraph::UndirectedEdge<int> edge("1", node1, node2);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge));
   CXXGraph::Graph<int> graph(edgeSet);
@@ -44,8 +44,8 @@ TEST(KosarajuTest, test_1) {
 TEST(KosarajuTest, test_2) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
-  CXXGraph::DirectedEdge<int> edge1(1, node1, node2);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node1);
+  CXXGraph::DirectedEdge<int> edge1("1", node1, node2);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node1);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
@@ -62,9 +62,9 @@ TEST(KosarajuTest, test_3) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
-  CXXGraph::DirectedEdge<int> edge1(1, node1, node2);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node1);
-  CXXGraph::DirectedEdge<int> edge3(3, node3, node1);
+  CXXGraph::DirectedEdge<int> edge1("1", node1, node2);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node1);
+  CXXGraph::DirectedEdge<int> edge3("3", node3, node1);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
@@ -84,10 +84,10 @@ TEST(KosarajuTest, test_4) {
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
   CXXGraph::Node<int> node4("4", 4);
-  CXXGraph::DirectedEdge<int> edge1(1, node1, node2);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node1);
-  CXXGraph::DirectedEdge<int> edge3(3, node3, node4);
-  CXXGraph::DirectedEdge<int> edge4(4, node4, node3);
+  CXXGraph::DirectedEdge<int> edge1("1", node1, node2);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node1);
+  CXXGraph::DirectedEdge<int> edge3("3", node3, node4);
+  CXXGraph::DirectedEdge<int> edge4("4", node4, node3);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
@@ -117,27 +117,27 @@ TEST(KosarajuTest, test_5) {
   CXXGraph::Node<int> node12("12", 12);
   CXXGraph::Node<int> node13("13", 13);
 
-  CXXGraph::DirectedEdge<int> edge1(1, node1, node2);
-  CXXGraph::DirectedEdge<int> edge2(2, node1, node6);
-  CXXGraph::DirectedEdge<int> edge3(3, node3, node1);
-  CXXGraph::DirectedEdge<int> edge4(4, node3, node4);
-  CXXGraph::DirectedEdge<int> edge5(5, node4, node5);
-  CXXGraph::DirectedEdge<int> edge6(6, node4, node6);
-  CXXGraph::DirectedEdge<int> edge7(7, node6, node5);
-  CXXGraph::DirectedEdge<int> edge8(8, node5, node3);
-  CXXGraph::DirectedEdge<int> edge9(9, node7, node1);
-  CXXGraph::DirectedEdge<int> edge10(10, node7, node5);
-  CXXGraph::DirectedEdge<int> edge11(11, node7, node10);
-  CXXGraph::DirectedEdge<int> edge12(12, node12, node5);
-  CXXGraph::DirectedEdge<int> edge13(13, node8, node7);
-  CXXGraph::DirectedEdge<int> edge14(14, node8, node9);
-  CXXGraph::DirectedEdge<int> edge15(15, node9, node8);
-  CXXGraph::DirectedEdge<int> edge16(16, node9, node10);
-  CXXGraph::DirectedEdge<int> edge17(17, node10, node11);
-  CXXGraph::DirectedEdge<int> edge18(18, node10, node12);
-  CXXGraph::DirectedEdge<int> edge19(19, node12, node13);
-  CXXGraph::DirectedEdge<int> edge20(20, node11, node13);
-  CXXGraph::DirectedEdge<int> edge21(21, node13, node10);
+  CXXGraph::DirectedEdge<int> edge1("1", node1, node2);
+  CXXGraph::DirectedEdge<int> edge2("2", node1, node6);
+  CXXGraph::DirectedEdge<int> edge3("3", node3, node1);
+  CXXGraph::DirectedEdge<int> edge4("4", node3, node4);
+  CXXGraph::DirectedEdge<int> edge5("5", node4, node5);
+  CXXGraph::DirectedEdge<int> edge6("6", node4, node6);
+  CXXGraph::DirectedEdge<int> edge7("7", node6, node5);
+  CXXGraph::DirectedEdge<int> edge8("8", node5, node3);
+  CXXGraph::DirectedEdge<int> edge9("9", node7, node1);
+  CXXGraph::DirectedEdge<int> edge10("10", node7, node5);
+  CXXGraph::DirectedEdge<int> edge11("11", node7, node10);
+  CXXGraph::DirectedEdge<int> edge12("12", node12, node5);
+  CXXGraph::DirectedEdge<int> edge13("13", node8, node7);
+  CXXGraph::DirectedEdge<int> edge14("14", node8, node9);
+  CXXGraph::DirectedEdge<int> edge15("15", node9, node8);
+  CXXGraph::DirectedEdge<int> edge16("16", node9, node10);
+  CXXGraph::DirectedEdge<int> edge17("17", node10, node11);
+  CXXGraph::DirectedEdge<int> edge18("18", node10, node12);
+  CXXGraph::DirectedEdge<int> edge19("19", node12, node13);
+  CXXGraph::DirectedEdge<int> edge20("20", node11, node13);
+  CXXGraph::DirectedEdge<int> edge21("21", node13, node10);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));

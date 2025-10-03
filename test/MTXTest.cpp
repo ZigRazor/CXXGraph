@@ -19,9 +19,9 @@ TEST(MTXTest, WriteToMtxDirectedWeighted) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 3);
-  CXXGraph::DirectedWeightedEdge<int> edge3(3, node3, node1, 7);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 5);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", node2, node3, 3);
+  CXXGraph::DirectedWeightedEdge<int> edge3("3", node3, node1, 7);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
@@ -39,9 +39,9 @@ TEST(MTXTest, WriteToMtxUndirected) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::UndirectedEdge<int> edge1(1, pairNode);
-  CXXGraph::UndirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedEdge<int> edge3(3, node3, node1);
+  CXXGraph::UndirectedEdge<int> edge1("1", pairNode);
+  CXXGraph::UndirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedEdge<int> edge3("3", node3, node1);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge2));
@@ -57,9 +57,9 @@ TEST(MTXTest, WriteToMtxMixed) {
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
 
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, node1, node2, 1);
-  CXXGraph::UndirectedWeightedEdge<int> edge2(2, node2, node3, 1);
-  CXXGraph::DirectedEdge<int> edge3(3, node1, node3);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", node1, node2, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge2("2", node2, node3, 1);
+  CXXGraph::DirectedEdge<int> edge3("3", node1, node3);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
@@ -103,14 +103,14 @@ TEST(MTXTest, ReadFromMtxDirectedWeighted) {
       12.);
 
   // Check an edge in the middle
-  ASSERT_EQ(graph.getEdge(3).value()->getNodePair().first->getUserId(), "1");
-  ASSERT_EQ(graph.getEdge(3).value()->getNodePair().second->getUserId(), "4");
+  ASSERT_EQ(graph.getEdge("3").value()->getNodePair().first->getUserId(), "1");
+  ASSERT_EQ(graph.getEdge("3").value()->getNodePair().second->getUserId(), "4");
   // Check that it is directed
-  ASSERT_EQ(graph.getEdge(3).value()->isDirected(), true);
+  ASSERT_EQ(graph.getEdge("3").value()->isDirected(), true);
   // Check that it's weighted and the value of the weight
-  ASSERT_EQ(graph.getEdge(3).value()->isWeighted(), true);
+  ASSERT_EQ(graph.getEdge("3").value()->isWeighted(), true);
   ASSERT_EQ(
-      dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(3).value().get())
+      dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge("3").value().get())
           ->getWeight(),
       6.);
 }
@@ -148,14 +148,14 @@ TEST(MTXTest, ReadFromMtxUndirectedWeighted) {
       12.);
 
   // Check an edge in the middle
-  ASSERT_EQ(graph.getEdge(3).value()->getNodePair().first->getUserId(), "1");
-  ASSERT_EQ(graph.getEdge(3).value()->getNodePair().second->getUserId(), "4");
+  ASSERT_EQ(graph.getEdge("3").value()->getNodePair().first->getUserId(), "1");
+  ASSERT_EQ(graph.getEdge("3").value()->getNodePair().second->getUserId(), "4");
   // Check that it is directed
-  ASSERT_EQ(graph.getEdge(3).value()->isDirected(), false);
+  ASSERT_EQ(graph.getEdge("3").value()->isDirected(), false);
   // Check that it's weighted and the value of the weight
-  ASSERT_EQ(graph.getEdge(3).value()->isWeighted(), true);
+  ASSERT_EQ(graph.getEdge("3").value()->isWeighted(), true);
   ASSERT_EQ(
-      dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge(3).value().get())
+      dynamic_cast<const CXXGraph::Weighted *>(graph.getEdge("3").value().get())
           ->getWeight(),
       6.);
 }

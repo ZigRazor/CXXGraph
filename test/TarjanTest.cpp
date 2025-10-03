@@ -16,8 +16,8 @@ TEST(TarjanTest, test_1) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, node1, node2, 1);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", node1, node2, 1);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", node2, node3, 1);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
@@ -63,12 +63,12 @@ TEST(TarjanTest, test_2) {
   CXXGraph::Node<int> node8("8", 8);
   CXXGraph::Node<int> node9("9", 9);
   std::vector<CXXGraph::DirectedWeightedEdge<int>> edges{
-      {1, node1, node2, 1},  {2, node2, node1, 1},  {3, node1, node3, 1},
-      {4, node3, node1, 1},  {5, node2, node4, 1},  {6, node3, node4, 1},
-      {7, node5, node4, 1},  {8, node4, node5, 1},  {9, node6, node2, 1},
-      {10, node7, node6, 1}, {11, node6, node8, 1}, {12, node8, node7, 1},
-      {13, node6, node5, 1}, {14, node8, node5, 1}, {15, node9, node7, 1},
-      {16, node9, node8, 1},
+      {"1", node1, node2, 1},  {"2", node2, node1, 1},  {"3", node1, node3, 1},
+      {"4", node3, node1, 1},  {"5", node2, node4, 1},  {"6", node3, node4, 1},
+      {"7", node5, node4, 1},  {"8", node4, node5, 1},  {"9", node6, node2, 1},
+      {"10", node7, node6, 1}, {"11", node6, node8, 1}, {"12", node8, node7, 1},
+      {"13", node6, node5, 1}, {"14", node8, node5, 1}, {"15", node9, node7, 1},
+      {"16", node9, node8, 1},
   };
   CXXGraph::T_EdgeSet<int> edgeSet;
   for (const auto &edge : edges) {
@@ -123,7 +123,8 @@ TEST(TarjanTest, test_3) {
       {11, 10}, {10, 16}, {10, 17}, {10, 18}, {17, 18}};
   std::vector<CXXGraph::UndirectedWeightedEdge<int>> edges;
   for (const auto &[id1, id2] : pairs) {
-    edges.emplace_back(edges.size() + 1, nodes[id1], nodes[id2], 1);
+    edges.emplace_back(std::to_string(edges.size() + 1), nodes[id1], nodes[id2],
+                       1);
   }
   CXXGraph::T_EdgeSet<int> edgeSet;
   for (const auto &edge : edges) {
@@ -164,7 +165,8 @@ TEST(TarjanTest, test_4) {
       {11, 10}, {10, 16}, {10, 17}, {10, 18}, {17, 18}};
   std::vector<CXXGraph::UndirectedWeightedEdge<int>> edges;
   for (const auto &[id1, id2] : pairs) {
-    edges.emplace_back(edges.size() + 1, nodes[id1], nodes[id2], 1);
+    edges.emplace_back(std::to_string(edges.size() + 1), nodes[id1], nodes[id2],
+                       1);
   }
   CXXGraph::T_EdgeSet<int> edgeSet;
   for (const auto &edge : edges) {
@@ -227,7 +229,8 @@ TEST(TarjanTest, test_5) {
   };
   std::vector<CXXGraph::UndirectedWeightedEdge<int>> edges;
   for (const auto &[id1, id2] : pairs) {
-    edges.emplace_back(edges.size() + 1, nodes[id1], nodes[id2], 1);
+    edges.emplace_back(std::to_string(edges.size() + 1), nodes[id1], nodes[id2],
+                       1);
   }
   CXXGraph::T_EdgeSet<int> edgeSet;
   for (const auto &edge : edges) {
@@ -241,7 +244,7 @@ TEST(TarjanTest, test_5) {
   ASSERT_EQ(res.bridges.size(), expectRes.size());
   std::sort(res.bridges.begin(), res.bridges.end(),
             [&](const auto &edge1, const auto &edge2) {
-              return edge1.getId() < edge2.getId();
+              return edge1.getUserId() < edge2.getUserId();
             });
   for (size_t i = 0; i < expectRes.size(); ++i) {
     ASSERT_EQ(res.bridges[i], edges[expectRes[i]]);
@@ -267,7 +270,8 @@ TEST(TarjanTest, test_6) {
   };
   std::vector<CXXGraph::UndirectedWeightedEdge<int>> edges;
   for (const auto &[id1, id2] : pairs) {
-    edges.emplace_back(edges.size() + 1, nodes[id1], nodes[id2], 1);
+    edges.emplace_back(std::to_string(edges.size() + 1), nodes[id1], nodes[id2],
+                       1);
   }
   CXXGraph::T_EdgeSet<int> edgeSet;
   for (const auto &edge : edges) {
@@ -326,7 +330,8 @@ TEST(TarjanTest, test_7) {
       {11, 10}, {10, 16}, {10, 17}, {10, 18}, {17, 18}};
   std::vector<CXXGraph::UndirectedWeightedEdge<int>> edges;
   for (const auto &[id1, id2] : pairs) {
-    edges.emplace_back(edges.size() + 1, nodes[id1], nodes[id2], 1);
+    edges.emplace_back(std::to_string(edges.size() + 1), nodes[id1], nodes[id2],
+                       1);
   }
   CXXGraph::T_EdgeSet<int> edgeSet;
   for (const auto &edge : edges) {

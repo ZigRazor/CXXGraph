@@ -19,10 +19,10 @@ TEST(HopcroftKarpTest, test_simple_bipartite) {
   CXXGraph::Node<int> v1("v1", 3);
   CXXGraph::Node<int> v2("v2", 4);
 
-  CXXGraph::UndirectedEdge<int> edge1(1, u1, v1);
-  CXXGraph::UndirectedEdge<int> edge2(2, u1, v2);
-  CXXGraph::UndirectedEdge<int> edge3(3, u2, v1);
-  CXXGraph::UndirectedEdge<int> edge4(4, u2, v2);
+  CXXGraph::UndirectedEdge<int> edge1("1", u1, v1);
+  CXXGraph::UndirectedEdge<int> edge2("2", u1, v2);
+  CXXGraph::UndirectedEdge<int> edge3("3", u2, v1);
+  CXXGraph::UndirectedEdge<int> edge4("4", u2, v2);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
@@ -46,9 +46,9 @@ TEST(HopcroftKarpTest, test_path_graph) {
   CXXGraph::Node<int> u2("u2", 3);
   CXXGraph::Node<int> v2("v2", 4);
 
-  CXXGraph::UndirectedEdge<int> edge1(1, u1, v1);
-  CXXGraph::UndirectedEdge<int> edge2(2, v1, u2);
-  CXXGraph::UndirectedEdge<int> edge3(3, u2, v2);
+  CXXGraph::UndirectedEdge<int> edge1("1", u1, v1);
+  CXXGraph::UndirectedEdge<int> edge2("2", v1, u2);
+  CXXGraph::UndirectedEdge<int> edge3("3", u2, v2);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
@@ -69,7 +69,7 @@ TEST(HopcroftKarpTest, test_single_edge) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
 
-  CXXGraph::UndirectedEdge<int> edge1(1, node1, node2);
+  CXXGraph::UndirectedEdge<int> edge1("1", node1, node2);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
@@ -113,9 +113,9 @@ TEST(HopcroftKarpTest, test_non_bipartite_graph) {
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
 
-  CXXGraph::UndirectedEdge<int> edge1(1, node1, node2);
-  CXXGraph::UndirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedEdge<int> edge3(3, node3, node1);
+  CXXGraph::UndirectedEdge<int> edge1("1", node1, node2);
+  CXXGraph::UndirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedEdge<int> edge3("3", node3, node1);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
@@ -136,7 +136,7 @@ TEST(HopcroftKarpTest, test_directed_graph_error) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
 
-  CXXGraph::DirectedEdge<int> edge1(1, node1, node2);
+  CXXGraph::DirectedEdge<int> edge1("1", node1, node2);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge1));
@@ -157,9 +157,9 @@ TEST(HopcroftKarpTest, test_augmenting_path_behavior) {
   CXXGraph::Node<int> r1("R1", 3);
   CXXGraph::Node<int> r2("R2", 4);
 
-  CXXGraph::UndirectedEdge<int> edge1(1, l1, r1);  // L1 -> R1
-  CXXGraph::UndirectedEdge<int> edge2(2, l2, r1);  // L2 -> R1
-  CXXGraph::UndirectedEdge<int> edge3(3, l2, r2);  // L2 -> R2
+  CXXGraph::UndirectedEdge<int> edge1("1", l1, r1);  // L1 -> R1
+  CXXGraph::UndirectedEdge<int> edge2("2", l2, r1);  // L2 -> R1
+  CXXGraph::UndirectedEdge<int> edge3("3", l2, r2);  // L2 -> R2
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
@@ -200,9 +200,9 @@ TEST(HopcroftKarpTest, test_incremental_matching) {
   CXXGraph::Node<int> v3("v3", 4);
 
   // u1 can connect to any of v1, v2, v3 but only one match is possible
-  CXXGraph::UndirectedEdge<int> edge1(1, u1, v1);
-  CXXGraph::UndirectedEdge<int> edge2(2, u1, v2);
-  CXXGraph::UndirectedEdge<int> edge3(3, u1, v3);
+  CXXGraph::UndirectedEdge<int> edge1("1", u1, v1);
+  CXXGraph::UndirectedEdge<int> edge2("2", u1, v2);
+  CXXGraph::UndirectedEdge<int> edge3("3", u1, v3);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
@@ -228,15 +228,15 @@ TEST(HopcroftKarpTest, test_disconnected_graph) {
   // tests matching on a graph with multiple disconnected components
   // component 1: a single edge (matching size 1)
   CXXGraph::Node<int> u1("u1", 1), v1("v1", 2);
-  CXXGraph::UndirectedEdge<int> edge1(1, u1, v1);
+  CXXGraph::UndirectedEdge<int> edge1("1", u1, v1);
 
   // component 2: a 4-cycle (matching size 2)
   CXXGraph::Node<int> u2("u2", 3), v2("v2", 4);
   CXXGraph::Node<int> u3("u3", 5), v3("v3", 6);
-  CXXGraph::UndirectedEdge<int> edge2(2, u2, v2);
-  CXXGraph::UndirectedEdge<int> edge3(3, v2, u3);
-  CXXGraph::UndirectedEdge<int> edge4(4, u3, v3);
-  CXXGraph::UndirectedEdge<int> edge5(5, v3, u2);
+  CXXGraph::UndirectedEdge<int> edge2("2", u2, v2);
+  CXXGraph::UndirectedEdge<int> edge3("3", v2, u3);
+  CXXGraph::UndirectedEdge<int> edge4("4", u3, v3);
+  CXXGraph::UndirectedEdge<int> edge5("5", v3, u2);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));
@@ -258,7 +258,7 @@ TEST(HopcroftKarpTest, test_disconnected_graph) {
 TEST(HopcroftKarpTest, test_graph_with_isolated_vertices) {
   // tests matching on a graph with isolated vertices
   CXXGraph::Node<int> u1("u1", 1), v1("v1", 2);
-  CXXGraph::UndirectedEdge<int> edge1(1, u1, v1);
+  CXXGraph::UndirectedEdge<int> edge1("1", u1, v1);
 
   // isolated nodes
   CXXGraph::Node<int> iso1("iso1", 3), iso2("iso2", 4);
@@ -309,9 +309,9 @@ TEST(HopcroftKarpTest, test_unbalanced_bipartite_graph) {
   CXXGraph::Node<int> u1("u1", 1), u2("u2", 2), u3("u3", 3);
   CXXGraph::Node<int> v1("v1", 4), v2("v2", 5);
 
-  CXXGraph::UndirectedEdge<int> edge1(1, u1, v1);
-  CXXGraph::UndirectedEdge<int> edge2(2, u2, v1);
-  CXXGraph::UndirectedEdge<int> edge3(3, u3, v2);
+  CXXGraph::UndirectedEdge<int> edge1("1", u1, v1);
+  CXXGraph::UndirectedEdge<int> edge2("2", u2, v1);
+  CXXGraph::UndirectedEdge<int> edge3("3", u3, v2);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge1));

@@ -45,16 +45,16 @@ std::ostream &operator<<(std::ostream &o, const DirectedWeightedEdge<T> &edge);
 template <typename T>
 class DirectedWeightedEdge : public DirectedEdge<T>, public Weighted {
  public:
-  DirectedWeightedEdge(const CXXGraph::id_t id, const Node<T> &node1,
+  DirectedWeightedEdge(const std::string &userId, const Node<T> &node1,
                        const Node<T> &node2, const double weight);
-  DirectedWeightedEdge(const CXXGraph::id_t id, shared<const Node<T>> node1,
+  DirectedWeightedEdge(const std::string &userId, shared<const Node<T>> node1,
                        shared<const Node<T>> node2, const double weight);
   DirectedWeightedEdge(
-      const CXXGraph::id_t id,
+      const std::string &userId,
       const std::pair<const Node<T> *, const Node<T> *> &nodepair,
       const double weight);
   DirectedWeightedEdge(
-      const CXXGraph::id_t id,
+      const std::string &userId,
       const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair,
       const double weight);
   DirectedWeightedEdge(const DirectedEdge<T> &edge, const double weight);

@@ -24,9 +24,9 @@ TEST(DialTest, test_1) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 1);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", node2, node3, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
@@ -52,9 +52,9 @@ TEST(DialTest, test_2) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 4);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 5);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", node2, node3, 4);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
@@ -81,9 +81,9 @@ TEST(DialTest, test_3) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 5);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
@@ -104,8 +104,8 @@ TEST(DialTest, test_4) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
@@ -130,8 +130,8 @@ TEST(DialTest, test_5) {
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
   CXXGraph::Node<int> node4("4", 4);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
@@ -152,8 +152,8 @@ TEST(DialTest, test_6) {
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
 
-  CXXGraph::DirectedWeightedEdge<int> edge12(1, node1, node2, 0);
-  CXXGraph::DirectedWeightedEdge<int> edge23(1, node2, node3, 0);
+  CXXGraph::DirectedWeightedEdge<int> edge12("1", node1, node2, 0);
+  CXXGraph::DirectedWeightedEdge<int> edge23("1", node2, node3, 0);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge12));
@@ -180,8 +180,8 @@ TEST(DialTest, test_7) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
 
-  CXXGraph::DirectedWeightedEdge<int> edge12First(1, node1, node2, 3);
-  CXXGraph::DirectedWeightedEdge<int> edge12Second(1, node1, node2, 5);
+  CXXGraph::DirectedWeightedEdge<int> edge12First("1", node1, node2, 3);
+  CXXGraph::DirectedWeightedEdge<int> edge12Second("1", node1, node2, 5);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge12First));
@@ -209,10 +209,10 @@ TEST(DialTest, test_8) {
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
 
-  CXXGraph::DirectedWeightedEdge<int> edge12(1, node1, node2, 3);
-  CXXGraph::DirectedWeightedEdge<int> edge23(1, node2, node3, 5);
-  CXXGraph::DirectedWeightedEdge<int> edge31(1, node3, node1, 8);
-  CXXGraph::DirectedWeightedEdge<int> edge13(1, node1, node3, 2);
+  CXXGraph::DirectedWeightedEdge<int> edge12("1", node1, node2, 3);
+  CXXGraph::DirectedWeightedEdge<int> edge23("1", node2, node3, 5);
+  CXXGraph::DirectedWeightedEdge<int> edge31("1", node3, node1, 8);
+  CXXGraph::DirectedWeightedEdge<int> edge13("1", node1, node3, 2);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge12));
@@ -239,8 +239,8 @@ TEST(DialTest, test_9) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
 
-  CXXGraph::DirectedWeightedEdge<int> edge11(1, node1, node1, 3);
-  CXXGraph::DirectedWeightedEdge<int> edge12(1, node1, node2, 5);
+  CXXGraph::DirectedWeightedEdge<int> edge11("1", node1, node1, 3);
+  CXXGraph::DirectedWeightedEdge<int> edge12("1", node1, node2, 5);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge11));
@@ -260,7 +260,7 @@ class BadDirectedWeightedEdge : public CXXGraph::DirectedWeightedEdge<T> {
  public:
   using Base = CXXGraph::DirectedWeightedEdge<T>;
   // forward to existing ctor
-  BadDirectedWeightedEdge(const CXXGraph::id_t id, const CXXGraph::Node<T> &n1,
+  BadDirectedWeightedEdge(const std::string &id, const CXXGraph::Node<T> &n1,
                           const CXXGraph::Node<T> &n2, const double weight)
       : Base(id, n1, n2, weight) {}
 
@@ -277,7 +277,7 @@ TEST(DialTest, test_10) {
   CXXGraph::Node<int> node2("2", 2);
 
   auto badEdge =
-      std::make_shared<BadDirectedWeightedEdge<int>>(1, node1, node2, 5);
+      std::make_shared<BadDirectedWeightedEdge<int>>("1", node1, node2, 5);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(badEdge);

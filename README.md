@@ -13,24 +13,24 @@
 
 [![GitHub license](https://img.shields.io/github/license/ZigRazor/CXXGraph.svg)](https://github.com/ZigRazor/CXXGraph/blob/master/LICENSE) [![GitHub release](https://img.shields.io/github/release/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/releases/) [![Conan Center](https://img.shields.io/conan/v/cxxgraph)](https://conan.io/center/recipes/cxxgraph)
 
-[![Generic badge](https://img.shields.io/badge/Required-G++7.3.0-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/required-C++17-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Required-CMake3.9-Green.svg)](https://shields.io/) 
+[![Generic badge](https://img.shields.io/badge/Required-G++7.3.0-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/required-C++17-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Required-CMake3.9-Green.svg)](https://shields.io/)
 
 [![Generic badge](https://img.shields.io/badge/Build-Passed-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/UnitTest-Passed-Green.svg)](https://shields.io/)
 
 ## Introduction
+
 **CXXGraph** is a comprehensive C++ library that manages graph algorithms. This header-only library serves as an alternative to the [Boost Graph Library (BGL)](https://www.boost.org/doc/libs/1_77_0/libs/graph/doc/index.html).
 
 [CXXGraph Website](https://zigrazor.github.io/CXXGraph/)
 
-## We are Looking for...
+## We are Looking for
 
 **We are looking for:**
 
 - **A Web Developer** for the development of the CXXGraph website. All documentation is currently hosted on this GitHub page.
 - **Developers and Contributors** to provide input. If you are new to the open-source world, we will guide you step by step!
 
-If you are interested, please contact us at zigrazor@gmail.com or contribute to this project. We are waiting for you!
-
+If you are interested, please contact us at <zigrazor@gmail.com> or contribute to this project. We are waiting for you!
 
 ## Table of Contents
 
@@ -73,7 +73,6 @@ If you are interested, please contact us at zigrazor@gmail.com or contribute to 
   - [Other Details](#other-details)
   - [Author](#author)
 
-
 ## Install and Uninstall
 
 ### Install Linux Tarballs
@@ -114,14 +113,14 @@ For self-compiled installations using CMake, execute the following from the comm
 
 ## Prerequisites
 
-- The minimum C++ standard required is **C++17** 
+- The minimum C++ standard required is **C++17**
 - A GCC compiler version 7.3.0 and later *OR* a MSVC compiler that supports C++17
 
 ## How to use
 
 To use the library **simply include the header file `CXXGraph.hpp`**, (make sure to add the [include folder](https://github.com/ZigRazor/CXXGraph/tree/master/include) to your compiler's inlcude path).
 
-CXXGraph revolves around the graph object which contains nodes and edges. This object can then be manipulated with a wide variety of algorithms. Please see the [examples section](#examples), [examples folder](https://github.com/ZigRazor/CXXGraph/tree/master/examples) and [website](https://zigrazor.github.io/CXXGraph/) for more information 
+CXXGraph revolves around the graph object which contains nodes and edges. This object can then be manipulated with a wide variety of algorithms. Please see the [examples section](#examples), [examples folder](https://github.com/ZigRazor/CXXGraph/tree/master/examples) and [website](https://zigrazor.github.io/CXXGraph/) for more information
 
 ## Examples
 
@@ -136,9 +135,9 @@ int main(){
   CXXGraph::Node<int> nodeB("B", 2);
   CXXGraph::Node<int> nodeC("C", 3);
 
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, nodeA, nodeB, 1);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, nodeB, nodeC, 1);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, nodeA, nodeC, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", nodeA, nodeB, 1);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", nodeB, nodeC, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", nodeA, nodeC, 6);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
@@ -155,7 +154,6 @@ int main(){
 ```
 
 See more examples in the [examples folder](https://github.com/ZigRazor/CXXGraph/tree/master/examples).
-
 
 ## Unit-Test Execution
 
@@ -188,7 +186,7 @@ make                 # Compile
 
 ### How to Run GoogleTest
 
-After the build has compiled, run the "test_exe" executable in the "build" directory with the following command: 
+After the build has compiled, run the "test_exe" executable in the "build" directory with the following command:
 
 `./test_exe`
 
@@ -232,7 +230,7 @@ make                       # Compile
 
 ### How to Run Google Benchmark
 
-After the build has compiled, run the "benchmark" executable in the "build" directory with the following command: 
+After the build has compiled, run the "benchmark" executable in the "build" directory with the following command:
 
 `./benchmark`
 
@@ -288,6 +286,7 @@ Both the [Doxygen documentation](https://rawcdn.githack.com/ZigRazor/CXXGraph/ma
 The Classes Explanation can be found in the [classes section](https://rawcdn.githack.com/ZigRazor/CXXGraph/master/docs/html/classes.html) of the [Doxygen documentation](https://rawcdn.githack.com/ZigRazor/CXXGraph/master/docs/html/index.html).
 
 #### Network Dynamics
+
 More information can be found [here](https://zigrazor.github.io/CXXGraph/component-explanation/network-dynamics).
 
 - Adjacency Matrix
@@ -296,8 +295,10 @@ More information can be found [here](https://zigrazor.github.io/CXXGraph/compone
 - Transition Matrix
 
 ### Algorithms
-The following is a list of all the implemented algorithms, more information on the algorithms can be found [here](https://zigrazor.github.io/CXXGraph/component-explanation/regular-algorithm). 
-#### Graph Traversal Algorithms.
+
+The following is a list of all the implemented algorithms, more information on the algorithms can be found [here](https://zigrazor.github.io/CXXGraph/component-explanation/regular-algorithm).
+
+#### Graph Traversal Algorithms
 
 - Breadth First Search (BFS)
 - Depth First Search (DFS)
@@ -336,23 +337,24 @@ The following is a list of all the implemented algorithms, more information on t
 - Tarjan’s Algorithm (DFS-based topological sorting)
 
 #### Eulerian Path/Cycle Detection
+
 - Hierholzer's Algorithm
 
 #### Graph Transformation
+
 - Transitive Reduction (reduce graph to essential edges while preserving reachability)
 
 #### Graph Coloring Algorithms
+
 - Welsh–Powell Coloring Algorithm
 
-
 #### Partition Algorithms
+
 - Vertex-Cut
 - Edge Balanced Vertex-Cut
 - Edge Balanced Vertex-Cut based on this [paper](https://arxiv.org/abs/2010.09007)
 - Greedy Vertex-Cut
 - High Degree Replicated First
-
-
 
 ## How to contribute
 
@@ -361,7 +363,6 @@ If you want to give your support you can create a ***pull request***   [![GitHub
 If you want to change the code, fix an issue, or implement a new feature please read our [CONTRIBUTING Guide](https://github.com/ZigRazor/CXXGraph/blob/master/CONTRIBUTING.md).
 
 If you want to discuss new features or you have any questions or suggestions about the library, please open a [Discussion](https://github.com/ZigRazor/CXXGraph/discussions) or simply chat on [![Join the chat at https://gitter.im/CXXGraph-Community/community](https://badges.gitter.im/CXXGraph-Community/community.svg)](https://gitter.im/CXXGraph-Community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 
 ## Roadmap
 
@@ -384,7 +385,7 @@ If you want to discuss new features or you have any questions or suggestions abo
 
 ## Contact
 
-E-mail : zigrazor@gmail.com
+E-mail : <zigrazor@gmail.com>
 
 [![Join the chat at https://gitter.im/CXXGraph-Community/community](https://badges.gitter.im/CXXGraph-Community/community.svg)](https://gitter.im/CXXGraph-Community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -416,11 +417,11 @@ Thanks to [GeeksForGeeks](https://www.geeksforgeeks.org/) for some algorithm ins
 
 Thank you to all the people who have already contributed to CXXGraph!
 
-[![Contributors](https://contrib.rocks/image?repo=zigrazor/CXXGraph)](https://github.com/ZigRazor/CXXGraph/graphs/contributors) 
+[![Contributors](https://contrib.rocks/image?repo=zigrazor/CXXGraph)](https://github.com/ZigRazor/CXXGraph/graphs/contributors)
 
 ## Cited By
 
-- Ruizhe Wang, Meng Xu, and N. Asokan. 2024. SeMalloc: Semantics-Informed Memory Allocator. In Proceedings of the 2024 on ACM SIGSAC Conference on Computer and Communications Security (CCS '24). Association for Computing Machinery, New York, NY, USA, 1375–1389. https://doi.org/10.1145/3658644.3670363
+- Ruizhe Wang, Meng Xu, and N. Asokan. 2024. SeMalloc: Semantics-Informed Memory Allocator. In Proceedings of the 2024 on ACM SIGSAC Conference on Computer and Communications Security (CCS '24). Association for Computing Machinery, New York, NY, USA, 1375–1389. <https://doi.org/10.1145/3658644.3670363>
 
 ## Cite Us
 
@@ -437,4 +438,3 @@ View the [Estimated Value of the Project](https://www.openhub.net/p/CXXGraph/est
 
 | [<img src="https://avatars0.githubusercontent.com/u/6591180?s=460&v=4" width="100"><br><sub>@ZigRazor</sub>](https://github.com/ZigRazor) |
 |:----:|
-
