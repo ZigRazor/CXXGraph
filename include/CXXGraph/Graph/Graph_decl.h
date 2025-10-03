@@ -105,11 +105,11 @@ class Graph {
                  const std::string &graphName) const;
   int readFromDot(const std::string &workingDir, const std::string &fileName);
   void recreateGraph(
-      std::unordered_map<CXXGraph::id_t, std::pair<std::string, std::string>>
+      std::unordered_map<std::string, std::pair<std::string, std::string>>
           &edgeMap,
-      std::unordered_map<CXXGraph::id_t, bool> &edgeDirectedMap,
+      std::unordered_map<std::string, bool> &edgeDirectedMap,
       std::unordered_map<std::string, T> &nodeFeatMap,
-      std::unordered_map<CXXGraph::id_t, double> &edgeWeightMap);
+      std::unordered_map<std::string, double> &edgeWeightMap);
 
   // Type trait used to compile allow compilation when T is not extractable
   template <typename U, typename = void>
@@ -170,9 +170,11 @@ class Graph {
    * Note: No Thread Safe
    *
    * @param edge The Edge to insert
+   * @return The id of the added edge or nullopt if the edge was already present
+   * or if failed
    *
    */
-  virtual void addEdge(const Edge<T> *edge);
+  virtual std::optional<CXXGraph::id_t> addEdge(const Edge<T> *edge);
 
   /**
    * \brief
@@ -182,9 +184,11 @@ class Graph {
    * Note: No Thread Safe
    *
    * @param edge The Edge to insert
+   * @return The id of the added edge or nullopt if the edge was already present
+   * or if failed
    *
    */
-  virtual void addEdge(shared<const Edge<T>> edge);
+  virtual std::optional<CXXGraph::id_t> addEdge(shared<const Edge<T>> edge);
 
   /**
    * \brief
@@ -256,6 +260,16 @@ class Graph {
    * Function remove an Edge from the Graph Edge Set
    * Note: No Thread Safe
    *
+   * @param edgeUserId The Edge User Id to remove
+   *
+   */
+  virtual void removeEdge(const std::string &edgeUserId);
+
+  /**
+   * \brief
+   * Function remove an Edge from the Graph Edge Set
+   * Note: No Thread Safe
+   *
    * @param edgeId The Edge Id to remove
    *
    */
@@ -266,10 +280,20 @@ class Graph {
    * Function to remove a Node from the Graph Node Set
    * Note: No Thread Safe
    *
-   * @param edgeId The Edge Id to remove
+   * @param edgeId The Node UserId to remove
    *
    */
   virtual void removeNode(const std::string &nodeUserId);
+
+  /**
+   * \brief
+   * Function to remove a Node from the Graph Node Set
+   * Note: No Thread Safe
+   *
+   * @param edgeId The Node Id to remove
+   *
+   */
+  virtual void removeNode(const CXXGraph::id_t nodeId);
 
   /**
    * \brief
@@ -364,6 +388,18 @@ class Graph {
    * Function that return an Edge with specific ID if Exist in the Graph
    * Note: No Thread Safe
    *
+   * @param edgeId The Edge UserId to return
+   * @returns the Edge if exist
+   *
+   */
+  virtual const std::optional<shared<const Edge<T>>> getEdge(
+      const std::string &edgeUserId) const;
+
+  /**
+   * \brief
+   * Function that return an Edge with specific ID if Exist in the Graph
+   * Note: No Thread Safe
+   *
    * @param edgeId The Edge Id to return
    * @returns the Edge if exist
    *
@@ -376,12 +412,24 @@ class Graph {
    * Function that return a Node with specific ID if Exist in the Graph
    * Note: No Thread Safe
    *
-   * @param nodeId The Node Id to return
+   * @param nodeId The Node UserId to return
    * @returns the Node if exist
    *
    */
   virtual const std::optional<shared<const Node<T>>> getNode(
       const std::string &nodeUserId) const;
+
+  /**
+   * \brief
+   * Function that return a Node with specific ID if Exist in the Graph
+   * Note: No Thread Safe
+   *
+   * @param nodeId The Node Id to return
+   * @returns the Node if exist
+   *
+   */
+  virtual const std::optional<shared<const Node<T>>> getNode(
+      const CXXGraph::id_t nodeId) const;
 
   /**
    * @brief This function generates an adjacency list with every

@@ -5,7 +5,7 @@ TEST(WelshPowellColoring, one_edge_two_nodes_undirected) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
 
-  CXXGraph::UndirectedWeightedEdge<int> edge12(3, node1, node2, 4);
+  CXXGraph::UndirectedWeightedEdge<int> edge12("3", node1, node2, 4);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(
@@ -42,53 +42,53 @@ TEST(WelshPowellColoring, undirected_simon_james) {
   CXXGraph::Node<int> nodeJ("j", 1);
   CXXGraph::Node<int> nodeK("k", 1);
 
-  CXXGraph::UndirectedEdge<int> edgeAB(1, nodeA, nodeB),
-      edgeBA(1, nodeB, nodeA),  //
+  CXXGraph::UndirectedEdge<int> edgeAB("1", nodeA, nodeB),
+      edgeBA("1", nodeB, nodeA),  //
 
-      edgeAC(1, nodeA, nodeC), edgeCA(1, nodeC, nodeA),  //
+      edgeAC("1", nodeA, nodeC), edgeCA("1", nodeC, nodeA),  //
 
-      edgeAD(1, nodeA, nodeD), edgeDA(1, nodeD, nodeA),  //
+      edgeAD("1", nodeA, nodeD), edgeDA("1", nodeD, nodeA),  //
 
-      edgeAK(1, nodeA, nodeK), edgeKA(1, nodeK, nodeA),
+      edgeAK("1", nodeA, nodeK), edgeKA("1", nodeK, nodeA),
 
-      edgeAH(1, nodeA, nodeH), edgeHA(1, nodeA, nodeH),  //
+      edgeAH("1", nodeA, nodeH), edgeHA("1", nodeA, nodeH),  //
 
-      edgeAE(1, nodeA, nodeE), edgeEA(1, nodeA, nodeH),  //
+      edgeAE("1", nodeA, nodeE), edgeEA("1", nodeA, nodeH),  //
 
-      edgeAG(1, nodeA, nodeG), edgeGA(1, nodeA, nodeG),  //
+      edgeAG("1", nodeA, nodeG), edgeGA("1", nodeA, nodeG),  //
 
-      edgeBK(1, nodeB, nodeK), edgeKB(1, nodeK, nodeB),  //
+      edgeBK("1", nodeB, nodeK), edgeKB("1", nodeK, nodeB),  //
 
-      edgeBI(1, nodeB, nodeI), edgeIB(1, nodeI, nodeB),  //
+      edgeBI("1", nodeB, nodeI), edgeIB("1", nodeI, nodeB),  //
 
-      edgeBJ(1, nodeB, nodeJ), edgeJB(1, nodeJ, nodeB),
+      edgeBJ("1", nodeB, nodeJ), edgeJB("1", nodeJ, nodeB),
 
-      edgeBF(1, nodeB, nodeF), edgeFB(1, nodeF, nodeB),  //
+      edgeBF("1", nodeB, nodeF), edgeFB("1", nodeF, nodeB),  //
 
-      edgeBD(1, nodeB, nodeD), edgeDB(1, nodeD, nodeB),  //
+      edgeBD("1", nodeB, nodeD), edgeDB("1", nodeD, nodeB),  //
 
-      edgeCE(1, nodeC, nodeE), edgeEC(1, nodeE, nodeC),  //
+      edgeCE("1", nodeC, nodeE), edgeEC("1", nodeE, nodeC),  //
 
-      edgeCD(1, nodeC, nodeD), edgeDC(1, nodeD, nodeC),  //
+      edgeCD("1", nodeC, nodeD), edgeDC("1", nodeD, nodeC),  //
 
-      edgeCH(1, nodeC, nodeH), edgeHC(1, nodeH, nodeC),  //
+      edgeCH("1", nodeC, nodeH), edgeHC("1", nodeH, nodeC),  //
 
-      edgeCG(1, nodeC, nodeG), edgeGC(1, nodeG, nodeC),  //
+      edgeCG("1", nodeC, nodeG), edgeGC("1", nodeG, nodeC),  //
 
-      edgeDE(1, nodeD, nodeE), edgeED(1, nodeD, nodeE),  //
+      edgeDE("1", nodeD, nodeE), edgeED("1", nodeD, nodeE),  //
 
-      edgeEK(1, nodeE, nodeK), edgeKE(1, nodeK, nodeE),  //
+      edgeEK("1", nodeE, nodeK), edgeKE("1", nodeK, nodeE),  //
 
-      edgeFI(1, nodeF, nodeI), edgeIF(1, nodeI, nodeF),
+      edgeFI("1", nodeF, nodeI), edgeIF("1", nodeI, nodeF),
 
-      edgeFJ(1, nodeF, nodeJ), edgeJF(1, nodeJ, nodeF),
+      edgeFJ("1", nodeF, nodeJ), edgeJF("1", nodeJ, nodeF),
 
-      edgeFG(1, nodeF, nodeG), edgeGF(1, nodeG, nodeF),
+      edgeFG("1", nodeF, nodeG), edgeGF("1", nodeG, nodeF),
 
-      edgeGH(1, nodeG, nodeH), edgeHG(1, nodeH, nodeG),
+      edgeGH("1", nodeG, nodeH), edgeHG("1", nodeH, nodeG),
 
-      edgeIJ(1, nodeI, nodeJ),  //
-      edgeJI(1, nodeJ, nodeI);  //
+      edgeIJ("1", nodeI, nodeJ),  //
+      edgeJI("1", nodeJ, nodeI);  //
 
   CXXGraph::T_EdgeSet<int> edgeSet;
 

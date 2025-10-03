@@ -51,7 +51,7 @@ void Node<T>::setId(const std::string &inpId) {
 }
 
 template <typename T>
-const CXXGraph::id_t &Node<T>::getId() const {
+CXXGraph::id_t Node<T>::getId() const {
   return id;
 }
 

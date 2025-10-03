@@ -70,7 +70,7 @@ void Graph<T>::setEdgeSet(const T_EdgeSet<T> &edgeSet) {
 }
 
 template <typename T>
-void Graph<T>::addEdge(const Edge<T> *edge) {
+std::optional<CXXGraph::id_t> Graph<T>::addEdge(const Edge<T> *edge) {
   shared<const Edge<T>> edge_shared;
 
   bool is_directed = edge->isDirected().value_or(false);
@@ -78,34 +78,44 @@ void Graph<T>::addEdge(const Edge<T> *edge) {
 
   if (is_directed) {
     if (is_weighted) {
-      edge_shared = make_shared<DirectedWeightedEdge<T>>(
-          *dynamic_cast<const DirectedWeightedEdge<T> *>(edge));
+      const DirectedWeightedEdge<T> *edge_casted =
+          dynamic_cast<const DirectedWeightedEdge<T> *>(edge);
+      if (edge_casted) {
+        edge_shared = make_shared<DirectedWeightedEdge<T>>(*edge_casted);
+      } else {
+        // The edge is not of the correct type
+        return std::nullopt;
+      }
+
     } else {
       edge_shared = make_shared<DirectedEdge<T>>(*edge);
     }
   } else {
     if (is_weighted) {
-      edge_shared = make_shared<UndirectedWeightedEdge<T>>(
-          *dynamic_cast<const UndirectedWeightedEdge<T> *>(edge));
+      const UndirectedWeightedEdge<T> *edge_casted =
+          dynamic_cast<const UndirectedWeightedEdge<T> *>(edge);
+      if (edge_casted) {
+        edge_shared = make_shared<UndirectedWeightedEdge<T>>(*edge_casted);
+      } else {
+        // The edge is not of the correct type
+        return std::nullopt;
+      }
     } else {
       edge_shared = make_shared<UndirectedEdge<T>>(*edge);
     }
   }
 
-  addEdge(edge_shared);
+  return addEdge(edge_shared);
 }
 
 template <typename T>
-void Graph<T>::addEdge(shared<const Edge<T>> edge) {
+std::optional<CXXGraph::id_t> Graph<T>::addEdge(shared<const Edge<T>> edge) {
   auto [it, inserted] = edgeSet.insert(edge);
   if (!inserted) {
-    return;
+    return std::nullopt;
   }
 
   auto &[from, to] = edge->getNodePair();
-
-  /* Adding new edge in cached adjacency lists */
-  this->edgeSet.insert(edge);
 
   (*cachedAdjListOut)[from].emplace_back(to, edge);
   (*cachedAdjListIn)[to].emplace_back(from, edge);
@@ -113,6 +123,8 @@ void Graph<T>::addEdge(shared<const Edge<T>> edge) {
     (*cachedAdjListOut)[to].emplace_back(from, edge);
     (*cachedAdjListIn)[from].emplace_back(to, edge);
   }
+
+  return std::optional<CXXGraph::id_t>(edge->getId());
 }
 
 template <typename T>
@@ -152,6 +164,92 @@ std::enable_if_t<all_are_node_ptrs_v<T1, Tn...>, void> Graph<T>::addNodes(
     T1 node, Tn... nodes) {
   addNode(node);
   addNodes(nodes...);
+}
+
+template <typename T>
+void Graph<T>::removeEdge(const std::string &edgeUserId) {
+  auto edgeOpt = Graph<T>::getEdge(edgeUserId);
+  if (edgeOpt.has_value()) {
+    /*
+    edgeSet.erase(std::find_if(this->edgeSet.begin(), this->edgeSet.end(),
+    [edgeOpt](const Edge<T> *edge) { return (*(edgeOpt.value()) == *edge); }));
+    */
+    edgeSet.erase(edgeSet.find(edgeOpt.value()));
+
+    auto &[from, to] = edgeOpt.value().get()->getNodePair();
+
+    int delIndex = -1;
+    int i = 0;
+    /* Removing the edge from the cached adjacency lists */
+    for (const auto &elem : (*cachedAdjListOut)[from]) {
+      if (elem.second.get()->getUserId() == edgeUserId) {
+        delIndex = i;
+        break;
+      }
+      i++;
+    }
+    if (delIndex != -1) {
+      (*cachedAdjListOut)[from].erase((*cachedAdjListOut)[from].begin() +
+                                      delIndex);
+      if ((*cachedAdjListOut)[from].empty()) {
+        cachedAdjListOut->erase(from);
+      }
+    }
+
+    delIndex = -1;
+    i = 0;
+    for (const auto &elem : (*cachedAdjListIn)[to]) {
+      if (elem.second.get()->getUserId() == edgeUserId) {
+        delIndex = i;
+        break;
+      }
+      i++;
+    }
+    if (delIndex != -1) {
+      (*cachedAdjListIn)[to].erase((*cachedAdjListIn)[to].begin() + delIndex);
+      if ((*cachedAdjListIn)[to].empty()) {
+        cachedAdjListIn->erase(to);
+      }
+    }
+
+    // If the edge is just he base class Edge it is treated as an undirected
+    // edge
+    if (!edgeOpt.value().get()->isDirected().value_or(false)) {
+      delIndex = -1;
+      i = 0;
+      for (const auto &elem : (*cachedAdjListOut)[to]) {
+        if (elem.second.get()->getUserId() == edgeUserId) {
+          delIndex = i;
+          break;
+        }
+        i++;
+      }
+      if (delIndex != -1) {
+        (*cachedAdjListOut)[to].erase((*cachedAdjListOut)[to].begin() +
+                                      delIndex);
+        if ((*cachedAdjListOut)[to].empty()) {
+          cachedAdjListOut->erase(to);
+        }
+      }
+
+      delIndex = -1;
+      i = 0;
+      for (const auto &elem : (*cachedAdjListIn)[from]) {
+        if (elem.second.get()->getUserId() == edgeUserId) {
+          delIndex = i;
+          break;
+        }
+        i++;
+      }
+      if (delIndex != -1) {
+        (*cachedAdjListIn)[from].erase((*cachedAdjListIn)[from].begin() +
+                                       delIndex);
+        if ((*cachedAdjListIn)[from].empty()) {
+          cachedAdjListIn->erase(from);
+        }
+      }
+    }
+  }
 }
 
 template <typename T>
@@ -266,6 +364,31 @@ void Graph<T>::removeNode(const std::string &nodeUserId) {
 }
 
 template <typename T>
+void Graph<T>::removeNode(const CXXGraph::id_t nodeId) {
+  auto nodeOpt = getNode(nodeId);
+  if (nodeOpt.has_value()) {
+    auto isolatedNodeIt = isolatedNodesSet.find(nodeOpt.value());
+    if (isolatedNodeIt != isolatedNodesSet.end()) {
+      // The node is isolated
+      isolatedNodesSet.erase(isolatedNodeIt);
+    } else {
+      // The node is not isolated
+      // Remove the edges containing the node
+      auto edgeIt = edgeSet.begin();
+      auto nextIt = edgeIt;
+      while (edgeIt != edgeSet.end()) {
+        nextIt = std::next(edgeIt);
+        if ((*edgeIt)->getNodePair().first->getId() == nodeId ||
+            (*edgeIt)->getNodePair().second->getId() == nodeId) {
+          this->removeEdge((*edgeIt)->getId());
+        }
+        edgeIt = nextIt;
+      }
+    }
+  }
+}
+
+template <typename T>
 bool Graph<T>::findEdge(const Node<T> *v1, const Node<T> *v2,
                         CXXGraph::id_t &id) const {
   auto v1_shared = make_shared<const Node<T>>(*v1);
@@ -357,6 +480,18 @@ void Graph<T>::setNodeData(std::map<std::string, T> &dataMap) {
 
 template <typename T>
 const std::optional<shared<const Edge<T>>> Graph<T>::getEdge(
+    const std::string &edgeUserId) const {
+  for (const auto &it : edgeSet) {
+    if (it->getUserId() == edgeUserId) {
+      return it;
+    }
+  }
+
+  return std::nullopt;
+}
+
+template <typename T>
+const std::optional<shared<const Edge<T>>> Graph<T>::getEdge(
     const CXXGraph::id_t edgeId) const {
   for (const auto &it : edgeSet) {
     if (it->getId() == edgeId) {
@@ -372,6 +507,18 @@ const std::optional<shared<const Node<T>>> Graph<T>::getNode(
     const std::string &nodeUserId) const {
   for (const auto &it : getNodeSet()) {
     if (it->getUserId() == nodeUserId) {
+      return it;
+    }
+  }
+
+  return std::nullopt;
+}
+
+template <typename T>
+const std::optional<shared<const Node<T>>> Graph<T>::getNode(
+    const CXXGraph::id_t nodeId) const {
+  for (const auto &it : getNodeSet()) {
+    if (it->getId() == nodeId) {
       return it;
     }
   }
@@ -848,7 +995,7 @@ void Graph<T>::reverseDirectedGraph() {
   auto oldEdgeSet = Graph<T>::getEdgeSet();
   for (const auto &edge : oldEdgeSet) {
     auto &[first, second] = edge->getNodePair();
-    auto id = edge->getId();
+    auto id = edge->getUserId();
     this->removeEdge(id);
     auto newEdge = std::make_shared<DirectedEdge<T>>(id, second, first);
     this->addEdge(newEdge);

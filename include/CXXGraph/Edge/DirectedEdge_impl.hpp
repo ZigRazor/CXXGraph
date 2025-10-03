@@ -30,31 +30,31 @@ using std::make_shared;
 using std::make_unique;
 
 template <typename T>
-DirectedEdge<T>::DirectedEdge(const CXXGraph::id_t id, const Node<T> &node1,
+DirectedEdge<T>::DirectedEdge(const std::string &userId, const Node<T> &node1,
                               const Node<T> &node2)
-    : Edge<T>(id, node1, node2) {}
+    : Edge<T>(userId, node1, node2) {}
 
 template <typename T>
-DirectedEdge<T>::DirectedEdge(const CXXGraph::id_t id,
+DirectedEdge<T>::DirectedEdge(const std::string &userId,
                               shared<const Node<T>> node1,
                               shared<const Node<T>> node2)
-    : Edge<T>(id, node1, node2) {}
+    : Edge<T>(userId, node1, node2) {}
 
 template <typename T>
 DirectedEdge<T>::DirectedEdge(
-    const CXXGraph::id_t id,
+    const std::string &userId,
     const std::pair<const Node<T> *, const Node<T> *> &nodepair)
-    : Edge<T>(id, nodepair) {}
+    : Edge<T>(userId, nodepair) {}
 
 template <typename T>
 DirectedEdge<T>::DirectedEdge(
-    const CXXGraph::id_t id,
+    const std::string &userId,
     const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair)
-    : Edge<T>(id, nodepair) {}
+    : Edge<T>(userId, nodepair) {}
 
 template <typename T>
 DirectedEdge<T>::DirectedEdge(const Edge<T> &edge)
-    : DirectedEdge(edge.getId(), *(edge.getNodePair().first),
+    : DirectedEdge(edge.getUserId(), *(edge.getNodePair().first),
                    *(edge.getNodePair().second)) {}
 
 template <typename T>

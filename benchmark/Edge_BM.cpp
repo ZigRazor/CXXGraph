@@ -8,7 +8,7 @@ static void BM_EdgeCreation(benchmark::State &state) {
   auto n1 = *nodes.at(0);
   auto n2 = *nodes.at(1);
   for (auto _ : state) {
-    CXXGraph::Edge<int> e(1, n1, n2);
+    CXXGraph::Edge<int> e("1", n1, n2);
   }
   state.SetComplexityN(2);
 }
@@ -21,7 +21,7 @@ static void EdgeCreationDestruction_new_delete(benchmark::State &state) {
   auto n2 = *nodes.at(1);
   CXXGraph::Edge<int> *e;
   for (auto _ : state) {
-    e = new CXXGraph::Edge<int>(1, n1, n2);
+    e = new CXXGraph::Edge<int>("1", n1, n2);
     delete e;
   }
   state.SetComplexityN(2);
@@ -33,7 +33,7 @@ static void EdgeGetId(benchmark::State &state) {
   auto nodes = generateRandomNodes(2, 2);
   auto n1 = *nodes.at(0);
   auto n2 = *nodes.at(1);
-  CXXGraph::Edge<int> e(1, n1, n2);
+  CXXGraph::Edge<int> e("1", n1, n2);
   for (auto _ : state) {
     e.getId();
   }
@@ -45,7 +45,7 @@ static void NodeGetNodePair(benchmark::State &state) {
   auto nodes = generateRandomNodes(2, 2);
   auto n1 = *nodes.at(0);
   auto n2 = *nodes.at(1);
-  CXXGraph::Edge<int> e(1, n1, n2);
+  CXXGraph::Edge<int> e("1", n1, n2);
   for (auto _ : state) {
     e.getNodePair();
   }

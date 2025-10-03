@@ -47,16 +47,16 @@ std::ostream &operator<<(std::ostream &o,
 template <typename T>
 class UndirectedWeightedEdge : public UndirectedEdge<T>, public Weighted {
  public:
-  UndirectedWeightedEdge(const CXXGraph::id_t id, const Node<T> &node1,
+  UndirectedWeightedEdge(const std::string &userId, const Node<T> &node1,
                          const Node<T> &node2, const double weight);
-  UndirectedWeightedEdge(const CXXGraph::id_t id, shared<const Node<T>> node1,
+  UndirectedWeightedEdge(const std::string &userId, shared<const Node<T>> node1,
                          shared<const Node<T>> node2, const double weight);
   UndirectedWeightedEdge(
-      const CXXGraph::id_t id,
+      const std::string &userId,
       const std::pair<const Node<T> *, const Node<T> *> &nodepair,
       const double weight);
   UndirectedWeightedEdge(
-      const CXXGraph::id_t id,
+      const std::string &userId,
       const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair,
       const double weight);
   UndirectedWeightedEdge(const UndirectedEdge<T> &edge, const double weight);

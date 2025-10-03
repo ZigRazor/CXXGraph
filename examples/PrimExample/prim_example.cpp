@@ -17,21 +17,21 @@ int main() {
   CXXGraph::Node<int> node7("7", 7);
   CXXGraph::Node<int> node8("8", 8);
 
-  CXXGraph::UndirectedWeightedEdge<int> edge1(1, node0, node1, 4);
-  CXXGraph::UndirectedWeightedEdge<int> edge2(2, node0, node7, 8);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node7, 11);
-  CXXGraph::UndirectedWeightedEdge<int> edge4(4, node1, node2, 8);
-  CXXGraph::UndirectedWeightedEdge<int> edge5(5, node2, node8, 2);
-  CXXGraph::UndirectedWeightedEdge<int> edge6(6, node2, node5, 4);
-  CXXGraph::UndirectedWeightedEdge<int> edge7(7, node2, node3, 7);
-  CXXGraph::UndirectedWeightedEdge<int> edge8(8, node3, node3, 1);
-  CXXGraph::UndirectedWeightedEdge<int> edge9(9, node3, node4, 9);
-  CXXGraph::UndirectedWeightedEdge<int> edge10(10, node3, node5, 14);
-  CXXGraph::UndirectedWeightedEdge<int> edge11(11, node4, node5, 10);
-  CXXGraph::UndirectedWeightedEdge<int> edge12(12, node5, node6, 2);
-  CXXGraph::UndirectedWeightedEdge<int> edge13(13, node6, node8, 6);
-  CXXGraph::UndirectedWeightedEdge<int> edge14(14, node6, node7, 1);
-  CXXGraph::UndirectedWeightedEdge<int> edge15(15, node7, node8, 7);
+  CXXGraph::UndirectedWeightedEdge<int> edge1("1", node0, node1, 4);
+  CXXGraph::UndirectedWeightedEdge<int> edge2("2", node0, node7, 8);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node7, 11);
+  CXXGraph::UndirectedWeightedEdge<int> edge4("4", node1, node2, 8);
+  CXXGraph::UndirectedWeightedEdge<int> edge5("5", node2, node8, 2);
+  CXXGraph::UndirectedWeightedEdge<int> edge6("6", node2, node5, 4);
+  CXXGraph::UndirectedWeightedEdge<int> edge7("7", node2, node3, 7);
+  CXXGraph::UndirectedWeightedEdge<int> edge8("8", node3, node3, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge9("9", node3, node4, 9);
+  CXXGraph::UndirectedWeightedEdge<int> edge10("10", node3, node5, 14);
+  CXXGraph::UndirectedWeightedEdge<int> edge11("11", node4, node5, 10);
+  CXXGraph::UndirectedWeightedEdge<int> edge12("12", node5, node6, 2);
+  CXXGraph::UndirectedWeightedEdge<int> edge13("13", node6, node8, 6);
+  CXXGraph::UndirectedWeightedEdge<int> edge14("14", node6, node7, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge15("15", node7, node8, 7);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));

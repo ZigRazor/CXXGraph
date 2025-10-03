@@ -42,7 +42,8 @@ static std::map<unsigned long, CXXGraph::Edge<int> *> generateRandomEdges(
     randomNumber1 = (distribution(rand) % MaxValue);
     randomNumber2 = (distribution(rand) % MaxValue);
     CXXGraph::Edge<int> *newEdge = new CXXGraph::Edge<int>(
-        index, *(nodes.at(randomNumber1)), *(nodes.at(randomNumber2)));
+        std::to_string(index), *(nodes.at(randomNumber1)),
+        *(nodes.at(randomNumber2)));
     edges[index] = newEdge;
   }
   return edges;
@@ -67,7 +68,8 @@ generateRandomUndirectedEdges(
     randomNumber1 = (distribution(rand) % MaxValue);
     randomNumber2 = (distribution(rand) % MaxValue);
     CXXGraph::UndirectedEdge<int> *newEdge = new CXXGraph::UndirectedEdge<int>(
-        index, *(nodes.at(randomNumber1)), *(nodes.at(randomNumber2)));
+        std::to_string(index), *(nodes.at(randomNumber1)),
+        *(nodes.at(randomNumber2)));
     edges[index] = newEdge;
   }
   return edges;

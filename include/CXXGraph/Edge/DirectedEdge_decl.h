@@ -42,14 +42,14 @@ std::ostream &operator<<(std::ostream &o, const DirectedEdge<T> &edge);
 template <typename T>
 class DirectedEdge : public Edge<T> {
  public:
-  DirectedEdge(const CXXGraph::id_t id, const Node<T> &node1,
+  DirectedEdge(const std::string &userId, const Node<T> &node1,
                const Node<T> &node2);
-  DirectedEdge(const CXXGraph::id_t id, shared<const Node<T>> node1,
+  DirectedEdge(const std::string &userId, shared<const Node<T>> node1,
                shared<const Node<T>> node2);
-  DirectedEdge(const CXXGraph::id_t id,
+  DirectedEdge(const std::string &userId,
                const std::pair<const Node<T> *, const Node<T> *> &nodepair);
   DirectedEdge(
-      const CXXGraph::id_t id,
+      const std::string &userId,
       const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair);
   DirectedEdge(const Edge<T> &edge);
   virtual ~DirectedEdge() = default;

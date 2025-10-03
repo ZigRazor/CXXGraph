@@ -21,9 +21,9 @@ TEST(UnionFindTest, setFindTest1) {
          1 2
         3
   */
-  CXXGraph::UndirectedWeightedEdge<int> edge1(0, node0, node1, 5);
-  CXXGraph::UndirectedWeightedEdge<int> edge2(1, node0, node2, 10);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(2, node1, node3, 5);
+  CXXGraph::UndirectedWeightedEdge<int> edge1("0", node0, node1, 5);
+  CXXGraph::UndirectedWeightedEdge<int> edge2("1", node0, node2, 10);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("2", node1, node3, 5);
 
   // currently we are forced to construct a graph since currently setFind and
   // setUnion are functions belonging to graph class
@@ -58,7 +58,7 @@ TEST(UnionFindTest, setFindTest2) {
   CXXGraph::Subset set1{0, 0}, set2{0, 0}, set3{0, 0}, set4{1, 0};
   subset = {{0, set1}, {1, set2}, {2, set3}, {3, set4}};
 
-  CXXGraph::UndirectedWeightedEdge<int> edge1(0, node0, node1, 5);
+  CXXGraph::UndirectedWeightedEdge<int> edge1("0", node0, node1, 5);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
   CXXGraph::Graph<int> graph(edgeSet);
@@ -85,7 +85,7 @@ TEST(UnionFindTest, setUnionTest3) {
   // currently we are forced to construct a graph since currently setFind and
   // setUnion are functions belonging to graph class
   // can be removed if Subset becomes a class of its own
-  CXXGraph::UndirectedWeightedEdge<int> edge1(0, node0, node1, 5);
+  CXXGraph::UndirectedWeightedEdge<int> edge1("0", node0, node1, 5);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
   CXXGraph::Graph<int> graph(edgeSet);
@@ -108,19 +108,19 @@ TEST(UnionFindTest, containsCycle) {
   CXXGraph::Node<int> node2("2", 2);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
-  CXXGraph::UndirectedWeightedEdge<int> edge0(0, node0, node1, 5);
+  CXXGraph::UndirectedWeightedEdge<int> edge0("0", node0, node1, 5);
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge0));
 
   CXXGraph::Graph<int> graph(edgeSet);
   bool containsCycle = graph.containsCycle(&edgeSet);
   ASSERT_EQ(containsCycle, false);
 
-  CXXGraph::UndirectedWeightedEdge<int> edge1(1, node1, node2, 10);
+  CXXGraph::UndirectedWeightedEdge<int> edge1("1", node1, node2, 10);
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge1));
   containsCycle = graph.containsCycle(&edgeSet);
   ASSERT_EQ(containsCycle, false);
 
-  CXXGraph::UndirectedWeightedEdge<int> edge2(2, node2, node0, 5);
+  CXXGraph::UndirectedWeightedEdge<int> edge2("2", node2, node0, 5);
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge2));
   containsCycle = graph.containsCycle(&edgeSet);
   ASSERT_EQ(containsCycle, true);

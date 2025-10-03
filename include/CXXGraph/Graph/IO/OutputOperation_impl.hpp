@@ -253,7 +253,7 @@ void Graph<T>::writeGraphToStream(std::ostream &oGraph, std::ostream &oNodeFeat,
                                   bool writeNodeFeat,
                                   bool writeEdgeWeight) const {
   for (const auto &edge : edgeSet) {
-    oGraph << edge->getId() << sep << edge->getNodePair().first->getUserId()
+    oGraph << edge->getUserId() << sep << edge->getNodePair().first->getUserId()
            << sep << edge->getNodePair().second->getUserId() << sep
            << ((edge->isDirected().has_value() && edge->isDirected().value())
                    ? 1
@@ -271,7 +271,7 @@ void Graph<T>::writeGraphToStream(std::ostream &oGraph, std::ostream &oNodeFeat,
   if (writeEdgeWeight) {
     for (const auto &edge : edgeSet) {
       oEdgeWeight
-          << edge->getId() << sep
+          << edge->getUserId() << sep
           << (edge->isWeighted().has_value() && edge->isWeighted().value()
                   ? (std::dynamic_pointer_cast<const Weighted>(edge))
                         ->getWeight()
