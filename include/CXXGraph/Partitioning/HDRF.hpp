@@ -129,11 +129,8 @@ void HDRF<T>::performStep(shared<const Edge<T>> e,
       fv = 1 + (1 - fv);
     }
     int load = state->getMachineLoad(m);
-    double bal = (MAX_LOAD - load);
-    bal /= (epsilon + MAX_LOAD - MIN_LOAD);
-    if (bal < 0) {
-      bal = 0;
-    }
+    const double bal =
+        std::max(0.0, (MAX_LOAD - load) / (epsilon + MAX_LOAD - MIN_LOAD));
     double SCORE_m = fu + fv + lambda * bal;
     if (SCORE_m < 0) {
       std::cout << "ERRORE: SCORE_m<0" << std::endl;
