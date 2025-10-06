@@ -4,8 +4,8 @@
 #include <stdexcept>
 
 #if defined(_WIN32) || defined(_WIN64)
-#include <windows.h>
 #include <bcrypt.h>
+#include <windows.h>
 #ifndef STATUS_SUCCESS
 #define STATUS_SUCCESS ((NTSTATUS)0x00000000L)
 #endif
@@ -33,10 +33,15 @@ inline void generateBytes(unsigned char* buffer, size_t length) {
   if (!urandom.is_open())
     throw std::runtime_error("Failed to open /dev/urandom");
 
-  urandom.read(reinterpret_cast<char*>(buffer),
-               static_cast<std::streamsize>(length));
-  if (urandom.gcount() != static_cast<std::streamsize>(length))
-    throw std::runtime_error("Failed to read enough random bytes");
+  std::streamsize totalRead = 0;
+  while (totalRead < static_cast<std::streamsize>(length)) {
+    urandom.read(reinterpret_cast<char*>(buffer) + totalRead,
+                 static_cast<std::streamsize>(length) - totalRead);
+    std::streamsize bytesRead = urandom.gcount();
+    if (bytesRead <= 0)
+      throw std::runtime_error("Failed to read enough random bytes");
+    totalRead += bytesRead;
+  }
 #endif
 }
 
