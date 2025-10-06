@@ -6,6 +6,9 @@
 #if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
 #include <bcrypt.h>
+#ifndef STATUS_SUCCESS
+#define STATUS_SUCCESS ((NTSTATUS)0x00000000L)
+#endif
 #pragma comment(lib, "bcrypt.lib")
 #else
 #include <fstream>
@@ -19,6 +22,8 @@ inline void generateBytes(unsigned char* buffer, size_t length) {
     throw std::invalid_argument("Invalid buffer or length");
 
 #if defined(_WIN32) || defined(_WIN64)
+  if (length > ULONG_MAX)
+    throw std::length_error("Requested random length too large");
   NTSTATUS status = BCryptGenRandom(nullptr, buffer, static_cast<ULONG>(length),
                                     BCRYPT_USE_SYSTEM_PREFERRED_RNG);
   if (status != STATUS_SUCCESS)
