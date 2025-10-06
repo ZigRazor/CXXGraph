@@ -4,19 +4,22 @@ on:
   - push
   - delete
 
+permissions:
+  contents: write
+
 jobs:
   sync:
     runs-on: ubuntu-latest
     name: Git Repo Sync
     steps:
-    - uses: actions/checkout@v5
-      with:
-        fetch-depth: 0
-    - uses: action-pack/gitlab-sync@v3.03
-      with:
-        # GitLab repo URL
-        url: ${{ secrets.GITLAB_TARGET_URL }}
-        # GitLab username
-        username: ${{ secrets.GITLAB_TARGET_USERNAME }}
-        # GitLab token
-        token: ${{ secrets.GITLAB_TARGET_TOKEN }}
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: action-pack/gitlab-sync@v3.03
+        with:
+          # GitLab repo URL
+          url: ${{ secrets.GITLAB_TARGET_URL }}
+          # GitLab username
+          username: ${{ secrets.GITLAB_TARGET_USERNAME }}
+          # GitLab token
+          token: ${{ secrets.GITLAB_TARGET_TOKEN }}
