@@ -55,27 +55,22 @@ struct csv_whitespace : std::ctype<char> {
 template <typename T>
 int Graph<T>::compressFile(const std::string &inputFile,
                            const std::string &outputFile) const {
-  std::ifstream ifs;
-  ifs.open(inputFile);
+  std::ifstream ifs(inputFile, std::ios::binary);
   if (!ifs.is_open()) {
-    // ERROR File Not Open
-    return -1;
+    return -1;  // File not open
   }
+
   std::string content((std::istreambuf_iterator<char>(ifs)),
-                      (std::istreambuf_iterator<char>()));
+                      std::istreambuf_iterator<char>());
 
-  const char *content_ptr = content.c_str();
   gzFile outFileZ = gzopen(outputFile.c_str(), "wb");
-  if (outFileZ == NULL) {
-    // printf("Error: Failed to gzopen %s\n", outputFile.c_str());
-    return -1;
+  if (outFileZ == nullptr) {
+    return -1;  // Failed to open gz file
   }
 
-  unsigned int zippedBytes;
-  zippedBytes =
-      gzwrite(outFileZ, content_ptr, (unsigned int)strlen(content_ptr));
+  unsigned int zippedBytes = gzwrite(outFileZ, content.data(),
+                                     static_cast<unsigned int>(content.size()));
 
-  ifs.close();
   gzclose(outFileZ);
   return zippedBytes;
 }
