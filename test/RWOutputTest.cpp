@@ -2,6 +2,7 @@
 #include <memory>
 
 #include "CXXGraph/CXXGraph.hpp"
+#include "CXXGraph/Utility/SecureRandom.hpp"
 #include "gtest/gtest.h"
 
 // Smart pointers alias
@@ -21,11 +22,10 @@ inline bool exists_test(const std::string &name) {
 static std::unordered_map<unsigned long, shared<CXXGraph::Node<int>>>
 generateRandomNodes(unsigned long numberOfNodes, int MaxValue) {
   std::unordered_map<unsigned long, shared<CXXGraph::Node<int>>> nodes;
-  srand(static_cast<unsigned>(time(NULL)));
   int randomNumber;
   for (unsigned long index = 0; index < numberOfNodes; ++index) {
     // auto index = std::to_string(index);
-    randomNumber = (rand() % MaxValue) + 1;
+    randomNumber = (CXXGraph::SecureRandom::randomUInt() % MaxValue) + 1;
     auto newNode =
         make_shared<CXXGraph::Node<int>>(std::to_string(index), randomNumber);
     nodes[index] = newNode;
@@ -38,13 +38,12 @@ generateRandomEdges(
     unsigned long numberOfEdges,
     std::unordered_map<unsigned long, shared<CXXGraph::Node<int>>> nodes) {
   std::unordered_map<unsigned long, shared<CXXGraph::Edge<int>>> edges;
-  srand(static_cast<unsigned>(time(NULL)));
   int randomNumber1;
   int randomNumber2;
   auto MaxValue = nodes.size();
   for (unsigned long index = 0; index < numberOfEdges; ++index) {
-    randomNumber1 = (rand() % MaxValue);
-    randomNumber2 = (rand() % MaxValue);
+    randomNumber1 = (CXXGraph::SecureRandom::randomUInt() % MaxValue);
+    randomNumber2 = (CXXGraph::SecureRandom::randomUInt() % MaxValue);
     auto newEdge = make_shared<CXXGraph::Edge<int>>(std::to_string(index),
                                                     *(nodes.at(randomNumber1)),
                                                     *(nodes.at(randomNumber2)));

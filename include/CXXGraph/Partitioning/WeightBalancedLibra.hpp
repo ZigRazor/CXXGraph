@@ -75,7 +75,6 @@ void WeightBalancedLibra<T>::performStep(shared<const Edge<T>> e,
   //*** ASK FOR LOCK
   bool locks_taken = false;
   while (!locks_taken) {
-    srand((unsigned)time(NULL));
     int usleep_time = 2;
     while (!u_record->getLock()) {
       std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
