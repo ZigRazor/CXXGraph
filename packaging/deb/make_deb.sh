@@ -12,4 +12,4 @@ cp -r ../../include/* CXXGraph/usr/include/
 dpkg-deb --build CXXGraph
 
 #Rename
-mv CXXGraph.deb CXXGraph_$VERSION-$RELEASE.deb
+mv CXXGraph.deb "CXXGraph_$VERSION-$RELEASE.deb"
