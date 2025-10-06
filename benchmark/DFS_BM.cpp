@@ -16,12 +16,12 @@ static void DFS_X(benchmark::State &state) {
     auto &result =
         g.depth_first_search(*(range_start->second->getNodePair().first));
   }
-  state.SetComplexityN(2);
+  state.SetComplexityN(state.range(0));
 }
 
 BENCHMARK(DFS_X)
-    ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->RangeMultiplier(2)
+    ->Range((unsigned long)1, (unsigned long)1 << 20)
     ->Complexity();
 
 static void DFS_FromReadedCitHep(benchmark::State &state) {
@@ -30,7 +30,6 @@ static void DFS_FromReadedCitHep(benchmark::State &state) {
     auto &result = cit_graph_ptr->depth_first_search(
         *((*(edgeSet.begin()))->getNodePair().first));
   }
-  state.SetComplexityN(2);
 }
 
-// BENCHMARK(DFS_FromReadedCitHep)->Complexity();
+// BENCHMARK(DFS_FromReadedCitHep);

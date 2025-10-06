@@ -15,11 +15,11 @@ static void Boruvka_X(benchmark::State &state) {
   for (auto _ : state) {
     auto &result = g.boruvka();
   }
-  state.SetComplexityN(2);
+  state.SetComplexityN(state.range(0));
 }
 BENCHMARK(Boruvka_X)
-    ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->RangeMultiplier(2)
+    ->Range((unsigned long)1, (unsigned long)1 << 20)
     ->Complexity();
 
 static void Boruvka_FromReadedCitHep(benchmark::State &state) {
@@ -29,4 +29,4 @@ static void Boruvka_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(Boruvka_FromReadedCitHep)->Complexity();
+// BENCHMARK(Boruvka_FromReadedCitHep);

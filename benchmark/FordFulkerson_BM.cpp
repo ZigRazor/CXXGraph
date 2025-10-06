@@ -17,11 +17,11 @@ static void FordFulkerson_X(benchmark::State &state) {
         g.fordFulkersonMaxFlow(*(range_start->second->getNodePair().first),
                                *(range_end->second->getNodePair().second));
   }
-  state.SetComplexityN(2);
+  state.SetComplexityN(state.range(0));
 }
 BENCHMARK(FordFulkerson_X)
-    ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->RangeMultiplier(2)
+    ->Range((unsigned long)1, (unsigned long)1 << 20)
     ->Complexity();
 
 static void FordFulkerson_FromReadedCitHep(benchmark::State &state) {
@@ -31,7 +31,6 @@ static void FordFulkerson_FromReadedCitHep(benchmark::State &state) {
         *((*(edgeSet.begin()))->getNodePair().first),
         *((*(++edgeSet.begin()))->getNodePair().second));
   }
-  state.SetComplexityN(2);
 }
 
-// BENCHMARK(FordFulkerson_FromReadedCitHep)->Complexity();
+// BENCHMARK(FordFulkerson_FromReadedCitHep);

@@ -15,9 +15,9 @@ static void GraphSlicing_X(benchmark::State &state) {
   for (auto _ : state) {
     auto &result = g.graph_slicing(*(range_start->second->getNodePair().first));
   }
-  state.SetComplexityN(2);
+  state.SetComplexityN(state.range(0));
 }
 BENCHMARK(GraphSlicing_X)
-    ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 8)
+    ->RangeMultiplier(2)
+    ->Range((unsigned long)1, (unsigned long)1 << 20)
     ->Complexity();

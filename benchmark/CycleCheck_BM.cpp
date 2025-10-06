@@ -15,11 +15,11 @@ static void CycleCheckBFS_X(benchmark::State &state) {
   for (auto _ : state) {
     auto result = g.isCyclicDirectedGraphBFS();
   }
-  state.SetComplexityN(2);
+  state.SetComplexityN(state.range(0));
 }
 BENCHMARK(CycleCheckBFS_X)
-    ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->RangeMultiplier(2)
+    ->Range((unsigned long)1, (unsigned long)1 << 20)
     ->Complexity();
 
 static void CycleCheckBFS_FromReadedCitHep(benchmark::State &state) {
@@ -27,10 +27,9 @@ static void CycleCheckBFS_FromReadedCitHep(benchmark::State &state) {
   for (auto _ : state) {
     auto result = cit_graph_ptr->isCyclicDirectedGraphBFS();
   }
-  state.SetComplexityN(2);
 }
 
-BENCHMARK(CycleCheckBFS_FromReadedCitHep)->Complexity();
+// BENCHMARK(CycleCheckBFS_FromReadedCitHep);
 
 static void CycleCheckDFS_X(benchmark::State &state) {
   CXXGraph::Graph<int> g;
@@ -44,11 +43,11 @@ static void CycleCheckDFS_X(benchmark::State &state) {
   for (auto _ : state) {
     auto result = g.isCyclicDirectedGraphDFS();
   }
-  state.SetComplexityN(2);
+  state.SetComplexityN(state.range(0));
 }
 BENCHMARK(CycleCheckDFS_X)
-    ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->RangeMultiplier(2)
+    ->Range((unsigned long)1, (unsigned long)1 << 20)
     ->Complexity();
 
 static void CycleCheckDFS_FromReadedCitHep(benchmark::State &state) {
@@ -56,7 +55,6 @@ static void CycleCheckDFS_FromReadedCitHep(benchmark::State &state) {
   for (auto _ : state) {
     auto result = cit_graph_ptr->isCyclicDirectedGraphDFS();
   }
-  state.SetComplexityN(2);
 }
 
-BENCHMARK(CycleCheckDFS_FromReadedCitHep)->Complexity();
+// BENCHMARK(CycleCheckDFS_FromReadedCitHep);

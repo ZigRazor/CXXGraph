@@ -4,8 +4,8 @@
 #include <stdexcept>
 
 #if defined(_WIN32) || defined(_WIN64)
-#include <bcrypt.h>
 #include <windows.h>
+#include <bcrypt.h>
 #ifndef STATUS_SUCCESS
 #define STATUS_SUCCESS ((NTSTATUS)0x00000000L)
 #endif

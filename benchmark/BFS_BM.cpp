@@ -16,11 +16,11 @@ static void BFS_X(benchmark::State &state) {
     auto &result =
         g.breadth_first_search(*(range_start->second->getNodePair().first));
   }
-  state.SetComplexityN(2);
+  state.SetComplexityN(state.range(0));
 }
 BENCHMARK(BFS_X)
-    ->RangeMultiplier(18)
-    ->Range((unsigned long)1, (unsigned long)1 << 18)
+    ->RangeMultiplier(2)
+    ->Range((unsigned long)1, (unsigned long)1 << 20)
     ->Complexity();
 
 static void BFS_FromReadedCitHep(benchmark::State &state) {
@@ -29,11 +29,8 @@ static void BFS_FromReadedCitHep(benchmark::State &state) {
     auto &result = cit_graph_ptr->breadth_first_search(
         *((*(edgeSet.begin()))->getNodePair().first));
   }
-  state.SetComplexityN(2);
 }
-
-// In Error
-// BENCHMARK(BFS_FromReadedCitHep)->Complexity();
+// BENCHMARK(BFS_FromReadedCitHep);
 
 static void PSEUDO_CONCURRENCY_BFS_X(benchmark::State &state) {
   CXXGraph::Graph<int> g;
@@ -48,11 +45,11 @@ static void PSEUDO_CONCURRENCY_BFS_X(benchmark::State &state) {
     auto &result = g.concurrency_breadth_first_search(
         *(range_start->second->getNodePair().first), 1);
   }
-  state.SetComplexityN(2);
+  state.SetComplexityN(state.range(0));
 }
 BENCHMARK(PSEUDO_CONCURRENCY_BFS_X)
-    ->RangeMultiplier(18)
-    ->Range((unsigned long)1, (unsigned long)1 << 18)
+    ->RangeMultiplier(2)
+    ->Range((unsigned long)1, (unsigned long)1 << 20)
     ->Complexity();
 
 static void PSEUDO_CONCURRENCY_BFS_FromReadedCitHep(benchmark::State &state) {
@@ -61,10 +58,9 @@ static void PSEUDO_CONCURRENCY_BFS_FromReadedCitHep(benchmark::State &state) {
     auto &result = cit_graph_ptr->concurrency_breadth_first_search(
         *((*(edgeSet.begin()))->getNodePair().first), 1);
   }
-  state.SetComplexityN(2);
 }
 
-// BENCHMARK(PSEUDO_CONCURRENCY_BFS_FromReadedCitHep)->Complexity();
+// BENCHMARK(PSEUDO_CONCURRENCY_BFS_FromReadedCitHep);
 
 static void CONCURRENCY_BFS_X(benchmark::State &state) {
   CXXGraph::Graph<int> g;
@@ -79,10 +75,10 @@ static void CONCURRENCY_BFS_X(benchmark::State &state) {
     auto &result = g.concurrency_breadth_first_search(
         *(range_start->second->getNodePair().first), 8);
   }
-  state.SetComplexityN(2);
+  state.SetComplexityN(state.range(0));
 }
 // BENCHMARK(CONCURRENCY_BFS_X)
-//     ->RangeMultiplier(18)
+//     ->RangeMultiplier(2)
 //     ->Range((unsigned long)1, (unsigned long)1 << 18);
 
 static void CONCURRENCY_BFS_FromReadedCitHep(benchmark::State &state) {
@@ -91,7 +87,6 @@ static void CONCURRENCY_BFS_FromReadedCitHep(benchmark::State &state) {
     auto &result = cit_graph_ptr->concurrency_breadth_first_search(
         *((*(edgeSet.begin()))->getNodePair().first), 8);
   }
-  state.SetComplexityN(2);
 }
 
 // BENCHMARK(CONCURRENCY_BFS_FromReadedCitHep);

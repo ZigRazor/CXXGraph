@@ -85,8 +85,8 @@ static CXXGraph::Graph<int> *readGraph(const std::string &filename) {
 
 // Static Generation
 
-static const auto nodes = generateRandomNodes(100000, 2);
-static const auto edges = generateRandomEdges(100000, nodes);
+static const auto nodes = generateRandomNodes(2000000, 2);
+static const auto edges = generateRandomEdges(2000000, nodes);
 static const auto undirectedEdges =
     generateRandomUndirectedEdges(100000, nodes);
 static const auto cit_graph_ptr = readGraph("CitHepPh");

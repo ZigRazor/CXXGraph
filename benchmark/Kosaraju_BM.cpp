@@ -15,11 +15,11 @@ static void Kosaraju_X(benchmark::State &state) {
   for (auto _ : state) {
     const auto &result = g.kosaraju();
   }
-  state.SetComplexityN(2);
+  state.SetComplexityN(state.range(0));
 }
 BENCHMARK(Kosaraju_X)
-    ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->RangeMultiplier(2)
+    ->Range((unsigned long)1, (unsigned long)1 << 20)
     ->Complexity();
 
 static void Kosaraju_FromReadedCitHep(benchmark::State &state) {
@@ -27,7 +27,6 @@ static void Kosaraju_FromReadedCitHep(benchmark::State &state) {
   for (auto _ : state) {
     const auto &result = cit_graph_ptr->kosaraju();
   }
-  state.SetComplexityN(2);
 }
 
-BENCHMARK(Kosaraju_FromReadedCitHep)->Complexity();
+// BENCHMARK(Kosaraju_FromReadedCitHep);
