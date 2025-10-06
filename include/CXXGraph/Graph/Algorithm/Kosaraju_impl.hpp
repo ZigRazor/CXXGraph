@@ -109,7 +109,7 @@ SCCResult<T> Graph<T>::kosaraju() const {
         };
 
     int sccLabel = 0;
-    while (st.size() != 0) {
+    while (!st.empty()) {
       auto rem = st.top();
       st.pop();
       if (visited[rem->getId()] == false) {
