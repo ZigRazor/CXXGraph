@@ -19,7 +19,7 @@ static void TopologicalSort_X(benchmark::State &state) {
 }
 BENCHMARK(TopologicalSort_X)
     ->RangeMultiplier(2)
-    ->Range((unsigned long)1, (unsigned long)1 << 20)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
 static void TopologicalSort_FromReadedCitHep(benchmark::State &state) {

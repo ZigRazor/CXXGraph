@@ -41,7 +41,7 @@ static void AddEdgeX(benchmark::State &state) {
 }
 BENCHMARK(AddEdgeX)
     ->RangeMultiplier(2)
-    ->Range((unsigned long)1, (unsigned long)1 << 20)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
 static void ReadGraphCitHep(benchmark::State &state) {
@@ -71,7 +71,7 @@ static void getEdgeSetX(benchmark::State &state) {
 
 BENCHMARK(getEdgeSetX)
     ->RangeMultiplier(2)
-    ->Range((unsigned long)1, (unsigned long)1 << 20)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
 static void getNodeSetX(benchmark::State &state) {
@@ -91,7 +91,7 @@ static void getNodeSetX(benchmark::State &state) {
 
 BENCHMARK(getNodeSetX)
     ->RangeMultiplier(2)
-    ->Range((unsigned long)1, (unsigned long)1 << 20)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
 static void getEdgeSetCitHep(benchmark::State &state) {
@@ -129,7 +129,7 @@ static void getAdjMatrixX(benchmark::State &state) {
 
 BENCHMARK(getAdjMatrixX)
     ->RangeMultiplier(2)
-    ->Range((unsigned long)1, (unsigned long)1 << 20)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
 static void getAdjMatrixCitHep(benchmark::State &state) {

@@ -21,7 +21,7 @@ static void DFS_X(benchmark::State &state) {
 
 BENCHMARK(DFS_X)
     ->RangeMultiplier(2)
-    ->Range((unsigned long)1, (unsigned long)1 << 20)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
 static void DFS_FromReadedCitHep(benchmark::State &state) {

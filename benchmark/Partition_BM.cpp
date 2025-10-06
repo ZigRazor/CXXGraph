@@ -20,7 +20,7 @@ static void PartitionHDRF_X(benchmark::State &state) {
 }
 BENCHMARK(PartitionHDRF_X)
     ->RangeMultiplier(2)
-    ->Range((unsigned long)1, (unsigned long)1 << 20)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
 static void PartitionHDRF_FromReadedCitHep(benchmark::State &state) {
@@ -51,7 +51,7 @@ static void PartitionEBVC_X(benchmark::State &state) {
 }
 BENCHMARK(PartitionEBVC_X)
     ->RangeMultiplier(2)
-    ->Range((unsigned long)1, (unsigned long)1 << 20)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
 static void PartitionEBVC_FromReadedCitHep(benchmark::State &state) {
@@ -82,7 +82,7 @@ static void PartitionGVC_X(benchmark::State &state) {
 }
 BENCHMARK(PartitionGVC_X)
     ->RangeMultiplier(2)
-    ->Range((unsigned long)1, (unsigned long)1 << 20)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
 static void PartitionGVC_FromReadedCitHep(benchmark::State &state) {
@@ -113,7 +113,7 @@ static void PartitionEBV_X(benchmark::State &state) {
 }
 BENCHMARK(PartitionEBV_X)
     ->RangeMultiplier(2)
-    ->Range((unsigned long)1, (unsigned long)1 << 20)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
 static void PartitionEBV_FromReadedCitHep(benchmark::State &state) {

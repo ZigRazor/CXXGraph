@@ -20,7 +20,7 @@ static void BFS_X(benchmark::State &state) {
 }
 BENCHMARK(BFS_X)
     ->RangeMultiplier(2)
-    ->Range((unsigned long)1, (unsigned long)1 << 20)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
 static void BFS_FromReadedCitHep(benchmark::State &state) {
@@ -49,7 +49,7 @@ static void PSEUDO_CONCURRENCY_BFS_X(benchmark::State &state) {
 }
 BENCHMARK(PSEUDO_CONCURRENCY_BFS_X)
     ->RangeMultiplier(2)
-    ->Range((unsigned long)1, (unsigned long)1 << 20)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
 static void PSEUDO_CONCURRENCY_BFS_FromReadedCitHep(benchmark::State &state) {

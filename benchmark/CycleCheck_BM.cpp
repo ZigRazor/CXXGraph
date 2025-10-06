@@ -19,7 +19,7 @@ static void CycleCheckBFS_X(benchmark::State &state) {
 }
 BENCHMARK(CycleCheckBFS_X)
     ->RangeMultiplier(2)
-    ->Range((unsigned long)1, (unsigned long)1 << 20)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
 static void CycleCheckBFS_FromReadedCitHep(benchmark::State &state) {
@@ -47,7 +47,7 @@ static void CycleCheckDFS_X(benchmark::State &state) {
 }
 BENCHMARK(CycleCheckDFS_X)
     ->RangeMultiplier(2)
-    ->Range((unsigned long)1, (unsigned long)1 << 20)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
 static void CycleCheckDFS_FromReadedCitHep(benchmark::State &state) {

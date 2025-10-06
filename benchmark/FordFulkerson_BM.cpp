@@ -21,7 +21,7 @@ static void FordFulkerson_X(benchmark::State &state) {
 }
 BENCHMARK(FordFulkerson_X)
     ->RangeMultiplier(2)
-    ->Range((unsigned long)1, (unsigned long)1 << 20)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
 static void FordFulkerson_FromReadedCitHep(benchmark::State &state) {

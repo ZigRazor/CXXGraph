@@ -19,7 +19,7 @@ static void Kruskal_X(benchmark::State &state) {
 }
 BENCHMARK(Kruskal_X)
     ->RangeMultiplier(2)
-    ->Range((unsigned long)1, (unsigned long)1 << 20)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
 static void Kruskal_FromReadedCitHep(benchmark::State &state) {
