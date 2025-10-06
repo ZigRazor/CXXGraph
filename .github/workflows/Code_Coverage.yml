@@ -4,9 +4,12 @@ name: Code Coverage
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
+
+permissions:
+  contents: read
 
 jobs:
   codacy-coverage-reporter:
@@ -15,7 +18,7 @@ jobs:
     steps:
       #- name: Install gtest manually
       #  run: sudo apt-get install libgtest-dev
-        
+
       #- name: Install benchmark manually
       #  run: |
       #    git clone https://github.com/google/benchmark.git
