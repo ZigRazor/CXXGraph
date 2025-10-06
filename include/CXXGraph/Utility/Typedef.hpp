@@ -271,7 +271,7 @@ using AdjacencyList = std::unordered_map<
 
 template <typename T>
 using DegreeMatrix =
-    std::unordered_map<shared<const Node<T>>, unsigned int, nodeHash<T>>;
+    std::unordered_map<shared<const Node<T>>, size_t, nodeHash<T>>;
 
 template <typename T>
 using LaplacianMatrix = std::unordered_map<
