@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <memory>
 #include <mutex>
 #include <set>
@@ -136,10 +137,7 @@ void CoordinatedPartitionState<T>::incrementMachineLoad(
     const int m, shared<const Edge<T>> e) {
   std::lock_guard<std::mutex> lock(*machines_load_edges_mutex);
   machines_load_edges[m] = machines_load_edges[m] + 1;
-  int new_value = machines_load_edges.at(m);
-  if (new_value > MAX_LOAD) {
-    MAX_LOAD = new_value;
-  }
+  MAX_LOAD = std::max(MAX_LOAD, machines_load_edges.at(m));
   partition_map[m]->addEdge(e);
 }
 template <typename T>
@@ -161,14 +159,8 @@ void CoordinatedPartitionState<T>::incrementMachineWeight(
 template <typename T>
 int CoordinatedPartitionState<T>::getMinLoad() const {
   std::lock_guard<std::mutex> lock(*machines_load_edges_mutex);
-  int MIN_LOAD = std::numeric_limits<int>::max();
-  for (const auto &machines_load_edges_it : machines_load_edges) {
-    int loadi = machines_load_edges_it;
-    if (loadi < MIN_LOAD) {
-      MIN_LOAD = loadi;
-    }
-  }
-  return MIN_LOAD;
+  return *std::min_element(machines_load_edges.begin(),
+                           machines_load_edges.end());
 }
 template <typename T>
 int CoordinatedPartitionState<T>::getMaxLoad() const {
@@ -177,18 +169,9 @@ int CoordinatedPartitionState<T>::getMaxLoad() const {
 template <typename T>
 int CoordinatedPartitionState<T>::getMachineWithMinWeight() const {
   std::lock_guard<std::mutex> lock(*machines_weight_edges_mutex);
-
-  double MIN_LOAD = std::numeric_limits<double>::max();
-  int machine_id = 0;
-  for (size_t i = 0; i < machines_weight_edges.size(); ++i) {
-    double loadi = machines_weight_edges[i];
-    if (loadi < MIN_LOAD) {
-      MIN_LOAD = loadi;
-      machine_id = i;
-    }
-  }
-
-  return machine_id;
+  return std::distance(machines_weight_edges.begin(),
+                       std::min_element(machines_weight_edges.begin(),
+                                        machines_weight_edges.end()));
 }
 template <typename T>
 int CoordinatedPartitionState<T>::getMachineWithMinWeight(
