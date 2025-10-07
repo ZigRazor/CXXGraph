@@ -33,12 +33,12 @@ const std::vector<Node<T>> Graph<T>::breadth_first_search(
     const Node<T> &start) const {
   // vector to keep track of visited nodes
   std::vector<Node<T>> visited;
-  auto &nodeSet = Graph<T>::getNodeSet();
+  // std::unordered_set<CXXGraph::id_t> visited_ids;
+
   // check is exist node in the graph
-  auto start_node_it = std::find_if(
-      nodeSet.begin(), nodeSet.end(),
-      [&start](auto &node) { return node->getUserId() == start.getUserId(); });
-  if (start_node_it == nodeSet.end()) {
+
+  auto start_node = Graph<T>::getNode(start.getId());
+  if (!start_node.has_value()) {
     return visited;
   }
   // queue that stores vertices that need to be further explored
@@ -46,17 +46,20 @@ const std::vector<Node<T>> Graph<T>::breadth_first_search(
 
   // mark the starting node as visited
   visited.push_back(start);
-  tracker.push(*start_node_it);
+  // visited_ids.insert(start.getId());
+  tracker.push(start_node.value());
   while (!tracker.empty()) {
     shared<const Node<T>> node = tracker.front();
     tracker.pop();
     if (cachedAdjListOut->find(node) != cachedAdjListOut->end()) {
       for (const auto &elem : cachedAdjListOut->at(node)) {
-        // if the node is not visited then mark it as visited
-        // and push it to the queue
-        if (std::find(visited.begin(), visited.end(), *(elem.first)) ==
-            visited.end()) {
+        if (std::find_if(visited.begin(), visited.end(),
+                         [&elem](const auto &node) {
+                           return node.getId() == elem.first->getId();
+                         }) == visited.end()) {
+          // if (visited_ids.find(elem.first->getId()) == visited_ids.end()) {
           visited.push_back(*(elem.first));
+          // visited_ids.insert(elem.first->getId());
           tracker.push(elem.first);
         }
       }

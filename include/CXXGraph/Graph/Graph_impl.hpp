@@ -481,10 +481,13 @@ void Graph<T>::setNodeData(std::map<std::string, T> &dataMap) {
 template <typename T>
 const std::optional<shared<const Edge<T>>> Graph<T>::getEdge(
     const std::string &edgeUserId) const {
-  for (const auto &it : edgeSet) {
-    if (it->getUserId() == edgeUserId) {
-      return it;
-    }
+  const auto &edgeSet = this->getEdgeSet();
+  auto it = std::find_if(edgeSet.begin(), edgeSet.end(),
+                         [&edgeUserId](const auto &edge) {
+                           return edge->getUserId() == edgeUserId;
+                         });
+  if (it != edgeSet.end()) {
+    return *it;
   }
 
   return std::nullopt;
@@ -493,10 +496,12 @@ const std::optional<shared<const Edge<T>>> Graph<T>::getEdge(
 template <typename T>
 const std::optional<shared<const Edge<T>>> Graph<T>::getEdge(
     const CXXGraph::id_t edgeId) const {
-  for (const auto &it : edgeSet) {
-    if (it->getId() == edgeId) {
-      return it;
-    }
+  const auto &edgeSet = this->getEdgeSet();
+  auto it = std::find_if(
+      edgeSet.begin(), edgeSet.end(),
+      [edgeId](const auto &edge) { return edge->getId() == edgeId; });
+  if (it != edgeSet.end()) {
+    return *it;
   }
 
   return std::nullopt;
@@ -505,10 +510,13 @@ const std::optional<shared<const Edge<T>>> Graph<T>::getEdge(
 template <typename T>
 const std::optional<shared<const Node<T>>> Graph<T>::getNode(
     const std::string &nodeUserId) const {
-  for (const auto &it : getNodeSet()) {
-    if (it->getUserId() == nodeUserId) {
-      return it;
-    }
+  const auto &nodeSet = this->getNodeSet();
+  auto it = std::find_if(nodeSet.begin(), nodeSet.end(),
+                         [&nodeUserId](const auto &node) {
+                           return node->getUserId() == nodeUserId;
+                         });
+  if (it != nodeSet.end()) {
+    return *it;
   }
 
   return std::nullopt;
@@ -517,10 +525,12 @@ const std::optional<shared<const Node<T>>> Graph<T>::getNode(
 template <typename T>
 const std::optional<shared<const Node<T>>> Graph<T>::getNode(
     const CXXGraph::id_t nodeId) const {
-  for (const auto &it : getNodeSet()) {
-    if (it->getId() == nodeId) {
-      return it;
-    }
+  const auto &nodeSet = this->getNodeSet();
+  auto it = std::find_if(
+      nodeSet.begin(), nodeSet.end(),
+      [nodeId](const auto &node) { return node->getId() == nodeId; });
+  if (it != nodeSet.end()) {
+    return *it;
   }
 
   return std::nullopt;
@@ -538,7 +548,7 @@ std::unordered_set<shared<Node<T>>, nodeHash<T>> Graph<T>::nodeSet() {
     nodeSet.insert(std::const_pointer_cast<Node<T>>(adjListOutIt.first));
   }
 
-  for (auto &isNodeIt : isolatedNodesSet) {
+  for (const auto &isNodeIt : isolatedNodesSet) {
     nodeSet.insert(std::const_pointer_cast<Node<T>>(isNodeIt));
   }
 
