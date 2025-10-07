@@ -140,7 +140,7 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T>& source,
     result.errorMessage = "";
     result.result = dist[*target_node_it];
     std::string id = target.getUserId();
-    while (parent[id] != "") {
+    while (!parent[id].empty()) {
       result.path.push_back(id);
       id = parent[id];
     }
@@ -288,7 +288,7 @@ const DijkstraResult Graph<T>::dijkstra_deterministic(
     result.errorMessage = "";
     result.result = dist[*target_node_it];
     std::string id = target.getUserId();
-    while (parent[id] != "") {
+    while (!parent[id].empty()) {
       result.path.push_back(id);
       id = parent[id];
     }
@@ -444,7 +444,7 @@ const DijkstraResult Graph<T>::dijkstra_deterministic2(
     result.errorMessage = "";
     result.result = dist[*target_node_it];
     std::string id = target.getUserId();
-    while (parent[id] != "") {
+    while (!parent[id].empty()) {
       result.path.push_back(id);
       id = parent[id];
     }
@@ -591,7 +591,7 @@ const DijkstraResult Graph<T>::criticalpath_deterministic(
     result.errorMessage = "";
     result.result = dist[*target_node_it];
     std::string id = target.getUserId();
-    while (parent[id] != "") {
+    while (!parent[id].empty()) {
       result.path.push_back(id);
       id = parent[id];
     }

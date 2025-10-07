@@ -47,7 +47,7 @@ std::shared_ptr<std::vector<Node<T>>> Graph<T>::eulerianPath() const {
   auto currentNode = *(firstNodeIt);
   currentPath.push_back(currentNode);
 
-  while (currentPath.size() > 0) {
+  while (!currentPath.empty()) {
     auto &edges = cachedAdjListOut->at(currentNode);
     // we keep removing the edges that
     // have been traversed from the adjacency list
