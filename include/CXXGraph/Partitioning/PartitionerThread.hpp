@@ -43,7 +43,7 @@ class PartitionerThread : public Runnable {
   PartitionerThread(std::vector<shared<const Edge<T>>> &list,
                     shared<PartitionState<T>> state,
                     shared<PartitionStrategy<T>> algorithm);
-  ~PartitionerThread();
+  ~PartitionerThread() override;
 
   void run() override;
 

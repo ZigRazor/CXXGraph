@@ -53,7 +53,7 @@ class EdgeBalancedVertexCut : public PartitionStrategy<T> {
 
  public:
   explicit EdgeBalancedVertexCut(const Globals &G);
-  ~EdgeBalancedVertexCut();
+  ~EdgeBalancedVertexCut() override;
 
   void performStep(shared<const Edge<T>> e,
                    shared<PartitionState<T>> Sstate) override;

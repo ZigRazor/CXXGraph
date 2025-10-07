@@ -51,7 +51,7 @@ class UndirectedEdge : public Edge<T> {
       const std::string &userId,
       const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair);
   UndirectedEdge(const Edge<T> &edge);
-  virtual ~UndirectedEdge() = default;
+  ~UndirectedEdge() override = default;
   const Node<T> &getNode1() const;
   const Node<T> &getNode2() const;
   const std::optional<bool> isDirected() const override;

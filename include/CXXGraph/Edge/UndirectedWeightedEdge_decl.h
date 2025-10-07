@@ -64,7 +64,7 @@ class UndirectedWeightedEdge : public UndirectedEdge<T>, public Weighted {
   UndirectedWeightedEdge(const UndirectedEdge<T> &edge);
   UndirectedWeightedEdge(const Edge<T> &edge);
   UndirectedWeightedEdge(const DirectedWeightedEdge<T> &edge);
-  virtual ~UndirectedWeightedEdge() = default;
+  ~UndirectedWeightedEdge() override = default;
   const std::optional<bool> isWeighted() const override;
   // operator
   explicit operator DirectedWeightedEdge<T>() const {

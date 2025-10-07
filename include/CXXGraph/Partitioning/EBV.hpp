@@ -55,7 +55,7 @@ class EBV : public PartitionStrategy<T> {
 
  public:
   explicit EBV(const Globals &G);
-  ~EBV();
+  ~EBV() override;
 
   void performStep(shared<const Edge<T>> e,
                    shared<PartitionState<T>> Sstate) override;
