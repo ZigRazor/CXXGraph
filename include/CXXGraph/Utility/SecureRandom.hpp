@@ -4,8 +4,10 @@
 #include <stdexcept>
 
 #if defined(_WIN32) || defined(_WIN64)
+// clang-format off
 #include <windows.h>
 #include <bcrypt.h>
+// clang-format on
 #ifndef STATUS_SUCCESS
 #define STATUS_SUCCESS ((NTSTATUS)0x00000000L)
 #endif
