@@ -52,7 +52,7 @@ class DirectedEdge : public Edge<T> {
       const std::string &userId,
       const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair);
   DirectedEdge(const Edge<T> &edge);
-  virtual ~DirectedEdge() = default;
+  ~DirectedEdge() override = default;
   const Node<T> &getFrom() const;
   const Node<T> &getTo() const;
   const std::optional<bool> isDirected() const override;

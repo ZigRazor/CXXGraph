@@ -55,7 +55,7 @@ class GreedyVertexCut : public PartitionStrategy<T> {
 
  public:
   explicit GreedyVertexCut(const Globals &G);
-  ~GreedyVertexCut();
+  ~GreedyVertexCut() override;
 
   void performStep(shared<const Edge<T>> e,
                    shared<PartitionState<T>> Sstate) override;

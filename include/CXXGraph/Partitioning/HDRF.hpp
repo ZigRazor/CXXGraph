@@ -55,7 +55,7 @@ class HDRF : public PartitionStrategy<T> {
 
  public:
   explicit HDRF(const Globals &G);
-  ~HDRF();
+  ~HDRF() override;
 
   void performStep(shared<const Edge<T>> e,
                    shared<PartitionState<T>> Sstate) override;

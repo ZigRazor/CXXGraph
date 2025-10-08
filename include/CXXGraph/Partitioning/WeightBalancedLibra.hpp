@@ -48,7 +48,7 @@ class WeightBalancedLibra : public PartitionStrategy<T> {
   explicit WeightBalancedLibra(
       const Globals &G, double _weight_sum_bound,
       std::unordered_map<std::size_t, int> &&_vertices_degrees);
-  ~WeightBalancedLibra();
+  ~WeightBalancedLibra() override;
 
   void performStep(shared<const Edge<T>> e,
                    shared<PartitionState<T>> Sstate) override;

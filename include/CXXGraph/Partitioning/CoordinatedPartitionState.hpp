@@ -62,7 +62,7 @@ class CoordinatedPartitionState : public PartitionState<T> {
   // DatWriter out; //to print the final partition of each edge
  public:
   CoordinatedPartitionState(const Globals &G);
-  ~CoordinatedPartitionState();
+  ~CoordinatedPartitionState() override;
 
   std::shared_ptr<Record<T>> getRecord(CXXGraph::id_t x) override;
   int getMachineLoad(const int m) const override;

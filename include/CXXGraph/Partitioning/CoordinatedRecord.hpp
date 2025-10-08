@@ -39,7 +39,7 @@ class CoordinatedRecord : public Record<T> {
 
  public:
   CoordinatedRecord();
-  ~CoordinatedRecord();
+  ~CoordinatedRecord() override;
 
   const std::set<int> &getPartitions() const override;
   void addPartition(const int m) override;
