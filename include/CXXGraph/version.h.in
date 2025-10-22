@@ -1,0 +1,3 @@
+#pragma once
+
+#define CXXGRAPH_VERSION "@PROJECT_VERSION@"

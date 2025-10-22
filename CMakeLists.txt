@@ -54,9 +54,17 @@ add_subdirectory(test)
 add_subdirectory(benchmark)
 add_subdirectory(examples)
 
+configure_file(${PROJECT_SOURCE_DIR}/include/CXXGraph/version.h.in ${PROJECT_BINARY_DIR}/include/CXXGraph/version.h)
+
 include(${CPM_DOWNLOAD_LOCATION})
 add_library(${PROJECT_NAME} INTERFACE)
-target_include_directories(${PROJECT_NAME} INTERFACE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>)
+target_include_directories(${PROJECT_NAME} INTERFACE
+#Main include dir
+$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include> 
+$<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
+#Version include dir:
+$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>
+)
 CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.6.0")
 
 packageProject(
@@ -75,7 +83,6 @@ packageProject(
   # semicolon separated list of the project's dependencies
   DEPENDENCIES ""
   # (optional) create a header containing the version info
-  # Note: that the path to headers should be lowercase
   VERSION_HEADER "${PROJECT_NAME}/version.h"
   # (optional) create a export header using GenerateExportHeader module
   EXPORT_HEADER "${PROJECT_NAME}/export.h"

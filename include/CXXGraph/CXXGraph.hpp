@@ -1,7 +1,7 @@
 #ifndef __CXXGRAPH_H__
 #define __CXXGRAPH_H__
 
-#include "CXXGraph/CXXGraphConfig.h"
+#include "CXXGraph/version.h"
 #include "CXXGraph/Edge/DirectedEdge.h"
 #include "CXXGraph/Edge/DirectedWeightedEdge.h"
 #include "CXXGraph/Edge/Edge.h"
