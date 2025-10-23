@@ -81,6 +81,39 @@ std::ostream &operator<<(std::ostream &o, const AdjacencyList<T> &adj);
 /// Class that implement the Graph. ( This class is not Thread Safe )
 template <typename T>
 class Graph {
+ public:
+  /**
+   * @brief Write the graph to a binary file
+   * @param workingDir The parent directory of the output file
+   * @param fileName The output filename (without extension)
+   * @param writeNodeFeatures Whether to include node features
+   * @param writeEdgeWeights Whether to include edge weights
+   * @return 0 if successful, negative value on error:
+   *         -1: Cannot open file
+   *         -2: Write error
+   */
+  int writeToBinaryFile(const std::string &workingDir,
+                        const std::string &fileName,
+                        bool writeNodeFeatures = false,
+                        bool writeEdgeWeights = true) const;
+
+  /**
+   * @brief Read the graph from a binary file
+   * @param workingDir The parent directory of the input file
+   * @param fileName The input filename (without extension)
+   * @param readNodeFeatures Whether to read node features
+   * @param readEdgeWeights Whether to read edge weights
+   * @return 0 if successful, negative value on error:
+   *         -1: Cannot open file
+   *         -2: Invalid file format
+   *         -3: Unsupported version
+   *         -4: Read error
+   */
+  int readFromBinaryFile(const std::string &workingDir,
+                         const std::string &fileName,
+                         bool readNodeFeatures = false,
+                         bool readEdgeWeights = true);
+
  private:
   T_EdgeSet<T> edgeSet = {};
   T_NodeSet<T> isolatedNodesSet = {};
@@ -104,6 +137,47 @@ class Graph {
   int writeToDot(const std::string &workingDir, const std::string &OFileName,
                  const std::string &graphName) const;
   int readFromDot(const std::string &workingDir, const std::string &fileName);
+
+  // Binary file format constants
+  static constexpr uint32_t BINARY_MAGIC_NUMBER = 0x47525048;  // "GRPH"
+  static constexpr uint32_t BINARY_VERSION = 1;
+  static constexpr uint64_t BINARY_FLAG_HAS_NODE_FEATURES = 0x01;
+  static constexpr uint64_t BINARY_FLAG_HAS_EDGE_WEIGHTS = 0x02;
+
+  // Type trait to check if T is serializable to binary
+  template <typename U, typename = void>
+  struct is_binary_serializable : std::false_type {};
+
+  template <typename U>
+  struct is_binary_serializable<
+      U, std::void_t<decltype(std::declval<std::ofstream &>().write(
+             reinterpret_cast<const char *>(&std::declval<const U &>()),
+             sizeof(U)))>> : std::is_trivially_copyable<U> {};
+
+  // Helper functions for binary I/O
+  void writeBinaryString(std::ofstream &out, const std::string &str) const;
+  std::string readBinaryString(std::ifstream &in) const;
+
+  /**
+   * @brief Write the graph to a binary file
+   * @param filepath The full path to the output file
+   * @param writeNodeFeatures Whether to include node features
+   * @param writeEdgeWeights Whether to include edge weights
+   * @return 0 if successful, negative value on error
+   */
+  int writeToBinary(const std::string &filepath, bool writeNodeFeatures,
+                    bool writeEdgeWeights) const;
+
+  /**
+   * @brief Read the graph from a binary file
+   * @param filepath The full path to the input file
+   * @param readNodeFeatures Whether to read node features
+   * @param readEdgeWeights Whether to read edge weights
+   * @return 0 if successful, negative value on error
+   */
+  int readFromBinary(const std::string &filepath, bool readNodeFeatures,
+                     bool readEdgeWeights);
+
   void recreateGraph(
       std::unordered_map<std::string, std::pair<std::string, std::string>>
           &edgeMap,

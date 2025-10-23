@@ -193,6 +193,100 @@ int Graph<T>::writeToMTXFile(const std::string &workingDir,
 }
 
 template <typename T>
+int Graph<T>::writeToBinaryFile(const std::string &workingDir,
+                                const std::string &fileName,
+                                bool writeNodeFeatures,
+                                bool writeEdgeWeights) const {
+  std::string filepath = workingDir + "/" + fileName + ".bin";
+  return writeToBinary(filepath, writeNodeFeatures, writeEdgeWeights);
+}
+
+template <typename T>
+int Graph<T>::writeToBinary(const std::string &filepath, bool writeNodeFeatures,
+                            bool writeEdgeWeights) const {
+  std::ofstream out(filepath, std::ios::binary);
+  if (!out.is_open()) {
+    return -1;
+  }
+
+  try {
+    // Write header
+    out.write(reinterpret_cast<const char *>(&BINARY_MAGIC_NUMBER),
+              sizeof(BINARY_MAGIC_NUMBER));
+    out.write(reinterpret_cast<const char *>(&BINARY_VERSION),
+              sizeof(BINARY_VERSION));
+
+    auto nodeSet = this->getNodeSet();
+    auto edgeSet = this->getEdgeSet();
+
+    uint64_t numNodes = nodeSet.size();
+    uint64_t numEdges = edgeSet.size();
+    uint64_t flags = 0;
+
+    if (writeNodeFeatures) flags |= BINARY_FLAG_HAS_NODE_FEATURES;
+    if (writeEdgeWeights) flags |= BINARY_FLAG_HAS_EDGE_WEIGHTS;
+
+    out.write(reinterpret_cast<const char *>(&numNodes), sizeof(numNodes));
+    out.write(reinterpret_cast<const char *>(&numEdges), sizeof(numEdges));
+    out.write(reinterpret_cast<const char *>(&flags), sizeof(flags));
+
+    // Write nodes
+    for (const auto &node : nodeSet) {
+      writeBinaryString(out, node->getUserId());
+
+      if (writeNodeFeatures) {
+        // For trivially copyable types, write directly
+        if constexpr (is_binary_serializable<T>::value) {
+          uint32_t dataSize = sizeof(T);
+          out.write(reinterpret_cast<const char *>(&dataSize),
+                    sizeof(dataSize));
+          const T &data = node->getData();
+          out.write(reinterpret_cast<const char *>(&data), sizeof(T));
+        } else {
+          // For non-trivially copyable types, write 0 size
+          uint32_t dataSize = 0;
+          out.write(reinterpret_cast<const char *>(&dataSize),
+                    sizeof(dataSize));
+        }
+      } else {
+        uint32_t dataSize = 0;
+        out.write(reinterpret_cast<const char *>(&dataSize), sizeof(dataSize));
+      }
+    }
+
+    // Write edges
+    for (const auto &edge : edgeSet) {
+      writeBinaryString(out, edge->getUserId());
+      writeBinaryString(out, edge->getNodePair().first->getUserId());
+      writeBinaryString(out, edge->getNodePair().second->getUserId());
+
+      uint8_t edgeFlags = 0;
+      if (edge->isDirected().has_value() && edge->isDirected().value()) {
+        edgeFlags |= 0x01;
+      }
+      if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
+        edgeFlags |= 0x02;
+      }
+      out.write(reinterpret_cast<const char *>(&edgeFlags), sizeof(edgeFlags));
+
+      // Write weight if edge is weighted and we're saving weights
+      if (writeEdgeWeights && (edgeFlags & 0x02)) {
+        double weight =
+            std::dynamic_pointer_cast<const Weighted>(edge)->getWeight();
+        out.write(reinterpret_cast<const char *>(&weight), sizeof(weight));
+      }
+    }
+
+    out.close();
+    return 0;
+
+  } catch (const std::exception &e) {
+    out.close();
+    return -2;
+  }
+}
+
+template <typename T>
 int Graph<T>::writeToDot(const std::string &workingDir,
                          const std::string &OFileName,
                          const std::string &graphName) const {
@@ -282,6 +376,15 @@ void Graph<T>::writeGraphToStream(std::ostream &oGraph, std::ostream &oNodeFeat,
           << std::endl;
     }
   }
+}
+
+// Helper function to write string with length prefix
+template <typename T>
+void Graph<T>::writeBinaryString(std::ofstream &out,
+                                 const std::string &str) const {
+  uint32_t len = static_cast<uint32_t>(str.length());
+  out.write(reinterpret_cast<const char *>(&len), sizeof(len));
+  out.write(str.c_str(), len);
 }
 
 template <typename T>
