@@ -249,6 +249,126 @@ int Graph<T>::readFromMTXFile(const std::string &workingDir,
 }
 
 template <typename T>
+int Graph<T>::readFromBinaryFile(const std::string &workingDir,
+                                 const std::string &fileName,
+                                 bool readNodeFeatures, bool readEdgeWeights) {
+  std::string filepath = workingDir + "/" + fileName + ".bin";
+  return readFromBinary(filepath, readNodeFeatures, readEdgeWeights);
+}
+
+template <typename T>
+int Graph<T>::readFromBinary(const std::string &filepath, bool readNodeFeatures,
+                             bool readEdgeWeights) {
+  std::ifstream in(filepath, std::ios::binary);
+  if (!in.is_open()) {
+    return -1;
+  }
+
+  try {
+    // Read and verify header
+    uint32_t magic;
+    in.read(reinterpret_cast<char *>(&magic), sizeof(magic));
+    if (magic != BINARY_MAGIC_NUMBER) {
+      return -2;  // Invalid file format
+    }
+
+    uint32_t version;
+    in.read(reinterpret_cast<char *>(&version), sizeof(version));
+    if (version != BINARY_VERSION) {
+      return -3;  // Unsupported version
+    }
+
+    uint64_t numNodes, numEdges, flags;
+    in.read(reinterpret_cast<char *>(&numNodes), sizeof(numNodes));
+    in.read(reinterpret_cast<char *>(&numEdges), sizeof(numEdges));
+    in.read(reinterpret_cast<char *>(&flags), sizeof(flags));
+
+    bool hasNodeFeatures = (flags & BINARY_FLAG_HAS_NODE_FEATURES) != 0;
+    bool hasEdgeWeights = (flags & BINARY_FLAG_HAS_EDGE_WEIGHTS) != 0;
+
+    // Read nodes
+    std::unordered_map<std::string, shared<Node<T>>> nodeMap;
+    for (uint64_t i = 0; i < numNodes; ++i) {
+      std::string nodeId = readBinaryString(in);
+
+      T nodeData{};
+      if (hasNodeFeatures && readNodeFeatures) {
+        uint32_t dataSize;
+        in.read(reinterpret_cast<char *>(&dataSize), sizeof(dataSize));
+
+        if (dataSize > 0 && is_binary_serializable<T>::value) {
+          in.read(reinterpret_cast<char *>(&nodeData), sizeof(T));
+        }
+      } else if (hasNodeFeatures) {
+        // Skip node data if present but not reading
+        uint32_t dataSize;
+        in.read(reinterpret_cast<char *>(&dataSize), sizeof(dataSize));
+        if (dataSize > 0) {
+          in.seekg(dataSize, std::ios::cur);
+        }
+      } else {
+        uint32_t dataSize;
+        in.read(reinterpret_cast<char *>(&dataSize), sizeof(dataSize));
+      }
+
+      auto node = std::make_shared<Node<T>>(nodeId, std::move(nodeData));
+      nodeMap[nodeId] = node;
+    }
+
+    // Read edges
+    for (uint64_t i = 0; i < numEdges; ++i) {
+      std::string edgeId = readBinaryString(in);
+      std::string node1Id = readBinaryString(in);
+      std::string node2Id = readBinaryString(in);
+
+      uint8_t edgeFlags;
+      in.read(reinterpret_cast<char *>(&edgeFlags), sizeof(edgeFlags));
+
+      bool isDirected = (edgeFlags & 0x01) != 0;
+      bool isWeighted = (edgeFlags & 0x02) != 0;
+
+      double weight = 0.0;
+      if (hasEdgeWeights && isWeighted) {
+        if (readEdgeWeights) {
+          in.read(reinterpret_cast<char *>(&weight), sizeof(weight));
+        } else {
+          in.seekg(sizeof(double), std::ios::cur);
+        }
+      }
+
+      auto node1 = nodeMap[node1Id];
+      auto node2 = nodeMap[node2Id];
+
+      shared<Edge<T>> edge;
+      if (isDirected) {
+        if (isWeighted && readEdgeWeights) {
+          edge = std::make_shared<DirectedWeightedEdge<T>>(edgeId, node1, node2,
+                                                           weight);
+        } else {
+          edge = std::make_shared<DirectedEdge<T>>(edgeId, node1, node2);
+        }
+      } else {
+        if (isWeighted && readEdgeWeights) {
+          edge = std::make_shared<UndirectedWeightedEdge<T>>(edgeId, node1,
+                                                             node2, weight);
+        } else {
+          edge = std::make_shared<UndirectedEdge<T>>(edgeId, node1, node2);
+        }
+      }
+
+      this->addEdge(edge);
+    }
+
+    in.close();
+    return 0;
+
+  } catch (const std::exception &e) {
+    in.close();
+    return -4;
+  }
+}
+
+template <typename T>
 int Graph<T>::readFromDot(const std::string &workingDir,
                           const std::string &fileName) {
   // Define the edge maps
@@ -434,6 +554,16 @@ void Graph<T>::recreateGraph(
       }
     }
   }
+}
+
+// Helper function to read string with length prefix
+template <typename T>
+std::string Graph<T>::readBinaryString(std::ifstream &in) const {
+  uint32_t len;
+  in.read(reinterpret_cast<char *>(&len), sizeof(len));
+  std::string str(len, '\0');
+  in.read(&str[0], len);
+  return str;
 }
 
 }  // namespace CXXGraph
