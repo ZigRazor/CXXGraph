@@ -27,6 +27,14 @@ if (NOT MSVC)
     endif(CODE_COVERAGE)
 endif(NOT MSVC)
 
+option(TCMALLOC "Enable TCMalloc Optimization" OFF)
+if(TCMALLOC)
+    link_libraries(
+            "-ltcmalloc"
+        )
+    message( "TCMalloc Enabled" )
+endif(TCMALLOC)
+
 option(TEST "Enable Test" OFF)
 if(TEST)
     include(${CPM_DOWNLOAD_LOCATION})
