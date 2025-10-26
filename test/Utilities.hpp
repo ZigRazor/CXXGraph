@@ -1,7 +1,6 @@
 #ifndef __UTILITIES_H__
 #define __UTILITIES_H__
-#include <time.h>
-
+#include <ctime>
 #include <memory>
 #include <random>
 
