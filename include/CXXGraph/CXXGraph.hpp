@@ -1,7 +1,6 @@
 #ifndef __CXXGRAPH_H__
 #define __CXXGRAPH_H__
 
-#include "CXXGraph/version.h"
 #include "CXXGraph/Edge/DirectedEdge.h"
 #include "CXXGraph/Edge/DirectedWeightedEdge.h"
 #include "CXXGraph/Edge/Edge.h"
@@ -24,5 +23,6 @@
 #include "CXXGraph/Partitioning/PartitionerThread.hpp"
 #include "CXXGraph/Partitioning/PartitioningStats.hpp"
 #include "CXXGraph/Partitioning/Record.hpp"
+#include "CXXGraph/version.h"
 
 #endif  // __CXXGRAPH_H__
