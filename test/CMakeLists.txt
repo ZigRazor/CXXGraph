@@ -58,14 +58,15 @@ if(TEST)
         PUBLIC WITH_COMPRESSION
     )
     target_include_directories(test_exe
-        PUBLIC "${PROJECT_SOURCE_DIR}/include"
         PUBLIC ${zlib_BINARY_DIR}
         PUBLIC ${zlib_SOURCE_DIR}
     )
 
     target_link_libraries(test_exe
-        PUBLIC GTest::gtest_main
-        PUBLIC zlibstatic
+        PUBLIC 
+        GTest::gtest_main 
+        zlibstatic
+        ${PROJECT_NAME}
     )
 
     if(NOT gtest_disable_pthreads)
