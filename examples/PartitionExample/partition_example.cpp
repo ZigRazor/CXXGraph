@@ -1,6 +1,5 @@
-#include <stdlib.h>
-#include <time.h>
-
+#include <cstdlib>
+#include <ctime>
 #include <iterator>
 
 #include "CXXGraph/CXXGraph.hpp"

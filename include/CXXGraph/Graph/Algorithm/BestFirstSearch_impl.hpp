@@ -107,6 +107,7 @@ BestFirstSearchResult<T> Graph<T>::best_first_search(
 template <typename T>
 const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
     const Node<T> &start, size_t num_threads) const {
+  num_threads = 1;
   std::vector<Node<T>> bfs_result;
   // check is exist node in the graph
   auto &nodeSet = Graph<T>::getNodeSet();
