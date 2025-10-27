@@ -42,14 +42,15 @@ if(BENCHMARK)
 		PUBLIC WITH_COMPRESSION
 	)
 	target_include_directories(benchmark_exe PUBLIC
-		PUBLIC ${PROJECT_SOURCE_DIR}/include
 		PUBLIC ${zlib_BINARY_DIR}
 		PUBLIC ${zlib_SOURCE_DIR}
 	)
 	target_link_libraries(benchmark_exe
-		PUBLIC GTest::gtest
-		PUBLIC benchmark::benchmark
-		PUBLIC zlibstatic
+		PUBLIC 
+		GTest::gtest 
+		benchmark::benchmark 
+		zlibstatic
+		${PROJECT_NAME}
 	)
 	
 	# Ensure benchmark_exe itself is built in Release mode

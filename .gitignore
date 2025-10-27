@@ -41,3 +41,6 @@ packaging/
 CXXGraph.code-workspace
 # ignore visual studio files
 .vs
+
+# cache directories
+.cache
