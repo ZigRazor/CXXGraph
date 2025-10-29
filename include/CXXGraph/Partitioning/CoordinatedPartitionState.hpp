@@ -145,7 +145,7 @@ void CoordinatedPartitionState<T>::incrementMachineWeight(
     const int m, shared<const Edge<T>> e) {
   std::lock_guard<std::mutex> lock(*machines_weight_edges_mutex);
   double edge_weight = CXXGraph::NEGLIGIBLE_WEIGHT;
-  if (e->isWeighted().has_value() && e->isWeighted().value()) {
+  if (e->isWeighted().value_or(false)) {
     edge_weight = (std::dynamic_pointer_cast<const Weighted>(e))->getWeight();
   }
   machines_weight_edges[m] = machines_weight_edges[m] + edge_weight;

@@ -86,8 +86,7 @@ const MstResult Graph<T>::prim() const {
     if (cachedAdjListOut->find(currentNode) != cachedAdjListOut->end()) {
       for (const auto &elem : cachedAdjListOut->at(currentNode)) {
         // minimizing distances
-        if (elem.second->isWeighted().has_value() &&
-            elem.second->isWeighted().value()) {
+        if (elem.second->isWeighted().value_or(false)) {
           shared<const UndirectedWeightedEdge<T>> udw_edge =
               std::static_pointer_cast<const UndirectedWeightedEdge<T>>(
                   elem.second);

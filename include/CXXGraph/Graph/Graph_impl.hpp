@@ -971,30 +971,20 @@ Graph<T>::inOrOutEdges(shared<const Node<T>> node) const {
   return inOrOutEdges;
 }
 
+inline const auto isEdgeDirected = [](const auto &edge) {
+  return edge->isDirected().value_or(false);
+};
+
 template <typename T>
 bool Graph<T>::isDirectedGraph() const {
-  auto edgeSet = getEdgeSet();
-  for (const auto &edge : edgeSet) {
-    if (!(edge->isDirected().has_value() && edge->isDirected().value())) {
-      // Found Undirected Edge
-      return false;
-    }
-  }
-  // No Undirected Edge
-  return true;
+  const auto edgeSet = getEdgeSet();
+  return std::all_of(edgeSet.cbegin(), edgeSet.cend(), isEdgeDirected);
 }
 
 template <typename T>
 bool Graph<T>::isUndirectedGraph() const {
-  auto edgeSet = Graph<T>::getEdgeSet();
-  for (const auto &edge : edgeSet) {
-    if ((edge->isDirected().has_value() && edge->isDirected().value())) {
-      // Found Directed Edge
-      return false;
-    }
-  }
-  // No Directed Edge
-  return true;
+  const auto edgeSet = Graph<T>::getEdgeSet();
+  return std::none_of(edgeSet.cbegin(), edgeSet.cend(), isEdgeDirected);
 }
 
 template <typename T>
