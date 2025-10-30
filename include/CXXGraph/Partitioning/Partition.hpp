@@ -332,27 +332,19 @@ std::ostream &operator<<(std::ostream &os, const Partition<T> &partition) {
     if (!(*it)->isDirected().has_value() && !(*it)->isWeighted().has_value()) {
       // Edge Case
       os << **it << "\n";
-    } else if (((*it)->isDirected().has_value() &&
-                (*it)->isDirected().value()) &&
-               ((*it)->isWeighted().has_value() &&
-                (*it)->isWeighted().value())) {
+    } else if ((*it)->isDirected().value_or(false) &&
+               ((*it)->isWeighted().value_or(false))) {
       os << *std::static_pointer_cast<const DirectedWeightedEdge<T>>(*it)
          << "\n";
-    } else if (((*it)->isDirected().has_value() &&
-                (*it)->isDirected().value()) &&
-               !((*it)->isWeighted().has_value() &&
-                 (*it)->isWeighted().value())) {
+    } else if ((*it)->isDirected().value_or(false) &&
+               !((*it)->isWeighted().value_or(false))) {
       os << *std::static_pointer_cast<const DirectedEdge<T>>(*it) << "\n";
-    } else if (!((*it)->isDirected().has_value() &&
-                 (*it)->isDirected().value()) &&
-               ((*it)->isWeighted().has_value() &&
-                (*it)->isWeighted().value())) {
+    } else if (!((*it)->isDirected().value_or(false)) &&
+               ((*it)->isWeighted().value_or(false))) {
       os << *std::static_pointer_cast<const UndirectedWeightedEdge<T>>(*it)
          << "\n";
-    } else if (!((*it)->isDirected().has_value() &&
-                 (*it)->isDirected().value()) &&
-               !((*it)->isWeighted().has_value() &&
-                 (*it)->isWeighted().value())) {
+    } else if (!((*it)->isDirected().value_or(false)) &&
+               !((*it)->isWeighted().value_or(false))) {
       os << *std::static_pointer_cast<const UndirectedEdge<T>>(*it) << "\n";
     } else {
       // Should never happens

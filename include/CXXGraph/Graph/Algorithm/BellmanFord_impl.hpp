@@ -73,7 +73,7 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
     // each relaxation
     for (const auto &edge : edgeSet) {
       auto elem = edge->getNodePair();
-      if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
+      if (edge->isWeighted().value_or(false)) {
         auto edge_weight =
             (std::dynamic_pointer_cast<const Weighted>(edge))->getWeight();
         if (dist[elem.first] + edge_weight < dist[elem.second])

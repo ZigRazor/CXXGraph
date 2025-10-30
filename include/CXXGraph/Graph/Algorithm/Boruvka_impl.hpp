@@ -53,7 +53,7 @@ const MstResult Graph<T>::boruvka() const {
   const auto edgeSet = Graph<T>::getEdgeSet();
   std::unordered_map<CXXGraph::id_t, double> edgeWeight;
   for (const auto &edge : edgeSet) {
-    if (edge->isWeighted().has_value() && edge->isWeighted().value())
+    if (edge->isWeighted().value_or(false))
       edgeWeight[edge->getId()] =
           (std::dynamic_pointer_cast<const Weighted>(edge))->getWeight();
     else {
@@ -148,7 +148,7 @@ const MstResult Graph<T>::boruvka_deterministic() const {
   const auto edgeSet = Graph<T>::getEdgeSet();
   std::unordered_map<CXXGraph::id_t, double> edgeWeight;
   for (const auto &edge : edgeSet) {
-    if (edge->isWeighted().has_value() && edge->isWeighted().value())
+    if (edge->isWeighted().value_or(false))
       edgeWeight[edge->getId()] =
           (std::dynamic_pointer_cast<const Weighted>(edge))->getWeight();
     else {

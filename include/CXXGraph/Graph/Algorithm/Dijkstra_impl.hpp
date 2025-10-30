@@ -91,10 +91,8 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T>& source,
     if (cachedAdjListOut->find(currentNode) != cachedAdjListOut->end()) {
       for (const auto& elem : cachedAdjListOut->at(currentNode)) {
         // minimizing distances
-        if (elem.second->isWeighted().has_value() &&
-            elem.second->isWeighted().value()) {
-          if (elem.second->isDirected().has_value() &&
-              elem.second->isDirected().value()) {
+        if (elem.second->isWeighted().value_or(false)) {
+          if (elem.second->isDirected().value_or(false)) {
             shared<const DirectedWeightedEdge<T>> dw_edge =
                 std::static_pointer_cast<const DirectedWeightedEdge<T>>(
                     elem.second);
@@ -107,8 +105,7 @@ const DijkstraResult Graph<T>::dijkstra(const Node<T>& source,
               parent[elem.first.get()->getUserId()] =
                   currentNode.get()->getUserId();
             }
-          } else if (elem.second->isDirected().has_value() &&
-                     !elem.second->isDirected().value()) {
+          } else if (elem.second->isDirected() == false) {
             shared<const UndirectedWeightedEdge<T>> udw_edge =
                 std::static_pointer_cast<const UndirectedWeightedEdge<T>>(
                     elem.second);
@@ -235,10 +232,8 @@ const DijkstraResult Graph<T>::dijkstra_deterministic(
     if (cachedAdjListOut->find(currentNode) != cachedAdjListOut->end()) {
       for (const auto& elem : cachedAdjListOut->at(currentNode)) {
         // minimizing distances
-        if (elem.second->isWeighted().has_value() &&
-            elem.second->isWeighted().value()) {
-          if (elem.second->isDirected().has_value() &&
-              elem.second->isDirected().value()) {
+        if (elem.second->isWeighted().value_or(false)) {
+          if (elem.second->isDirected().value_or(false)) {
             shared<const DirectedWeightedEdge<T>> dw_edge =
                 std::static_pointer_cast<const DirectedWeightedEdge<T>>(
                     elem.second);
@@ -253,8 +248,7 @@ const DijkstraResult Graph<T>::dijkstra_deterministic(
               parent[elem.first.get()->getUserId()] =
                   currentNode.get()->getUserId();
             }
-          } else if (elem.second->isDirected().has_value() &&
-                     !elem.second->isDirected().value()) {
+          } else if (!elem.second->isDirected() == false) {
             shared<const UndirectedWeightedEdge<T>> udw_edge =
                 std::static_pointer_cast<const UndirectedWeightedEdge<T>>(
                     elem.second);
@@ -391,10 +385,8 @@ const DijkstraResult Graph<T>::dijkstra_deterministic2(
     if (cachedAdjListOut->find(currentNode) != cachedAdjListOut->end()) {
       for (const auto& elem : cachedAdjListOut->at(currentNode)) {
         // minimizing distances
-        if (elem.second->isWeighted().has_value() &&
-            elem.second->isWeighted().value()) {
-          if (elem.second->isDirected().has_value() &&
-              elem.second->isDirected().value()) {
+        if (elem.second->isWeighted().value_or(false)) {
+          if (elem.second->isDirected().value_or(false)) {
             shared<const DirectedWeightedEdge<T>> dw_edge =
                 std::static_pointer_cast<const DirectedWeightedEdge<T>>(
                     elem.second);
@@ -409,8 +401,7 @@ const DijkstraResult Graph<T>::dijkstra_deterministic2(
               parent[elem.first.get()->getUserId()] =
                   currentNode.get()->getUserId();
             }
-          } else if (elem.second->isDirected().has_value() &&
-                     !elem.second->isDirected().value()) {
+          } else if (!elem.second->isDirected() == false) {
             shared<const UndirectedWeightedEdge<T>> udw_edge =
                 std::static_pointer_cast<const UndirectedWeightedEdge<T>>(
                     elem.second);
@@ -538,10 +529,8 @@ const DijkstraResult Graph<T>::criticalpath_deterministic(
     if (cachedAdjListOut->find(currentNode) != cachedAdjListOut->end()) {
       for (const auto& elem : cachedAdjListOut->at(currentNode)) {
         // minimizing distances
-        if (elem.second->isWeighted().has_value() &&
-            elem.second->isWeighted().value()) {
-          if (elem.second->isDirected().has_value() &&
-              elem.second->isDirected().value()) {
+        if (elem.second->isWeighted().value_or(false)) {
+          if (elem.second->isDirected().value_or(false)) {
             shared<const DirectedWeightedEdge<T>> dw_edge =
                 std::static_pointer_cast<const DirectedWeightedEdge<T>>(
                     elem.second);
@@ -556,8 +545,7 @@ const DijkstraResult Graph<T>::criticalpath_deterministic(
               parent[elem.first.get()->getUserId()] =
                   currentNode.get()->getUserId();
             }
-          } else if (elem.second->isDirected().has_value() &&
-                     !elem.second->isDirected().value()) {
+          } else if (elem.second->isDirected() == false) {
             shared<const UndirectedWeightedEdge<T>> udw_edge =
                 std::static_pointer_cast<const UndirectedWeightedEdge<T>>(
                     elem.second);

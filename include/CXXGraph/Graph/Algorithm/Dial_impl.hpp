@@ -87,15 +87,12 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
     for (const auto &i : (*cachedAdjListOut)[u]) {
       auto v = i.first;
       int weight = 0;
-      if (i.second->isWeighted().has_value() &&
-          i.second->isWeighted().value()) {
-        if (i.second->isDirected().has_value() &&
-            i.second->isDirected().value()) {
+      if (i.second->isWeighted().value_or(false)) {
+        if (i.second->isDirected().value_or(false)) {
           shared<const DirectedWeightedEdge<T>> dw_edge =
               std::static_pointer_cast<const DirectedWeightedEdge<T>>(i.second);
           weight = (int)dw_edge->getWeight();
-        } else if (i.second->isDirected().has_value() &&
-                   !i.second->isDirected().value()) {
+        } else if (i.second->isDirected() == false) {
           shared<const UndirectedWeightedEdge<T>> udw_edge =
               std::static_pointer_cast<const UndirectedWeightedEdge<T>>(
                   i.second);

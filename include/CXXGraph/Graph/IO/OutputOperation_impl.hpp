@@ -158,7 +158,7 @@ int Graph<T>::writeToMTXFile(const std::string &workingDir,
   // Check if the adjacency matrix is symmetric, i.e., if all the edges are
   // undirected
   bool symmetric = !std::any_of(edgeSet.begin(), edgeSet.end(), [](auto edge) {
-    return (edge->isDirected().has_value() && edge->isDirected().value());
+    return edge->isDirected().value_or(false);
   });
   // Write in the header whether the adj matrix is symmetric or not
   if (symmetric) {
@@ -180,7 +180,7 @@ int Graph<T>::writeToMTXFile(const std::string &workingDir,
     std::string line;
     line += edgeIt->getNodePair().first->getUserId() + delimitier;
     line += edgeIt->getNodePair().second->getUserId() + delimitier;
-    if (edgeIt->isWeighted().has_value() && edgeIt->isWeighted().value()) {
+    if (edgeIt->isWeighted().value_or(false)) {
       line += std::to_string(edgeIt->isWeighted().value()) + '\n';
     } else {
       line += std::to_string(1.) + '\n';
@@ -261,10 +261,10 @@ int Graph<T>::writeToBinary(const std::string &filepath, bool writeNodeFeatures,
       writeBinaryString(out, edge->getNodePair().second->getUserId());
 
       uint8_t edgeFlags = 0;
-      if (edge->isDirected().has_value() && edge->isDirected().value()) {
+      if (edge->isDirected().value_or(false)) {
         edgeFlags |= 0x01;
       }
-      if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
+      if (edge->isWeighted().value_or(false)) {
         edgeFlags |= 0x02;
       }
       out.write(reinterpret_cast<const char *>(&edgeFlags), sizeof(edgeFlags));
@@ -313,7 +313,7 @@ int Graph<T>::writeToDot(const std::string &workingDir,
 
   for (auto const &edgePtr : edgeSet) {
     std::string edgeLine = "";
-    if (edgePtr->isDirected().has_value() && edgePtr->isDirected().value()) {
+    if (edgePtr->isDirected().value_or(false)) {
       auto directedPtr =
           std::static_pointer_cast<const DirectedEdge<T>>(edgePtr);
       edgeLine += '\t' + directedPtr->getFrom().getUserId() + ' ';
@@ -324,7 +324,7 @@ int Graph<T>::writeToDot(const std::string &workingDir,
       edgeLine += linkSymbol + ' ';
       edgeLine += edgePtr->getNodePair().second->getUserId();
     }
-    if (edgePtr->isWeighted().has_value() && edgePtr->isWeighted().value()) {
+    if (edgePtr->isWeighted().value_or(false)) {
       // Weights in dot files must be integers
       edgeLine += " [weight=" +
                   std::to_string(static_cast<int>(
@@ -349,10 +349,7 @@ void Graph<T>::writeGraphToStream(std::ostream &oGraph, std::ostream &oNodeFeat,
   for (const auto &edge : edgeSet) {
     oGraph << edge->getUserId() << sep << edge->getNodePair().first->getUserId()
            << sep << edge->getNodePair().second->getUserId() << sep
-           << ((edge->isDirected().has_value() && edge->isDirected().value())
-                   ? 1
-                   : 0)
-           << std::endl;
+           << (edge->isDirected().value_or(false) ? 1 : 0) << std::endl;
   }
 
   if (writeNodeFeat) {
@@ -364,16 +361,13 @@ void Graph<T>::writeGraphToStream(std::ostream &oGraph, std::ostream &oNodeFeat,
 
   if (writeEdgeWeight) {
     for (const auto &edge : edgeSet) {
-      oEdgeWeight
-          << edge->getUserId() << sep
-          << (edge->isWeighted().has_value() && edge->isWeighted().value()
-                  ? (std::dynamic_pointer_cast<const Weighted>(edge))
-                        ->getWeight()
-                  : 0.0)
-          << sep
-          << (edge->isWeighted().has_value() && edge->isWeighted().value() ? 1
-                                                                           : 0)
-          << std::endl;
+      oEdgeWeight << edge->getUserId() << sep
+                  << (edge->isWeighted().value_or(false)
+                          ? (std::dynamic_pointer_cast<const Weighted>(edge))
+                                ->getWeight()
+                          : 0.0)
+                  << sep << (edge->isWeighted().value_or(false) ? 1 : 0)
+                  << std::endl;
     }
   }
 }
@@ -395,27 +389,19 @@ std::ostream &operator<<(std::ostream &os, const Graph<T> &graph) {
     if (!(*it)->isDirected().has_value() && !(*it)->isWeighted().has_value()) {
       // Edge Case
       os << **it << "\n";
-    } else if (((*it)->isDirected().has_value() &&
-                (*it)->isDirected().value()) &&
-               ((*it)->isWeighted().has_value() &&
-                (*it)->isWeighted().value())) {
+    } else if ((*it)->isDirected().value_or(false) &&
+               (*it)->isWeighted().value_or(false)) {
       os << *std::static_pointer_cast<const DirectedWeightedEdge<T>>(*it)
          << "\n";
-    } else if (((*it)->isDirected().has_value() &&
-                (*it)->isDirected().value()) &&
-               !((*it)->isWeighted().has_value() &&
-                 (*it)->isWeighted().value())) {
+    } else if ((*it)->isDirected().value_or(false) &&
+               !((*it)->isWeighted().value_or(false))) {
       os << *std::static_pointer_cast<const DirectedEdge<T>>(*it) << "\n";
-    } else if (!((*it)->isDirected().has_value() &&
-                 (*it)->isDirected().value()) &&
-               ((*it)->isWeighted().has_value() &&
-                (*it)->isWeighted().value())) {
+    } else if (!((*it)->isDirected().value_or(false)) &&
+               (*it)->isWeighted().value_or(false)) {
       os << *std::static_pointer_cast<const UndirectedWeightedEdge<T>>(*it)
          << "\n";
-    } else if (!((*it)->isDirected().has_value() &&
-                 (*it)->isDirected().value()) &&
-               !((*it)->isWeighted().has_value() &&
-                 (*it)->isWeighted().value())) {
+    } else if (!((*it)->isDirected().value_or(false)) &&
+               !((*it)->isWeighted().value_or(false))) {
       os << *std::static_pointer_cast<const UndirectedEdge<T>>(*it) << "\n";
     } else {
       os << *it << "\n";
