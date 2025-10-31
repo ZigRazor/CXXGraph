@@ -1,5 +1,6 @@
 #include <fstream>
 #include <memory>
+#include <optional>
 
 #include "CXXGraph/CXXGraph.hpp"
 #include "CXXGraph/Utility/SecureRandom.hpp"
@@ -249,8 +250,7 @@ TEST(RWOutputTest, test_8) {
 
   for (const auto &readEdgeIt : readEdge) {
     if (readEdgeIt->getUserId() == "1") {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
       // ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
@@ -259,8 +259,7 @@ TEST(RWOutputTest, test_8) {
       // ASSERT_EQ(readEdgeIt->getNodePair().second->getData(),
       // node2.getData());
     } else if (readEdgeIt->getUserId() == "2") {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node2.getUserId());
       // ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
@@ -269,8 +268,7 @@ TEST(RWOutputTest, test_8) {
       // ASSERT_EQ(readEdgeIt->getNodePair().second->getData(),
       // node3.getData());
     } else if (readEdgeIt->getUserId() == "3") {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  !readEdgeIt->isDirected().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{false});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
       // ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
@@ -318,8 +316,7 @@ TEST(RWOutputTest, test_9) {
 
   for (const auto &readEdgeIt : readEdge) {
     if (readEdgeIt->getId() == edge1.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
@@ -327,8 +324,7 @@ TEST(RWOutputTest, test_9) {
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
     } else if (readEdgeIt->getId() == edge2.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
@@ -336,8 +332,7 @@ TEST(RWOutputTest, test_9) {
                 node3.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
     } else if (readEdgeIt->getId() == edge3.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  !readEdgeIt->isDirected().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{false});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
@@ -386,10 +381,8 @@ TEST(RWOutputTest, test_10) {
 
   for (const auto &readEdgeIt : readEdge) {
     if (readEdgeIt->getId() == edge1.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 5);
@@ -400,10 +393,8 @@ TEST(RWOutputTest, test_10) {
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
     } else if (readEdgeIt->getId() == edge2.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  !readEdgeIt->isWeighted().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{false});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
@@ -411,10 +402,8 @@ TEST(RWOutputTest, test_10) {
                 node3.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
     } else if (readEdgeIt->getId() == edge3.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  !readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{false});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 6);
@@ -632,8 +621,7 @@ TEST(RWOutputTest, test_18) {
 
   for (const auto &readEdgeIt : readEdge) {
     if (readEdgeIt->getId() == edge1.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
       // ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
@@ -642,8 +630,7 @@ TEST(RWOutputTest, test_18) {
       // ASSERT_EQ(readEdgeIt->getNodePair().second->getData(),
       // node2.getData());
     } else if (readEdgeIt->getId() == edge2.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node2.getUserId());
       // ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
@@ -652,8 +639,7 @@ TEST(RWOutputTest, test_18) {
       // ASSERT_EQ(readEdgeIt->getNodePair().second->getData(),
       // node3.getData());
     } else if (readEdgeIt->getId() == edge3.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  !readEdgeIt->isDirected().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{false});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
       // ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
@@ -701,8 +687,7 @@ TEST(RWOutputTest, test_19) {
 
   for (const auto &readEdgeIt : readEdge) {
     if (readEdgeIt->getId() == edge1.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
@@ -710,8 +695,7 @@ TEST(RWOutputTest, test_19) {
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
     } else if (readEdgeIt->getId() == edge2.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
@@ -719,8 +703,7 @@ TEST(RWOutputTest, test_19) {
                 node3.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
     } else if (readEdgeIt->getId() == edge3.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  !readEdgeIt->isDirected().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{false});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
@@ -769,10 +752,8 @@ TEST(RWOutputTest, test_20) {
 
   for (const auto &readEdgeIt : readEdge) {
     if (readEdgeIt->getId() == edge1.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 5);
@@ -783,10 +764,8 @@ TEST(RWOutputTest, test_20) {
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
     } else if (readEdgeIt->getId() == edge2.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  !readEdgeIt->isWeighted().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{false});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
@@ -794,10 +773,8 @@ TEST(RWOutputTest, test_20) {
                 node3.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
     } else if (readEdgeIt->getId() == edge3.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  !readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{false});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 6);
@@ -882,10 +859,8 @@ TEST(RWOutputTest, test_22) {
 
   for (const auto &readEdgeIt : readEdge) {
     if (readEdgeIt->getId() == edge1.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 5);
@@ -896,10 +871,8 @@ TEST(RWOutputTest, test_22) {
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
     } else if (readEdgeIt->getId() == edge2.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  !readEdgeIt->isWeighted().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{false});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
@@ -907,10 +880,8 @@ TEST(RWOutputTest, test_22) {
                 node3.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
     } else if (readEdgeIt->getId() == edge3.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  !readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{false});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 6);
@@ -1022,10 +993,8 @@ TEST(RWOutputTest, test_25) {
 
   for (const auto &readEdgeIt : readEdge) {
     if (readEdgeIt->getId() == edge1.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 5);
@@ -1036,10 +1005,8 @@ TEST(RWOutputTest, test_25) {
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
     } else if (readEdgeIt->getId() == edge2.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  !readEdgeIt->isWeighted().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{false});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
@@ -1047,10 +1014,8 @@ TEST(RWOutputTest, test_25) {
                 node3.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
     } else if (readEdgeIt->getId() == edge3.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  !readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{false});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 6);
@@ -1189,10 +1154,8 @@ TEST(RWOutputTest, test_29) {
 
   for (const auto &readEdgeIt : readEdge) {
     if (readEdgeIt->getId() == edge1.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 5);
@@ -1203,10 +1166,8 @@ TEST(RWOutputTest, test_29) {
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
     } else if (readEdgeIt->getId() == edge2.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  !readEdgeIt->isWeighted().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{false});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
@@ -1214,10 +1175,8 @@ TEST(RWOutputTest, test_29) {
                 node3.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
     } else if (readEdgeIt->getId() == edge3.getId()) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  !readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{false});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 6);
