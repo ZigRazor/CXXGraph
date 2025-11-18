@@ -23,6 +23,8 @@
 #pragma once
 
 #include <memory>
+#include <set>
+#include <vector>
 
 #include "Record.hpp"
 

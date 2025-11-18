@@ -20,10 +20,11 @@
 #ifndef __CXXGRAPH_PARTITIONING_EDGEBALANCEDVERTEXCUT_H__
 #define __CXXGRAPH_PARTITIONING_EDGEBALANCEDVERTEXCUT_H__
 
-#include <memory>
 #pragma once
 
 #include <chrono>
+#include <cmath>
+#include <memory>
 
 #include "CXXGraph/Edge/Edge.h"
 #include "CXXGraph/Partitioning/Utility/Globals.hpp"

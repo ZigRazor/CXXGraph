@@ -20,13 +20,17 @@
 #ifndef __CXXGRAPH_PARTITIONING_GREEDYVERTEXCUT_H__
 #define __CXXGRAPH_PARTITIONING_GREEDYVERTEXCUT_H__
 
-#include <memory>
 #pragma once
 
 #include <limits.h>
 
+#include <algorithm>
 #include <chrono>
+#include <cmath>
+#include <memory>
 #include <random>
+#include <set>
+#include <vector>
 
 #include "CXXGraph/Edge/Edge.h"
 #include "CXXGraph/Partitioning/Utility/Globals.hpp"

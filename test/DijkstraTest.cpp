@@ -1,4 +1,6 @@
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "CXXGraph/CXXGraph.hpp"
 #include "gtest/gtest.h"

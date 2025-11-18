@@ -23,6 +23,12 @@
 #pragma once
 
 #include <algorithm>
+#include <map>
+#include <queue>
+#include <string>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 #include "CXXGraph/Graph/Graph_decl.h"
 

@@ -20,11 +20,12 @@
 #ifndef __CXXGRAPH_PARTITIONING_HDRF_H__
 #define __CXXGRAPH_PARTITIONING_HDRF_H__
 
-#include <memory>
 #pragma once
 
 #include <chrono>
+#include <memory>
 #include <random>
+#include <vector>
 
 #include "CXXGraph/Edge/Edge.h"
 #include "CXXGraph/Partitioning/Utility/Globals.hpp"

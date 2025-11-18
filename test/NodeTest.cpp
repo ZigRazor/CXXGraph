@@ -1,3 +1,8 @@
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 #include "CXXGraph/CXXGraph.hpp"
 #include "gtest/gtest.h"
 

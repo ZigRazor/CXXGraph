@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "CXXGraph/CXXGraph.hpp"
 #include "gtest/gtest.h"
 /*************** EXAMPLE START   ********************

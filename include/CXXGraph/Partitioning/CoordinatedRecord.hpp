@@ -22,6 +22,9 @@
 
 #pragma once
 
+#include <algorithm>
+#include <memory>
+#include <mutex>
 #include <set>
 
 #include "CXXGraph/Utility/Typedef.hpp"

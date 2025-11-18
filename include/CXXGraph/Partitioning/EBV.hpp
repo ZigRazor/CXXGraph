@@ -20,10 +20,12 @@
 #ifndef __CXXGRAPH_PARTITIONING_EBV_H__
 #define __CXXGRAPH_PARTITIONING_EBV_H__
 
-#include <memory>
 #pragma once
 
 #include <chrono>
+#include <cmath>
+#include <map>
+#include <memory>
 #include <unordered_map>
 
 #include "CXXGraph/Edge/Edge.h"

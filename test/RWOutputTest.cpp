@@ -1,6 +1,8 @@
 #include <fstream>
 #include <memory>
 #include <optional>
+#include <string>
+#include <unordered_map>
 
 #include "CXXGraph/CXXGraph.hpp"
 #include "CXXGraph/Utility/SecureRandom.hpp"

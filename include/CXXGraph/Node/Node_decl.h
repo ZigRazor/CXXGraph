@@ -22,6 +22,7 @@
 
 #pragma once
 #include <iostream>
+#include <string>
 
 #include "CXXGraph/Utility/id_t.hpp"
 

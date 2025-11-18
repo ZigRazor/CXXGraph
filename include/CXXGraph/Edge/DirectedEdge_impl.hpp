@@ -22,6 +22,9 @@
 
 #pragma once
 
+#include <string>
+#include <utility>
+
 #include "DirectedEdge_decl.h"
 
 namespace CXXGraph {

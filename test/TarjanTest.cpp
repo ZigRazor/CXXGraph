@@ -1,3 +1,4 @@
+#include <memory>
 #include <random>
 #include <vector>
 
@@ -5,8 +6,6 @@
 #include "gtest/gtest.h"
 
 // Smart pointers alias
-template <typename T>
-using unique = std::unique_ptr<T>;
 template <typename T>
 using shared = std::shared_ptr<T>;
 

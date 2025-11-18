@@ -20,8 +20,10 @@
 #ifndef __CXXGRAPH_PARTITIONING_PARTITIONER_H__
 #define __CXXGRAPH_PARTITIONING_PARTITIONER_H__
 
-#include <memory>
 #pragma once
+
+#include <memory>
+#include <unordered_map>
 #include <vector>
 
 #include "CXXGraph/Edge/Edge.h"

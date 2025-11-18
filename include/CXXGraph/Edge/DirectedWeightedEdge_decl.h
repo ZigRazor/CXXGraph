@@ -21,6 +21,10 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+#include <utility>
+
 #include "DirectedEdge_decl.h"
 #include "Weighted.h"
 

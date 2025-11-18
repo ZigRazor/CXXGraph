@@ -7,6 +7,11 @@
 
 #pragma once
 
+#include <map>
+#include <memory>
+#include <utility>
+#include <vector>
+
 #include "CXXGraph/Graph/Graph_decl.h"
 
 namespace CXXGraph {
