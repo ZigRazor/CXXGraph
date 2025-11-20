@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <ctime>
-#include <iterator>
+#include <iostream>
+#include <string>
 
 #include "CXXGraph/CXXGraph.hpp"
 

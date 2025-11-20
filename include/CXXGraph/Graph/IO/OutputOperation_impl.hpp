@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <string>
+
 #include "CXXGraph/Graph/Graph_decl.h"
 
 namespace CXXGraph {

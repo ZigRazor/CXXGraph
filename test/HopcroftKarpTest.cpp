@@ -1,4 +1,6 @@
 #include <memory>
+#include <set>
+#include <string>
 
 #include "CXXGraph/CXXGraph.hpp"
 #include "gtest/gtest.h"

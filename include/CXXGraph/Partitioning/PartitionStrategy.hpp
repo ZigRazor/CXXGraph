@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "CXXGraph/Edge/Edge.h"
 #include "PartitionState.hpp"
 

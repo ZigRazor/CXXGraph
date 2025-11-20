@@ -23,6 +23,8 @@
 #pragma once
 
 #include <algorithm>
+#include <memory>
+#include <vector>
 
 #include "CXXGraph/Graph/Graph_decl.h"
 

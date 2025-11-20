@@ -24,6 +24,8 @@
 
 #include <limits.h>
 
+#include <unordered_map>
+
 #include "CXXGraph/Graph/Graph_decl.h"
 
 namespace CXXGraph {

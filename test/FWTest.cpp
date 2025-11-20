@@ -1,5 +1,7 @@
 #include <map>
 #include <memory>
+#include <string>
+#include <unordered_map>
 
 #include "CXXGraph/CXXGraph.hpp"
 #include "gtest/gtest.h"

@@ -22,6 +22,11 @@
 
 #pragma once
 
+#include <queue>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
 #include "CXXGraph/Graph/Graph_decl.h"
 
 namespace CXXGraph {

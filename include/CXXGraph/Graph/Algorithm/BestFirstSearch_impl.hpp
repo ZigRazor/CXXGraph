@@ -25,9 +25,13 @@
 #include <algorithm>
 #include <atomic>
 #include <condition_variable>
+#include <memory>
 #include <mutex>
 #include <queue>
 #include <thread>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 #include "CXXGraph/Graph/Graph_decl.h"
 

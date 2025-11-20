@@ -21,6 +21,7 @@
 #define __CXXGRAPH_NODE_IMPL_H__
 
 #include <iomanip>
+#include <string>
 
 #include "Node_decl.h"
 

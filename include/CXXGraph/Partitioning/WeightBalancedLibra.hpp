@@ -23,6 +23,10 @@
 #pragma once
 
 #include <chrono>
+#include <cmath>
+#include <memory>
+#include <set>
+#include <unordered_map>
 
 #include "CXXGraph/Edge/Edge.h"
 #include "CXXGraph/Partitioning/Utility/Globals.hpp"

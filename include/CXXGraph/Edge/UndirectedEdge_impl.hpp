@@ -22,6 +22,9 @@
 
 #pragma once
 
+#include <string>
+#include <utility>
+
 #include "UndirectedEdge_decl.h"
 
 namespace CXXGraph {

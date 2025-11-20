@@ -1,6 +1,8 @@
 #include <CXXGraph/CXXGraph.hpp>
 #include <cmath>
+#include <iostream>
 #include <memory>
+#include <vector>
 
 using std::make_shared;
 

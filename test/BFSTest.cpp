@@ -1,4 +1,8 @@
+#include <memory>
 #include <random>
+#include <set>
+#include <string>
+#include <utility>
 #include <vector>
 
 #include "CXXGraph/CXXGraph.hpp"

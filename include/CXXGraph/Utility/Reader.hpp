@@ -22,6 +22,8 @@
 
 #pragma once  // This is to make sure that this header is only included once
 
+#include <fstream>
+
 namespace CXXGraph {
 // Foward declaration
 template <typename T>

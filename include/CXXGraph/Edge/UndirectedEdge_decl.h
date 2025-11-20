@@ -22,6 +22,10 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+#include <utility>
+
 #include "Edge_decl.h"
 
 namespace CXXGraph {
