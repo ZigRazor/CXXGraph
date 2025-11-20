@@ -12,6 +12,6 @@ static_assert(IS_UNSIGNED(CXXGRAPH_ID_TYPE),
 
 typedef CXXGRAPH_ID_TYPE id_t;
 #else
-typedef size_t id_t;
+typedef std::size_t id_t;
 #endif
 }  // namespace CXXGraph
