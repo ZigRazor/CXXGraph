@@ -26,6 +26,7 @@
 #include <set>
 #include <vector>
 
+#include "CXXGraph/Utility/id_t.hpp"
 #include "Record.hpp"
 
 namespace CXXGraph {
