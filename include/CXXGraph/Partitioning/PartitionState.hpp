@@ -26,6 +26,7 @@
 #include <set>
 #include <vector>
 
+#include "CXXGraph/Edge/Edge_decl.h"
 #include "CXXGraph/Utility/id_t.hpp"
 #include "Record.hpp"
 

@@ -26,6 +26,7 @@
 #include <string>
 #include <utility>
 
+#include "DirectedEdge_decl.h"
 #include "Edge_decl.h"
 
 namespace CXXGraph {

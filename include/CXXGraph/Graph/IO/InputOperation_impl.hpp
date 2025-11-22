@@ -27,6 +27,7 @@
 #include <utility>
 
 #include "CXXGraph/Graph/Graph_decl.h"
+#include "IOUtility_impl.hpp"
 
 namespace CXXGraph {
 
