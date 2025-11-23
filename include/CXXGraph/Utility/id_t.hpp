@@ -1,17 +1,19 @@
 #pragma once
 
+#ifdef CXXGRAPH_ID_TYPE
 #include <type_traits>
-
-#define IS_UNSIGNED(T) !(((T) - 1) < 0)
+#else
+#include <cstddef>
+#endif
 
 namespace CXXGraph {
 #ifdef CXXGRAPH_ID_TYPE
 // Throw compiler error if the type is signed
-static_assert(IS_UNSIGNED(CXXGRAPH_ID_TYPE),
+static_assert(std::is_unsigned_v<CXXGRAPH_ID_TYPE>,
               "CXXGRAPH_ID_TYPE must be unsigned");
 
-typedef CXXGRAPH_ID_TYPE id_t;
+using id_t = CXXGRAPH_ID_TYPE;
 #else
-typedef std::size_t id_t;
+using id_t = std::size_t;
 #endif
 }  // namespace CXXGraph
