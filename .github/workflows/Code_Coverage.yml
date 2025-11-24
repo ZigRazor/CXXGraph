@@ -35,7 +35,7 @@ jobs:
       - name: Install tools manually
         run: sudo apt-get install lcov gcovr
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Configure CMake
         run: cmake -DTEST=ON -DCODE_COVERAGE=ON -B ${{github.workspace}}/build; sudo apt-get install lcov gcovr
