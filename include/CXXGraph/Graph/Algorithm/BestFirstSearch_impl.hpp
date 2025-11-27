@@ -147,7 +147,6 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
   // a worker is assigned a small part of tasks for each time
   // assignments of tasks in current level and updates of tasks in next
   // level are inclusive
-  std::mutex tracker_mutex;
   std::mutex next_tracker_mutex;
   std::atomic<int> assigned_tasks = 0;
   int num_tasks = 1;
@@ -158,13 +157,6 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
 
   auto extract_tasks = [&assigned_tasks, &num_tasks,
                         &block_size]() -> std::pair<int, int> {
-    /*
-    std::lock_guard<std::mutex> tracker_guard(tracker_mutex);
-    int task_block_size = std::min(num_tasks - assigned_tasks,
-    block_size); std::pair<int,int> task_block{assigned_tasks,
-    assigned_tasks + task_block_size}; assigned_tasks += task_block_size;
-    return task_block;
-    */
     int start = assigned_tasks.fetch_add(block_size);
     int end = std::min(num_tasks, start + block_size);
     return {start, end};
