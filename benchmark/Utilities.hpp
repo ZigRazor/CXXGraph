@@ -1,5 +1,6 @@
 #ifndef __UTILITIES_H__
 #define __UTILITIES_H__
+#include <cassert>
 #include <ctime>
 #include <map>
 #include <random>
@@ -81,6 +82,7 @@ static CXXGraph::Graph<int> *readGraph(const std::string &filename) {
   auto result =
       graph_ptr->readFromFile(CXXGraph::InputOutputFormat::STANDARD_CSV,
                               "../benchmark/dataset", filename);
+  assert(result == 0);
   return graph_ptr;
 }
 

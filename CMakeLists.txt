@@ -31,6 +31,13 @@ else ()
 			-fsanitize=leak
 		)
 	endif(SANITIZE)
+  add_compile_options(
+    -Werror
+    -Wall
+    -Wextra
+    -Wpedantic
+    -Wno-unused-parameter
+  )
 endif(MSVC)
 
 # set up CPM.cmake
