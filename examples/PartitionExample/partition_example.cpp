@@ -1,4 +1,3 @@
-#include <cassert>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
@@ -8,10 +7,8 @@
 
 static CXXGraph::Graph<int> *readGraph(const std::string &filename) {
   CXXGraph::Graph<int> *graph_ptr = new CXXGraph::Graph<int>();
-  auto result =
-      graph_ptr->readFromFile(CXXGraph::InputOutputFormat::STANDARD_CSV,
-                              "../../../benchmark/dataset", filename);
-  assert(result == 0);
+  graph_ptr->readFromFile(CXXGraph::InputOutputFormat::STANDARD_CSV,
+                          "../../../benchmark/dataset", filename);
   return graph_ptr;
 }
 

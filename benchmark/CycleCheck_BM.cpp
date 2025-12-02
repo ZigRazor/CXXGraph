@@ -16,6 +16,7 @@ static void CycleCheckBFS_X(benchmark::State &state) {
   }
   for (auto _ : state) {
     auto result = g.isCyclicDirectedGraphBFS();
+    benchmark::DoNotOptimize(result);
   }
   state.SetComplexityN(state.range(0));
 }
@@ -24,10 +25,12 @@ BENCHMARK(CycleCheckBFS_X)
     ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
+[[maybe_unused]]
 static void CycleCheckBFS_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
     auto result = cit_graph_ptr->isCyclicDirectedGraphBFS();
+    benchmark::DoNotOptimize(result);
   }
 }
 
@@ -44,6 +47,7 @@ static void CycleCheckDFS_X(benchmark::State &state) {
   }
   for (auto _ : state) {
     auto result = g.isCyclicDirectedGraphDFS();
+    benchmark::DoNotOptimize(result);
   }
   state.SetComplexityN(state.range(0));
 }
@@ -52,10 +56,12 @@ BENCHMARK(CycleCheckDFS_X)
     ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
+[[maybe_unused]]
 static void CycleCheckDFS_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
     auto result = cit_graph_ptr->isCyclicDirectedGraphDFS();
+    benchmark::DoNotOptimize(result);
   }
 }
 

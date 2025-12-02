@@ -25,6 +25,7 @@ BENCHMARK(BFS_X)
     ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
+[[maybe_unused]]
 static void BFS_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
@@ -54,6 +55,7 @@ BENCHMARK(PSEUDO_CONCURRENCY_BFS_X)
     ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
+[[maybe_unused]]
 static void PSEUDO_CONCURRENCY_BFS_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
@@ -64,6 +66,7 @@ static void PSEUDO_CONCURRENCY_BFS_FromReadedCitHep(benchmark::State &state) {
 
 // BENCHMARK(PSEUDO_CONCURRENCY_BFS_FromReadedCitHep);
 
+[[maybe_unused]]
 static void CONCURRENCY_BFS_X(benchmark::State &state) {
   CXXGraph::Graph<int> g;
   auto range_start = edges.begin();
@@ -83,6 +86,7 @@ static void CONCURRENCY_BFS_X(benchmark::State &state) {
 //     ->RangeMultiplier(2)
 //     ->Range((unsigned long)1, (unsigned long)1 << 18);
 
+[[maybe_unused]]
 static void CONCURRENCY_BFS_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
