@@ -18,6 +18,7 @@ static void FordFulkerson_X(benchmark::State &state) {
     auto result =
         g.fordFulkersonMaxFlow(*(range_start->second->getNodePair().first),
                                *(range_end->second->getNodePair().second));
+    benchmark::DoNotOptimize(result);
   }
   state.SetComplexityN(state.range(0));
 }
@@ -26,12 +27,14 @@ BENCHMARK(FordFulkerson_X)
     ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
+[[maybe_unused]]
 static void FordFulkerson_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
     auto result = cit_graph_ptr->fordFulkersonMaxFlow(
         *((*(edgeSet.begin()))->getNodePair().first),
         *((*(++edgeSet.begin()))->getNodePair().second));
+    benchmark::DoNotOptimize(result);
   }
 }
 

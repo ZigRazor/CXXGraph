@@ -1,6 +1,5 @@
 #ifndef __UTILITIES_H__
 #define __UTILITIES_H__
-#include <cassert>
 #include <ctime>
 #include <map>
 #include <random>
@@ -18,7 +17,7 @@ static std::map<unsigned long, CXXGraph::Node<int> *> generateRandomNodes(
   unsigned int randSeed = (unsigned int)time(NULL);
   rand.seed(randSeed);
   int randomNumber;
-  for (auto index = 0; index < numberOfNodes; index++) {
+  for (auto index = 0UL; index < numberOfNodes; index++) {
     randomNumber = (distribution(rand) % MaxValue) + 1;
     CXXGraph::Node<int> *newNode =
         new CXXGraph::Node<int>(std::to_string(index), randomNumber);
@@ -40,7 +39,7 @@ static std::map<unsigned long, CXXGraph::Edge<int> *> generateRandomEdges(
   int randomNumber1;
   int randomNumber2;
   auto MaxValue = nodes.size();
-  for (auto index = 0; index < numberOfEdges; index++) {
+  for (auto index = 0UL; index < numberOfEdges; index++) {
     randomNumber1 = (distribution(rand) % MaxValue);
     randomNumber2 = (distribution(rand) % MaxValue);
     CXXGraph::Edge<int> *newEdge = new CXXGraph::Edge<int>(
@@ -66,7 +65,7 @@ generateRandomUndirectedEdges(
   int randomNumber1;
   int randomNumber2;
   auto MaxValue = nodes.size();
-  for (auto index = 0; index < numberOfEdges; index++) {
+  for (auto index = 0UL; index < numberOfEdges; index++) {
     randomNumber1 = (distribution(rand) % MaxValue);
     randomNumber2 = (distribution(rand) % MaxValue);
     CXXGraph::UndirectedEdge<int> *newEdge = new CXXGraph::UndirectedEdge<int>(
@@ -79,10 +78,8 @@ generateRandomUndirectedEdges(
 
 static CXXGraph::Graph<int> *readGraph(const std::string &filename) {
   CXXGraph::Graph<int> *graph_ptr = new CXXGraph::Graph<int>();
-  auto result =
-      graph_ptr->readFromFile(CXXGraph::InputOutputFormat::STANDARD_CSV,
-                              "../benchmark/dataset", filename);
-  assert(result == 0);
+  graph_ptr->readFromFile(CXXGraph::InputOutputFormat::STANDARD_CSV,
+                          "../benchmark/dataset", filename);
   return graph_ptr;
 }
 
