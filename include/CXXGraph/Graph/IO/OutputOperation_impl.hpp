@@ -282,7 +282,7 @@ int Graph<T>::writeToBinary(const std::string &filepath, bool writeNodeFeatures,
     out.close();
     return 0;
 
-  } catch (const std::exception &e) {
+  } catch (const std::exception &) {
     out.close();
     return -2;
   }
