@@ -34,6 +34,7 @@ else ()
   add_compile_options(
     -Werror
     -Wall
+    -Wdouble-promotion
     -Wextra
     -Wpedantic
     -Wno-unused-parameter
