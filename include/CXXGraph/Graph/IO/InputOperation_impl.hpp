@@ -367,7 +367,7 @@ int Graph<T>::readFromBinary(const std::string &filepath, bool readNodeFeatures,
     in.close();
     return 0;
 
-  } catch (const std::exception &e) {
+  } catch (const std::exception &) {
     in.close();
     return -4;
   }
