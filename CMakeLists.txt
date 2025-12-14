@@ -19,6 +19,16 @@ endif(DEBUG)
 
 if (MSVC)
 	add_compile_options(/bigobj)
+  add_compile_options(
+    /WX
+    /W4
+    /permissive-
+    /wd4127
+    /wd4244
+    /wd4456
+    /wd4458
+    /wd4459
+  )
 else ()
 	option(SANITIZE "Enable Sanitize" OFF)
 	if(SANITIZE)
