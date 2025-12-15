@@ -52,7 +52,7 @@ jobs:
         working-directory: ${{github.workspace}}/build/test
         run: lcov --capture --directory .. --output-file coverage.info --ignore-errors mismatch
 
-      - uses: codecov/codecov-action@v5.5.1
+      - uses: codecov/codecov-action@v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           file: ${{github.workspace}}/build/test/coverage.info # optional
