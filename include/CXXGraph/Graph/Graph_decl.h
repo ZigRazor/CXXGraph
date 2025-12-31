@@ -204,7 +204,7 @@ class Graph {
 
  public:
   Graph();
-  Graph(const T_EdgeSet<T> &edgeSet);
+  explicit Graph(const T_EdgeSet<T> &edgeSet);
   virtual ~Graph() = default;
 
   /**

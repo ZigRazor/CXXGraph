@@ -65,7 +65,7 @@ class UndirectedWeightedEdge : public UndirectedEdge<T>, public Weighted {
       const double weight);
   UndirectedWeightedEdge(const UndirectedEdge<T> &edge, const double weight);
   UndirectedWeightedEdge(const Edge<T> &edge, const double weight);
-  UndirectedWeightedEdge(const UndirectedEdge<T> &edge);
+  explicit UndirectedWeightedEdge(const UndirectedEdge<T> &edge);
   UndirectedWeightedEdge(const Edge<T> &edge);
   UndirectedWeightedEdge(const DirectedWeightedEdge<T> &edge);
   ~UndirectedWeightedEdge() override = default;

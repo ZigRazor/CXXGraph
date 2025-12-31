@@ -33,11 +33,11 @@ namespace Partitioning {
 class Globals {
  private:
  public:
-  Globals(const int numberOfPartiton,
-          const PartitionAlgorithm algorithm = PartitionAlgorithm::HDRF_ALG,
-          const double param1 = 1, const double param2 = 1,
-          const double param3 = 1,
-          const unsigned int threads = std::thread::hardware_concurrency());
+  explicit Globals(
+      const int numberOfPartiton,
+      const PartitionAlgorithm algorithm = PartitionAlgorithm::HDRF_ALG,
+      const double param1 = 1, const double param2 = 1, const double param3 = 1,
+      const unsigned int threads = std::thread::hardware_concurrency());
   ~Globals();
 
   const std::string print() const;
