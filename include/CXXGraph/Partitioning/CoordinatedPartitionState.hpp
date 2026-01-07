@@ -62,7 +62,7 @@ class CoordinatedPartitionState : public PartitionState<T> {
   std::shared_ptr<std::mutex> record_map_mutex = nullptr;
   // DatWriter out; //to print the final partition of each edge
  public:
-  CoordinatedPartitionState(const Globals &G);
+  explicit CoordinatedPartitionState(const Globals &G);
   ~CoordinatedPartitionState() override;
 
   std::shared_ptr<Record<T>> getRecord(CXXGraph::id_t x) override;

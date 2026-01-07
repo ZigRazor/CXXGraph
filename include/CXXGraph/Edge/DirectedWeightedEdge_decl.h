@@ -63,7 +63,7 @@ class DirectedWeightedEdge : public DirectedEdge<T>, public Weighted {
       const double weight);
   DirectedWeightedEdge(const DirectedEdge<T> &edge, const double weight);
   DirectedWeightedEdge(const Edge<T> &edge, const double weight);
-  DirectedWeightedEdge(const DirectedEdge<T> &edge);
+  explicit DirectedWeightedEdge(const DirectedEdge<T> &edge);
   DirectedWeightedEdge(const Edge<T> &edge);
   DirectedWeightedEdge(const UndirectedWeightedEdge<T> &edge);
   ~DirectedWeightedEdge() override = default;
