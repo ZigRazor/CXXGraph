@@ -1,0 +1,24 @@
+---------------------------------------------------------------
+Benchmark                     Time             CPU   Iterations
+---------------------------------------------------------------
+BellmanFord_X/1             195 ns          194 ns      3661631
+BellmanFord_X/2             320 ns          319 ns      2074582
+BellmanFord_X/4             622 ns          621 ns      1175745
+BellmanFord_X/8            1216 ns         1213 ns       570063
+BellmanFord_X/16           2655 ns         2650 ns       265879
+BellmanFord_X/32           5623 ns         5611 ns       122899
+BellmanFord_X/64          11343 ns        11327 ns        62011
+BellmanFord_X/128         24646 ns        24592 ns        27775
+BellmanFord_X/256         56376 ns        56272 ns        12183
+BellmanFord_X/512        131170 ns       130930 ns         5170
+BellmanFord_X/1024       293640 ns       292910 ns         2400
+BellmanFord_X/2048       698531 ns       696522 ns         1117
+BellmanFord_X/4096      1467403 ns      1462826 ns          475
+BellmanFord_X/8192      3838824 ns      3824605 ns          185
+BellmanFord_X/16384    11268151 ns     11218453 ns           61
+BellmanFord_X/32768    26842603 ns     26755964 ns           26
+BellmanFord_X/65536   103831943 ns    103494733 ns            6
+BellmanFord_X/131072  113103936 ns    112689542 ns            6
+BellmanFord_X/262144  173054096 ns    172526200 ns            4
+BellmanFord_X_BigO       743.22 N        740.83 N    
+BellmanFord_X_RMS            62 %            62 %    
