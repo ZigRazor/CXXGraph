@@ -1,5 +1,7 @@
 #include <benchmark/benchmark.h>
 
+#include <unordered_map>
+
 #include "CXXGraph/CXXGraph.hpp"
 #include "Utilities.hpp"
 
@@ -16,12 +18,14 @@ static void Dijkstra_X(benchmark::State &state) {
     auto &result = g.dijkstra(*(range_start->second->getNodePair().first),
                               *(range_end->second->getNodePair().second));
   }
+  state.SetComplexityN(state.range(0));
 }
 BENCHMARK(Dijkstra_X)
-    ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->RangeMultiplier(2)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
+[[maybe_unused]]
 static void Dijkstra_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
@@ -31,4 +35,4 @@ static void Dijkstra_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(Dijkstra_FromReadedCitHep)->Complexity();
+// BENCHMARK(Dijkstra_FromReadedCitHep);

@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <unordered_map>
+
 #include "CXXGraph/Graph/Graph_decl.h"
 
 namespace CXXGraph {
@@ -43,9 +45,9 @@ bool Graph<T>::isConnectedGraph() const {
           visited[source->getId()] = true;
 
           // travel the neighbors
-          for (size_t i = 0; i < (*cachedAdjMatrix)[source].size(); i++) {
+          for (size_t i = 0; i < (*cachedAdjListOut)[source].size(); i++) {
             shared<const Node<T>> neighbor =
-                (*cachedAdjMatrix)[source].at(i).first;
+                (*cachedAdjListOut)[source].at(i).first;
             if (visited[neighbor->getId()] == false) {
               // make recursive call from neighbor
               dfs_helper(neighbor);
@@ -83,9 +85,9 @@ bool Graph<T>::isStronglyConnectedGraph() const {
             visited[source->getId()] = true;
 
             // travel the neighbors
-            for (size_t i = 0; i < (*cachedAdjMatrix)[source].size(); i++) {
+            for (size_t i = 0; i < (*cachedAdjListOut)[source].size(); i++) {
               shared<const Node<T>> neighbor =
-                  (*cachedAdjMatrix)[source].at(i).first;
+                  (*cachedAdjListOut)[source].at(i).first;
               if (visited[neighbor->getId()] == false) {
                 // make recursive call from neighbor
                 dfs_helper(neighbor);

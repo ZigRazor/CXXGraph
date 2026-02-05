@@ -23,6 +23,8 @@
 #pragma once
 
 #include <algorithm>
+#include <queue>
+#include <unordered_map>
 
 #include "CXXGraph/Graph/Graph_decl.h"
 
@@ -67,7 +69,7 @@ double Graph<T>::fordFulkersonMaxFlow(const Node<T> &source,
       nodeSet.begin(), nodeSet.end(),
       [&target](auto node) { return node->getUserId() == target.getUserId(); });
 
-  auto bfs_helper = [this, &source_node_ptr, &target_node_ptr, &parent,
+  auto bfs_helper = [&source_node_ptr, &target_node_ptr, &parent,
                      &weightMap]() -> bool {
     std::unordered_map<shared<const Node<T>>, bool, nodeHash<T>> visited;
     std::queue<shared<const Node<T>>> queue;

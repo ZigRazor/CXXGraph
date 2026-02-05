@@ -25,6 +25,8 @@
 namespace CXXGraph {
 class Runnable {
  public:
+  virtual ~Runnable() = default;
+
   virtual void run() = 0;
 };
 }  // namespace CXXGraph

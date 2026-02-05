@@ -4,9 +4,12 @@ name: Code Coverage
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
+
+permissions:
+  contents: read
 
 jobs:
   codacy-coverage-reporter:
@@ -15,7 +18,7 @@ jobs:
     steps:
       #- name: Install gtest manually
       #  run: sudo apt-get install libgtest-dev
-        
+
       #- name: Install benchmark manually
       #  run: |
       #    git clone https://github.com/google/benchmark.git
@@ -32,7 +35,7 @@ jobs:
       - name: Install tools manually
         run: sudo apt-get install lcov gcovr
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Configure CMake
         run: cmake -DTEST=ON -DCODE_COVERAGE=ON -B ${{github.workspace}}/build; sudo apt-get install lcov gcovr
@@ -47,9 +50,9 @@ jobs:
 
       - name: create Report
         working-directory: ${{github.workspace}}/build/test
-        run: lcov --capture --directory .. --output-file coverage.info
+        run: lcov --capture --directory .. --output-file coverage.info --ignore-errors mismatch
 
-      - uses: codecov/codecov-action@v5.4.0
+      - uses: codecov/codecov-action@v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           file: ${{github.workspace}}/build/test/coverage.info # optional

@@ -38,9 +38,10 @@ namespace CXXGraph {
 // is_node type trait
 template <typename T>
 struct is_node
-    : std::integral_constant<
-          bool, std::is_same<Node<typename T::Node_t>,
-                             typename std::remove_const<T>::type>::value> {};
+    : std::integral_constant<bool,
+                             std::is_same_v<Node<typename T::Node_t>,
+                                            typename std::remove_const_t<T>>> {
+};
 
 template <typename T>
 struct is_node<T*> : std::false_type {};
@@ -56,11 +57,10 @@ template <typename T>
 struct is_node_ptr : std::false_type {};
 
 template <typename T>
-struct is_node_ptr<T*> : std::integral_constant<bool, is_node<T>::value> {};
+struct is_node_ptr<T*> : std::integral_constant<bool, is_node_v<T>> {};
 
 template <typename T>
-struct is_node_ptr<shared<T>>
-    : std::integral_constant<bool, is_node<T>::value> {};
+struct is_node_ptr<shared<T>> : std::integral_constant<bool, is_node_v<T>> {};
 
 template <typename T>
 inline constexpr bool is_node_ptr_v = is_node_ptr<T>::value;
@@ -75,10 +75,10 @@ inline constexpr bool all_are_node_ptrs_v = all_are_node_ptrs<T, Ts...>::value;
 
 // is_edge type trait
 template <typename T>
-struct is_edge
-    : std::integral_constant<
-          bool, std::is_base_of<Edge<typename T::Node_t>,
-                                typename std::remove_const<T>::type>::value> {};
+struct is_edge : std::integral_constant<
+                     bool, std::is_base_of_v<Edge<typename T::Node_t>,
+                                             typename std::remove_const_t<T>>> {
+};
 
 template <typename T>
 struct is_edge<T*> : std::false_type {};
@@ -94,11 +94,10 @@ template <typename T>
 struct is_edge_ptr : std::false_type {};
 
 template <typename T>
-struct is_edge_ptr<T*> : std::integral_constant<bool, is_edge<T>::value> {};
+struct is_edge_ptr<T*> : std::integral_constant<bool, is_edge_v<T>> {};
 
 template <typename T>
-struct is_edge_ptr<shared<T>>
-    : std::integral_constant<bool, is_edge<T>::value> {};
+struct is_edge_ptr<shared<T>> : std::integral_constant<bool, is_edge_v<T>> {};
 
 template <typename T>
 inline constexpr bool is_edge_ptr_v = is_edge_ptr<T>::value;
@@ -113,4 +112,4 @@ inline constexpr bool all_are_edge_ptrs_v = all_are_edge_ptrs<T, Ts...>::value;
 
 }  // namespace CXXGraph
 
-#endif
+#endif  // __CXXGRAPH_TYPE_TRAITS__

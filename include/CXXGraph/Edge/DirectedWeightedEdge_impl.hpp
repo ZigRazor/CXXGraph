@@ -21,6 +21,9 @@
 
 #pragma once
 
+#include <string>
+#include <utility>
+
 #include "DirectedWeightedEdge_decl.h"
 #include "Weighted.h"
 
@@ -30,32 +33,32 @@ using std::make_shared;
 using std::make_unique;
 
 template <typename T>
-DirectedWeightedEdge<T>::DirectedWeightedEdge(const CXXGraph::id_t id,
+DirectedWeightedEdge<T>::DirectedWeightedEdge(const std::string &userId,
                                               const Node<T> &node1,
                                               const Node<T> &node2,
                                               const double weight)
-    : DirectedEdge<T>(id, node1, node2), Weighted(weight) {}
+    : DirectedEdge<T>(userId, node1, node2), Weighted(weight) {}
 
 template <typename T>
-DirectedWeightedEdge<T>::DirectedWeightedEdge(const CXXGraph::id_t id,
+DirectedWeightedEdge<T>::DirectedWeightedEdge(const std::string &userId,
                                               shared<const Node<T>> node1,
                                               shared<const Node<T>> node2,
                                               const double weight)
-    : DirectedEdge<T>(id, node1, node2), Weighted(weight) {}
+    : DirectedEdge<T>(userId, node1, node2), Weighted(weight) {}
 
 template <typename T>
 DirectedWeightedEdge<T>::DirectedWeightedEdge(
-    const CXXGraph::id_t id,
+    const std::string &userId,
     const std::pair<const Node<T> *, const Node<T> *> &nodepair,
     const double weight)
-    : DirectedEdge<T>(id, nodepair), Weighted(weight) {}
+    : DirectedEdge<T>(userId, nodepair), Weighted(weight) {}
 
 template <typename T>
 DirectedWeightedEdge<T>::DirectedWeightedEdge(
-    const CXXGraph::id_t id,
+    const std::string &userId,
     const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair,
     const double weight)
-    : DirectedEdge<T>(id, nodepair), Weighted(weight) {}
+    : DirectedEdge<T>(userId, nodepair), Weighted(weight) {}
 
 template <typename T>
 DirectedWeightedEdge<T>::DirectedWeightedEdge(const DirectedEdge<T> &edge,

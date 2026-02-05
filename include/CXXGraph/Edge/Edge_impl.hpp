@@ -22,6 +22,10 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+#include <utility>
+
 #include "CXXGraph/Edge/Edge_decl.h"
 
 namespace CXXGraph {
@@ -35,35 +39,44 @@ using std::make_shared;
 using std::make_unique;
 
 template <typename T>
-Edge<T>::Edge(const CXXGraph::id_t id, const Node<T> &node1,
+Edge<T>::Edge(const std::string &userId, const Node<T> &node1,
               const Node<T> &node2) {
   this->nodePair.first = make_shared<const Node<T>>(node1);
   this->nodePair.second = make_shared<const Node<T>>(node2);
-  this->id = id;
+  this->userId = userId;
+  setId(userId);
 }
 
 template <typename T>
-Edge<T>::Edge(const CXXGraph::id_t id, shared<const Node<T>> node1,
+Edge<T>::Edge(const std::string &userId, shared<const Node<T>> node1,
               shared<const Node<T>> node2) {
   this->nodePair.first = node1;
   this->nodePair.second = node2;
-  this->id = id;
+  this->userId = userId;
+  setId(userId);
 }
 
 template <typename T>
-Edge<T>::Edge(const CXXGraph::id_t id,
+Edge<T>::Edge(const std::string &userId,
               const std::pair<const Node<T> *, const Node<T> *> &nodepair) {
   this->nodePair.first = make_shared<const Node<T>>(*(nodepair.first));
   this->nodePair.second = make_shared<const Node<T>>(*(nodepair.second));
-  this->id = id;
+  this->userId = userId;
+  setId(userId);
 }
 
 template <typename T>
 Edge<T>::Edge(
-    const CXXGraph::id_t id,
+    const std::string &userId,
     const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair)
     : nodePair(nodepair) {
-  this->id = id;
+  this->userId = userId;
+  setId(userId);
+}
+
+template <typename T>
+void Edge<T>::setId(const std::string &inpId) {
+  this->id = std::hash<std::string>{}(inpId);
 }
 
 template <typename T>
@@ -79,8 +92,13 @@ void Edge<T>::setSecondNode(shared<const Node<T>> node) {
 }
 
 template <typename T>
-unsigned long long Edge<T>::getId() const {
+CXXGraph::id_t Edge<T>::getId() const {
   return id;
+}
+
+template <typename T>
+const std::string &Edge<T>::getUserId() const {
+  return userId;
 }
 
 template <typename T>

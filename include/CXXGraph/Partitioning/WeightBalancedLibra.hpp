@@ -23,9 +23,14 @@
 #pragma once
 
 #include <chrono>
+#include <cmath>
+#include <memory>
+#include <set>
+#include <unordered_map>
 
 #include "CXXGraph/Edge/Edge.h"
 #include "CXXGraph/Partitioning/Utility/Globals.hpp"
+#include "CoordinatedPartitionState.hpp"
 #include "PartitionStrategy.hpp"
 
 namespace CXXGraph {
@@ -48,7 +53,7 @@ class WeightBalancedLibra : public PartitionStrategy<T> {
   explicit WeightBalancedLibra(
       const Globals &G, double _weight_sum_bound,
       std::unordered_map<std::size_t, int> &&_vertices_degrees);
-  ~WeightBalancedLibra();
+  ~WeightBalancedLibra() override;
 
   void performStep(shared<const Edge<T>> e,
                    shared<PartitionState<T>> Sstate) override;
@@ -61,7 +66,7 @@ WeightBalancedLibra<T>::WeightBalancedLibra(
       weight_sum_bound(_weight_sum_bound),
       vertices_degrees(_vertices_degrees) {}
 template <typename T>
-WeightBalancedLibra<T>::~WeightBalancedLibra() {}
+WeightBalancedLibra<T>::~WeightBalancedLibra() = default;
 template <typename T>
 void WeightBalancedLibra<T>::performStep(shared<const Edge<T>> e,
                                          shared<PartitionState<T>> state) {
@@ -75,7 +80,6 @@ void WeightBalancedLibra<T>::performStep(shared<const Edge<T>> e,
   //*** ASK FOR LOCK
   bool locks_taken = false;
   while (!locks_taken) {
-    srand((unsigned)time(NULL));
     int usleep_time = 2;
     while (!u_record->getLock()) {
       std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));

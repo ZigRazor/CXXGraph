@@ -20,14 +20,17 @@
 #ifndef __CXXGRAPH_PARTITIONING_EBV_H__
 #define __CXXGRAPH_PARTITIONING_EBV_H__
 
-#include <memory>
 #pragma once
 
 #include <chrono>
+#include <cmath>
+#include <map>
+#include <memory>
 #include <unordered_map>
 
 #include "CXXGraph/Edge/Edge.h"
 #include "CXXGraph/Partitioning/Utility/Globals.hpp"
+#include "CoordinatedPartitionState.hpp"
 #include "PartitionStrategy.hpp"
 
 namespace CXXGraph {
@@ -55,7 +58,7 @@ class EBV : public PartitionStrategy<T> {
 
  public:
   explicit EBV(const Globals &G);
-  ~EBV();
+  ~EBV() override;
 
   void performStep(shared<const Edge<T>> e,
                    shared<PartitionState<T>> Sstate) override;
@@ -65,7 +68,7 @@ EBV<T>::EBV(const Globals &G) : GLOBALS(G) {
   // this->GLOBALS = G;
 }
 template <typename T>
-EBV<T>::~EBV() {}
+EBV<T>::~EBV() = default;
 template <typename T>
 void EBV<T>::performStep(shared<const Edge<T>> e,
                          shared<PartitionState<T>> state) {
@@ -86,7 +89,6 @@ void EBV<T>::performStep(shared<const Edge<T>> e,
   //*** ASK FOR LOCK
   bool locks_taken = false;
   while (!locks_taken) {
-    srand((unsigned)time(NULL));
     int usleep_time = 2;
     while (!u_record->getLock()) {
       std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));

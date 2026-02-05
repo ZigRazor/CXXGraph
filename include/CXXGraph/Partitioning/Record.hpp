@@ -28,7 +28,12 @@ namespace CXXGraph {
 namespace Partitioning {
 template <typename T>
 class Record {
+ protected:
+  bool owns_lock = false;
+
  public:
+  virtual ~Record() = default;
+
   virtual const std::set<int> &getPartitions() const = 0;
   virtual void addPartition(const int m) = 0;
   virtual bool hasReplicaInPartition(const int m) const = 0;

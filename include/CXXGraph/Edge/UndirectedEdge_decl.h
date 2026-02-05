@@ -22,6 +22,11 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+#include <utility>
+
+#include "DirectedEdge_decl.h"
 #include "Edge_decl.h"
 
 namespace CXXGraph {
@@ -41,17 +46,17 @@ std::ostream &operator<<(std::ostream &o, const UndirectedEdge<T> &edge);
 template <typename T>
 class UndirectedEdge : public Edge<T> {
  public:
-  UndirectedEdge(const CXXGraph::id_t id, const Node<T> &node1,
+  UndirectedEdge(const std::string &userId, const Node<T> &node1,
                  const Node<T> &node2);
-  UndirectedEdge(const CXXGraph::id_t id, shared<const Node<T>> node1,
+  UndirectedEdge(const std::string &userId, shared<const Node<T>> node1,
                  shared<const Node<T>> node2);
-  UndirectedEdge(const CXXGraph::id_t id,
+  UndirectedEdge(const std::string &userId,
                  const std::pair<const Node<T> *, const Node<T> *> &nodepair);
   UndirectedEdge(
-      const CXXGraph::id_t id,
+      const std::string &userId,
       const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair);
   UndirectedEdge(const Edge<T> &edge);
-  virtual ~UndirectedEdge() = default;
+  ~UndirectedEdge() override = default;
   const Node<T> &getNode1() const;
   const Node<T> &getNode2() const;
   const std::optional<bool> isDirected() const override;

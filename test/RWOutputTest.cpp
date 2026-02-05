@@ -1,7 +1,11 @@
 #include <fstream>
 #include <memory>
+#include <optional>
+#include <string>
+#include <unordered_map>
 
 #include "CXXGraph/CXXGraph.hpp"
+#include "CXXGraph/Utility/SecureRandom.hpp"
 #include "gtest/gtest.h"
 
 // Smart pointers alias
@@ -21,11 +25,10 @@ inline bool exists_test(const std::string &name) {
 static std::unordered_map<unsigned long, shared<CXXGraph::Node<int>>>
 generateRandomNodes(unsigned long numberOfNodes, int MaxValue) {
   std::unordered_map<unsigned long, shared<CXXGraph::Node<int>>> nodes;
-  srand(static_cast<unsigned>(time(NULL)));
   int randomNumber;
   for (unsigned long index = 0; index < numberOfNodes; ++index) {
     // auto index = std::to_string(index);
-    randomNumber = (rand() % MaxValue) + 1;
+    randomNumber = (CXXGraph::SecureRandom::randomUInt() % MaxValue) + 1;
     auto newNode =
         make_shared<CXXGraph::Node<int>>(std::to_string(index), randomNumber);
     nodes[index] = newNode;
@@ -38,22 +41,22 @@ generateRandomEdges(
     unsigned long numberOfEdges,
     std::unordered_map<unsigned long, shared<CXXGraph::Node<int>>> nodes) {
   std::unordered_map<unsigned long, shared<CXXGraph::Edge<int>>> edges;
-  srand(static_cast<unsigned>(time(NULL)));
   int randomNumber1;
   int randomNumber2;
   auto MaxValue = nodes.size();
   for (unsigned long index = 0; index < numberOfEdges; ++index) {
-    randomNumber1 = (rand() % MaxValue);
-    randomNumber2 = (rand() % MaxValue);
-    auto newEdge = make_shared<CXXGraph::Edge<int>>(
-        index, *(nodes.at(randomNumber1)), *(nodes.at(randomNumber2)));
+    randomNumber1 = (CXXGraph::SecureRandom::randomUInt() % MaxValue);
+    randomNumber2 = (CXXGraph::SecureRandom::randomUInt() % MaxValue);
+    auto newEdge = make_shared<CXXGraph::Edge<int>>(std::to_string(index),
+                                                    *(nodes.at(randomNumber1)),
+                                                    *(nodes.at(randomNumber2)));
     edges[index] = newEdge;
   }
   return edges;
 }
 
-static auto nodes = generateRandomNodes(10000, 2);
-static auto edges = generateRandomEdges(10000, nodes);
+static const auto nodes = generateRandomNodes(10000, 2);
+static const auto edges = generateRandomEdges(10000, nodes);
 
 //************* CSV ***************//
 
@@ -63,9 +66,9 @@ TEST(RWOutputTest, test_1) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 1);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", node2, node3, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
@@ -87,9 +90,9 @@ TEST(RWOutputTest, test_2) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 4);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 5);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", node2, node3, 4);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
@@ -111,9 +114,9 @@ TEST(RWOutputTest, test_3) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 5);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
@@ -134,8 +137,8 @@ TEST(RWOutputTest, test_4) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
@@ -151,8 +154,8 @@ TEST(RWOutputTest, test_5) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
@@ -176,8 +179,8 @@ TEST(RWOutputTest, test_6) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", node2, node3, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
@@ -199,8 +202,8 @@ TEST(RWOutputTest, test_7) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", node2, node3, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
@@ -224,9 +227,9 @@ TEST(RWOutputTest, test_8) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 5);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
@@ -248,9 +251,8 @@ TEST(RWOutputTest, test_8) {
   ASSERT_EQ(readNode.size(), 3);
 
   for (const auto &readEdgeIt : readEdge) {
-    if (readEdgeIt->getId() == 1) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
+    if (readEdgeIt->getUserId() == "1") {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
       // ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
@@ -258,9 +260,8 @@ TEST(RWOutputTest, test_8) {
                 node2.getUserId());
       // ASSERT_EQ(readEdgeIt->getNodePair().second->getData(),
       // node2.getData());
-    } else if (readEdgeIt->getId() == 2) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
+    } else if (readEdgeIt->getUserId() == "2") {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node2.getUserId());
       // ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
@@ -268,9 +269,8 @@ TEST(RWOutputTest, test_8) {
                 node3.getUserId());
       // ASSERT_EQ(readEdgeIt->getNodePair().second->getData(),
       // node3.getData());
-    } else if (readEdgeIt->getId() == 3) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  !readEdgeIt->isDirected().value());
+    } else if (readEdgeIt->getUserId() == "3") {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{false});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
       // ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
@@ -293,9 +293,9 @@ TEST(RWOutputTest, test_9) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 5);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
@@ -317,27 +317,24 @@ TEST(RWOutputTest, test_9) {
   ASSERT_EQ(readNode.size(), 3);
 
   for (const auto &readEdgeIt : readEdge) {
-    if (readEdgeIt->getId() == 1) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
+    if (readEdgeIt->getId() == edge1.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
-    } else if (readEdgeIt->getId() == 2) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
+    } else if (readEdgeIt->getId() == edge2.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(),
                 node3.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
-    } else if (readEdgeIt->getId() == 3) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  !readEdgeIt->isDirected().value());
+    } else if (readEdgeIt->getId() == edge3.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{false});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
@@ -361,9 +358,9 @@ TEST(RWOutputTest, test_10) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 5);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
@@ -385,11 +382,9 @@ TEST(RWOutputTest, test_10) {
   ASSERT_EQ(readNode.size(), 3);
 
   for (const auto &readEdgeIt : readEdge) {
-    if (readEdgeIt->getId() == 1) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+    if (readEdgeIt->getId() == edge1.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 5);
@@ -399,22 +394,18 @@ TEST(RWOutputTest, test_10) {
       ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
-    } else if (readEdgeIt->getId() == 2) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  !readEdgeIt->isWeighted().value());
+    } else if (readEdgeIt->getId() == edge2.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{false});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(),
                 node3.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
-    } else if (readEdgeIt->getId() == 3) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  !readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+    } else if (readEdgeIt->getId() == edge3.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{false});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 6);
@@ -445,9 +436,9 @@ TEST(RWOutputTest, test_11) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 1);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 1);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", node2, node3, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
@@ -470,9 +461,9 @@ TEST(RWOutputTest, test_12) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 4);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 5);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", node2, node3, 4);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
@@ -494,9 +485,9 @@ TEST(RWOutputTest, test_13) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 5);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
@@ -517,8 +508,8 @@ TEST(RWOutputTest, test_14) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
@@ -534,8 +525,8 @@ TEST(RWOutputTest, test_15) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
@@ -559,8 +550,8 @@ TEST(RWOutputTest, test_16) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", node2, node3, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
@@ -582,8 +573,8 @@ TEST(RWOutputTest, test_17) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", node2, node3, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
@@ -607,9 +598,9 @@ TEST(RWOutputTest, test_18) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 5);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
@@ -631,9 +622,8 @@ TEST(RWOutputTest, test_18) {
   ASSERT_EQ(readNode.size(), 3);
 
   for (const auto &readEdgeIt : readEdge) {
-    if (readEdgeIt->getId() == 1) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
+    if (readEdgeIt->getId() == edge1.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
       // ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
@@ -641,9 +631,8 @@ TEST(RWOutputTest, test_18) {
                 node2.getUserId());
       // ASSERT_EQ(readEdgeIt->getNodePair().second->getData(),
       // node2.getData());
-    } else if (readEdgeIt->getId() == 2) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
+    } else if (readEdgeIt->getId() == edge2.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node2.getUserId());
       // ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
@@ -651,9 +640,8 @@ TEST(RWOutputTest, test_18) {
                 node3.getUserId());
       // ASSERT_EQ(readEdgeIt->getNodePair().second->getData(),
       // node3.getData());
-    } else if (readEdgeIt->getId() == 3) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  !readEdgeIt->isDirected().value());
+    } else if (readEdgeIt->getId() == edge3.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{false});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
       // ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
@@ -676,9 +664,9 @@ TEST(RWOutputTest, test_19) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 5);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
@@ -700,27 +688,24 @@ TEST(RWOutputTest, test_19) {
   ASSERT_EQ(readNode.size(), 3);
 
   for (const auto &readEdgeIt : readEdge) {
-    if (readEdgeIt->getId() == 1) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
+    if (readEdgeIt->getId() == edge1.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
-    } else if (readEdgeIt->getId() == 2) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
+    } else if (readEdgeIt->getId() == edge2.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(),
                 node3.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
-    } else if (readEdgeIt->getId() == 3) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  !readEdgeIt->isDirected().value());
+    } else if (readEdgeIt->getId() == edge3.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{false});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node1.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node1.getData());
@@ -744,9 +729,9 @@ TEST(RWOutputTest, test_20) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 5);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
@@ -768,11 +753,9 @@ TEST(RWOutputTest, test_20) {
   ASSERT_EQ(readNode.size(), 3);
 
   for (const auto &readEdgeIt : readEdge) {
-    if (readEdgeIt->getId() == 1) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+    if (readEdgeIt->getId() == edge1.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 5);
@@ -782,22 +765,18 @@ TEST(RWOutputTest, test_20) {
       ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
-    } else if (readEdgeIt->getId() == 2) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  !readEdgeIt->isWeighted().value());
+    } else if (readEdgeIt->getId() == edge2.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{false});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(),
                 node3.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
-    } else if (readEdgeIt->getId() == 3) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  !readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+    } else if (readEdgeIt->getId() == edge3.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{false});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 6);
@@ -824,8 +803,8 @@ TEST(RWOutputTest, test_21) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", node2, node3, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
@@ -852,9 +831,9 @@ TEST(RWOutputTest, test_22) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 5);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
@@ -881,11 +860,9 @@ TEST(RWOutputTest, test_22) {
   ASSERT_EQ(readNode.size(), 3);
 
   for (const auto &readEdgeIt : readEdge) {
-    if (readEdgeIt->getId() == 1) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+    if (readEdgeIt->getId() == edge1.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 5);
@@ -895,22 +872,18 @@ TEST(RWOutputTest, test_22) {
       ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
-    } else if (readEdgeIt->getId() == 2) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  !readEdgeIt->isWeighted().value());
+    } else if (readEdgeIt->getId() == edge2.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{false});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(),
                 node3.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
-    } else if (readEdgeIt->getId() == 3) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  !readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+    } else if (readEdgeIt->getId() == edge3.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{false});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 6);
@@ -940,8 +913,8 @@ TEST(RWOutputTest, test_23) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", node2, node3, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
@@ -964,8 +937,8 @@ TEST(RWOutputTest, test_24) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", node2, node3, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
@@ -992,9 +965,9 @@ TEST(RWOutputTest, test_25) {
   CXXGraph::Node<int> node3("3", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 5);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
@@ -1021,11 +994,9 @@ TEST(RWOutputTest, test_25) {
   ASSERT_EQ(readNode.size(), 3);
 
   for (const auto &readEdgeIt : readEdge) {
-    if (readEdgeIt->getId() == 1) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+    if (readEdgeIt->getId() == edge1.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 5);
@@ -1035,22 +1006,18 @@ TEST(RWOutputTest, test_25) {
       ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
-    } else if (readEdgeIt->getId() == 2) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  !readEdgeIt->isWeighted().value());
+    } else if (readEdgeIt->getId() == edge2.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{false});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(),
                 node3.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
-    } else if (readEdgeIt->getId() == 3) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  !readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+    } else if (readEdgeIt->getId() == edge3.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{false});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 6);
@@ -1080,8 +1047,8 @@ TEST(RWOutputTest, test_26) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
-  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 1);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge2("2", node2, node3, 1);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
   edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
@@ -1130,7 +1097,7 @@ TEST(RWOutputTest, test_27) {
 TEST(RWOutputTest, test_28) {
   CXXGraph::Node<int> node1("1", 1);
   CXXGraph::Node<int> node2("2", 2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(2, node1, node2, 1);
+  CXXGraph::DirectedWeightedEdge<int> edge1("2", node1, node2, 1);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   CXXGraph::Graph<int> graph(edgeSet);
@@ -1159,9 +1126,9 @@ TEST(RWOutputTest, test_29) {
   CXXGraph::Node<int> node3("Third", 3);
   std::pair<const CXXGraph::Node<int> *, const CXXGraph::Node<int> *> pairNode(
       &node1, &node2);
-  CXXGraph::DirectedWeightedEdge<int> edge1(1, pairNode, 5);
-  CXXGraph::DirectedEdge<int> edge2(2, node2, node3);
-  CXXGraph::UndirectedWeightedEdge<int> edge3(3, node1, node3, 6);
+  CXXGraph::DirectedWeightedEdge<int> edge1("1", pairNode, 5);
+  CXXGraph::DirectedEdge<int> edge2("2", node2, node3);
+  CXXGraph::UndirectedWeightedEdge<int> edge3("3", node1, node3, 6);
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge2));
@@ -1188,11 +1155,9 @@ TEST(RWOutputTest, test_29) {
   ASSERT_EQ(readNode.size(), 3);
 
   for (const auto &readEdgeIt : readEdge) {
-    if (readEdgeIt->getId() == 1) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+    if (readEdgeIt->getId() == edge1.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 5);
@@ -1202,22 +1167,18 @@ TEST(RWOutputTest, test_29) {
       ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node2.getData());
-    } else if (readEdgeIt->getId() == 2) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  !readEdgeIt->isWeighted().value());
+    } else if (readEdgeIt->getId() == edge2.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{true});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{false});
       ASSERT_EQ(readEdgeIt->getNodePair().first->getUserId(),
                 node2.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().first->getData(), node2.getData());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getUserId(),
                 node3.getUserId());
       ASSERT_EQ(readEdgeIt->getNodePair().second->getData(), node3.getData());
-    } else if (readEdgeIt->getId() == 3) {
-      ASSERT_TRUE(readEdgeIt->isDirected().has_value() &&
-                  !readEdgeIt->isDirected().value());
-      ASSERT_TRUE(readEdgeIt->isWeighted().has_value() &&
-                  readEdgeIt->isWeighted().value());
+    } else if (readEdgeIt->getId() == edge3.getId()) {
+      ASSERT_EQ(readEdgeIt->isDirected(), std::optional<bool>{false});
+      ASSERT_EQ(readEdgeIt->isWeighted(), std::optional<bool>{true});
       ASSERT_EQ((dynamic_cast<const CXXGraph::Weighted *>(readEdgeIt.get()))
                     ->getWeight(),
                 6);

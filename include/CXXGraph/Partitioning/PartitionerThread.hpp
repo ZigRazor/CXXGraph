@@ -43,7 +43,7 @@ class PartitionerThread : public Runnable {
   PartitionerThread(std::vector<shared<const Edge<T>>> &list,
                     shared<PartitionState<T>> state,
                     shared<PartitionStrategy<T>> algorithm);
-  ~PartitionerThread();
+  ~PartitionerThread() override;
 
   void run() override;
 
@@ -58,7 +58,7 @@ PartitionerThread<T>::PartitionerThread(
   this->algorithm = algorithm;
 }
 template <typename T>
-PartitionerThread<T>::~PartitionerThread() {}
+PartitionerThread<T>::~PartitionerThread() = default;
 template <typename T>
 void PartitionerThread<T>::run() {
   for (const auto &edge_it : list) {

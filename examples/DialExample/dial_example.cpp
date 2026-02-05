@@ -1,7 +1,8 @@
-#include <math.h>
-
 #include <CXXGraph/CXXGraph.hpp>
+#include <cmath>
+#include <iostream>
 #include <memory>
+#include <vector>
 
 using std::make_shared;
 
@@ -31,23 +32,23 @@ int main() {
   CXXGraph::Node<int> node3("3", 3);
 
   CXXGraph::DirectedWeightedEdge<int> edge1(
-      1, node1, node2,
+      "1", node1, node2,
       norm(points_vector.at(node1.getData()),
            points_vector.at(node2.getData())));
   CXXGraph::DirectedWeightedEdge<int> edge2(
-      2, node2, node3,
+      "2", node2, node3,
       norm(points_vector.at(node2.getData()),
            points_vector.at(node3.getData())));
   CXXGraph::DirectedWeightedEdge<int> edge3(
-      3, node1, node3,
+      "3", node1, node3,
       norm(points_vector.at(node1.getData()),
            points_vector.at(node3.getData())));
   CXXGraph::DirectedWeightedEdge<int> edge4(
-      4, node0, node1,
+      "4", node0, node1,
       norm(points_vector.at(node0.getData()),
            points_vector.at(node1.getData())));
   CXXGraph::DirectedWeightedEdge<int> edge5(
-      5, node0, node2,
+      "5", node0, node2,
       norm(points_vector.at(node0.getData()),
            points_vector.at(node2.getData())));
 

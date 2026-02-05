@@ -20,13 +20,15 @@
 #ifndef __CXXGRAPH_PARTITIONING_EDGEBALANCEDVERTEXCUT_H__
 #define __CXXGRAPH_PARTITIONING_EDGEBALANCEDVERTEXCUT_H__
 
-#include <memory>
 #pragma once
 
 #include <chrono>
+#include <cmath>
+#include <memory>
 
 #include "CXXGraph/Edge/Edge.h"
 #include "CXXGraph/Partitioning/Utility/Globals.hpp"
+#include "CoordinatedPartitionState.hpp"
 #include "PartitionStrategy.hpp"
 
 namespace CXXGraph {
@@ -53,7 +55,7 @@ class EdgeBalancedVertexCut : public PartitionStrategy<T> {
 
  public:
   explicit EdgeBalancedVertexCut(const Globals &G);
-  ~EdgeBalancedVertexCut();
+  ~EdgeBalancedVertexCut() override;
 
   void performStep(shared<const Edge<T>> e,
                    shared<PartitionState<T>> Sstate) override;
@@ -63,7 +65,7 @@ EdgeBalancedVertexCut<T>::EdgeBalancedVertexCut(const Globals &G) : GLOBALS(G) {
   // this->GLOBALS = G;
 }
 template <typename T>
-EdgeBalancedVertexCut<T>::~EdgeBalancedVertexCut() {}
+EdgeBalancedVertexCut<T>::~EdgeBalancedVertexCut() = default;
 template <typename T>
 void EdgeBalancedVertexCut<T>::performStep(shared<const Edge<T>> e,
                                            shared<PartitionState<T>> state) {
@@ -78,7 +80,6 @@ void EdgeBalancedVertexCut<T>::performStep(shared<const Edge<T>> e,
   //*** ASK FOR LOCK
   bool locks_taken = false;
   while (!locks_taken) {
-    srand((unsigned)time(NULL));
     int usleep_time = 2;
     while (!u_record->getLock()) {
       std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));

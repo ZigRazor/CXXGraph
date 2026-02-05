@@ -55,7 +55,7 @@ class Partition : public Graph<T> {
   explicit Partition(const CXXGraph::id_t partitionId);
   explicit Partition(const T_EdgeSet<T> &edgeSet);
   Partition(const CXXGraph::id_t partitionId, const T_EdgeSet<T> &edgeSet);
-  ~Partition() = default;
+  ~Partition() override = default;
   /**
    * @brief Get the Partition ID
    *
@@ -332,27 +332,19 @@ std::ostream &operator<<(std::ostream &os, const Partition<T> &partition) {
     if (!(*it)->isDirected().has_value() && !(*it)->isWeighted().has_value()) {
       // Edge Case
       os << **it << "\n";
-    } else if (((*it)->isDirected().has_value() &&
-                (*it)->isDirected().value()) &&
-               ((*it)->isWeighted().has_value() &&
-                (*it)->isWeighted().value())) {
+    } else if ((*it)->isDirected().value_or(false) &&
+               ((*it)->isWeighted().value_or(false))) {
       os << *std::static_pointer_cast<const DirectedWeightedEdge<T>>(*it)
          << "\n";
-    } else if (((*it)->isDirected().has_value() &&
-                (*it)->isDirected().value()) &&
-               !((*it)->isWeighted().has_value() &&
-                 (*it)->isWeighted().value())) {
+    } else if ((*it)->isDirected().value_or(false) &&
+               !((*it)->isWeighted().value_or(false))) {
       os << *std::static_pointer_cast<const DirectedEdge<T>>(*it) << "\n";
-    } else if (!((*it)->isDirected().has_value() &&
-                 (*it)->isDirected().value()) &&
-               ((*it)->isWeighted().has_value() &&
-                (*it)->isWeighted().value())) {
+    } else if (!((*it)->isDirected().value_or(false)) &&
+               ((*it)->isWeighted().value_or(false))) {
       os << *std::static_pointer_cast<const UndirectedWeightedEdge<T>>(*it)
          << "\n";
-    } else if (!((*it)->isDirected().has_value() &&
-                 (*it)->isDirected().value()) &&
-               !((*it)->isWeighted().has_value() &&
-                 (*it)->isWeighted().value())) {
+    } else if (!((*it)->isDirected().value_or(false)) &&
+               !((*it)->isWeighted().value_or(false))) {
       os << *std::static_pointer_cast<const UndirectedEdge<T>>(*it) << "\n";
     } else {
       // Should never happens

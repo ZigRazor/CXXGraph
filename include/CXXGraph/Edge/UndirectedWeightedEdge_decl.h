@@ -22,6 +22,10 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+#include <utility>
+
 #include "UndirectedEdge_decl.h"
 #include "Weighted.h"
 
@@ -47,24 +51,24 @@ std::ostream &operator<<(std::ostream &o,
 template <typename T>
 class UndirectedWeightedEdge : public UndirectedEdge<T>, public Weighted {
  public:
-  UndirectedWeightedEdge(const CXXGraph::id_t id, const Node<T> &node1,
+  UndirectedWeightedEdge(const std::string &userId, const Node<T> &node1,
                          const Node<T> &node2, const double weight);
-  UndirectedWeightedEdge(const CXXGraph::id_t id, shared<const Node<T>> node1,
+  UndirectedWeightedEdge(const std::string &userId, shared<const Node<T>> node1,
                          shared<const Node<T>> node2, const double weight);
   UndirectedWeightedEdge(
-      const CXXGraph::id_t id,
+      const std::string &userId,
       const std::pair<const Node<T> *, const Node<T> *> &nodepair,
       const double weight);
   UndirectedWeightedEdge(
-      const CXXGraph::id_t id,
+      const std::string &userId,
       const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair,
       const double weight);
   UndirectedWeightedEdge(const UndirectedEdge<T> &edge, const double weight);
   UndirectedWeightedEdge(const Edge<T> &edge, const double weight);
-  UndirectedWeightedEdge(const UndirectedEdge<T> &edge);
+  explicit UndirectedWeightedEdge(const UndirectedEdge<T> &edge);
   UndirectedWeightedEdge(const Edge<T> &edge);
   UndirectedWeightedEdge(const DirectedWeightedEdge<T> &edge);
-  virtual ~UndirectedWeightedEdge() = default;
+  ~UndirectedWeightedEdge() override = default;
   const std::optional<bool> isWeighted() const override;
   // operator
   explicit operator DirectedWeightedEdge<T>() const {

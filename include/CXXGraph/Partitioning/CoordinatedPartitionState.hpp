@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <algorithm>
+#include <map>
 #include <memory>
 #include <mutex>
 #include <set>
@@ -60,8 +62,8 @@ class CoordinatedPartitionState : public PartitionState<T> {
   std::shared_ptr<std::mutex> record_map_mutex = nullptr;
   // DatWriter out; //to print the final partition of each edge
  public:
-  CoordinatedPartitionState(const Globals &G);
-  ~CoordinatedPartitionState();
+  explicit CoordinatedPartitionState(const Globals &G);
+  ~CoordinatedPartitionState() override;
 
   std::shared_ptr<Record<T>> getRecord(CXXGraph::id_t x) override;
   int getMachineLoad(const int m) const override;
@@ -104,16 +106,14 @@ CoordinatedPartitionState<T>::CoordinatedPartitionState(const Globals &G)
 }
 
 template <typename T>
-CoordinatedPartitionState<T>::~CoordinatedPartitionState() {}
+CoordinatedPartitionState<T>::~CoordinatedPartitionState() = default;
 
 template <typename T>
 std::shared_ptr<Record<T>> CoordinatedPartitionState<T>::getRecord(
     CXXGraph::id_t x) {
   std::lock_guard<std::mutex> lock(*record_map_mutex);
-  if (record_map.find(x) == record_map.end()) {
-    record_map[x] = std::make_shared<CoordinatedRecord<T>>();
-  }
-  return record_map.at(x);
+  return record_map.try_emplace(x, std::make_shared<CoordinatedRecord<T>>())
+      .first->second;
 }
 
 template <typename T>
@@ -138,10 +138,7 @@ void CoordinatedPartitionState<T>::incrementMachineLoad(
     const int m, shared<const Edge<T>> e) {
   std::lock_guard<std::mutex> lock(*machines_load_edges_mutex);
   machines_load_edges[m] = machines_load_edges[m] + 1;
-  int new_value = machines_load_edges.at(m);
-  if (new_value > MAX_LOAD) {
-    MAX_LOAD = new_value;
-  }
+  MAX_LOAD = std::max(MAX_LOAD, machines_load_edges.at(m));
   partition_map[m]->addEdge(e);
 }
 template <typename T>
@@ -149,7 +146,7 @@ void CoordinatedPartitionState<T>::incrementMachineWeight(
     const int m, shared<const Edge<T>> e) {
   std::lock_guard<std::mutex> lock(*machines_weight_edges_mutex);
   double edge_weight = CXXGraph::NEGLIGIBLE_WEIGHT;
-  if (e->isWeighted().has_value() && e->isWeighted().value()) {
+  if (e->isWeighted().value_or(false)) {
     edge_weight = (std::dynamic_pointer_cast<const Weighted>(e))->getWeight();
   }
   machines_weight_edges[m] = machines_weight_edges[m] + edge_weight;
@@ -163,14 +160,8 @@ void CoordinatedPartitionState<T>::incrementMachineWeight(
 template <typename T>
 int CoordinatedPartitionState<T>::getMinLoad() const {
   std::lock_guard<std::mutex> lock(*machines_load_edges_mutex);
-  int MIN_LOAD = std::numeric_limits<int>::max();
-  for (const auto &machines_load_edges_it : machines_load_edges) {
-    int loadi = machines_load_edges_it;
-    if (loadi < MIN_LOAD) {
-      MIN_LOAD = loadi;
-    }
-  }
-  return MIN_LOAD;
+  return *std::min_element(machines_load_edges.begin(),
+                           machines_load_edges.end());
 }
 template <typename T>
 int CoordinatedPartitionState<T>::getMaxLoad() const {
@@ -179,18 +170,9 @@ int CoordinatedPartitionState<T>::getMaxLoad() const {
 template <typename T>
 int CoordinatedPartitionState<T>::getMachineWithMinWeight() const {
   std::lock_guard<std::mutex> lock(*machines_weight_edges_mutex);
-
-  double MIN_LOAD = std::numeric_limits<double>::max();
-  int machine_id = 0;
-  for (size_t i = 0; i < machines_weight_edges.size(); ++i) {
-    double loadi = machines_weight_edges[i];
-    if (loadi < MIN_LOAD) {
-      MIN_LOAD = loadi;
-      machine_id = i;
-    }
-  }
-
-  return machine_id;
+  return std::distance(machines_weight_edges.begin(),
+                       std::min_element(machines_weight_edges.begin(),
+                                        machines_weight_edges.end()));
 }
 template <typename T>
 int CoordinatedPartitionState<T>::getMachineWithMinWeight(
@@ -212,11 +194,7 @@ int CoordinatedPartitionState<T>::getMachineWithMinWeight(
 template <typename T>
 std::vector<int> CoordinatedPartitionState<T>::getMachines_load() const {
   std::lock_guard<std::mutex> lock(*machines_load_edges_mutex);
-  std::vector<int> result;
-  for (const auto &machines_load_edges_it : machines_load_edges) {
-    result.push_back(machines_load_edges_it);
-  }
-  return result;
+  return machines_load_edges;
 }
 template <typename T>
 size_t CoordinatedPartitionState<T>::getTotalReplicas() const {
@@ -257,11 +235,7 @@ template <typename T>
 std::vector<int> CoordinatedPartitionState<T>::getMachines_loadVertices()
     const {
   std::lock_guard<std::mutex> lock(*machines_load_vertices_mutex);
-  std::vector<int> result;
-  for (const auto &machines_load_vertices_it : machines_load_vertices) {
-    result.push_back(machines_load_vertices_it);
-  }
-  return result;
+  return machines_load_vertices;
 }
 
 template <typename T>

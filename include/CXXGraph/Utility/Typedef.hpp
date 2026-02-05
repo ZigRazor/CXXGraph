@@ -25,6 +25,7 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include "ConstValue.hpp"
@@ -145,13 +146,13 @@ struct MstResult_struct {
 };
 typedef MstResult_struct MstResult;
 
-/// Struct that contains the information about Dijsktra's Algorithm results
+/// Struct that contains the information about Dijkstra's Algorithm results
 struct DialResult_struct {
   bool success =
       false;  // TRUE if the function does not return error, FALSE otherwise
   std::string errorMessage = "";  // message of error
   std::unordered_map<unsigned long long, long> minDistanceMap =
-      {};  // result a map that contains the node id and the minumum distance
+      {};  // result a map that contains the node id and the minimum distance
            // from source (valid only if success is TRUE)
 };
 typedef DialResult_struct DialResult;
@@ -248,19 +249,30 @@ struct BronKerboschResult_struct {
 template <typename T>
 using BronKerboschResult = BronKerboschResult_struct<T>;
 
+/// Struct that contains the information about Hopcroft-Karp Algorithm results
+struct HopcroftKarpResult_struct {
+  bool success =
+      false;  // TRUE if the function does not return error, FALSE otherwise
+  std::string errorMessage = "";  // message of error
+  int maxMatching = 0;            // Size of maximum bipartite matching
+  std::vector<std::pair<std::string, std::string>> matching =
+      {};  // The matching pairs (node userIds)
+};
+using HopcroftKarpResult = HopcroftKarpResult_struct;
+
 ///////////////////////////////////////////////////////////////////////////////////
 // Using Definition
 // ///////////////////////////////////////////////////////////////
 
 template <typename T>
-using AdjacencyMatrix = std::unordered_map<
+using AdjacencyList = std::unordered_map<
     shared<const Node<T>>,
     std::vector<std::pair<shared<const Node<T>>, shared<const Edge<T>>>>,
     nodeHash<T>>;
 
 template <typename T>
 using DegreeMatrix =
-    std::unordered_map<shared<const Node<T>>, unsigned int, nodeHash<T>>;
+    std::unordered_map<shared<const Node<T>>, size_t, nodeHash<T>>;
 
 template <typename T>
 using LaplacianMatrix = std::unordered_map<

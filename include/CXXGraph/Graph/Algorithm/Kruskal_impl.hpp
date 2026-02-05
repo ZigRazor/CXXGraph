@@ -22,7 +22,13 @@
 
 #pragma once
 
+#include <queue>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
 #include "CXXGraph/Graph/Graph_decl.h"
+#include "CXXGraph/Utility/ConstString.hpp"
 
 namespace CXXGraph {
 
@@ -47,7 +53,7 @@ const MstResult Graph<T>::kruskal() const {
                       std::greater<std::pair<double, shared<const Edge<T>>>>>
       sortedEdges;
   for (const auto &edge : edgeSet) {
-    if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
+    if (edge->isWeighted().value_or(false)) {
       auto weight =
           (std::dynamic_pointer_cast<const Weighted>(edge))->getWeight();
       sortedEdges.push(std::make_pair(weight, edge));

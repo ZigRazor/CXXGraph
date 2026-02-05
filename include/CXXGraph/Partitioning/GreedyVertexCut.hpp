@@ -20,16 +20,21 @@
 #ifndef __CXXGRAPH_PARTITIONING_GREEDYVERTEXCUT_H__
 #define __CXXGRAPH_PARTITIONING_GREEDYVERTEXCUT_H__
 
-#include <memory>
 #pragma once
 
 #include <limits.h>
 
+#include <algorithm>
 #include <chrono>
+#include <cmath>
+#include <memory>
 #include <random>
+#include <set>
+#include <vector>
 
 #include "CXXGraph/Edge/Edge.h"
 #include "CXXGraph/Partitioning/Utility/Globals.hpp"
+#include "CoordinatedPartitionState.hpp"
 #include "PartitionStrategy.hpp"
 
 namespace CXXGraph {
@@ -55,7 +60,7 @@ class GreedyVertexCut : public PartitionStrategy<T> {
 
  public:
   explicit GreedyVertexCut(const Globals &G);
-  ~GreedyVertexCut();
+  ~GreedyVertexCut() override;
 
   void performStep(shared<const Edge<T>> e,
                    shared<PartitionState<T>> Sstate) override;
@@ -65,7 +70,7 @@ template <typename T>
 GreedyVertexCut<T>::GreedyVertexCut(const Globals &G) : GLOBALS(G) {}
 
 template <typename T>
-GreedyVertexCut<T>::~GreedyVertexCut() {}
+GreedyVertexCut<T>::~GreedyVertexCut() = default;
 
 template <typename T>
 void GreedyVertexCut<T>::performStep(shared<const Edge<T>> e,

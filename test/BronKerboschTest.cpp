@@ -19,12 +19,12 @@ TEST(BronKerboschTest, test_1) {
   CXXGraph::Node<int> node3("3", 3);
   CXXGraph::Node<int> node4("4", 4);
 
-  CXXGraph::UndirectedEdge<int> edge0(0, node0, node1);
-  CXXGraph::UndirectedEdge<int> edge1(0, node0, node2);
-  CXXGraph::UndirectedEdge<int> edge2(0, node2, node1);
-  CXXGraph::UndirectedEdge<int> edge3(0, node2, node3);
-  CXXGraph::UndirectedEdge<int> edge4(0, node2, node4);
-  CXXGraph::UndirectedEdge<int> edge5(0, node3, node4);
+  CXXGraph::UndirectedEdge<int> edge0("0", node0, node1);
+  CXXGraph::UndirectedEdge<int> edge1("0", node0, node2);
+  CXXGraph::UndirectedEdge<int> edge2("0", node2, node1);
+  CXXGraph::UndirectedEdge<int> edge3("0", node2, node3);
+  CXXGraph::UndirectedEdge<int> edge4("0", node2, node4);
+  CXXGraph::UndirectedEdge<int> edge5("0", node3, node4);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge0));
@@ -105,16 +105,16 @@ TEST(BronKerboschTest, test_3) {
   CXXGraph::Node<int> node3("3", 3);
   CXXGraph::Node<int> node4("4", 4);
 
-  CXXGraph::UndirectedEdge<int> edge0(0, node0, node1);
-  CXXGraph::UndirectedEdge<int> edge1(1, node0, node2);
-  CXXGraph::UndirectedEdge<int> edge2(2, node0, node3);
-  CXXGraph::UndirectedEdge<int> edge3(3, node0, node4);
-  CXXGraph::UndirectedEdge<int> edge4(4, node1, node2);
-  CXXGraph::UndirectedEdge<int> edge5(5, node1, node3);
-  CXXGraph::UndirectedEdge<int> edge6(6, node1, node4);
-  CXXGraph::UndirectedEdge<int> edge7(7, node2, node3);
-  CXXGraph::UndirectedEdge<int> edge8(8, node2, node4);
-  CXXGraph::UndirectedEdge<int> edge9(9, node3, node4);
+  CXXGraph::UndirectedEdge<int> edge0("0", node0, node1);
+  CXXGraph::UndirectedEdge<int> edge1("1", node0, node2);
+  CXXGraph::UndirectedEdge<int> edge2("2", node0, node3);
+  CXXGraph::UndirectedEdge<int> edge3("3", node0, node4);
+  CXXGraph::UndirectedEdge<int> edge4("4", node1, node2);
+  CXXGraph::UndirectedEdge<int> edge5("5", node1, node3);
+  CXXGraph::UndirectedEdge<int> edge6("6", node1, node4);
+  CXXGraph::UndirectedEdge<int> edge7("7", node2, node3);
+  CXXGraph::UndirectedEdge<int> edge8("8", node2, node4);
+  CXXGraph::UndirectedEdge<int> edge9("9", node3, node4);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::UndirectedEdge<int>>(edge0));
@@ -152,12 +152,12 @@ TEST(BronKerboschTest, test_4) {
   CXXGraph::Node<int> node3("3", 3);
   CXXGraph::Node<int> node4("4", 4);
 
-  CXXGraph::DirectedEdge<int> edge0(0, node0, node1);
-  CXXGraph::UndirectedEdge<int> edge1(0, node0, node2);
-  CXXGraph::UndirectedEdge<int> edge2(0, node2, node1);
-  CXXGraph::UndirectedEdge<int> edge3(0, node2, node3);
-  CXXGraph::UndirectedEdge<int> edge4(0, node2, node4);
-  CXXGraph::UndirectedEdge<int> edge5(0, node3, node4);
+  CXXGraph::DirectedEdge<int> edge0("0", node0, node1);
+  CXXGraph::UndirectedEdge<int> edge1("0", node0, node2);
+  CXXGraph::UndirectedEdge<int> edge2("0", node2, node1);
+  CXXGraph::UndirectedEdge<int> edge3("0", node2, node3);
+  CXXGraph::UndirectedEdge<int> edge4("0", node2, node4);
+  CXXGraph::UndirectedEdge<int> edge5("0", node3, node4);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedEdge<int>>(edge0));

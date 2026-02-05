@@ -36,6 +36,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
+#include <vector>
 
 #include "CXXGraph/Edge/DirectedEdge.h"
 #include "CXXGraph/Edge/DirectedWeightedEdge.h"
@@ -76,16 +77,50 @@ class Graph;
 template <typename T>
 std::ostream &operator<<(std::ostream &o, const Graph<T> &graph);
 template <typename T>
-std::ostream &operator<<(std::ostream &o, const AdjacencyMatrix<T> &adj);
+std::ostream &operator<<(std::ostream &o, const AdjacencyList<T> &adj);
 
 /// Class that implement the Graph. ( This class is not Thread Safe )
 template <typename T>
 class Graph {
+ public:
+  /**
+   * @brief Write the graph to a binary file
+   * @param workingDir The parent directory of the output file
+   * @param fileName The output filename (without extension)
+   * @param writeNodeFeatures Whether to include node features
+   * @param writeEdgeWeights Whether to include edge weights
+   * @return 0 if successful, negative value on error:
+   *         -1: Cannot open file
+   *         -2: Write error
+   */
+  int writeToBinaryFile(const std::string &workingDir,
+                        const std::string &fileName,
+                        bool writeNodeFeatures = false,
+                        bool writeEdgeWeights = true) const;
+
+  /**
+   * @brief Read the graph from a binary file
+   * @param workingDir The parent directory of the input file
+   * @param fileName The input filename (without extension)
+   * @param readNodeFeatures Whether to read node features
+   * @param readEdgeWeights Whether to read edge weights
+   * @return 0 if successful, negative value on error:
+   *         -1: Cannot open file
+   *         -2: Invalid file format
+   *         -3: Unsupported version
+   *         -4: Read error
+   */
+  int readFromBinaryFile(const std::string &workingDir,
+                         const std::string &fileName,
+                         bool readNodeFeatures = false,
+                         bool readEdgeWeights = true);
+
  private:
   T_EdgeSet<T> edgeSet = {};
   T_NodeSet<T> isolatedNodesSet = {};
 
-  shared<AdjacencyMatrix<T>> cachedAdjMatrix;
+  shared<AdjacencyList<T>> cachedAdjListOut;
+  shared<AdjacencyList<T>> cachedAdjListIn;
   shared<DegreeMatrix<T>> cachedDegreeMatrix;
   shared<LaplacianMatrix<T>> cachedLaplacianMatrix;
   shared<TransitionMatrix<T>> cachedTransitionMatrix;
@@ -103,12 +138,62 @@ class Graph {
   int writeToDot(const std::string &workingDir, const std::string &OFileName,
                  const std::string &graphName) const;
   int readFromDot(const std::string &workingDir, const std::string &fileName);
+
+  // Binary file format constants
+  static constexpr uint32_t BINARY_MAGIC_NUMBER = 0x47525048;  // "GRPH"
+  static constexpr uint32_t BINARY_VERSION = 1;
+  static constexpr uint64_t BINARY_FLAG_HAS_NODE_FEATURES = 0x01;
+  static constexpr uint64_t BINARY_FLAG_HAS_EDGE_WEIGHTS = 0x02;
+
+  // Type trait to check if T is serializable to binary
+  template <typename U, typename = void>
+  struct is_binary_serializable : std::false_type {};
+
+  template <typename U>
+  struct is_binary_serializable<
+      U, std::void_t<decltype(std::declval<std::ofstream &>().write(
+             reinterpret_cast<const char *>(&std::declval<const U &>()),
+             sizeof(U)))>> : std::is_trivially_copyable<U> {};
+
+  // Helper functions for binary I/O
+  void writeBinaryString(std::ofstream &out, const std::string &str) const;
+  std::string readBinaryString(std::ifstream &in) const;
+
+  /**
+   * @brief Write the graph to a binary file
+   * @param filepath The full path to the output file
+   * @param writeNodeFeatures Whether to include node features
+   * @param writeEdgeWeights Whether to include edge weights
+   * @return 0 if successful, negative value on error
+   */
+  int writeToBinary(const std::string &filepath, bool writeNodeFeatures,
+                    bool writeEdgeWeights) const;
+
+  /**
+   * @brief Read the graph from a binary file
+   * @param filepath The full path to the input file
+   * @param readNodeFeatures Whether to read node features
+   * @param readEdgeWeights Whether to read edge weights
+   * @return 0 if successful, negative value on error
+   */
+  int readFromBinary(const std::string &filepath, bool readNodeFeatures,
+                     bool readEdgeWeights);
+
   void recreateGraph(
-      std::unordered_map<CXXGraph::id_t, std::pair<std::string, std::string>>
+      std::unordered_map<std::string, std::pair<std::string, std::string>>
           &edgeMap,
-      std::unordered_map<CXXGraph::id_t, bool> &edgeDirectedMap,
+      std::unordered_map<std::string, bool> &edgeDirectedMap,
       std::unordered_map<std::string, T> &nodeFeatMap,
-      std::unordered_map<CXXGraph::id_t, double> &edgeWeightMap);
+      std::unordered_map<std::string, double> &edgeWeightMap);
+
+  // Type trait used to compile allow compilation when T is not extractable
+  template <typename U, typename = void>
+  struct is_istream_extractable : std::false_type {};
+
+  template <typename U>
+  struct is_istream_extractable<
+      U, std::void_t<decltype(std::declval<std::istream &>() >>
+                              std::declval<U &>())>> : std::true_type {};
 
 #ifdef WITH_COMPRESSION
   int compressFile(const std::string &inputFile,
@@ -119,7 +204,7 @@ class Graph {
 
  public:
   Graph();
-  Graph(const T_EdgeSet<T> &edgeSet);
+  explicit Graph(const T_EdgeSet<T> &edgeSet);
   virtual ~Graph() = default;
 
   /**
@@ -160,9 +245,11 @@ class Graph {
    * Note: No Thread Safe
    *
    * @param edge The Edge to insert
+   * @return The id of the added edge or nullopt if the edge was already present
+   * or if failed
    *
    */
-  virtual void addEdge(const Edge<T> *edge);
+  virtual std::optional<CXXGraph::id_t> addEdge(const Edge<T> *edge);
 
   /**
    * \brief
@@ -172,9 +259,11 @@ class Graph {
    * Note: No Thread Safe
    *
    * @param edge The Edge to insert
+   * @return The id of the added edge or nullopt if the edge was already present
+   * or if failed
    *
    */
-  virtual void addEdge(shared<const Edge<T>> edge);
+  virtual std::optional<CXXGraph::id_t> addEdge(shared<const Edge<T>> edge);
 
   /**
    * \brief
@@ -246,6 +335,16 @@ class Graph {
    * Function remove an Edge from the Graph Edge Set
    * Note: No Thread Safe
    *
+   * @param edgeUserId The Edge User Id to remove
+   *
+   */
+  virtual void removeEdge(const std::string &edgeUserId);
+
+  /**
+   * \brief
+   * Function remove an Edge from the Graph Edge Set
+   * Note: No Thread Safe
+   *
    * @param edgeId The Edge Id to remove
    *
    */
@@ -256,10 +355,34 @@ class Graph {
    * Function to remove a Node from the Graph Node Set
    * Note: No Thread Safe
    *
-   * @param edgeId The Edge Id to remove
+   * @param edgeId The Node UserId to remove
    *
    */
   virtual void removeNode(const std::string &nodeUserId);
+
+  /**
+   * \brief
+   * Function to remove a Node from the Graph Node Set
+   * Note: No Thread Safe
+   *
+   * @param edgeId The Node Id to remove
+   *
+   */
+  virtual void removeNode(const CXXGraph::id_t nodeId);
+
+  /**
+   * \brief
+   * Invalidates and rebuilds the graph's core caches.
+   * This includes the adjacency lists, degree matrix, and Laplacian matrix.
+   * Optionally, the transition matrix can also be rebuilt.
+   *
+   * \param includeTransitionMatrix
+   * If true, the transition matrix will be rebuilt as part of the cache update.
+   *
+   * \note Not thread-safe.
+   * \note Call after any structural modification of the graph.
+   */
+  void invalidateCache(bool includeTransitionMatrix);
 
   /**
    * \brief
@@ -340,6 +463,18 @@ class Graph {
    * Function that return an Edge with specific ID if Exist in the Graph
    * Note: No Thread Safe
    *
+   * @param edgeId The Edge UserId to return
+   * @returns the Edge if exist
+   *
+   */
+  virtual const std::optional<shared<const Edge<T>>> getEdge(
+      const std::string &edgeUserId) const;
+
+  /**
+   * \brief
+   * Function that return an Edge with specific ID if Exist in the Graph
+   * Note: No Thread Safe
+   *
    * @param edgeId The Edge Id to return
    * @returns the Edge if exist
    *
@@ -352,7 +487,7 @@ class Graph {
    * Function that return a Node with specific ID if Exist in the Graph
    * Note: No Thread Safe
    *
-   * @param nodeId The Node Id to return
+   * @param nodeId The Node UserId to return
    * @returns the Node if exist
    *
    */
@@ -360,18 +495,37 @@ class Graph {
       const std::string &nodeUserId) const;
 
   /**
-   * @brief This function generate a list of adjacency matrix with every element
-   * of the matrix contain the node where is directed the link and the Edge
-   * corrispondent to the link
+   * \brief
+   * Function that return a Node with specific ID if Exist in the Graph
    * Note: No Thread Safe
+   *
+   * @param nodeId The Node Id to return
+   * @returns the Node if exist
+   *
    */
-  virtual shared<AdjacencyMatrix<T>> getAdjMatrix() const;
+  virtual const std::optional<shared<const Node<T>>> getNode(
+      const CXXGraph::id_t nodeId) const;
 
   /**
-   * @brief This function calculates the adjacency matrix of the graph and
-   * stores it in the cachedAdjMatrix variable.
+   * @brief This function generates an adjacency list with every
+   * element of the list containing the node where is directed the link and the
+   * Edge corrispondent to the link Note: No Thread Safe
+   * Note: No Thread Safe
    */
-  virtual void cacheAdjMatrix();
+  virtual shared<AdjacencyList<T>> getAdjListOut() const;
+
+  /**
+   * @brief This function generate an adjacency list with every element
+   * of the list containing the node where is the origin of the Edge and the
+   * Edge corrispondent to the link Note: No Thread Safe
+   */
+  virtual shared<AdjacencyList<T>> getAdjListIn() const;
+
+  /**
+   * @brief This function calculates the adjacency matricies of the graph and
+   * stores it in the cachedAdjListOut and cachedAdjListIn variable.
+   */
+  virtual void cacheAdjLists();
 
   /**
    * @brief This function generates a list of the degree matrix with every
@@ -414,24 +568,44 @@ class Graph {
   virtual void cacheTransitionMatrix();
 
   /**
-   * \brief This function generates a set of nodes linked to the provided node
-   * in a directed graph
+   * \brief This function generates a set of nodes linked only out (not in) from
+   * the provided node in a directed graph
    *
    * @param Pointer to the node
    *
    */
   virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
-  outNeighbors(const Node<T> *node) const;
+  outNotInNeighbors(const Node<T> *node) const;
 
   /**
-   * \brief This function generates a set of nodes linked to the provided node
-   * in a directed graph
+   * \brief This function generates a set of nodes linked only out (not in) from
+   * the provided node in a directed graph
    *
    * @param Pointer to the node
    *
    */
   virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
-  outNeighbors(shared<const Node<T>> node) const;
+  outNotInNeighbors(shared<const Node<T>> node) const;
+
+  /**
+   * \brief This function generates a set of nodes linked only in (not out) of
+   * the provided node in a directed graph
+   *
+   * @param Pointer to the node
+   *
+   */
+  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+  inNotOutNeighbors(const Node<T> *node) const;
+
+  /**
+   * \brief This function generates a set of nodes linked only in (not out) of
+   * the provided node in a directed graph
+   *
+   * @param Pointer to the node
+   *
+   */
+  virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
+  inNotOutNeighbors(shared<const Node<T>> node) const;
 
   /**
    * \brief This function generates a set of nodes linked to the provided node
@@ -441,7 +615,7 @@ class Graph {
    *
    */
   virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
-  inOutNeighbors(const Node<T> *node) const;
+  inOrOutNeighbors(const Node<T> *node) const;
 
   /**
    * \brief
@@ -452,29 +626,49 @@ class Graph {
    *
    */
   virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
-  inOutNeighbors(shared<const Node<T>> node) const;
+  inOrOutNeighbors(shared<const Node<T>> node) const;
 
   /**
    * \brief
-   * \brief This function generates a set of Edges going out of a node
-   * in any graph
+   * \brief This function generates a set of directed Edges going only out of
+   * (not in) to a node in any graph
    *
    * @param Pointer to the node
    *
    */
-  virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> outEdges(
-      const Node<T> *node) const;
+  virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
+  outNotInEdges(const Node<T> *node) const;
 
   /**
-   * \brief
-   * \brief This function generates a set of Edges going out of a node
-   * in any graph
+   * \brief This function generates a set of directed Edges going only out of
+   * (not in) to a node in any graph
    *
    * @param Shared pointer to the node
    *
    */
-  virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>> outEdges(
-      shared<const Node<T>> node) const;
+  virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
+  outNotInEdges(shared<const Node<T>> node) const;
+
+  /**
+   * \brief
+   * \brief This function generates a set of directed Edges going only out of
+   * (not in) to a node in any graph
+   *
+   * @param Pointer to the node
+   *
+   */
+  virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
+  inNotOutEdges(const Node<T> *node) const;
+
+  /**
+   * \brief This function generates a set of directed Edges going only out of
+   * (not in) to a node in any graph
+   *
+   * @param Shared pointer to the node
+   *
+   */
+  virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
+  inNotOutEdges(shared<const Node<T>> node) const;
 
   /**
    * \brief
@@ -485,7 +679,7 @@ class Graph {
    *
    */
   virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
-  inOutEdges(const Node<T> *node) const;
+  inOrOutEdges(const Node<T> *node) const;
 
   /**
    * \brief
@@ -496,7 +690,7 @@ class Graph {
    *
    */
   virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
-  inOutEdges(shared<const Node<T>> node) const;
+  inOrOutEdges(shared<const Node<T>> node) const;
 
   /**
    * @brief This function finds the subset of given a nodeId
@@ -951,6 +1145,22 @@ class Graph {
                                       const Node<T> &target) const;
 
   /**
+   * @brief This function performs the Hopcroft-Karp algorithm to find the
+   * maximum matching in a bipartite graph.
+   *
+   * @return HopcroftKarpResult containing success status, error message (if
+   * any), the size of maximum matching, and the actual matching pairs
+   *
+   * Note: The function requires an undirected graph. If the graph is not
+   * bipartite, the algorithm will return a matching of size 0 with success =
+   * true.
+   *
+   * Complexity: O(E√V) where E is the number of edges and V is the number of
+   * vertices
+   */
+  virtual const HopcroftKarpResult_struct hopcroftKarp() const;
+
+  /**
    * @brief Welsh-Powell Coloring algorithm
    * @return a std::map of keys being the nodes and the values being the color
    * order (by integer) starting from 1.
@@ -1041,7 +1251,7 @@ class Graph {
 
   friend std::ostream &operator<< <>(std::ostream &os, const Graph<T> &graph);
   friend std::ostream &operator<< <>(std::ostream &os,
-                                     const AdjacencyMatrix<T> &adj);
+                                     const AdjacencyList<T> &adj);
 };
 
 }  // namespace CXXGraph

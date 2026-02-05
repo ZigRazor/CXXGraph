@@ -22,6 +22,7 @@
 
 #pragma once
 #include <iostream>
+#include <string>
 
 #include "CXXGraph/Utility/id_t.hpp"
 
@@ -45,10 +46,10 @@ class Node {
   // Move constructor
   explicit Node(const std::string &, T &&data) noexcept;
   ~Node() = default;
-  const CXXGraph::id_t &getId() const;
+  CXXGraph::id_t getId() const;
   const std::string &getUserId() const;
   const T &getData() const;
-  T& getData();
+  T &getData();
   void setData(T &&new_data);
   // operator
   bool operator==(const Node<T> &b) const;

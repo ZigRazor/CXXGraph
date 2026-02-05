@@ -1,5 +1,7 @@
 #include <benchmark/benchmark.h>
 
+#include <unordered_map>
+
 #include "CXXGraph/CXXGraph.hpp"
 #include "Utilities.hpp"
 
@@ -15,8 +17,9 @@ static void EulerPath_X(benchmark::State &state) {
   for (auto _ : state) {
     auto result = g.eulerianPath();
   }
+  state.SetComplexityN(state.range(0));
 }
 BENCHMARK(EulerPath_X)
-    ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->RangeMultiplier(2)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();

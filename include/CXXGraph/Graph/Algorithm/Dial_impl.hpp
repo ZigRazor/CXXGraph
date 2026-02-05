@@ -23,8 +23,13 @@
 #pragma once
 
 #include <algorithm>
+#include <deque>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 #include "CXXGraph/Graph/Graph_decl.h"
+#include "CXXGraph/Utility/ConstString.hpp"
 
 namespace CXXGraph {
 
@@ -47,7 +52,7 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
           its bucket is stored so that vertex can be deleted
           in O(1) at time of updation. So
           dist[i].first = distance of ith vertex from src vertex
-          dits[i].second = vertex i in bucket number */
+          dist[i].second = vertex i in bucket number */
   auto V = nodeSet.size();
   std::unordered_map<shared<const Node<T>>,
                      std::pair<long, shared<const Node<T>>>, nodeHash<T>>
@@ -84,18 +89,15 @@ const DialResult Graph<T>::dial(const Node<T> &source, int maxWeight) const {
 
     // Process all adjacents of extracted vertex 'u' and
     // update their distanced if required.
-    for (const auto &i : (*cachedAdjMatrix)[u]) {
+    for (const auto &i : (*cachedAdjListOut)[u]) {
       auto v = i.first;
       int weight = 0;
-      if (i.second->isWeighted().has_value() &&
-          i.second->isWeighted().value()) {
-        if (i.second->isDirected().has_value() &&
-            i.second->isDirected().value()) {
+      if (i.second->isWeighted().value_or(false)) {
+        if (i.second->isDirected().value_or(false)) {
           shared<const DirectedWeightedEdge<T>> dw_edge =
               std::static_pointer_cast<const DirectedWeightedEdge<T>>(i.second);
           weight = (int)dw_edge->getWeight();
-        } else if (i.second->isDirected().has_value() &&
-                   !i.second->isDirected().value()) {
+        } else if (i.second->isDirected() == false) {
           shared<const UndirectedWeightedEdge<T>> udw_edge =
               std::static_pointer_cast<const UndirectedWeightedEdge<T>>(
                   i.second);

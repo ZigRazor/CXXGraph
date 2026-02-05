@@ -6,23 +6,26 @@ on:
     #paths-ignore:
     #- '.github/**' # Ignore changes towards the .github directory
     paths:
-      - '.github/**'
+      - ".github/**"
     branches:
-    - master # Only trigger on the master branch
+      - master # Only trigger on the master branch
+
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: [ubuntu-latest]
     steps:
-    - name: Copy
-      uses: andstor/copycat-action@v3
-      with:
-        personal_token: ${{ secrets.PERSONAL_TOKEN }}
-        src_path: /.github
-        dst_path: /
-        src_branch: master
-        dst_branch: WebSite
-        username: ZigRazor
-        email: zigrazor@gmail.com
-        dst_owner: ZigRazor
-        dst_repo_name: CXXGraph
+      - name: Copy
+        uses: andstor/copycat-action@v3
+        with:
+          personal_token: ${{ secrets.PERSONAL_TOKEN }}
+          src_path: /.github
+          dst_path: /
+          src_branch: master
+          dst_branch: WebSite
+          username: ZigRazor
+          email: zigrazor@gmail.com
+          dst_owner: ZigRazor
+          dst_repo_name: CXXGraph

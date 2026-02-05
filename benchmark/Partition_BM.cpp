@@ -1,5 +1,7 @@
 #include <benchmark/benchmark.h>
 
+#include <unordered_map>
+
 #include "CXXGraph/CXXGraph.hpp"
 #include "Utilities.hpp"
 
@@ -16,12 +18,14 @@ static void PartitionHDRF_X(benchmark::State &state) {
     auto result = CXXGraph::Partitioning::Partitioner<int>::partitionGraph(
         g, CXXGraph::Partitioning::PartitionAlgorithm::HDRF_ALG, 4, 1, 0.001);
   }
+  state.SetComplexityN(state.range(0));
 }
 BENCHMARK(PartitionHDRF_X)
-    ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->RangeMultiplier(2)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
+[[maybe_unused]]
 static void PartitionHDRF_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
@@ -31,7 +35,7 @@ static void PartitionHDRF_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(PartitionHDRF_FromReadedCitHep)->Complexity();
+// BENCHMARK(PartitionHDRF_FromReadedCitHep);
 
 static void PartitionEBVC_X(benchmark::State &state) {
   CXXGraph::Graph<int> g;
@@ -46,12 +50,14 @@ static void PartitionEBVC_X(benchmark::State &state) {
     auto result = CXXGraph::Partitioning::Partitioner<int>::partitionGraph(
         g, CXXGraph::Partitioning::PartitionAlgorithm::EDGEBALANCED_VC_ALG, 4);
   }
+  state.SetComplexityN(state.range(0));
 }
 BENCHMARK(PartitionEBVC_X)
-    ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->RangeMultiplier(2)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
+[[maybe_unused]]
 static void PartitionEBVC_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
@@ -61,7 +67,7 @@ static void PartitionEBVC_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(PartitionEBVC_FromReadedCitHep)->Complexity();
+// BENCHMARK(PartitionEBVC_FromReadedCitHep);
 
 static void PartitionGVC_X(benchmark::State &state) {
   CXXGraph::Graph<int> g;
@@ -76,12 +82,14 @@ static void PartitionGVC_X(benchmark::State &state) {
     auto result = CXXGraph::Partitioning::Partitioner<int>::partitionGraph(
         g, CXXGraph::Partitioning::PartitionAlgorithm::GREEDY_VC_ALG, 4);
   }
+  state.SetComplexityN(state.range(0));
 }
 BENCHMARK(PartitionGVC_X)
-    ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->RangeMultiplier(2)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
+[[maybe_unused]]
 static void PartitionGVC_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
@@ -91,7 +99,7 @@ static void PartitionGVC_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(PartitionGVC_FromReadedCitHep)->Complexity();
+// BENCHMARK(PartitionGVC_FromReadedCitHep);
 
 static void PartitionEBV_X(benchmark::State &state) {
   CXXGraph::Graph<int> g;
@@ -106,12 +114,14 @@ static void PartitionEBV_X(benchmark::State &state) {
     auto result = CXXGraph::Partitioning::Partitioner<int>::partitionGraph(
         g, CXXGraph::Partitioning::PartitionAlgorithm::EBV_ALG, 4, 1, 1);
   }
+  state.SetComplexityN(state.range(0));
 }
 BENCHMARK(PartitionEBV_X)
-    ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->RangeMultiplier(2)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
+[[maybe_unused]]
 static void PartitionEBV_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
@@ -121,4 +131,4 @@ static void PartitionEBV_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(PartitionEBV_FromReadedCitHep)->Complexity();
+// BENCHMARK(PartitionEBV_FromReadedCitHep);

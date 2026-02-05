@@ -20,8 +20,10 @@
 #ifndef __CXXGRAPH_PARTITIONING_PARTITIONER_H__
 #define __CXXGRAPH_PARTITIONING_PARTITIONER_H__
 
-#include <memory>
 #pragma once
+
+#include <memory>
+#include <unordered_map>
 #include <vector>
 
 #include "CXXGraph/Edge/Edge.h"
@@ -99,7 +101,7 @@ Partitioner<T>::Partitioner(shared<const T_EdgeSet<T>> dataset, Globals &G)
     double weight_sum = 0.0;
     for (const auto &edge_it : *(this->dataset)) {
       weight_sum +=
-          (edge_it->isWeighted().has_value() && edge_it->isWeighted().value())
+          (edge_it->isWeighted().value_or(false))
               ? std::dynamic_pointer_cast<const Weighted>(edge_it)->getWeight()
               : CXXGraph::NEGLIGIBLE_WEIGHT;
     }
@@ -142,7 +144,7 @@ Partitioner<T>::Partitioner(const Partitioner &other) {
     double weight_sum = 0.0;
     for (const auto &edge_it : *(this->dataset)) {
       weight_sum +=
-          (edge_it->isWeighted().has_value() && edge_it->isWeighted().value())
+          (edge_it->isWeighted().value_or(false))
               ? std::dynamic_pointer_cast<const Weighted>(edge_it)->getWeight()
               : CXXGraph::NEGLIGIBLE_WEIGHT;
     }

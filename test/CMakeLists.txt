@@ -14,16 +14,26 @@ if (NOT MSVC)
             --coverage #set coverage flag
             -fprofile-arcs
             -ftest-coverage
+            -fprofile-update=atomic
             -fPIC
         )
         link_libraries(
             "gcov"
             "-fprofile-arcs"
+            "-fprofile-update=atomic"
             "--coverage"
         )
 
     endif(CODE_COVERAGE)
 endif(NOT MSVC)
+
+option(TCMALLOC "Enable TCMalloc Optimization" OFF)
+if(TCMALLOC)
+    link_libraries(
+            "-ltcmalloc"
+        )
+    message( "TCMalloc Enabled" )
+endif(TCMALLOC)
 
 option(TEST "Enable Test" OFF)
 if(TEST)
@@ -45,7 +55,7 @@ if(TEST)
     CPMAddPackage(
         NAME zlib
         GITHUB_REPOSITORY madler/zlib
-        VERSION 1.2.13
+        VERSION 1.3.1
         OPTIONS "CMAKE_POSITION_INDEPENDENT_CODE True"
     )
 
@@ -56,14 +66,15 @@ if(TEST)
         PUBLIC WITH_COMPRESSION
     )
     target_include_directories(test_exe
-        PUBLIC "${PROJECT_SOURCE_DIR}/include"
         PUBLIC ${zlib_BINARY_DIR}
         PUBLIC ${zlib_SOURCE_DIR}
     )
 
     target_link_libraries(test_exe
-        PUBLIC GTest::gtest_main
-        PUBLIC zlibstatic
+        PUBLIC 
+        GTest::gtest_main 
+        zlibstatic
+        ${PROJECT_NAME}
     )
 
     if(NOT gtest_disable_pthreads)
@@ -99,6 +110,7 @@ if(TEST)
     add_test(test_fordfulkerson test_exe --gtest_filter=FordFulkerson*)
     add_test(test_fw test_exe --gtest_filter=FW*)
     add_test(test_graph_slicing test_exe --gtest_filter=GraphSlicing*)
+    add_test(test_hopcroft_karp test_exe --gtest_filter=HopcroftKarp*)
     add_test(test_kruskal test_exe --gtest_filter=Kruskal*)
     add_test(test_mtx test_exe --gtest_filter=MTX*)
     add_test(test_prim test_exe --gtest_filter=Prim*)

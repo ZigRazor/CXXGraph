@@ -22,7 +22,10 @@
 
 #pragma once
 
+#include <unordered_map>
+
 #include "CXXGraph/Graph/Graph_decl.h"
+#include "CXXGraph/Utility/ConstString.hpp"
 
 namespace CXXGraph {
 
@@ -46,8 +49,8 @@ TopoSortResult<T> Graph<T>::topologicalSort() const {
          &result](shared<const Node<T>> curNode) {
           visited[curNode] = true;
 
-          if (cachedAdjMatrix->find(curNode) != cachedAdjMatrix->end()) {
-            for (const auto &edge : cachedAdjMatrix->at(curNode)) {
+          if (cachedAdjListOut->find(curNode) != cachedAdjListOut->end()) {
+            for (const auto &edge : cachedAdjListOut->at(curNode)) {
               const auto &nextNode = edge.first;
               if (false == visited[nextNode]) {
                 postorder_helper(nextNode);
@@ -58,7 +61,7 @@ TopoSortResult<T> Graph<T>::topologicalSort() const {
           result.nodesInTopoOrder.push_back(*curNode);
         };
 
-    auto numNodes = cachedAdjMatrix->size();
+    auto numNodes = cachedAdjListOut->size();
     result.nodesInTopoOrder.reserve(numNodes);
 
     for (const auto &node : nodeSet) {

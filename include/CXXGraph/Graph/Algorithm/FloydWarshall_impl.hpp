@@ -22,7 +22,12 @@
 
 #pragma once
 
+#include <string>
+#include <unordered_map>
+#include <utility>
+
 #include "CXXGraph/Graph/Graph_decl.h"
+#include "CXXGraph/Utility/ConstString.hpp"
 
 namespace CXXGraph {
 template <typename T>
@@ -51,7 +56,7 @@ const FWResult Graph<T>::floydWarshall() const {
   // connected by edges
   for (const auto &edge : edgeSet) {
     const auto &elem = edge->getNodePair();
-    if (edge->isWeighted().has_value() && edge->isWeighted().value()) {
+    if (edge->isWeighted().value_or(false)) {
       auto edgeWeight =
           (std::dynamic_pointer_cast<const Weighted>(edge))->getWeight();
       auto key =

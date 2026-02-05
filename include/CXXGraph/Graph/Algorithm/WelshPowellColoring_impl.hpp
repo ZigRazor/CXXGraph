@@ -7,12 +7,17 @@
 
 #pragma once
 
+#include <map>
+#include <memory>
+#include <utility>
+#include <vector>
+
 #include "CXXGraph/Graph/Graph_decl.h"
 
 namespace CXXGraph {
 template <typename T>
 std::map<Node<T>, int> Graph<T>::welshPowellColoring() const {
-  auto adjMatrix = *getAdjMatrix();
+  auto adjMatrix = *getAdjListOut();
 
   std::vector<std::pair<std::shared_ptr<const Node<T>>, int>>
       degreeOfVertexVector = {};

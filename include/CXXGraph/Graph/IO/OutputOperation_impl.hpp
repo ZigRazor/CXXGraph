@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <string>
+
 #include "CXXGraph/Graph/Graph_decl.h"
 
 namespace CXXGraph {
@@ -158,7 +160,7 @@ int Graph<T>::writeToMTXFile(const std::string &workingDir,
   // Check if the adjacency matrix is symmetric, i.e., if all the edges are
   // undirected
   bool symmetric = !std::any_of(edgeSet.begin(), edgeSet.end(), [](auto edge) {
-    return (edge->isDirected().has_value() && edge->isDirected().value());
+    return edge->isDirected().value_or(false);
   });
   // Write in the header whether the adj matrix is symmetric or not
   if (symmetric) {
@@ -180,7 +182,7 @@ int Graph<T>::writeToMTXFile(const std::string &workingDir,
     std::string line;
     line += edgeIt->getNodePair().first->getUserId() + delimitier;
     line += edgeIt->getNodePair().second->getUserId() + delimitier;
-    if (edgeIt->isWeighted().has_value() && edgeIt->isWeighted().value()) {
+    if (edgeIt->isWeighted().value_or(false)) {
       line += std::to_string(edgeIt->isWeighted().value()) + '\n';
     } else {
       line += std::to_string(1.) + '\n';
@@ -190,6 +192,100 @@ int Graph<T>::writeToMTXFile(const std::string &workingDir,
 
   iFile.close();
   return 0;
+}
+
+template <typename T>
+int Graph<T>::writeToBinaryFile(const std::string &workingDir,
+                                const std::string &fileName,
+                                bool writeNodeFeatures,
+                                bool writeEdgeWeights) const {
+  std::string filepath = workingDir + "/" + fileName + ".bin";
+  return writeToBinary(filepath, writeNodeFeatures, writeEdgeWeights);
+}
+
+template <typename T>
+int Graph<T>::writeToBinary(const std::string &filepath, bool writeNodeFeatures,
+                            bool writeEdgeWeights) const {
+  std::ofstream out(filepath, std::ios::binary);
+  if (!out.is_open()) {
+    return -1;
+  }
+
+  try {
+    // Write header
+    out.write(reinterpret_cast<const char *>(&BINARY_MAGIC_NUMBER),
+              sizeof(BINARY_MAGIC_NUMBER));
+    out.write(reinterpret_cast<const char *>(&BINARY_VERSION),
+              sizeof(BINARY_VERSION));
+
+    auto nodeSet = this->getNodeSet();
+    auto edgeSet = this->getEdgeSet();
+
+    uint64_t numNodes = nodeSet.size();
+    uint64_t numEdges = edgeSet.size();
+    uint64_t flags = 0;
+
+    if (writeNodeFeatures) flags |= BINARY_FLAG_HAS_NODE_FEATURES;
+    if (writeEdgeWeights) flags |= BINARY_FLAG_HAS_EDGE_WEIGHTS;
+
+    out.write(reinterpret_cast<const char *>(&numNodes), sizeof(numNodes));
+    out.write(reinterpret_cast<const char *>(&numEdges), sizeof(numEdges));
+    out.write(reinterpret_cast<const char *>(&flags), sizeof(flags));
+
+    // Write nodes
+    for (const auto &node : nodeSet) {
+      writeBinaryString(out, node->getUserId());
+
+      if (writeNodeFeatures) {
+        // For trivially copyable types, write directly
+        if constexpr (is_binary_serializable<T>::value) {
+          uint32_t dataSize = sizeof(T);
+          out.write(reinterpret_cast<const char *>(&dataSize),
+                    sizeof(dataSize));
+          const T &data = node->getData();
+          out.write(reinterpret_cast<const char *>(&data), sizeof(T));
+        } else {
+          // For non-trivially copyable types, write 0 size
+          uint32_t dataSize = 0;
+          out.write(reinterpret_cast<const char *>(&dataSize),
+                    sizeof(dataSize));
+        }
+      } else {
+        uint32_t dataSize = 0;
+        out.write(reinterpret_cast<const char *>(&dataSize), sizeof(dataSize));
+      }
+    }
+
+    // Write edges
+    for (const auto &edge : edgeSet) {
+      writeBinaryString(out, edge->getUserId());
+      writeBinaryString(out, edge->getNodePair().first->getUserId());
+      writeBinaryString(out, edge->getNodePair().second->getUserId());
+
+      uint8_t edgeFlags = 0;
+      if (edge->isDirected().value_or(false)) {
+        edgeFlags |= 0x01;
+      }
+      if (edge->isWeighted().value_or(false)) {
+        edgeFlags |= 0x02;
+      }
+      out.write(reinterpret_cast<const char *>(&edgeFlags), sizeof(edgeFlags));
+
+      // Write weight if edge is weighted and we're saving weights
+      if (writeEdgeWeights && (edgeFlags & 0x02)) {
+        double weight =
+            std::dynamic_pointer_cast<const Weighted>(edge)->getWeight();
+        out.write(reinterpret_cast<const char *>(&weight), sizeof(weight));
+      }
+    }
+
+    out.close();
+    return 0;
+
+  } catch (const std::exception &) {
+    out.close();
+    return -2;
+  }
 }
 
 template <typename T>
@@ -219,7 +315,7 @@ int Graph<T>::writeToDot(const std::string &workingDir,
 
   for (auto const &edgePtr : edgeSet) {
     std::string edgeLine = "";
-    if (edgePtr->isDirected().has_value() && edgePtr->isDirected().value()) {
+    if (edgePtr->isDirected().value_or(false)) {
       auto directedPtr =
           std::static_pointer_cast<const DirectedEdge<T>>(edgePtr);
       edgeLine += '\t' + directedPtr->getFrom().getUserId() + ' ';
@@ -230,7 +326,7 @@ int Graph<T>::writeToDot(const std::string &workingDir,
       edgeLine += linkSymbol + ' ';
       edgeLine += edgePtr->getNodePair().second->getUserId();
     }
-    if (edgePtr->isWeighted().has_value() && edgePtr->isWeighted().value()) {
+    if (edgePtr->isWeighted().value_or(false)) {
       // Weights in dot files must be integers
       edgeLine += " [weight=" +
                   std::to_string(static_cast<int>(
@@ -253,12 +349,9 @@ void Graph<T>::writeGraphToStream(std::ostream &oGraph, std::ostream &oNodeFeat,
                                   bool writeNodeFeat,
                                   bool writeEdgeWeight) const {
   for (const auto &edge : edgeSet) {
-    oGraph << edge->getId() << sep << edge->getNodePair().first->getUserId()
+    oGraph << edge->getUserId() << sep << edge->getNodePair().first->getUserId()
            << sep << edge->getNodePair().second->getUserId() << sep
-           << ((edge->isDirected().has_value() && edge->isDirected().value())
-                   ? 1
-                   : 0)
-           << std::endl;
+           << (edge->isDirected().value_or(false) ? 1 : 0) << std::endl;
   }
 
   if (writeNodeFeat) {
@@ -270,18 +363,86 @@ void Graph<T>::writeGraphToStream(std::ostream &oGraph, std::ostream &oNodeFeat,
 
   if (writeEdgeWeight) {
     for (const auto &edge : edgeSet) {
-      oEdgeWeight
-          << edge->getId() << sep
-          << (edge->isWeighted().has_value() && edge->isWeighted().value()
-                  ? (std::dynamic_pointer_cast<const Weighted>(edge))
-                        ->getWeight()
-                  : 0.0)
-          << sep
-          << (edge->isWeighted().has_value() && edge->isWeighted().value() ? 1
-                                                                           : 0)
-          << std::endl;
+      oEdgeWeight << edge->getUserId() << sep
+                  << (edge->isWeighted().value_or(false)
+                          ? (std::dynamic_pointer_cast<const Weighted>(edge))
+                                ->getWeight()
+                          : 0.0)
+                  << sep << (edge->isWeighted().value_or(false) ? 1 : 0)
+                  << std::endl;
     }
   }
+}
+
+// Helper function to write string with length prefix
+template <typename T>
+void Graph<T>::writeBinaryString(std::ofstream &out,
+                                 const std::string &str) const {
+  uint32_t len = static_cast<uint32_t>(str.length());
+  out.write(reinterpret_cast<const char *>(&len), sizeof(len));
+  out.write(str.c_str(), len);
+}
+
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const Graph<T> &graph) {
+  os << "Graph:\n";
+  auto edgeList = graph.getEdgeSet();
+  for (auto it = edgeList.begin(); it != edgeList.end(); ++it) {
+    if (!(*it)->isDirected().has_value() && !(*it)->isWeighted().has_value()) {
+      // Edge Case
+      os << **it << "\n";
+    } else if ((*it)->isDirected().value_or(false) &&
+               (*it)->isWeighted().value_or(false)) {
+      os << *std::static_pointer_cast<const DirectedWeightedEdge<T>>(*it)
+         << "\n";
+    } else if ((*it)->isDirected().value_or(false) &&
+               !((*it)->isWeighted().value_or(false))) {
+      os << *std::static_pointer_cast<const DirectedEdge<T>>(*it) << "\n";
+    } else if (!((*it)->isDirected().value_or(false)) &&
+               (*it)->isWeighted().value_or(false)) {
+      os << *std::static_pointer_cast<const UndirectedWeightedEdge<T>>(*it)
+         << "\n";
+    } else if (!((*it)->isDirected().value_or(false)) &&
+               !((*it)->isWeighted().value_or(false))) {
+      os << *std::static_pointer_cast<const UndirectedEdge<T>>(*it) << "\n";
+    } else {
+      os << *it << "\n";
+    }
+  }
+  return os;
+}
+
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const AdjacencyList<T> &adj) {
+  os << "Adjacency Matrix:\n";
+  unsigned long max_column = 0;
+  for (const auto &it : adj) {
+    if (it.second.size() > max_column) {
+      max_column = (unsigned long)it.second.size();
+    }
+  }
+  if (max_column == 0) {
+    os << "ERROR in Print\n";
+    return os;
+  } else {
+    os << "|--|";
+    for (unsigned long i = 0; i < max_column; ++i) {
+      os << "-----|";
+    }
+    os << "\n";
+    for (const auto &it : adj) {
+      os << "|N" << it.first->getId() << "|";
+      for (const auto &it2 : it.second) {
+        os << "N" << it2.first->getId() << ",E" << it2.second->getId() << "|";
+      }
+      os << "\n|--|";
+      for (unsigned long i = 0; i < max_column; ++i) {
+        os << "-----|";
+      }
+      os << "\n";
+    }
+  }
+  return os;
 }
 
 }  // namespace CXXGraph

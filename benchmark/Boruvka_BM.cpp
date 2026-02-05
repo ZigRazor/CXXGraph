@@ -1,5 +1,7 @@
 #include <benchmark/benchmark.h>
 
+#include <unordered_map>
+
 #include "CXXGraph/CXXGraph.hpp"
 #include "Utilities.hpp"
 
@@ -15,12 +17,14 @@ static void Boruvka_X(benchmark::State &state) {
   for (auto _ : state) {
     auto &result = g.boruvka();
   }
+  state.SetComplexityN(state.range(0));
 }
 BENCHMARK(Boruvka_X)
-    ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->RangeMultiplier(2)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
+[[maybe_unused]]
 static void Boruvka_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
@@ -28,4 +32,4 @@ static void Boruvka_FromReadedCitHep(benchmark::State &state) {
   }
 }
 
-BENCHMARK(Boruvka_FromReadedCitHep)->Complexity();
+// BENCHMARK(Boruvka_FromReadedCitHep);

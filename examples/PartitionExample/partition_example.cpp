@@ -1,19 +1,18 @@
-#include <stdlib.h>
-#include <time.h>
-
-#include <iterator>
+#include <cstdlib>
+#include <ctime>
+#include <iostream>
+#include <string>
 
 #include "CXXGraph/CXXGraph.hpp"
 
 static CXXGraph::Graph<int> *readGraph(const std::string &filename) {
   CXXGraph::Graph<int> *graph_ptr = new CXXGraph::Graph<int>();
-  auto result =
-      graph_ptr->readFromFile(CXXGraph::InputOutputFormat::STANDARD_CSV,
-                              "../../../benchmark/dataset", filename);
+  graph_ptr->readFromFile(CXXGraph::InputOutputFormat::STANDARD_CSV,
+                          "../../../benchmark/dataset", filename);
   return graph_ptr;
 }
 
-static auto cit_graph_ptr = readGraph("CitHepPh");
+static const auto cit_graph_ptr = readGraph("CitHepPh");
 
 int main() {
   // std::cout << *cit_graph_ptr << std::endl;

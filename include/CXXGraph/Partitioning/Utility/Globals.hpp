@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <iostream>
+#include <string>
 #include <thread>
 
 #include "CXXGraph/Partitioning/PartitionAlgorithm.hpp"
@@ -31,18 +33,18 @@ namespace Partitioning {
 class Globals {
  private:
  public:
-  Globals(const int numberOfPartiton,
-          const PartitionAlgorithm algorithm = PartitionAlgorithm::HDRF_ALG,
-          const double param1 = 1, const double param2 = 1,
-          const double param3 = 1,
-          const unsigned int threads = std::thread::hardware_concurrency());
+  explicit Globals(
+      const int numberOfPartiton,
+      const PartitionAlgorithm algorithm = PartitionAlgorithm::HDRF_ALG,
+      const double param1 = 1, const double param2 = 1, const double param3 = 1,
+      const unsigned int threads = std::thread::hardware_concurrency());
   ~Globals();
 
   const std::string print() const;
 
   // CONSTANT
-  const int SLEEP_LIMIT = 16;  // In microseconds
-  const int PLACES = 4;
+  int SLEEP_LIMIT = 16;  // In microseconds
+  int PLACES = 4;
 
   int numberOfPartition = 0;  // number of partitions
   // OPTIONAL
@@ -72,7 +74,7 @@ inline Globals::Globals(const int numberOfPartiton,
   }
 }
 
-inline Globals::~Globals() {}
+inline Globals::~Globals() = default;
 
 inline const std::string Globals::print() const {
   std::string prt_str;

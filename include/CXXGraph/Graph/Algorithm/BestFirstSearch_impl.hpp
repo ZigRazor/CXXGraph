@@ -25,11 +25,16 @@
 #include <algorithm>
 #include <atomic>
 #include <condition_variable>
+#include <memory>
 #include <mutex>
 #include <queue>
 #include <thread>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 #include "CXXGraph/Graph/Graph_decl.h"
+#include "CXXGraph/Utility/ConstString.hpp"
 
 namespace CXXGraph {
 template <typename T>
@@ -69,8 +74,8 @@ BestFirstSearchResult<T> Graph<T>::best_first_search(
     if (*currentNode == target) {
       break;
     }
-    if (cachedAdjMatrix->find(currentNode) != cachedAdjMatrix->end()) {
-      for (const auto &elem : cachedAdjMatrix->at(currentNode)) {
+    if (cachedAdjListOut->find(currentNode) != cachedAdjListOut->end()) {
+      for (const auto &elem : cachedAdjListOut->at(currentNode)) {
         if (elem.second->isWeighted().has_value()) {
           if (elem.second->isDirected().has_value()) {
             shared<const DirectedWeightedEdge<T>> dw_edge =
@@ -142,7 +147,6 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
   // a worker is assigned a small part of tasks for each time
   // assignments of tasks in current level and updates of tasks in next
   // level are inclusive
-  std::mutex tracker_mutex;
   std::mutex next_tracker_mutex;
   std::atomic<int> assigned_tasks = 0;
   int num_tasks = 1;
@@ -151,15 +155,8 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
   int block_size = 1;
   int level = 1;
 
-  auto extract_tasks = [&level_tracker, &tracker_mutex, &assigned_tasks,
-                        &num_tasks, &block_size]() -> std::pair<int, int> {
-    /*
-    std::lock_guard<std::mutex> tracker_guard(tracker_mutex);
-    int task_block_size = std::min(num_tasks - assigned_tasks,
-    block_size); std::pair<int,int> task_block{assigned_tasks,
-    assigned_tasks + task_block_size}; assigned_tasks += task_block_size;
-    return task_block;
-    */
+  auto extract_tasks = [&assigned_tasks, &num_tasks,
+                        &block_size]() -> std::pair<int, int> {
     int start = assigned_tasks.fetch_add(block_size);
     int end = std::min(num_tasks, start + block_size);
     return {start, end};
@@ -190,8 +187,8 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
         }
 
         for (int i = start_index; i < end_index; ++i) {
-          if (cachedAdjMatrix->count(level_tracker[i])) {
-            for (const auto &elem : cachedAdjMatrix->at(level_tracker[i])) {
+          if (cachedAdjListOut->count(level_tracker[i])) {
+            for (const auto &elem : cachedAdjListOut->at(level_tracker[i])) {
               int index = (int)node_to_index[elem.first];
               if (visited[index] == 0) {
                 visited[index] = 1;

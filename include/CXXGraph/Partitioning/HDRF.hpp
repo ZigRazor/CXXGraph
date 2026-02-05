@@ -20,14 +20,16 @@
 #ifndef __CXXGRAPH_PARTITIONING_HDRF_H__
 #define __CXXGRAPH_PARTITIONING_HDRF_H__
 
-#include <memory>
 #pragma once
 
 #include <chrono>
+#include <memory>
 #include <random>
+#include <vector>
 
 #include "CXXGraph/Edge/Edge.h"
 #include "CXXGraph/Partitioning/Utility/Globals.hpp"
+#include "CoordinatedPartitionState.hpp"
 #include "PartitionStrategy.hpp"
 
 namespace CXXGraph {
@@ -55,7 +57,7 @@ class HDRF : public PartitionStrategy<T> {
 
  public:
   explicit HDRF(const Globals &G);
-  ~HDRF();
+  ~HDRF() override;
 
   void performStep(shared<const Edge<T>> e,
                    shared<PartitionState<T>> Sstate) override;
@@ -65,7 +67,7 @@ HDRF<T>::HDRF(const Globals &G) : GLOBALS(G) {
   // this->GLOBALS = G;
 }
 template <typename T>
-HDRF<T>::~HDRF() {}
+HDRF<T>::~HDRF() = default;
 template <typename T>
 void HDRF<T>::performStep(shared<const Edge<T>> e,
                           shared<PartitionState<T>> state) {
@@ -78,30 +80,30 @@ void HDRF<T>::performStep(shared<const Edge<T>> e,
   std::shared_ptr<Record<T>> u_record = state->getRecord(u);
   std::shared_ptr<Record<T>> v_record = state->getRecord(v);
 
-  //*** ASK FOR LOCK
-  bool locks_taken = false;
-  while (!locks_taken) {
-    srand((unsigned)time(NULL));
-    int usleep_time = 2;
-    while (!u_record->getLock()) {
-      std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
-      usleep_time = (int)pow(usleep_time, 2);
-    }
-    usleep_time = 2;
-    if (u != v) {
-      while (!v_record->getLock()) {
-        std::this_thread::sleep_for(std::chrono::microseconds(usleep_time));
-        usleep_time = (int)pow(usleep_time, 2);
+  //*** OBTAIN LOCK
+  int backoff = 10;  // microseconds
+  while (true) {
+    bool got_u = u_record->getLock();
+    bool got_v = false;
 
-        if (usleep_time > GLOBALS.SLEEP_LIMIT) {
+    if (got_u) {
+      if (u != v) {
+        got_v = v_record->getLock();
+        if (got_v) {
+          break;
+        } else {
           u_record->releaseLock();
-          performStep(e, state);
-          return;
-        }  // TO AVOID DEADLOCK
+        }
+      } else {
+        got_v = true;
+        break;
       }
     }
-    locks_taken = true;
+
+    std::this_thread::sleep_for(std::chrono::microseconds(backoff));
+    if (backoff < GLOBALS.SLEEP_LIMIT) backoff *= 2;
   }
+
   //*** LOCK TAKEN
   int machine_id = -1;
 
@@ -129,11 +131,8 @@ void HDRF<T>::performStep(shared<const Edge<T>> e,
       fv = 1 + (1 - fv);
     }
     int load = state->getMachineLoad(m);
-    double bal = (MAX_LOAD - load);
-    bal /= (epsilon + MAX_LOAD - MIN_LOAD);
-    if (bal < 0) {
-      bal = 0;
-    }
+    const double bal =
+        std::max(0.0, (MAX_LOAD - load) / (epsilon + MAX_LOAD - MIN_LOAD));
     double SCORE_m = fu + fv + lambda * bal;
     if (SCORE_m < 0) {
       std::cout << "ERRORE: SCORE_m<0" << std::endl;

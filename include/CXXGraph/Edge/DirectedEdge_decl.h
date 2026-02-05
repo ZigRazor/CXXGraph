@@ -22,6 +22,10 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+#include <utility>
+
 #include "Edge_decl.h"
 
 namespace CXXGraph {
@@ -42,17 +46,17 @@ std::ostream &operator<<(std::ostream &o, const DirectedEdge<T> &edge);
 template <typename T>
 class DirectedEdge : public Edge<T> {
  public:
-  DirectedEdge(const CXXGraph::id_t id, const Node<T> &node1,
+  DirectedEdge(const std::string &userId, const Node<T> &node1,
                const Node<T> &node2);
-  DirectedEdge(const CXXGraph::id_t id, shared<const Node<T>> node1,
+  DirectedEdge(const std::string &userId, shared<const Node<T>> node1,
                shared<const Node<T>> node2);
-  DirectedEdge(const CXXGraph::id_t id,
+  DirectedEdge(const std::string &userId,
                const std::pair<const Node<T> *, const Node<T> *> &nodepair);
   DirectedEdge(
-      const CXXGraph::id_t id,
+      const std::string &userId,
       const std::pair<shared<const Node<T>>, shared<const Node<T>>> &nodepair);
   DirectedEdge(const Edge<T> &edge);
-  virtual ~DirectedEdge() = default;
+  ~DirectedEdge() override = default;
   const Node<T> &getFrom() const;
   const Node<T> &getTo() const;
   const std::optional<bool> isDirected() const override;

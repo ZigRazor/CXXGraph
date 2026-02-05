@@ -22,7 +22,14 @@
 
 #pragma once
 
+#include <queue>
+#include <string>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
 #include "CXXGraph/Graph/Graph_decl.h"
+#include "CXXGraph/Utility/ConstString.hpp"
 
 namespace CXXGraph {
 
@@ -46,7 +53,7 @@ const MstResult Graph<T>::prim() const {
 
   // setting all the distances initially to INF_DOUBLE
   std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist;
-  for (const auto &elem : (*cachedAdjMatrix)) {
+  for (const auto &elem : (*cachedAdjListOut)) {
     dist[elem.first] = INF_DOUBLE;
   }
 
@@ -83,11 +90,10 @@ const MstResult Graph<T>::prim() const {
     pq.pop();
     // for all the reachable vertex from the currently exploring vertex
     // we will try to minimize the distance
-    if (cachedAdjMatrix->find(currentNode) != cachedAdjMatrix->end()) {
-      for (const auto &elem : cachedAdjMatrix->at(currentNode)) {
+    if (cachedAdjListOut->find(currentNode) != cachedAdjListOut->end()) {
+      for (const auto &elem : cachedAdjListOut->at(currentNode)) {
         // minimizing distances
-        if (elem.second->isWeighted().has_value() &&
-            elem.second->isWeighted().value()) {
+        if (elem.second->isWeighted().value_or(false)) {
           shared<const UndirectedWeightedEdge<T>> udw_edge =
               std::static_pointer_cast<const UndirectedWeightedEdge<T>>(
                   elem.second);

@@ -8,7 +8,7 @@ static void NodeCreation(benchmark::State &state) {
     CXXGraph::Node<int> n1("1", 1);
   }
 }
-BENCHMARK(NodeCreation)->Complexity();
+BENCHMARK(NodeCreation);
 
 static void NodeCreationDestruction_new_delete(benchmark::State &state) {
   for (auto _ : state) {
@@ -17,7 +17,7 @@ static void NodeCreationDestruction_new_delete(benchmark::State &state) {
   }
 }
 
-BENCHMARK(NodeCreationDestruction_new_delete)->Complexity();
+BENCHMARK(NodeCreationDestruction_new_delete);
 
 static void NodeGetId(benchmark::State &state) {
   CXXGraph::Node<int> n1("1", 1);
@@ -25,7 +25,7 @@ static void NodeGetId(benchmark::State &state) {
     n1.getId();
   }
 }
-BENCHMARK(NodeGetId)->Complexity();
+BENCHMARK(NodeGetId);
 
 static void NodeGetData(benchmark::State &state) {
   CXXGraph::Node<int> n1("1", 1);
@@ -33,4 +33,4 @@ static void NodeGetData(benchmark::State &state) {
     n1.getData();
   }
 }
-BENCHMARK(NodeGetData)->Complexity();
+BENCHMARK(NodeGetData);

@@ -23,7 +23,11 @@
 #pragma once
 
 #include <memory>
+#include <set>
+#include <vector>
 
+#include "CXXGraph/Edge/Edge_decl.h"
+#include "CXXGraph/Utility/id_t.hpp"
 #include "Record.hpp"
 
 namespace CXXGraph {
@@ -40,6 +44,8 @@ namespace Partitioning {
 template <typename T>
 class PartitionState {
  public:
+  virtual ~PartitionState() = default;
+
   virtual shared<Record<T>> getRecord(CXXGraph::id_t x) = 0;
   virtual int getMachineLoad(const int m) const = 0;
   virtual int getMachineWeight(const int m) const = 0;

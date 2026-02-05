@@ -21,6 +21,7 @@
 #define __CXXGRAPH_NODE_IMPL_H__
 
 #include <iomanip>
+#include <string>
 
 #include "Node_decl.h"
 
@@ -51,7 +52,7 @@ void Node<T>::setId(const std::string &inpId) {
 }
 
 template <typename T>
-const CXXGraph::id_t &Node<T>::getId() const {
+CXXGraph::id_t Node<T>::getId() const {
   return id;
 }
 

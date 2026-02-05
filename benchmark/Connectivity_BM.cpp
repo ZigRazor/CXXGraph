@@ -1,5 +1,7 @@
 #include <benchmark/benchmark.h>
 
+#include <unordered_map>
+
 #include "CXXGraph/CXXGraph.hpp"
 #include "Utilities.hpp"
 
@@ -14,21 +16,25 @@ static void Connectivity_X(benchmark::State &state) {
   }
   for (auto _ : state) {
     auto result = g.isConnectedGraph();
+    benchmark::DoNotOptimize(result);
   }
+  state.SetComplexityN(state.range(0));
 }
 BENCHMARK(Connectivity_X)
-    ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->RangeMultiplier(2)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
+[[maybe_unused]]
 static void Connectivity_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
     auto result = cit_graph_ptr->isConnectedGraph();
+    benchmark::DoNotOptimize(result);
   }
 }
 
-BENCHMARK(Connectivity_FromReadedCitHep)->Complexity();
+// BENCHMARK(Connectivity_FromReadedCitHep);
 
 static void StrongConnectivity_X(benchmark::State &state) {
   CXXGraph::Graph<int> g;
@@ -41,18 +47,22 @@ static void StrongConnectivity_X(benchmark::State &state) {
   }
   for (auto _ : state) {
     auto result = g.isConnectedGraph();
+    benchmark::DoNotOptimize(result);
   }
+  state.SetComplexityN(state.range(0));
 }
 BENCHMARK(StrongConnectivity_X)
-    ->RangeMultiplier(16)
-    ->Range((unsigned long)1, (unsigned long)1 << 16)
+    ->RangeMultiplier(2)
+    ->Range((unsigned long)1, (unsigned long)1 << 18)
     ->Complexity();
 
+[[maybe_unused]]
 static void StrongConnectivity_FromReadedCitHep(benchmark::State &state) {
   auto edgeSet = cit_graph_ptr->getEdgeSet();
   for (auto _ : state) {
     auto result = cit_graph_ptr->isConnectedGraph();
+    benchmark::DoNotOptimize(result);
   }
 }
 
-BENCHMARK(StrongConnectivity_FromReadedCitHep)->Complexity();
+// BENCHMARK(StrongConnectivity_FromReadedCitHep);

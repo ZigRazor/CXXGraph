@@ -36,26 +36,42 @@ jobs:
     steps:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      # Execute Codacy Analysis CLI and generate a SARIF output with the security issues identified during the analysis
+          # Run Codacy Analysis CLI
       - name: Run Codacy Analysis CLI
-        uses: codacy/codacy-analysis-cli-action@97bf5df3c09e75f5bcd72695998f96ebd701846e
+        uses: codacy/codacy-analysis-cli-action@562ee3e92b8e92df8b67e0a5ff8aa8e261919c08
         with:
-          # Check https://github.com/codacy/codacy-analysis-cli#project-token to get your project token from your Codacy repository
-          # You can also omit the token and run the tools that support default configurations
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           verbose: true
           output: results.sarif
           format: sarif
-          # Adjust severity of non-security issues
           gh-code-scanning-compat: true
-          # Force 0 exit code to allow SARIF file generation
-          # This will handover control about PR rejection to the GitHub side
           max-allowed-issues: 2147483647
 
-      # Upload the SARIF file generated in the previous step
-      - name: Upload SARIF results file
-        uses: github/codeql-action/upload-sarif@v3
+      - name: Merge SARIF runs into one
+        run: |
+          python3 <<'EOF'
+          import json
+          with open("results.sarif") as f:
+              sarif = json.load(f)
+
+          # Flatten multiple runs into a single run
+          all_results = []
+          for run in sarif["runs"]:
+              all_results.extend(run.get("results", []))
+
+          merged_run = sarif["runs"][0]
+          merged_run["results"] = all_results
+          sarif["runs"] = [merged_run]
+
+          with open("merged.sarif", "w") as f:
+              json.dump(sarif, f)
+          EOF
+
+      - name: Upload merged SARIF
+        uses: github/codeql-action/upload-sarif@v4
         with:
-          sarif_file: results.sarif
+          sarif_file: merged.sarif
+
+

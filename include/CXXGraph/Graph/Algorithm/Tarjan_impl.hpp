@@ -22,7 +22,13 @@
 
 #pragma once
 
+#include <stack>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
+
 #include "CXXGraph/Graph/Graph_decl.h"
+#include "CXXGraph/Utility/ConstString.hpp"
 
 namespace CXXGraph {
 
@@ -81,12 +87,12 @@ const TarjanResult<T> Graph<T>::tarjan(const unsigned int typeMask) const {
           vbccNodeStack.emplace(*curNode);
         }
         // travel the neighbors
-        if (cachedAdjMatrix->find(curNode) != cachedAdjMatrix->end()) {
+        if (cachedAdjListOut->find(curNode) != cachedAdjListOut->end()) {
           int numSon = 0;
           bool nodeIsAdded =
               false;  // whether a node has been marked as a cut vertice
           for (const auto &[neighborNode, edge] :
-               cachedAdjMatrix->at(curNode)) {
+               cachedAdjListOut->at(curNode)) {
             if (!discoveryTime.count(neighborNode->getId())) {
               dfs_helper(neighborNode, edge);
               lowestDisc[curNode->getId()] =

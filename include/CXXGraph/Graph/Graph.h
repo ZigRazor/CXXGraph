@@ -35,8 +35,10 @@
 #include "CXXGraph/Graph/Algorithm/DepthFirstSearch_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/Dial_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/Dijkstra_impl.hpp"
+#include "CXXGraph/Graph/Algorithm/EulerianPath_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/FloydWarshall_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/FordFulkerson_impl.hpp"
+#include "CXXGraph/Graph/Algorithm/HopcroftKarp_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/Kahn_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/Kosaraju_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/Kruskal_impl.hpp"
@@ -44,7 +46,7 @@
 #include "CXXGraph/Graph/Algorithm/Tarjan_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/TopologicalSort_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/TransitiveReduction_impl.hpp"
-#include "CXXGraph/Graph/Algorithm/welshPowellColoring_impl.hpp"
+#include "CXXGraph/Graph/Algorithm/WelshPowellColoring_impl.hpp"
 
 // IO Operation
 #include "CXXGraph/Graph/IO/IOUtility_impl.hpp"

@@ -23,8 +23,11 @@
 #pragma once
 
 #include <stack>
+#include <unordered_map>
+#include <utility>
 
 #include "CXXGraph/Graph/Graph_decl.h"
+#include "CXXGraph/Utility/ConstString.hpp"
 
 namespace CXXGraph {
 
@@ -51,9 +54,9 @@ SCCResult<T> Graph<T>::kosaraju() const {
           visited[source->getId()] = true;
 
           // travel the neighbors
-          for (size_t i = 0; i < (*cachedAdjMatrix)[source].size(); i++) {
+          for (size_t i = 0; i < (*cachedAdjListOut)[source].size(); i++) {
             shared<const Node<T>> neighbor =
-                (*cachedAdjMatrix)[source].at(i).first;
+                (*cachedAdjListOut)[source].at(i).first;
             if (visited[neighbor->getId()] == false) {
               // make recursive call from neighbor
               dfs_helper(neighbor);
@@ -70,7 +73,7 @@ SCCResult<T> Graph<T>::kosaraju() const {
     }
 
     // construct the transpose of the given graph
-    AdjacencyMatrix<T> rev;
+    AdjacencyList<T> rev;
     auto addElementToAdjMatrix = [&rev](shared<const Node<T>> nodeFrom,
                                         shared<const Node<T>> nodeTo,
                                         shared<const Edge<T>> edge) {
@@ -89,8 +92,8 @@ SCCResult<T> Graph<T>::kosaraju() const {
     visited.clear();
 
     std::function<void(shared<const Node<T>>, SCCResult<T>, int)> dfs_helper1 =
-        [this, &rev, &visited, &dfs_helper1](
-            shared<const Node<T>> source, SCCResult<T> result, int sccLabel) {
+        [&rev, &visited, &dfs_helper1](shared<const Node<T>> source,
+                                       SCCResult<T> result, int sccLabel) {
           // mark the vertex visited
           visited[source->getId()] = true;
           // Add the current vertex to the strongly connected
@@ -109,7 +112,7 @@ SCCResult<T> Graph<T>::kosaraju() const {
         };
 
     int sccLabel = 0;
-    while (st.size() != 0) {
+    while (!st.empty()) {
       auto rem = st.top();
       st.pop();
       if (visited[rem->getId()] == false) {

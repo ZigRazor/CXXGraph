@@ -1,7 +1,7 @@
 #ifndef __UTILITIES_H__
 #define __UTILITIES_H__
-#include <time.h>
-
+#include <ctime>
+#include <map>
 #include <memory>
 #include <random>
 
@@ -45,8 +45,9 @@ static std::map<unsigned long, shared<CXXGraph::Edge<int>>> generateRandomEdges(
   for (unsigned long index = 0; index < numberOfEdges; index++) {
     int randomNumber1 = (distribution(rand) % MaxValue);
     int randomNumber2 = (distribution(rand) % MaxValue);
-    auto newEdge = make_shared<CXXGraph::Edge<int>>(
-        index, *(nodes.at(randomNumber1)), *(nodes.at(randomNumber2)));
+    auto newEdge = make_shared<CXXGraph::Edge<int>>(std::to_string(index),
+                                                    *(nodes.at(randomNumber1)),
+                                                    *(nodes.at(randomNumber2)));
     edges[index] = newEdge;
   }
   return edges;
