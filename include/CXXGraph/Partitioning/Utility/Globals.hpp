@@ -38,6 +38,20 @@ class Globals {
           const unsigned int threads = std::thread::hardware_concurrency());
   ~Globals();
 
+ Globals& operator=(const Globals& that) {
+    numberOfPartition = that.numberOfPartition;  // number of partitions
+    partitionStategy = that.partitionStategy;
+    threads = that.threads;
+    param1 = that.param1;
+    param2 = that.param2;
+    param3 = that.param3;
+
+    edgeCardinality = that.edgeCardinality;
+    vertexCardinality = that.vertexCardinality;
+    edgeAnalyzed = that.edgeAnalyzed;
+    return *this;
+  }
+
   const std::string print() const;
 
   // CONSTANT
