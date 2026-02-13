@@ -62,6 +62,11 @@ if(TEST)
     file (GLOB TEST_FILES "*.cpp" "*.hpp" "*.h")
     add_executable(test_exe ${TEST_FILES})
 
+    if (MINGW)
+        target_link_libraries(test_exe PRIVATE bcrypt)
+    endif()
+
+
     target_compile_definitions(test_exe
         PUBLIC WITH_COMPRESSION
     )

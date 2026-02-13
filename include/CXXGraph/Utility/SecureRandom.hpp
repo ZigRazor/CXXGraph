@@ -11,7 +11,9 @@
 #ifndef STATUS_SUCCESS
 #define STATUS_SUCCESS ((NTSTATUS)0x00000000L)
 #endif
+#ifdef _MSC_VER
 #pragma comment(lib, "bcrypt.lib")
+#endif
 #else
 #include <fstream>
 #endif

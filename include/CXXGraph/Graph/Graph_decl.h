@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 #include <cmath>
 #include <cstring>
 #include <deque>
@@ -114,6 +116,8 @@ class Graph {
                          const std::string &fileName,
                          bool readNodeFeatures = false,
                          bool readEdgeWeights = true);
+  const std::vector<std::pair<Node<T>, Node<T>>> bridges(
+      const Node<T> &start) const;
 
  private:
   T_EdgeSet<T> edgeSet = {};

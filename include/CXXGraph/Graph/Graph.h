@@ -47,6 +47,7 @@
 #include "CXXGraph/Graph/Algorithm/TopologicalSort_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/TransitiveReduction_impl.hpp"
 #include "CXXGraph/Graph/Algorithm/WelshPowellColoring_impl.hpp"
+#include "CXXGraph/Graph/Algorithm/Bridges_impl.hpp"
 
 // IO Operation
 #include "CXXGraph/Graph/IO/IOUtility_impl.hpp"
