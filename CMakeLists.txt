@@ -87,6 +87,7 @@ endif()
 add_subdirectory(test)
 add_subdirectory(benchmark)
 add_subdirectory(examples)
+add_subdirectory(python)
 
 configure_file(${PROJECT_SOURCE_DIR}/include/CXXGraph/version.h.in ${PROJECT_BINARY_DIR}/include/CXXGraph/version.h)
 
