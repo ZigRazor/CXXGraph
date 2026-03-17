@@ -23,6 +23,7 @@
 #pragma once
 
 #include "CXXGraph/Graph/Graph_impl.hpp"
+#include "CXXGraph/Graph/ThreadSafeGraph_impl.hpp"
 
 // Algorithm
 #include "CXXGraph/Graph/Algorithm/BellmanFord_impl.hpp"
