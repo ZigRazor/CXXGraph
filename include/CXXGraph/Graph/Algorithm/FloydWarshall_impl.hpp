@@ -38,24 +38,24 @@ const FWResult Graph<T>::floydWarshall() const {
   std::unordered_map<std::pair<std::string, std::string>, double,
                      CXXGraph::pair_hash>
       pairwise_dist;
-  const auto &nodeSet = Graph<T>::getNodeSet();
+  const auto& nodeSet = Graph<T>::getNodeSet();
   // create a pairwise distance matrix with distance node distances
   // set to inf. Distance of node to itself is set as 0.
-  for (const auto &elem1 : nodeSet) {
-    for (const auto &elem2 : nodeSet) {
+  for (const auto& elem1 : nodeSet) {
+    for (const auto& elem2 : nodeSet) {
       auto key = std::make_pair(elem1->getUserId(), elem2->getUserId());
       if (elem1 != elem2)
-        pairwise_dist[key] = INF_DOUBLE;
+        pairwise_dist[key] = std::numeric_limits<double>::infinity();
       else
         pairwise_dist[key] = 0.0;
     }
   }
 
-  const auto &edgeSet = Graph<T>::getEdgeSet();
+  const auto& edgeSet = Graph<T>::getEdgeSet();
   // update the weights of nodesfloydWarshall
   // connected by edges
-  for (const auto &edge : edgeSet) {
-    const auto &elem = edge->getNodePair();
+  for (const auto& edge : edgeSet) {
+    const auto& elem = edge->getNodePair();
     if (edge->isWeighted().value_or(false)) {
       auto edgeWeight =
           (std::dynamic_pointer_cast<const Weighted>(edge))->getWeight();
@@ -75,13 +75,13 @@ const FWResult Graph<T>::floydWarshall() const {
     }
   }
 
-  for (const auto &k : nodeSet) {
+  for (const auto& k : nodeSet) {
     // set all vertices as source one by one
-    for (const auto &src : nodeSet) {
+    for (const auto& src : nodeSet) {
       // iterate through all vertices as destination for the
       // current source
       auto src_k = std::make_pair(src->getUserId(), k->getUserId());
-      for (const auto &dst : nodeSet) {
+      for (const auto& dst : nodeSet) {
         // If vertex k provides a shorter path than
         // src to dst, update the value of
         // pairwise_dist[src_to_dst]
@@ -89,8 +89,8 @@ const FWResult Graph<T>::floydWarshall() const {
         auto k_dst = std::make_pair(k->getUserId(), dst->getUserId());
         if (pairwise_dist[src_dst] >
                 (pairwise_dist[src_k] + pairwise_dist[k_dst]) &&
-            (pairwise_dist[k_dst] != INF_DOUBLE &&
-             pairwise_dist[src_k] != INF_DOUBLE))
+            (pairwise_dist[k_dst] != std::numeric_limits<double>::infinity() &&
+             pairwise_dist[src_k] != std::numeric_limits<double>::infinity()))
           pairwise_dist[src_dst] = pairwise_dist[src_k] + pairwise_dist[k_dst];
       }
     }
@@ -99,7 +99,7 @@ const FWResult Graph<T>::floydWarshall() const {
   result.success = true;
   // presense of negative number in the diagonal indicates
   // that that the graph contains a negative cycle
-  for (const auto &node : nodeSet) {
+  for (const auto& node : nodeSet) {
     auto diag = std::make_pair(node->getUserId(), node->getUserId());
     if (pairwise_dist[diag] < 0.) {
       result.negativeCycle = true;

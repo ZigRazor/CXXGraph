@@ -17,6 +17,28 @@ if(DEBUG)
 	)
 endif(DEBUG)
 
+# ── Parallel execution backend ────────────────────────────────────────────────
+option(WITH_OPENMP "Enable OpenMP parallel algorithm backend" OFF)
+
+if(WITH_OPENMP)
+  find_package(OpenMP REQUIRED)
+  if(OpenMP_CXX_FOUND)
+    link_libraries(OpenMP::OpenMP_CXX)
+    add_compile_definitions(CXXGRAPH_WITH_OPENMP)
+    message(STATUS "CXXGraph: OpenMP parallel backend enabled")
+  endif()
+else()
+  # std::execution::par_unseq needs TBB on Linux (GCC/Clang)
+  find_package(TBB QUIET)
+  if(TBB_FOUND)
+    link_libraries(TBB::tbb)
+    message(STATUS "CXXGraph: std::execution backend found TBB (recommended)")
+  else()
+    message(STATUS "CXXGraph: std::execution backend active (no TBB — sequential fallback on GCC)")
+  endif()
+endif()
+
+
 if (MSVC)
 	add_compile_options(/bigobj)
   add_compile_options(

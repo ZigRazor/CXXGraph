@@ -75,9 +75,9 @@ template <typename T>
 class Graph;
 
 template <typename T>
-std::ostream &operator<<(std::ostream &o, const Graph<T> &graph);
+std::ostream& operator<<(std::ostream& o, const Graph<T>& graph);
 template <typename T>
-std::ostream &operator<<(std::ostream &o, const AdjacencyList<T> &adj);
+std::ostream& operator<<(std::ostream& o, const AdjacencyList<T>& adj);
 
 /// Class that implement the Graph. ( This class is not Thread Safe )
 template <typename T>
@@ -93,8 +93,8 @@ class Graph {
    *         -1: Cannot open file
    *         -2: Write error
    */
-  int writeToBinaryFile(const std::string &workingDir,
-                        const std::string &fileName,
+  int writeToBinaryFile(const std::string& workingDir,
+                        const std::string& fileName,
                         bool writeNodeFeatures = false,
                         bool writeEdgeWeights = true) const;
 
@@ -110,8 +110,8 @@ class Graph {
    *         -3: Unsupported version
    *         -4: Read error
    */
-  int readFromBinaryFile(const std::string &workingDir,
-                         const std::string &fileName,
+  int readFromBinaryFile(const std::string& workingDir,
+                         const std::string& fileName,
                          bool readNodeFeatures = false,
                          bool readEdgeWeights = true);
 
@@ -129,15 +129,15 @@ class Graph {
 
   std::optional<std::pair<std::string, char>> getExtenstionAndSeparator(
       InputOutputFormat format) const;
-  void writeGraphToStream(std::ostream &oGraph, std::ostream &oNodeFeat,
-                          std::ostream &oEdgeWeight, const char &sep,
+  void writeGraphToStream(std::ostream& oGraph, std::ostream& oNodeFeat,
+                          std::ostream& oEdgeWeight, const char& sep,
                           bool writeNodeFeat, bool writeEdgeWeight) const;
-  void readGraphFromStream(std::istream &iGraph, std::istream &iNodeFeat,
-                           std::istream &iEdgeWeight, bool readNodeFeat,
+  void readGraphFromStream(std::istream& iGraph, std::istream& iNodeFeat,
+                           std::istream& iEdgeWeight, bool readNodeFeat,
                            bool readEdgeWeight);
-  int writeToDot(const std::string &workingDir, const std::string &OFileName,
-                 const std::string &graphName) const;
-  int readFromDot(const std::string &workingDir, const std::string &fileName);
+  int writeToDot(const std::string& workingDir, const std::string& OFileName,
+                 const std::string& graphName) const;
+  int readFromDot(const std::string& workingDir, const std::string& fileName);
 
   // Binary file format constants
   static constexpr uint32_t BINARY_MAGIC_NUMBER = 0x47525048;  // "GRPH"
@@ -151,13 +151,13 @@ class Graph {
 
   template <typename U>
   struct is_binary_serializable<
-      U, std::void_t<decltype(std::declval<std::ofstream &>().write(
-             reinterpret_cast<const char *>(&std::declval<const U &>()),
+      U, std::void_t<decltype(std::declval<std::ofstream&>().write(
+             reinterpret_cast<const char*>(&std::declval<const U&>()),
              sizeof(U)))>> : std::is_trivially_copyable<U> {};
 
   // Helper functions for binary I/O
-  void writeBinaryString(std::ofstream &out, const std::string &str) const;
-  std::string readBinaryString(std::ifstream &in) const;
+  void writeBinaryString(std::ofstream& out, const std::string& str) const;
+  std::string readBinaryString(std::ifstream& in) const;
 
   /**
    * @brief Write the graph to a binary file
@@ -166,7 +166,7 @@ class Graph {
    * @param writeEdgeWeights Whether to include edge weights
    * @return 0 if successful, negative value on error
    */
-  int writeToBinary(const std::string &filepath, bool writeNodeFeatures,
+  int writeToBinary(const std::string& filepath, bool writeNodeFeatures,
                     bool writeEdgeWeights) const;
 
   /**
@@ -176,15 +176,15 @@ class Graph {
    * @param readEdgeWeights Whether to read edge weights
    * @return 0 if successful, negative value on error
    */
-  int readFromBinary(const std::string &filepath, bool readNodeFeatures,
+  int readFromBinary(const std::string& filepath, bool readNodeFeatures,
                      bool readEdgeWeights);
 
   void recreateGraph(
-      std::unordered_map<std::string, std::pair<std::string, std::string>>
-          &edgeMap,
-      std::unordered_map<std::string, bool> &edgeDirectedMap,
-      std::unordered_map<std::string, T> &nodeFeatMap,
-      std::unordered_map<std::string, double> &edgeWeightMap);
+      std::unordered_map<std::string, std::pair<std::string, std::string>>&
+          edgeMap,
+      std::unordered_map<std::string, bool>& edgeDirectedMap,
+      std::unordered_map<std::string, T>& nodeFeatMap,
+      std::unordered_map<std::string, double>& edgeWeightMap);
 
   // Type trait used to compile allow compilation when T is not extractable
   template <typename U, typename = void>
@@ -192,19 +192,19 @@ class Graph {
 
   template <typename U>
   struct is_istream_extractable<
-      U, std::void_t<decltype(std::declval<std::istream &>() >>
-                              std::declval<U &>())>> : std::true_type {};
+      U, std::void_t<decltype(std::declval<std::istream&>() >>
+                              std::declval<U&>())>> : std::true_type {};
 
 #ifdef WITH_COMPRESSION
-  int compressFile(const std::string &inputFile,
-                   const std::string &outputFile) const;
-  int decompressFile(const std::string &inputFile,
-                     const std::string &outputFile) const;
+  int compressFile(const std::string& inputFile,
+                   const std::string& outputFile) const;
+  int decompressFile(const std::string& inputFile,
+                     const std::string& outputFile) const;
 #endif
 
  public:
   Graph();
-  explicit Graph(const T_EdgeSet<T> &edgeSet);
+  explicit Graph(const T_EdgeSet<T>& edgeSet);
   virtual ~Graph() = default;
 
   /**
@@ -215,7 +215,7 @@ class Graph {
    * @returns a list of Edges of the graph
    *
    */
-  virtual const T_EdgeSet<T> &getEdgeSet() const;
+  virtual const T_EdgeSet<T>& getEdgeSet() const;
 
   /**
    * \brief
@@ -235,7 +235,7 @@ class Graph {
    * @param edgeSet The Edge Set
    *
    */
-  virtual void setEdgeSet(const T_EdgeSet<T> &edgeSet);
+  virtual void setEdgeSet(const T_EdgeSet<T>& edgeSet);
 
   /**
    * \brief
@@ -249,7 +249,7 @@ class Graph {
    * or if failed
    *
    */
-  virtual std::optional<CXXGraph::id_t> addEdge(const Edge<T> *edge);
+  virtual std::optional<CXXGraph::id_t> addEdge(const Edge<T>* edge);
 
   /**
    * \brief
@@ -296,7 +296,7 @@ class Graph {
    * @param pointer to the node
    *
    */
-  virtual void addNode(const Node<T> *node);
+  virtual void addNode(const Node<T>* node);
 
   /**
    * \brief
@@ -338,7 +338,7 @@ class Graph {
    * @param edgeUserId The Edge User Id to remove
    *
    */
-  virtual void removeEdge(const std::string &edgeUserId);
+  virtual void removeEdge(const std::string& edgeUserId);
 
   /**
    * \brief
@@ -358,7 +358,7 @@ class Graph {
    * @param edgeId The Node UserId to remove
    *
    */
-  virtual void removeNode(const std::string &nodeUserId);
+  virtual void removeNode(const std::string& nodeUserId);
 
   /**
    * \brief
@@ -393,8 +393,8 @@ class Graph {
    * @param id The edge id if the edge is found. Otherwise set to 0.
    * @return True if the edge exists in the graph.
    */
-  virtual bool findEdge(const Node<T> *v1, const Node<T> *v2,
-                        CXXGraph::id_t &id) const;
+  virtual bool findEdge(const Node<T>* v1, const Node<T>* v2,
+                        CXXGraph::id_t& id) const;
 
   /**
    * \brief
@@ -406,7 +406,7 @@ class Graph {
    * @return True if the edge exists in the graph.
    */
   virtual bool findEdge(shared<const Node<T>> v1, shared<const Node<T>> v2,
-                        CXXGraph::id_t &id) const;
+                        CXXGraph::id_t& id) const;
 
   /**
    * \brief
@@ -447,7 +447,7 @@ class Graph {
    * @param data The new value for the node data
    *
    */
-  virtual void setNodeData(const std::string &nodeUserId, T data);
+  virtual void setNodeData(const std::string& nodeUserId, T data);
 
   /**
    * \brief
@@ -456,7 +456,7 @@ class Graph {
    * @param dataMap Map of the userId of every node with its new data value
    *
    */
-  virtual void setNodeData(std::map<std::string, T> &dataMap);
+  virtual void setNodeData(std::map<std::string, T>& dataMap);
 
   /**
    * \brief
@@ -468,7 +468,7 @@ class Graph {
    *
    */
   virtual const std::optional<shared<const Edge<T>>> getEdge(
-      const std::string &edgeUserId) const;
+      const std::string& edgeUserId) const;
 
   /**
    * \brief
@@ -492,7 +492,7 @@ class Graph {
    *
    */
   virtual const std::optional<shared<const Node<T>>> getNode(
-      const std::string &nodeUserId) const;
+      const std::string& nodeUserId) const;
 
   /**
    * \brief
@@ -575,7 +575,7 @@ class Graph {
    *
    */
   virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
-  outNotInNeighbors(const Node<T> *node) const;
+  outNotInNeighbors(const Node<T>* node) const;
 
   /**
    * \brief This function generates a set of nodes linked only out (not in) from
@@ -595,7 +595,7 @@ class Graph {
    *
    */
   virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
-  inNotOutNeighbors(const Node<T> *node) const;
+  inNotOutNeighbors(const Node<T>* node) const;
 
   /**
    * \brief This function generates a set of nodes linked only in (not out) of
@@ -615,7 +615,7 @@ class Graph {
    *
    */
   virtual const std::unordered_set<shared<const Node<T>>, nodeHash<T>>
-  inOrOutNeighbors(const Node<T> *node) const;
+  inOrOutNeighbors(const Node<T>* node) const;
 
   /**
    * \brief
@@ -637,7 +637,7 @@ class Graph {
    *
    */
   virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
-  outNotInEdges(const Node<T> *node) const;
+  outNotInEdges(const Node<T>* node) const;
 
   /**
    * \brief This function generates a set of directed Edges going only out of
@@ -658,7 +658,7 @@ class Graph {
    *
    */
   virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
-  inNotOutEdges(const Node<T> *node) const;
+  inNotOutEdges(const Node<T>* node) const;
 
   /**
    * \brief This function generates a set of directed Edges going only out of
@@ -679,7 +679,7 @@ class Graph {
    *
    */
   virtual const std::unordered_set<shared<const Edge<T>>, edgeHash<T>>
-  inOrOutEdges(const Node<T> *node) const;
+  inOrOutEdges(const Node<T>* node) const;
 
   /**
    * \brief
@@ -702,7 +702,7 @@ class Graph {
    * @return parent node of elem
    * Note: No Thread Safe
    */
-  virtual CXXGraph::id_t setFind(std::unordered_map<CXXGraph::id_t, Subset> *,
+  virtual CXXGraph::id_t setFind(std::unordered_map<CXXGraph::id_t, Subset>*,
                                  const CXXGraph::id_t elem) const;
 
   /**
@@ -729,7 +729,7 @@ class Graph {
    * NOTE: Original subset is no longer available after union.
    * Note: No Thread Safe
    */
-  virtual void setUnion(std::unordered_map<CXXGraph::id_t, Subset> *,
+  virtual void setUnion(std::unordered_map<CXXGraph::id_t, Subset>*,
                         const CXXGraph::id_t set1,
                         const CXXGraph::id_t elem2) const;
 
@@ -768,7 +768,7 @@ class Graph {
    * computation.
    */
   virtual const DijkstraResult criticalpath_deterministic(
-      const Node<T> &source, const Node<T> &target) const;
+      const Node<T>& source, const Node<T>& target) const;
 
   /**
    * @brief Function runs the dijkstra algorithm for some source node and
@@ -783,8 +783,8 @@ class Graph {
    * case if target is not reachable from source or there is error in the
    * computation.
    */
-  virtual const DijkstraResult dijkstra(const Node<T> &source,
-                                        const Node<T> &target) const;
+  virtual const DijkstraResult dijkstra(const Node<T>& source,
+                                        const Node<T>& target) const;
 
   /**
    * @brief Deterministic implementation of the dijkstra algorithm
@@ -798,7 +798,7 @@ class Graph {
    * computation.
    */
   virtual const DijkstraResult dijkstra_deterministic(
-      const Node<T> &source, const Node<T> &target) const;
+      const Node<T>& source, const Node<T>& target) const;
 
   /**
    * @brief Alternative version of the deterministic dijkstra algorithm which
@@ -815,7 +815,7 @@ class Graph {
    * computation.
    */
   virtual const DijkstraResult dijkstra_deterministic2(
-      const Node<T> &source, const Node<T> &target) const;
+      const Node<T>& source, const Node<T>& target) const;
 
   /**
    * @brief This function runs the tarjan algorithm and returns different types
@@ -846,8 +846,8 @@ class Graph {
    * case if target is not reachable from source. If there is no error then also
    * returns if the graph contains a negative cycle.
    */
-  virtual const BellmanFordResult bellmanford(const Node<T> &source,
-                                              const Node<T> &target) const;
+  virtual const BellmanFordResult bellmanford(const Node<T>& source,
+                                              const Node<T>& target) const;
 
   /**
    * @brief This function computes the transitive reduction of the graph,
@@ -927,7 +927,7 @@ class Graph {
    *
    */
   virtual BestFirstSearchResult<T> best_first_search(
-      const Node<T> &source, const Node<T> &target) const;
+      const Node<T>& source, const Node<T>& target) const;
 
   /**
    * \brief
@@ -943,7 +943,7 @@ class Graph {
   virtual const BronKerboschResult<T> bron_kerbosch() const;
 
   virtual const std::vector<Node<T>> breadth_first_search(
-      const Node<T> &start) const;
+      const Node<T>& start) const;
 
   /**
    * \brief
@@ -958,7 +958,7 @@ class Graph {
    *
    */
   virtual const std::vector<Node<T>> concurrency_breadth_first_search(
-      const Node<T> &start, size_t num_threads) const;
+      const Node<T>& start, size_t num_threads) const;
 
   /**
    * \brief
@@ -971,7 +971,7 @@ class Graph {
    *
    */
   virtual const std::vector<Node<T>> depth_first_search(
-      const Node<T> &start) const;
+      const Node<T>& start) const;
 
   /**
    * \brief
@@ -1002,7 +1002,7 @@ class Graph {
    *
    * @return true if a cycle is detected, else false
    */
-  virtual bool containsCycle(const T_EdgeSet<T> *) const;
+  virtual bool containsCycle(const T_EdgeSet<T>*) const;
   /**
    * @brief
    * This function checks if the given set of edges
@@ -1039,6 +1039,15 @@ class Graph {
    * @return true if the graph is undirected, else false.
    */
   virtual bool isUndirectedGraph() const;
+
+  /**
+   * \brief
+   * This function checks if a graph is weighted
+   * Note: No Thread Safe
+   *
+   * @return true if the graph is weighted, else false.
+   */
+  virtual bool isWeightedGraph() const;
 
   /**
    * @brief This function reverse the direction of the edges in a directed graph
@@ -1115,7 +1124,7 @@ class Graph {
   * @param start Node from where traversing starts
   * @return a vector of nodes that belong to C but not to M.
   */
-  virtual const std::vector<Node<T>> graph_slicing(const Node<T> &start) const;
+  virtual const std::vector<Node<T>> graph_slicing(const Node<T>& start) const;
 
   /**
    * @brief Function runs the Dial algorithm  (Optimized Dijkstra for small
@@ -1129,7 +1138,7 @@ class Graph {
    * @return shortest distance for all nodes reachable from source else ERROR in
    * case there is error in the computation.
    */
-  virtual const DialResult dial(const Node<T> &source, int maxWeight) const;
+  virtual const DialResult dial(const Node<T>& source, int maxWeight) const;
 
   /**
    * @brief Function runs the Ford-Fulkerson algorithm for some source node and
@@ -1139,8 +1148,8 @@ class Graph {
    * @param target  target vertex
    * @return double Max-Flow value or -1 in case of error
    */
-  virtual double fordFulkersonMaxFlow(const Node<T> &source,
-                                      const Node<T> &target) const;
+  virtual double fordFulkersonMaxFlow(const Node<T>& source,
+                                      const Node<T>& target) const;
 
   /**
    * @brief This function performs the Hopcroft-Karp algorithm to find the
@@ -1169,6 +1178,28 @@ class Graph {
    */
   virtual std::map<Node<T>, int> welshPowellColoring() const;
 
+  // ── Parallel algorithm variants
+  // ───────────────────────────────────────────── Available when compiled with
+  // -DCXXGRAPH_WITH_OPENMP or a TBB-backed std::execution. Falls back
+  // gracefully to sequential on unsupported platforms.
+
+  /** @brief Parallel Floyd-Warshall. Same result as floydWarshall().
+   *  Uses a cache-friendly dense matrix layout; faster than the serial version
+   *  even single-threaded due to improved locality. */
+  virtual const FWResult floydWarshall_parallel() const;
+
+  /** @brief Parallel Bellman-Ford using snapshot relaxation.
+   *  Correct under concurrent writes via atomic CAS on per-vertex distances. */
+  virtual const BellmanFordResult bellmanford_parallel(
+      const Node<T>& source, const Node<T>& target) const;
+
+  /** @brief Parallel Kruskal. Parallel sort + sequential union-find. */
+  virtual const MstResult kruskal_parallel() const;
+
+  /** @brief Parallel Welsh-Powell. Parallel degree + sort; sequential coloring.
+   */
+  virtual std::map<Node<T>, int> welshPowellColoring_parallel() const;
+
   /**
    * \brief
    * This function writes the graph to an output file
@@ -1184,8 +1215,8 @@ class Graph {
    */
   virtual int writeToFile(
       InputOutputFormat format = InputOutputFormat::STANDARD_CSV,
-      const std::string &workingDir = ".",
-      const std::string &OFileName = "graph", bool compress = false,
+      const std::string& workingDir = ".",
+      const std::string& OFileName = "graph", bool compress = false,
       bool writeNodeFeat = false, bool writeEdgeWeight = false) const;
 
   /**
@@ -1196,9 +1227,9 @@ class Graph {
    * @param graphName The name of the graph
    * @return 0 if OK, else return a negative value
    */
-  virtual int writeToDotFile(const std::string &workingDir,
-                             const std::string &OFileName,
-                             const std::string &graphName) const;
+  virtual int writeToDotFile(const std::string& workingDir,
+                             const std::string& OFileName,
+                             const std::string& graphName) const;
   /**
    * @brief This function writes the graph to a MTX file
    * @param workingDir The parent directory of the output file
@@ -1206,8 +1237,8 @@ class Graph {
    * @param delimier The delimiter to use in the file
    * @return 0 if OK, else return a negative value
    */
-  virtual int writeToMTXFile(const std::string &workingDir,
-                             const std::string &OFileName, char delimier) const;
+  virtual int writeToMTXFile(const std::string& workingDir,
+                             const std::string& OFileName, char delimier) const;
 
   /**
    * \brief
@@ -1225,8 +1256,8 @@ class Graph {
    */
   virtual int readFromFile(
       InputOutputFormat format = InputOutputFormat::STANDARD_CSV,
-      const std::string &workingDir = ".",
-      const std::string &OFileName = "graph", bool compress = false,
+      const std::string& workingDir = ".",
+      const std::string& OFileName = "graph", bool compress = false,
       bool readNodeFeat = false, bool readEdgeWeight = false);
   /**
    * @brief This function reads the graph from a dot file
@@ -1235,8 +1266,8 @@ class Graph {
    * @param fileName The input filename
    * @return 0 if OK, else return a negative value
    */
-  virtual int readFromDotFile(const std::string &workingDir,
-                              const std::string &fileName);
+  virtual int readFromDotFile(const std::string& workingDir,
+                              const std::string& fileName);
   /**
    * @brief This function reads the graph from a MTX file
    *
@@ -1244,12 +1275,12 @@ class Graph {
    * @param fileName The input filename
    * @return 0 if OK, else return a negative value
    */
-  virtual int readFromMTXFile(const std::string &workingDir,
-                              const std::string &fileName);
+  virtual int readFromMTXFile(const std::string& workingDir,
+                              const std::string& fileName);
 
-  friend std::ostream &operator<< <>(std::ostream &os, const Graph<T> &graph);
-  friend std::ostream &operator<< <>(std::ostream &os,
-                                     const AdjacencyList<T> &adj);
+  friend std::ostream& operator<< <>(std::ostream& os, const Graph<T>& graph);
+  friend std::ostream& operator<< <>(std::ostream& os,
+                                     const AdjacencyList<T>& adj);
 };
 
 }  // namespace CXXGraph
