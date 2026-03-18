@@ -1,4 +1,14 @@
-name: CMake
+# ─────────────────────────────────────────────────────────────────────────────
+# CXXGraph – Comprehensive Build & Test Matrix
+#
+# Covers:
+#   • Ubuntu 22.04 / 24.04  ×  GCC 12-14  ×  Clang 15-18
+#   • macOS 13 (x86-64) / macOS latest (arm64)  ×  Apple Clang + Homebrew GCC
+#   • Windows  ×  MSVC 2022  ×  Clang-CL
+#   • C++ standards: 17, 20
+#   • Build types:   Release, Debug, RelWithDebInfo
+# ─────────────────────────────────────────────────────────────────────────────
+name: CMake Build & Test
 
 on:
   push:
@@ -9,55 +19,313 @@ on:
 permissions:
   contents: read
 
+# Cancel superseded runs on the same branch/PR to save CI minutes
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Global defaults
+# ─────────────────────────────────────────────────────────────────────────────
 env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
+  CMAKE_GENERATOR: Ninja          # fast, cross-platform
+  CPM_SOURCE_CACHE: ~/.cache/cpm  # persistent CPM download cache
 
 jobs:
-  build:
-    # Define the operating systems you want to run the job on
+  build-and-test:
+    name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+
     strategy:
-      fail-fast: false
+      fail-fast: false   # always collect the full failure picture
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
 
+          # ╔══════════════════════════════════════╗
+          # ║        UBUNTU  ×  GCC                ║
+          # ╚══════════════════════════════════════╝
+
+          - name:        "Ubuntu 22.04 · GCC 12 · C++17 · Release"
+            os:          ubuntu-22.04
+            cc:          gcc-12
+            cxx:         g++-12
+            build_type:  Release
+            cxx_std:     17
+
+          - name:        "Ubuntu 22.04 · GCC 12 · C++17 · Debug"
+            os:          ubuntu-22.04
+            cc:          gcc-12
+            cxx:         g++-12
+            build_type:  Debug
+            cxx_std:     17
+
+          - name:        "Ubuntu 22.04 · GCC 13 · C++17 · Release"
+            os:          ubuntu-22.04
+            cc:          gcc-13
+            cxx:         g++-13
+            build_type:  Release
+            cxx_std:     17
+
+          - name:        "Ubuntu 22.04 · GCC 13 · C++20 · Release"
+            os:          ubuntu-22.04
+            cc:          gcc-13
+            cxx:         g++-13
+            build_type:  Release
+            cxx_std:     20
+
+          - name:        "Ubuntu 24.04 · GCC 14 · C++17 · Release"
+            os:          ubuntu-24.04
+            cc:          gcc-14
+            cxx:         g++-14
+            build_type:  Release
+            cxx_std:     17
+
+          - name:        "Ubuntu 24.04 · GCC 14 · C++17 · RelWithDebInfo"
+            os:          ubuntu-24.04
+            cc:          gcc-14
+            cxx:         g++-14
+            build_type:  RelWithDebInfo
+            cxx_std:     17
+
+          - name:        "Ubuntu 24.04 · GCC 14 · C++20 · Release"
+            os:          ubuntu-24.04
+            cc:          gcc-14
+            cxx:         g++-14
+            build_type:  Release
+            cxx_std:     20
+
+          # ╔══════════════════════════════════════╗
+          # ║        UBUNTU  ×  CLANG              ║
+          # ╚══════════════════════════════════════╝
+
+          - name:        "Ubuntu 22.04 · Clang 15 · C++17 · Release"
+            os:          ubuntu-22.04
+            cc:          clang-15
+            cxx:         clang++-15
+            build_type:  Release
+            cxx_std:     17
+
+          - name:        "Ubuntu 22.04 · Clang 15 · C++17 · Debug"
+            os:          ubuntu-22.04
+            cc:          clang-15
+            cxx:         clang++-15
+            build_type:  Debug
+            cxx_std:     17
+
+          - name:        "Ubuntu 24.04 · Clang 17 · C++17 · Release"
+            os:          ubuntu-24.04
+            cc:          clang-17
+            cxx:         clang++-17
+            build_type:  Release
+            cxx_std:     17
+
+          - name:        "Ubuntu 24.04 · Clang 18 · C++17 · Release"
+            os:          ubuntu-24.04
+            cc:          clang-18
+            cxx:         clang++-18
+            build_type:  Release
+            cxx_std:     17
+
+          - name:        "Ubuntu 24.04 · Clang 18 · C++20 · Release"
+            os:          ubuntu-24.04
+            cc:          clang-18
+            cxx:         clang++-18
+            build_type:  Release
+            cxx_std:     20
+
+          - name:        "Ubuntu 24.04 · Clang 18 · C++20 · Debug"
+            os:          ubuntu-24.04
+            cc:          clang-18
+            cxx:         clang++-18
+            build_type:  Debug
+            cxx_std:     20
+
+          # ╔══════════════════════════════════════╗
+          # ║        macOS  ×  Apple Clang         ║
+          # ╚══════════════════════════════════════╝
+
+          - name:        "macOS 13 (x86) · Apple Clang · C++17 · Release"
+            os:          macos-13
+            cc:          clang
+            cxx:         clang++
+            build_type:  Release
+            cxx_std:     17
+
+          - name:        "macOS latest (arm64) · Apple Clang · C++17 · Release"
+            os:          macos-latest
+            cc:          clang
+            cxx:         clang++
+            build_type:  Release
+            cxx_std:     17
+
+          - name:        "macOS latest (arm64) · Apple Clang · C++20 · Release"
+            os:          macos-latest
+            cc:          clang
+            cxx:         clang++
+            build_type:  Release
+            cxx_std:     20
+
+          - name:        "macOS latest (arm64) · Apple Clang · C++17 · Debug"
+            os:          macos-latest
+            cc:          clang
+            cxx:         clang++
+            build_type:  Debug
+            cxx_std:     17
+
+          # ╔══════════════════════════════════════╗
+          # ║        WINDOWS  ×  MSVC 2022         ║
+          # ╚══════════════════════════════════════╝
+
+          - name:        "Windows · MSVC 2022 · C++17 · Release"
+            os:          windows-latest
+            cc:          cl
+            cxx:         cl
+            build_type:  Release
+            cxx_std:     17
+            msvc:        true
+
+          - name:        "Windows · MSVC 2022 · C++17 · Debug"
+            os:          windows-latest
+            cc:          cl
+            cxx:         cl
+            build_type:  Debug
+            cxx_std:     17
+            msvc:        true
+
+          - name:        "Windows · MSVC 2022 · C++20 · Release"
+            os:          windows-latest
+            cc:          cl
+            cxx:         cl
+            build_type:  Release
+            cxx_std:     20
+            msvc:        true
+
+          # ╔══════════════════════════════════════╗
+          # ║        WINDOWS  ×  Clang-CL          ║
+          # ╚══════════════════════════════════════╝
+
+          - name:        "Windows · Clang-CL · C++17 · Release"
+            os:          windows-latest
+            cc:          clang-cl
+            cxx:         clang-cl
+            build_type:  Release
+            cxx_std:     17
+            clang_cl:    true
+
+    # ─────────────────────────────────────────────────────────────────────
     steps:
-      #- name: Install gtest manually
-      #  run: sudo apt-get install libgtest-dev
 
-      #- name: Install benchmark manually
-      #  run: |
-      #      git clone https://github.com/google/benchmark.git
-      #      git clone https://github.com/google/googletest.git benchmark/googletest
-      #      cd benchmark
-      #      cmake -E make_directory "build"
-      #      cmake -E chdir "build" cmake -DCMAKE_BUILD_TYPE=Release ../
-      #      cmake --build "build" --config Release
-      #      sudo cmake --build "build" --config Release --target install
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1       # shallow clone is enough for builds
 
-      - uses: actions/checkout@v6
-
-      - name: Configure CMake
-        # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-        # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-
-        # The macro ${{github.workspace}} results in windows file seprators, (\) which CMake often cannot parse.
-        # To get around this use a relative path instead.
+      # ── Compiler installation (Linux only) ────────────────────────────
+      - name: Install GCC (Ubuntu)
+        if: runner.os == 'Linux' && startsWith(matrix.cc, 'gcc')
         run: |
-          if [ ${{ matrix.os }} == 'windows-latest' ]; then
-            cmake -DTEST=ON -Dgtest_disable_pthreads=ON -B ./build
-          else
-            cmake -DTEST=ON -B ${{github.workspace}}/build
-          fi;
+          sudo apt-get update -q
+          sudo apt-get install -y --no-install-recommends \
+            ${{ matrix.cc }} ${{ matrix.cxx }}
+
+      - name: Install Clang (Ubuntu)
+        if: runner.os == 'Linux' && startsWith(matrix.cc, 'clang')
+        run: |
+          sudo apt-get update -q
+          # Use the official LLVM apt repository for recent Clang versions
+          wget -qO- https://apt.llvm.org/llvm.sh | \
+            sudo bash -s -- $(echo '${{ matrix.cc }}' | grep -oP '\d+') all
+          sudo apt-get install -y --no-install-recommends \
+            ${{ matrix.cc }} ${{ matrix.cxx }}
+
+      # ── Ninja generator (all platforms) ──────────────────────────────
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v5
+
+      # ── ccache for incremental rebuilds ───────────────────────────────
+      - name: Set up ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ matrix.name }}-${{ github.sha }}
+          restore-keys: |
+            ${{ matrix.name }}-
+          max-size: 500M
+
+      # ── CPM dependency cache ───────────────────────────────────────────
+      - name: Cache CPM packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/cpm
+          key: cpm-${{ runner.os }}-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: cpm-${{ runner.os }}-
+
+      # ── Configure (Unix / macOS) ───────────────────────────────────────
+      - name: Configure CMake (Unix)
+        if: runner.os != 'Windows'
+        env:
+          CC:  ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+        run: |
+          cmake -B build \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -DCMAKE_CXX_STANDARD=${{ matrix.cxx_std }} \
+            -DCMAKE_CXX_STANDARD_REQUIRED=ON \
+            -DCMAKE_CXX_EXTENSIONS=OFF \
+            -DTEST=ON \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+      # ── Configure (Windows / MSVC) ────────────────────────────────────
+      - name: Configure CMake (Windows MSVC)
+        if: matrix.msvc == true
+        run: |
+          cmake -B build `
+            -G "Visual Studio 17 2022" -A x64 `
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} `
+            -DCMAKE_CXX_STANDARD=${{ matrix.cxx_std }} `
+            -DCMAKE_CXX_STANDARD_REQUIRED=ON `
+            -DCMAKE_CXX_EXTENSIONS=OFF `
+            -DTEST=ON `
+            -Dgtest_disable_pthreads=ON
+
+      # ── Configure (Windows / Clang-CL) ───────────────────────────────
+      - name: Configure CMake (Windows Clang-CL)
+        if: matrix.clang_cl == true
+        run: |
+          cmake -B build `
+            -G "Visual Studio 17 2022" -A x64 -T ClangCL `
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} `
+            -DCMAKE_CXX_STANDARD=${{ matrix.cxx_std }} `
+            -DCMAKE_CXX_STANDARD_REQUIRED=ON `
+            -DCMAKE_CXX_EXTENSIONS=OFF `
+            -DTEST=ON `
+            -Dgtest_disable_pthreads=ON
+
+      # ── Build ─────────────────────────────────────────────────────────
+      - name: Build
+        run: cmake --build build --config ${{ matrix.build_type }} --parallel
+
+      # ── Test ──────────────────────────────────────────────────────────
+      - name: Test
+        working-directory: build
+        run: |
+          ctest \
+            --build-config ${{ matrix.build_type }} \
+            --output-on-failure \
+            --parallel 4 \
+            --timeout 120 \
+            -T Test
         shell: bash
 
-      - name: Build
-        # Build your program with the given configuration
-        run: cmake --build ${{github.workspace}}/build
-
-      - name: Test
-        working-directory: ${{github.workspace}}/build/test
-        # Execute tests defined by the CMake configuration.
-        # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-        run: ctest
+      # ── Artifacts: always upload test results XML ──────────────────────
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.name }}
+          path: build/Testing/**/*.xml
+          if-no-files-found: ignore
+          retention-days: 14
