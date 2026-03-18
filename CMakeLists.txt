@@ -30,7 +30,6 @@ if(WITH_OPENMP)
     message(STATUS "CXXGraph: OpenMP parallel backend enabled")
   endif()
 else()
-  if(WITH_TBB)
     # std::execution::par_unseq needs TBB on Linux (GCC/Clang)
     find_package(TBB QUIET)
     if(TBB_FOUND)
@@ -39,9 +38,6 @@ else()
     else()
       message(STATUS "CXXGraph: std::execution backend active (no TBB — sequential fallback on GCC)")
     endif()
-  else()
-    message(STATUS "CXXGraph: std::execution backend active (no OpenMP or TBB)")
-  endif()
 endif()
 
 
@@ -96,20 +92,54 @@ else ()
 endif(MSVC)
 
 # set up CPM.cmake
-if(CPM_SOURCE_CACHE)
-	set(CPM_DOWNLOAD_LOCATION "${CPM_SOURCE_CACHE}/cpm/CPM.cmake")
-elseif(DEFINED ENV{CPM_SOURCE_CACHE})
-	set(CPM_DOWNLOAD_LOCATION "$ENV{CPM_SOURCE_CACHE}/cpm/CPM.cmake")
+set(CPM_VERSION "0.40.2")
+
+# ── Resolve CPM_SOURCE_CACHE to an absolute path ──────────────────────────────
+if(DEFINED ENV{CPM_SOURCE_CACHE})
+  # Convert whatever the env var holds (including "~" on Unix) to an
+  # absolute, normalised CMake path.  file(TO_CMAKE_PATH) converts slashes
+  # but does NOT expand "~" — we do that manually first via GLOB.
+  set(_raw_cache "$ENV{CPM_SOURCE_CACHE}")
+
+  # Expand a leading "~" using CMake's own notion of the home directory.
+  # (cmake_path NORMAL_PATH does not expand "~" either, but we can do it
+  #  portably by asking the C runtime via a small trick.)
+  if(_raw_cache MATCHES "^~(.*)")
+    # $ENV{HOME} is set on Linux/macOS; on Windows use $ENV{USERPROFILE}.
+    if(DEFINED ENV{HOME})
+      set(_raw_cache "$ENV{HOME}${CMAKE_MATCH_1}")
+    elseif(DEFINED ENV{USERPROFILE})
+      set(_raw_cache "$ENV{USERPROFILE}${CMAKE_MATCH_1}")
+    endif()
+  endif()
+
+  file(TO_CMAKE_PATH "${_raw_cache}" CPM_SOURCE_CACHE)
+  set(CPM_DOWNLOAD_LOCATION "${CPM_SOURCE_CACHE}/cpm/CPM_${CPM_VERSION}.cmake")
+  message(STATUS "CXXGraph: CPM cache directory: ${CPM_SOURCE_CACHE}")
 else()
-	set(CPM_DOWNLOAD_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM.cmake")
+  # No cache requested — download into the binary tree (never persisted).
+  set(CPM_DOWNLOAD_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM_${CPM_VERSION}.cmake")
+  message(STATUS "CXXGraph: CPM cache disabled (set CPM_SOURCE_CACHE to enable)")
 endif()
 
-if(NOT (EXISTS ${CPM_DOWNLOAD_LOCATION}))
-	message(STATUS "Downloading CPM.cmake to ${CPM_DOWNLOAD_LOCATION}")
-	file(DOWNLOAD
-    	https://github.com/cpm-cmake/CPM.cmake/releases/latest/download/CPM.cmake
-    	${CPM_DOWNLOAD_LOCATION}
-	)
+# ── Download CPM if not already present ───────────────────────────────────────
+if(NOT EXISTS "${CPM_DOWNLOAD_LOCATION}")
+  get_filename_component(_cpm_dir "${CPM_DOWNLOAD_LOCATION}" DIRECTORY)
+  file(MAKE_DIRECTORY "${_cpm_dir}")   # ensure parent dirs exist
+
+  message(STATUS "CXXGraph: Downloading CPM.cmake ${CPM_VERSION} to ${CPM_DOWNLOAD_LOCATION}")
+  file(
+    DOWNLOAD
+      "https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_VERSION}/CPM.cmake"
+      "${CPM_DOWNLOAD_LOCATION}"
+    TLS_VERIFY ON
+    STATUS _dl_status
+  )
+  list(GET _dl_status 0 _dl_code)
+  if(NOT _dl_code EQUAL 0)
+    list(GET _dl_status 1 _dl_msg)
+    message(FATAL_ERROR "CXXGraph: Failed to download CPM.cmake: ${_dl_msg}")
+  endif()
 endif()
 
 add_subdirectory(test)
