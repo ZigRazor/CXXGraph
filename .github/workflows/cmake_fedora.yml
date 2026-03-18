@@ -1,0 +1,627 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# CXXGraph – Fedora-Family Build & Test Matrix
+#
+# Distros covered (all via Docker containers on ubuntu-latest runners):
+#   • Fedora 40           — GCC 14, Clang 18  (current stable)
+#   • Fedora 41           — GCC 14, Clang 18  (latest stable)
+#   • AlmaLinux 9         — GCC 11 (default), GCC 13 (toolset), Clang 17
+#   • Rocky Linux 9       — GCC 11 (default), GCC 13 (toolset)
+#   • AlmaLinux 8         — GCC 8  (default), GCC 12 (toolset)
+#
+# Parallel backends tested per distro:
+#   • Sequential          — std::sort / plain loops (no extra packages)
+#   • TBB                 — std::execution::par_unseq backed by oneTBB (tbb-devel)
+#   • OpenMP              — #pragma omp (libgomp bundled with GCC; libomp-devel for Clang)
+#
+# Architecture notes:
+#   • GitHub Actions has no native Fedora runner.  We use the container: key
+#     so the host runner (ubuntu-latest) boots the container image and mounts
+#     the workspace.  JavaScript actions (checkout, cache) run via the host
+#     runner's Node.js — they do NOT need git/node inside the container.
+#   • All shell run: steps execute INSIDE the container.
+#   • ccache is installed via dnf and configured manually (no JS wrapper needed).
+#   • CPM_SOURCE_CACHE is set to an absolute path under github.workspace to
+#     avoid the tilde-expansion bug in CMake's file(DOWNLOAD).
+#   • GCC Toolsets on EL8/EL9 are accessed via their absolute binary paths
+#     (/opt/rh/gcc-toolset-N/...) — no need to source the activation script.
+# ─────────────────────────────────────────────────────────────────────────────
+name: CMake Build & Test – Fedora Family
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: ${{ matrix.name }}
+
+    # All Fedora-family jobs run on a plain ubuntu-latest host that boots
+    # the specified container image.
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ matrix.container }}
+      # Run as root so dnf can install packages without sudo.
+      options: --user root
+
+    timeout-minutes: 60
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+
+          # ╔══════════════════════════════════════════════════════════════════╗
+          # ║  FEDORA 40  ·  GCC 14                                           ║
+          # ╚══════════════════════════════════════════════════════════════════╝
+
+          - name:          "Fedora 40 · GCC 14 · C++17 · Release · Sequential"
+            container:     fedora:40
+            cc:            gcc
+            cxx:           g++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   fedora
+            crb_repo:      ""
+            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   ""
+
+          - name:          "Fedora 40 · GCC 14 · C++17 · Debug · Sequential"
+            container:     fedora:40
+            cc:            gcc
+            cxx:           g++
+            cxx_std:       17
+            build_type:    Debug
+            distro_type:   fedora
+            crb_repo:      ""
+            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   ""
+
+          - name:          "Fedora 40 · GCC 14 · C++17 · Release · TBB"
+            container:     fedora:40
+            cc:            gcc
+            cxx:           g++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   fedora
+            crb_repo:      ""
+            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
+            extra_pkgs:    "tbb-devel"
+            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+
+          - name:          "Fedora 40 · GCC 14 · C++20 · Release · TBB"
+            container:     fedora:40
+            cc:            gcc
+            cxx:           g++
+            cxx_std:       20
+            build_type:    Release
+            distro_type:   fedora
+            crb_repo:      ""
+            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
+            extra_pkgs:    "tbb-devel"
+            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+
+          - name:          "Fedora 40 · GCC 14 · C++17 · Release · OpenMP"
+            container:     fedora:40
+            cc:            gcc
+            cxx:           g++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   fedora
+            crb_repo:      ""
+            # libgomp is bundled with gcc on Fedora — no extra package needed
+            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
+
+          - name:          "Fedora 40 · GCC 14 · C++20 · Release · OpenMP"
+            container:     fedora:40
+            cc:            gcc
+            cxx:           g++
+            cxx_std:       20
+            build_type:    Release
+            distro_type:   fedora
+            crb_repo:      ""
+            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
+
+          # ╔══════════════════════════════════════════════════════════════════╗
+          # ║  FEDORA 40  ·  CLANG 18                                         ║
+          # ║  libomp-devel provides the OpenMP headers for Clang on Fedora  ║
+          # ╚══════════════════════════════════════════════════════════════════╝
+
+          - name:          "Fedora 40 · Clang 18 · C++17 · Release · Sequential"
+            container:     fedora:40
+            cc:            clang
+            cxx:           clang++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   fedora
+            crb_repo:      ""
+            base_pkgs:     "cmake ninja-build clang ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   ""
+
+          - name:          "Fedora 40 · Clang 18 · C++17 · Release · TBB"
+            container:     fedora:40
+            cc:            clang
+            cxx:           clang++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   fedora
+            crb_repo:      ""
+            base_pkgs:     "cmake ninja-build clang ccache wget curl"
+            extra_pkgs:    "tbb-devel"
+            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+
+          - name:          "Fedora 40 · Clang 18 · C++17 · Release · OpenMP"
+            container:     fedora:40
+            cc:            clang
+            cxx:           clang++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   fedora
+            crb_repo:      ""
+            # Clang uses libomp (LLVM's OpenMP runtime), not libgomp
+            base_pkgs:     "cmake ninja-build clang ccache wget curl"
+            extra_pkgs:    "libomp-devel"
+            extra_cmake:   "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp=libomp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp=libomp"
+
+          # ╔══════════════════════════════════════════════════════════════════╗
+          # ║  FEDORA 41  ·  GCC 14  +  CLANG 18  (latest Fedora stable)     ║
+          # ╚══════════════════════════════════════════════════════════════════╝
+
+          - name:          "Fedora 41 · GCC 14 · C++17 · Release · Sequential"
+            container:     fedora:41
+            cc:            gcc
+            cxx:           g++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   fedora
+            crb_repo:      ""
+            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   ""
+
+          - name:          "Fedora 41 · GCC 14 · C++17 · Debug · Sequential"
+            container:     fedora:41
+            cc:            gcc
+            cxx:           g++
+            cxx_std:       17
+            build_type:    Debug
+            distro_type:   fedora
+            crb_repo:      ""
+            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   ""
+
+          - name:          "Fedora 41 · GCC 14 · C++20 · Release · TBB"
+            container:     fedora:41
+            cc:            gcc
+            cxx:           g++
+            cxx_std:       20
+            build_type:    Release
+            distro_type:   fedora
+            crb_repo:      ""
+            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
+            extra_pkgs:    "tbb-devel"
+            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+
+          - name:          "Fedora 41 · GCC 14 · C++17 · Release · OpenMP"
+            container:     fedora:41
+            cc:            gcc
+            cxx:           g++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   fedora
+            crb_repo:      ""
+            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
+
+          - name:          "Fedora 41 · Clang 18 · C++17 · Release · Sequential"
+            container:     fedora:41
+            cc:            clang
+            cxx:           clang++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   fedora
+            crb_repo:      ""
+            base_pkgs:     "cmake ninja-build clang ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   ""
+
+          - name:          "Fedora 41 · Clang 18 · C++20 · Release · TBB"
+            container:     fedora:41
+            cc:            clang
+            cxx:           clang++
+            cxx_std:       20
+            build_type:    Release
+            distro_type:   fedora
+            crb_repo:      ""
+            base_pkgs:     "cmake ninja-build clang ccache wget curl"
+            extra_pkgs:    "tbb-devel"
+            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+
+          # ╔══════════════════════════════════════════════════════════════════╗
+          # ║  ALMALINUX 9  ·  (RHEL 9 compatible)                           ║
+          # ║  Requires: EPEL + CRB  for tbb-devel and other extras          ║
+          # ║  GCC Toolset 13 provides GCC 13 alongside system GCC 11        ║
+          # ╚══════════════════════════════════════════════════════════════════╝
+
+          - name:          "AlmaLinux 9 · GCC 11 · C++17 · Release · Sequential"
+            container:     almalinux:9
+            cc:            gcc
+            cxx:           g++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   rhel
+            crb_repo:      crb
+            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   ""
+
+          - name:          "AlmaLinux 9 · GCC 11 · C++17 · Debug · Sequential"
+            container:     almalinux:9
+            cc:            gcc
+            cxx:           g++
+            cxx_std:       17
+            build_type:    Debug
+            distro_type:   rhel
+            crb_repo:      crb
+            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   ""
+
+          - name:          "AlmaLinux 9 · GCC 11 · C++17 · Release · OpenMP"
+            container:     almalinux:9
+            cc:            gcc
+            cxx:           g++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   rhel
+            crb_repo:      crb
+            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
+
+          - name:          "AlmaLinux 9 · GCC 13 (Toolset) · C++17 · Release · Sequential"
+            container:     almalinux:9
+            # Absolute path to toolset binary avoids needing to source the
+            # activation script, which is shell-session-scoped and doesn't
+            # persist across GitHub Actions steps.
+            cc:            /opt/rh/gcc-toolset-13/root/usr/bin/gcc
+            cxx:           /opt/rh/gcc-toolset-13/root/usr/bin/g++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   rhel
+            crb_repo:      crb
+            base_pkgs:     "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   ""
+
+          - name:          "AlmaLinux 9 · GCC 13 (Toolset) · C++17 · Release · TBB"
+            container:     almalinux:9
+            cc:            /opt/rh/gcc-toolset-13/root/usr/bin/gcc
+            cxx:           /opt/rh/gcc-toolset-13/root/usr/bin/g++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   rhel
+            crb_repo:      crb
+            base_pkgs:     "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
+            extra_pkgs:    "tbb-devel"
+            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+
+          - name:          "AlmaLinux 9 · GCC 13 (Toolset) · C++20 · Release · TBB"
+            container:     almalinux:9
+            cc:            /opt/rh/gcc-toolset-13/root/usr/bin/gcc
+            cxx:           /opt/rh/gcc-toolset-13/root/usr/bin/g++
+            cxx_std:       20
+            build_type:    Release
+            distro_type:   rhel
+            crb_repo:      crb
+            base_pkgs:     "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
+            extra_pkgs:    "tbb-devel"
+            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+
+          - name:          "AlmaLinux 9 · GCC 13 (Toolset) · C++17 · Release · OpenMP"
+            container:     almalinux:9
+            cc:            /opt/rh/gcc-toolset-13/root/usr/bin/gcc
+            cxx:           /opt/rh/gcc-toolset-13/root/usr/bin/g++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   rhel
+            crb_repo:      crb
+            base_pkgs:     "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
+
+          - name:          "AlmaLinux 9 · Clang · C++17 · Release · Sequential"
+            container:     almalinux:9
+            cc:            clang
+            cxx:           clang++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   rhel
+            crb_repo:      crb
+            base_pkgs:     "cmake ninja-build clang ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   ""
+
+          - name:          "AlmaLinux 9 · Clang · C++17 · Release · TBB"
+            container:     almalinux:9
+            cc:            clang
+            cxx:           clang++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   rhel
+            crb_repo:      crb
+            base_pkgs:     "cmake ninja-build clang ccache wget curl"
+            extra_pkgs:    "tbb-devel"
+            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+
+          # ╔══════════════════════════════════════════════════════════════════╗
+          # ║  ROCKY LINUX 9  ·  (RHEL 9 compatible, independent rebuild)    ║
+          # ╚══════════════════════════════════════════════════════════════════╝
+
+          - name:          "Rocky Linux 9 · GCC 11 · C++17 · Release · Sequential"
+            container:     rockylinux:9
+            cc:            gcc
+            cxx:           g++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   rhel
+            crb_repo:      crb
+            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   ""
+
+          - name:          "Rocky Linux 9 · GCC 11 · C++17 · Release · OpenMP"
+            container:     rockylinux:9
+            cc:            gcc
+            cxx:           g++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   rhel
+            crb_repo:      crb
+            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
+
+          - name:          "Rocky Linux 9 · GCC 13 (Toolset) · C++17 · Release · TBB"
+            container:     rockylinux:9
+            cc:            /opt/rh/gcc-toolset-13/root/usr/bin/gcc
+            cxx:           /opt/rh/gcc-toolset-13/root/usr/bin/g++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   rhel
+            crb_repo:      crb
+            base_pkgs:     "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
+            extra_pkgs:    "tbb-devel"
+            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+
+          - name:          "Rocky Linux 9 · GCC 13 (Toolset) · C++20 · Release · Sequential"
+            container:     rockylinux:9
+            cc:            /opt/rh/gcc-toolset-13/root/usr/bin/gcc
+            cxx:           /opt/rh/gcc-toolset-13/root/usr/bin/g++
+            cxx_std:       20
+            build_type:    Release
+            distro_type:   rhel
+            crb_repo:      crb
+            base_pkgs:     "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   ""
+
+          # ╔══════════════════════════════════════════════════════════════════╗
+          # ║  ALMALINUX 8  ·  (RHEL 8 compatible — LTS, widely deployed)    ║
+          # ║  Uses 'powertools' instead of 'crb' (EL8 naming convention)    ║
+          # ║  GCC Toolset 12 provides GCC 12 alongside system GCC 8.5       ║
+          # ╚══════════════════════════════════════════════════════════════════╝
+
+          - name:          "AlmaLinux 8 · GCC 8.5 · C++17 · Release · Sequential"
+            container:     almalinux:8
+            cc:            gcc
+            cxx:           g++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   rhel
+            crb_repo:      powertools   # EL8 uses 'powertools', not 'crb'
+            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   ""
+
+          - name:          "AlmaLinux 8 · GCC 8.5 · C++17 · Release · OpenMP"
+            container:     almalinux:8
+            cc:            gcc
+            cxx:           g++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   rhel
+            crb_repo:      powertools
+            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
+
+          - name:          "AlmaLinux 8 · GCC 12 (Toolset) · C++17 · Release · Sequential"
+            container:     almalinux:8
+            cc:            /opt/rh/gcc-toolset-12/root/usr/bin/gcc
+            cxx:           /opt/rh/gcc-toolset-12/root/usr/bin/g++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   rhel
+            crb_repo:      powertools
+            base_pkgs:     "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   ""
+
+          - name:          "AlmaLinux 8 · GCC 12 (Toolset) · C++17 · Release · TBB"
+            container:     almalinux:8
+            cc:            /opt/rh/gcc-toolset-12/root/usr/bin/gcc
+            cxx:           /opt/rh/gcc-toolset-12/root/usr/bin/g++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   rhel
+            crb_repo:      powertools
+            base_pkgs:     "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl"
+            extra_pkgs:    "tbb-devel"
+            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+
+          - name:          "AlmaLinux 8 · GCC 12 (Toolset) · C++20 · Release · TBB"
+            container:     almalinux:8
+            cc:            /opt/rh/gcc-toolset-12/root/usr/bin/gcc
+            cxx:           /opt/rh/gcc-toolset-12/root/usr/bin/g++
+            cxx_std:       20
+            build_type:    Release
+            distro_type:   rhel
+            crb_repo:      powertools
+            base_pkgs:     "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl"
+            extra_pkgs:    "tbb-devel"
+            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+
+          - name:          "AlmaLinux 8 · GCC 12 (Toolset) · C++17 · Release · OpenMP"
+            container:     almalinux:8
+            cc:            /opt/rh/gcc-toolset-12/root/usr/bin/gcc
+            cxx:           /opt/rh/gcc-toolset-12/root/usr/bin/g++
+            cxx_std:       17
+            build_type:    Release
+            distro_type:   rhel
+            crb_repo:      powertools
+            base_pkgs:     "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl"
+            extra_pkgs:    ""
+            extra_cmake:   "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
+
+    # ─────────────────────────────────────────────────────────────────────────
+    steps:
+
+      # ── Checkout ──────────────────────────────────────────────────────────
+      # This is a JavaScript action — it runs via the host runner's Node.js
+      # and clones the repository to a path that is bind-mounted into the
+      # container.  git does NOT need to be installed in the container.
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # ── RHEL-family extra repos ───────────────────────────────────────────
+      # EPEL provides tbb-devel and other packages absent from base channels.
+      # CRB (EL9) / powertools (EL8) provide build-time dependencies of EPEL.
+      - name: Enable EPEL + CRB/PowerTools (RHEL family)
+        if: matrix.distro_type == 'rhel'
+        run: |
+          # dnf-plugins-core provides `dnf config-manager`
+          dnf install -y dnf-plugins-core epel-release
+          dnf config-manager --set-enabled ${{ matrix.crb_repo }}
+          dnf makecache
+
+      # Fedora ships with comprehensive repos; just refresh the metadata cache.
+      - name: Refresh DNF metadata (Fedora)
+        if: matrix.distro_type == 'fedora'
+        run: dnf makecache
+
+      # ── Install packages ─────────────────────────────────────────────────
+      - name: Install base packages
+        run: dnf install -y ${{ matrix.base_pkgs }}
+
+      - name: Install extra backend packages
+        if: matrix.extra_pkgs != ''
+        run: dnf install -y ${{ matrix.extra_pkgs }}
+
+      # ── Verify compiler ──────────────────────────────────────────────────
+      # Emit the exact compiler version into the log to aid future debugging.
+      - name: Show compiler version
+        run: |
+          ${{ matrix.cc }} --version
+          ${{ matrix.cxx }} --version
+
+      # ── ccache ────────────────────────────────────────────────────────────
+      # We do NOT use hendrikmuhs/ccache-action here: that action is designed
+      # for host-runner jobs and may not integrate cleanly with containers.
+      # Instead we restore the cache directory manually via actions/cache
+      # (which IS a JS action and works fine in containers), then configure
+      # ccache via environment variables.
+      - name: Restore ccache
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.ccache
+          key: ccache-fedora-${{ matrix.name }}-${{ github.sha }}
+          restore-keys: ccache-fedora-${{ matrix.name }}-
+
+      - name: Configure ccache
+        run: |
+          ccache --set-config=cache_dir=${{ github.workspace }}/.ccache
+          ccache --set-config=max_size=500M
+          ccache --zero-stats    # reset hit/miss counters for this run
+          echo "CCACHE_DIR=${{ github.workspace }}/.ccache" >> "$GITHUB_ENV"
+
+      # ── CPM dependency cache ───────────────────────────────────────────────
+      # Must use an absolute path — CMake's file(DOWNLOAD) never expands ~.
+      - name: Restore CPM cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.cache/cpm
+          key: cpm-fedora-${{ matrix.name }}-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: cpm-fedora-${{ matrix.name }}-
+
+      # ── Configure ─────────────────────────────────────────────────────────
+      - name: Configure CMake
+        env:
+          CC:               ${{ matrix.cc }}
+          CXX:              ${{ matrix.cxx }}
+          CPM_SOURCE_CACHE: ${{ github.workspace }}/.cache/cpm
+          CCACHE_DIR:       ${{ github.workspace }}/.ccache
+        run: |
+          cmake -B build \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -DCMAKE_CXX_STANDARD=${{ matrix.cxx_std }} \
+            -DCMAKE_CXX_STANDARD_REQUIRED=ON \
+            -DCMAKE_CXX_EXTENSIONS=OFF \
+            -DTEST=ON \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+            ${{ matrix.extra_cmake }}
+
+      # ── Build ─────────────────────────────────────────────────────────────
+      - name: Build
+        env:
+          CCACHE_DIR: ${{ github.workspace }}/.ccache
+        run: cmake --build build --parallel
+
+      # ── ccache stats ──────────────────────────────────────────────────────
+      # Shows hit rate — useful for tuning the cache key / max_size.
+      - name: Show ccache statistics
+        if: always()
+        run: ccache --show-stats
+
+      # ── Test ──────────────────────────────────────────────────────────────
+      - name: Test
+        working-directory: build
+        run: |
+          ctest \
+            --build-config ${{ matrix.build_type }} \
+            --output-on-failure \
+            --parallel 4 \
+            --timeout 120 \
+            -T Test
+
+      # ── Artifacts ─────────────────────────────────────────────────────────
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fedora-test-results-${{ matrix.name }}
+          path: build/Testing/**/*.xml
+          if-no-files-found: ignore
+          retention-days: 14
