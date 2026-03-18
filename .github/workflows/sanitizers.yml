@@ -1,0 +1,215 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# CXXGraph – Runtime Sanitizer Suite
+#
+# Runs the full test suite under four independent sanitizers to catch bugs
+# that only surface at runtime:
+#
+#   • ASan  + UBSan  – memory errors + undefined behaviour (GCC & Clang)
+#   • TSan            – data races / lock-order violations  (GCC & Clang)
+#   • MSan            – use of uninitialised memory         (Clang only)
+#
+# All jobs run on ubuntu-24.04 (most recent LLVM & GCC available).
+# ─────────────────────────────────────────────────────────────────────────────
+name: Sanitizers
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CPM_SOURCE_CACHE: ~/.cache/cpm
+
+jobs:
+  sanitize:
+    name: "${{ matrix.sanitizer }} · ${{ matrix.compiler }} · C++${{ matrix.cxx_std }}"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+
+          # ─────────────────────────────────────────────────────────────
+          # AddressSanitizer + UndefinedBehaviourSanitizer  (GCC 14)
+          # ─────────────────────────────────────────────────────────────
+          - sanitizer:   "ASan+UBSan"
+            compiler:    gcc-14
+            cxx:         g++-14
+            cxx_std:     17
+            san_flags:   "-fsanitize=address,undefined -fno-omit-frame-pointer -fno-optimize-sibling-calls"
+            asan_opts:   "strict_string_checks=1:detect_stack_use_after_return=1:check_initialization_order=1:strict_init_order=1:detect_invalid_pointer_pairs=2"
+            ubsan_opts:  "print_stacktrace=1:halt_on_error=1"
+            tsan_opts:   ""
+            msan_opts:   ""
+
+          - sanitizer:   "ASan+UBSan"
+            compiler:    gcc-14
+            cxx:         g++-14
+            cxx_std:     20
+            san_flags:   "-fsanitize=address,undefined -fno-omit-frame-pointer -fno-optimize-sibling-calls"
+            asan_opts:   "strict_string_checks=1:detect_stack_use_after_return=1:check_initialization_order=1:strict_init_order=1:detect_invalid_pointer_pairs=2"
+            ubsan_opts:  "print_stacktrace=1:halt_on_error=1"
+            tsan_opts:   ""
+            msan_opts:   ""
+
+          # ─────────────────────────────────────────────────────────────
+          # AddressSanitizer + UndefinedBehaviourSanitizer  (Clang 18)
+          # ─────────────────────────────────────────────────────────────
+          - sanitizer:   "ASan+UBSan"
+            compiler:    clang-18
+            cxx:         clang++-18
+            cxx_std:     17
+            san_flags:   "-fsanitize=address,undefined -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize-address-use-after-scope"
+            asan_opts:   "strict_string_checks=1:detect_stack_use_after_return=1:check_initialization_order=1:strict_init_order=1:detect_invalid_pointer_pairs=2"
+            ubsan_opts:  "print_stacktrace=1:halt_on_error=1"
+            tsan_opts:   ""
+            msan_opts:   ""
+
+          - sanitizer:   "ASan+UBSan"
+            compiler:    clang-18
+            cxx:         clang++-18
+            cxx_std:     20
+            san_flags:   "-fsanitize=address,undefined -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize-address-use-after-scope"
+            asan_opts:   "strict_string_checks=1:detect_stack_use_after_return=1:check_initialization_order=1:strict_init_order=1:detect_invalid_pointer_pairs=2"
+            ubsan_opts:  "print_stacktrace=1:halt_on_error=1"
+            tsan_opts:   ""
+            msan_opts:   ""
+
+          # ─────────────────────────────────────────────────────────────
+          # ThreadSanitizer  (GCC 14)
+          # Note: TSan is incompatible with ASan – must be a separate job
+          # ─────────────────────────────────────────────────────────────
+          - sanitizer:   "TSan"
+            compiler:    gcc-14
+            cxx:         g++-14
+            cxx_std:     17
+            san_flags:   "-fsanitize=thread -fno-omit-frame-pointer"
+            asan_opts:   ""
+            ubsan_opts:  ""
+            tsan_opts:   "second_deadlock_stack=1:halt_on_error=1"
+            msan_opts:   ""
+
+          # ─────────────────────────────────────────────────────────────
+          # ThreadSanitizer  (Clang 18)
+          # ─────────────────────────────────────────────────────────────
+          - sanitizer:   "TSan"
+            compiler:    clang-18
+            cxx:         clang++-18
+            cxx_std:     17
+            san_flags:   "-fsanitize=thread -fno-omit-frame-pointer"
+            asan_opts:   ""
+            ubsan_opts:  ""
+            tsan_opts:   "second_deadlock_stack=1:halt_on_error=1"
+            msan_opts:   ""
+
+          # ─────────────────────────────────────────────────────────────
+          # MemorySanitizer  (Clang 18 only – GCC does not support MSan)
+          # ─────────────────────────────────────────────────────────────
+          - sanitizer:   "MSan"
+            compiler:    clang-18
+            cxx:         clang++-18
+            cxx_std:     17
+            san_flags:   "-fsanitize=memory -fno-omit-frame-pointer -fsanitize-memory-track-origins=2"
+            asan_opts:   ""
+            ubsan_opts:  ""
+            tsan_opts:   ""
+            msan_opts:   "halt_on_error=1:poison_in_dtor=1"
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # ── Install compilers ─────────────────────────────────────────────
+      - name: Install GCC
+        if: startsWith(matrix.compiler, 'gcc')
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y --no-install-recommends \
+            ${{ matrix.compiler }} ${{ matrix.cxx }}
+
+      - name: Install Clang
+        if: startsWith(matrix.compiler, 'clang')
+        run: |
+          sudo apt-get update -q
+          wget -qO- https://apt.llvm.org/llvm.sh | \
+            sudo bash -s -- $(echo '${{ matrix.compiler }}' | grep -oP '\d+') all
+          sudo apt-get install -y --no-install-recommends \
+            ${{ matrix.compiler }} ${{ matrix.cxx }}
+
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v5
+
+      # ── CPM cache ─────────────────────────────────────────────────────
+      - name: Cache CPM packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/cpm
+          key: cpm-ubuntu-san-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: cpm-ubuntu-san-
+
+      # ── Configure: inject sanitizer flags via CMAKE_CXX_FLAGS ─────────
+      - name: Configure CMake
+        env:
+          CC:  ${{ matrix.compiler }}
+          CXX: ${{ matrix.cxx }}
+        run: |
+          cmake -B build \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_CXX_STANDARD=${{ matrix.cxx_std }} \
+            -DCMAKE_CXX_STANDARD_REQUIRED=ON \
+            -DCMAKE_CXX_EXTENSIONS=OFF \
+            -DTEST=ON \
+            -DCMAKE_CXX_FLAGS="${{ matrix.san_flags }}" \
+            -DCMAKE_EXE_LINKER_FLAGS="${{ matrix.san_flags }}" \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      # ── Run tests with sanitizer runtime options ───────────────────────
+      - name: Test (ASan + UBSan)
+        if: matrix.sanitizer == 'ASan+UBSan'
+        working-directory: build
+        env:
+          ASAN_OPTIONS:  ${{ matrix.asan_opts }}
+          UBSAN_OPTIONS: ${{ matrix.ubsan_opts }}
+        run: ctest --output-on-failure --parallel 4 --timeout 120
+
+      - name: Test (TSan)
+        if: matrix.sanitizer == 'TSan'
+        working-directory: build
+        env:
+          TSAN_OPTIONS: ${{ matrix.tsan_opts }}
+        run: ctest --output-on-failure --parallel 1 --timeout 180
+        # TSan: serial to avoid false positives from test-level parallelism
+
+      - name: Test (MSan)
+        if: matrix.sanitizer == 'MSan'
+        working-directory: build
+        env:
+          MSAN_OPTIONS: ${{ matrix.msan_opts }}
+        run: ctest --output-on-failure --parallel 4 --timeout 120
+
+      # ── Artifacts ─────────────────────────────────────────────────────
+      - name: Upload sanitizer test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: san-results-${{ matrix.sanitizer }}-${{ matrix.compiler }}-cxx${{ matrix.cxx_std }}
+          path: build/Testing/**/*.xml
+          if-no-files-found: ignore
+          retention-days: 14
