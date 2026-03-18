@@ -42,8 +42,7 @@ namespace CXXGraph {
 // ── findNodeInMap_ ───────────────────────────────────────────────────────────
 
 template <typename T>
-typename std::unordered_map<std::string,
-                            shared<const Node<T>>>::const_iterator
+typename std::unordered_map<std::string, shared<const Node<T>>>::const_iterator
 Hypergraph<T>::findNodeInMap_(const std::string& userId) const {
   return nodeMap_.find(userId);
 }
@@ -72,9 +71,9 @@ void Hypergraph<T>::registerNodes_(shared<const HyperEdge<T>> he) {
     auto isoIt = isolatedNodes_.find(node);
     if (isoIt == isolatedNodes_.end()) {
       // Not found by pointer equality — search by userId
-      auto isoByUid = std::find_if(
-          isolatedNodes_.begin(), isolatedNodes_.end(),
-          [&uid](const auto& n) { return n->getUserId() == uid; });
+      auto isoByUid =
+          std::find_if(isolatedNodes_.begin(), isolatedNodes_.end(),
+                       [&uid](const auto& n) { return n->getUserId() == uid; });
       if (isoByUid != isolatedNodes_.end()) {
         isolatedNodes_.erase(isoByUid);
       }
@@ -182,7 +181,7 @@ void Hypergraph<T>::removeNode(const std::string& nodeUserId) {
   if (mapIt == nodeMap_.end()) return;  // no-op
 
   shared<const Node<T>> nodePtr = mapIt->second;
-  const CXXGraph::id_t  nodeId  = nodePtr->getId();
+  const CXXGraph::id_t nodeId = nodePtr->getId();
 
   // Collect hyperedge ids that contain this node
   std::vector<CXXGraph::id_t> affectedHeIds;
@@ -194,9 +193,9 @@ void Hypergraph<T>::removeNode(const std::string& nodeUserId) {
   // For each affected edge, rebuild it without the removed node
   for (const CXXGraph::id_t heId : affectedHeIds) {
     // Find the hyperedge in hyperEdgeSet_
-    auto heIt = std::find_if(
-        hyperEdgeSet_.begin(), hyperEdgeSet_.end(),
-        [heId](const auto& he) { return he->getId() == heId; });
+    auto heIt =
+        std::find_if(hyperEdgeSet_.begin(), hyperEdgeSet_.end(),
+                     [heId](const auto& he) { return he->getId() == heId; });
 
     if (heIt == hyperEdgeSet_.end()) continue;
 
@@ -224,8 +223,8 @@ void Hypergraph<T>::removeNode(const std::string& nodeUserId) {
         newHe = std::make_shared<const WeightedHyperEdge<T>>(
             oldHe->getUserId(), std::move(newNodes), whe->getWeight().value());
       } else {
-        newHe = std::make_shared<const HyperEdge<T>>(
-            oldHe->getUserId(), std::move(newNodes));
+        newHe = std::make_shared<const HyperEdge<T>>(oldHe->getUserId(),
+                                                     std::move(newNodes));
       }
 
       auto [newIt, ins] = hyperEdgeSet_.insert(newHe);
@@ -269,8 +268,8 @@ T_NodeSet<T> Hypergraph<T>::getNodeSet() const {
 }
 
 template <typename T>
-std::optional<shared<const HyperEdge<T>>>
-Hypergraph<T>::getHyperEdge(const std::string& heUserId) const {
+std::optional<shared<const HyperEdge<T>>> Hypergraph<T>::getHyperEdge(
+    const std::string& heUserId) const {
   auto it = std::find_if(
       hyperEdgeSet_.begin(), hyperEdgeSet_.end(),
       [&heUserId](const auto& he) { return he->getUserId() == heUserId; });
@@ -280,16 +279,16 @@ Hypergraph<T>::getHyperEdge(const std::string& heUserId) const {
 }
 
 template <typename T>
-std::optional<shared<const Node<T>>>
-Hypergraph<T>::getNode(const std::string& nodeUserId) const {
+std::optional<shared<const Node<T>>> Hypergraph<T>::getNode(
+    const std::string& nodeUserId) const {
   auto it = findNodeInMap_(nodeUserId);
   if (it != nodeMap_.end()) return it->second;
   return std::nullopt;
 }
 
 template <typename T>
-std::vector<shared<const HyperEdge<T>>>
-Hypergraph<T>::getHyperEdgesOfNode(const std::string& nodeUserId) const {
+std::vector<shared<const HyperEdge<T>>> Hypergraph<T>::getHyperEdgesOfNode(
+    const std::string& nodeUserId) const {
   std::vector<shared<const HyperEdge<T>>> result;
 
   auto mapIt = findNodeInMap_(nodeUserId);
@@ -311,8 +310,7 @@ Hypergraph<T>::getHyperEdgesOfNode(const std::string& nodeUserId) const {
 }
 
 template <typename T>
-T_NodeSet<T>
-Hypergraph<T>::getNeighbors(const std::string& nodeUserId) const {
+T_NodeSet<T> Hypergraph<T>::getNeighbors(const std::string& nodeUserId) const {
   T_NodeSet<T> neighbors;
 
   auto mapIt = findNodeInMap_(nodeUserId);
@@ -393,19 +391,19 @@ Hypergraph<std::string> Hypergraph<T>::dual() const {
 
   // Build dual nodes: one per original hyperedge
   // dual node userId = original edge userId, data = original edge userId
-  std::unordered_map<CXXGraph::id_t,
-                     shared<const Node<std::string>>> edgeIdToDualNode;
+  std::unordered_map<CXXGraph::id_t, shared<const Node<std::string>>>
+      edgeIdToDualNode;
 
   for (const auto& he : hyperEdgeSet_) {
-    auto dualNode = std::make_shared<const Node<std::string>>(
-        he->getUserId(), he->getUserId());
+    auto dualNode = std::make_shared<const Node<std::string>>(he->getUserId(),
+                                                              he->getUserId());
     edgeIdToDualNode[he->getId()] = dualNode;
   }
 
   // Build dual edges: one per original node
   // For original node v, the dual hyperedge contains all dual nodes
   // (original edges) whose original edge contained v.
-  std::size_t dualEdgeCounter = 0;
+  // std::size_t dualEdgeCounter = 0;
 
   for (const auto& [uid, node] : nodeMap_) {
     auto incIt = incidence_.find(node->getId());
@@ -433,7 +431,7 @@ Hypergraph<std::string> Hypergraph<T>::dual() const {
         uid, std::move(dualMembers));
     dualGraph.addHyperEdge(dualEdge);
 
-    ++dualEdgeCounter;
+    // ++dualEdgeCounter;
   }
 
   return dualGraph;
@@ -488,7 +486,7 @@ std::vector<std::vector<int>> Hypergraph<T>::incidenceMatrix() const {
   std::vector<shared<const Node<T>>> nodeVec(nodeSetTmp.begin(),
                                              nodeSetTmp.end());
   std::vector<shared<const HyperEdge<T>>> edgeVec(hyperEdgeSet_.begin(),
-                                                   hyperEdgeSet_.end());
+                                                  hyperEdgeSet_.end());
 
   const std::size_t V = nodeVec.size();
   const std::size_t E = edgeVec.size();
@@ -519,8 +517,8 @@ std::vector<std::vector<int>> Hypergraph<T>::incidenceMatrix() const {
 // nodes AND visited edges to avoid redundant expansion.
 
 template <typename T>
-std::vector<Node<T>>
-Hypergraph<T>::breadth_first_search(const Node<T>& start) const {
+std::vector<Node<T>> Hypergraph<T>::breadth_first_search(
+    const Node<T>& start) const {
   std::vector<Node<T>> result;
 
   // Locate start node
@@ -529,7 +527,7 @@ Hypergraph<T>::breadth_first_search(const Node<T>& start) const {
 
   std::unordered_set<CXXGraph::id_t> visitedNodes;
   std::unordered_set<CXXGraph::id_t> visitedEdges;
-  std::queue<shared<const Node<T>>>  queue;
+  std::queue<shared<const Node<T>>> queue;
 
   shared<const Node<T>> startPtr = mapIt->second;
   queue.push(startPtr);
@@ -574,16 +572,16 @@ Hypergraph<T>::breadth_first_search(const Node<T>& start) const {
 // Same expansion rule as BFS; uses an explicit stack instead of a queue.
 
 template <typename T>
-std::vector<Node<T>>
-Hypergraph<T>::depth_first_search(const Node<T>& start) const {
+std::vector<Node<T>> Hypergraph<T>::depth_first_search(
+    const Node<T>& start) const {
   std::vector<Node<T>> result;
 
   auto mapIt = findNodeInMap_(start.getUserId());
   if (mapIt == nodeMap_.end()) return result;
 
-  std::unordered_set<CXXGraph::id_t>  visitedNodes;
-  std::unordered_set<CXXGraph::id_t>  visitedEdges;
-  std::stack<shared<const Node<T>>>   stack;
+  std::unordered_set<CXXGraph::id_t> visitedNodes;
+  std::unordered_set<CXXGraph::id_t> visitedEdges;
+  std::stack<shared<const Node<T>>> stack;
 
   shared<const Node<T>> startPtr = mapIt->second;
   stack.push(startPtr);
@@ -631,8 +629,7 @@ Hypergraph<T>::depth_first_search(const Node<T>& start) const {
 //   3. Group nodes by root → each group is one component.
 
 template <typename T>
-std::vector<std::vector<Node<T>>>
-Hypergraph<T>::connectedComponents() const {
+std::vector<std::vector<Node<T>>> Hypergraph<T>::connectedComponents() const {
   if (nodeMap_.empty()) return {};
 
   // ── Union-Find with path compression ──────────────────────────────────────
