@@ -23,37 +23,58 @@
 
 [CXXGraph Website](https://zigrazor.github.io/CXXGraph/)
 
-## We are Looking for
+## Roadmap
 
-**We are looking for:**
+| Completed | Description | Date of Completition |
+| :-------: | :---------- | :-------------------: |
+| :heavy_check_mark: | Release 0.4.0 | Oct 7, 2022 |
+| :heavy_check_mark: | Release 0.5.0 | Mar 23, 2023 |
+| :heavy_check_mark: | First Stable Release 1.0.0 | Mar 28, 2023 |
+| :heavy_check_mark: | Release 1.0.1 | May 7, 2023 |
+| :heavy_check_mark: | Release 1.1.0 | May 8, 2023 |
+| :heavy_check_mark: | Stable Release 2.0.0 | Jun 1, 2023 |
+| :heavy_check_mark: | Stable Release 3.0.0 | Nov 3, 2023 |
+| :heavy_check_mark: | Release 3.1.0 | Jan 9, 2023 |
+| :heavy_check_mark: | Release 4.0.0 | Jun 20, 2024 |
+| :heavy_check_mark: | Release 4.1.0 | Jun 21, 2024 |
+| :heavy_check_mark: | Introduce Hypergraph [#122](https://github.com/ZigRazor/CXXGraph/issues/122) | Mar 16, 2026 |
+| :memo: | Stable Release 5.0.0 | TBD |
 
-- **A Web Developer** for the development of the CXXGraph website. All documentation is currently hosted on this GitHub page.
-- **Developers and Contributors** to provide input. If you are new to the open-source world, we will guide you step by step!
+## Compared to Boost Graph Library
 
-If you are interested, please contact us at <zigrazor@gmail.com> or contribute to this project. We are waiting for you!
+|                  | CXXGraph ✅ | Boost Graph ❌ |
+| ---------------- | ---------- | ------------- |
+| Setup time       | Seconds    | Minutes–Hours |
+| API readability  | High       | Low           |
+| Boilerplate      | Minimal    | Heavy         |
+| Modern C++ style | Yes        | Mixed/Legacy  |
+| Learning curve   | Low        | High          |
+
+CXXGraph focuses on **developer experience first**.
 
 ## Table of Contents
 
 - [CXXGraph](#cxxgraph)
   - [Introduction](#introduction)
-  - [We are Looking for...](#we-are-looking-for)
+  - [Roadmap](#roadmap)
+  - [Compared to Boost Graph Library](#compared-to-boost-graph-library)
   - [Table of Contents](#table-of-contents)
   - [Install and Uninstall](#install-and-uninstall)
     - [Install Linux Tarballs](#install-linux-tarballs)
     - [Install RPM](#install-rpm)
     - [Install DEB](#install-deb)
     - [Install From Source](#install-from-source)
-  - [Requirements](#requirements)
+  - [Prerequisites](#prerequisites)
   - [How to use](#how-to-use)
   - [Examples](#examples)
   - [Unit-Test Execution](#unit-test-execution)
-    - [Google Test Installation](#google-test-installation)
-    - [How to Compile Test](#how-to-compile-test)
-    - [How to Run Test](#how-to-run-test)
+    - [Install GoogleTest](#install-googletest)
+    - [How to Compile GoogleTest](#how-to-compile-googletest)
+    - [How to Run GoogleTest](#how-to-run-googletest)
   - [Benchmark Execution](#benchmark-execution)
-    - [Google Benchmark Installation](#google-benchmark-installation)
-    - [How to Compile Benchmark](#how-to-compile-benchmark)
-    - [How to Run Benchmark](#how-to-run-benchmark)
+    - [Install Google Benchmark](#install-google-benchmark)
+    - [How to Compile Google Benchmark](#how-to-compile-google-benchmark)
+    - [How to Run Google Benchmark](#how-to-run-google-benchmark)
     - [Benchmark Results](#benchmark-results)
   - [Packaging](#packaging)
     - [Tarballs](#tarballs)
@@ -62,8 +83,9 @@ If you are interested, please contact us at <zigrazor@gmail.com> or contribute t
     - [DEB](#deb)
       - [(Debian/Ubuntu)](#debianubuntu)
   - [Algorithms, Classes and Network Dynamics](#algorithms-classes-and-network-dynamics)
-  - [How to contribute](#how-to-contribute)
-  - [Roadmap](#roadmap)
+  - [How to contribute](#how-to-contribute)  
+  - [Discussion](#discussion)
+  - [Share it](#share-it)
   - [Contact](#contact)
   - [Support](#support)
   - [References](#references)
@@ -362,22 +384,20 @@ The following is a list of all the implemented algorithms, more information on t
 If you want to give your support you can create a ***pull request***   [![GitHub pull-requests](https://img.shields.io/github/issues-pr/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/pull/) or report an ***issue***  [![GitHub issues](https://img.shields.io/github/issues/ZigRazor/CXXGraph.svg)](https://GitHub.com/ZigRazor/CXXGraph/issues/).
 If you want to change the code, fix an issue, or implement a new feature please read our [CONTRIBUTING Guide](https://github.com/ZigRazor/CXXGraph/blob/master/CONTRIBUTING.md).
 
-If you want to discuss new features or you have any questions or suggestions about the library, please open a [Discussion](https://github.com/ZigRazor/CXXGraph/discussions) or simply chat on [![Join the chat at https://gitter.im/CXXGraph-Community/community](https://badges.gitter.im/CXXGraph-Community/community.svg)](https://gitter.im/CXXGraph-Community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+## Discussion
 
-## Roadmap
+Have ideas, feedback, or questions?
+Open a discussion or an issue — we’re building this together.
 
-| Completed | Description | Date of Completition |
-| :-------: | :---------- | :-------------------: |
-| :heavy_check_mark: | Release 0.4.0 | Oct 7, 2022 |
-| :heavy_check_mark: | Release 0.5.0 | Mar 23, 2023 |
-| :heavy_check_mark: | First Stable Release 1.0.0 | Mar 28, 2023 |
-| :heavy_check_mark: | Release 1.0.1 | May 7, 2023 |
-| :heavy_check_mark: | Release 1.1.0 | May 8, 2023 |
-| :heavy_check_mark: | Stable Release 2.0.0 | Jun 1, 2023 |
-| :heavy_check_mark: | Stable Release 3.0.0 | Nov 3, 2023 |
-| :heavy_check_mark: | Release 3.1.0 | Jan 9, 2023 |
-| :memo: | Introduce Hypergraph [#122](https://github.com/ZigRazor/CXXGraph/issues/122) | TBD |
-| :memo: | Stable Release 4.0.0 | TBD |
+## Share it
+
+If you found this useful:
+
+⭐ Star the repo
+
+🧵 Share it on Reddit / Hacker News
+
+💬 Tell us how you use it
 
 ## Stars History
 
