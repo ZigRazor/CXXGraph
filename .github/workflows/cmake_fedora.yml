@@ -148,7 +148,7 @@ jobs:
             build_type: Release
             distro_type: fedora
             crb_repo: ""
-            base_pkgs: "cmake ninja-build clang ccache wget curl"
+            base_pkgs: "cmake ninja-build clang ccache wget curl git"
             extra_pkgs: ""
             extra_cmake: ""
 
@@ -160,7 +160,7 @@ jobs:
             build_type: Release
             distro_type: fedora
             crb_repo: ""
-            base_pkgs: "cmake ninja-build clang ccache wget curl"
+            base_pkgs: "cmake ninja-build clang ccache wget curl git"
             extra_pkgs: "tbb-devel"
             extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
 
@@ -173,7 +173,7 @@ jobs:
             distro_type: fedora
             crb_repo: ""
             # Clang uses libomp (LLVM's OpenMP runtime), not libgomp
-            base_pkgs: "cmake ninja-build clang ccache wget curl"
+            base_pkgs: "cmake ninja-build clang ccache wget curl git"
             extra_pkgs: "libomp-devel"
             extra_cmake: "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp=libomp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp=libomp"
 
@@ -237,7 +237,7 @@ jobs:
             build_type: Release
             distro_type: fedora
             crb_repo: ""
-            base_pkgs: "cmake ninja-build clang ccache wget curl"
+            base_pkgs: "cmake ninja-build clang ccache wget curl git"
             extra_pkgs: ""
             extra_cmake: ""
 
@@ -249,7 +249,7 @@ jobs:
             build_type: Release
             distro_type: fedora
             crb_repo: ""
-            base_pkgs: "cmake ninja-build clang ccache wget curl"
+            base_pkgs: "cmake ninja-build clang ccache wget curl git"
             extra_pkgs: "tbb-devel"
             extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
 
@@ -267,7 +267,7 @@ jobs:
             build_type: Release
             distro_type: rhel
             crb_repo: crb
-            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget git"
             extra_pkgs: ""
             extra_cmake: ""
 
@@ -279,7 +279,7 @@ jobs:
             build_type: Debug
             distro_type: rhel
             crb_repo: crb
-            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget git"
             extra_pkgs: ""
             extra_cmake: ""
 
@@ -291,7 +291,7 @@ jobs:
             build_type: Release
             distro_type: rhel
             crb_repo: crb
-            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget  git"
             extra_pkgs: ""
             extra_cmake: "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
 
@@ -306,7 +306,7 @@ jobs:
             build_type: Release
             distro_type: rhel
             crb_repo: crb
-            base_pkgs: "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
+            base_pkgs: "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget git"
             extra_pkgs: ""
             extra_cmake: ""
 
@@ -318,7 +318,7 @@ jobs:
             build_type: Release
             distro_type: rhel
             crb_repo: crb
-            base_pkgs: "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
+            base_pkgs: "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget git"
             extra_pkgs: "tbb-devel"
             extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
 
@@ -330,7 +330,7 @@ jobs:
             build_type: Release
             distro_type: rhel
             crb_repo: crb
-            base_pkgs: "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
+            base_pkgs: "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget git"
             extra_pkgs: "tbb-devel"
             extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
 
@@ -342,7 +342,7 @@ jobs:
             build_type: Release
             distro_type: rhel
             crb_repo: crb
-            base_pkgs: "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
+            base_pkgs: "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget git"
             extra_pkgs: ""
             extra_cmake: "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
 
@@ -354,7 +354,7 @@ jobs:
             build_type: Release
             distro_type: rhel
             crb_repo: crb
-            base_pkgs: "cmake ninja-build clang ccache wget curl"
+            base_pkgs: "cmake ninja-build clang ccache wget "
             extra_pkgs: ""
             extra_cmake: ""
 
@@ -366,7 +366,7 @@ jobs:
             build_type: Release
             distro_type: rhel
             crb_repo: crb
-            base_pkgs: "cmake ninja-build clang ccache wget curl"
+            base_pkgs: "cmake ninja-build clang ccache wget git"
             extra_pkgs: "tbb-devel"
             extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
 
@@ -382,7 +382,7 @@ jobs:
             build_type: Release
             distro_type: rhel
             crb_repo: crb
-            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget git"
             extra_pkgs: ""
             extra_cmake: ""
 
@@ -394,7 +394,7 @@ jobs:
             build_type: Release
             distro_type: rhel
             crb_repo: crb
-            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget git"
             extra_pkgs: ""
             extra_cmake: "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
 
@@ -406,7 +406,7 @@ jobs:
             build_type: Release
             distro_type: rhel
             crb_repo: crb
-            base_pkgs: "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
+            base_pkgs: "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget git"
             extra_pkgs: "tbb-devel"
             extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
 
@@ -418,7 +418,7 @@ jobs:
             build_type: Release
             distro_type: rhel
             crb_repo: crb
-            base_pkgs: "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
+            base_pkgs: "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget git"
             extra_pkgs: ""
             extra_cmake: ""
 
@@ -460,7 +460,7 @@ jobs:
             build_type: Release
             distro_type: rhel
             crb_repo: powertools
-            base_pkgs: "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl"
+            base_pkgs: "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl git"
             extra_pkgs: ""
             extra_cmake: ""
 
@@ -472,7 +472,7 @@ jobs:
             build_type: Release
             distro_type: rhel
             crb_repo: powertools
-            base_pkgs: "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl"
+            base_pkgs: "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl git"
             extra_pkgs: "tbb-devel"
             extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
 
@@ -484,7 +484,7 @@ jobs:
             build_type: Release
             distro_type: rhel
             crb_repo: powertools
-            base_pkgs: "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl"
+            base_pkgs: "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl git"
             extra_pkgs: "tbb-devel"
             extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
 
@@ -496,7 +496,7 @@ jobs:
             build_type: Release
             distro_type: rhel
             crb_repo: powertools
-            base_pkgs: "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl"
+            base_pkgs: "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl git"
             extra_pkgs: ""
             extra_cmake: "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
 
