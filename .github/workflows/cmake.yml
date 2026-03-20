@@ -383,7 +383,7 @@ jobs:
     # ─────────────────────────────────────────────────────────────────────
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
 
@@ -430,7 +430,7 @@ jobs:
       # IMPORTANT: path must match CPM_SOURCE_CACHE exactly.
       # Tilde (~) is NOT safe here — use github.workspace for an absolute path.
       - name: Cache CPM packages
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/.cache/cpm
           key: cpm-${{ runner.os }}-${{ hashFiles('**/CMakeLists.txt') }}
@@ -502,7 +502,7 @@ jobs:
       # ── Upload test result XMLs as artifacts ──────────────────────────
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: test-results-${{ matrix.name }}
           path: build/Testing/**/*.xml
