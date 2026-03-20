@@ -39,264 +39,263 @@ jobs:
       fail-fast: false
       matrix:
         include:
-
           # ╔══════════════════════════════════════════════════════════════╗
           # ║   UBUNTU · GCC · Sequential (no extra parallel library)     ║
           # ╚══════════════════════════════════════════════════════════════╝
 
-          - name:           "Ubuntu 22.04 · GCC 12 · C++17 · Release · Sequential"
-            os:             ubuntu-22.04
-            cc:             gcc-12
-            cxx:            g++-12
-            build_type:     Release
-            cxx_std:        17
-            extra_cmake:    ""
-            extra_apt:      ""
+          - name: "Ubuntu 22.04 · GCC 12 · C++17 · Release · Sequential"
+            os: ubuntu-22.04
+            cc: gcc-12
+            cxx: g++-12
+            build_type: Release
+            cxx_std: 17
+            extra_cmake: ""
+            extra_apt: ""
 
-          - name:           "Ubuntu 22.04 · GCC 12 · C++17 · Debug · Sequential"
-            os:             ubuntu-22.04
-            cc:             gcc-12
-            cxx:            g++-12
-            build_type:     Debug
-            cxx_std:        17
-            extra_cmake:    ""
-            extra_apt:      ""
+          - name: "Ubuntu 22.04 · GCC 12 · C++17 · Debug · Sequential"
+            os: ubuntu-22.04
+            cc: gcc-12
+            cxx: g++-12
+            build_type: Debug
+            cxx_std: 17
+            extra_cmake: ""
+            extra_apt: ""
 
           # ╔══════════════════════════════════════════════════════════════╗
           # ║   UBUNTU · GCC · TBB  (std::execution → oneTBB backend)    ║
           # ╚══════════════════════════════════════════════════════════════╝
 
-          - name:           "Ubuntu 22.04 · GCC 13 · C++17 · Release · TBB"
-            os:             ubuntu-22.04
-            cc:             gcc-13
-            cxx:            g++-13
-            build_type:     Release
-            cxx_std:        17
-            extra_cmake:    "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
-            extra_apt:      "gcc-13 g++-13 libtbb-dev"
+          - name: "Ubuntu 22.04 · GCC 13 · C++17 · Release · TBB"
+            os: ubuntu-22.04
+            cc: gcc-13
+            cxx: g++-13
+            build_type: Release
+            cxx_std: 17
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+            extra_apt: "gcc-13 g++-13 libtbb-dev"
 
-          - name:           "Ubuntu 22.04 · GCC 13 · C++20 · Release · TBB"
-            os:             ubuntu-22.04
-            cc:             gcc-13
-            cxx:            g++-13
-            build_type:     Release
-            cxx_std:        20
-            extra_cmake:    "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
-            extra_apt:      "gcc-13 g++-13 libtbb-dev"
+          - name: "Ubuntu 22.04 · GCC 13 · C++20 · Release · TBB"
+            os: ubuntu-22.04
+            cc: gcc-13
+            cxx: g++-13
+            build_type: Release
+            cxx_std: 20
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+            extra_apt: "gcc-13 g++-13 libtbb-dev"
 
-          - name:           "Ubuntu 24.04 · GCC 14 · C++17 · Release · TBB"
-            os:             ubuntu-24.04
-            cc:             gcc-14
-            cxx:            g++-14
-            build_type:     Release
-            cxx_std:        17
-            extra_cmake:    "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
-            extra_apt:      "gcc-14 g++-14 libtbb-dev"
+          - name: "Ubuntu 24.04 · GCC 14 · C++17 · Release · TBB"
+            os: ubuntu-24.04
+            cc: gcc-14
+            cxx: g++-14
+            build_type: Release
+            cxx_std: 17
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+            extra_apt: "gcc-14 g++-14 libtbb-dev"
 
-          - name:           "Ubuntu 24.04 · GCC 14 · C++17 · RelWithDebInfo · TBB"
-            os:             ubuntu-24.04
-            cc:             gcc-14
-            cxx:            g++-14
-            build_type:     RelWithDebInfo
-            cxx_std:        17
-            extra_cmake:    "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
-            extra_apt:      "gcc-14 g++-14 libtbb-dev"
+          - name: "Ubuntu 24.04 · GCC 14 · C++17 · RelWithDebInfo · TBB"
+            os: ubuntu-24.04
+            cc: gcc-14
+            cxx: g++-14
+            build_type: RelWithDebInfo
+            cxx_std: 17
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+            extra_apt: "gcc-14 g++-14 libtbb-dev"
 
-          - name:           "Ubuntu 24.04 · GCC 14 · C++20 · Release · TBB"
-            os:             ubuntu-24.04
-            cc:             gcc-14
-            cxx:            g++-14
-            build_type:     Release
-            cxx_std:        20
-            extra_cmake:    "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
-            extra_apt:      "gcc-14 g++-14 libtbb-dev"
+          - name: "Ubuntu 24.04 · GCC 14 · C++20 · Release · TBB"
+            os: ubuntu-24.04
+            cc: gcc-14
+            cxx: g++-14
+            build_type: Release
+            cxx_std: 20
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+            extra_apt: "gcc-14 g++-14 libtbb-dev"
 
           # ╔══════════════════════════════════════════════════════════════╗
           # ║   UBUNTU · GCC · OpenMP  (-DCXXGRAPH_WITH_OPENMP + -fopenmp)║
           # ║   libgomp is bundled with GCC — no extra apt package needed ║
           # ╚══════════════════════════════════════════════════════════════╝
 
-          - name:           "Ubuntu 22.04 · GCC 13 · C++17 · Release · OpenMP"
-            os:             ubuntu-22.04
-            cc:             gcc-13
-            cxx:            g++-13
-            build_type:     Release
-            cxx_std:        17
-            extra_cmake:    "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
-            extra_apt:      "gcc-13 g++-13"
+          - name: "Ubuntu 22.04 · GCC 13 · C++17 · Release · OpenMP"
+            os: ubuntu-22.04
+            cc: gcc-13
+            cxx: g++-13
+            build_type: Release
+            cxx_std: 17
+            extra_cmake: "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
+            extra_apt: "gcc-13 g++-13"
 
-          - name:           "Ubuntu 24.04 · GCC 14 · C++17 · Release · OpenMP"
-            os:             ubuntu-24.04
-            cc:             gcc-14
-            cxx:            g++-14
-            build_type:     Release
-            cxx_std:        17
-            extra_cmake:    "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
-            extra_apt:      "gcc-14 g++-14"
+          - name: "Ubuntu 24.04 · GCC 14 · C++17 · Release · OpenMP"
+            os: ubuntu-24.04
+            cc: gcc-14
+            cxx: g++-14
+            build_type: Release
+            cxx_std: 17
+            extra_cmake: "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
+            extra_apt: "gcc-14 g++-14"
 
-          - name:           "Ubuntu 24.04 · GCC 14 · C++20 · Release · OpenMP"
-            os:             ubuntu-24.04
-            cc:             gcc-14
-            cxx:            g++-14
-            build_type:     Release
-            cxx_std:        20
-            extra_cmake:    "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
-            extra_apt:      "gcc-14 g++-14"
+          - name: "Ubuntu 24.04 · GCC 14 · C++20 · Release · OpenMP"
+            os: ubuntu-24.04
+            cc: gcc-14
+            cxx: g++-14
+            build_type: Release
+            cxx_std: 20
+            extra_cmake: "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
+            extra_apt: "gcc-14 g++-14"
 
           # ╔══════════════════════════════════════════════════════════════╗
           # ║   UBUNTU · CLANG · Sequential                               ║
           # ╚══════════════════════════════════════════════════════════════╝
 
-          - name:           "Ubuntu 22.04 · Clang 15 · C++17 · Release · Sequential"
-            os:             ubuntu-22.04
-            cc:             clang-15
-            cxx:            clang++-15
-            build_type:     Release
-            cxx_std:        17
-            extra_cmake:    ""
-            extra_apt:      ""
-            clang_ver:      "15"
+          - name: "Ubuntu 22.04 · Clang 15 · C++17 · Release · Sequential"
+            os: ubuntu-22.04
+            cc: clang-15
+            cxx: clang++-15
+            build_type: Release
+            cxx_std: 17
+            extra_cmake: ""
+            extra_apt: ""
+            clang_ver: "15"
 
-          - name:           "Ubuntu 22.04 · Clang 15 · C++17 · Debug · Sequential"
-            os:             ubuntu-22.04
-            cc:             clang-15
-            cxx:            clang++-15
-            build_type:     Debug
-            cxx_std:        17
-            extra_cmake:    ""
-            extra_apt:      ""
-            clang_ver:      "15"
+          - name: "Ubuntu 22.04 · Clang 15 · C++17 · Debug · Sequential"
+            os: ubuntu-22.04
+            cc: clang-15
+            cxx: clang++-15
+            build_type: Debug
+            cxx_std: 17
+            extra_cmake: ""
+            extra_apt: ""
+            clang_ver: "15"
 
           # ╔══════════════════════════════════════════════════════════════╗
           # ║   UBUNTU · CLANG · TBB                                      ║
           # ╚══════════════════════════════════════════════════════════════╝
 
-          - name:           "Ubuntu 24.04 · Clang 17 · C++17 · Release · TBB"
-            os:             ubuntu-24.04
-            cc:             clang-17
-            cxx:            clang++-17
-            build_type:     Release
-            cxx_std:        17
-            extra_cmake:    "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
-            extra_apt:      "libtbb-dev"
-            clang_ver:      "17"
+          - name: "Ubuntu 24.04 · Clang 17 · C++17 · Release · TBB"
+            os: ubuntu-24.04
+            cc: clang-17
+            cxx: clang++-17
+            build_type: Release
+            cxx_std: 17
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+            extra_apt: "libtbb-dev"
+            clang_ver: "17"
 
-          - name:           "Ubuntu 24.04 · Clang 18 · C++17 · Release · TBB"
-            os:             ubuntu-24.04
-            cc:             clang-18
-            cxx:            clang++-18
-            build_type:     Release
-            cxx_std:        17
-            extra_cmake:    "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
-            extra_apt:      "libtbb-dev"
-            clang_ver:      "18"
+          - name: "Ubuntu 24.04 · Clang 18 · C++17 · Release · TBB"
+            os: ubuntu-24.04
+            cc: clang-18
+            cxx: clang++-18
+            build_type: Release
+            cxx_std: 17
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+            extra_apt: "libtbb-dev"
+            clang_ver: "18"
 
-          - name:           "Ubuntu 24.04 · Clang 18 · C++20 · Release · TBB"
-            os:             ubuntu-24.04
-            cc:             clang-18
-            cxx:            clang++-18
-            build_type:     Release
-            cxx_std:        20
-            extra_cmake:    "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
-            extra_apt:      "libtbb-dev"
-            clang_ver:      "18"
+          - name: "Ubuntu 24.04 · Clang 18 · C++20 · Release · TBB"
+            os: ubuntu-24.04
+            cc: clang-18
+            cxx: clang++-18
+            build_type: Release
+            cxx_std: 20
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+            extra_apt: "libtbb-dev"
+            clang_ver: "18"
 
-          - name:           "Ubuntu 24.04 · Clang 18 · C++20 · Debug · TBB"
-            os:             ubuntu-24.04
-            cc:             clang-18
-            cxx:            clang++-18
-            build_type:     Debug
-            cxx_std:        20
-            extra_cmake:    "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
-            extra_apt:      "libtbb-dev"
-            clang_ver:      "18"
+          - name: "Ubuntu 24.04 · Clang 18 · C++20 · Debug · TBB"
+            os: ubuntu-24.04
+            cc: clang-18
+            cxx: clang++-18
+            build_type: Debug
+            cxx_std: 20
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+            extra_apt: "libtbb-dev"
+            clang_ver: "18"
 
           # ╔══════════════════════════════════════════════════════════════╗
           # ║   UBUNTU · CLANG · OpenMP                                   ║
           # ║   Clang needs libomp (not bundled unlike GCC's libgomp)    ║
           # ╚══════════════════════════════════════════════════════════════╝
 
-          - name:           "Ubuntu 24.04 · Clang 18 · C++17 · Release · OpenMP"
-            os:             ubuntu-24.04
-            cc:             clang-18
-            cxx:            clang++-18
-            build_type:     Release
-            cxx_std:        17
-            extra_cmake:    "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp=libomp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp=libomp"
-            extra_apt:      "libomp-18-dev"
-            clang_ver:      "18"
+          - name: "Ubuntu 24.04 · Clang 18 · C++17 · Release · OpenMP"
+            os: ubuntu-24.04
+            cc: clang-18
+            cxx: clang++-18
+            build_type: Release
+            cxx_std: 17
+            extra_cmake: "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp=libomp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp=libomp"
+            extra_apt: "libomp-18-dev"
+            clang_ver: "18"
 
-          - name:           "Ubuntu 24.04 · Clang 18 · C++20 · Release · OpenMP"
-            os:             ubuntu-24.04
-            cc:             clang-18
-            cxx:            clang++-18
-            build_type:     Release
-            cxx_std:        20
-            extra_cmake:    "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp=libomp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp=libomp"
-            extra_apt:      "libomp-18-dev"
-            clang_ver:      "18"
+          - name: "Ubuntu 24.04 · Clang 18 · C++20 · Release · OpenMP"
+            os: ubuntu-24.04
+            cc: clang-18
+            cxx: clang++-18
+            build_type: Release
+            cxx_std: 20
+            extra_cmake: "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp=libomp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp=libomp"
+            extra_apt: "libomp-18-dev"
+            clang_ver: "18"
 
           # ╔══════════════════════════════════════════════════════════════╗
           # ║   macOS · Apple Clang · Sequential                          ║
           # ╚══════════════════════════════════════════════════════════════╝
 
-          - name:           "macOS 13 (x86) · Apple Clang · C++17 · Release · Sequential"
-            os:             macos-13
-            cc:             clang
-            cxx:            clang++
-            build_type:     Release
-            cxx_std:        17
-            extra_cmake:    ""
-            extra_brew:     ""
+          - name: "macOS 13 (x86) · Apple Clang · C++17 · Release · Sequential"
+            os: macos-13
+            cc: clang
+            cxx: clang++
+            build_type: Release
+            cxx_std: 17
+            extra_cmake: ""
+            extra_brew: ""
 
-          - name:           "macOS latest (arm64) · Apple Clang · C++17 · Release · Sequential"
-            os:             macos-latest
-            cc:             clang
-            cxx:            clang++
-            build_type:     Release
-            cxx_std:        17
-            extra_cmake:    ""
-            extra_brew:     ""
+          - name: "macOS latest (arm64) · Apple Clang · C++17 · Release · Sequential"
+            os: macos-latest
+            cc: clang
+            cxx: clang++
+            build_type: Release
+            cxx_std: 17
+            extra_cmake: ""
+            extra_brew: ""
 
-          - name:           "macOS latest (arm64) · Apple Clang · C++20 · Release · Sequential"
-            os:             macos-latest
-            cc:             clang
-            cxx:            clang++
-            build_type:     Release
-            cxx_std:        20
-            extra_cmake:    ""
-            extra_brew:     ""
+          - name: "macOS latest (arm64) · Apple Clang · C++20 · Release · Sequential"
+            os: macos-latest
+            cc: clang
+            cxx: clang++
+            build_type: Release
+            cxx_std: 20
+            extra_cmake: ""
+            extra_brew: ""
 
           # ╔══════════════════════════════════════════════════════════════╗
           # ║   macOS · Apple Clang · TBB (Homebrew oneTBB)               ║
           # ╚══════════════════════════════════════════════════════════════╝
 
-          - name:           "macOS latest (arm64) · Apple Clang · C++17 · Release · TBB"
-            os:             macos-latest
-            cc:             clang
-            cxx:            clang++
-            build_type:     Release
-            cxx_std:        17
-            extra_cmake:    "-DCMAKE_EXE_LINKER_FLAGS=-ltbb -DCMAKE_PREFIX_PATH=/opt/homebrew"
-            extra_brew:     "tbb"
+          - name: "macOS latest (arm64) · Apple Clang · C++17 · Release · TBB"
+            os: macos-latest
+            cc: clang
+            cxx: clang++
+            build_type: Release
+            cxx_std: 17
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb -DCMAKE_PREFIX_PATH=/opt/homebrew"
+            extra_brew: "tbb"
 
-          - name:           "macOS latest (arm64) · Apple Clang · C++20 · Release · TBB"
-            os:             macos-latest
-            cc:             clang
-            cxx:            clang++
-            build_type:     Release
-            cxx_std:        20
-            extra_cmake:    "-DCMAKE_EXE_LINKER_FLAGS=-ltbb -DCMAKE_PREFIX_PATH=/opt/homebrew"
-            extra_brew:     "tbb"
+          - name: "macOS latest (arm64) · Apple Clang · C++20 · Release · TBB"
+            os: macos-latest
+            cc: clang
+            cxx: clang++
+            build_type: Release
+            cxx_std: 20
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb -DCMAKE_PREFIX_PATH=/opt/homebrew"
+            extra_brew: "tbb"
 
-          - name:           "macOS 13 (x86) · Apple Clang · C++17 · Release · TBB"
-            os:             macos-13
-            cc:             clang
-            cxx:            clang++
-            build_type:     Release
-            cxx_std:        17
-            extra_cmake:    "-DCMAKE_EXE_LINKER_FLAGS=-ltbb -DCMAKE_PREFIX_PATH=/usr/local"
-            extra_brew:     "tbb"
+          - name: "macOS 13 (x86) · Apple Clang · C++17 · Release · TBB"
+            os: macos-13
+            cc: clang
+            cxx: clang++
+            build_type: Release
+            cxx_std: 17
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb -DCMAKE_PREFIX_PATH=/usr/homebrew"
+            extra_brew: "tbb"
 
           # ╔══════════════════════════════════════════════════════════════╗
           # ║   macOS · Apple Clang · OpenMP                              ║
@@ -304,86 +303,85 @@ jobs:
           # ║   arm64 prefix: /opt/homebrew   x86 prefix: /usr/local     ║
           # ╚══════════════════════════════════════════════════════════════╝
 
-          - name:           "macOS latest (arm64) · Apple Clang · C++17 · Release · OpenMP"
-            os:             macos-latest
-            cc:             clang
-            cxx:            clang++
-            build_type:     Release
-            cxx_std:        17
-            extra_cmake:    >-
+          - name: "macOS latest (arm64) · Apple Clang · C++17 · Release · OpenMP"
+            os: macos-latest
+            cc: clang
+            cxx: clang++
+            build_type: Release
+            cxx_std: 17
+            extra_cmake: >-
               -DCMAKE_CXX_FLAGS="-DCXXGRAPH_WITH_OPENMP -Xpreprocessor -fopenmp -I/opt/homebrew/opt/libomp/include"
               -DCMAKE_EXE_LINKER_FLAGS="-L/opt/homebrew/opt/libomp/lib -lomp"
-            extra_brew:     "libomp"
+            extra_brew: "libomp"
 
-          - name:           "macOS 13 (x86) · Apple Clang · C++17 · Release · OpenMP"
-            os:             macos-13
-            cc:             clang
-            cxx:            clang++
-            build_type:     Release
-            cxx_std:        17
-            extra_cmake:    >-
+          - name: "macOS 13 (x86) · Apple Clang · C++17 · Release · OpenMP"
+            os: macos-13
+            cc: clang
+            cxx: clang++
+            build_type: Release
+            cxx_std: 17
+            extra_cmake: >-
               -DCMAKE_CXX_FLAGS="-DCXXGRAPH_WITH_OPENMP -Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include"
               -DCMAKE_EXE_LINKER_FLAGS="-L/usr/local/opt/libomp/lib -lomp"
-            extra_brew:     "libomp"
+            extra_brew: "libomp"
 
           # ╔══════════════════════════════════════════════════════════════╗
           # ║   WINDOWS · MSVC 2022 · Sequential                          ║
           # ╚══════════════════════════════════════════════════════════════╝
 
-          - name:           "Windows · MSVC 2022 · C++17 · Release · Sequential"
-            os:             windows-latest
-            build_type:     Release
-            cxx_std:        17
-            extra_cmake:    ""
-            msvc:           true
+          - name: "Windows · MSVC 2022 · C++17 · Release · Sequential"
+            os: windows-latest
+            build_type: Release
+            cxx_std: 17
+            extra_cmake: ""
+            msvc: true
 
-          - name:           "Windows · MSVC 2022 · C++17 · Debug · Sequential"
-            os:             windows-latest
-            build_type:     Debug
-            cxx_std:        17
-            extra_cmake:    ""
-            msvc:           true
+          - name: "Windows · MSVC 2022 · C++17 · Debug · Sequential"
+            os: windows-latest
+            build_type: Debug
+            cxx_std: 17
+            extra_cmake: ""
+            msvc: true
 
-          - name:           "Windows · MSVC 2022 · C++20 · Release · Sequential"
-            os:             windows-latest
-            build_type:     Release
-            cxx_std:        20
-            extra_cmake:    ""
-            msvc:           true
+          - name: "Windows · MSVC 2022 · C++20 · Release · Sequential"
+            os: windows-latest
+            build_type: Release
+            cxx_std: 20
+            extra_cmake: ""
+            msvc: true
 
           # ╔══════════════════════════════════════════════════════════════╗
           # ║   WINDOWS · MSVC 2022 · OpenMP  (/openmp)                   ║
           # ║   MSVC ships OpenMP runtime vcomp — no extra install needed ║
           # ╚══════════════════════════════════════════════════════════════╝
 
-          - name:           "Windows · MSVC 2022 · C++17 · Release · OpenMP"
-            os:             windows-latest
-            build_type:     Release
-            cxx_std:        17
-            extra_cmake:    "-DCMAKE_CXX_FLAGS='/DCXXGRAPH_WITH_OPENMP /openmp'"
-            msvc:           true
+          - name: "Windows · MSVC 2022 · C++17 · Release · OpenMP"
+            os: windows-latest
+            build_type: Release
+            cxx_std: 17
+            extra_cmake: "-DCMAKE_CXX_FLAGS='/DCXXGRAPH_WITH_OPENMP /openmp'"
+            msvc: true
 
-          - name:           "Windows · MSVC 2022 · C++20 · Release · OpenMP"
-            os:             windows-latest
-            build_type:     Release
-            cxx_std:        20
-            extra_cmake:    "-DCMAKE_CXX_FLAGS='/DCXXGRAPH_WITH_OPENMP /openmp'"
-            msvc:           true
+          - name: "Windows · MSVC 2022 · C++20 · Release · OpenMP"
+            os: windows-latest
+            build_type: Release
+            cxx_std: 20
+            extra_cmake: "-DCMAKE_CXX_FLAGS='/DCXXGRAPH_WITH_OPENMP /openmp'"
+            msvc: true
 
           # ╔══════════════════════════════════════════════════════════════╗
           # ║   WINDOWS · Clang-CL · Sequential                           ║
           # ╚══════════════════════════════════════════════════════════════╝
 
-          - name:           "Windows · Clang-CL · C++17 · Release · Sequential"
-            os:             windows-latest
-            build_type:     Release
-            cxx_std:        17
-            extra_cmake:    ""
-            clang_cl:       true
+          - name: "Windows · Clang-CL · C++17 · Release · Sequential"
+            os: windows-latest
+            build_type: Release
+            cxx_std: 17
+            extra_cmake: ""
+            clang_cl: true
 
     # ─────────────────────────────────────────────────────────────────────
     steps:
-
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -442,7 +440,7 @@ jobs:
       - name: Configure CMake (Unix)
         if: runner.os != 'Windows'
         env:
-          CC:  ${{ matrix.cc }}
+          CC: ${{ matrix.cc }}
           CXX: ${{ matrix.cxx }}
         run: |
           cmake -B build \
