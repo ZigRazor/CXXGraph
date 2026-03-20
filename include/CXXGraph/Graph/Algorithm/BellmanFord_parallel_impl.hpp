@@ -19,6 +19,8 @@
 
 #pragma once
 
+#include <atomic>
+
 #include "CXXGraph/Graph/Graph_decl.h"
 #include "CXXGraph/Utility/Parallel.hpp"
 #include "CXXGraph/Utility/Typedef.hpp"
@@ -162,4 +164,4 @@ const BellmanFordResult Graph<T>::bellmanford_parallel(
   result.result = dist[tgtIdx];
   return result;
 }
-}
+}  // namespace CXXGraph
