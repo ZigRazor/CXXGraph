@@ -58,201 +58,200 @@ jobs:
       fail-fast: false
       matrix:
         include:
-
           # ╔══════════════════════════════════════════════════════════════════╗
           # ║  FEDORA 40  ·  GCC 14                                           ║
           # ╚══════════════════════════════════════════════════════════════════╝
 
-          - name:          "Fedora 40 · GCC 14 · C++17 · Release · Sequential"
-            container:     fedora:40
-            cc:            gcc
-            cxx:           g++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   fedora
-            crb_repo:      ""
-            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   ""
+          - name: "Fedora 40 · GCC 14 · C++17 · Release · Sequential"
+            container: fedora:40
+            cc: gcc
+            cxx: g++
+            cxx_std: 17
+            build_type: Release
+            distro_type: fedora
+            crb_repo: ""
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            extra_pkgs: ""
+            extra_cmake: ""
 
-          - name:          "Fedora 40 · GCC 14 · C++17 · Debug · Sequential"
-            container:     fedora:40
-            cc:            gcc
-            cxx:           g++
-            cxx_std:       17
-            build_type:    Debug
-            distro_type:   fedora
-            crb_repo:      ""
-            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   ""
+          - name: "Fedora 40 · GCC 14 · C++17 · Debug · Sequential"
+            container: fedora:40
+            cc: gcc
+            cxx: g++
+            cxx_std: 17
+            build_type: Debug
+            distro_type: fedora
+            crb_repo: ""
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            extra_pkgs: ""
+            extra_cmake: ""
 
-          - name:          "Fedora 40 · GCC 14 · C++17 · Release · TBB"
-            container:     fedora:40
-            cc:            gcc
-            cxx:           g++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   fedora
-            crb_repo:      ""
-            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
-            extra_pkgs:    "tbb-devel"
-            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+          - name: "Fedora 40 · GCC 14 · C++17 · Release · TBB"
+            container: fedora:40
+            cc: gcc
+            cxx: g++
+            cxx_std: 17
+            build_type: Release
+            distro_type: fedora
+            crb_repo: ""
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            extra_pkgs: "tbb-devel"
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
 
-          - name:          "Fedora 40 · GCC 14 · C++20 · Release · TBB"
-            container:     fedora:40
-            cc:            gcc
-            cxx:           g++
-            cxx_std:       20
-            build_type:    Release
-            distro_type:   fedora
-            crb_repo:      ""
-            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
-            extra_pkgs:    "tbb-devel"
-            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+          - name: "Fedora 40 · GCC 14 · C++20 · Release · TBB"
+            container: fedora:40
+            cc: gcc
+            cxx: g++
+            cxx_std: 20
+            build_type: Release
+            distro_type: fedora
+            crb_repo: ""
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            extra_pkgs: "tbb-devel"
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
 
-          - name:          "Fedora 40 · GCC 14 · C++17 · Release · OpenMP"
-            container:     fedora:40
-            cc:            gcc
-            cxx:           g++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   fedora
-            crb_repo:      ""
+          - name: "Fedora 40 · GCC 14 · C++17 · Release · OpenMP"
+            container: fedora:40
+            cc: gcc
+            cxx: g++
+            cxx_std: 17
+            build_type: Release
+            distro_type: fedora
+            crb_repo: ""
             # libgomp is bundled with gcc on Fedora — no extra package needed
-            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            extra_pkgs: ""
+            extra_cmake: "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
 
-          - name:          "Fedora 40 · GCC 14 · C++20 · Release · OpenMP"
-            container:     fedora:40
-            cc:            gcc
-            cxx:           g++
-            cxx_std:       20
-            build_type:    Release
-            distro_type:   fedora
-            crb_repo:      ""
-            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
+          - name: "Fedora 40 · GCC 14 · C++20 · Release · OpenMP"
+            container: fedora:40
+            cc: gcc
+            cxx: g++
+            cxx_std: 20
+            build_type: Release
+            distro_type: fedora
+            crb_repo: ""
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            extra_pkgs: ""
+            extra_cmake: "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
 
           # ╔══════════════════════════════════════════════════════════════════╗
           # ║  FEDORA 40  ·  CLANG 18                                         ║
           # ║  libomp-devel provides the OpenMP headers for Clang on Fedora  ║
           # ╚══════════════════════════════════════════════════════════════════╝
 
-          - name:          "Fedora 40 · Clang 18 · C++17 · Release · Sequential"
-            container:     fedora:40
-            cc:            clang
-            cxx:           clang++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   fedora
-            crb_repo:      ""
-            base_pkgs:     "cmake ninja-build clang ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   ""
+          - name: "Fedora 40 · Clang 18 · C++17 · Release · Sequential"
+            container: fedora:40
+            cc: clang
+            cxx: clang++
+            cxx_std: 17
+            build_type: Release
+            distro_type: fedora
+            crb_repo: ""
+            base_pkgs: "cmake ninja-build clang ccache wget curl"
+            extra_pkgs: ""
+            extra_cmake: ""
 
-          - name:          "Fedora 40 · Clang 18 · C++17 · Release · TBB"
-            container:     fedora:40
-            cc:            clang
-            cxx:           clang++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   fedora
-            crb_repo:      ""
-            base_pkgs:     "cmake ninja-build clang ccache wget curl"
-            extra_pkgs:    "tbb-devel"
-            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+          - name: "Fedora 40 · Clang 18 · C++17 · Release · TBB"
+            container: fedora:40
+            cc: clang
+            cxx: clang++
+            cxx_std: 17
+            build_type: Release
+            distro_type: fedora
+            crb_repo: ""
+            base_pkgs: "cmake ninja-build clang ccache wget curl"
+            extra_pkgs: "tbb-devel"
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
 
-          - name:          "Fedora 40 · Clang 18 · C++17 · Release · OpenMP"
-            container:     fedora:40
-            cc:            clang
-            cxx:           clang++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   fedora
-            crb_repo:      ""
+          - name: "Fedora 40 · Clang 18 · C++17 · Release · OpenMP"
+            container: fedora:40
+            cc: clang
+            cxx: clang++
+            cxx_std: 17
+            build_type: Release
+            distro_type: fedora
+            crb_repo: ""
             # Clang uses libomp (LLVM's OpenMP runtime), not libgomp
-            base_pkgs:     "cmake ninja-build clang ccache wget curl"
-            extra_pkgs:    "libomp-devel"
-            extra_cmake:   "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp=libomp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp=libomp"
+            base_pkgs: "cmake ninja-build clang ccache wget curl"
+            extra_pkgs: "libomp-devel"
+            extra_cmake: "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp=libomp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp=libomp"
 
           # ╔══════════════════════════════════════════════════════════════════╗
           # ║  FEDORA 41  ·  GCC 14  +  CLANG 18  (latest Fedora stable)     ║
           # ╚══════════════════════════════════════════════════════════════════╝
 
-          - name:          "Fedora 41 · GCC 14 · C++17 · Release · Sequential"
-            container:     fedora:41
-            cc:            gcc
-            cxx:           g++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   fedora
-            crb_repo:      ""
-            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   ""
+          - name: "Fedora 41 · GCC 14 · C++17 · Release · Sequential"
+            container: fedora:41
+            cc: gcc
+            cxx: g++
+            cxx_std: 17
+            build_type: Release
+            distro_type: fedora
+            crb_repo: ""
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            extra_pkgs: ""
+            extra_cmake: ""
 
-          - name:          "Fedora 41 · GCC 14 · C++17 · Debug · Sequential"
-            container:     fedora:41
-            cc:            gcc
-            cxx:           g++
-            cxx_std:       17
-            build_type:    Debug
-            distro_type:   fedora
-            crb_repo:      ""
-            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   ""
+          - name: "Fedora 41 · GCC 14 · C++17 · Debug · Sequential"
+            container: fedora:41
+            cc: gcc
+            cxx: g++
+            cxx_std: 17
+            build_type: Debug
+            distro_type: fedora
+            crb_repo: ""
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            extra_pkgs: ""
+            extra_cmake: ""
 
-          - name:          "Fedora 41 · GCC 14 · C++20 · Release · TBB"
-            container:     fedora:41
-            cc:            gcc
-            cxx:           g++
-            cxx_std:       20
-            build_type:    Release
-            distro_type:   fedora
-            crb_repo:      ""
-            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
-            extra_pkgs:    "tbb-devel"
-            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+          - name: "Fedora 41 · GCC 14 · C++20 · Release · TBB"
+            container: fedora:41
+            cc: gcc
+            cxx: g++
+            cxx_std: 20
+            build_type: Release
+            distro_type: fedora
+            crb_repo: ""
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            extra_pkgs: "tbb-devel"
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
 
-          - name:          "Fedora 41 · GCC 14 · C++17 · Release · OpenMP"
-            container:     fedora:41
-            cc:            gcc
-            cxx:           g++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   fedora
-            crb_repo:      ""
-            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
+          - name: "Fedora 41 · GCC 14 · C++17 · Release · OpenMP"
+            container: fedora:41
+            cc: gcc
+            cxx: g++
+            cxx_std: 17
+            build_type: Release
+            distro_type: fedora
+            crb_repo: ""
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            extra_pkgs: ""
+            extra_cmake: "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
 
-          - name:          "Fedora 41 · Clang 18 · C++17 · Release · Sequential"
-            container:     fedora:41
-            cc:            clang
-            cxx:           clang++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   fedora
-            crb_repo:      ""
-            base_pkgs:     "cmake ninja-build clang ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   ""
+          - name: "Fedora 41 · Clang 18 · C++17 · Release · Sequential"
+            container: fedora:41
+            cc: clang
+            cxx: clang++
+            cxx_std: 17
+            build_type: Release
+            distro_type: fedora
+            crb_repo: ""
+            base_pkgs: "cmake ninja-build clang ccache wget curl"
+            extra_pkgs: ""
+            extra_cmake: ""
 
-          - name:          "Fedora 41 · Clang 18 · C++20 · Release · TBB"
-            container:     fedora:41
-            cc:            clang
-            cxx:           clang++
-            cxx_std:       20
-            build_type:    Release
-            distro_type:   fedora
-            crb_repo:      ""
-            base_pkgs:     "cmake ninja-build clang ccache wget curl"
-            extra_pkgs:    "tbb-devel"
-            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+          - name: "Fedora 41 · Clang 18 · C++20 · Release · TBB"
+            container: fedora:41
+            cc: clang
+            cxx: clang++
+            cxx_std: 20
+            build_type: Release
+            distro_type: fedora
+            crb_repo: ""
+            base_pkgs: "cmake ninja-build clang ccache wget curl"
+            extra_pkgs: "tbb-devel"
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
 
           # ╔══════════════════════════════════════════════════════════════════╗
           # ║  ALMALINUX 9  ·  (RHEL 9 compatible)                           ║
@@ -260,168 +259,168 @@ jobs:
           # ║  GCC Toolset 13 provides GCC 13 alongside system GCC 11        ║
           # ╚══════════════════════════════════════════════════════════════════╝
 
-          - name:          "AlmaLinux 9 · GCC 11 · C++17 · Release · Sequential"
-            container:     almalinux:9
-            cc:            gcc
-            cxx:           g++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   rhel
-            crb_repo:      crb
-            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   ""
+          - name: "AlmaLinux 9 · GCC 11 · C++17 · Release · Sequential"
+            container: almalinux:9
+            cc: gcc
+            cxx: g++
+            cxx_std: 17
+            build_type: Release
+            distro_type: rhel
+            crb_repo: crb
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            extra_pkgs: ""
+            extra_cmake: ""
 
-          - name:          "AlmaLinux 9 · GCC 11 · C++17 · Debug · Sequential"
-            container:     almalinux:9
-            cc:            gcc
-            cxx:           g++
-            cxx_std:       17
-            build_type:    Debug
-            distro_type:   rhel
-            crb_repo:      crb
-            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   ""
+          - name: "AlmaLinux 9 · GCC 11 · C++17 · Debug · Sequential"
+            container: almalinux:9
+            cc: gcc
+            cxx: g++
+            cxx_std: 17
+            build_type: Debug
+            distro_type: rhel
+            crb_repo: crb
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            extra_pkgs: ""
+            extra_cmake: ""
 
-          - name:          "AlmaLinux 9 · GCC 11 · C++17 · Release · OpenMP"
-            container:     almalinux:9
-            cc:            gcc
-            cxx:           g++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   rhel
-            crb_repo:      crb
-            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
+          - name: "AlmaLinux 9 · GCC 11 · C++17 · Release · OpenMP"
+            container: almalinux:9
+            cc: gcc
+            cxx: g++
+            cxx_std: 17
+            build_type: Release
+            distro_type: rhel
+            crb_repo: crb
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            extra_pkgs: ""
+            extra_cmake: "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
 
-          - name:          "AlmaLinux 9 · GCC 13 (Toolset) · C++17 · Release · Sequential"
-            container:     almalinux:9
+          - name: "AlmaLinux 9 · GCC 13 (Toolset) · C++17 · Release · Sequential"
+            container: almalinux:9
             # Absolute path to toolset binary avoids needing to source the
             # activation script, which is shell-session-scoped and doesn't
             # persist across GitHub Actions steps.
-            cc:            /opt/rh/gcc-toolset-13/root/usr/bin/gcc
-            cxx:           /opt/rh/gcc-toolset-13/root/usr/bin/g++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   rhel
-            crb_repo:      crb
-            base_pkgs:     "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   ""
+            cc: /opt/rh/gcc-toolset-13/root/usr/bin/gcc
+            cxx: /opt/rh/gcc-toolset-13/root/usr/bin/g++
+            cxx_std: 17
+            build_type: Release
+            distro_type: rhel
+            crb_repo: crb
+            base_pkgs: "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
+            extra_pkgs: ""
+            extra_cmake: ""
 
-          - name:          "AlmaLinux 9 · GCC 13 (Toolset) · C++17 · Release · TBB"
-            container:     almalinux:9
-            cc:            /opt/rh/gcc-toolset-13/root/usr/bin/gcc
-            cxx:           /opt/rh/gcc-toolset-13/root/usr/bin/g++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   rhel
-            crb_repo:      crb
-            base_pkgs:     "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
-            extra_pkgs:    "tbb-devel"
-            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+          - name: "AlmaLinux 9 · GCC 13 (Toolset) · C++17 · Release · TBB"
+            container: almalinux:9
+            cc: /opt/rh/gcc-toolset-13/root/usr/bin/gcc
+            cxx: /opt/rh/gcc-toolset-13/root/usr/bin/g++
+            cxx_std: 17
+            build_type: Release
+            distro_type: rhel
+            crb_repo: crb
+            base_pkgs: "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
+            extra_pkgs: "tbb-devel"
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
 
-          - name:          "AlmaLinux 9 · GCC 13 (Toolset) · C++20 · Release · TBB"
-            container:     almalinux:9
-            cc:            /opt/rh/gcc-toolset-13/root/usr/bin/gcc
-            cxx:           /opt/rh/gcc-toolset-13/root/usr/bin/g++
-            cxx_std:       20
-            build_type:    Release
-            distro_type:   rhel
-            crb_repo:      crb
-            base_pkgs:     "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
-            extra_pkgs:    "tbb-devel"
-            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+          - name: "AlmaLinux 9 · GCC 13 (Toolset) · C++20 · Release · TBB"
+            container: almalinux:9
+            cc: /opt/rh/gcc-toolset-13/root/usr/bin/gcc
+            cxx: /opt/rh/gcc-toolset-13/root/usr/bin/g++
+            cxx_std: 20
+            build_type: Release
+            distro_type: rhel
+            crb_repo: crb
+            base_pkgs: "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
+            extra_pkgs: "tbb-devel"
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
 
-          - name:          "AlmaLinux 9 · GCC 13 (Toolset) · C++17 · Release · OpenMP"
-            container:     almalinux:9
-            cc:            /opt/rh/gcc-toolset-13/root/usr/bin/gcc
-            cxx:           /opt/rh/gcc-toolset-13/root/usr/bin/g++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   rhel
-            crb_repo:      crb
-            base_pkgs:     "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
+          - name: "AlmaLinux 9 · GCC 13 (Toolset) · C++17 · Release · OpenMP"
+            container: almalinux:9
+            cc: /opt/rh/gcc-toolset-13/root/usr/bin/gcc
+            cxx: /opt/rh/gcc-toolset-13/root/usr/bin/g++
+            cxx_std: 17
+            build_type: Release
+            distro_type: rhel
+            crb_repo: crb
+            base_pkgs: "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
+            extra_pkgs: ""
+            extra_cmake: "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
 
-          - name:          "AlmaLinux 9 · Clang · C++17 · Release · Sequential"
-            container:     almalinux:9
-            cc:            clang
-            cxx:           clang++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   rhel
-            crb_repo:      crb
-            base_pkgs:     "cmake ninja-build clang ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   ""
+          - name: "AlmaLinux 9 · Clang · C++17 · Release · Sequential"
+            container: almalinux:9
+            cc: clang
+            cxx: clang++
+            cxx_std: 17
+            build_type: Release
+            distro_type: rhel
+            crb_repo: crb
+            base_pkgs: "cmake ninja-build clang ccache wget curl"
+            extra_pkgs: ""
+            extra_cmake: ""
 
-          - name:          "AlmaLinux 9 · Clang · C++17 · Release · TBB"
-            container:     almalinux:9
-            cc:            clang
-            cxx:           clang++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   rhel
-            crb_repo:      crb
-            base_pkgs:     "cmake ninja-build clang ccache wget curl"
-            extra_pkgs:    "tbb-devel"
-            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+          - name: "AlmaLinux 9 · Clang · C++17 · Release · TBB"
+            container: almalinux:9
+            cc: clang
+            cxx: clang++
+            cxx_std: 17
+            build_type: Release
+            distro_type: rhel
+            crb_repo: crb
+            base_pkgs: "cmake ninja-build clang ccache wget curl"
+            extra_pkgs: "tbb-devel"
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
 
           # ╔══════════════════════════════════════════════════════════════════╗
           # ║  ROCKY LINUX 9  ·  (RHEL 9 compatible, independent rebuild)    ║
           # ╚══════════════════════════════════════════════════════════════════╝
 
-          - name:          "Rocky Linux 9 · GCC 11 · C++17 · Release · Sequential"
-            container:     rockylinux:9
-            cc:            gcc
-            cxx:           g++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   rhel
-            crb_repo:      crb
-            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   ""
+          - name: "Rocky Linux 9 · GCC 11 · C++17 · Release · Sequential"
+            container: rockylinux:9
+            cc: gcc
+            cxx: g++
+            cxx_std: 17
+            build_type: Release
+            distro_type: rhel
+            crb_repo: crb
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            extra_pkgs: ""
+            extra_cmake: ""
 
-          - name:          "Rocky Linux 9 · GCC 11 · C++17 · Release · OpenMP"
-            container:     rockylinux:9
-            cc:            gcc
-            cxx:           g++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   rhel
-            crb_repo:      crb
-            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
+          - name: "Rocky Linux 9 · GCC 11 · C++17 · Release · OpenMP"
+            container: rockylinux:9
+            cc: gcc
+            cxx: g++
+            cxx_std: 17
+            build_type: Release
+            distro_type: rhel
+            crb_repo: crb
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            extra_pkgs: ""
+            extra_cmake: "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
 
-          - name:          "Rocky Linux 9 · GCC 13 (Toolset) · C++17 · Release · TBB"
-            container:     rockylinux:9
-            cc:            /opt/rh/gcc-toolset-13/root/usr/bin/gcc
-            cxx:           /opt/rh/gcc-toolset-13/root/usr/bin/g++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   rhel
-            crb_repo:      crb
-            base_pkgs:     "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
-            extra_pkgs:    "tbb-devel"
-            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+          - name: "Rocky Linux 9 · GCC 13 (Toolset) · C++17 · Release · TBB"
+            container: rockylinux:9
+            cc: /opt/rh/gcc-toolset-13/root/usr/bin/gcc
+            cxx: /opt/rh/gcc-toolset-13/root/usr/bin/g++
+            cxx_std: 17
+            build_type: Release
+            distro_type: rhel
+            crb_repo: crb
+            base_pkgs: "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
+            extra_pkgs: "tbb-devel"
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
 
-          - name:          "Rocky Linux 9 · GCC 13 (Toolset) · C++20 · Release · Sequential"
-            container:     rockylinux:9
-            cc:            /opt/rh/gcc-toolset-13/root/usr/bin/gcc
-            cxx:           /opt/rh/gcc-toolset-13/root/usr/bin/g++
-            cxx_std:       20
-            build_type:    Release
-            distro_type:   rhel
-            crb_repo:      crb
-            base_pkgs:     "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   ""
+          - name: "Rocky Linux 9 · GCC 13 (Toolset) · C++20 · Release · Sequential"
+            container: rockylinux:9
+            cc: /opt/rh/gcc-toolset-13/root/usr/bin/gcc
+            cxx: /opt/rh/gcc-toolset-13/root/usr/bin/g++
+            cxx_std: 20
+            build_type: Release
+            distro_type: rhel
+            crb_repo: crb
+            base_pkgs: "cmake ninja-build gcc-toolset-13 gcc-toolset-13-gcc-c++ ccache wget curl"
+            extra_pkgs: ""
+            extra_cmake: ""
 
           # ╔══════════════════════════════════════════════════════════════════╗
           # ║  ALMALINUX 8  ·  (RHEL 8 compatible — LTS, widely deployed)    ║
@@ -429,81 +428,80 @@ jobs:
           # ║  GCC Toolset 12 provides GCC 12 alongside system GCC 8.5       ║
           # ╚══════════════════════════════════════════════════════════════════╝
 
-          - name:          "AlmaLinux 8 · GCC 8.5 · C++17 · Release · Sequential"
-            container:     almalinux:8
-            cc:            gcc
-            cxx:           g++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   rhel
-            crb_repo:      powertools   # EL8 uses 'powertools', not 'crb'
-            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   ""
+          - name: "AlmaLinux 8 · GCC 8.5 · C++17 · Release · Sequential"
+            container: almalinux:8
+            cc: gcc
+            cxx: g++
+            cxx_std: 17
+            build_type: Release
+            distro_type: rhel
+            crb_repo: powertools # EL8 uses 'powertools', not 'crb'
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            extra_pkgs: ""
+            extra_cmake: ""
 
-          - name:          "AlmaLinux 8 · GCC 8.5 · C++17 · Release · OpenMP"
-            container:     almalinux:8
-            cc:            gcc
-            cxx:           g++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   rhel
-            crb_repo:      powertools
-            base_pkgs:     "cmake ninja-build gcc gcc-c++ ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
+          - name: "AlmaLinux 8 · GCC 8.5 · C++17 · Release · OpenMP"
+            container: almalinux:8
+            cc: gcc
+            cxx: g++
+            cxx_std: 17
+            build_type: Release
+            distro_type: rhel
+            crb_repo: powertools
+            base_pkgs: "cmake ninja-build gcc gcc-c++ ccache wget curl git"
+            extra_pkgs: ""
+            extra_cmake: "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
 
-          - name:          "AlmaLinux 8 · GCC 12 (Toolset) · C++17 · Release · Sequential"
-            container:     almalinux:8
-            cc:            /opt/rh/gcc-toolset-12/root/usr/bin/gcc
-            cxx:           /opt/rh/gcc-toolset-12/root/usr/bin/g++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   rhel
-            crb_repo:      powertools
-            base_pkgs:     "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   ""
+          - name: "AlmaLinux 8 · GCC 12 (Toolset) · C++17 · Release · Sequential"
+            container: almalinux:8
+            cc: /opt/rh/gcc-toolset-12/root/usr/bin/gcc
+            cxx: /opt/rh/gcc-toolset-12/root/usr/bin/g++
+            cxx_std: 17
+            build_type: Release
+            distro_type: rhel
+            crb_repo: powertools
+            base_pkgs: "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl"
+            extra_pkgs: ""
+            extra_cmake: ""
 
-          - name:          "AlmaLinux 8 · GCC 12 (Toolset) · C++17 · Release · TBB"
-            container:     almalinux:8
-            cc:            /opt/rh/gcc-toolset-12/root/usr/bin/gcc
-            cxx:           /opt/rh/gcc-toolset-12/root/usr/bin/g++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   rhel
-            crb_repo:      powertools
-            base_pkgs:     "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl"
-            extra_pkgs:    "tbb-devel"
-            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+          - name: "AlmaLinux 8 · GCC 12 (Toolset) · C++17 · Release · TBB"
+            container: almalinux:8
+            cc: /opt/rh/gcc-toolset-12/root/usr/bin/gcc
+            cxx: /opt/rh/gcc-toolset-12/root/usr/bin/g++
+            cxx_std: 17
+            build_type: Release
+            distro_type: rhel
+            crb_repo: powertools
+            base_pkgs: "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl"
+            extra_pkgs: "tbb-devel"
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
 
-          - name:          "AlmaLinux 8 · GCC 12 (Toolset) · C++20 · Release · TBB"
-            container:     almalinux:8
-            cc:            /opt/rh/gcc-toolset-12/root/usr/bin/gcc
-            cxx:           /opt/rh/gcc-toolset-12/root/usr/bin/g++
-            cxx_std:       20
-            build_type:    Release
-            distro_type:   rhel
-            crb_repo:      powertools
-            base_pkgs:     "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl"
-            extra_pkgs:    "tbb-devel"
-            extra_cmake:   "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
+          - name: "AlmaLinux 8 · GCC 12 (Toolset) · C++20 · Release · TBB"
+            container: almalinux:8
+            cc: /opt/rh/gcc-toolset-12/root/usr/bin/gcc
+            cxx: /opt/rh/gcc-toolset-12/root/usr/bin/g++
+            cxx_std: 20
+            build_type: Release
+            distro_type: rhel
+            crb_repo: powertools
+            base_pkgs: "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl"
+            extra_pkgs: "tbb-devel"
+            extra_cmake: "-DCMAKE_EXE_LINKER_FLAGS=-ltbb"
 
-          - name:          "AlmaLinux 8 · GCC 12 (Toolset) · C++17 · Release · OpenMP"
-            container:     almalinux:8
-            cc:            /opt/rh/gcc-toolset-12/root/usr/bin/gcc
-            cxx:           /opt/rh/gcc-toolset-12/root/usr/bin/g++
-            cxx_std:       17
-            build_type:    Release
-            distro_type:   rhel
-            crb_repo:      powertools
-            base_pkgs:     "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl"
-            extra_pkgs:    ""
-            extra_cmake:   "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
+          - name: "AlmaLinux 8 · GCC 12 (Toolset) · C++17 · Release · OpenMP"
+            container: almalinux:8
+            cc: /opt/rh/gcc-toolset-12/root/usr/bin/gcc
+            cxx: /opt/rh/gcc-toolset-12/root/usr/bin/g++
+            cxx_std: 17
+            build_type: Release
+            distro_type: rhel
+            crb_repo: powertools
+            base_pkgs: "cmake ninja-build gcc-toolset-12 gcc-toolset-12-gcc-c++ ccache wget curl"
+            extra_pkgs: ""
+            extra_cmake: "-DCMAKE_CXX_FLAGS='-DCXXGRAPH_WITH_OPENMP -fopenmp' -DCMAKE_EXE_LINKER_FLAGS=-fopenmp"
 
     # ─────────────────────────────────────────────────────────────────────────
     steps:
-
       # ── Checkout ──────────────────────────────────────────────────────────
       # This is a JavaScript action — it runs via the host runner's Node.js
       # and clones the repository to a path that is bind-mounted into the
@@ -576,10 +574,10 @@ jobs:
       # ── Configure ─────────────────────────────────────────────────────────
       - name: Configure CMake
         env:
-          CC:               ${{ matrix.cc }}
-          CXX:              ${{ matrix.cxx }}
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
           CPM_SOURCE_CACHE: ${{ github.workspace }}/.cache/cpm
-          CCACHE_DIR:       ${{ github.workspace }}/.ccache
+          CCACHE_DIR: ${{ github.workspace }}/.ccache
         run: |
           cmake -B build \
             -G Ninja \
