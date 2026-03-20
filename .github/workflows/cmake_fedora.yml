@@ -507,7 +507,7 @@ jobs:
       # and clones the repository to a path that is bind-mounted into the
       # container.  git does NOT need to be installed in the container.
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
 
@@ -549,7 +549,7 @@ jobs:
       # (which IS a JS action and works fine in containers), then configure
       # ccache via environment variables.
       - name: Restore ccache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/.ccache
           key: ccache-fedora-${{ matrix.name }}-${{ github.sha }}
@@ -617,7 +617,7 @@ jobs:
       # ── Artifacts ─────────────────────────────────────────────────────────
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fedora-test-results-${{ matrix.name }}
           path: build/Testing/**/*.xml
