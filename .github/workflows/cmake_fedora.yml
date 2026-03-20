@@ -354,7 +354,7 @@ jobs:
             build_type: Release
             distro_type: rhel
             crb_repo: crb
-            base_pkgs: "cmake ninja-build clang ccache wget "
+            base_pkgs: "cmake ninja-build clang ccache wget git"
             extra_pkgs: ""
             extra_cmake: ""
 

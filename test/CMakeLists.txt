@@ -78,7 +78,7 @@ if(TEST)
     )
 
     if(NOT gtest_disable_pthreads)
-        target_link_libraries(test_exe PUBLIC pthread)
+        target_link_libraries(test_exe PUBLIC Threads::Threads)
     endif(NOT gtest_disable_pthreads)
 
     enable_testing()
