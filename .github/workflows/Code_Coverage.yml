@@ -148,7 +148,7 @@ jobs:
       # ── Attach HTML report as artifact (always, useful on PRs) ────────
       - name: Upload HTML coverage report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-report-html
           path: build/coverage_html/
@@ -156,7 +156,7 @@ jobs:
 
       - name: Upload LCOV file
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-lcov
           path: build/coverage.info
