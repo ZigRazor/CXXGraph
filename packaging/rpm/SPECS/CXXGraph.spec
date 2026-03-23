@@ -5,7 +5,7 @@ Summary:        Header-Only C++ Library for Graph Representation and Algorithms
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 Prefix:/usr
 
-License:        AGPLv3.0
+License:        MPLv2.0
 URL:            https://github.com/ZigRazor/CXXGraph
 Source0:        https://github.com/ZigRazor/CXXGraph/archive/refs/tags/v%{version}.%{release}.tar.gz
 
