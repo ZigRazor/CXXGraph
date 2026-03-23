@@ -207,7 +207,7 @@ jobs:
       # ── Artifacts ─────────────────────────────────────────────────────
       - name: Upload sanitizer test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: san-results-${{ matrix.sanitizer }}-${{ matrix.compiler }}-cxx${{ matrix.cxx_std }}
           path: build/Testing/**/*.xml
