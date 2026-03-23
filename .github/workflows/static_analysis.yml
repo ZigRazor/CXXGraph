@@ -45,7 +45,7 @@ jobs:
             /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-18 100
 
       - name: Install Ninja
-        uses: seanmiddleditch/gha-setup-ninja@v5
+        uses: seanmiddleditch/gha-setup-ninja@v6
 
       - name: Cache CPM packages
         uses: actions/cache@v5
