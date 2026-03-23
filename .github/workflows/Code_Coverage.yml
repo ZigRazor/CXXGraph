@@ -47,7 +47,7 @@ jobs:
             gcc-14 g++-14 lcov gcovr ninja-build
 
       - name: Install Ninja
-        uses: seanmiddleditch/gha-setup-ninja@v5
+        uses: seanmiddleditch/gha-setup-ninja@v6
 
       # ── CPM cache ─────────────────────────────────────────────────────
       - name: Cache CPM packages
