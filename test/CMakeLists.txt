@@ -78,6 +78,12 @@ if(TEST)
     )
 
     if(NOT gtest_disable_pthreads)
+        find_package(Threads)
+        # if(Threads_FOUND)
+        #     message(STATUS "Found Threads: ${CMAKE_THREAD_LIBS_INIT}")
+        # else()
+        #     message(FATAL_ERROR "CXXGraph: Failed to find Threads library")
+        # endif()
         target_link_libraries(test_exe PUBLIC Threads::Threads)
     endif(NOT gtest_disable_pthreads)
 
