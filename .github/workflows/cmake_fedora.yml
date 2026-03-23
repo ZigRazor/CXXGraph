@@ -605,7 +605,7 @@ jobs:
 
       # ── Test ──────────────────────────────────────────────────────────────
       - name: Test
-        working-directory: build
+        working-directory: build/test
         run: |
           ctest \
             --build-config ${{ matrix.build_type }} \
@@ -620,6 +620,6 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: fedora-test-results-${{ matrix.name }}
-          path: build/Testing/**/*.xml
+          path: build/test/Testing/**/*.xml
           if-no-files-found: ignore
           retention-days: 14
