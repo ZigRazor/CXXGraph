@@ -1,5 +1,5 @@
 option(CMAKE_USE_WIN32_THREADS_INIT "using WIN32 threads" ON)
-option(gtest_disable_pthreads "Disable uses of pthreads in gtest." ON)
+option(gtest_disable_pthreads "Disable uses of pthreads in gtest." OFF)
 
 # Force dynamic linking since MSVC now links C runtimes dynamically by default
 set(gtest_force_shared_crt on)
