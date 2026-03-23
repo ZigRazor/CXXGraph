@@ -48,7 +48,7 @@ jobs:
         uses: seanmiddleditch/gha-setup-ninja@v5
 
       - name: Cache CPM packages
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/cpm
           key: cpm-ubuntu-tidy-${{ hashFiles('**/CMakeLists.txt') }}
