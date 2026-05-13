@@ -140,14 +140,23 @@ For self-compiled installations using CMake, execute the following from the comm
 
 ## How to use
 
-To use the library **simply include the header file `CXXGraph.hpp`**, (make sure to add the [include folder](https://github.com/ZigRazor/CXXGraph/tree/master/include) to your compiler's inlcude path).
+[//]: # (To use the library **simply include the header file `CXXGraph.hpp`**, &#40;make sure to add the [include folder]&#40;https://github.com/ZigRazor/CXXGraph/tree/master/include&#41; to your compiler's inlcude path&#41;.)
+To use the library, simply include the `CXXGraph/CXXGraph.hpp` file at the top of your file.   
+
+While compiling the file, include the two include paths mentioned in the `To compile and run the program` section in the command.
 
 CXXGraph revolves around the graph object which contains nodes and edges. This object can then be manipulated with a wide variety of algorithms. Please see the [examples section](#examples), [examples folder](https://github.com/ZigRazor/CXXGraph/tree/master/examples) and [website](https://zigrazor.github.io/CXXGraph/) for more information
 
 ## Examples
 
-In this example, the shortest path between nodeA and nodeC is obtained using Dijkstra's algorithm.
+In this example file `example.cpp`, the shortest path between nodeA and nodeC is obtained using Dijkstra's algorithm.  
+```bash
+$ mkdir folder
+$ cd folder
+$ touch example.cpp    
+```
 
+Paste the below code into example.cpp
 ```cpp
 #include <iostream>
 #include "CXXGraph/CXXGraph.hpp"
@@ -162,9 +171,9 @@ int main(){
   CXXGraph::UndirectedWeightedEdge<int> edge3("3", nodeA, nodeC, 6);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
-  edgeSet.insert(make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
+  edgeSet.insert(std::make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
+  edgeSet.insert(std::make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge2));
+  edgeSet.insert(std::make_shared<CXXGraph::UndirectedWeightedEdge<int>>(edge3));
 
   CXXGraph::Graph<int> graph(edgeSet);
   CXXGraph::DijkstraResult res = graph.dijkstra(nodeA, nodeC);
@@ -173,6 +182,21 @@ int main(){
     std::cout << node_user_id << '\n';
   }
 }
+```
+
+### To compile and run the program
+
+Use the following command to compile the program:
+``` bash 
+# while the path points to /folder/ 
+
+$ g++ <path_to/folder/example.cpp> -I <path_to/CXXGraph/include> \
+  -I <path_to/CXXGraph/build/include> -std=c++17
+```
+This will generate an executable binary `a.out`.
+Use the following command to run the compiled binary:
+```
+./a.out
 ```
 
 See more examples in the [examples folder](https://github.com/ZigRazor/CXXGraph/tree/master/examples).
