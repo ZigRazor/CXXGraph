@@ -39,9 +39,9 @@
 namespace CXXGraph {
 template <typename T>
 BestFirstSearchResult<T> Graph<T>::best_first_search(
-    const Node<T> &source, const Node<T> &target) const {
+    const Node<T>& source, const Node<T>& target) const {
   BestFirstSearchResult<T> result;
-  auto &nodeSet = Graph<T>::getNodeSet();
+  auto& nodeSet = Graph<T>::getNodeSet();
   using pq_type = std::pair<double, shared<const Node<T>>>;
 
   auto source_node_it = std::find_if(
@@ -75,7 +75,7 @@ BestFirstSearchResult<T> Graph<T>::best_first_search(
       break;
     }
     if (cachedAdjListOut->find(currentNode) != cachedAdjListOut->end()) {
-      for (const auto &elem : cachedAdjListOut->at(currentNode)) {
+      for (const auto& elem : cachedAdjListOut->at(currentNode)) {
         if (elem.second->isWeighted().has_value()) {
           if (elem.second->isDirected().has_value()) {
             shared<const DirectedWeightedEdge<T>> dw_edge =
@@ -111,10 +111,10 @@ BestFirstSearchResult<T> Graph<T>::best_first_search(
 
 template <typename T>
 const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
-    const Node<T> &start, size_t num_threads) const {
+    const Node<T>& start, size_t num_threads) const {
   std::vector<Node<T>> bfs_result;
   // check is exist node in the graph
-  auto &nodeSet = Graph<T>::getNodeSet();
+  auto& nodeSet = Graph<T>::getNodeSet();
   auto start_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),
       [&start](auto node) { return node->getUserId() == start.getUserId(); });
@@ -123,10 +123,15 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
   }
 
   std::unordered_map<shared<const Node<T>>, size_t, nodeHash<T>> node_to_index;
-  for (const auto &node : nodeSet) {
+  for (const auto& node : nodeSet) {
     node_to_index[node] = node_to_index.size();
   }
-  std::vector<size_t> visited(nodeSet.size(), 0);
+  // visited is shared among worker threads.
+  // Use atomic to avoid TSAN-reported data races and duplicate enqueues.
+  std::vector<std::atomic<uint8_t>> visited(nodeSet.size());
+  for (auto& v : visited) {
+    v.store(0, std::memory_order_relaxed);
+  }
 
   // parameter limitations
   if (num_threads <= 0) {
@@ -141,7 +146,8 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
   next_level_tracker.reserve(static_cast<int>(1.0 * nodeSet.size()));
 
   // mark the starting node as visited
-  visited[node_to_index[*start_node_it]] = 1;
+  visited[node_to_index[*start_node_it]].store(1, std::memory_order_relaxed);
+
   level_tracker.push_back(*start_node_it);
 
   // a worker is assigned a small part of tasks for each time
@@ -150,6 +156,7 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
   std::mutex next_tracker_mutex;
   std::atomic<int> assigned_tasks = 0;
   int num_tasks = 1;
+
   // unit of task assignment, which mean assign block_size tasks to a
   // worker each time
   int block_size = 1;
@@ -164,7 +171,7 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
 
   auto submit_result =
       [&next_level_tracker, &next_tracker_mutex](
-          std::vector<shared<const Node<T>>> &submission) -> void {
+          std::vector<shared<const Node<T>>>& submission) -> void {
     std::lock_guard<std::mutex> tracker_guard(next_tracker_mutex);
     next_level_tracker.insert(std::end(next_level_tracker),
                               std::begin(submission), std::end(submission));
@@ -174,6 +181,8 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
   std::mutex next_level_mutex;
   std::condition_variable next_level_cond;
   std::atomic<int> waiting_workers = 0;
+  // phase/generation variable to prevent missed wakeups.
+  std::atomic<int> phase = 0;
 
   auto bfs_worker = [&]() -> void {
     // algorithm is not done
@@ -188,10 +197,12 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
 
         for (int i = start_index; i < end_index; ++i) {
           if (cachedAdjListOut->count(level_tracker[i])) {
-            for (const auto &elem : cachedAdjListOut->at(level_tracker[i])) {
+            for (const auto& elem : cachedAdjListOut->at(level_tracker[i])) {
               int index = (int)node_to_index[elem.first];
-              if (visited[index] == 0) {
-                visited[index] = 1;
+              // Atomically claim the node to avoid races and duplicates.
+              uint8_t expected = 0;
+              if (visited[index].compare_exchange_strong(
+                      expected, 1, std::memory_order_relaxed)) {
                 local_tracker.push_back(elem.first);
               }
             }
@@ -205,10 +216,30 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
       }
 
       // last worker need to do preparation for the next iteration
-      int cur_level = level;
+      int local_phase = phase.load(std::memory_order_acquire);
+
       if (num_threads == 1u + waiting_workers.fetch_add(1u)) {
+        // This worker becomes responsible for advancing the phase.
+        std::unique_lock<std::mutex> next_level_lock(next_level_mutex);
+
         swap(level_tracker, next_level_tracker);
         next_level_tracker.clear();
+
+        // Snapshot current level for this iteration; if the worker pool
+        // is allowed to reach the barrier while there are no tasks for the
+        // next level, waiting would deadlock.
+        if (level_tracker.empty()) {
+          // Still advance the phase so that all waiting workers can exit.
+          level = level + 1;
+
+          phase.fetch_add(1, std::memory_order_release);
+          next_level_cond.notify_all();
+          waiting_workers = 0;
+          assigned_tasks = 0;
+          // Exit this worker; other workers will also break because
+          // they'll observe level_tracker.empty() on their next loop.
+          break;
+        }
 
         // adjust block_size according to number of nodes in next level
         block_size = 4;
@@ -223,14 +254,19 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
         num_tasks = (int)level_tracker.size();
         waiting_workers = 0;
         assigned_tasks = 0;
+
+        // Advance BFS level (phase) under the same mutex so that all
+        // wait predicates are consistent.
         level = level + 1;
+        phase.fetch_add(1, std::memory_order_release);
+
         next_level_cond.notify_all();
       } else {
-        // not to wait if last worker reachs last statement before notify
-        // all or even further
+        // Wait for phase to advance. Using a phase/generation variable
+        // prevents missed wakeups.
         std::unique_lock<std::mutex> next_level_lock(next_level_mutex);
-        next_level_cond.wait(next_level_lock, [&level, cur_level]() {
-          return level != cur_level;
+        next_level_cond.wait(next_level_lock, [&]() {
+          return phase.load(std::memory_order_acquire) != local_phase;
         });
       }
     }
@@ -242,14 +278,15 @@ const std::vector<Node<T>> Graph<T>::concurrency_breadth_first_search(
   }
   bfs_worker();
 
-  for (auto &worker : workers) {
+  for (auto& worker : workers) {
     if (worker.joinable()) {
       worker.join();
     }
   }
 
-  for (const auto &visited_node : nodeSet) {
-    if (visited[node_to_index[visited_node]] != 0) {
+  for (const auto& visited_node : nodeSet) {
+    if (visited[node_to_index[visited_node]].load(std::memory_order_relaxed) !=
+        0) {
       bfs_result.push_back(*visited_node);
     }
   }
