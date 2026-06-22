@@ -507,7 +507,7 @@ jobs:
       # and clones the repository to a path that is bind-mounted into the
       # container.  git does NOT need to be installed in the container.
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 1
 
