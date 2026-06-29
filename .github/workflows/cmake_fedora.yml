@@ -549,7 +549,7 @@ jobs:
       # (which IS a JS action and works fine in containers), then configure
       # ccache via environment variables.
       - name: Restore ccache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ github.workspace }}/.ccache
           key: ccache-fedora-${{ matrix.name }}-${{ github.sha }}
@@ -565,7 +565,7 @@ jobs:
       # ── CPM dependency cache ───────────────────────────────────────────────
       # Must use an absolute path — CMake's file(DOWNLOAD) never expands ~.
       - name: Restore CPM cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ github.workspace }}/.cache/cpm
           key: cpm-fedora-${{ matrix.name }}-${{ hashFiles('**/CMakeLists.txt') }}
