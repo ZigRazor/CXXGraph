@@ -430,7 +430,7 @@ jobs:
       # IMPORTANT: path must match CPM_SOURCE_CACHE exactly.
       # Tilde (~) is NOT safe here — use github.workspace for an absolute path.
       - name: Cache CPM packages
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ github.workspace }}/.cache/cpm
           key: cpm-${{ runner.os }}-${{ hashFiles('**/CMakeLists.txt') }}
