@@ -24,6 +24,7 @@
 
 #include <cmath>
 #include <cstring>
+#include <cstdint>
 #include <deque>
 #include <fstream>
 #include <functional>
