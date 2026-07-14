@@ -179,22 +179,22 @@ TEST(CycleCheckTest, test_2001000) {
    *           |-node6...
    */
   CXXGraph::Node<int> node(std::to_string(node_i), node_i);
-  nodes.push_back(node);
+  nodes.push_back(std::move(node));
   node_i++;
   for (int i = 2; i < 2001; i++) {
     for (int j = 0; j < i; j++) {
       auto last_i_node = nodes.back();
       CXXGraph::Node<int> node(std::to_string(node_i), node_i);
-      nodes.push_back(node);
+      nodes.push_back(std::move(node));
       node_i++;
       CXXGraph::DirectedWeightedEdge<int> edge(std::to_string(edge_i++), last_i_node, nodes.back(), distrib(gen));
-      edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge));
+      edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(std::move(edge)));
     }
   }
   CXXGraph::Graph<int> graph_tree(edgeSet);
   ASSERT_EQ(graph_tree.isCyclicDirectedGraphBFS(), false);
   CXXGraph::DirectedWeightedEdge<int> edge(std::to_string(edge_i++), nodes.back(), nodes.front(), distrib(gen));
-  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge));
-  CXXGraph::Graph<int> graph_cycle(edgeSet);
+  edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(std::move(edge)));
+  CXXGraph::Graph<int> graph_cycle(std::move(edgeSet));
   ASSERT_EQ(graph_cycle.isCyclicDirectedGraphBFS(), true);
 }
