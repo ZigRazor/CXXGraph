@@ -173,10 +173,9 @@ TEST(CycleCheckTest, test_2001000) {
    * Creates a Tree Graph with a root node in which each level
    * has one more node than the previous one, having in the end
    * 2000*2001/2 = 2001000 nodes the form looks as follows:
-   * node1-node2
-   *     |-node3-node4
-   *           |-node5
-   *           |-node6...
+   * node1---node3---node6...
+   *     |-node2 |-node5
+   *             |-node4
    */
   CXXGraph::Node<int> node(std::to_string(node_i), node_i);
   nodes.push_back(std::move(node));
