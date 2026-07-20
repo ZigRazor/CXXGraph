@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: action-pack/gitlab-sync@v3.04
+      - uses: action-pack/gitlab-sync@v3.05
         with:
           # GitLab repo URL
           url: ${{ secrets.GITLAB_TARGET_URL }}
