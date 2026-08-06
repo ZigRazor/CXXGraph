@@ -10,10 +10,10 @@ int main() {
   CXXGraph::Node<int> node2("2", 2);
   CXXGraph::Node<int> node3("3", 3);
 
-  CXXGraph::DirectedWeightedEdge<int> edge1("1", node1, node2, 2.0);
-  CXXGraph::DirectedWeightedEdge<int> edge2("2", node2, node3, 2.0);
-  CXXGraph::DirectedWeightedEdge<int> edge3("3", node0, node1, 2.0);
-  CXXGraph::DirectedWeightedEdge<int> edge4("4", node0, node3, 1.0);
+  CXXGraph::DirectedWeightedEdge<int> edge1(1, node1, node2, 2.0);
+  CXXGraph::DirectedWeightedEdge<int> edge2(2, node2, node3, 2.0);
+  CXXGraph::DirectedWeightedEdge<int> edge3(3, node0, node1, 2.0);
+  CXXGraph::DirectedWeightedEdge<int> edge4(4, node0, node3, 1.0);
 
   CXXGraph::T_EdgeSet<int> edgeSet;
   edgeSet.insert(make_shared<CXXGraph::DirectedWeightedEdge<int>>(edge1));
