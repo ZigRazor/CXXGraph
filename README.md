@@ -425,7 +425,7 @@ If you found this useful:
 
 ## Stars History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=ZigRazor/CXXGraph&type=Date)](https://star-history.com/#ZigRazor/CXXGraph&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=ZigRazor/CXXGraph&type=Date)](https://star-history.dera.page/#ZigRazor/CXXGraph&Date)
 
 ## Contact
 
