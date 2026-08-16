@@ -123,6 +123,10 @@ std::optional<CXXGraph::id_t> Graph<T>::addEdge(shared<const Edge<T>> edge) {
 
   auto& [from, to] = edge->getNodePair();
 
+  // Connected nodes are no longer isolated
+  isolatedNodesSet.erase(from);
+  isolatedNodesSet.erase(to);
+
   (*cachedAdjListOut)[from].emplace_back(to, edge);
   (*cachedAdjListIn)[to].emplace_back(from, edge);
   if (!edge.get()->isDirected().value_or(true)) {
@@ -180,7 +184,10 @@ void Graph<T>::removeEdge(const std::string& edgeUserId) {
     edgeSet.erase(std::find_if(this->edgeSet.begin(), this->edgeSet.end(),
     [edgeOpt](const Edge<T> *edge) { return (*(edgeOpt.value()) == *edge); }));
     */
-    edgeSet.erase(edgeSet.find(edgeOpt.value()));
+    auto edgeIt = edgeSet.find(edgeOpt.value());
+    if (edgeIt != edgeSet.end()) {
+      edgeSet.erase(edgeIt);
+    }
 
     auto& [from, to] = edgeOpt.value().get()->getNodePair();
 
@@ -254,6 +261,19 @@ void Graph<T>::removeEdge(const std::string& edgeUserId) {
           cachedAdjListIn->erase(from);
         }
       }
+    }
+
+    // Endpoints that no longer appear in any adjacency list become isolated
+    // nodes (same approach as Hypergraph::unregisterEdgeFromIncidence_).
+    auto stillConnected = [this](const shared<const Node<T>>& node) {
+      return cachedAdjListOut->find(node) != cachedAdjListOut->end() ||
+             cachedAdjListIn->find(node) != cachedAdjListIn->end();
+    };
+    if (!stillConnected(from)) {
+      isolatedNodesSet.insert(from);
+    }
+    if (!stillConnected(to)) {
+      isolatedNodesSet.insert(to);
     }
   }
 }
@@ -266,7 +286,10 @@ void Graph<T>::removeEdge(const CXXGraph::id_t edgeId) {
     edgeSet.erase(std::find_if(this->edgeSet.begin(), this->edgeSet.end(),
     [edgeOpt](const Edge<T> *edge) { return (*(edgeOpt.value()) == *edge); }));
     */
-    edgeSet.erase(edgeSet.find(edgeOpt.value()));
+    auto edgeIt = edgeSet.find(edgeOpt.value());
+    if (edgeIt != edgeSet.end()) {
+      edgeSet.erase(edgeIt);
+    }
 
     auto& [from, to] = edgeOpt.value().get()->getNodePair();
 
@@ -340,6 +363,19 @@ void Graph<T>::removeEdge(const CXXGraph::id_t edgeId) {
           cachedAdjListIn->erase(from);
         }
       }
+    }
+
+    // Endpoints that no longer appear in any adjacency list become isolated
+    // nodes (same approach as Hypergraph::unregisterEdgeFromIncidence_).
+    auto stillConnected = [this](const shared<const Node<T>>& node) {
+      return cachedAdjListOut->find(node) != cachedAdjListOut->end() ||
+             cachedAdjListIn->find(node) != cachedAdjListIn->end();
+    };
+    if (!stillConnected(from)) {
+      isolatedNodesSet.insert(from);
+    }
+    if (!stillConnected(to)) {
+      isolatedNodesSet.insert(to);
     }
   }
 }
