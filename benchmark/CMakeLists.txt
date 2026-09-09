@@ -4,6 +4,8 @@ option(CMAKE_USE_WIN32_THREADS_INIT "using WIN32 threads" ON)
 if(BENCHMARK)
 	include(${CPM_DOWNLOAD_LOCATION})
 
+	# Find OpenMP for parallelization
+	find_package(OpenMP REQUIRED)
 
 	# Always force Google Benchmark to build in Release mode
 	set(BENCHMARK_BUILD_TYPE Release CACHE STRING "Build type for Google Benchmark" FORCE)
@@ -50,6 +52,7 @@ if(BENCHMARK)
 		GTest::gtest 
 		benchmark::benchmark 
 		zlibstatic
+		OpenMP::OpenMP_CXX
 		${PROJECT_NAME}
 	)
 	
