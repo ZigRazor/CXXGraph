@@ -1411,6 +1411,30 @@ TEST(GraphTest, remove_node_connectedNode2) {
   ASSERT_EQ(graph.getEdgeSet().size(), 1);
 }
 
+TEST(GraphTest, removeEdge_keepsOrphanNodesIsolated) {
+  // Regression for #497: removeEdge must not drop endpoints that were only
+  // introduced via that edge; they should remain as isolated nodes.
+  CXXGraph::Node<int> a("A", 1);
+  CXXGraph::Node<int> b("B", 2);
+  CXXGraph::DirectedWeightedEdge<int> ab("ab", a, b, 1.0);
+
+  CXXGraph::Graph<int> graph;
+  graph.addEdge(&ab);
+
+  ASSERT_EQ(graph.getNodeSet().size(), 2);
+  ASSERT_EQ(graph.getEdgeSet().size(), 1);
+  ASSERT_TRUE(graph.getNode("A").has_value());
+  ASSERT_TRUE(graph.getNode("B").has_value());
+
+  graph.removeEdge("ab");
+
+  ASSERT_EQ(graph.getEdgeSet().size(), 0);
+  ASSERT_EQ(graph.getNodeSet().size(), 2);
+  ASSERT_EQ(graph.getIsolatedNodeSet().size(), 2);
+  ASSERT_TRUE(graph.getNode("A").has_value());
+  ASSERT_TRUE(graph.getNode("B").has_value());
+}
+
 TEST(GraphTest, remove_node_removeInvalidNode) {
   /** Test to call the remove_node function on a node that was never added. In
    * this case getNode will return an optional that is nullptr*/
