@@ -1,20 +1,22 @@
 /***********************************************************/
-/***      ______  ____  ______                 _         ***/
-/***     / ___\ \/ /\ \/ / ___|_ __ __ _ _ __ | |__	     ***/
-/***    | |    \  /  \  / |  _| '__/ _` | '_ \| '_ \	 ***/
-/***    | |___ /  \  /  \ |_| | | | (_| | |_) | | | |    ***/
-/***     \____/_/\_\/_/\_\____|_|  \__,_| .__/|_| |_|    ***/
-/***                                    |_|			     ***/
+/***      ______  ____  ______   ___  __    __         ***/
+/***     /" _  "\("  _ "\( __ "\|"  \|" |  |" \        ***/
+/***    (: ______)|   __/\/"  \ |    \   |  ||  |       ***/
+/***     \/    | (\  |  )  |/ \|  o  )  |  |:  |       ***/
+/***     // ___)_ /\\ \ /  /    \.   /   :  |\  |___    ***/
+/***    (:      "(  <_|:  /  //\\  \  //\\  \|  |:::|   ***/
+/***     \_______)\_______/  (__)_(_)(__\_)_(__|___|   ***/
+/***                                                     ***/
 /***********************************************************/
-/***     Header-Only C++ Library for Graph			     ***/
-/***	 Representation and Algorithms				     ***/
+/***     Header-Only C++ Library for Graph             ***/
+/***     Representation and Algorithms                 ***/
 /***********************************************************/
-/***     Author: ZigRazor ***/
-/***	 E-Mail: zigrazor@gmail.com 				     ***/
+/***     Author: ZigRazor                              ***/
+/***     E-Mail: zigrazor@gmail.com                    ***/
 /***********************************************************/
-/***	 Collaboration: ----------- 				     ***/
+/***     Collaboration: -----------                    ***/
 /***********************************************************/
-/***	 License: MPL v2.0 ***/
+/***     License: MPL v2.0                             ***/
 /***********************************************************/
 
 #ifndef __CXXGRAPH_BELLMANFORD_IMPL_H__
@@ -24,11 +26,12 @@
 
 #include <algorithm>
 #include <unordered_map>
-
+#include <vector>
 #include "CXXGraph/Graph/Graph_decl.h"
 #include "CXXGraph/Utility/ConstString.hpp"
 
 namespace CXXGraph {
+
 template <typename T>
 const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
                                               const Node<T> &target) const {
@@ -36,6 +39,7 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
   result.success = false;
   result.errorMessage = "";
   result.result = INF_DOUBLE;
+
   auto nodeSet = Graph<T>::getNodeSet();
   auto source_node_it = std::find_if(
       nodeSet.begin(), nodeSet.end(),
@@ -53,50 +57,81 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
     result.errorMessage = ERR_TARGET_NODE_NOT_IN_GRAPH;
     return result;
   }
-  // setting all the distances initially to INF_DOUBLE
-  std::unordered_map<shared<const Node<T>>, double, nodeHash<T>> dist,
-      currentDist;
-  // n denotes the number of vertices in graph
-  auto n = nodeSet.size();
-  for (const auto &elem : nodeSet) {
-    dist[elem] = INF_DOUBLE;
-    currentDist[elem] = INF_DOUBLE;
+
+  // Map nodes to integer indices for efficient vector usage
+  size_t n = nodeSet.size();
+  std::vector<shared<const Node<T>>> nodes(n);
+  std::unordered_map<shared<const Node<T>>, size_t, nodeHash<T>> node_to_idx;
+  size_t idx = 0;
+  for (const auto &node : nodeSet) {
+    nodes[idx] = node;
+    node_to_idx[node] = idx++;
   }
 
-  // marking the distance of source as 0
-  dist[*source_node_it] = 0;
-  // set if node distances in two consecutive
-  // iterations remain the same.
-  auto earlyStopping = false;
-  // outer loop for vertex relaxation
+  auto source_ptr = *source_node_it;
+  auto target_ptr = *target_node_it;
+  size_t src_idx = node_to_idx[source_ptr];
+  size_t tgt_idx = node_to_idx[target_ptr];
+
+  // Prepare edges as struct for better cache and sorting
+  struct MyEdge {
+    size_t u, v;
+    double w;
+  };
+  std::vector<MyEdge> edges;
+  auto edgeSet = Graph<T>::getEdgeSet();
+  for (const auto &edge : edgeSet) {
+    if (!edge->isWeighted().value_or(false)) {
+      result.errorMessage = ERR_NO_WEIGHTED_EDGE;
+      return result;
+    }
+    auto elem = edge->getNodePair();
+    double weight =
+        (std::dynamic_pointer_cast<const Weighted>(edge))->getWeight();
+    edges.push_back({node_to_idx[elem.first], node_to_idx[elem.second], weight});
+  }
+  size_t m = edges.size();
+
+  // OPTIMIZATION: Sort edges by source for better cache locality, but only for larger graphs
+  const size_t SORT_THRESHOLD = 10000;  // Adjust threshold as needed
+  if (m > SORT_THRESHOLD) {
+    std::sort(edges.begin(), edges.end(),
+              [](const MyEdge &a, const MyEdge &b) { return a.u < b.u; });
+  }
+
+  // setting all the distances initially to INF_DOUBLE
+  std::vector<double> dist(n, INF_DOUBLE);
+  dist[src_idx] = 0.0;
+
+  // outer loop for vertex relaxation with early stopping
+  bool earlyStopping = false;
   for (size_t i = 0; i < n - 1; ++i) {
-    auto edgeSet = Graph<T>::getEdgeSet();
-    // inner loop for distance updates of
-    // each relaxation
-    for (const auto &edge : edgeSet) {
-      auto elem = edge->getNodePair();
-      if (edge->isWeighted().value_or(false)) {
-        auto edge_weight =
-            (std::dynamic_pointer_cast<const Weighted>(edge))->getWeight();
-        if (dist[elem.first] + edge_weight < dist[elem.second])
-          dist[elem.second] = dist[elem.first] + edge_weight;
-      } else {
-        // No Weighted Edge
-        result.errorMessage = ERR_NO_WEIGHTED_EDGE;
-        return result;
+    bool relaxed = false;
+
+    // OPTIMIZATION: Process in blocks for better cache utilization
+    const int BLOCK_SIZE = 64;
+    for (size_t block_start = 0; block_start < m; block_start += BLOCK_SIZE) {
+      size_t block_end = std::min(block_start + BLOCK_SIZE, m);
+
+      // OPTIMIZATION: Prefetch next block
+      if (block_start + BLOCK_SIZE < m) {
+        __builtin_prefetch(&edges[block_start + BLOCK_SIZE], 0, 3);
+      }
+
+      // Process current block
+      for (size_t j = block_start; j < block_end; ++j) {
+        const auto &e = edges[j];
+        if (dist[e.u] < INF_DOUBLE) {
+          double new_dist = dist[e.u] + e.w;
+          if (new_dist < dist[e.v]) {
+            dist[e.v] = new_dist;
+            relaxed = true;
+          }
+        }
       }
     }
-    auto flag = true;
-    for (const auto &[key, value] : dist) {
-      if (currentDist[key] != value) {
-        flag = false;
-        break;
-      }
-    }
-    for (const auto &[key, value] : dist) {
-      currentDist[key] = value;  // update the current distance
-    }
-    if (flag) {
+
+    if (!relaxed) {
       earlyStopping = true;
       break;
     }
@@ -104,30 +139,34 @@ const BellmanFordResult Graph<T>::bellmanford(const Node<T> &source,
 
   // check if there exists a negative cycle
   if (!earlyStopping) {
-    auto edgeSet = Graph<T>::getEdgeSet();
-    for (const auto &edge : edgeSet) {
-      auto elem = edge->getNodePair();
-      auto edge_weight =
-          (std::dynamic_pointer_cast<const Weighted>(edge))->getWeight();
-      if (dist[elem.first] + edge_weight < dist[elem.second]) {
-        result.success = true;
-        result.negativeCycle = true;
-        result.errorMessage = "";
-        return result;
+    bool hasNegativeCycle = false;
+    for (const auto &e : edges) {
+      if (dist[e.u] < INF_DOUBLE && dist[e.u] + e.w < dist[e.v]) {
+        hasNegativeCycle = true;
+        break;
       }
+    }
+    if (hasNegativeCycle) {
+      result.success = true;
+      result.negativeCycle = true;
+      result.errorMessage = "";
+      return result;
     }
   }
 
-  if (dist[*target_node_it] != INF_DOUBLE) {
+  if (dist[tgt_idx] != INF_DOUBLE) {
     result.success = true;
     result.errorMessage = "";
     result.negativeCycle = false;
-    result.result = dist[*target_node_it];
+    result.result = dist[tgt_idx];
     return result;
   }
+
   result.errorMessage = ERR_TARGET_NODE_NOT_REACHABLE;
   result.result = -1;
   return result;
 }
+
 }  // namespace CXXGraph
+
 #endif  // __CXXGRAPH_BELLMANFORD_IMPL_H__
